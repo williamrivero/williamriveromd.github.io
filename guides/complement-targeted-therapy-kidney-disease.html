@@ -459,11 +459,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -492,21 +507,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1883,12 +1919,12 @@ try{(function(){var v=localStorage.getItem('wgmr-complement-mode');if(v===null){
     <div class="ov-card">
     <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
     <div class="ov-list">
-    <div class="ov-stat"><span class="v">&minus;3.10</span><span class="l">Iptacopan total estimated glomerular filtration rate (eGFR) slope (mL/min/1.73m&sup2;/yr), APPLAUSE-IgAN (IgA nephropathy) 24-mo vs &minus;6.12 placebo</span></div>
-    <div class="ov-stat"><span class="v">~2000&times;</span><span class="l">Increased meningococcal disease risk on complement blockade (CDC)</span></div>
-    <div class="ov-stat"><span class="v">&ge;2</span><span class="l">Immunofluorescence (IF) orders of C3 over any other reactant — a C3-dominance screen, not a diagnosis</span></div>
-    <div class="ov-stat"><span class="v">Apr 2026</span><span class="l">Food and Drug Administration (FDA) proposed withdrawal of avacopan; status unresolved at cut-off</span></div>
-    </div>
-    <a class="ov-foot" href="#md-evidence">View evidence map <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+<div class="ov-stat"><span class="v">−3.10</span><span class="l">eGFR slope (mL/min/1.73 m²/yr) on iptacopan vs −6.12 placebo (APPLAUSE-IgAN, 24 mo)</span></div>
+<div class="ov-stat"><span class="v">~2000×</span><span class="l">Increased meningococcal disease risk on complement blockade (CDC)</span></div>
+<div class="ov-stat"><span class="v">≥2</span><span class="l">IF orders of C3 over any other reactant: a C3-dominance screen, not a diagnosis</span></div>
+<div class="ov-stat"><span class="v">Apr 2026</span><span class="l">FDA proposed withdrawal of avacopan; status unresolved at cut-off</span></div>
+</div>
+<a class="ov-foot" href="#md-evidence">View evidence map <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
     </aside>
     <div class="hero-copy">
@@ -2113,7 +2149,7 @@ try{(function(){var v=localStorage.getItem('wgmr-complement-mode');if(v===null){
       <tr><td><strong>C5</strong></td><td>C5a generation and terminal C5b-9 (MAC) formation</td><td>Proximal C3 activation and opsonization</td><td>Established role in complement-mediated hemolytic uremic syndrome (HUS); substantial meningococcal risk remains</td></tr>
       <tr><td><strong>C5a receptor (C5aR1)</strong></td><td>C5a-driven neutrophil inflammatory signaling</td><td>Other complement functions, including terminal-complex formation</td><td>Mechanistically attractive in antineutrophil cytoplasmic antibody (ANCA)&ndash;associated vasculitis (AAV); avacopan evidence and regulatory status now unsettled</td></tr>
       <tr><td><strong>C3 / C3b</strong></td><td>Central convergence and amplification</td><td>Little downstream complement activity</td><td>Broad proximal control; serious encapsulated-bacterial precautions</td></tr>
-      <tr><td><strong>Factor B</strong></td><td>Alternative-pathway amplification</td><td>Classical/lectin initiation and some non-alternative activity</td><td>Oral proximal alternative-pathway strategy in IgAN and C3G indications</td></tr>
+      <tr><td><strong>Factor B</strong></td><td>Alternative-pathway amplification</td><td>Classical/lectin initiation and some non-alternative activity</td><td>Oral proximal alternative-pathway strategy in IgAN (immunoglobulin A nephropathy) and C3G indications</td></tr>
     </tbody>
   </table>
   </div>
@@ -2269,7 +2305,7 @@ try{(function(){var v=localStorage.getItem('wgmr-complement-mode');if(v===null){
       <tr>
         <td><strong>Primary IgAN at risk of progression</strong></td>
         <td>Alternative pathway amplifies immune-complex inflammation</td>
-        <td><span class="tier-badge tier-1">Randomized phase 3</span> Iptacopan — proteinuria + 24-month eGFR-slope benefit (APPLAUSE-IgAN)</td>
+        <td><span class="tier-badge tier-1">Randomized phase 3</span> Iptacopan — proteinuria + 24-month estimated glomerular filtration rate (eGFR) slope benefit (APPLAUSE-IgAN)</td>
         <td>July 2026 US traditional approval: <em>slows kidney-function decline</em></td>
         <td>Which patient should receive which disease-specific drug or combination</td>
       </tr>
@@ -2295,7 +2331,7 @@ try{(function(){var v=localStorage.getItem('wgmr-complement-mode');if(v===null){
   <h3 style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:var(--navy);margin:28px 0 12px;">Pegcetacoplan outside the trial: real-world and post-transplant data (2026)</h3>
   <p>Two 2026 <em>Kidney International</em> reports, both from the Bambino Gesù/CompCure group, carry the trial signal into routine practice:</p>
   <ul style="font-size:14.5px;color:var(--text-mid);line-height:1.7;padding-left:20px;">
-    <li><strong>Real-world cohort (n = 25).</strong> Patients from the CompCure registry and an international survey were treated outside trials: 18 with C3 glomerulonephritis, 3 with dense deposit disease and 4 with primary IC-MPGN. Most were children and young adults (median age 14.9 years) and most had not responded to conventional immunosuppression. Baseline median urine protein-to-creatinine ratio (uPCR) was 3.5 g/g. Proteinuria fell within the first month and was 81% lower at 6 months; 68% reached uPCR below 1 g/g (12% complete and 64% partial remission). Serum C3 normalized in every patient but one, who was suspected of non-adherence. eGFR rose by about 9 mL/min/1.73 m² at 3 months and 12 mL/min/1.73 m² at 6 months, then held steady to 12 months. Over 222 patient-months there were 2 possibly drug-related adverse events (pneumonia and localized erysipelas) and no encapsulated-bacterial infections in vaccinated patients. Repeat biopsies (n = 4) ranged from complete clearance of C3 deposits to persistent deposits and chronic lesions. This is a small observational series, but it shows that the VALIANT response is reproducible in harder-to-treat patients.</li>
+    <li><strong>Real-world cohort (n = 25).</strong> Patients from the CompCure registry and an international survey were treated outside trials: 18 with C3 glomerulonephritis, 3 with dense deposit disease and 4 with primary IC-MPGN. Most were children and young adults (median age 14.9 years) and most had not responded to conventional immunosuppression. Baseline median urine protein-to-creatinine ratio (uPCR) was 3.5 g/g. Proteinuria fell within the first month and was 81% lower at 6 months; 68% reached uPCR below 1 g/g (12% complete and 64% partial remission). Serum C3 normalized in every patient but one, who was suspected of non-adherence. eGFR (estimated glomerular filtration rate) rose by about 9 mL/min/1.73 m² at 3 months and 12 mL/min/1.73 m² at 6 months, then held steady to 12 months. Over 222 patient-months there were 2 possibly drug-related adverse events (pneumonia and localized erysipelas) and no encapsulated-bacterial infections in vaccinated patients. Repeat biopsies (n = 4) ranged from complete clearance of C3 deposits to persistent deposits and chronic lesions. This is a small observational series, but it shows that the VALIANT response is reproducible in harder-to-treat patients.</li>
     <li><strong>Prophylaxis against post-transplant recurrence (case report).</strong> C3G recurs in about 60–84% of kidney grafts. A child with C3G (a pathogenic <em>CFH</em> variant plus <em>NPHS2</em> modifier variants) progressed to dialysis despite pegcetacoplan given late at an eGFR of 23. She then received a living-related graft with pegcetacoplan started 1 week <em>before</em> surgery, timed so that C3 had normalized by the day of transplant. Protocol biopsies at 3 and 7 months showed no recurrence, and graft function and complement were normal at 8 months. This is the first reported use of pegcetacoplan as recurrence prophylaxis. It is a single case and does not support routine use, but it is a reasonable option to discuss for high-risk recipients, especially those who lost a previous graft to recurrence.</li>
   </ul>
   <p>The case also shows the limits of starting late. In the native kidney at an eGFR of 23, C3 rose and albumin improved, but nephrotic proteinuria persisted and the kidney failed within 9 months. This is one patient, but it fits the general principle that complement inhibition is most likely to help before chronic scarring dominates the biopsy.</p>

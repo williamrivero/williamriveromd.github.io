@@ -459,11 +459,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -492,21 +507,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1895,11 +1931,11 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <div class="ov-card">
     <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
     <div class="ov-list">
-    <div class="ov-stat"><span class="v">5&ndash;10</span><span class="l">GFR (mL/min/1.73m²) where indications often — but not invariably — appear (KDIGO 2024, Practice Point)</span></div>
-    <div class="ov-stat"><span class="v">1.04</span><span class="l">IDEAL all-cause mortality hazard ratio, planned early vs late start (95% CI 0.83–1.30)</span></div>
-    <div class="ov-stat"><span class="v">0</span><span class="l">Randomized trials of dialysis vs conservative management in the 2025 Cochrane review</span></div>
-    </div>
-    <a class="ov-foot" href="#md-algorithm">View algorithm <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+<div class="ov-stat"><span class="v">5–10</span><span class="l">GFR (mL/min/1.73 m²) where indications often, but not always, appear (KDIGO 2024)</span></div>
+<div class="ov-stat"><span class="v">1.04</span><span class="l">IDEAL mortality HR, planned early vs late start (95% CI 0.83–1.30)</span></div>
+<div class="ov-stat"><span class="v">0</span><span class="l">RCTs of dialysis vs conservative care in the 2025 Cochrane review</span></div>
+</div>
+<a class="ov-foot" href="#md-algorithm">View algorithm <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
     </aside>
     <div class="hero-copy">
@@ -2000,7 +2036,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <section class="section mode-patient" id="fork">
   <div class="section-tag"><span data-lang="en">First Fork</span><span data-lang="tl" class="lang-hidden">Unang Sangahan</span><span data-lang="ceb" class="lang-hidden">Unang Sanga</span><span data-lang="kap" class="lang-hidden">Mumunang Sanga</span></div>
   <h2><span data-lang="en">Is this a gradual change, or a sudden one?</span><span data-lang="tl" class="lang-hidden">Ito ba ay unti-unting pagbabago, o biglaan?</span><span data-lang="ceb" class="lang-hidden">Kini ba usa ka hinay-hinay nga kausaban, o kalit?</span><span data-lang="kap" class="lang-hidden">Ini wari metung a inut-inut a pamanyaliwa, o kalit?</span></h2>
-  <p><span data-lang="en">Before anything else, the timing question splits in two, because the reasoning is completely different. Chronic kidney disease (CKD) develops slowly over months to years; acute kidney injury (AKI) is a rapid change over hours to days, often during another illness. The slow-CKD timing logic on this page does not apply to a sudden change — and an estimated GFR calculated from a single creatinine is <em>not</em> reliable when kidney function is moving quickly.</span><span data-lang="tl" class="lang-hidden">Bago ang lahat, ang tanong tungkol sa timing ay nahahati sa dalawa, dahil ganap na magkaiba ang pangangatwiran. Ang chronic kidney disease (CKD) ay unti-unting umuunlad sa loob ng mga buwan hanggang taon; ang acute kidney injury (AKI) ay mabilis na pagbabago sa loob ng ilang oras hanggang araw, kadalasan habang may ibang sakit. Ang mabagal-na-CKD na lohika ng timing sa pahinang ito ay hindi angkop sa isang biglaang pagbabago — at ang isang estimated GFR na kinuwenta mula sa iisang creatinine ay <em>hindi</em> maaasahan kapag mabilis na gumagalaw ang gana ng bato.</span><span data-lang="ceb" class="lang-hidden">Sa wala pa ang tanan, ang pangutana bahin sa timing mabahin sa duha, tungod kay hingpit nga lahi ang pangatarungan. Ang chronic kidney disease (CKD) hinay-hinay nga mouswag sulod sa mga bulan hangtod tuig; ang acute kidney injury (AKI) usa ka paspas nga kausaban sulod sa pipila ka oras hangtod adlaw, kasagaran samtang naay laing sakit. Ang hinay-nga-CKD nga lohika sa timing niini nga panid dili haom sa kalit nga kausaban — ug ang usa ka estimated GFR nga gikwenta gikan sa usa ka creatinine <em>dili</em> kasaligan kung paspas nga naglihok ang gana sa kidney.</span><span data-lang="kap" class="lang-hidden">Bayu ing anaman, ing kutang tungkul king timing mibabahagi ya king adua, uling ganap a miyayaliwa ing pangatuiran. Ing chronic kidney disease (CKD) inut-inut yang tutubu king kilub da reng bulan angga king banua; ing acute kidney injury (AKI) metung a mabilis a pamanyaliwa king kilub da reng oras angga king aldo, karaniwan kayabe ning aliwang sakit. Ing mabagal-a-CKD a lohika ning timing king panid a ini ali ya angkup king metung a kalit a pamanyaliwa — at ing metung a estimated GFR a kinuwenta ibat king metung a creatinine <em>ali</em> ya maasahan nung mabilis a gagalo ing gana ning bato.</span></p>
+  <p><span data-lang="en">Before anything else, the timing question splits in two, because the reasoning is completely different. Chronic kidney disease (CKD) develops slowly over months to years; acute kidney injury (AKI) is a rapid change over hours to days, often during another illness. The slow-CKD timing logic on this page does not apply to a sudden change — and an estimated GFR (glomerular filtration rate) calculated from a single creatinine is <em>not</em> reliable when kidney function is moving quickly.</span><span data-lang="tl" class="lang-hidden">Bago ang lahat, ang tanong tungkol sa timing ay nahahati sa dalawa, dahil ganap na magkaiba ang pangangatwiran. Ang chronic kidney disease (CKD) ay unti-unting umuunlad sa loob ng mga buwan hanggang taon; ang acute kidney injury (AKI) ay mabilis na pagbabago sa loob ng ilang oras hanggang araw, kadalasan habang may ibang sakit. Ang mabagal-na-CKD na lohika ng timing sa pahinang ito ay hindi angkop sa isang biglaang pagbabago — at ang isang estimated GFR na kinuwenta mula sa iisang creatinine ay <em>hindi</em> maaasahan kapag mabilis na gumagalaw ang gana ng bato.</span><span data-lang="ceb" class="lang-hidden">Sa wala pa ang tanan, ang pangutana bahin sa timing mabahin sa duha, tungod kay hingpit nga lahi ang pangatarungan. Ang chronic kidney disease (CKD) hinay-hinay nga mouswag sulod sa mga bulan hangtod tuig; ang acute kidney injury (AKI) usa ka paspas nga kausaban sulod sa pipila ka oras hangtod adlaw, kasagaran samtang naay laing sakit. Ang hinay-nga-CKD nga lohika sa timing niini nga panid dili haom sa kalit nga kausaban — ug ang usa ka estimated GFR nga gikwenta gikan sa usa ka creatinine <em>dili</em> kasaligan kung paspas nga naglihok ang gana sa kidney.</span><span data-lang="kap" class="lang-hidden">Bayu ing anaman, ing kutang tungkul king timing mibabahagi ya king adua, uling ganap a miyayaliwa ing pangatuiran. Ing chronic kidney disease (CKD) inut-inut yang tutubu king kilub da reng bulan angga king banua; ing acute kidney injury (AKI) metung a mabilis a pamanyaliwa king kilub da reng oras angga king aldo, karaniwan kayabe ning aliwang sakit. Ing mabagal-a-CKD a lohika ning timing king panid a ini ali ya angkup king metung a kalit a pamanyaliwa — at ing metung a estimated GFR a kinuwenta ibat king metung a creatinine <em>ali</em> ya maasahan nung mabilis a gagalo ing gana ning bato.</span></p>
   <div class="fork-grid">
     <div class="fork-card chronic">
       <h4>🐢 <span data-lang="en">Gradual — over months or years</span><span data-lang="tl" class="lang-hidden">Unti-unti — sa loob ng mga buwan o taon</span><span data-lang="ceb" class="lang-hidden">Hinay-hinay — sulod sa mga bulan o tuig</span><span data-lang="kap" class="lang-hidden">Inut-inut — king kilub da reng bulan o banua</span></h4>
@@ -2033,7 +2069,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
   <div class="section-tag"><span data-lang="en">The Core Misconception</span><span data-lang="tl" class="lang-hidden">Ang Pangunahing Maling Akala</span><span data-lang="ceb" class="lang-hidden">Ang Sentro nga Sayop nga Pagsabot</span><span data-lang="kap" class="lang-hidden">Ing Pekamaragul a Malb a Pamagakala</span></div>
   <h2><span data-lang="en">There is no magic eGFR.</span><span data-lang="tl" class="lang-hidden">Walang mahiwagang eGFR.</span><span data-lang="ceb" class="lang-hidden">Walay salamangka nga eGFR.</span><span data-lang="kap" class="lang-hidden">Alang salamangkang eGFR.</span></h2>
   <p><span data-lang="en">The estimated glomerular filtration rate (eGFR) is a genuinely useful number: it tells you roughly how advanced kidney disease is and how fast it is moving. What it cannot do is announce the day dialysis must begin. At very low kidney function, the creatinine-based eGFR becomes less precise — it is thrown off by low muscle mass, frailty, an amputation, swelling, an unusual diet, or kidney function that is itself changing. And two people with an identical eGFR can be worlds apart in their potassium, their acid balance, their fluid, their nutrition, how much urine they still make, and whether they feel well enough to live safely.</span><span data-lang="tl" class="lang-hidden">Ang estimated glomerular filtration rate (eGFR) ay isang tunay na kapaki-pakinabang na numero: tinatantya nito kung gaano na kalala ang sakit sa bato at gaano ito kabilis kumikilos. Ang hindi nito magagawa ay ipahayag ang araw na dapat magsimula ang dialysis. Sa napakababang gana ng bato, ang creatinine-based na eGFR ay nagiging mas hindi tiyak — naaapektuhan ito ng mababang laman ng kalamnan, pagiging mahina, isang amputation, pamamaga, isang di-pangkaraniwang diyeta, o gana ng bato na mismong nagbabago. At dalawang taong may magkaparehong eGFR ay maaaring magkalayong-magkalayo sa kanilang potassium, sa balanse ng asido, sa tubig, sa nutrisyon, kung gaano karaming ihi ang nagagawa pa nila, at kung sapat ba ang pakiramdam nilang mabuti para mabuhay nang ligtas.</span><span data-lang="ceb" class="lang-hidden">Ang estimated glomerular filtration rate (eGFR) usa ka tinuod nga mapuslanon nga numero: gibanabana niini kon unsa na ka grabe ang sakit sa kidney ug unsa kini ka paspas molihok. Ang dili niini mahimo mao ang pagpahayag sa adlaw nga angay magsugod ang dialysis. Sa hilabihan ka ubos nga gana sa kidney, ang creatinine-based nga eGFR mahimong dili na kaayo tukma — naapektohan kini sa ubos nga sulod sa kaunuran, kaluya, usa ka amputation, panghubag, usa ka dili kasagaran nga diyeta, o gana sa kidney nga nag-usab mismo. Ug duha ka tawo nga adunay parehong eGFR mahimong layo kaayo sa ilang potassium, sa ilang balanse sa asido, sa ilang tubig, sa ilang nutrisyon, kon pila ka ihi ang mabuhat pa nila, ug kon igo ba ang ilang pagbati nga maayo aron mabuhi nga luwas.</span><span data-lang="kap" class="lang-hidden">Ing estimated glomerular filtration rate (eGFR) metung yang tune a makakayanan a numeru: titimbangan na nung makananu na kalala ing sakit king bato at makananu ya kabilis a gagalo. Ing e na agagawa ing ipahayag ing aldo a dapat magumpisa ing dialysis. King mababa a gana ning bato, ing creatinine-based a eGFR mengari yang e na masyadong tiyak — aapektuan ne ning mababang laman ning kalamnan, kaluyan, metung a amputation, panlaki, metung a e karaniwan a diyeta, o gana ning bato a mismung mengayaliwa. At adua tau a atin parehong eGFR malyaring marayung-marayu king karelang potassium, king balanse ning asido, king danum, king nutrisyon, nung makananu karakal a ihi ing agagawa da pa, at nung sukat ing pamiramdam dang mayap para mabie a ligtas.</span></p>
-  <p><span data-lang="en">So the useful question is never "what is the number?" but "what is the number a sign <em>of</em>, and can that problem be controlled another way?" KDIGO — the international kidney-guideline body — puts it as a <strong>composite assessment</strong>: symptoms, signs, quality of life, your preferences, GFR, and laboratory abnormalities, weighed together. In its 2024 CKD guideline, KDIGO notes that the indications to start dialysis <strong>often — but not invariably</strong> — develop at a GFR of about 5–10 mL/min/1.73 m². That range is <em>descriptive, not a threshold</em>: it is where indications commonly appear, not a target to aim for and not an instruction to wait.</span><span data-lang="tl" class="lang-hidden">Kaya ang kapaki-pakinabang na tanong ay hindi kailanman "ano ang numero?" kundi "ano ang tanda ng numerong iyon, at makokontrol ba ang problemang iyon sa ibang paraan?" Inilalahad ito ng KDIGO — ang pandaigdigang lupon ng mga gabay sa bato — bilang isang <strong>composite assessment</strong>: mga sintomas, palatandaan, kalidad ng buhay, iyong mga kagustuhan, GFR, at mga abnormalidad sa laboratoryo, na tinitimbang nang magkakasama. Sa 2024 CKD guideline nito, binabanggit ng KDIGO na ang mga indikasyon para magsimula ng dialysis ay <strong>madalas — ngunit hindi palagi</strong> — nabubuo sa GFR na mga 5–10 mL/min/1.73 m². Ang saklaw na iyon ay <em>naglalarawan lamang, hindi isang threshold</em>: doon karaniwang lumilitaw ang mga indikasyon, hindi isang target na tutumbukin at hindi isang utos na maghintay.</span><span data-lang="ceb" class="lang-hidden">Busa ang mapuslanon nga pangutana dili gyud "unsa ang numero?" kondili "unsa ang timailhan sa numero, ug makontrol ba kadto nga problema sa laing paagi?" Gibutang kini sa KDIGO — ang internasyonal nga lawas sa mga giya sa kidney — isip usa ka <strong>composite assessment</strong>: mga simtomas, timailhan, kalidad sa kinabuhi, imong mga gusto, GFR, ug mga abnormalidad sa laboratoryo, nga gitimbang nga dungan. Sa 2024 CKD guideline niini, gihisgotan sa KDIGO nga ang mga indikasyon aron magsugod ug dialysis <strong>kasagaran — apan dili kanunay</strong> — motungha sa GFR nga mga 5–10 mL/min/1.73 m². Kadto nga han-ay <em>naghulagway lamang, dili usa ka threshold</em>: didto kasagaran motungha ang mga indikasyon, dili usa ka target nga pangitngiton ug dili usa ka mando nga maghulat.</span><span data-lang="kap" class="lang-hidden">Kanita ing makakayanan a kutang ali kapilan man "nanu ing numeru?" nune "nanu ing tanda ning numeru, at makontrol wari ita a problema king aliwang paraan?" Ilalage ne ning KDIGO — ing pang-yatu a lupon da reng giya king bato — antimong metung a <strong>composite assessment</strong>: deng sintomas, tanda, kalidad ning bie, deng kekang buri, GFR, ampo deng abnormalidad king laboratoryo, a titimbangan a mirasan. King 2024 CKD guideline na, sasabian ning KDIGO a deng indikasyon bang magumpisa ning dialysis <strong>malmu — dapot ali pariwan</strong> — tutubu la king GFR a mga 5–10 mL/min/1.73 m². Ita a saklaw <em>maglarawan mu, ali metung a threshold</em>: karin karaniwan a lulual deng indikasyon, ali metung a target a tutudian at ali metung a utos a manaya.</span></p>
+  <p><span data-lang="en">So the useful question is never "what is the number?" but "what is the number a sign <em>of</em>, and can that problem be controlled another way?" KDIGO (Kidney Disease: Improving Global Outcomes) — the international kidney-guideline body — puts it as a <strong>composite assessment</strong>: symptoms, signs, quality of life, your preferences, GFR, and laboratory abnormalities, weighed together. In its 2024 CKD guideline, KDIGO notes that the indications to start dialysis <strong>often — but not invariably</strong> — develop at a GFR of about 5–10 mL/min/1.73 m². That range is <em>descriptive, not a threshold</em>: it is where indications commonly appear, not a target to aim for and not an instruction to wait.</span><span data-lang="tl" class="lang-hidden">Kaya ang kapaki-pakinabang na tanong ay hindi kailanman "ano ang numero?" kundi "ano ang tanda ng numerong iyon, at makokontrol ba ang problemang iyon sa ibang paraan?" Inilalahad ito ng KDIGO — ang pandaigdigang lupon ng mga gabay sa bato — bilang isang <strong>composite assessment</strong>: mga sintomas, palatandaan, kalidad ng buhay, iyong mga kagustuhan, GFR, at mga abnormalidad sa laboratoryo, na tinitimbang nang magkakasama. Sa 2024 CKD guideline nito, binabanggit ng KDIGO na ang mga indikasyon para magsimula ng dialysis ay <strong>madalas — ngunit hindi palagi</strong> — nabubuo sa GFR na mga 5–10 mL/min/1.73 m². Ang saklaw na iyon ay <em>naglalarawan lamang, hindi isang threshold</em>: doon karaniwang lumilitaw ang mga indikasyon, hindi isang target na tutumbukin at hindi isang utos na maghintay.</span><span data-lang="ceb" class="lang-hidden">Busa ang mapuslanon nga pangutana dili gyud "unsa ang numero?" kondili "unsa ang timailhan sa numero, ug makontrol ba kadto nga problema sa laing paagi?" Gibutang kini sa KDIGO — ang internasyonal nga lawas sa mga giya sa kidney — isip usa ka <strong>composite assessment</strong>: mga simtomas, timailhan, kalidad sa kinabuhi, imong mga gusto, GFR, ug mga abnormalidad sa laboratoryo, nga gitimbang nga dungan. Sa 2024 CKD guideline niini, gihisgotan sa KDIGO nga ang mga indikasyon aron magsugod ug dialysis <strong>kasagaran — apan dili kanunay</strong> — motungha sa GFR nga mga 5–10 mL/min/1.73 m². Kadto nga han-ay <em>naghulagway lamang, dili usa ka threshold</em>: didto kasagaran motungha ang mga indikasyon, dili usa ka target nga pangitngiton ug dili usa ka mando nga maghulat.</span><span data-lang="kap" class="lang-hidden">Kanita ing makakayanan a kutang ali kapilan man "nanu ing numeru?" nune "nanu ing tanda ning numeru, at makontrol wari ita a problema king aliwang paraan?" Ilalage ne ning KDIGO — ing pang-yatu a lupon da reng giya king bato — antimong metung a <strong>composite assessment</strong>: deng sintomas, tanda, kalidad ning bie, deng kekang buri, GFR, ampo deng abnormalidad king laboratoryo, a titimbangan a mirasan. King 2024 CKD guideline na, sasabian ning KDIGO a deng indikasyon bang magumpisa ning dialysis <strong>malmu — dapot ali pariwan</strong> — tutubu la king GFR a mga 5–10 mL/min/1.73 m². Ita a saklaw <em>maglarawan mu, ali metung a threshold</em>: karin karaniwan a lulual deng indikasyon, ali metung a target a tutudian at ali metung a utos a manaya.</span></p>
   <div class="table-wrap">
     <table>
       <thead>

@@ -456,11 +456,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -489,21 +504,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -2077,7 +2113,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">&ge;23</span><span class="l">World Health Organization (WHO) Asia-Pacific overweight body mass index (BMI) cutoff</span></div>
+<div class="ov-stat"><span class="v">≥23<span class="u">kg/m²</span></span><span class="l">WHO Asia-Pacific overweight BMI cutoff</span></div>
 <div class="ov-stat"><span class="v">24%</span><span class="l">Semaglutide cut kidney/CV death (FLOW)</span></div>
 <div class="ov-stat"><span class="v">18&ndash;22%</span><span class="l">Tirzepatide body-weight loss in trials</span></div>
 </div>
@@ -2187,7 +2223,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
     <span data-lang="kap" class="lang-hidden">Nukarin nagagaling ing paniniwala: ing estorya ning reverse epidemiology</span>
   </h3>
   <p>
-    <span data-lang="en">In the 1990s and 2000s, researchers analysing large dialysis registries noticed something counterintuitive: among patients already on dialysis, those with <em>higher</em> BMI appeared to survive longer than those with <em>lower</em> BMI. This pattern — called "reverse epidemiology" or the "obesity paradox" — was observed across the largest dialysis databases in the world: the <strong>US Renal Data System (USRDS)</strong> with over 600,000 patients; the multinational <strong>Dialysis Outcomes and Practice Patterns Study (DOPPS)</strong>; the <strong>Japanese JSDT Registry</strong>; and the <strong>Philippine Renal Disease Registry (PRDR)</strong>. The finding was real, reproduced across continents, and published in the American Journal of Kidney Diseases, Kidney International, and the Journal of the American Society of Nephrology. When your doctor told a patient that "obesity is protective for dialysis," they were not fabricating medical advice — they were applying a widely accepted clinical observation. The problem is what comes next: <em>why</em> that pattern exists, and whether it means what it appears to mean.</span>
+    <span data-lang="en">In the 1990s and 2000s, researchers analysing large dialysis registries noticed something counterintuitive: among patients already on dialysis, those with <em>higher</em> BMI (body mass index) appeared to survive longer than those with <em>lower</em> BMI. This pattern — called "reverse epidemiology" or the "obesity paradox" — was observed across the largest dialysis databases in the world: the <strong>US Renal Data System (USRDS)</strong> with over 600,000 patients; the multinational <strong>Dialysis Outcomes and Practice Patterns Study (DOPPS)</strong>; the <strong>Japanese JSDT Registry</strong>; and the <strong>Philippine Renal Disease Registry (PRDR)</strong>. The finding was real, reproduced across continents, and published in the American Journal of Kidney Diseases, Kidney International, and the Journal of the American Society of Nephrology. When your doctor told a patient that "obesity is protective for dialysis," they were not fabricating medical advice — they were applying a widely accepted clinical observation. The problem is what comes next: <em>why</em> that pattern exists, and whether it means what it appears to mean.</span>
     <span data-lang="tl" class="lang-hidden">Sa mga 1990s at 2000s, ang mga mananaliksik na nag-aanalisa ng malalaking dialysis registry ay napansin ang isang bagay na hindi inaasahan: sa mga pasyente na nasa dialysis na, ang mga may mas mataas na BMI ay mukhang mas matagal ang buhay kaysa sa mga may mas mababang BMI. Ang pattern na ito — tinatawag na "reverse epidemiology" o "obesity paradox" — ay naobserbahan sa mga pinakamalaking dialysis database sa mundo: ang US Renal Data System (USRDS) na may mahigit 600,000 pasyente; ang multinational na DOPPS; ang Japanese JSDT Registry; at ang Philippine Renal Disease Registry (PRDR). Totoo ang natuklasan, paulit-ulit sa iba't ibang kontinente, at inilathala sa mga nangungunang medikal na journal. Ang problema ay kung <em>bakit</em> umiiral ang pattern na iyon, at kung ibig bang sabihin ng tila ibig sabihin nito.</span>
     <span data-lang="ceb" class="lang-hidden">Sa mga 1990s ug 2000s, ang mga tigsiksik nga nag-analisa sa dagkong dialysis registry namatngonan sa usa ka dili gilaoman: sa mga pasyente nga naa na sa dialysis, ang mga adunay mas taas nga BMI mura'g mas dugay mabuhi kaysa sa mga adunay mas ubos nga BMI. Kining pattern — gitawag og "reverse epidemiology" o "obesity paradox" — naobserbahan sa mga pinakadako nga dialysis database sa kalibutan: ang USRDS nga adunay kapin 600,000 pasyente; ang multinational nga DOPPS; ang Japanese JSDT Registry; ug ang Philippine Renal Disease Registry (PRDR). Tinuod ang nakit-an, gibalik-balik sa lain-laing kontinente, ug gipatik sa mga nangungunang medikal nga journal. Ang problema mao kon <em>ngano</em> naa ang pattern, ug kon kana ba ang pasabot sa gipakita niini.</span>
     <span data-lang="kap" class="lang-hidden">King deng 1990s at 2000s, ing deng mananaliksik a nag-aanalisa king deng malalaking dialysis registry namatngonan ya ing metung a hindi inaasahan: king deng pasyente a nasa dialysis na, ing deng atin mas mataas a BMI mukha yang mas tumatagal ing buhay kesa keng deng atin mas mababang BMI. Itong pattern — tawag yang "reverse epidemiology" o "obesity paradox" — naobserbahan king deng pinakamalaking dialysis database king buong mundo: USRDS, DOPPS, Japanese JSDT Registry, at Philippine Renal Disease Registry (PRDR). Tunay ing nakit-an, inulit king iba't ibang kontinente, at inilathala king deng nangungunang medikal na journal.</span>
@@ -2422,7 +2458,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 
   <div class="intro-callout">
     <p>
-      <span data-lang="en"><strong>The Asian-Pacific BMI cutoffs are different.</strong> The WHO Asia-Pacific guidelines &mdash; adopted by the Philippine Society of Endocrinology, Diabetes and Metabolism &mdash; classify <em>overweight at BMI ≥23</em> and <em>obese at BMI ≥25</em>. By the older "Western" cutoffs (overweight ≥25, obese ≥30), the same Filipino body would be called "normal" until the kidney damage was already underway. Using the right cutoff matters.</span>
+      <span data-lang="en"><strong>The Asian-Pacific BMI cutoffs are different.</strong> The WHO (World Health Organization) Asia-Pacific guidelines &mdash; adopted by the Philippine Society of Endocrinology, Diabetes and Metabolism &mdash; classify <em>overweight at BMI ≥23</em> and <em>obese at BMI ≥25</em>. By the older "Western" cutoffs (overweight ≥25, obese ≥30), the same Filipino body would be called "normal" until the kidney damage was already underway. Using the right cutoff matters.</span>
       <span data-lang="tl" class="lang-hidden"><strong>Iba ang Asian-Pacific BMI cutoffs.</strong> Ang WHO Asia-Pacific guidelines &mdash; sinusunod ng Philippine Society of Endocrinology, Diabetes and Metabolism &mdash; ay nag-classify <em>overweight sa BMI ≥23</em> at <em>obese sa BMI ≥25</em>. Sa mas lumang "Western" cutoffs (overweight ≥25, obese ≥30), ang parehong katawan ng Pilipino ay tatawaging "normal" hanggang sa nasimulan na ang pinsala sa bato. Mahalaga ang tamang cutoff.</span>
       <span data-lang="ceb" class="lang-hidden"><strong>Lahi ang Asian-Pacific BMI cutoffs.</strong> Ang WHO Asia-Pacific guidelines &mdash; gisunod sa Philippine Society of Endocrinology, Diabetes and Metabolism &mdash; nag-classify og <em>overweight sa BMI ≥23</em> ug <em>obese sa BMI ≥25</em>. Sa mas daan nga "Western" cutoffs (overweight ≥25, obese ≥30), ang parehong lawas sa Pilipino tawagong "normal" hangtod nakapagsugod na ang kadaot sa kidney. Importante ang husto nga cutoff.</span>
       <span data-lang="kap" class="lang-hidden"><strong>Lain deng Asian-Pacific BMI cutoffs.</strong> Ing WHO Asia-Pacific guidelines &mdash; sinusunud ning Philippine Society of Endocrinology, Diabetes and Metabolism &mdash; nag-classify ning <em>overweight king BMI ≥23</em> at <em>obese king BMI ≥25</em>. King mas matuang "Western" cutoffs (overweight ≥25, obese ≥30), ing parehong katawan ning Pilipino tatawagang "normal" angga king nasugo na ing pinsala king batu.</span>

@@ -459,11 +459,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -492,21 +507,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1869,13 +1905,12 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
         <div class="ov-card">
           <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
           <div class="ov-list">
-            <div class="ov-stat"><span class="v">33–86%</span><span class="l">Intradialytic cramp prevalence reported in hemodialysis (HD) cohorts</span></div>
-            <div class="ov-stat"><span class="v">~73%</span><span class="l">Cramps clustering in the final hour of HD</span></div>
-            <div class="ov-stat"><span class="v">~85%</span><span class="l">HD patients with measurable carnitine deficiency</span></div>
-            <div class="ov-stat"><span class="v">≤10</span><span class="l">Target UFR (mL/kg/h) to lower hemodynamic stress</span></div>
-            <div class="ov-stat"><span class="v">ABI</span><span class="l">(ankle–brachial index) Required before any leg compression in chronic kidney disease (CKD)</span></div>
-          </div>
-          <a class="ov-foot" href="#md-pathophys">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+<div class="ov-stat"><span class="v">33–86%</span><span class="l">Intradialytic cramp prevalence reported in hemodialysis (HD) cohorts</span></div>
+<div class="ov-stat"><span class="v">~73%</span><span class="l">Cramps clustering in the final hour of HD</span></div>
+<div class="ov-stat"><span class="v">≤10</span><span class="l">Target UFR (mL/kg/h) to lower hemodynamic stress</span></div>
+<div class="ov-stat"><span class="v">ABI</span><span class="l">Ankle–brachial index required before any leg compression in CKD</span></div>
+</div>
+<a class="ov-foot" href="#md-pathophys">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
         </div>
       </aside>
       <div class="hero-copy">
@@ -2057,7 +2092,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
     <div class="lifestyle-card">
       <div class="lc-icon">💧</div>
       <h4><span data-lang="en">1. Keep IDWG low</span><span class="lang-hidden" data-lang="tl">1. Panatilihing mababa ang IDWG</span><span class="lang-hidden" data-lang="ceb">1. Hupti nga ubos ang IDWG</span><span class="lang-hidden" data-lang="kap">1. Panatilihing mababa ya ing IDWG</span></h4>
-      <p><span data-lang="en">Interdialytic weight gain (IDWG) is the number-one driver of high UFR and last-hour cramps. Aim for ≤ 4–5% of dry weight between sessions. Most of the win comes from <strong>salt</strong>, not water — chips, instant noodles, dried fish, hotdogs, soy sauce. Less salt → less thirst → less weight.</span><span class="lang-hidden" data-lang="tl">Ang Interdialytic Weight Gain (IDWG) ay ang pinakamalaking dahilan ng mataas na UFR at huling-oras na pulikat. Layunin ay ≤ 4–5% ng tuyong timbang sa pagitan ng mga sesyon. Ang karamihan ng panalong galing sa <strong>asin</strong>, hindi sa tubig — chips, instant noodles, daing, hotdog, toyo. Mas kaunting asin → mas kaunting uhaw → mas kaunting timbang.</span><span class="lang-hidden" data-lang="ceb">Ang Interdialytic Weight Gain (IDWG) mao ang pangunang hinungdan sa taas nga UFR ug sa kataposang-oras nga kulokot. Tinguhaa ang ≤ 4–5% sa uga nga timbang tali sa mga sesyon. Ang kadaghanan sa kadaugan gikan sa <strong>asin</strong>, dili sa tubig — chips, instant noodles, uga, hotdog, toyo. Gamay nga asin → gamay nga kauhaw → gamay nga timbang.</span><span class="lang-hidden" data-lang="kap">Reng Interdialytic Weight Gain (IDWG) iya ya ing kabud na dahilan king matas a UFR at king pulikat king tauling oras. Tutuluya ya ing ≤ 4–5% ning matuyung timbang kabang reng sesyon. Reng dakal a panalo galing king <strong>asin</strong>, ali king danum — chips, instant noodles, daing, hotdog, toyo. Mapilang asin → mapilang uhaw → mapilang timbang.</span></p>
+      <p><span data-lang="en">Interdialytic weight gain (IDWG) is the number-one driver of high UFR (ultrafiltration rate) and last-hour cramps. Aim for ≤ 4–5% of dry weight between sessions. Most of the win comes from <strong>salt</strong>, not water — chips, instant noodles, dried fish, hotdogs, soy sauce. Less salt → less thirst → less weight.</span><span class="lang-hidden" data-lang="tl">Ang Interdialytic Weight Gain (IDWG) ay ang pinakamalaking dahilan ng mataas na UFR at huling-oras na pulikat. Layunin ay ≤ 4–5% ng tuyong timbang sa pagitan ng mga sesyon. Ang karamihan ng panalong galing sa <strong>asin</strong>, hindi sa tubig — chips, instant noodles, daing, hotdog, toyo. Mas kaunting asin → mas kaunting uhaw → mas kaunting timbang.</span><span class="lang-hidden" data-lang="ceb">Ang Interdialytic Weight Gain (IDWG) mao ang pangunang hinungdan sa taas nga UFR ug sa kataposang-oras nga kulokot. Tinguhaa ang ≤ 4–5% sa uga nga timbang tali sa mga sesyon. Ang kadaghanan sa kadaugan gikan sa <strong>asin</strong>, dili sa tubig — chips, instant noodles, uga, hotdog, toyo. Gamay nga asin → gamay nga kauhaw → gamay nga timbang.</span><span class="lang-hidden" data-lang="kap">Reng Interdialytic Weight Gain (IDWG) iya ya ing kabud na dahilan king matas a UFR at king pulikat king tauling oras. Tutuluya ya ing ≤ 4–5% ning matuyung timbang kabang reng sesyon. Reng dakal a panalo galing king <strong>asin</strong>, ali king danum — chips, instant noodles, daing, hotdog, toyo. Mapilang asin → mapilang uhaw → mapilang timbang.</span></p>
     </div>
     <div class="lifestyle-card">
       <div class="lc-icon">⚖️</div>
@@ -2087,7 +2122,7 @@ try{(function(){var v=localStorage.getItem('wgmr-cramps-mode');if(v===null){var 
     <div class="lifestyle-card">
       <div class="lc-icon">🧦</div>
       <h4><span data-lang="en">7. Compression — only after ABI</span><span class="lang-hidden" data-lang="tl">7. Compression — sa ABI lamang muna</span><span class="lang-hidden" data-lang="ceb">7. Compression — human sa ABI</span><span class="lang-hidden" data-lang="kap">7. Compression — bayu mu ABI</span></h4>
-      <p><span data-lang="en">Graduated compression stockings are powerful against pigmentation, edema, and even cramp burden — but they are <em>dangerous</em> in legs with significant peripheral arterial disease, which is common in CKD. Never start compression without an ankle-brachial index (ABI) and a clinician's approval.</span><span class="lang-hidden" data-lang="tl">Ang graduated compression stockings ay malakas laban sa pigmentasyon, pamamaga, at pulikat — ngunit <em>delikado</em> sa mga binti na may makabuluhang peripheral arterial disease, na karaniwan sa CKD. Huwag magsimula ng compression nang walang ankle-brachial index (ABI) at pahintulot ng clinician.</span><span class="lang-hidden" data-lang="ceb">Ang graduated compression stockings kusog batok sa pigmentasyon, panghubag, ug bisan sa palas-anon sa kulokot — apan <em>delikado</em> sa mga bitiis nga adunay mahinungdanong peripheral arterial disease, nga komon sa CKD. Ayaw pagsugod og compression nga walay ankle-brachial index (ABI) ug pagtugot sa klinisyan.</span><span class="lang-hidden" data-lang="kap">Reng graduated compression stockings makusug la laban king pigmentasyon, pamabuktut, at pulikat — pero <em>delikadu</em> la king bitis nga ating mahinungdanon a peripheral arterial disease, a parating na king CKD. Eka magsimula ya ing compression nung alang ankle-brachial index (ABI) ampong pahintulut na ning klinisyan.</span></p>
+      <p><span data-lang="en">Graduated compression stockings are powerful against pigmentation, edema, and even cramp burden — but they are <em>dangerous</em> in legs with significant peripheral arterial disease, which is common in CKD (chronic kidney disease). Never start compression without an ankle-brachial index (ABI) and a clinician's approval.</span><span class="lang-hidden" data-lang="tl">Ang graduated compression stockings ay malakas laban sa pigmentasyon, pamamaga, at pulikat — ngunit <em>delikado</em> sa mga binti na may makabuluhang peripheral arterial disease, na karaniwan sa CKD. Huwag magsimula ng compression nang walang ankle-brachial index (ABI) at pahintulot ng clinician.</span><span class="lang-hidden" data-lang="ceb">Ang graduated compression stockings kusog batok sa pigmentasyon, panghubag, ug bisan sa palas-anon sa kulokot — apan <em>delikado</em> sa mga bitiis nga adunay mahinungdanong peripheral arterial disease, nga komon sa CKD. Ayaw pagsugod og compression nga walay ankle-brachial index (ABI) ug pagtugot sa klinisyan.</span><span class="lang-hidden" data-lang="kap">Reng graduated compression stockings makusug la laban king pigmentasyon, pamabuktut, at pulikat — pero <em>delikadu</em> la king bitis nga ating mahinungdanon a peripheral arterial disease, a parating na king CKD. Eka magsimula ya ing compression nung alang ankle-brachial index (ABI) ampong pahintulut na ning klinisyan.</span></p>
     </div>
   </div>
 </section>

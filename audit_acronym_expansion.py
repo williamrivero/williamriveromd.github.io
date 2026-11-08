@@ -17,7 +17,8 @@ Scope of "content" (what is audited):
     translation is never treated as the first use.
   * The running body: `<main>` plus intro/alert callouts. Excluded as display
     chrome or non-prose: the hero <h1> title, the section nav-strip pills, the
-    hero-meta byline, the Glossary accordion (it is the dictionary), the
+    hero-meta byline, the hero eyebrow tag and clinician badge chips, the
+    clinician Evidence Snapshot card, per-figure abbreviation lists, the Glossary accordion (it is the dictionary), the
     References accordion, the dr-card, related-guides, footer, and all
     <script>/<style>.
 
@@ -146,6 +147,13 @@ def content_region(html):
     html = re.sub(r'<nav class="nav-strip[^"]*"[^>]*>.*?</nav>', ' ', html, flags=re.DOTALL)
     html = re.sub(r'<div class="hero-meta[^"]*"[^>]*>.*?</div>', ' ', html, flags=re.DOTALL)
     html = re.sub(r'<p class="hero-sub[^"]*"[^>]*>.*?</p>', ' ', html, flags=re.DOTALL)  # subtitle is chrome
+    # Clinician Evidence Snapshot card: compact stat tiles (CLAUDE.md rule 7), chrome like the hero title
+    html = re.sub(r'<div class="ov-card">.*?</aside>', ' ', html, flags=re.DOTALL)
+    # Hero eyebrow tag, clinician badge chips: display labels, like the nav-strip pills
+    html = re.sub(r'<div class="hero-tag[^"]*"[^>]*>.*?</div>', ' ', html, flags=re.DOTALL)
+    html = re.sub(r'<div class="clin-badges[^"]*"[^>]*>.*?</div>', ' ', html, flags=re.DOTALL)
+    # Per-figure abbreviation lists are themselves definitions (rule 11), not running prose
+    html = re.sub(r'<dl class="fig-abbrevs"[^>]*>.*?</dl>', ' ', html, flags=re.DOTALL)
     # glossary + references + tail
     for marker in ('<!-- GLOSSARY-START -->', '<!-- REFERENCES-ACC-START -->',
                    '<!-- DR CARD -->', '<div class="dr-card-wrap"',

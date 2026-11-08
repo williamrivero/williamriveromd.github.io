@@ -454,11 +454,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -487,21 +502,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1757,10 +1793,11 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">A3 &gt;300 mg/g</span><span class="l">KDIGO (Kidney Disease: Improving Global Outcomes) 2024 severely &uarr; albuminuria; nephrotic-range UACR (urine albumin-to-creatinine ratio) &gt;2200 mg/g (&ge;3.5 g/day)</span></div>
-<div class="ov-stat"><span class="v">30&ndash;50% &darr;</span><span class="l">angiotensin-converting enzyme inhibitor (ACEi)/angiotensin receptor blocker (ARB) UACR reduction (IDNT, RENAAL, MARVAL)</span></div>
-<div class="ov-stat"><span class="v">20&ndash;35% &darr;</span><span class="l">sodium–glucose cotransporter-2 inhibitor (SGLT2i) UACR reduction (DAPA-CKD, EMPA-KIDNEY, CREDENCE)</span></div>
+<div class="ov-stat"><span class="v">&gt;300<span class="u">mg/g</span></span><span class="l">UACR for A3 (severely increased); nephrotic range &gt;2200 mg/g</span></div>
+<div class="ov-stat"><span class="v">30–50%</span><span class="l">UACR reduction with ACEi/ARB (IDNT, RENAAL, MARVAL)</span></div>
+<div class="ov-stat"><span class="v">20–35%</span><span class="l">UACR reduction with SGLT2i (DAPA-CKD, EMPA-KIDNEY, CREDENCE)</span></div>
 </div>
+<div class="ov-src">KDIGO 2024</div>
 <a class="ov-foot" href="#clin-rx">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
 </aside>
@@ -1821,7 +1858,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
         <img fetchpriority="high" loading="eager" src="../images/proteins-proteinuria-overview.png" width="1536" height="1024"
              alt="Proteins and Proteinuria: the kidney-conscious balance — what proteinuria is, how it affects kidneys, recommended protein intake 0.6–0.8 g/kg/day, protein quality, and ways to reduce proteinuria" style="width:100%;height:auto;max-width:600px;display:block;margin:0 auto 0 auto;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.1);">
       </picture>
-      <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Proteins and proteinuria: the right balance protects your kidneys and slows CKD progression.</figcaption>
+      <figcaption style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:8px;font-style:italic;">Proteins and proteinuria: the right balance protects your kidneys and slows CKD (chronic kidney disease) progression.</figcaption>
     </figure>
     <div class="intro-callout">
       <p><span data-lang="en">Proteinuria means <strong>protein leaking into the urine</strong>. Normally, the kidney's filtration membrane is impermeable to large molecules like albumin — the main blood protein. When this membrane is damaged or overwhelmed, albumin escapes into the urine. Proteinuria is both a <strong>sign of kidney damage</strong> and an <strong>active driver of further damage</strong> — a vicious cycle that must be interrupted.</span><span data-lang="tl" class="lang-hidden">Ang proteinuria ay nangangahulugang <strong>nagtatakad ang protina sa ihi</strong>. Sa karaniwang kalagayan, ang filtration membrane ng bato ay hindi tinatawid ng malalaking molekula tulad ng albumin — ang pangunahing protina sa dugo. Kapag nasira o nalabasan ang membranang ito, tumatagos ang albumin sa ihi. Ang proteinuria ay parehong <strong>tanda ng pinsala sa bato</strong> at <strong>aktibong nagpapalala ng karagdagang pinsala</strong> — isang mapanganib na ikot na dapat putulin.</span><span data-lang="ceb" class="lang-hidden">Ang proteinuria nagpasabot nga <strong>nagtakas ang protina ngadto sa ihi</strong>. Sa normal nga kahimtang, ang filtration membrane sa kidney dili mapasagdan sa dagkong molekula sama sa albumin — ang panguna nga protina sa dugo. Kung kining membrane madaot o mabawasan ang kusog, ang albumin molusot ngadto sa ihi. Ang proteinuria pareho nga <strong>timailhan sa kadaot sa kidney</strong> ug <strong>aktibong nagpalala sa dugang pang kadaot</strong> — usa ka delikadong sirkulo nga kinahanglan putulon.</span>
@@ -2097,7 +2134,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
       <span data-lang="kap" class="lang-hidden">Normal (A1)</span></span></td><td><span data-lang="en">Screen annually if diabetic or hypertensive. Continue preventive measures.</span><span data-lang="tl" class="lang-hidden">Mag-screen taon-taon kung diabetic o hypertensive. Ipagpatuloy ang mga pang-iwas na hakbain.</span><span data-lang="ceb" class="lang-hidden">Mag-screen matag tuig kung diabetic o hypertensive. Ipadayon ang mga pampreserba nga lakang.</span>
       <span data-lang="kap" class="lang-hidden">Mag-screen banua-banua nung diabetic o hypertensive. Ipagpatuloy ing deng pang-iwas a hakbain.</span></td></tr>
         <tr><td>30–300 mg/g</td><td><span data-lang="en">Microalbuminuria (A2) — early kidney damage marker</span><span data-lang="tl" class="lang-hidden">Microalbuminuria (A2) — maagang tanda ng pinsala sa bato</span><span data-lang="ceb" class="lang-hidden">Microalbuminuria (A2) — sayo nga timailhan sa kadaot sa kidney</span>
-      <span data-lang="kap" class="lang-hidden">Microalbuminuria (A2) — maagang tanda ning pinsala king batu</span></td><td><span data-lang="en">Start ACE/ARB + SGLT2i + strict BP control. Recheck in 3 months.</span><span data-lang="tl" class="lang-hidden">Simulan ang ACE/ARB + SGLT2i + mahigpit na BP control. Suriin ulit sa loob ng 3 buwan.</span><span data-lang="ceb" class="lang-hidden">Sugdan ang ACE/ARB + SGLT2i + estrikto nga BP control. Susihon pag-usab sulod sa 3 ka buwan.</span>
+      <span data-lang="kap" class="lang-hidden">Microalbuminuria (A2) — maagang tanda ning pinsala king batu</span></td><td><span data-lang="en">Start ACE/ARB (angiotensin receptor blocker) + SGLT2i (sodium–glucose cotransporter-2 inhibitor) + strict BP control. Recheck in 3 months.</span><span data-lang="tl" class="lang-hidden">Simulan ang ACE/ARB + SGLT2i + mahigpit na BP control. Suriin ulit sa loob ng 3 buwan.</span><span data-lang="ceb" class="lang-hidden">Sugdan ang ACE/ARB + SGLT2i + estrikto nga BP control. Susihon pag-usab sulod sa 3 ka buwan.</span>
       <span data-lang="kap" class="lang-hidden">Simulan ing ACE/ARB + SGLT2i + mahigpit a BP control. Suriin ulit king loob ning 3 bulan.</span></td></tr>
         <tr><td>300–1,000 mg/g</td><td><span data-lang="en">Macroalbuminuria (A3) — significant damage</span><span data-lang="tl" class="lang-hidden">Macroalbuminuria (A3) — makabuluhang pinsala</span><span data-lang="ceb" class="lang-hidden">Macroalbuminuria (A3) — mahinungdanon nga kadaot</span>
       <span data-lang="kap" class="lang-hidden">Macroalbuminuria (A3) — makabuluhang pinsala</span></td><td><span data-lang="en">Urgent nephrologist referral. Maximize renoprotective therapy. Consider biopsy.</span><span data-lang="tl" class="lang-hidden">Agarang referral sa nephrologist. I-maximize ang renoprotective therapy. Isaalang-alang ang biopsy.</span><span data-lang="ceb" class="lang-hidden">Dinalian nga referral sa nephrologist. I-maximize ang renoprotective therapy. Hunahunaon ang biopsy.</span>
@@ -2188,7 +2225,7 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
       <span data-lang="kap" class="lang-hidden">Interactive a Kasangkapan</span></div>
     <h2><span data-lang="en">Proteinuria Calculator — UACR Staging, PCR &amp; CKD Risk Classification</span><span data-lang="tl" class="lang-hidden">Kalkulator ng Proteinuria — UACR Staging, PCR at CKD Risk Classification</span><span data-lang="ceb" class="lang-hidden">Kalkulator sa Proteinuria — UACR Staging, PCR ug CKD Risk Classification</span>
       <span data-lang="kap" class="lang-hidden">Kalkulator ning Proteinuria — UACR Staging, PCR at CKD Risk Classification</span></h2>
-    <p><span data-lang="en">Enter your urine protein or albumin results to determine your KDIGO albuminuria category, cross-reference it with your eGFR stage, and understand what your combined risk classification means for monitoring and treatment.</span><span data-lang="tl" class="lang-hidden">Ilagay ang inyong mga resulta ng urine protein o albumin upang matukoy ang inyong KDIGO albuminuria category, i-cross-reference ito sa inyong eGFR stage, at maunawaan kung ano ang ibig sabihin ng inyong combined risk classification para sa pagsubaybay at paggamot.</span><span data-lang="ceb" class="lang-hidden">Isulod ang inyong mga resulta sa urine protein o albumin aron matino ang inyong KDIGO albuminuria category, i-cross-reference kini sa inyong eGFR stage, ug masabtan kung unsa ang kahulogan sa inyong combined risk classification alang sa pagsubay ug pagtambal.</span>
+    <p><span data-lang="en">Enter your urine protein or albumin results to determine your KDIGO (Kidney Disease: Improving Global Outcomes) albuminuria category, cross-reference it with your eGFR stage, and understand what your combined risk classification means for monitoring and treatment.</span><span data-lang="tl" class="lang-hidden">Ilagay ang inyong mga resulta ng urine protein o albumin upang matukoy ang inyong KDIGO albuminuria category, i-cross-reference ito sa inyong eGFR stage, at maunawaan kung ano ang ibig sabihin ng inyong combined risk classification para sa pagsubaybay at paggamot.</span><span data-lang="ceb" class="lang-hidden">Isulod ang inyong mga resulta sa urine protein o albumin aron matino ang inyong KDIGO albuminuria category, i-cross-reference kini sa inyong eGFR stage, ug masabtan kung unsa ang kahulogan sa inyong combined risk classification alang sa pagsubay ug pagtambal.</span>
       <span data-lang="kap" class="lang-hidden">Ilagay ing inyu deng resulta ning urine protein o albumin upang matukoy ing inyu KDIGO albuminuria category, i-cross-reference ini king inyu eGFR stage, at maunawaan nung ano ing ibig sabihin ning inyu combined risk classification para king pagsubaybay at paggamut.</span></p>
     <div class="calc-wrap">
       <div class="unit-toggle-wrap">
@@ -2492,8 +2529,8 @@ try{(function(){var v=localStorage.getItem('wgmr-proteins-mode');if(v===null){va
 <div class="ov-list">
 <div class="ov-stat"><span class="v">30&ndash;50%</span><span class="l">proteinuria &darr; with RAAS blockade</span></div>
 <div class="ov-stat"><span class="v">31&ndash;35%</span><span class="l">proteinuria &darr; with finerenone</span></div>
-<div class="ov-stat"><span class="v">KDIGO<br>2024</span><span class="l">heat-map staging &amp; targets</span></div>
 </div>
+<div class="ov-src">KDIGO 2024 · heat-map staging and targets</div>
 <a class="ov-foot" href="#clin-class">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
 

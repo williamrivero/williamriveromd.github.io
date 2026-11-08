@@ -458,11 +458,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -491,21 +506,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1838,9 +1874,9 @@ try{(function(){var v=localStorage.getItem('wgmr-sugarckd-mode');if(v===null){va
 <div class="ov-card">
 <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
 <div class="ov-list">
-<div class="ov-stat"><span class="v">6.5&ndash;8.0</span><span class="l">% &mdash; individualized HbA1c (hemoglobin A1c) target range in CKD (chronic kidney disease), not a default (KDIGO 2022)</span></div>
-<div class="ov-stat"><span class="v">&ge;20</span><span class="l">eGFR (estimated glomerular filtration rate) floor to start an SGLT2 (sodium-glucose cotransporter-2) inhibitor for organ protection, irrespective of A1C (ADA 2026 / KDIGO 2024)</span></div>
-<div class="ov-stat"><span class="v">euDKA</span><span class="l">SGLT2-inhibitor (SGLT2i) danger &mdash; normal glucose does not exclude DKA (diabetic ketoacidosis); hold on sick days &amp; peri-op</span></div>
+<div class="ov-stat"><span class="v">6.5–8.0<span class="u">%</span></span><span class="l">Individualized HbA1c target range in CKD, not a default (KDIGO 2022)</span></div>
+<div class="ov-stat"><span class="v">≥20</span><span class="l">eGFR floor to start an SGLT2i for organ protection, regardless of A1C (ADA 2026)</span></div>
+<div class="ov-stat"><span class="v">euDKA</span><span class="l">SGLT2i risk: normal glucose does not exclude DKA; hold on sick days and peri-op</span></div>
 </div>
 <a class="ov-foot" href="#md-pharm">View pharmacotherapy <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
 </div>
@@ -1951,7 +1987,7 @@ try{(function(){var v=localStorage.getItem('wgmr-sugarckd-mode');if(v===null){va
 <section class="section mode-patient" id="pt-a1c">
 <div class="section-tag"><span data-lang="en">Part I</span><span data-lang="tl" class="lang-hidden">Bahagi I</span><span data-lang="ceb" class="lang-hidden">Bahin I</span><span data-lang="kap" class="lang-hidden">Dake I</span></div>
 <h2><span data-lang="en">Understanding Your HbA1c</span><span data-lang="tl" class="lang-hidden">Pag-unawa sa Iyong HbA1c</span><span data-lang="ceb" class="lang-hidden">Pagsabot sa Imong HbA1c</span><span data-lang="kap" class="lang-hidden">Pamintindi king Kekang HbA1c</span></h2>
-<p><span data-lang="en">Your HbA1c &mdash; short for hemoglobin A1c, also called glycated hemoglobin &mdash; is a blood test that acts like a report card for the past three months. Sugar in your blood sticks to the red cells that carry oxygen, and because those cells live about 90 days, the test shows your <em>average</em> sugar over that time, not just today's number. A result is given as a percentage: the higher the percentage, the more sugar has been coating your cells.</span><span data-lang="tl" class="lang-hidden">Ang iyong HbA1c &mdash; daglat para sa hemoglobin A1c, tinatawag ding glycated hemoglobin &mdash; ay isang test sa dugo na parang report card para sa nakaraang tatlong buwan. Ang asukal sa iyong dugo ay dumidikit sa mga pulang selula na nagdadala ng oksiheno, at dahil nabubuhay ang mga selulang iyon nang halos 90 araw, ipinapakita ng test ang <em>average</em> ng iyong asukal sa panahong iyon, hindi lang ang numero ngayon. Ang resulta ay ibinibigay bilang porsyento: mas mataas ang porsyento, mas maraming asukal ang bumabalot sa iyong mga selula.</span><span data-lang="ceb" class="lang-hidden">Ang imong HbA1c &mdash; mubo alang sa hemoglobin A1c, gitawag usab og glycated hemoglobin &mdash; usa ka test sa dugo nga sama sa report card sa milabay nga tulo ka bulan. Ang asukar sa imong dugo motapot sa pula nga mga selula nga nagdala og oksiheno, ug tungod kay kadto nga mga selula mabuhi og mga 90 ka adlaw, gipakita sa test ang <em>average</em> sa imong asukar niadto nga panahon, dili lang ang numero karon. Ang resulta gihatag isip porsyento: mas taas ang porsyento, mas daghan ang asukar nga mohaklap sa imong mga selula.</span><span data-lang="kap" class="lang-hidden">Ing kekang HbA1c &mdash; daglat para king hemoglobin A1c, ausan da mu naman glycated hemoglobin &mdash; metung yang test king daya a anti report card para king milabas a atlung bulan. Ing asukal king daya mu didikit ya karing malutung selula a magdala oksiheno, at uling mabye la deng selula a reti maygit-kumulang 90 aldo, papakit ne ning test ing <em>average</em> ning asukal mu king panaun a ita, e mu ing numeru ngeni. Ing resulta bibye ya bilang porsyento: mas matas ing porsyento, mas dakal ing asukal a babalut karing selula mu.</span></p>
+<p><span data-lang="en">Your HbA1c (hemoglobin A1c, also called glycated hemoglobin) is a blood test that acts like a report card for the past three months. Sugar in your blood sticks to the red cells that carry oxygen, and because those cells live about 90 days, the test shows your <em>average</em> sugar over that time, not just today's number. A result is given as a percentage: the higher the percentage, the more sugar has been coating your cells.</span><span data-lang="tl" class="lang-hidden">Ang iyong HbA1c &mdash; daglat para sa hemoglobin A1c, tinatawag ding glycated hemoglobin &mdash; ay isang test sa dugo na parang report card para sa nakaraang tatlong buwan. Ang asukal sa iyong dugo ay dumidikit sa mga pulang selula na nagdadala ng oksiheno, at dahil nabubuhay ang mga selulang iyon nang halos 90 araw, ipinapakita ng test ang <em>average</em> ng iyong asukal sa panahong iyon, hindi lang ang numero ngayon. Ang resulta ay ibinibigay bilang porsyento: mas mataas ang porsyento, mas maraming asukal ang bumabalot sa iyong mga selula.</span><span data-lang="ceb" class="lang-hidden">Ang imong HbA1c &mdash; mubo alang sa hemoglobin A1c, gitawag usab og glycated hemoglobin &mdash; usa ka test sa dugo nga sama sa report card sa milabay nga tulo ka bulan. Ang asukar sa imong dugo motapot sa pula nga mga selula nga nagdala og oksiheno, ug tungod kay kadto nga mga selula mabuhi og mga 90 ka adlaw, gipakita sa test ang <em>average</em> sa imong asukar niadto nga panahon, dili lang ang numero karon. Ang resulta gihatag isip porsyento: mas taas ang porsyento, mas daghan ang asukar nga mohaklap sa imong mga selula.</span><span data-lang="kap" class="lang-hidden">Ing kekang HbA1c &mdash; daglat para king hemoglobin A1c, ausan da mu naman glycated hemoglobin &mdash; metung yang test king daya a anti report card para king milabas a atlung bulan. Ing asukal king daya mu didikit ya karing malutung selula a magdala oksiheno, at uling mabye la deng selula a reti maygit-kumulang 90 aldo, papakit ne ning test ing <em>average</em> ning asukal mu king panaun a ita, e mu ing numeru ngeni. Ing resulta bibye ya bilang porsyento: mas matas ing porsyento, mas dakal ing asukal a babalut karing selula mu.</span></p>
 <div class="alert alert-teal">
   <div class="alert-icon">💡</div>
   <div class="alert-body">
@@ -2042,7 +2078,7 @@ try{(function(){var v=localStorage.getItem('wgmr-sugarckd-mode');if(v===null){va
 <section class="section mode-patient" id="pt-meds">
 <div class="section-tag"><span data-lang="en">Part V</span><span data-lang="tl" class="lang-hidden">Bahagi V</span><span data-lang="ceb" class="lang-hidden">Bahin V</span><span data-lang="kap" class="lang-hidden">Dake V</span></div>
 <h2><span data-lang="en">Medicines That Protect Both Sugar and Kidneys</span><span data-lang="tl" class="lang-hidden">Mga Gamot na Nagpuprotekta sa Asukal at Bato</span><span data-lang="ceb" class="lang-hidden">Mga Tambal nga Nagpanalipod sa Asukar ug Kidney</span><span data-lang="kap" class="lang-hidden">Deng Gamut a Magprotekta king Asukal at Butu</span></h2>
-<p><span data-lang="en">Here is the reframe that changes everything. There is now a group of medicines called SGLT2 inhibitors (sodium-glucose cotransporter-2 inhibitors) &mdash; and another called GLP-1 (glucagon-like peptide-1) receptor agonists &mdash; that started out as sugar pills but turned out to be <strong>kidney and heart protectors.</strong> In large trials, SGLT2 inhibitors slowed kidney decline and kept people off dialysis longer, even when their sugar was already fine.<sup class="cite">3</sup> That is why your doctor may start one of these <em>for your kidneys</em>, not for your sugar.</span><span data-lang="tl" class="lang-hidden">Narito ang pagbabago ng pananaw na nagbabago ng lahat. May grupo na ngayon ng mga gamot na tinatawag na SGLT2 inhibitors (sodium-glucose cotransporter-2 inhibitors) &mdash; at isa pang tinatawag na GLP-1 receptor agonists (glucagon-like peptide-1 receptor agonists) &mdash; na nagsimula bilang gamot sa asukal ngunit napatunayang <strong>protektor ng bato at puso.</strong> Sa malalaking pagsubok, pinabagal ng SGLT2 inhibitors ang paghina ng bato at mas matagal na iniwas ang mga tao sa dialysis, kahit maayos na ang kanilang asukal.<sup class="cite">3</sup> Kaya maaaring magsimula ang iyong doktor ng isa sa mga ito <em>para sa iyong bato</em>, hindi para sa asukal.</span><span data-lang="ceb" class="lang-hidden">Aniay pagbag-o sa panglantaw nga nag-usab sa tanan. Aduna nay grupo sa mga tambal nga gitawag og SGLT2 inhibitors (sodium-glucose cotransporter-2 inhibitors) &mdash; ug lain nga gitawag og GLP-1 receptor agonists (glucagon-like peptide-1 receptor agonists) &mdash; nga nagsugod isip tambal sa asukar apan napamatud-an nga <strong>tigpanalipod sa kidney ug kasingkasing.</strong> Sa dagkong pagsulay, gipahinay sa SGLT2 inhibitors ang paghuyang sa kidney ug mas dugay nga gilikay ang mga tawo sa dialysis, bisan maayo na ang ilang asukar.<sup class="cite">3</sup> Mao nga mahimong magsugod ang imong doktor og usa niini <em>para sa imong kidney</em>, dili para sa asukar.</span><span data-lang="kap" class="lang-hidden">Atyu ka ing pamagbayu ning pamanlawe a magbayu king anggang bage. Atin nang grupu ding gamut a ausan dang SGLT2 inhibitors (sodium-glucose cotransporter-2 inhibitors) &mdash; at aliwa a ausan dang GLP-1 receptor agonists (glucagon-like peptide-1 receptor agonists) &mdash; a mengumpisa bilang gamut king asukal dapot mepatunayan a <strong>protektor da ring butu at pusu.</strong> Karing maragul a pamagsubuk, peparimla ne ning SGLT2 inhibitors ing pamaina ning butu at mas malwat a iniwas de reng tau king dialysis, maski mayap na ing asukal da.<sup class="cite">3</sup> Inya malyaring magumpisa ing doktor mu king metung kariti <em>para karing butu mu</em>, e para king asukal.</span></p>
+<p><span data-lang="en">Here is the reframe that changes everything. There is now a group of medicines called SGLT2 (sodium-glucose cotransporter-2) inhibitors &mdash; and another called GLP-1 (glucagon-like peptide-1) receptor agonists &mdash; that started out as sugar pills but turned out to be <strong>kidney and heart protectors.</strong> In large trials, SGLT2 inhibitors slowed kidney decline and kept people off dialysis longer, even when their sugar was already fine.<sup class="cite">3</sup> That is why your doctor may start one of these <em>for your kidneys</em>, not for your sugar.</span><span data-lang="tl" class="lang-hidden">Narito ang pagbabago ng pananaw na nagbabago ng lahat. May grupo na ngayon ng mga gamot na tinatawag na SGLT2 inhibitors (sodium-glucose cotransporter-2 inhibitors) &mdash; at isa pang tinatawag na GLP-1 receptor agonists (glucagon-like peptide-1 receptor agonists) &mdash; na nagsimula bilang gamot sa asukal ngunit napatunayang <strong>protektor ng bato at puso.</strong> Sa malalaking pagsubok, pinabagal ng SGLT2 inhibitors ang paghina ng bato at mas matagal na iniwas ang mga tao sa dialysis, kahit maayos na ang kanilang asukal.<sup class="cite">3</sup> Kaya maaaring magsimula ang iyong doktor ng isa sa mga ito <em>para sa iyong bato</em>, hindi para sa asukal.</span><span data-lang="ceb" class="lang-hidden">Aniay pagbag-o sa panglantaw nga nag-usab sa tanan. Aduna nay grupo sa mga tambal nga gitawag og SGLT2 inhibitors (sodium-glucose cotransporter-2 inhibitors) &mdash; ug lain nga gitawag og GLP-1 receptor agonists (glucagon-like peptide-1 receptor agonists) &mdash; nga nagsugod isip tambal sa asukar apan napamatud-an nga <strong>tigpanalipod sa kidney ug kasingkasing.</strong> Sa dagkong pagsulay, gipahinay sa SGLT2 inhibitors ang paghuyang sa kidney ug mas dugay nga gilikay ang mga tawo sa dialysis, bisan maayo na ang ilang asukar.<sup class="cite">3</sup> Mao nga mahimong magsugod ang imong doktor og usa niini <em>para sa imong kidney</em>, dili para sa asukar.</span><span data-lang="kap" class="lang-hidden">Atyu ka ing pamagbayu ning pamanlawe a magbayu king anggang bage. Atin nang grupu ding gamut a ausan dang SGLT2 inhibitors (sodium-glucose cotransporter-2 inhibitors) &mdash; at aliwa a ausan dang GLP-1 receptor agonists (glucagon-like peptide-1 receptor agonists) &mdash; a mengumpisa bilang gamut king asukal dapot mepatunayan a <strong>protektor da ring butu at pusu.</strong> Karing maragul a pamagsubuk, peparimla ne ning SGLT2 inhibitors ing pamaina ning butu at mas malwat a iniwas de reng tau king dialysis, maski mayap na ing asukal da.<sup class="cite">3</sup> Inya malyaring magumpisa ing doktor mu king metung kariti <em>para karing butu mu</em>, e para king asukal.</span></p>
 <div class="alert alert-purple">
   <div class="alert-icon">🔬</div>
   <div class="alert-body">
@@ -2132,7 +2168,7 @@ try{(function(){var v=localStorage.getItem('wgmr-sugarckd-mode');if(v===null){va
 <h2>The Glycemic-Renal-Cardiovascular Cascade</h2>
 <p>Glycemic injury to the kidney is best taught as one continuous mechanism rather than a list. Chronic hyperglycemia drives afferent arteriolar vasodilation: sodium-glucose cotransporter-2 (SGLT2)-mediated proximal reabsorption of glucose and sodium reduces distal sodium delivery to the macula densa, blunting the tubuloglomerular feedback (TGF) signal that would normally constrict the afferent arteriole. The result is glomerular hyperfiltration &mdash; a supraphysiologic single-nephron glomerular filtration rate (GFR) with elevated intraglomerular pressure.<sup class="cite">4</sup></p>
 <p>Sustained intraglomerular hypertension is mechanically transmitted to podocytes, producing effacement, detachment, and the earliest clinical signal &mdash; albuminuria. In parallel, advanced glycation end-products (AGEs) cross-link matrix proteins to drive mesangial expansion, glomerular basement membrane thickening, and tubulointerstitial fibrosis. The renin-angiotensin-aldosterone system (RAAS) is both driver and consequence: hyperglycemia upregulates proximal-tubular angiotensinogen, and angiotensin II preferentially constricts the efferent arteriole, further raising glomerular pressure. These pathways converge with the lipid/cardiovascular (CV) axis on a shared endothelial-dysfunction substrate &mdash; the mechanistic basis for the cardiovascular-kidney-metabolic (CKM) framing and for a statin indication in diabetes plus CKD independent of low-density lipoprotein (LDL) level.</p>
-<p><strong>The bidirectional loop patients rarely grasp:</strong> as eGFR falls, renal insulin clearance and gluconeogenesis decline, so insulin and renally-cleared secretagogues accumulate and hypoglycemia risk rises &mdash; the "renal-glycemic feedback" that mandates proactive de-escalation of glucose-lowering therapy as CKD advances, not a static regimen.</p>
+<p><strong>The bidirectional loop patients rarely grasp:</strong> as eGFR (estimated glomerular filtration rate) falls, renal insulin clearance and gluconeogenesis decline, so insulin and renally-cleared secretagogues accumulate and hypoglycemia risk rises &mdash; the "renal-glycemic feedback" that mandates proactive de-escalation of glucose-lowering therapy as CKD advances, not a static regimen.</p>
 <figure style="margin:28px 0">
 <picture>
 <source srcset="../images/sugar-control-kidney-disease-02-cascade.webp" type="image/webp">
@@ -2146,7 +2182,7 @@ try{(function(){var v=localStorage.getItem('wgmr-sugarckd-mode');if(v===null){va
 <section class="section mode-physician" id="md-targets" style="display:none;">
 <div class="section-tag">Guideline-Anchored Targets</div>
 <h2>An Individualized Target, Not a Default Number</h2>
-<p>The KDIGO 2022 Diabetes-in-CKD guideline frames HbA1c as an individualized range of roughly <strong>6.5–8.0%</strong>, selected along a decision axis &mdash; not a single default.<sup class="cite">5</sup> Relax toward 8.0% with shorter life expectancy, established cardiovascular disease (CVD), hypoglycemia unawareness, extensive comorbidity, advanced CKD, or dialysis vintage; tighten toward 6.5% in younger patients with long horizons, low hypoglycemia risk, and few comorbidities. The ADA Standards of Care in Diabetes—2026 (Section 11, Chronic Kidney Disease and Risk Management) is concordant on individualization while embedding glycemia within the CKM framework, so glucose is one organ-protective goal among several rather than the sole priority.<sup class="cite">6</sup></p>
+<p>The KDIGO (Kidney Disease: Improving Global Outcomes) 2022 Diabetes-in-CKD guideline frames HbA1c as an individualized range of roughly <strong>6.5–8.0%</strong>, selected along a decision axis &mdash; not a single default.<sup class="cite">5</sup> Relax toward 8.0% with shorter life expectancy, established cardiovascular disease (CVD), hypoglycemia unawareness, extensive comorbidity, advanced CKD, or dialysis vintage; tighten toward 6.5% in younger patients with long horizons, low hypoglycemia risk, and few comorbidities. The ADA (American Diabetes Association) Standards of Care in Diabetes—2026 (Section 11, Chronic Kidney Disease and Risk Management) is concordant on individualization while embedding glycemia within the CKM framework, so glucose is one organ-protective goal among several rather than the sole priority.<sup class="cite">6</sup></p>
 <div class="alert alert-purple">
   <div class="alert-icon">🔬</div>
   <div class="alert-body">

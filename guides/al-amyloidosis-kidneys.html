@@ -459,11 +459,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -492,21 +507,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -2011,15 +2047,13 @@ try{(function(){var v=localStorage.getItem('wgmr-al-amyloidosis-kidneys-mode');i
     <div class="ov-card">
     <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
     <div class="ov-list">
-    <div class="ov-stat"><span class="v">708</span><span class="l">Patients with kidney light-chain (AL) amyloidosis and a deep, sustained hematologic response (Rauf 2026, observational)</span></div>
-    <div class="ov-stat"><span class="v">14→52%</span><span class="l">Estimated 5-year renal replacement therapy (RRT) incidence, CD68 (cluster of differentiation 68) macrophage score 0 vs 3</span></div>
-    <div class="ov-stat"><span class="v">1.31</span><span class="l">Adjusted hazard ratio (HR) for RRT per 1-point CD68 score (95% confidence interval [CI] 1.09–1.56)</span></div>
-    <div class="ov-stat"><span class="v">9.44</span><span class="l">Landmark HR, serum amyloid P (SAP) scan accumulation vs regression (n = 396; CI 3.25–27.39)</span></div>
-    <div class="ov-stat"><span class="v">≥30%</span><span class="l">Proteinuria fall for renal response, without a ≥25% estimated glomerular filtration rate (eGFR) decline (Palladini 2014)</span></div>
-    <div class="ov-stat"><span class="v">53.0%</span><span class="l">6-month renal response with daratumumab plus bortezomib, cyclophosphamide, and dexamethasone (VCd) vs 23.9% with VCd (ANDROMEDA)</span></div>
-    <div class="ov-stat"><span class="v">12</span><span class="l">American Society of Hematology (ASH) 2026 diagnosis recommendations; tissue typing required</span></div>
-    </div>
-    <a class="ov-foot" href="#study-appraisal">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+<div class="ov-stat"><span class="v">14→52%</span><span class="l">5-year RRT incidence, CD68 macrophage score 0 vs 3</span></div>
+<div class="ov-stat"><span class="v">9.44</span><span class="l">Landmark HR, SAP scan accumulation vs regression (n = 396)</span></div>
+<div class="ov-stat"><span class="v">≥30%</span><span class="l">Proteinuria fall that defines renal response, without a ≥25% eGFR decline (Palladini 2014)</span></div>
+<div class="ov-stat"><span class="v">53.0%</span><span class="l">6-month renal response, daratumumab + VCd vs 23.9% with VCd (ANDROMEDA)</span></div>
+</div>
+<div class="ov-src">ASH 2026 · 12 diagnosis recommendations; tissue typing required</div>
+<a class="ov-foot" href="#study-appraisal">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
     </aside>
     <div class="hero-copy">
@@ -2081,7 +2115,7 @@ try{(function(){var v=localStorage.getItem('wgmr-al-amyloidosis-kidneys-mode');i
   <div class="alert-icon">💡</div>
   <div class="alert-body">
     <h4><span data-lang="en">The one-minute answer</span><span data-lang="tl" class="lang-hidden">Ang sagot sa isang minuto</span><span data-lang="ceb" class="lang-hidden">Ang tubag sa usa ka minuto</span><span data-lang="kap" class="lang-hidden">Ing sagot king metung a minutu</span></h4>
-    <ul><li><span data-lang="en">Treatment works on the <strong>source</strong> (plasma cells making light chains) first. The kidneys recover <strong>later and more slowly</strong>, and sometimes only partly.</span><span data-lang="tl" class="lang-hidden">Una munang tinatamaan ng gamutan ang <strong>pinagmumulan</strong> (plasma cell na gumagawa ng light chain). <strong>Mas huli at mas mabagal</strong> gumaling ang bato, at kung minsan ay bahagya lamang.</span><span data-lang="ceb" class="lang-hidden">Una nga gitumong sa pagtambal ang <strong>gigikanan</strong> (plasma cell nga naghimo og light chain). <strong>Mas ulahi ug mas hinay</strong> nga mouswag ang bato, ug usahay bahin lang.</span><span data-lang="kap" class="lang-hidden">Mumuna nang tatamaan ning pamanulu ing <strong>pikuanan</strong> (plasma cell a gagawa light chain). <strong>Mas tauli at mas mabagal</strong> mumayap ing batu, at kekatamu bage mu pamu.</span></li><li><span data-lang="en">Persistent urine protein after a good blood response is common and does not by itself mean treatment failed. A falling eGFR needs attention even if urine protein falls.</span><span data-lang="tl" class="lang-hidden">Karaniwan ang patuloy na protina sa ihi pagkatapos ng magandang tugon ng dugo at hindi ito nangangahulugang nabigo ang gamutan. Kailangang bantayan ang bumababang eGFR kahit bumababa ang protina sa ihi.</span><span data-lang="ceb" class="lang-hidden">Kasagaran ang padayon nga protina sa ihi human sa maayong tubag sa dugo ug dili kini magpasabot nga napakyas ang pagtambal. Kinahanglang bantayan ang nagkunhod nga eGFR bisan mokunhod ang protina sa ihi.</span><span data-lang="kap" class="lang-hidden">Karaniwan ing tuloy-tuloy a protina king ihi kaibat ning mayap a tugon ning daya at ali na buring sabyan a mebigu ing pamanulu. Kailangan bantayan ing bababang eGFR agyang bababa ing protina king ihi.</span></li><li><span data-lang="en">Keep tests comparable: same urine test, same units, complete collections, same eGFR equation. Keep both hematology and kidney follow-up.</span><span data-lang="tl" class="lang-hidden">Panatilihing maihahambing ang mga test: parehong test ng ihi, parehong unit, kumpletong koleksyon, parehong equation ng eGFR. Ipagpatuloy ang follow-up sa hematology at sa bato.</span><span data-lang="ceb" class="lang-hidden">Pabilina nga matandi ang mga test: parehas nga test sa ihi, parehas nga unit, kompleto nga koleksyon, parehas nga equation sa eGFR. Padayona ang follow-up sa hematology ug sa bato.</span><span data-lang="kap" class="lang-hidden">Panatilian apikumpara deng test: pareung test ning ihi, pareung unit, kumpletung koleksyun, pareung equation ning eGFR. Ituloy ing follow-up king hematology at king batu.</span></li></ul>
+    <ul><li><span data-lang="en">Treatment works on the <strong>source</strong> (plasma cells making light chains) first. The kidneys recover <strong>later and more slowly</strong>, and sometimes only partly.</span><span data-lang="tl" class="lang-hidden">Una munang tinatamaan ng gamutan ang <strong>pinagmumulan</strong> (plasma cell na gumagawa ng light chain). <strong>Mas huli at mas mabagal</strong> gumaling ang bato, at kung minsan ay bahagya lamang.</span><span data-lang="ceb" class="lang-hidden">Una nga gitumong sa pagtambal ang <strong>gigikanan</strong> (plasma cell nga naghimo og light chain). <strong>Mas ulahi ug mas hinay</strong> nga mouswag ang bato, ug usahay bahin lang.</span><span data-lang="kap" class="lang-hidden">Mumuna nang tatamaan ning pamanulu ing <strong>pikuanan</strong> (plasma cell a gagawa light chain). <strong>Mas tauli at mas mabagal</strong> mumayap ing batu, at kekatamu bage mu pamu.</span></li><li><span data-lang="en">Persistent urine protein after a good blood response is common and does not by itself mean treatment failed. A falling eGFR (estimated glomerular filtration rate) needs attention even if urine protein falls.</span><span data-lang="tl" class="lang-hidden">Karaniwan ang patuloy na protina sa ihi pagkatapos ng magandang tugon ng dugo at hindi ito nangangahulugang nabigo ang gamutan. Kailangang bantayan ang bumababang eGFR kahit bumababa ang protina sa ihi.</span><span data-lang="ceb" class="lang-hidden">Kasagaran ang padayon nga protina sa ihi human sa maayong tubag sa dugo ug dili kini magpasabot nga napakyas ang pagtambal. Kinahanglang bantayan ang nagkunhod nga eGFR bisan mokunhod ang protina sa ihi.</span><span data-lang="kap" class="lang-hidden">Karaniwan ing tuloy-tuloy a protina king ihi kaibat ning mayap a tugon ning daya at ali na buring sabyan a mebigu ing pamanulu. Kailangan bantayan ing bababang eGFR agyang bababa ing protina king ihi.</span></li><li><span data-lang="en">Keep tests comparable: same urine test, same units, complete collections, same eGFR equation. Keep both hematology and kidney follow-up.</span><span data-lang="tl" class="lang-hidden">Panatilihing maihahambing ang mga test: parehong test ng ihi, parehong unit, kumpletong koleksyon, parehong equation ng eGFR. Ipagpatuloy ang follow-up sa hematology at sa bato.</span><span data-lang="ceb" class="lang-hidden">Pabilina nga matandi ang mga test: parehas nga test sa ihi, parehas nga unit, kompleto nga koleksyon, parehas nga equation sa eGFR. Padayona ang follow-up sa hematology ug sa bato.</span><span data-lang="kap" class="lang-hidden">Panatilian apikumpara deng test: pareung test ning ihi, pareung unit, kumpletung koleksyun, pareung equation ning eGFR. Ituloy ing follow-up king hematology at king batu.</span></li></ul>
   </div>
 </div>
 <div class="al-printbar al-js-only" hidden><span class="al-printbar-lbl"><span data-lang="en">Print:</span><span data-lang="tl" class="lang-hidden">I-print:</span><span data-lang="ceb" class="lang-hidden">I-print:</span><span data-lang="kap" class="lang-hidden">I-print:</span></span><button type="button" class="al-btn al-btn-sm" data-print-mode="patient"><span data-lang="en">Patient guide</span><span data-lang="tl" class="lang-hidden">Gabay sa pasyente</span><span data-lang="ceb" class="lang-hidden">Giya sa pasyente</span><span data-lang="kap" class="lang-hidden">Giya para king pasyente</span></button><button type="button" class="al-btn al-btn-sm" data-print-mode="clinician"><span data-lang="en">Clinician guide</span><span data-lang="tl" class="lang-hidden">Gabay sa doktor</span><span data-lang="ceb" class="lang-hidden">Giya sa doktor</span><span data-lang="kap" class="lang-hidden">Giya para king doktor</span></button><button type="button" class="al-btn al-btn-sm" data-print-mode="all"><span data-lang="en">Both</span><span data-lang="tl" class="lang-hidden">Pareho</span><span data-lang="ceb" class="lang-hidden">Duha</span><span data-lang="kap" class="lang-hidden">Parehu</span></button></div>
@@ -2404,7 +2438,7 @@ try{(function(){var v=localStorage.getItem('wgmr-al-amyloidosis-kidneys-mode');i
         <tr><td>Renal response</td><td>24-h urine protein + eGFR</td><td>Palladini 2014: proteinuria fall &ge;30% or to &lt;0.5 g/24 h, <em>without</em> renal progression</td><td>Months to years</td></tr>
         <tr><td>Renal progression</td><td>eGFR</td><td>Palladini 2014: eGFR decrease &ge;25% (adopted after validation at 6 months)</td><td>Months</td></tr>
         <tr><td>Cardiac</td><td>NT-proBNP (troponin, imaging)</td><td>Palladini 2012 NT-proBNP-based criteria; interpret with kidney function</td><td>Months</td></tr>
-        <tr><td>Tissue burden</td><td>SAP scintigraphy (research and few centers), biopsy</td><td>No routine clinical response criterion; SAP regression used in the 2026 cohort</td><td>Years</td></tr>
+        <tr><td>Tissue burden</td><td>SAP (serum amyloid P component) scintigraphy (research and few centers), biopsy</td><td>No routine clinical response criterion; SAP regression used in the 2026 cohort</td><td>Years</td></tr>
       </tbody>
     </table>
   </div>

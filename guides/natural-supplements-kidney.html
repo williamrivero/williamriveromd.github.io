@@ -476,11 +476,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -509,21 +524,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1945,7 +1981,7 @@ table.followup tr:last-child td { border-bottom:none; }
   </div>
 
   <div class="supp-title">MX3 — Mangosteen Xanthones</div>
-  <p style="font-size:14px;margin-bottom:12px;"><span data-lang="en">Alpha-mangostin activates the <strong>Nrf2 pathway</strong> — a cellular master switch for antioxidant and anti-inflammatory enzyme production (HO-1, NQO1, SOD, GPx). In preclinical AKI (acute kidney injury) models, it significantly reduced serum creatinine, BUN (blood urea nitrogen), MDA, and ROS. Network pharmacology identified 10 hub targets including <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> and <strong>IL-6</strong>. One human RCT (randomized controlled trial) in healthy adults showed CRP (C-reactive protein) reduction over 30 days; kidney function tests were unchanged. <em>No human trial in CKD patients exists.</em><sup>[1,2,3]</sup></span><span data-lang="tl" class="lang-hidden">Ang alpha-mangostin ay nagpapagana sa <strong>Nrf2 pathway</strong> — isang cellular master switch para sa produksyon ng antioxidant at anti-inflammatory na enzyme (HO-1, NQO1, SOD, GPx). Sa mga preclinical AKI (acute kidney injury) na modelo, makabuluhan nitong ibinaba ang serum creatinine, BUN (blood urea nitrogen), MDA, at ROS. Natukoy ng network pharmacology ang 10 hub target kabilang ang <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> at <strong>IL-6</strong>. Isang human RCT (randomized controlled trial) sa malulusog na adulto ang nagpakita ng pagbaba ng CRP (C-reactive protein) sa loob ng 30 araw; hindi nagbago ang mga kidney function test. <em>Walang human trial sa mga pasyenteng may CKD na umiiral.</em><sup>[1,2,3]</sup></span><span data-lang="ceb" class="lang-hidden">Ang alpha-mangostin nagpalihok sa <strong>Nrf2 pathway</strong> — usa ka cellular master switch alang sa produksyon sa antioxidant ug anti-inflammatory nga enzyme (HO-1, NQO1, SOD, GPx). Sa mga preclinical AKI (acute kidney injury) nga modelo, hinungdanon niini nga gipakunhod ang serum creatinine, BUN (blood urea nitrogen), MDA, ug ROS. Nakit-an sa network pharmacology ang 10 ka hub target lakip ang <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> ug <strong>IL-6</strong>. Usa ka human RCT (randomized controlled trial) sa himsog nga mga hamtong ang nagpakita og pagkunhod sa CRP (C-reactive protein) sulod sa 30 ka adlaw; wala mausab ang mga kidney function test. <em>Walay human trial sa mga pasyente nga adunay CKD nga naglungtad.</em><sup>[1,2,3]</sup></span><span data-lang="kap" class="lang-hidden">Ing alpha-mangostin papagana ne ing <strong>Nrf2 pathway</strong> — metung a cellular master switch para king produksyon ning antioxidant at anti-inflammatory a enzyme (HO-1, NQO1, SOD, GPx). Karing preclinical AKI (acute kidney injury) a modelo, makabuluhan nang binaba ing serum creatinine, BUN (blood urea nitrogen), MDA, at ROS. Atukid ning network pharmacology ing 10 hub target kayabe ing <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> at <strong>IL-6</strong>. Metung a human RCT (randomized controlled trial) karing malusug a adulto ing mepakit ning pamaniababa ning CRP (C-reactive protein) king lub ning 30 aldo; ali mesambut deng kidney function test. <em>Alang human trial karing pasyenteng atin CKD.</em><sup>[1,2,3]</sup></span></p>
+  <p style="font-size:14px;margin-bottom:12px;"><span data-lang="en">Alpha-mangostin activates the <strong>Nrf2 pathway</strong> — a cellular master switch for antioxidant and anti-inflammatory enzyme production (HO-1, NQO1, SOD, GPx). In preclinical AKI (acute kidney injury) models, it significantly reduced serum creatinine, BUN (blood urea nitrogen), MDA, and ROS. Network pharmacology identified 10 hub targets including <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> and <strong>IL-6</strong>. One human RCT (randomized controlled trial) in healthy adults showed CRP (C-reactive protein) reduction over 30 days; kidney function tests were unchanged. <em>No human trial in CKD (chronic kidney disease) patients exists.</em><sup>[1,2,3]</sup></span><span data-lang="tl" class="lang-hidden">Ang alpha-mangostin ay nagpapagana sa <strong>Nrf2 pathway</strong> — isang cellular master switch para sa produksyon ng antioxidant at anti-inflammatory na enzyme (HO-1, NQO1, SOD, GPx). Sa mga preclinical AKI (acute kidney injury) na modelo, makabuluhan nitong ibinaba ang serum creatinine, BUN (blood urea nitrogen), MDA, at ROS. Natukoy ng network pharmacology ang 10 hub target kabilang ang <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> at <strong>IL-6</strong>. Isang human RCT (randomized controlled trial) sa malulusog na adulto ang nagpakita ng pagbaba ng CRP (C-reactive protein) sa loob ng 30 araw; hindi nagbago ang mga kidney function test. <em>Walang human trial sa mga pasyenteng may CKD na umiiral.</em><sup>[1,2,3]</sup></span><span data-lang="ceb" class="lang-hidden">Ang alpha-mangostin nagpalihok sa <strong>Nrf2 pathway</strong> — usa ka cellular master switch alang sa produksyon sa antioxidant ug anti-inflammatory nga enzyme (HO-1, NQO1, SOD, GPx). Sa mga preclinical AKI (acute kidney injury) nga modelo, hinungdanon niini nga gipakunhod ang serum creatinine, BUN (blood urea nitrogen), MDA, ug ROS. Nakit-an sa network pharmacology ang 10 ka hub target lakip ang <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> ug <strong>IL-6</strong>. Usa ka human RCT (randomized controlled trial) sa himsog nga mga hamtong ang nagpakita og pagkunhod sa CRP (C-reactive protein) sulod sa 30 ka adlaw; wala mausab ang mga kidney function test. <em>Walay human trial sa mga pasyente nga adunay CKD nga naglungtad.</em><sup>[1,2,3]</sup></span><span data-lang="kap" class="lang-hidden">Ing alpha-mangostin papagana ne ing <strong>Nrf2 pathway</strong> — metung a cellular master switch para king produksyon ning antioxidant at anti-inflammatory a enzyme (HO-1, NQO1, SOD, GPx). Karing preclinical AKI (acute kidney injury) a modelo, makabuluhan nang binaba ing serum creatinine, BUN (blood urea nitrogen), MDA, at ROS. Atukid ning network pharmacology ing 10 hub target kayabe ing <strong>TNF, AKT1, NF-κB1, HIF-1A,</strong> at <strong>IL-6</strong>. Metung a human RCT (randomized controlled trial) karing malusug a adulto ing mepakit ning pamaniababa ning CRP (C-reactive protein) king lub ning 30 aldo; ali mesambut deng kidney function test. <em>Alang human trial karing pasyenteng atin CKD.</em><sup>[1,2,3]</sup></span></p>
   <table class="ev-table">
     <thead><tr><th><span data-lang="en">Claim</span><span data-lang="tl" class="lang-hidden">Inaangkin</span><span data-lang="ceb" class="lang-hidden">Giangkon</span><span data-lang="kap" class="lang-hidden">Inaangkin</span></th><th><span data-lang="en">Evidence Level</span><span data-lang="tl" class="lang-hidden">Antas ng Ebidensya</span><span data-lang="ceb" class="lang-hidden">Ang-ang sa Ebidensya</span><span data-lang="kap" class="lang-hidden">Antas ning Ebidensya</span></th><th><span data-lang="en">Notes</span><span data-lang="tl" class="lang-hidden">Mga Tala</span><span data-lang="ceb" class="lang-hidden">Mga Nota</span><span data-lang="kap" class="lang-hidden">Deng Tala</span></th></tr></thead>
     <tbody>

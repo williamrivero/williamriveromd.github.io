@@ -460,11 +460,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -493,21 +508,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1851,11 +1887,11 @@ try{(function(){var v=localStorage.getItem('wgmr-diabetic-mode');if(v===null){va
       <div class="ov-card">
       <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
       <div class="ov-list">
-      <div class="ov-stat"><span class="v">30&ndash;40%</span><span class="l">Lower postprandial glucose AUC with carb-last meal sequencing</span></div>
-      <div class="ov-stat"><span class="v">&minus;1.2%</span><span class="l">glycated hemoglobin (HbA1c) fall with glycemic-load reduction (Grade A)</span></div>
-      <div class="ov-stat"><span class="v">2025</span><span class="l">American Diabetes Association (ADA) &mdash; nutrition therapy individualised to culture</span></div>
-      </div>
-      <a class="ov-foot" href="#md-evidence">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+<div class="ov-stat"><span class="v">30&ndash;40%</span><span class="l">Lower postprandial glucose AUC with carb-last meal sequencing</span></div>
+<div class="ov-stat"><span class="v">&minus;1.2%</span><span class="l">glycated hemoglobin (HbA1c) fall with glycemic-load reduction (Grade A)</span></div>
+</div>
+<div class="ov-src">ADA 2025 · nutrition therapy individualized to culture</div>
+<a class="ov-foot" href="#md-evidence">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
       </div>
       </aside>
       <div class="hero-copy">
@@ -1990,7 +2026,7 @@ try{(function(){var v=localStorage.getItem('wgmr-diabetic-mode');if(v===null){va
             <div class="mech-num">2</div>
             <div class="mech-body">
               <strong><span data-lang="en">The postprandial spike pattern is uniquely Filipino.</span><span data-lang="tl" class="lang-hidden">Ang pattern ng postprandial spike ay natatanging Pilipino.</span><span data-lang="ceb" class="lang-hidden">Ang pattern sa postprandial spike talagang Pilipino.</span><span data-lang="kap" class="lang-hidden">Ing pattern ning postprandial spike ya talagang Pilipino.</span></strong>
-              <p><span data-lang="en">Filipino meals front-load glycemic content — rice first, viand second, almost no fiber buffer. The result: sharp postprandial glucose spikes of 230–260 mg/dL after every meal. Many Filipino patients have near-normal fasting glucose but extremely high postprandial levels. Their HbA1c reflects this hidden burden — even when their morning reading looks fine.</span><span data-lang="tl" class="lang-hidden">Ang mga pagkaing Pilipino ay nagsisimula sa mataas na glycemic content — kanin muna, ulam pangalawa, halos walang fiber buffer. Maraming Pilipinong pasyente ang may malapit-normal na fasting glucose ngunit napakaataas na postprandial levels.</span><span data-lang="ceb" class="lang-hidden">Ang mga pagkaing Pilipino nagsugod sa taas nga glycemic content — kanin una, ulam ikaduha, halos walay fiber buffer. Daghang Pilipinong pasyente adunay suod-normal nga fasting glucose apan taas kaayo nga postprandial levels.</span><span data-lang="kap" class="lang-hidden">Ing deng pagkaing Pilipino ya nagsisimula sa matas a glycemic content — kanin muna, ulam pangalawa, halos alang fiber buffer. Dakal a Pilipinong pasyente ya atin malapit-normal a fasting glucose ngarud napakamatas a postprandial levels.</span></p>
+              <p><span data-lang="en">Filipino meals front-load glycemic content — rice first, viand second, almost no fiber buffer. The result: sharp postprandial glucose spikes of 230–260 mg/dL after every meal. Many Filipino patients have near-normal fasting glucose but extremely high postprandial levels. Their HbA1c (glycated hemoglobin) reflects this hidden burden — even when their morning reading looks fine.</span><span data-lang="tl" class="lang-hidden">Ang mga pagkaing Pilipino ay nagsisimula sa mataas na glycemic content — kanin muna, ulam pangalawa, halos walang fiber buffer. Maraming Pilipinong pasyente ang may malapit-normal na fasting glucose ngunit napakaataas na postprandial levels.</span><span data-lang="ceb" class="lang-hidden">Ang mga pagkaing Pilipino nagsugod sa taas nga glycemic content — kanin una, ulam ikaduha, halos walay fiber buffer. Daghang Pilipinong pasyente adunay suod-normal nga fasting glucose apan taas kaayo nga postprandial levels.</span><span data-lang="kap" class="lang-hidden">Ing deng pagkaing Pilipino ya nagsisimula sa matas a glycemic content — kanin muna, ulam pangalawa, halos alang fiber buffer. Dakal a Pilipinong pasyente ya atin malapit-normal a fasting glucose ngarud napakamatas a postprandial levels.</span></p>
             </div>
           </div>
           <div class="mech-step">
@@ -2415,7 +2451,7 @@ try{(function(){var v=localStorage.getItem('wgmr-diabetic-mode');if(v===null){va
             </tbody>
           </table>
         </div>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:-10px;"><em>GI = Glycemic Index · GL = Glycemic Load per serving · Sources: Atkinson et al., Am J Clin Nutr 2021 (GI Tables); FNRI Philippine Food Composition Tables 2023; ADA Standards of Care 2025.</em></p>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:-10px;"><em>GI = Glycemic Index · GL = Glycemic Load per serving · Sources: Atkinson et al., Am J Clin Nutr 2021 (GI Tables); FNRI Philippine Food Composition Tables 2023; ADA (American Diabetes Association) Standards of Care 2025.</em></p>
 
         <h3><span data-lang="en">Simple Filipino Kitchen Swaps</span><span data-lang="tl" class="lang-hidden">Simpleng Pagpapalit sa Kusina para sa Pilipino</span><span data-lang="ceb" class="lang-hidden">Simpleng Pagbalon sa Kusina alang sa Pilipino</span><span data-lang="kap" class="lang-hidden">Simpleng Filipino Kitchen Swaps</span></h3>
         <p><span data-lang="en">Seven everyday substitutions that lower your glycemic load without changing your cooking style.</span><span data-lang="tl" class="lang-hidden">Pitong karaniwang pagpapalit na nagpapababa ng iyong glycemic load nang hindi binabago ang iyong paraan ng pagluluto.</span><span data-lang="ceb" class="lang-hidden">Pito ka adlaw-adlaw nga pagbalon nga nagpaubos sa imong glycemic load nga dili mabago ang imong pamaagi sa pagluto.</span><span data-lang="kap" class="lang-hidden">Pitong adlaw-adlaw a pagpapalit a nagpapababa ning iyong glycemic load nang ali binabago ing iyong paraan ning pagluluto.</span></p>

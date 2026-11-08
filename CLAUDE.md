@@ -77,6 +77,9 @@ python3 audit_acronym_expansion.py --details   # list every first-use violation,
 python3 audit_acronym_expansion.py --report    # per-guide ratios, never exit-fails (survey the whole library)
 python3 audit_acronym_expansion.py --guide igan-guide.html  # single guide; exits 1 if any acronym is unexpanded at first use
 
+python3 audit_evidence_snapshot.py             # clinician Evidence Snapshot cards: ≤4 rows, short values + unit span, ≤100-char labels (rule 7)
+python3 audit_evidence_snapshot.py --guide anemia-management.html  # single guide; exits 1 on any problem
+
 python3 patch_hero_meta.py                # hero byline: drop "Author" row, show Published date + References count
 python3 patch_hero_meta.py --dry-run
 python3 patch_hero_meta.py --guide understanding-ckd.html  # single guide
@@ -253,20 +256,24 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    because justifying short or constrained-width content opens distracting rivers of
    whitespace; only the long-form section paragraphs are justified.
 
-7. **Evidence Snapshot card — fixed value column.** Clinician-mode guides surface
-   an "Evidence Snapshot" card (`<aside class="hero-cards mode-physician"> →
-   .ov-card → .ov-list → .ov-stat (.v + .l)`). Value column (`.v`) widths vary —
-   `"0"` vs `"−7 mmHg"` vs `"G4–G5"` vs `"AHA 2023"` — and with the original flex
-   layout each row's label (`.l`) started at a different x. `MASTER_CSS` now
-   pins every `.ov-stat` to `display:grid; grid-template-columns:104px 1fr`
-   (with `!important` to defeat any stray per-guide overrides). The 104 px is
-   wide enough for the longest typical clinical value; wider entries wrap inside
-   the column rather than pushing the label right. Every description column now
-   shares the same x-position. **Never re-add per-guide `min-width`/`flex-shrink`
-   on `.ov-stat .v` and do not author a `.v` value longer than ~8 characters** —
-   the 104 px column is fixed by design. Values are **center-aligned** within
-   the column (`text-align:center`) so short ("0") and wide ("−7 mmHg") entries
-   read as a balanced metrics column.
+7. **Evidence Snapshot card — stacked stat rows (Nov 2026 redesign).** Clinician-mode
+   guides surface an "Evidence Snapshot" card (`<aside class="hero-cards mode-physician"> →
+   .ov-card → .ov-list → .ov-stat (.v + .l)`, then an optional `.ov-src` line, then the
+   `.ov-foot` "View evidence" link). `MASTER_CSS` stacks each row: the number on top,
+   left-aligned, with its description underneath at full card width and a hairline between
+   rows. On desktop the card takes the left column (`minmax(300px, 1fr)`) and is centered
+   vertically against the title block; at ≤820px it drops below the title and its rows form
+   a two-up grid. Content rules, enforced by **`audit_evidence_snapshot.py`** (run it before
+   declaring a clinician guide done):
+   - **At most 4 rows.** Extra numbers belong in the clinician overview section of the body.
+   - **`.v` is a number plus its unit, ≤ 8 characters** (unit excluded). Put the unit in
+     `<span class="u">`: `<span class="v">≥115<span class="u">g/L</span></span>`. A short
+     trial or score name (`CLIMB`, `ABI`, `euDKA`) is allowed. Never `<br>` in a value.
+   - **Guideline names are not stats.** "KDIGO 2024", "KDOQI · ISRNM" and the like go in
+     `<div class="ov-src">KDIGO 2024 · short note</div>` between the list and `.ov-foot`.
+   - **`.l` ≤ 100 characters** (two to three lines). The card is display chrome, like the
+     hero title, so acronyms in it may stay bare; `audit_acronym_expansion.py` skips the card
+     and requires the expansion at the first use in the body instead.
 
 8. **Text contrast in both light and dark mode (WCAG AA).** Every visible text
    element in a guide must pass **≥ 4.5:1** contrast against its background for
@@ -362,8 +369,9 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
     patient- and clinician-facing guides alike (the on-page glossary of rule 12
     is the dictionary; this rule is the first-use courtesy in the running prose).
     - **Scope = English body prose.** Expand in the `data-lang="en"` content. Hero
-      **titles** and the section **nav-strip pills** are display chrome and stay as
-      bare acronyms (expanding a headline reads poorly); the expansion lands at the
+      **titles**, the hero eyebrow **tag**, clinician **badge chips**, the **Evidence
+      Snapshot** card, per-figure `fig-abbrevs` lists, and the section **nav-strip pills**
+      are display chrome and stay as bare acronyms (expanding a headline reads poorly); the expansion lands at the
       first occurrence in the running text (a lead paragraph, an intro callout, or
       the dashboard/table row where the acronym first appears). For a multilingual
       guide, mirror the expansion into the TL/CEB/KAP sibling spans when you touch

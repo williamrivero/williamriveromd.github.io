@@ -459,11 +459,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -492,21 +507,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1929,15 +1965,13 @@ try{(function(){var v=localStorage.getItem('wgmr-onconephrology-chemotherapy-kid
     <div class="ov-card">
     <div class="ov-head"><span class="ov-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="ov-title">Evidence Snapshot</span></div>
     <div class="ov-list">
-    <div class="ov-stat"><span class="v">34th</span><span class="l">34th Acute Disease Quality Initiative (ADQI) consensus on cytotoxic chemotherapy nephrotoxicity, <em>Kidney International</em> 2026</span></div>
-    <div class="ov-stat"><span class="v">24,717</span><span class="l">Adults in the cisplatin acute kidney injury (AKI) risk-score cohort; severe AKI in 5.2% (derivation) and 3.3% (validation)</span></div>
-    <div class="ov-stat"><span class="v">&gt;500</span><span class="l">Methotrexate (MTX) dose in mg/m&sup2; most associated with AKI</span></div>
-    <div class="ov-stat"><span class="v">99%</span><span class="l">Maximum fall in plasma MTX within 15 minutes of glucarpidase; rebound follows</span></div>
-    <div class="ov-stat"><span class="v">2.70</span><span class="l">Adjusted odds ratio for kidney recovery with glucarpidase in MTX-associated AKI (observational, n = 708)</span></div>
-    <div class="ov-stat"><span class="v">&lt;45</span><span class="l">Estimated glomerular filtration rate (eGFR, mL/min/1.73 m&sup2;) below which the International Consensus Guideline for Anticancer Drug Dosing in Kidney Dysfunction (ADDIKD) advises avoiding cisplatin</span></div>
-    <div class="ov-stat"><span class="v">4&ndash;15%</span><span class="l">Reported thrombotic microangiopathy (TMA) incidence with mitomycin C, with risk concentrated at high cumulative dose</span></div>
-    </div>
-    <a class="ov-foot" href="#md-adqi">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+<div class="ov-stat"><span class="v">&gt;500<span class="u">mg/m²</span></span><span class="l">Methotrexate dose most associated with AKI</span></div>
+<div class="ov-stat"><span class="v">99%</span><span class="l">Maximum fall in plasma MTX within 15 minutes of glucarpidase; rebound follows</span></div>
+<div class="ov-stat"><span class="v">&lt;45</span><span class="l">eGFR (mL/min/1.73 m²) below which ADDIKD advises avoiding cisplatin</span></div>
+<div class="ov-stat"><span class="v">4–15%</span><span class="l">TMA incidence with mitomycin C, concentrated at high cumulative dose</span></div>
+</div>
+<div class="ov-src">ADQI 34 consensus (Kidney International 2026) · ADDIKD</div>
+<a class="ov-foot" href="#md-adqi">View evidence <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
     </aside>
     <div class="hero-copy">
@@ -2078,7 +2112,7 @@ try{(function(){var v=localStorage.getItem('wgmr-onconephrology-chemotherapy-kid
 </figure>
 <div class="table-wrap"><table>
 <thead><tr><th><span data-lang="en">Test</span><span data-lang="tl" class="lang-hidden">Test</span><span data-lang="ceb" class="lang-hidden">Test</span><span data-lang="kap" class="lang-hidden">Test</span></th><th><span data-lang="en">What it tells your team</span><span data-lang="tl" class="lang-hidden">Ano ang sinasabi nito sa team</span><span data-lang="ceb" class="lang-hidden">Unsa ang gisulti niini sa team</span><span data-lang="kap" class="lang-hidden">Nanu ing sasabyan na king team</span></th></tr></thead><tbody>
-<tr><td><strong><span data-lang="en">Creatinine and eGFR</span><span data-lang="tl" class="lang-hidden">Creatinine at eGFR</span><span data-lang="ceb" class="lang-hidden">Creatinine ug eGFR</span><span data-lang="kap" class="lang-hidden">Creatinine at eGFR</span></strong></td><td><span data-lang="en">Estimated glomerular filtration rate (eGFR) is your estimated filtering power, calculated from blood creatinine, age, and sex.</span><span data-lang="tl" class="lang-hidden">Ang estimated glomerular filtration rate (eGFR) ay tantiya ng lakas ng pagsala, kinukuwenta mula sa creatinine sa dugo, edad, at kasarian.</span><span data-lang="ceb" class="lang-hidden">Ang estimated glomerular filtration rate (eGFR) mao ang banabana sa kusog sa pagsala, gikuwenta gikan sa creatinine sa dugo, edad, ug sekso.</span><span data-lang="kap" class="lang-hidden">Ing estimated glomerular filtration rate (eGFR) tantya ning sikan ning pamanala, kukuwentan menibat king creatinine king daya, edad, at kasarian.</span></td></tr>
+<tr><td><strong><span data-lang="en">Creatinine and eGFR (estimated glomerular filtration rate)</span><span data-lang="tl" class="lang-hidden">Creatinine at eGFR</span><span data-lang="ceb" class="lang-hidden">Creatinine ug eGFR</span><span data-lang="kap" class="lang-hidden">Creatinine at eGFR</span></strong></td><td><span data-lang="en">Estimated glomerular filtration rate (eGFR) is your estimated filtering power, calculated from blood creatinine, age, and sex.</span><span data-lang="tl" class="lang-hidden">Ang estimated glomerular filtration rate (eGFR) ay tantiya ng lakas ng pagsala, kinukuwenta mula sa creatinine sa dugo, edad, at kasarian.</span><span data-lang="ceb" class="lang-hidden">Ang estimated glomerular filtration rate (eGFR) mao ang banabana sa kusog sa pagsala, gikuwenta gikan sa creatinine sa dugo, edad, ug sekso.</span><span data-lang="kap" class="lang-hidden">Ing estimated glomerular filtration rate (eGFR) tantya ning sikan ning pamanala, kukuwentan menibat king creatinine king daya, edad, at kasarian.</span></td></tr>
 <tr><td><strong><span data-lang="en">Cystatin C</span><span data-lang="tl" class="lang-hidden">Cystatin C</span><span data-lang="ceb" class="lang-hidden">Cystatin C</span><span data-lang="kap" class="lang-hidden">Cystatin C</span></strong></td><td><span data-lang="en">A second blood marker that does not depend on muscle; used when creatinine may be misleading.</span><span data-lang="tl" class="lang-hidden">Pangalawang marker sa dugo na hindi nakadepende sa kalamnan; ginagamit kapag maaaring nakalilinlang ang creatinine.</span><span data-lang="ceb" class="lang-hidden">Ikaduha nga marker sa dugo nga dili nagdepende sa kaunoran; gigamit kung mahimong makapahisalaag ang creatinine.</span><span data-lang="kap" class="lang-hidden">Kadua a marker king daya a ali makasalalay king laman; gagamitan nung malyaring makapanlinlang ing creatinine.</span></td></tr>
 <tr><td><strong><span data-lang="en">Measured glomerular filtration rate (GFR)</span><span data-lang="tl" class="lang-hidden">Measured GFR (glomerular filtration rate)</span><span data-lang="ceb" class="lang-hidden">Measured GFR (glomerular filtration rate)</span><span data-lang="kap" class="lang-hidden">Measured GFR (glomerular filtration rate)</span></strong></td><td><span data-lang="en">A direct test (a tracer is injected and timed blood samples are taken) for when the dose must be exact, such as high-dose methotrexate.</span><span data-lang="tl" class="lang-hidden">Direktang test (may itinuturok na tracer at may nakatakdang pagkuha ng dugo) para kapag kailangang eksakto ang dosis, gaya ng high-dose methotrexate.</span><span data-lang="ceb" class="lang-hidden">Direkta nga test (adunay ituturok nga tracer ug adunay gitakdang pagkuha sa dugo) para kung kinahanglan eksakto ang dosis, sama sa high-dose methotrexate.</span><span data-lang="kap" class="lang-hidden">Direktang test (atin iturok a tracer at atin takdang pamanguang daya) para nung kailangan eksaktu ing dosis, anti ing high-dose methotrexate.</span></td></tr>
 <tr><td><strong><span data-lang="en">Magnesium, potassium, sodium, calcium, phosphate</span><span data-lang="tl" class="lang-hidden">Magnesium, potassium, sodium, calcium, phosphate</span><span data-lang="ceb" class="lang-hidden">Magnesium, potassium, sodium, calcium, phosphate</span><span data-lang="kap" class="lang-hidden">Magnesium, potassium, sodium, calcium, phosphate</span></strong></td><td><span data-lang="en">Salts that some drugs make the kidneys waste; low magnesium also raises cisplatin risk.</span><span data-lang="tl" class="lang-hidden">Mga asin na pinapawala ng ilang gamot sa bato; nagpapataas din ng panganib sa cisplatin ang mababang magnesium.</span><span data-lang="ceb" class="lang-hidden">Mga asin nga gipawala sa pipila ka tambal sa bato; mopataas usab sa peligro sa cisplatin ang ubos nga magnesium.</span><span data-lang="kap" class="lang-hidden">Deng asin a pawalan ning pilan a gamut king batu; mamataas mu naman king panganib king cisplatin ing mababang magnesium.</span></td></tr>
@@ -2191,7 +2225,7 @@ try{(function(){var v=localStorage.getItem('wgmr-onconephrology-chemotherapy-kid
   </figcaption>
 </figure>
 
-<p class="oc-xlink"><span data-lang="en">Related: <a href="aki-does-not-end-at-discharge.html">AKI does not end at discharge</a></span><span data-lang="tl" class="lang-hidden">Kaugnay: <a href="aki-does-not-end-at-discharge.html">Hindi natatapos ang AKI sa paglabas sa ospital</a></span><span data-lang="ceb" class="lang-hidden">May kalabotan: <a href="aki-does-not-end-at-discharge.html">Dili mahuman ang AKI sa paggawas sa ospital</a></span><span data-lang="kap" class="lang-hidden">Kaugnay: <a href="aki-does-not-end-at-discharge.html">Ali mayari ing AKI king pamanalwal king ospital</a></span></p>
+<p class="oc-xlink"><span data-lang="en">Related: <a href="aki-does-not-end-at-discharge.html">AKI (acute kidney injury) does not end at discharge</a></span><span data-lang="tl" class="lang-hidden">Kaugnay: <a href="aki-does-not-end-at-discharge.html">Hindi natatapos ang AKI sa paglabas sa ospital</a></span><span data-lang="ceb" class="lang-hidden">May kalabotan: <a href="aki-does-not-end-at-discharge.html">Dili mahuman ang AKI sa paggawas sa ospital</a></span><span data-lang="kap" class="lang-hidden">Kaugnay: <a href="aki-does-not-end-at-discharge.html">Ali mayari ing AKI king pamanalwal king ospital</a></span></p>
 </section>
 
 <section class="section mode-patient" id="screening">

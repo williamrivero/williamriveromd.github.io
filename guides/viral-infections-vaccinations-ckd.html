@@ -454,11 +454,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -487,21 +502,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1915,7 +1951,7 @@ body.dark .related-card-title {
     <div class="section-tag"><span data-lang="en">Immunology of CKD</span><span data-lang="tl" class="lang-hidden">Immunolohiya ng CKD</span><span data-lang="ceb" class="lang-hidden">Immunolohiya sa CKD</span><span data-lang="kap" class="lang-hidden">Immunolohiya ning CKD</span></div>
     <h2><span data-lang="en">Why Viral Infections Hit Harder in Kidney Disease</span><span data-lang="tl" class="lang-hidden">Bakit Mas Matindi ang Epekto ng Viral na Impeksyon sa Sakit sa Bato</span><span data-lang="ceb" class="lang-hidden">Ngano nga Mas Grabe ang Epekto sa Viral nga Impeksyon sa Sakit sa Kidney</span><span data-lang="kap" class="lang-hidden">Bakit Mas Matindi ing Epekto ning Viral na Impeksyon sa Sakit sa Batu</span></h2>
     <div class="intro-callout">
-      <p><span data-lang="en">The immune system of a CKD patient is profoundly and specifically impaired — not simply "weakened" in a general sense. Uremic toxins that accumulate as kidney function declines directly interfere with neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, and B-cell antibody production. The result is a state of <strong>uremic immunoparalysis</strong> — the patient is simultaneously prone to infections they cannot fight and, paradoxically, prone to inflammatory conditions driven by dysregulated cytokine release.</span><span data-lang="tl" class="lang-hidden">Ang immune system ng isang pasyenteng may CKD ay lubos at tiyak na nasugatan — hindi lamang "humina" sa pangkalahatang kahulugan. Ang mga uremic toxin na nag-iipon habang bumababa ang kidney function ay direktang nakakasagabal sa neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, at B-cell antibody production. Ang resulta ay isang estado ng <strong>uremic immunoparalysis</strong> — ang pasyente ay sabay na madaling kapitan ng mga impeksyon na hindi nila malabanan at, kabalintunaan, madaling magkaroon ng mga kondisyong nagsusulong ng pamamaga.</span><span data-lang="ceb" class="lang-hidden">Ang immune system sa usa ka pasyente nga adunay CKD grabeng ug espesipikong naanggaan — dili lang "humina" sa kinatibuk-ang pagsabot. Ang mga uremic toxin nga nag-iipon habang nagpaubos ang kidney function direkta nga nakabalabag sa neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, ug B-cell antibody production. Ang resulta usa ka estado sa <strong>uremic immunoparalysis</strong> — ang pasyente dungan nga daling maapektuhan sa mga impeksyon nga dili nila mapakig-away ug, paradoha, daling magkaon sa mga kondisyon nga gipadagan sa dysregulated nga cytokine release.</span><span data-lang="kap" class="lang-hidden">Ing immune system ning metung a pasyenteng may CKD ya lubos at tiyak na nasugatan — ali lamang "humina" sa pangkalahatang kahulugan. Deng uremic toxin na nag-iipon habang bumababa ining kidney function ya direktang nakakasagabal sa neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, at B-cell antibody production. Ing resulta ya metung a estado ning <strong>uremic immunoparalysis</strong> — ing pasyente ya sabay na madaling kapitan ning deng impeksyon na ali nila malabanan at, kabalintunaan, madaling magkaroon ning deng kondisyong nagsusulong ning pamamaga.</span></p>
+      <p><span data-lang="en">The immune system of a CKD (chronic kidney disease) patient is profoundly and specifically impaired — not simply "weakened" in a general sense. Uremic toxins that accumulate as kidney function declines directly interfere with neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, and B-cell antibody production. The result is a state of <strong>uremic immunoparalysis</strong> — the patient is simultaneously prone to infections they cannot fight and, paradoxically, prone to inflammatory conditions driven by dysregulated cytokine release.</span><span data-lang="tl" class="lang-hidden">Ang immune system ng isang pasyenteng may CKD ay lubos at tiyak na nasugatan — hindi lamang "humina" sa pangkalahatang kahulugan. Ang mga uremic toxin na nag-iipon habang bumababa ang kidney function ay direktang nakakasagabal sa neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, at B-cell antibody production. Ang resulta ay isang estado ng <strong>uremic immunoparalysis</strong> — ang pasyente ay sabay na madaling kapitan ng mga impeksyon na hindi nila malabanan at, kabalintunaan, madaling magkaroon ng mga kondisyong nagsusulong ng pamamaga.</span><span data-lang="ceb" class="lang-hidden">Ang immune system sa usa ka pasyente nga adunay CKD grabeng ug espesipikong naanggaan — dili lang "humina" sa kinatibuk-ang pagsabot. Ang mga uremic toxin nga nag-iipon habang nagpaubos ang kidney function direkta nga nakabalabag sa neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, ug B-cell antibody production. Ang resulta usa ka estado sa <strong>uremic immunoparalysis</strong> — ang pasyente dungan nga daling maapektuhan sa mga impeksyon nga dili nila mapakig-away ug, paradoha, daling magkaon sa mga kondisyon nga gipadagan sa dysregulated nga cytokine release.</span><span data-lang="kap" class="lang-hidden">Ing immune system ning metung a pasyenteng may CKD ya lubos at tiyak na nasugatan — ali lamang "humina" sa pangkalahatang kahulugan. Deng uremic toxin na nag-iipon habang bumababa ining kidney function ya direktang nakakasagabal sa neutrophil chemotaxis, T-lymphocyte activation, natural killer cell cytotoxicity, at B-cell antibody production. Ing resulta ya metung a estado ning <strong>uremic immunoparalysis</strong> — ing pasyente ya sabay na madaling kapitan ning deng impeksyon na ali nila malabanan at, kabalintunaan, madaling magkaroon ning deng kondisyong nagsusulong ning pamamaga.</span></p>
       <p><span data-lang="en">This matters enormously for vaccination: <strong>vaccines produce weaker and shorter-lived antibody responses in CKD patients</strong> — requiring higher doses, more booster doses, and earlier timing than in healthy adults. A vaccine given too late (e.g., after dialysis initiation) may produce only half the antibody titre of the same vaccine given in CKD Stage 2–3. Timing is part of the treatment.</span><span data-lang="tl" class="lang-hidden">Ito ay napakahalaga para sa pagbabakuna: <strong>ang mga bakuna ay nagpoprodyus ng mas mahinang at mas maikli ang buhay na antibody responses sa mga pasyenteng may CKD</strong> — nangangailangan ng mas mataas na dosis, mas maraming booster doses, at mas maagang oras kaysa sa malusog na matatanda. Ang isang bakunang ibinigay nang masyadong huli (hal., pagkatapos magsimula ang dialysis) ay maaaring magprodyus lamang ng kalahati ng antibody titre ng parehong bakuna na ibinigay sa CKD Stage 2–3. Ang oras ay bahagi ng paggamot.</span><span data-lang="ceb" class="lang-hidden">Kini importante kaayo alang sa pagbabakuna: <strong>ang mga bakuna nagprodukte og mas huyang ug mas mubo ang kinabuhi nga antibody responses sa mga pasyente nga may CKD</strong> — nagkinahanglan og mas taas nga dosis, mas daghang booster doses, ug mas sayo nga timing kaysa sa himsog nga mga hamtong. Ang usa ka bakuna nga gihatag nga masyadong ulahi (hal., human magsugod ang dialysis) mahimong magprodukte lamang og katunga sa antibody titre sa samang bakuna nga gihatag sa CKD Stage 2–3. Ang timing bahin sa pagtambal.</span><span data-lang="kap" class="lang-hidden">Ini ya napakahalaga para king pagbabakuna: <strong>deng bakuna ya nagpoprodyus ning mas mahinang at mas maikli ining biye na antibody responses sa deng pasyenteng may CKD</strong> — nangangailangan ning mas matas a dosis, mas dacal a booster doses, at mas maagang oras kaysa sa malusog na matatanda. Ing metung a bakunang ibinigay nang masyadong huli (hal., kapabanuan magsimula ing dialysis) ya maaaring magprodyus lamang ning kalahati ning antibody titre ning parehong bakuna na ibinigay sa CKD Stage 2–3. Ing oras ya bahagi ning paggamut.</span></p>
     </div>
 

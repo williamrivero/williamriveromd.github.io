@@ -456,11 +456,26 @@
 
   /* Clinician Evidence card sits to the LEFT of the title (distinct from patient hero) */
   /* Clinician Evidence card takes 1/3 of the hero, the title 2/3 */
-  .mode-physician .hero-grid { grid-template-columns: 1fr 2fr; }
+  .mode-physician .hero-grid { grid-template-columns: minmax(300px, 1fr) 2fr; }
   .mode-physician .hero-cards { order: -1; width: 100%; }
   /* Single-hero guides: clinician-only Evidence card (.hero-cards.mode-physician) shows LEFT */
   .hero-cards.mode-physician { order: -1; width: 100%; }
-  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr 2fr; }
+  body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
+  /* Evidence card and title block are centered on each other (Nov 2026) */
+  body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
+  /* Hero holding the Evidence card AND a vignette figure as siblings: three
+     columns (card | copy | figure) so the copy is never squeezed (desktop) */
+  @media (min-width: 821px) {
+    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure) {
+      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(220px, .9fr);
+    }
+  }
+  /* ≤820px: one column — title first, Evidence card underneath */
+  @media (max-width: 820px) {
+    .mode-physician .hero-grid,
+    body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: 1fr; }
+    .mode-physician .hero-cards, .hero-cards.mode-physician { order: 2; }
+  }
 
   /* Clinician: Evidence Snapshot card on the right of the hero copy */
   body.physician-mode .hero-grid { align-items: start; gap: 34px; }
@@ -489,21 +504,42 @@
   .ov-list.kp li { display: flex; gap: 7px; font-size: 12px; line-height: 1.4; color: #34455f; }
   .ov-list.kp li strong { color: #1f3864; font-weight: 700; }
   .ov-list.kp svg { width: 14px; height: 14px; stroke: #1a9b8e; flex-shrink: 0; margin-top: 2px; }
-  /* Evidence Snapshot stat rows — every label (.l) must start at the
-     same x-position regardless of value (.v) width. Approach: the row
-     itself is a 2-col grid with a fixed value column (104px, wide
-     enough for the longest typical clinical value "−7 mmHg", "AHA 2023",
-     "30–60%") and a flexible label column. Wider values wrap inside
-     the column rather than pushing the label right. */
-  .ov-stat { display: grid !important; grid-template-columns: 104px 1fr !important; column-gap: 12px; align-items: baseline; }
+  /* Evidence Snapshot stat rows (Nov 2026 redesign) — each row stacks the
+     number on top and its description underneath at full card width, with a
+     hairline between rows. No fixed value column, so values of any width
+     line up on the same left edge. Content rules (CLAUDE.md rule 7): at most
+     4 rows; .v = number + unit only, unit wrapped in <span class="u">;
+     guideline names go in the source line (.ov-src), not in a .v. */
+  .ov-card .ov-list { gap: 0; }
+  .ov-stat { display: block !important; padding: 11px 0; border-top: 1px solid #eef1f6; }
+  .ov-stat:first-child { border-top: 0; padding-top: 2px; }
   .ov-stat .v {
+    display: block;
     font-family: 'Inter', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 19px; font-weight: 800;
-    color: #1f3864; line-height: 1.15; min-width: 0; text-align: center;
+    font-size: 21px; font-weight: 800; letter-spacing: -.01em;
+    color: #1f3864; line-height: 1.12; text-align: left; white-space: nowrap;
   }
+  .ov-stat .v .u { font-size: 13px; font-weight: 700; color: #5a6680; margin-left: 3px; letter-spacing: 0; }
   .ov-stat .l {
+    display: block; margin-top: 3px;
     font-family: 'Manrope', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 11.5px; color: #5a6680; line-height: 1.35; min-width: 0;
+    font-size: 12px; color: #5a6680; line-height: 1.4;
+  }
+  .ov-head { margin-bottom: 8px; }
+  /* Guideline / source line between the stats and the "View evidence" link */
+  .ov-src {
+    margin-top: 12px; padding-top: 10px; border-top: 1px solid #eef1f6;
+    font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .02em; color: #5a6680;
+  }
+  .ov-src + .ov-foot { margin-top: 8px; padding-top: 0; border-top: 0; }
+  @media (max-width: 820px) {
+    .ov-card .ov-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .ov-stat:nth-child(2) { border-top: 0; padding-top: 2px; }
+  }
+  @media (max-width: 380px) {
+    .ov-card .ov-list { grid-template-columns: 1fr; }
+    .ov-stat:nth-child(2) { border-top: 1px solid #eef1f6; padding-top: 11px; }
   }
   .ov-foot {
     margin-top: 14px; padding-top: 12px; border-top: 1px solid #eef1f6;
@@ -1940,8 +1976,8 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <span class="hero-refcount"><strong><span data-lang="en">References</span><span class="lang-hidden" data-lang="tl">Mga Sanggunian</span><span class="lang-hidden" data-lang="ceb">Mga Tinubdan</span><span class="lang-hidden" data-lang="kap">Reng Reperensya</span>:</strong> <span style="display:inline-block;background:rgba(120,134,150,.18);border:1px solid rgba(120,134,150,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">4</span></span>
 <span class="hero-readtime"><strong><span data-lang="en">Read time</span><span class="lang-hidden" data-lang="tl">Oras ng pagbasa</span><span class="lang-hidden" data-lang="ceb">Oras sa pagbasa</span><span class="lang-hidden" data-lang="kap">Oras ning pamamasa</span>:</strong> <time datetime="PT33M" style="display:inline-block;background:rgba(184,150,46,.16);border:1px solid rgba(184,150,46,.5);border-radius:10px;padding:1px 8px;font-size:12px;letter-spacing:.02em;color:rgba(255,255,255,.9);">~33 min</time></span>
 </div>
-      <div>AVF maturation<br><strong>Place at estimated glomerular filtration rate (eGFR) ~20–25</strong></div>
-      <div>The decisions<br><strong>HD · peritoneal dialysis (PD) · conservative</strong></div>
+      <div>AVF (arteriovenous fistula) maturation<br><strong>Place at estimated glomerular filtration rate (eGFR) ~20–25</strong></div>
+      <div>The decisions<br><strong>HD (hemodialysis) · peritoneal dialysis (PD) · conservative</strong></div>
   </div><!-- /hero-copy -->
     <figure class="hero-figure">
       <div class="hero-vignette">
@@ -1984,7 +2020,7 @@ try{(function(){var v=localStorage.getItem('wgmr-mode');if(v===null){var per=loc
 <section class="section mode-patient" id="window">
   <div class="section-tag"><span data-lang="en">Why This Moment Matters</span><span data-lang="tl" class="lang-hidden">Bakit Mahalaga ang Sandaling Ito</span><span data-lang="ceb" class="lang-hidden">Ngano Importante Kining Panahona</span><span data-lang="kap" class="lang-hidden">Bakit Mahalaga ing Sandaling Ini</span></div>
   <h2><span data-lang="en">You are in the <em>most important window</em> of your kidney disease.</span><span data-lang="tl" class="lang-hidden">Kayo ay nasa <em>pinakamahalagang panahon</em> ng inyong sakit sa bato.</span><span data-lang="ceb" class="lang-hidden">Ikaw anaa sa <em>pinakaimportante nga panahon</em> sa imong sakit sa kidney.</span><span data-lang="kap" class="lang-hidden">Kayu ya nasa <em>pinakamahalagang panahon</em> ning inyoning sakit sa batu.</span></h2>
-  <p><span data-lang="en">If your nephrologist has told you that you are in CKD Stage 4 or Stage 5 — meaning your eGFR is between 15 and 29 — you are standing at the most consequential point in the entire kidney-disease journey. The decisions you make in the next 12 to 24 months will shape the rest of your life with kidney disease. Not the decisions you make once dialysis has started. The ones you make <em>before</em>.</span><span data-lang="tl" class="lang-hidden">Kung sinabi sa inyo ng inyong nefrologo na kayo ay nasa CKD Stage 4 o Stage 5 — ibig sabihin ang inyong eGFR ay nasa pagitan ng 15 at 29 — kayo ay nakatayo sa pinaka-kritikal na punto sa buong paglalakbay ng sakit sa bato. Ang mga desisyon na gagawin ninyo sa susunod na 12 hanggang 24 na buwan ay huhubog sa natitira pang buhay ninyo kasama ang sakit sa bato. Hindi ang mga desisyong gagawin ninyo kapag nagsimula na ang diyalisis. Ang mga gagawin ninyo <em>bago</em> ito.</span><span data-lang="ceb" class="lang-hidden">Kung gisultihan ka sa imong nephrologist nga ikaw anaa sa CKD Stage 4 o Stage 5 — nagpasabot nga ang imong eGFR anaa taliwala sa 15 ug 29 — nagtindog ka sa pinaka-kritikal nga punto sa tibuok paglalakbay sa sakit sa kidney. Ang mga desisyon nga imong buhaton sa sunod nga 12 hangtod 24 ka bulan maghulma sa nahibilin ninyong kinabuhi uban sa sakit sa kidney. Dili ang mga desisyon nga imong buhaton sa dihang nagsugod na ang diyalisis. Ang mga buhaton ninyo <em>sa wala pa</em> kini.</span><span data-lang="kap" class="lang-hidden">Nung sinabi sa inyo ning inyong nefrologo na kayu ya nasa CKD Stage 4 o Stage 5 — ibig sabihin ing inyong eGFR ya nasa pagitan ning 15 at 29 — kayu ya nakaita sa pinaka-kritikal na punto sa buong paglalakbay nining sakit sa batu. Deng desisyon na gagawin ninyo sa susunod na 12 anggang 24 na bulan ya huhubog sa natitira paning biye ninyo kasama ining sakit sa batu. Ali deng desisyong gagawin ninyo nung nagsimula na ing diyalisis. Deng gagawin ninyo <em>bago</em> ini.</span></p>
+  <p><span data-lang="en">If your nephrologist has told you that you are in CKD (chronic kidney disease) Stage 4 or Stage 5 — meaning your eGFR is between 15 and 29 — you are standing at the most consequential point in the entire kidney-disease journey. The decisions you make in the next 12 to 24 months will shape the rest of your life with kidney disease. Not the decisions you make once dialysis has started. The ones you make <em>before</em>.</span><span data-lang="tl" class="lang-hidden">Kung sinabi sa inyo ng inyong nefrologo na kayo ay nasa CKD Stage 4 o Stage 5 — ibig sabihin ang inyong eGFR ay nasa pagitan ng 15 at 29 — kayo ay nakatayo sa pinaka-kritikal na punto sa buong paglalakbay ng sakit sa bato. Ang mga desisyon na gagawin ninyo sa susunod na 12 hanggang 24 na buwan ay huhubog sa natitira pang buhay ninyo kasama ang sakit sa bato. Hindi ang mga desisyong gagawin ninyo kapag nagsimula na ang diyalisis. Ang mga gagawin ninyo <em>bago</em> ito.</span><span data-lang="ceb" class="lang-hidden">Kung gisultihan ka sa imong nephrologist nga ikaw anaa sa CKD Stage 4 o Stage 5 — nagpasabot nga ang imong eGFR anaa taliwala sa 15 ug 29 — nagtindog ka sa pinaka-kritikal nga punto sa tibuok paglalakbay sa sakit sa kidney. Ang mga desisyon nga imong buhaton sa sunod nga 12 hangtod 24 ka bulan maghulma sa nahibilin ninyong kinabuhi uban sa sakit sa kidney. Dili ang mga desisyon nga imong buhaton sa dihang nagsugod na ang diyalisis. Ang mga buhaton ninyo <em>sa wala pa</em> kini.</span><span data-lang="kap" class="lang-hidden">Nung sinabi sa inyo ning inyong nefrologo na kayu ya nasa CKD Stage 4 o Stage 5 — ibig sabihin ing inyong eGFR ya nasa pagitan ning 15 at 29 — kayu ya nakaita sa pinaka-kritikal na punto sa buong paglalakbay nining sakit sa batu. Deng desisyon na gagawin ninyo sa susunod na 12 anggang 24 na bulan ya huhubog sa natitira paning biye ninyo kasama ining sakit sa batu. Ali deng desisyong gagawin ninyo nung nagsimula na ing diyalisis. Deng gagawin ninyo <em>bago</em> ini.</span></p>
 
   <div class="intro-callout">
     <p><span data-lang="en"><strong>Six things need to happen during this window.</strong> You need to choose a treatment direction (hemodialysis, peritoneal dialysis, or conservative management). You need to plan a vascular access if you choose hemodialysis. You need to transition to a pre-dialysis diet. You need to prepare yourself and your family emotionally. You need to enrol in PhilHealth (Philippine Health Insurance Corporation)'s Z-Benefit Package. And you need to keep your kidneys protected while you do all of this.</span><span data-lang="tl" class="lang-hidden"><strong>Anim na bagay ang kailangang mangyari sa panahong ito.</strong> Kailangan ninyong pumili ng direksyon ng paggamot (hemodialysis, peritoneal dialysis, o conservative management). Kailangan ninyong magplano ng vascular access kung pipiliin ninyo ang hemodialysis. Kailangan ninyong lumipat sa pre-dialysis diet. Kailangan ninyong ihanda ang inyong sarili at pamilya nang emosyonal. Kailangan ninyong mag-enrol sa PhilHealth's Z-Benefit Package. At kailangan ninyong panatilihing protektado ang inyong mga bato habang ginagawa ang lahat ng ito.</span><span data-lang="ceb" class="lang-hidden"><strong>Unom ka butang kinahanglan mahitabo sa panahon nga ito.</strong> Kinahanglan mong pilion ang direksyon sa pagtambal (hemodialysis, peritoneal dialysis, o conservative management). Kinahanglan mong magplano og vascular access kung pilion mo ang hemodialysis. Kinahanglan mong mobalhin sa pre-dialysis diet. Kinahanglan mong andam ang imong kaugalingon ug pamilya emosyonal. Kinahanglan mong mag-enrol sa PhilHealth Z-Benefit Package. Ug kinahanglan mong padayon nga protektahan ang imong mga kidney samtang ginahimo ang tanan niini.</span><span data-lang="kap" class="lang-hidden"><strong>Anim na bagay ing kailangang mangyari sa panahong ini.</strong> Kailangan ninyong pumili ning direksyon ning paggamut (hemodialysis, perinineal dialysis, o conservative management). Kailangan ninyong magplano ning vascular access nung pipiliin ninyo ing hemodialysis. Kailangan ninyong lumipat sa pre-dialysis diet. Kailangan ninyong ihanda ing inyong sarili at pamilya nang emosyonal. Kailangan ninyong mag-enrol sa PhilHealth's Z-Benefit Package. At kailangan ninyong panatilihing protektado ing inyong dening batu habang ginagawa ing lahat ning ini.</span></p>
