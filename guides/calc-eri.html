@@ -463,16 +463,9 @@
   body.physician-mode .hero-grid:has(> aside.hero-cards.mode-physician) { grid-template-columns: minmax(300px, 1fr) 2fr; }
   /* Evidence card and title block are centered on each other (Nov 2026) */
   body.physician-mode .hero-grid:has(.ov-card) { align-items: center; }
-  /* Hero holding the Evidence card AND a vignette figure as siblings: three
-     columns (card | copy | figure) so the copy is never squeezed (desktop) */
-  @media (min-width: 821px) {
-    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure:not(.mode-patient)) {
-      grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr) minmax(0, 280px);
-    }
-    body.physician-mode .hero-grid:has(> .hero-cards .ov-card):has(> .hero-figure:not(.mode-patient)) > .hero-figure {
-      grid-column: 3; min-width: 0;
-    }
-  }
+  /* Clinician hero with the Evidence card: the patient vignette is not shown
+     beside it (card | title is the clinician layout); avoids a squeezed title */
+  body.physician-mode .hero-grid:has(> .hero-cards .ov-card) > .hero-figure:not(.mode-physician) { display: none; }
   /* ≤820px: one column — title first, Evidence card underneath */
   @media (max-width: 820px) {
     .mode-physician .hero-grid,
