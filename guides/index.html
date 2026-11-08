@@ -5622,7 +5622,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = (tile.dataset.text || '').toLowerCase();
       const titleEl = tile.querySelector('.tile-title');
       const teaserEl = tile.querySelector('.tile-teaser');
-      const fullText = (titleEl?.textContent || '') + ' ' + (teaserEl?.textContent || '') + ' ' + text;
+      const fname = (tile.getAttribute('href') || '').split('#')[0].replace(/^.*\//, '');
+      const fullText = (titleEl?.textContent || '') + ' ' + (teaserEl?.textContent || '') + ' ' + text
+        + ' ' + ((SEARCH_EXTRA && SEARCH_EXTRA[fname]) || '');
 
       // Filter match — whole tags only ("dialysis" must not match "pre-dialysis"),
       // and "all" excludes download tiles (Downloads has its own filter)
@@ -5684,6 +5686,23 @@ function highlight(text, words) {
   const pattern = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
   return text.replace(new RegExp(`(${pattern})`, 'gi'), '<mark>$1</mark>');
 }
+
+  // Extra search terms from inside each guide (headings, glossary, drugs, trials,
+  // distinctive body words) — built by generate_search_index.py, fetched once on
+  // first use so the page itself stays light.
+  var SEARCH_EXTRA = {};
+  var searchIndexState = 0; // 0 = not loaded, 1 = loading, 2 = ready
+  function loadSearchIndex() {
+    if (searchIndexState) return;
+    searchIndexState = 1;
+    fetch('search-index.json', {cache: 'force-cache'})
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (d) { SEARCH_EXTRA = d || {}; searchIndexState = 2; if (searchInput.value.trim()) applyFilters(); })
+      .catch(function () { searchIndexState = 0; });
+  }
+  searchInput.addEventListener('focus', loadSearchIndex);
+  searchInput.addEventListener('input', loadSearchIndex);
+  if (searchInput.value.trim()) loadSearchIndex();
 
   searchInput.addEventListener('input', applyFilters);
   searchClear.addEventListener('click', () => {

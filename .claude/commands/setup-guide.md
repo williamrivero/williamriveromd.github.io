@@ -188,6 +188,7 @@ python3 audit_acronym_expansion.py --guide <filename>      # HARD-FAIL gate: eve
 python3 audit_evidence_snapshot.py --guide <filename>      # HARD-FAIL gate: clinician Evidence Snapshot ≤4 rows, value ≤8 chars + unit span, label ≤100 chars, guideline names in .ov-src. CLAUDE.md rule 7
 python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
 python3 generate_sitemap.py
+python3 generate_search_index.py                           # in-guide terms for the index search bar (guides/search-index.json)
 python3 patch_audience_chips.py                            # Patients / Clinicians chips + Clinicians filter tag on the index tile
 python3 generate_latest_guides.py                          # refresh the "Latest guides" strip on guides/index.html (new guide auto-appears)
 python3 generate_latest_calculators.py                     # if a calc-* page: refresh the "Latest calculators" carousel on calculators.html

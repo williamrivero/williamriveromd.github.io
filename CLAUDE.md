@@ -89,6 +89,9 @@ python3 patch_symptom_widget.py --report  # audit which eligible guides lack the
 python3 patch_symptom_widget.py --dry-run
 python3 patch_symptom_widget.py --guide hmo-ckd-coverage.html  # single guide
 
+python3 generate_search_index.py          # rebuild guides/search-index.json (terms from inside each guide for the index search bar)
+python3 generate_search_index.py --guide igan-guide.html  # show one guide's extra search terms
+
 python3 patch_audience_chips.py           # rebuild the Patients / Clinicians tile chips on guides/index.html from each guide's tabs
 python3 patch_audience_chips.py --report  # list every guide's audience (both / patient / clinician)
 
@@ -445,6 +448,13 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    jump links and
    "Expand all" open them). **A new tile in a sub-grouped section goes inside the matching
    sub-group**, not directly under `.section-body`; add any new sidebar jump link by hand.
+   **Search.** The search bar matches each tile's title, teaser and `data-text`, plus the
+   terms in `guides/search-index.json` (fetched once on first use of the search box). That
+   file is built by `generate_search_index.py` from inside each guide: headings, nav pills,
+   glossary terms, figure descriptions, table headers, bold terms, meta keywords, and the
+   body words that are distinctive to that guide (used 3+ times, in fewer than 15% of
+   guides). **Run it after adding or substantially editing a guide**; the sitemap GitHub
+   Action also rebuilds it on every push to `main`. Never hand-edit the JSON.
    **Audience chips.** The green **Patients** and blue **Clinicians** chips on every tile
    say which audience tabs the guide has: both chips for a guide with Patients & Families
    and Clinicians tabs, one chip for a single-audience guide. They are rendered from the
