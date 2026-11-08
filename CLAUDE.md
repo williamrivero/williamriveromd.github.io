@@ -89,6 +89,9 @@ python3 patch_symptom_widget.py --report  # audit which eligible guides lack the
 python3 patch_symptom_widget.py --dry-run
 python3 patch_symptom_widget.py --guide hmo-ckd-coverage.html  # single guide
 
+python3 patch_audience_chips.py           # rebuild the Patients / Clinicians tile chips on guides/index.html from each guide's tabs
+python3 patch_audience_chips.py --report  # list every guide's audience (both / patient / clinician)
+
 python3 generate_latest_guides.py         # regenerate the "Latest guides" strip on guides/index.html
 python3 generate_latest_guides.py --dry-run
 python3 generate_latest_guides.py --count 6   # up to N updated + N new guides (default 15 each)
@@ -442,6 +445,13 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    jump links and
    "Expand all" open them). **A new tile in a sub-grouped section goes inside the matching
    sub-group**, not directly under `.section-body`; add any new sidebar jump link by hand.
+   **Audience chips.** The green **Patients** and blue **Clinicians** chips on every tile
+   say which audience tabs the guide has: both chips for a guide with Patients & Families
+   and Clinicians tabs, one chip for a single-audience guide. They are rendered from the
+   `AUD` map in the "Audience pills" script, which `patch_audience_chips.py` generates from
+   the guide files (it also sets the `clinician` data-tag that drives the sidebar Clinicians
+   filter). **Run it after adding a tile or changing a guide's tabs**; never hand-add a
+   `tag-clinician` chip to a tile.
    The **"Latest & Updated Guides"** category pinned at the top of the list
    is built in the browser from the strip that `generate_latest_guides.py`
    writes between the `LATEST-GUIDES` markers (the strip itself is hidden on
