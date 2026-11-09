@@ -493,8 +493,8 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    say which audience tabs the guide has: both chips for a guide with Patients & Families
    and Clinicians tabs, one chip for a single-audience guide. They are rendered from the
    `AUD` map in the "Audience pills" script, which `patch_audience_chips.py` generates from
-   the guide files (it also sets the `clinician` data-tag that drives the sidebar Clinicians
-   filter). **Run it after adding a tile or changing a guide's tabs**; never hand-add a
+   the guide files (it also sets the `clinician` data-tag on tiles; the sidebar Clinicians
+   filter itself was removed Nov 9 2026). **Run it after adding a tile or changing a guide's tabs**; never hand-add a
    `tag-clinician` chip to a tile.
    The **"Latest & Updated Guides"** category pinned at the top of the list
    is built in the browser from the strip that `generate_latest_guides.py`
