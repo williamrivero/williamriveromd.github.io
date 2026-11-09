@@ -54,7 +54,7 @@ The guide asks readers to grasp four ideas. Each image carries one of them, so a
 | 10 | `incremental-dialysis-07-pd-schedules.png` | Clinician §Incremental PD | simple-figure (Scaffold B/E) | 1792×1024 |
 | 11 | `incremental-dialysis-08-rkf-physiology.png` | Clinician §Overview | biomedical-mechanism | 1792×1024 |
 
-> **Wiring status.** All 11 `<figure>` / meta references are already in the guide HTML with matching file names, `width`/`height`, `alt` text, and lightbox captions (`.fig-desc` plus `.fig-abbrevs`). Until each file is committed, that figure shows its alt text. After saving the images, run `python3 patch_hero_fetchpriority.py --guide incremental-dialysis.html` and `python3 patch_image_lightbox.py --guide incremental-dialysis.html`.
+> **Wiring status (updated 2026-11-09, evening).** All 11 images are generated, committed, and rendering. All 11 `<figure>` / meta references are already in the guide HTML with matching file names, `width`/`height`, `alt` text, and lightbox captions (`.fig-desc` plus `.fig-abbrevs`). Until each file is committed, that figure shows its alt text. After saving the images, run `python3 patch_hero_fetchpriority.py --guide incremental-dialysis.html` and `python3 patch_image_lightbox.py --guide incremental-dialysis.html`.
 >
 > **Derived asset (no separate prompt):** `incremental-dialysis-rg-thumb.webp`, a 1:1 center crop of the OG card (#2), used by Related-guides cards on sibling guides.
 >
@@ -554,7 +554,7 @@ ring (tick marks only, no numerals) with colored arcs showing dwell periods:
 2. Header (purple #6c3d8e): "Incremental CAPD". Clock with three exchange markers and continuous
    dwell arcs. Stats: "3 × 2 L daily", "21 fills/week", "42 L/week".
 3. Header (purple): "Incremental APD". Clock with a night arc shaded as a cycler period (small
-   cycler icon with a moon) and an empty, unshaded daytime arc labeled "No day dwell". Stats:
+   cycler icon with a moon) and a small daytime arc labeled "Daytime last fill". Stats:
    "5 nights: 4 × 2 L + 1 L last fill", "25 fills/week", "45 L/week".
 
 Below the panels, a full-width pale-teal (#eef6f7) strip with two short notes separated by a thin
@@ -572,7 +572,7 @@ dark backgrounds. Use ONLY Inter (or Nunito Sans, IBM Plex Sans, Manrope). Never
 renalcarematters.com attribution.
 
 QUALITY CHECK:
-Panel stats exactly: 28 / 56, 21 / 42, 25 / 45. APD panel shows an unshaded day. Two notes in the
+Panel stats exactly: 28 / 56, 21 / 42, 25 / 45. APD panel shows the small daytime last fill. Two notes in the
 bottom strip. Attribution bottom-right.
 ```
 
