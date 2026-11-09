@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit the clinician "Evidence Snapshot" card (CLAUDE.md rule 7).
+"""Audit the clinician "Evidence Scorecard" card (CLAUDE.md rule 7).
 
 Checks every <div class="ov-card"> in guides/*.html:
   * at most 4 stat rows (.ov-stat)
@@ -57,7 +57,7 @@ def main():
             bad += 1
             print(f'✗ {os.path.basename(f)}')
             for x in p: print('   ', x)
-    print(f'\nEvidence Snapshot audit: {cards} card(s) checked, {bad} guide(s) with problems')
+    print(f'\nEvidence Scorecard audit: {cards} card(s) checked, {bad} guide(s) with problems')
     sys.exit(1 if bad else 0)
 
 if __name__ == '__main__':

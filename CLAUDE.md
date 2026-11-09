@@ -77,7 +77,7 @@ python3 audit_acronym_expansion.py --details   # list every first-use violation,
 python3 audit_acronym_expansion.py --report    # per-guide ratios, never exit-fails (survey the whole library)
 python3 audit_acronym_expansion.py --guide igan-guide.html  # single guide; exits 1 if any acronym is unexpanded at first use
 
-python3 audit_evidence_snapshot.py             # clinician Evidence Snapshot cards: ≤4 rows, short values + unit span, ≤100-char labels (rule 7)
+python3 audit_evidence_snapshot.py             # clinician Evidence Scorecard cards: ≤4 rows, short values + unit span, ≤100-char labels (rule 7)
 python3 audit_evidence_snapshot.py --guide anemia-management.html  # single guide; exits 1 on any problem
 
 python3 audit_hero_abstract.py                # clinician hero Summary abstract on every dual-mode guide (rule 14)
@@ -273,8 +273,8 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    because justifying short or constrained-width content opens distracting rivers of
    whitespace; only the long-form section paragraphs are justified.
 
-7. **Evidence Snapshot card — stacked stat rows (Nov 2026 redesign).** Clinician-mode
-   guides surface an "Evidence Snapshot" card (`<aside class="hero-cards mode-physician"> →
+7. **Evidence Scorecard card — stacked stat rows (Nov 2026 redesign; renamed from "Evidence
+   Snapshot" Nov 10 2026).** Clinician-mode guides surface an "Evidence Scorecard" card (`<aside class="hero-cards mode-physician"> →
    .ov-card → .ov-list → .ov-stat (.v + .l)`, then an optional `.ov-src` line, then the
    `.ov-foot` "View evidence" link). `MASTER_CSS` stacks each row: the number on top,
    left-aligned, with its description underneath at full card width and a hairline between
@@ -413,7 +413,7 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
 14. **Clinician hero Summary abstract (dual-mode guides, Nov 2026).** Every guide with a
     Clinicians tab carries a short **Summary** panel in its clinician hero, directly under the
     subtitle (`.hero-sub`, or `.md-hero-sub` / the subtitle `<p>` in a separate clinician hero)
-    and above `.hero-meta`. It fills the space beside the Evidence Snapshot card and gives a
+    and above `.hero-meta`. It fills the space beside the Evidence Scorecard card and gives a
     clinician the bottom line before they scroll. Markup:
 
     ```html
@@ -560,9 +560,10 @@ adding any new guide; `--report` audits coverage. Never hand-author share markup
 
 **Side rail (desktop/tablet ≥ 1024px, Nov 2026).** Every content guide also loads
 `assets/guide-rail.js` (tag placed right **after** the share-buttons tag; its Share tab calls
-`window.rcmShare.renderGrid`). It adds a slim sticky icon rail on the right edge — **References**
-(with source count), **Glossary**, **Share**, each only if the guide has it — that slides out a
-tabbed drawer. Drawer content is **cloned at load** from the guide's own References accordion
+`window.rcmShare.renderGrid`). It adds a slim sticky icon rail on the right edge — **Scorecard** (the clinician Evidence
+Scorecard card, cloned from the hero; the tab shows only while that card is visible, i.e. in
+Clinicians mode), **References** (with source count), **Glossary**, **Share**, each only if the
+guide has it — that slides out a tabbed drawer. Drawer content is **cloned at load** from the guide's own References accordion
 (`.ref-section`) and Glossary accordion (`.glossary-section`), so those accordions stay the single
 source of truth: keep authoring them exactly as rules 5 and 12 say. While the rail is active, the
 end-of-guide References, Glossary and "Share this guide" blocks are hidden on screen; they still

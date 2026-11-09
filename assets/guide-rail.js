@@ -29,6 +29,7 @@
   var I = {
     refs: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/>',
     gloss: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+    score: '<path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17v-9"/>',
     share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
     close: '<path d="M18 6 6 18M6 6l12 12"/>'
   };
@@ -78,6 +79,8 @@
     '.rcm-pane a{color:var(--teal,#1A6B72);word-break:break-word;}',
     '.rcm-pane > div{padding:0!important;}',
     '.rcm-pane .rcm-share-grid{grid-template-columns:1fr 1fr;}',
+    '.rcm-pane > .rcm-score-card{margin:0;box-shadow:none;max-width:none;padding:16px 18px!important;}',
+    '.rcm-pane .rcm-score-card .ov-list{display:block!important;}',
     'html.rcm-rail-on .ref-section,html.rcm-rail-on .glossary-section,html.rcm-rail-on .rcm-share-panel{display:none!important;}',
     'html[data-theme="dark"] .rcm-rail,body.dark-mode .rcm-rail{background:#1a2535;border-color:#2c3a52;}',
     'html[data-theme="dark"] .rcm-rail-btn,body.dark-mode .rcm-rail-btn{color:#d6deea;}',
@@ -92,6 +95,13 @@
     'html[data-theme="dark"] .rcm-pane a,body.dark-mode .rcm-pane a{color:#7fd3da;}',
     'html[data-theme="dark"] .rcm-pane dt,body.dark-mode .rcm-pane dt,html[data-theme="dark"] .rcm-pane h4,body.dark-mode .rcm-pane h4{color:#e6ecf5!important;}',
     'html[data-theme="dark"] .rcm-close,body.dark-mode .rcm-close{color:#c9d3e1;}',
+    'html[data-theme="dark"] .rcm-pane .rcm-score-card,body.dark-mode .rcm-pane .rcm-score-card{background:#1a2535!important;border-color:#2c3a52!important;}',
+    'html[data-theme="dark"] .rcm-pane .rcm-score-card .ov-stat,body.dark-mode .rcm-pane .rcm-score-card .ov-stat{border-color:#2c3a52!important;}',
+    'html[data-theme="dark"] .rcm-pane .rcm-score-card .v,body.dark-mode .rcm-pane .rcm-score-card .v{color:#e6ecf5!important;}',
+    'html[data-theme="dark"] .rcm-pane .rcm-score-card .v .u,body.dark-mode .rcm-pane .rcm-score-card .v .u{color:#9ba6b8!important;}',
+    'html[data-theme="dark"] .rcm-pane .rcm-score-card .l,body.dark-mode .rcm-pane .rcm-score-card .l{color:#c9d3e1!important;}',
+    'html[data-theme="dark"] .rcm-pane .rcm-score-card .ov-src,body.dark-mode .rcm-pane .rcm-score-card .ov-src{color:#9ba6b8!important;border-color:#2c3a52!important;}',
+    'html[data-theme="dark"] .rcm-pane .rcm-score-card .ov-foot,body.dark-mode .rcm-pane .rcm-score-card .ov-foot{color:#7fd3da!important;}',
     '@media (max-width:1023.98px){.rcm-rail,.rcm-drawer,.rcm-scrim{display:none!important;}}',
     '@media print{.rcm-rail,.rcm-drawer,.rcm-scrim{display:none!important;}html.rcm-rail-on .ref-section,html.rcm-rail-on .glossary-section{display:block!important;}}'
   ].join('\n');
@@ -106,12 +116,19 @@
     var glossSec = document.querySelector('.glossary-section');
     if (glossSec && !glossSec.querySelector('.glossary-acc')) glossSec = null;
     var canShare = !!window.rcmShare;
-    if (!refSec && !glossSec && !canShare) return;
+    // Clinician Evidence Scorecard (the stat card in the clinician hero), if any.
+    var scoreCard = null;
+    Array.prototype.some.call(document.querySelectorAll('.hero-cards .ov-card'), function (c) {
+      if (c.querySelector('.ov-stat') || /evidence/i.test((c.querySelector('.ov-title') || {}).textContent || '')) { scoreCard = c; return true; }
+      return false;
+    });
+    if (!refSec && !glossSec && !canShare && !scoreCard) return;
 
     var st = document.createElement('style'); st.id = 'rcm-rail-css'; st.textContent = CSS;
     document.head.appendChild(st);
 
     var tabs = [];
+    if (scoreCard) tabs.push({ k: 'score', en: 'Scorecard', tl: 'Scorecard', ceb: 'Scorecard', kap: 'Scorecard', icon: I.score, clinician: true });
     if (refSec) tabs.push({ k: 'refs', en: 'References', tl: 'Mga Sanggunian', ceb: 'Mga Tinubdan', kap: 'Deng Pikuanan', icon: I.refs,
       n: refSec.querySelectorAll('ol > li').length });
     if (glossSec) tabs.push({ k: 'gloss', en: 'Glossary', tl: 'Glosaryo', ceb: 'Glosaryo', kap: 'Glosaryo', icon: I.gloss });
@@ -141,9 +158,17 @@
       return node;
     }
 
+    if (scoreCard) {
+      var sc = dr.querySelector('#rcm-pane-score');
+      sc.innerHTML = '<p class="rcm-pane-title">Evidence Scorecard</p><p class="rcm-pane-sub">Key numbers for clinicians, from this guide</p>';
+      var cc = strip(scoreCard.cloneNode(true)); cc.classList.add('rcm-score-card');
+      var t0 = cc.querySelector('.ov-head'); if (t0) t0.remove();
+      sc.appendChild(cc);
+    }
+    var refTab = tabs.filter(function (t) { return t.k === 'refs'; })[0];
     if (refSec) {
       var pane = dr.querySelector('#rcm-pane-refs');
-      pane.innerHTML = '<p class="rcm-pane-title">' + langSpans(tabs[0]) + '</p><p class="rcm-pane-sub">' + tabs[0].n + ' sources · APA 7</p>';
+      pane.innerHTML = '<p class="rcm-pane-title">' + langSpans(refTab) + '</p><p class="rcm-pane-sub">' + refTab.n + ' sources · APA 7</p>';
       pane.appendChild(strip(refSec.querySelector('ol').cloneNode(true)));
     }
     if (glossSec) {
@@ -194,7 +219,9 @@
     });
     dr.addEventListener('click', function (e) {
       var t = e.target.closest('.rcm-tab'); if (t) { select(t.getAttribute('data-tab')); return; }
-      if (e.target.closest('.rcm-close')) close();
+      if (e.target.closest('.rcm-close')) { close(); return; }
+      var jump = e.target.closest('#rcm-pane-score a[href^="#"]');
+      if (jump) close(); // e.g. "View evidence" -> let the page scroll to that section
     });
     dr.addEventListener('keydown', function (e) {
       var t = e.target.closest('.rcm-tab'); if (!t || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
@@ -233,9 +260,23 @@
       }
     });
 
+    // The Scorecard tab follows the guide's audience tab: shown only while the
+    // clinician card itself is visible (Clinicians mode / clinician-only guides).
+    function syncScore() {
+      if (!scoreCard) return;
+      var on = scoreCard.getClientRects().length > 0;
+      var rb = rail.querySelector('[data-tab="score"]'), tb = dr.querySelector('#rcm-tab-score');
+      if (rb) rb.style.display = on ? '' : 'none';
+      if (tb) tb.style.display = on ? '' : 'none';
+      if (!on && current === 'score') { var first = tabs.filter(function (t) { return t.k !== 'score'; })[0]; if (first) select(first.k); else close(); }
+    }
+    if (scoreCard && window.MutationObserver) {
+      new MutationObserver(function () { syncScore(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
     function apply() {
       document.documentElement.classList.toggle('rcm-rail-on', MQ.matches);
       if (!MQ.matches && isOpen()) close();
+      syncScore();
     }
     apply();
     if (MQ.addEventListener) MQ.addEventListener('change', apply); else MQ.addListener(apply);

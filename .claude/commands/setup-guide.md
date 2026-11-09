@@ -88,8 +88,8 @@ and replace its content — do not invent a new layout.
   live in a **second `<style>` block** after the first, or the patch step will strip it.
   Harvest these blocks from a guide that already uses them (e.g.
   `post-dialysis-fatigue.html`, `fluid-management-dialysis.html`).
-- **Evidence Snapshot (clinician mode).** Dual-mode guides whose clinician hero
-  carries an Evidence Snapshot card use `<aside class="hero-cards mode-physician">
+- **Evidence Scorecard (clinician mode).** Dual-mode guides whose clinician hero
+  carries an Evidence Scorecard card use `<aside class="hero-cards mode-physician">
   → <div class="ov-card"> → <div class="ov-list"> → <div class="ov-stat">
   (<span class="v"> + <span class="l">)`. `MASTER_CSS` pins every `.ov-stat` to a
   fixed-column grid (`grid-template-columns:104px 1fr`) so every label (`.l`)
@@ -193,7 +193,7 @@ python3 patch_reading_time.py --guide <filename>           # "Reading time" esti
 python3 patch_references_accordion.py --guide <filename>   # accordion References section before the signature block
 python3 audit_apa_references.py --guide <filename>         # HARD-FAIL gate: every citation must be APA-7 (italic journal, DOI link, year, author block)
 python3 audit_acronym_expansion.py --guide <filename>      # HARD-FAIL gate: every acronym expanded on first body use — Expansion (ACRO) or ACRO (Expansion). CLAUDE.md rule 13
-python3 audit_evidence_snapshot.py --guide <filename>      # HARD-FAIL gate: clinician Evidence Snapshot ≤4 rows, value ≤8 chars + unit span, label ≤100 chars, guideline names in .ov-src. CLAUDE.md rule 7
+python3 audit_evidence_snapshot.py --guide <filename>      # HARD-FAIL gate: clinician Evidence Scorecard ≤4 rows, value ≤8 chars + unit span, label ≤100 chars, guideline names in .ov-src. CLAUDE.md rule 7
 python3 audit_hero_abstract.py --guide <filename>          # HARD-FAIL gate (dual-mode guides): clinician hero Summary present, 2–3 bold-led paragraphs, ≤130 words. CLAUDE.md rule 14
 python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
 python3 generate_sitemap.py
