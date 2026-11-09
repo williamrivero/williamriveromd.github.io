@@ -92,6 +92,10 @@ python3 patch_symptom_widget.py --report  # audit which eligible guides lack the
 python3 patch_symptom_widget.py --dry-run
 python3 patch_symptom_widget.py --guide hmo-ckd-coverage.html  # single guide
 
+python3 patch_share_buttons.py            # install the share bar (hero icon row + "Share this guide" panel) on every content guide
+python3 patch_share_buttons.py --report   # audit which eligible guides lack the share bar (no writes)
+python3 patch_share_buttons.py --guide igan-guide.html  # single guide
+
 python3 generate_search_index.py          # rebuild guides/search-index.json (terms from inside each guide for the index search bar)
 python3 generate_search_index.py --guide igan-guide.html  # show one guide's extra search terms
 
@@ -537,6 +541,18 @@ symptom checker in a modal iframe) via a single deferred `<script>` before the f
 (`calc-*`, the calculators index, `ckd-dri-calculator.html`), the pure
 interpreter/atlas tools, and printable log/blank sheets. Run it (or rely on
 `/setup-guide`) after adding any new guide; `--report` audits coverage.
+
+**Share bar (journal-style, like NEJM / KDIGO / ASN).** Every content guide loads
+`assets/share-buttons.js` via a single deferred `<script>` before the final `</body>`. At load
+it renders a compact icon row under the hero byline (`.hero-meta`; under the first `<h1>` if a
+guide has none) and a labeled **"Share this guide"** panel where the content ends (before the
+glossary, else the references accordion). Networks: Facebook, X, LinkedIn, Bluesky, WhatsApp,
+Viber (touch devices only), Email, Copy link, plus the phone's native share sheet. It shares
+the page's canonical URL, carries EN/TL/CEB/KAP labels, injects its own scoped `.rcm-share`
+styles (white-on-brand buttons all ≥ 4.5:1), and hides in print. `patch_share_buttons.py`
+installs the tag idempotently using the **same eligibility rules as the Symptom-Checker
+widget** (imported from `patch_symptom_widget.py`). Run it (or rely on `/setup-guide`) after
+adding any new guide; `--report` audits coverage. Never hand-author share markup in a guide.
 
 ```bash
 python3 add_calc_nav_pill.py               # add floating bottom-center nav pill to all calculator pages
