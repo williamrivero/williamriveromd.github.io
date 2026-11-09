@@ -117,7 +117,7 @@ MASTER_CSS = """
     margin-left: auto; flex: 0 0 auto;
   }
   .site-header .back:hover { color: rgba(255,255,255,.9); }
-  /* Right-side nav cluster — CALCULATORS · ATLAS · ALL GUIDES */
+  /* Right-side nav cluster — CALCULATORS · ATLAS · GUIDES */
   .header-nav {
     display: flex; align-items: center; gap: 14px;
     margin-left: auto; flex: 0 1 auto; min-width: 0;

@@ -161,7 +161,7 @@ scroll-margin-top on sections: 112px  (56px header + 56px drug nav)
     <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" aria-label="Toggle dark mode">
       <span id="darkLabel">Dark</span>
     </button>
-    <a class="back" href="index.html">← All Guides</a>
+    <a class="back" href="index.html">← Guides</a>
   </div>
 </header>
 

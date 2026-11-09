@@ -648,7 +648,7 @@ These are the load-bearing layout conventions every guide must follow. All of th
 1. **Top nav bar** (`<header class="site-header">` — direct children, in order):
    - `<a class="brand">` — left
    - `<div class="header-lang">` — Lang chips (multilingual guides only)
-   - `<nav class="header-nav">` — **must be a direct child** of `.site-header`; `margin-left:auto` flushes it to the right. The 4 links: **CALCULATORS · PHYSIOLOGY · ATLAS · ALL GUIDES**, with the current page rendered gold + non-clickable (`.is-current`).
+   - `<nav class="header-nav">` — **must be a direct child** of `.site-header`; `margin-left:auto` flushes it to the right. The 4 links: **CALCULATORS · PHYSIOLOGY · ATLAS · GUIDES**, with the current page rendered gold + non-clickable (`.is-current`).
    - ⚠️ Do NOT wrap `.header-nav` in another `<div>` — that breaks the auto-margin push. Run `patch_relocate_toggles.py` if a guide was built before the convention, or use the same patcher idiom for fresh guides.
 2. **Floating toggle widgets** (every guide).
    - Bottom-right `.float-controls`: dark/light toggle (44 px circle, white in light theme, charcoal in dark).

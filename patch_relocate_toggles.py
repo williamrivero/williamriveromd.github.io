@@ -3,7 +3,7 @@
 patch_relocate_toggles.py — williamriveromd.com
 
 Site-wide convention change: move the language toggle (Lang: EN TL CEB KAP)
-INTO the top site-header, between the brand link and the ← All Guides link;
+INTO the top site-header, between the brand link and the ← Guides link;
 move the Dark/Desktop toggles OUT of the lang bar and into a single floating
 circular widget pinned to bottom-right (the iso-uf-sodium-uf-ramping pattern).
 

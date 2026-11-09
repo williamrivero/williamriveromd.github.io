@@ -3,7 +3,7 @@
 patch_nav_about.py — williamriveromd.com
 
 Adds an "ABOUT" link (→ /about.html) to the end of the standard header-nav
-(CALCULATORS · PHYSIOLOGY · ATLAS · ALL GUIDES) across every guides/*.html
+(CALCULATORS · PHYSIOLOGY · ATLAS · GUIDES) across every guides/*.html
 page that uses it — guide pages, calculators.html, calc-*.html, and
 guides/index.html itself. Idempotent: a file that already links to
 /about.html from its header is left untouched.
@@ -30,7 +30,7 @@ import re
 import argparse
 from pathlib import Path
 
-NAV_RE = re.compile(r'(<a href="/guides/"[^>]*>ALL GUIDES</a>)(\s*</nav>)')
+NAV_RE = re.compile(r'(<a href="/guides/"[^>]*>GUIDES</a>)(\s*</nav>)')
 ABOUT_LINK = '<a href="/about.html">ABOUT</a>'
 
 SKIP = {

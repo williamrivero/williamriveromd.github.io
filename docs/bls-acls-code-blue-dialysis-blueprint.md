@@ -76,7 +76,7 @@ by `patch_last_reviewed.py`. (Do not hand-write; the patch script owns this.)
 ## 3. Page architecture (matches house dual-mode skeleton)
 
 ```
-<header class="site-header">           HOME · ← All Guides
+<header class="site-header">           HOME · ← Guides
 <div class="guide-lang-bar">           EN / TL / CEB / KAP  (ids glb-en…glb-kap)
 <div class="guide-toggle-bar">         Dark · Desktop
 <div class="audience-tabs">            🧑‍⚕️ For Patients & Families | 🩺 For Clinicians

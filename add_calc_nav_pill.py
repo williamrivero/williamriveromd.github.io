@@ -83,7 +83,7 @@ html[data-theme="dark"] .calc-nav-pill>a:hover,html[data-theme="dark"] .calc-nav
 @media print{{.calc-nav-pill{{display:none!important;}}}}
 </style>
 <nav class="calc-nav-pill" id="calc-nav-pill" aria-label="Calculator navigation">
-<a href="{INDEX_URL}" aria-label="Back to all calculators"><span class="cnp-tip">All Guides</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+<a href="{INDEX_URL}" aria-label="Back to all calculators"><span class="cnp-tip">Guides</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
 <span class="cnp-div"></span>
 <button class="cnp-print" onclick="window.print()" aria-label="Print this page"><span class="cnp-tip">Print</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg></button>
 <span class="cnp-div"></span>
