@@ -706,6 +706,17 @@ All pages use the same in-DOM multilingual pattern:
 
 When adding new translatable text to a guide, always add sibling `data-lang` spans for all four languages; omitting one causes that language to show no content in that section.
 
+**Code-switching is allowed for difficult translations (all guides).** When a medical or
+technical idea has no natural, widely understood Kapampangan word, write the KAP span the way
+Kapampangan speakers actually talk: **Kapampangan–English** or **Kapampangan–Tagalog**
+code-switching (e.g. `inflammation king batu`, `bystander mu`, `paninikip ning dibdib (chest
+tightness)`, `ing worm check (pamanintun king bulati)`). Prefer the familiar English or Tagalog
+term, optionally with a short Kapampangan gloss in parentheses, over coining an unfamiliar
+"pure" Kapampangan word. The same latitude applies to Cebuano (Cebuano–English/Tagalog) and to
+Tagalog (Taglish) when the English clinical term is what patients hear in clinic. Keep the
+sentence grammar in the target language; switch only the hard term. Never leave a KAP span
+blank or fall back to an all-English sentence.
+
 ### CSS color tokens
 
 Two token sets exist — **do not mix them**:
