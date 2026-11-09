@@ -164,6 +164,16 @@
       wire(bar);
     });
 
+    // Public hook: the side rail (guide-rail.js) renders the same labeled
+    // buttons inside its Share drawer.
+    window.rcmShare = {
+      renderGrid: function (container) {
+        var g = document.createElement('div'); g.className = 'rcm-share-grid';
+        g.innerHTML = list.map(function (n) { return item(n, true); }).join('');
+        container.appendChild(g); wire(g); return g;
+      }
+    };
+
     // 2) Labeled panel where the guide content ends: before the glossary,
     //    else the references accordion, else the signature card.
     var sig = document.querySelector('.glossary-acc') || document.querySelector('.ref-acc') || document.querySelector('.dr-card-wrap');

@@ -96,6 +96,10 @@ python3 patch_share_buttons.py            # install the share bar (hero icon row
 python3 patch_share_buttons.py --report   # audit which eligible guides lack the share bar (no writes)
 python3 patch_share_buttons.py --guide igan-guide.html  # single guide
 
+python3 patch_guide_rail.py               # install the desktop side rail (References / Glossary / Share drawer) on every content guide
+python3 patch_guide_rail.py --report      # audit which eligible guides lack the rail (no writes)
+python3 patch_guide_rail.py --guide igan-guide.html  # single guide
+
 python3 generate_search_index.py          # rebuild guides/search-index.json (terms from inside each guide for the index search bar)
 python3 generate_search_index.py --guide igan-guide.html  # show one guide's extra search terms
 
@@ -553,6 +557,21 @@ styles (white-on-brand buttons all ≥ 4.5:1), and hides in print. `patch_share_
 installs the tag idempotently using the **same eligibility rules as the Symptom-Checker
 widget** (imported from `patch_symptom_widget.py`). Run it (or rely on `/setup-guide`) after
 adding any new guide; `--report` audits coverage. Never hand-author share markup in a guide.
+
+**Side rail (desktop/tablet ≥ 1024px, Nov 2026).** Every content guide also loads
+`assets/guide-rail.js` (tag placed right **after** the share-buttons tag; its Share tab calls
+`window.rcmShare.renderGrid`). It adds a slim sticky icon rail on the right edge — **References**
+(with source count), **Glossary**, **Share**, each only if the guide has it — that slides out a
+tabbed drawer. Drawer content is **cloned at load** from the guide's own References accordion
+(`.ref-section`) and Glossary accordion (`.glossary-section`), so those accordions stay the single
+source of truth: keep authoring them exactly as rules 5 and 12 say. While the rail is active, the
+end-of-guide References, Glossary and "Share this guide" blocks are hidden on screen; they still
+render on phones (< 1024px), in print, and for search engines. In-page links into the references
+or glossary (e.g. citation links `#ref-3`) open the drawer on that item; a `#ref-N` link with no
+matching anchor opens reference N. Esc / scrim click / ✕ closes. Scoped `.rcm-rail` /
+`.rcm-drawer` styles are injected by the script (light + dark, hidden in print).
+`patch_guide_rail.py` installs it with the same eligibility rules; run it (or `/setup-guide`) after
+adding any new guide.
 
 ```bash
 python3 add_calc_nav_pill.py               # add floating bottom-center nav pill to all calculator pages
