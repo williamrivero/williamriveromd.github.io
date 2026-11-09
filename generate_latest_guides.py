@@ -421,6 +421,9 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
     text, n2 = re.subn(
         r'(<span class="stat-num">)\d+(</span><span class="stat-label">Calculators</span>)',
         rf'\g<1>{calc_count}\g<2>', text)
+    text = re.sub(  # sidebar "All calculators" link count
+        r'(<span class="count" data-count="calculators">)\d+(</span>)',
+        rf'\g<1>{calc_count}\g<2>', text)
     text, n3 = re.subn(
         r'(<span class="stat-num">)\d+(</span><span class="stat-label">Specialties</span>)',
         rf'\g<1>{spec_count}\g<2>', text)
