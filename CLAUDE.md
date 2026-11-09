@@ -80,6 +80,9 @@ python3 audit_acronym_expansion.py --guide igan-guide.html  # single guide; exit
 python3 audit_evidence_snapshot.py             # clinician Evidence Snapshot cards: ≤4 rows, short values + unit span, ≤100-char labels (rule 7)
 python3 audit_evidence_snapshot.py --guide anemia-management.html  # single guide; exits 1 on any problem
 
+python3 audit_hero_abstract.py                # clinician hero Summary abstract on every dual-mode guide (rule 14)
+python3 audit_hero_abstract.py --guide igan-guide.html  # single guide; exits 1 on any problem
+
 python3 patch_hero_meta.py                # hero byline: drop "Author" row, show Published date + References count
 python3 patch_hero_meta.py --dry-run
 python3 patch_hero_meta.py --guide understanding-ckd.html  # single guide
@@ -398,6 +401,37 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
     - **Run it before declaring a touched guide done** (like the APA audit). The
       existing library is being brought into compliance on-touch; a guide you edit
       should come out at `N/N` for the acronyms it uses.
+
+14. **Clinician hero Summary abstract (dual-mode guides, Nov 2026).** Every guide with a
+    Clinicians tab carries a short **Summary** panel in its clinician hero, directly under the
+    subtitle (`.hero-sub`, or `.md-hero-sub` / the subtitle `<p>` in a separate clinician hero)
+    and above `.hero-meta`. It fills the space beside the Evidence Snapshot card and gives a
+    clinician the bottom line before they scroll. Markup:
+
+    ```html
+    <div class="hero-abstract mode-physician" role="note" aria-label="Summary">
+      <div class="ha-label">Summary</div>
+      <p><strong>Diagnosis.</strong> One or two sentences.</p>
+      <p><strong>Practice.</strong> One or two sentences.</p>
+    </div>
+    ```
+
+    - **2–3 paragraphs, each with a bold one-word or two-word lead** (Diagnosis / Monitoring /
+      Treatment / Evidence / Practice / Bottom line …), **≤ 130 words in total**, English only
+      (clinician mode is English-locked; no `data-lang` siblings).
+    - **Content comes only from the guide itself** — restate its clinical answer, key numbers
+      and guideline position; never introduce a claim, number or citation that is not in the
+      body. Calibrate verbs to the evidence (observational = "associated with").
+    - **Expand acronyms on first use inside the abstract.** It is the first prose a clinician
+      reads, so `audit_acronym_expansion.py` treats it as body text (unlike the Evidence
+      Snapshot card, which is chrome).
+    - Keep `mode-physician` on the div when it sits in a shared hero, so patients never see it;
+      inside a clinician-only wrapper it is harmless.
+    - Styling is in `MASTER_CSS` (`.hero-abstract`, light, dark, print, plus a dark-glass
+      variant for navy `.md-hero` heroes). **Do not add per-guide CSS for it.**
+    - **`audit_hero_abstract.py`** enforces presence, label, 2–3 bold-led paragraphs,
+      ≤ 130 words and hero placement: `python3 audit_hero_abstract.py` (exits 1 on any problem)
+      or `--guide <file>`. Run it before declaring a dual-mode guide done.
 
 9. **Category-tinted Latest-guides cards.** Each section in `guides/index.html`
    (`<div class="guide-section" data-section="…">`) has its own colour — visible

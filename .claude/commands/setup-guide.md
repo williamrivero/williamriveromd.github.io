@@ -97,6 +97,12 @@ and replace its content — do not invent a new layout.
   (≤ ~8 chars — `"0"`, `"−7 mmHg"`, `"AHA 2023"`, `"G4–G5"`); longer values wrap
   inside the 104 px column rather than pushing the label right. Do **not** add
   per-guide `min-width`/`flex-shrink` on `.ov-stat .v`.
+- **Clinician hero Summary abstract (dual-mode guides).** Directly under the clinician
+  subtitle and above `.hero-meta`, add `<div class="hero-abstract mode-physician" role="note"
+  aria-label="Summary"><div class="ha-label">Summary</div><p><strong>Lead.</strong> …</p>…</div>`:
+  2–3 bold-led paragraphs, ≤ 130 words, English only, written **only** from the guide's own
+  clinical content, acronyms expanded on first use. Styling comes from `MASTER_CSS`. Canonical
+  example: `guides/diabetes-tests.html`. See CLAUDE.md rule 14.
 - **WCAG AA contrast in both modes.** Every text element in the new guide must
   hit **≥ 4.5:1** for normal text and **≥ 3:1** for large text (`≥ 18.66 px`
   bold or `≥ 24 px`) against its actual rendered background, in **both** light
@@ -186,6 +192,7 @@ python3 patch_references_accordion.py --guide <filename>   # accordion Reference
 python3 audit_apa_references.py --guide <filename>         # HARD-FAIL gate: every citation must be APA-7 (italic journal, DOI link, year, author block)
 python3 audit_acronym_expansion.py --guide <filename>      # HARD-FAIL gate: every acronym expanded on first body use — Expansion (ACRO) or ACRO (Expansion). CLAUDE.md rule 13
 python3 audit_evidence_snapshot.py --guide <filename>      # HARD-FAIL gate: clinician Evidence Snapshot ≤4 rows, value ≤8 chars + unit span, label ≤100 chars, guideline names in .ov-src. CLAUDE.md rule 7
+python3 audit_hero_abstract.py --guide <filename>          # HARD-FAIL gate (dual-mode guides): clinician hero Summary present, 2–3 bold-led paragraphs, ≤130 words. CLAUDE.md rule 14
 python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
 python3 generate_sitemap.py
 python3 generate_search_index.py                           # in-guide terms for the index search bar (guides/search-index.json)
