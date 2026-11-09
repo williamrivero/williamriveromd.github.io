@@ -278,7 +278,7 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    .ov-card → .ov-list → .ov-stat (.v + .l)`, then an optional `.ov-src` line, then the
    `.ov-foot` "View evidence" link). `MASTER_CSS` stacks each row: the number on top,
    left-aligned, with its description underneath at full card width and a hairline between
-   rows. On desktop the card takes the left column (`minmax(300px, 1fr)`) and is centered
+   rows. On desktop the card takes the **right** column (`2fr minmax(300px, 1fr)`; moved from the left Nov 10 2026) and is centered
    vertically against the title block; at ≤820px it drops below the title and its rows form
    a two-up grid. Content rules, enforced by **`audit_evidence_snapshot.py`** (run it before
    declaring a clinician guide done):
