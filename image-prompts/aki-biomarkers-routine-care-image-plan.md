@@ -49,16 +49,16 @@ The guide's hardest idea is that **three different signals** (function, stress, 
 
 | # | File (`images/…`) | Guide placement | Skill | Size | Wired? |
 |---|---|---|---|---|---|
-| 1 | `aki-biomarkers-routine-care-vignette-hero.png` | Patient hero disc + current `og:image` | hero-vignette | 2048×2048 | ✅ referenced |
-| 2 | `aki-biomarkers-routine-care-og.png` | Optional social card (swap into `og:image` when made) | infographic (OG) | 1200×630 | ⏳ optional |
-| 3 | `aki-biomarkers-routine-care-01-function-stress-damage.png` | Patient § The Big Idea | biomedical-mechanism | 1792×1024 | ✅ referenced |
-| 4 | `aki-biomarkers-routine-care-02-four-state-matrix.png` | Clinician § Four States | infographic (reference card) | 1536×1152 | ✅ referenced |
-| 5 | `aki-biomarkers-routine-care-03-bigpak2-trial-design.png` | Clinician § Trials | infographic (data figure) | 1792×1024 | ✅ referenced |
-| 6 | `aki-biomarkers-routine-care-04-decision-pathway.png` | Clinician § Respond | algorithm (House style C) | 1024×1536 | ✅ referenced |
-| 7 | `aki-biomarkers-routine-care-05-patient-journey.png` | Patient § Protection Plan | infographic (multi-panel) | 1792×1024 | ✅ referenced |
-| 8 | `aki-biomarkers-routine-care-06-natural-frequencies.png` | Clinician § Positive Test Math | infographic (icon array) | 1792×1024 | ✅ referenced |
+| 1 | `aki-biomarkers-routine-care-vignette-hero.png` | Patient hero disc + current `og:image` | hero-vignette | 2048×2048 | ✅ wired |
+| 2 | `aki-biomarkers-routine-care-og.png` | Optional social card (swap into `og:image` when made) | infographic (OG) | 1200×630 | ✅ wired (`og:image`) |
+| 3 | `aki-biomarkers-routine-care-01-function-stress-damage.png` | Patient § The Big Idea | biomedical-mechanism | 1792×1024 | ✅ wired |
+| 4 | `aki-biomarkers-routine-care-02-four-state-matrix.png` | Clinician § Four States | infographic (reference card) | 1536×1152 | ✅ wired |
+| 5 | `aki-biomarkers-routine-care-03-bigpak2-trial-design.png` | Clinician § Trials | infographic (data figure) | 1792×1024 | ✅ wired |
+| 6 | `aki-biomarkers-routine-care-04-decision-pathway.png` | Clinician § Respond | algorithm (House style C) | 1024×1536 | ✅ wired |
+| 7 | `aki-biomarkers-routine-care-05-patient-journey.png` | Patient § Protection Plan | infographic (multi-panel) | 1792×1024 | ✅ wired |
+| 8 | `aki-biomarkers-routine-care-06-natural-frequencies.png` | Clinician § Positive Test Math | infographic (icon array) | 1792×1024 | ✅ wired |
 
-All `<figure>` blocks are already in the guide with plain-language `fig-desc` captions and `fig-abbrevs` lists, so each image goes live as soon as its PNG and WebP land in `images/`.
+**Wiring status (2026-11-09):** all 8 assets generated, QA-checked against the guide (icon counts, percentages, KDIGO criteria, algorithm branches), committed to `images/` as PNG + WebP, and wired; `og:image` now points to the 1200×630 card.
 
 ---
 
