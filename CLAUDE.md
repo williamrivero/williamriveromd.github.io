@@ -551,7 +551,7 @@ interpreter/atlas tools, and printable log/blank sheets. Run it (or rely on
 it renders a compact icon row under the hero byline (`.hero-meta`; under the first `<h1>` if a
 guide has none) and a labeled **"Share this guide"** panel where the content ends (before the
 glossary, else the references accordion). Networks: Facebook, X, LinkedIn, Bluesky, WhatsApp,
-Viber (touch devices only), Email, Copy link, plus the phone's native share sheet. It shares
+Viber (opens the app / Viber Desktop; on computers it also copies the link), Email, Copy link, plus the phone's native share sheet. It shares
 the page's canonical URL, carries EN/TL/CEB/KAP labels, injects its own scoped `.rcm-share`
 styles (white-on-brand buttons all ≥ 4.5:1), and hides in print. `patch_share_buttons.py`
 installs the tag idempotently using the **same eligibility rules as the Symptom-Checker

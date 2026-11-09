@@ -49,10 +49,10 @@
     { k: 'linkedin', n: 'LinkedIn', c: '#0A66C2', h: 'https://www.linkedin.com/sharing/share-offsite/?url=' + eu },
     { k: 'bluesky', n: 'Bluesky', c: '#0066CC', h: 'https://bsky.app/intent/compose?text=' + encodeURIComponent(title + ' ' + url) },
     { k: 'whatsapp', n: 'WhatsApp', c: '#157A3E', h: 'https://wa.me/?text=' + encodeURIComponent(title + ' ' + url) },
-    { k: 'viber', n: 'Viber', c: '#5E4BD8', h: 'viber://forward?text=' + encodeURIComponent(title + ' ' + url), app: true, touchOnly: true },
+    { k: 'viber', n: 'Viber', c: '#5E4BD8', h: 'viber://forward?text=' + encodeURIComponent(title + ' ' + url), app: true },
     { k: 'email', n: 'Email', c: '#1F3864', h: 'mailto:?subject=' + et + '&body=' + encodeURIComponent(title + '\n\n' + url), app: true, icon: MAIL },
     { k: 'copy', n: 'Copy link', c: '#1A6B72', icon: LINK }
-  ].filter(function (n) { return !n.touchOnly || touch; });
+  ];
 
   var CSS = [
     '.rcm-share{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:12px 0 0;}',
@@ -97,15 +97,16 @@
     if (!win) window.open(href, '_blank', 'noopener');
   }
 
-  function copy(btn) {
+  function copy(btn, msg) {
+    msg = msg || 'Link copied';
     var done = function () {
       if (btn.classList.contains('rcm-share-big')) {
         var old = btn.innerHTML;
-        btn.classList.add('is-copied'); btn.innerHTML = CHECK + 'Link copied';
+        btn.classList.add('is-copied'); btn.innerHTML = CHECK + msg;
         setTimeout(function () { btn.classList.remove('is-copied'); btn.innerHTML = old; }, 1800);
       } else {
-        var tip = document.createElement('span'); tip.className = 'rcm-share-tip'; tip.textContent = 'Link copied';
-        btn.appendChild(tip); setTimeout(function () { tip.remove(); }, 1600);
+        var tip = document.createElement('span'); tip.className = 'rcm-share-tip'; tip.textContent = msg;
+        btn.appendChild(tip); setTimeout(function () { tip.remove(); }, msg === 'Link copied' ? 1600 : 3200);
       }
     };
     if (navigator.clipboard && window.isSecureContext) {
@@ -125,6 +126,9 @@
       var b = e.target.closest('[data-net]'); if (!b) return;
       var net = b.getAttribute('data-net');
       if (net === 'copy') { e.preventDefault(); copy(b); return; }
+      // Viber opens the app (phone or Viber Desktop); on computers also copy the
+      // link so it can be pasted if Viber Desktop is not installed.
+      if (net === 'viber' && !touch) copy(b, 'Link copied \u00b7 paste in Viber');
       if (net === 'native') {
         e.preventDefault();
         navigator.share({ title: title, url: url }).catch(function () {});
