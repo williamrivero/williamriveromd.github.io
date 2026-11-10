@@ -60,7 +60,7 @@ Clinician images may use correct technical labels (β2M, λ-FLC, MCO, SC) but ke
 | 9 | `expanded-hemodialysis-hdx-07-pilot-algorithm.png` | Clinician §Practice & Pilot | algorithm (Mode C, house style) | 1792×1024 |
 | 10 | `expanded-hemodialysis-hdx-08-albumin-crosstalk.png` | Clinician §Albumin | organ-crosstalk sigil (labeled) | 1792×1024 |
 
-> **Wiring status.** All 10 references already exist in the guide HTML with matching file names, `width`/`height`, `alt` text, and lightbox captions (`.fig-desc` plus `.fig-abbrevs`). Until each file is committed, that figure shows its alt text. #9 is declared 1792×1024 in the HTML, so it is drawn **landscape** (left-to-right algorithm) rather than the usual portrait.
+> **Wiring status (updated 2026-11-10).** All 10 images plus the `-rg-thumb.webp` are generated, committed, and rendering (sizes verified: hero 2048×2048, OG 1200×630, figures 1792×1024, thumb 600×600). All 10 references exist in the guide HTML with matching file names, `width`/`height`, `alt` text, and lightbox captions (`.fig-desc` plus `.fig-abbrevs`). Until each file is committed, that figure shows its alt text. #9 is declared 1792×1024 in the HTML, so it is drawn **landscape** (left-to-right algorithm) rather than the usual portrait.
 >
 > **Derived asset (no separate prompt):** `expanded-hemodialysis-hdx-rg-thumb.webp`, a 1:1 center crop of the OG card (#2), for Related-guides cards on sibling guides.
 
