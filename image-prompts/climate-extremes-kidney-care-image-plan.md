@@ -54,7 +54,7 @@ Every figure in this guide has to work for three readers at once: a grandmother 
 | 9 | `climate-extremes-kidney-care-06-ro-water-flows.png` | Clinician § Stewardship | infographic (3D cutaway) | 1792×1024 | Clinicians, engineers |
 | — | `climate-extremes-kidney-care-rg-thumb.webp` | Related-guide cards on 3 sibling guides | derived: 1:1 center crop of #2 or #1, export 220×160 | — | — |
 
-> **Wiring status (2026-11-10).** All nine `<figure>`/hero/OG slots are already in the live HTML and point to these file names; until the files are committed, the alt text shows in place of each image. After adding files to `images/`, commit both `.png` and `.webp`. No HTML edit is needed unless dimensions change.
+> **Wiring status (2026-11-10, updated).** All nine assets plus the rg-thumb are generated, committed to `images/` (PNG + recompressed WebP), and rendering in the live guide.
 
 **Generation order (highest impact first):** 1 → 2 → 3 → 5 → 4 → 6 → 7 → 8 → 9.
 
