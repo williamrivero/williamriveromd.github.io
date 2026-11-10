@@ -87,6 +87,10 @@ python3 patch_hero_meta.py                # hero byline: drop "Author" row, show
 python3 patch_hero_meta.py --dry-run
 python3 patch_hero_meta.py --guide understanding-ckd.html  # single guide
 
+python3 patch_share_title.py             # strip the author suffix ("· W Rivero, MD") from <title>/og:title/twitter:title/JSON-LD headline
+python3 patch_share_title.py --dry-run
+python3 patch_share_title.py --guide igan-guide.html  # single guide
+
 python3 patch_symptom_widget.py           # install the floating Symptom-Checker widget on every content guide
 python3 patch_symptom_widget.py --report  # audit which eligible guides lack the widget (no writes)
 python3 patch_symptom_widget.py --dry-run
@@ -440,6 +444,16 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
     - **`audit_hero_abstract.py`** enforces presence, label, 2–3 bold-led paragraphs,
       ≤ 130 words and hero placement: `python3 audit_hero_abstract.py` (exits 1 on any problem)
       or `--guide <file>`. Run it before declaring a dual-mode guide done.
+
+15. **No author name in share titles (Nov 11 2026).** When a guide is shared on Facebook,
+    Viber, Messenger or X, the link preview shows the page title. Titles must **not** end with
+    an author suffix (`· W Rivero, MD`, `– W Rivero, MD`, `| Dr. W Rivero, MD`, `— Dr. Rivero`,
+    etc.) in `<title>`, `og:title`, `twitter:title`, or the JSON-LD `headline`; the author is
+    credited in the signature/dr-card block. Hub pages (`guides/index.html`,
+    `guides/calculators.html`, `404.html`) end with `· Renal Care Matters` instead. Leave the
+    JSON-LD `author` object and the dr-card untouched. **`patch_share_title.py`** enforces it
+    (idempotent; `/setup-guide` runs it, and the SessionStart hook runs it site-wide as a
+    safety net). The About page and the homepage keep the doctor's name by design.
 
 9. **Category-tinted Latest-guides cards.** Each section in `guides/index.html`
    (`<div class="guide-section" data-section="…">`) has its own colour — visible

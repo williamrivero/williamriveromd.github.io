@@ -130,7 +130,7 @@ and replace its content — do not invent a new layout.
 - **Page-tail order (enforced by `patch_signature_position.py`).** End every guide,
   outside `<main>`, as: `</main>` → optional `calc-cards-wrap` → `<!-- DR CARD -->`
   `<div class="dr-card-wrap">` → `<div class="related-guides">` → `<footer class="guide-footer">`.
-- **Head/meta.** Set a unique `<title>`, `description`, `keywords`, `canonical`,
+- **Head/meta.** Set a unique `<title>` (never append an author suffix such as "· W Rivero, MD"; the same goes for `og:title`, `twitter:title` and the JSON-LD `headline`), `description`, `keywords`, `canonical`,
   full Open Graph + Twitter tags (`og:image` → `../images/<slug>-og.png`, 1200×630,
   `og:locale en_PH`), and JSON-LD (`Article` + `MedicalWebPage`). `patch_last_reviewed.py`
   manages the Last-Reviewed badge.
@@ -196,6 +196,7 @@ python3 audit_acronym_expansion.py --guide <filename>      # HARD-FAIL gate: eve
 python3 audit_evidence_snapshot.py --guide <filename>      # HARD-FAIL gate: clinician Evidence Scorecard ≤4 rows, value ≤8 chars + unit span, label ≤100 chars, guideline names in .ov-src. CLAUDE.md rule 7
 python3 audit_hero_abstract.py --guide <filename>          # HARD-FAIL gate (dual-mode guides): clinician hero Summary present, 2–3 bold-led paragraphs, ≤130 words. CLAUDE.md rule 14
 python3 patch_hero_meta.py --guide <filename>              # hero byline: drop Author, show Published date + References count
+python3 patch_share_title.py --guide <filename>           # share titles: no "· W Rivero, MD" suffix in <title>/og/twitter/headline
 python3 generate_sitemap.py
 python3 generate_search_index.py                           # in-guide terms for the index search bar (guides/search-index.json)
 python3 patch_audience_chips.py                            # Patients / Clinicians chips + Clinicians filter tag on the index tile
