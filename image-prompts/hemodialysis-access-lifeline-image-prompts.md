@@ -143,6 +143,14 @@ Most-read and most-explanatory first:
 | **Clinician images** | Every abbreviation on the image appears in that figure's `fig-abbrevs` list in the guide |
 | **House style** | Light background, approved font named, `renalcarematters.com` present and legible, no flat-vector clip-art look |
 
+### 1.8 Post-delivery clinical review (November 11, 2026)
+
+Images 08, 09, and 10 were reviewed at full resolution against the guide text and its sources; no changes were required.
+- **08:** rope-ladder shown as the default for fistulas and grafts; buttonhole limited to selected patients with an infection caution; aneurysms only in area puncture.
+- **09:** concern, confirmation, and decision kept separate; isolated numbers loop back to repeat measurement; no thresholds.
+- **10:** thrombosis routed to prompt thrombectomy and cause treatment; stent-graft outflow trade-off stated; recurrent failure routed to multidisciplinary review and succession; no doses or numbers.
+Final clinical sign-off rests with the guide author.
+
 ---
 
 ## Part 2 — Prompts
