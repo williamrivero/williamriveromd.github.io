@@ -2,7 +2,7 @@
 
 **Guide:** `guides/novel-regulators-mineral-metabolism.html` · **Companion calculator:** `guides/calc-mineral-metabolism-workbench.html`
 **Version:** 1.0 · November 11, 2026
-**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` (001) · `williamriveromd-infographic-skill` (002, 003, 005, 007, 010, 020) · `williamriveromd-simple-figure` (004, 006, 008, 012, 016, 018, 019) · `williamriveromd-biomedical-mechanism-figure` (011, 013, 014, 015) · `williamriveromd-organ-crosstalk-sigil-graphic` (009) · `williamriveromd-algorithm-generator-skill` (017) · Stage 2 schema from `williamriveromd-local-image-generator`
 **Local folder (Stage 2):** `/Users/williamgregoryrivero/Downloads/novel-regulators-mineral-metabolism/`
 

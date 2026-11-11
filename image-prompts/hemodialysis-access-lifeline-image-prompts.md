@@ -1,7 +1,7 @@
 # A Dialysis Access Lifeline That Lasts a Lifetime — Image Plan Blueprint and GPT Prompt Pack
 
 **Guide:** `guides/hemodialysis-access-lifeline.html` · **Calculators:** `calc-catheter-exposure.html`, `calc-access-infection-rate.html`, `calc-access-intervention-burden.html`, `calc-access-flow-cardiac.html`
-**Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator)
+**Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/)
 **Prepared:** November 11, 2026 · **Version:** 1.1 (images delivered and wired November 11, 2026; 12 and 14 updated as produced, see production notes)
 **Skills used:** `williamriveromd-hero-vignette` (v3, Scaffold A, archetype H) · `williamriveromd-infographic-skill` (v5 archetypes 2, 3, 4, 5, 9 and the hemofilter reference anatomy) · `williamriveromd-biomedical-mechanism-figure` (image 03) · `williamriveromd-algorithm-generator-skill` style (images 09, 10) · `williamriveromd-organ-crosstalk-sigil-graphic` style (image 13) · Stage 2 handled by `williamriveromd-local-image-generator`
 

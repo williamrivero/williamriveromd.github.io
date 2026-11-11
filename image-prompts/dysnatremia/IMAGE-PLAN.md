@@ -3,7 +3,7 @@
 **Guide:** `guides/dysnatremia.html` (dual-mode: Patients & Families in EN/TL/CEB/KAP · Clinicians in EN)
 **Asset path:** `images/dysnatremia-*.{webp,png}` — every `<picture>` in the guide already points to these names.
 **Prompt pack:** `PROMPTS-gpt.md` (this folder) — Constitution v1.0 seven-layer prompts for the ChatGPT Image Generator GPT
-(https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+(https://chatgpt.com/).
 **Skills applied:** Constitution v1.0 infographic generator (7-layer architecture, dual-audience rule, triple attribution) ·
 hero-vignette v3 · infographic-skill v5 (house style, canonical sizes, OG rule) · algorithm-generator (Mode C house style) ·
 biomedical-mechanism-figure (organ → magnified unit → injury → intervention → benefit) · simple-figure (comparison / step / chart scaffolds) ·

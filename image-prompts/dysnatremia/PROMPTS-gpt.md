@@ -1,6 +1,6 @@
 # ChatGPT Image Generator Prompt Pack — Dysnatremia (Constitution v1.0)
 
-**Guide:** `guides/dysnatremia.html` · **Plan:** `IMAGE-PLAN.md` · **Generator:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Guide:** `guides/dysnatremia.html` · **Plan:** `IMAGE-PLAN.md` · **Generator:** https://chatgpt.com/
 **Assets:** 12 prompts (H, OG, 01–10). Each prompt is self-contained: paste everything inside one code block, generate, then save
 as `generated-images/<FILE NAME>` and export `.png` + `.webp` to `images/` with the same stem.
 
