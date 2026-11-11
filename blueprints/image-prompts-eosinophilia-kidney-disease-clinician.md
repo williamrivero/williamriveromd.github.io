@@ -1,7 +1,7 @@
 # Image Plan & Prompt Pack — Eosinophilia and Kidney Disease
 
 **Guide:** `guides/eosinophilia-kidney-disease-clinician.html` · **Canonical:** https://renalcarematters.com/guides/eosinophilia-kidney-disease-clinician.html
-**Pipeline:** Stage 1 (this file, written with the repo graphic skills) → generate in the ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, `og:image` tags).
+**Pipeline:** Stage 1 (this file, written with the repo graphic skills) → generate in the ChatGPT Image Generator GPT (https://chatgpt.com/) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, `og:image` tags).
 **Prepared:** November 8, 2026. Every number inside a prompt is taken from the guide, which was verified against PubMed and primary sources (refined eosinophil-disorder criteria 2023; KDIGO AKI 2012; Blank 2014; Muriithi 2013 and 2014; Moledina 2023; Chavez 2026; González 2008; Fernandez-Juarez 2018; Gupta 2021; Grayson 2022; Durel 2021; MANDARA 2024; Roufosse 2020; NATRON 2026; MITIGATE 2025; Scolari 2007; Hildebrand 2016; Abad 2022; Ross 2017; CDC). Do not let the generator add numbers, doses, drug brands, or names that are not written in the prompt.
 
 **Skills used:** `williamriveromd-hero-vignette` (00) · `williamriveromd-biomedical-mechanism-figure` (01) · `williamriveromd-algorithm-generator-skill` Mode C (02, 03, 13) and Mode A (18) · `williamriveromd-simple-figure` (04, 05, 07, 09, 10, 11, 12, 14, 15, 17, 19, 21, 23, 24) · `williamriveromd-infographic-skill` (06, 16, 20 circular workflow, 22 case snapshot, 25 reference card, OG) · `williamriveromd-organ-crosstalk-sigil-graphic` (08).

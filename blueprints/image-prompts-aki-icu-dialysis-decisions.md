@@ -1,7 +1,7 @@
 # Image Plan & Prompt Pack — Dialysis Decisions in the ICU
 
 **Guide:** `guides/aki-icu-dialysis-decisions.html` · **Canonical:** https://renalcarematters.com/guides/aki-icu-dialysis-decisions.html
-**Pipeline:** Stage 1 (this file, written with the repo graphic skills) → generate in the ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, `og:image` tags).
+**Pipeline:** Stage 1 (this file, written with the repo graphic skills) → generate in the ChatGPT Image Generator GPT (https://chatgpt.com/) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, `og:image` tags).
 **Prepared:** November 8, 2026. Every number inside a prompt comes from a source verified for the guide (STARRT-AKI 2020; AKIKI 2016; IDEAL-ICU 2018; ELAIN 2016; the 2020 individual-patient meta-analysis; AKIKI 2 2021; Allegretti 2018; Kim 2024; Bagshaw 2022; the 2012 international AKI guideline; the 2024 thoracic-society time-limited trial report). Do not let the generator add numbers, drug doses, or names that are not written in the prompt.
 
 **Skills used:** `williamriveromd-hero-vignette` (00) · `williamriveromd-algorithm-generator-skill` Mode C (01) · `williamriveromd-infographic-skill` (02 circular workflow, 04 procedural, 12 reference card, 15 reference card, 17 case snapshot, OG) · `williamriveromd-simple-figure` (03, 05, 06, 07, 08, 09, 10, 13, 14, 16, 18, 19) · `williamriveromd-organ-crosstalk-sigil-graphic` (11).

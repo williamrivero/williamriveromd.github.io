@@ -1,7 +1,7 @@
 # Organ & Kidney Donation in the Philippines — Supplemental Image Pack
 Guide: `guides/organ-donation-philippines.html`
 Generated: 2026-06-11 · williamriveromd-infographic-skill v5
-Generator: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+Generator: https://chatgpt.com/
 
 Image audit summary: the Organ Donation tab currently carries only ONE image
 (`organ-donation-ph-overview.png`, in #what-organs) across seven sections; the

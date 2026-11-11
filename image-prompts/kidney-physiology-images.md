@@ -41,7 +41,7 @@ background that morphs from pronephros → mature kidney**, so they MUST share o
 consistent framing/scale/viewpoint so they cross-fade cleanly (see Section A note).
 
 **Generator:** paste each prompt into the ChatGPT Image Generator GPT
-(https://chatgpt.com/g/g-pmuQfob8d-image-generator), one at a time. Output `.png`.
+(https://chatgpt.com/), one at a time. Output `.png`.
 
 ---
 

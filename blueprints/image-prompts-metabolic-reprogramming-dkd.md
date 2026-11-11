@@ -2,7 +2,7 @@
 
 **Guide:** `guides/metabolic-reprogramming-dkd.html` (live)
 **Version:** 2.0 · 8 November 2026 (supersedes the v1 four-prompt pack)
-**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` (001) · `williamriveromd-infographic-skill` (002, 008, 009, 011, 017, 019, 020) · `williamriveromd-simple-figure` (003–007, 010, 016) · `williamriveromd-biomedical-mechanism-figure` (013–015) · `williamriveromd-organ-crosstalk-sigil-graphic` (012) · `williamriveromd-algorithm-generator-skill` (018) · Stage 2 schema from `williamriveromd-local-image-generator`
 **Local folder (Stage 2):** `/Users/williamgregoryrivero/Downloads/metabolic-reprogramming-dkd/`
 

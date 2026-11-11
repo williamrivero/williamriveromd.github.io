@@ -9,7 +9,7 @@ description: >-
   structure under /Users/williamgregoryrivero/Downloads/[guide-folder]/,
   writes image-manifest.csv, image-manifest.json, and
   README-image-generation.md, then hands the prompts to the user for
-  generation in the ChatGPT Image Generator GPT. Also appends the correct
+  generation in the ChatGPT image generation. Also appends the correct
   og:image / og:image:width / og:image:height / og:image:alt tags to the
   guide HTML once images are confirmed received.
 ---
@@ -42,13 +42,14 @@ Stage 2 (this skill) operationalizes those prompts locally:
 - validates prompt completeness
 - builds the local folder structure
 - finalizes manifests
-- presents prompts to the user for paste-in to the Image Generator GPT
+- presents prompts to the user for paste-in to the ChatGPT image generation
 - wires generated images into the guide HTML
 - appends OG image tags
 
-The actual image rendering still happens inside the ChatGPT Image Generator
-GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator). This skill does not
-call that API directly.
+The actual image rendering happens in ChatGPT image generation (https://chatgpt.com/,
+using the current GPT image model). The former "Image Generator" GPT link
+(chatgpt.com/g/g-pmuQfob8d-image-generator) was repurposed by its owner in
+November 2026 and must not be used. This skill does not call that API directly.
 
 ---
 
@@ -136,7 +137,7 @@ Missing fields must be flagged before proceeding.
    - numbered filename
    - archetype
    - pixel dimensions
-   - paste URL: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+   - paste URL: https://chatgpt.com/
    - save destination: `generated-images/[filename]`
 6. **Present** each prompt to the user one at a time (or as a batch if
    requested), clearly labelled with image number and file name.

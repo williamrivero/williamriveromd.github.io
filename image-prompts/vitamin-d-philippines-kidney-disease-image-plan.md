@@ -1,7 +1,7 @@
 # Image Plan — *Vitamin D in the Philippines: The Sunshine Paradox and the Kidney Connection* (`vitamin-d-philippines-kidney-disease.html`)
 
 **Guide:** Why Filipinos can be vitamin D–low despite year-round sun; the skin–liver–kidney activation chain; testing, thresholds, and safe treatment in CKD — dual patient/clinician.
-**Prepared:** 2026-08-13 · **Pipeline:** Stage 1 (prompt authoring). Paste each `COPY-READY … PROMPT` block into the ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Prepared:** 2026-08-13 · **Pipeline:** Stage 1 (prompt authoring). Paste each `COPY-READY … PROMPT` block into the ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` · `williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure`
 **Stage 2:** hand this pack to `williamriveromd-local-image-generator` to validate fields, build `generated-images/`, and write the manifests. Every block below already carries the full Stage-2 schema (`IMAGE NUMBER … OG WIDTH/HEIGHT`).
 

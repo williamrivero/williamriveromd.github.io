@@ -2,7 +2,7 @@
 
 **Guide:** `guides/inflammation-in-dialysis.html` · **Slug:** `inflammation-in-dialysis`
 **Prepared:** November 2, 2026 · **Pipeline:** Stage 1 prompt pack → Stage 2 `williamriveromd-local-image-generator`
-**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Skills applied:** `williamriveromd-hero-vignette` (v3), `williamriveromd-infographic-skill` (v5), `williamriveromd-simple-figure`, `williamriveromd-biomedical-mechanism-figure`, `williamriveromd-algorithm-generator-skill` (Style Mode C), `williamriveromd-organ-crosstalk-sigil-graphic`
 
 ---

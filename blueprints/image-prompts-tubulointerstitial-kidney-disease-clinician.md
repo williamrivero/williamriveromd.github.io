@@ -1,7 +1,7 @@
 # Image Prompt Pack — Beyond the Glomerulus (TIN clinician series)
 
 **Companion to** `tubulointerstitial-kidney-disease-clinician-blueprint.md` (§M).
-**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Pipeline:** Stage 1 (these prompts, authored via the `williamriveromd-*` graphic skills) → generate in GPT → save PNG + WebP twin into `images/` → wire `og:image` / `<picture>` per guide.
 
 ## House constants (baked into every prompt below)

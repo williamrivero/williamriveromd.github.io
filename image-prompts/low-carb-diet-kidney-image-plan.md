@@ -3,7 +3,7 @@
 **Guide:** `guides/low-carb-diet-kidney.html`
 **Canonical:** https://renalcarematters.com/guides/low-carb-diet-kidney.html
 **Generated with:** `williamriveromd-hero-vignette`, `williamriveromd-infographic-skill`, `williamriveromd-biomedical-mechanism-figure`, `williamriveromd-simple-figure`
-**Target GPT:** ChatGPT Image Generator — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Target GPT:** ChatGPT Image Generator — https://chatgpt.com/
 
 10 assets: 1 circular-vignette hero (patient), 1 OG share card, 8 in-body figures.
 Every figure carries the `renalcarematters.com` attribution; every background is light;

@@ -2,7 +2,7 @@
 ### "Blood Sugar and Your Kidneys: Breaking the Glycemic-Renal Cycle"
 
 Stage-1 prompt pack for the **ChatGPT Image Generator GPT**
-(<https://chatgpt.com/g/g-pmuQfob8d-image-generator>). Every prompt below is
+(<https://chatgpt.com/>). Every prompt below is
 copy-paste ready. Generated with the renalcarematters.com graphic skills
 (hero-vignette v3, simple-figure, biomedical-mechanism-figure, algorithm-generator,
 infographic v5).

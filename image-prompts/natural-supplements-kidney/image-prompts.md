@@ -1,7 +1,7 @@
 # Image Prompts — Natural Supplements & Kidney Disease
 **Guide:** `guides/natural-supplements-kidney.html`
 **URL:** https://renalcarematters.com/guides/natural-supplements-kidney
-**Destination GPT:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Destination GPT:** https://chatgpt.com/
 **Generated:** 2026-05-27
 **Total images:** 6
 

@@ -1,7 +1,7 @@
 # Image Prompts — Dialyzer Reuse in Modern Times
 **Guide:** `guides/dialyzer-reprocessing-reuse.html`
 **URL:** https://renalcarematters.com/guides/dialyzer-reprocessing-reuse
-**Destination GPT:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Destination GPT:** https://chatgpt.com/
 **Generated:** 2026-06-29
 **Total images:** 10
 
@@ -614,6 +614,6 @@ QUALITY CHECK: When viewed as a phone screenshot, all six questions must still b
 - [ ] Build local folder `/Users/williamgregoryrivero/Downloads/dialyzer-reprocessing-reuse/` with `images/` and `og/` subfolders.
 - [ ] Write `image-manifest.csv` and `image-manifest.json` from the manifest table above.
 - [ ] Write `README-image-generation.md` with paste-in instructions for the Image Generator GPT.
-- [ ] Hand prompts to user for generation in https://chatgpt.com/g/g-pmuQfob8d-image-generator.
+- [ ] Hand prompts to user for generation in https://chatgpt.com/.
 - [ ] After images arrive, run `patch_hero_fetchpriority.py --guide dialyzer-reprocessing-reuse.html`, then `patch_hero_fullwidth.py`, then `patch_hero_maxwidth.py`.
 - [ ] Append `og:image` / `og:image:width` / `og:image:height` / `og:image:alt` meta tags to the guide HTML.

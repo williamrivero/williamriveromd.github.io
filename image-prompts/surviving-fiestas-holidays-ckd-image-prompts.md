@@ -4,7 +4,7 @@
 
 This pack covers the hero (already referenced in the guide), the OG social-share
 card, and four key educational infographics. All prompts are copy-ready for the
-ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+ChatGPT Image Generator GPT (https://chatgpt.com/).
 
 **House rules applied to every prompt:** light background only (never dark/navy/
 black), navy/teal/green/amber/red used as accents and type only, and the

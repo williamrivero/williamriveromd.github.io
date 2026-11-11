@@ -6,7 +6,7 @@
 ---
 
 ## How to generate
-1. Open the Image Generator GPT: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+1. Open the Image Generator GPT: https://chatgpt.com/
 2. For each image below, copy the block under **COPY-READY PROMPT** and paste it into the GPT
 3. Save the generated image with the filename shown under **Save as**
 4. Upload all generated images to the Claude Code session to wire them into the guide

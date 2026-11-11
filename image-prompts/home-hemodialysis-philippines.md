@@ -8,7 +8,7 @@
 **Generated:** 17 August 2026
 
 Stage 1 output (prompt authoring). Paste each **PROMPT** block into the ChatGPT
-Image Generator GPT: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+Image Generator GPT: https://chatgpt.com/
 
 ---
 

@@ -1,7 +1,7 @@
 # Image Generation Plan — Point-of-Care Ultrasound in Nephrology
 ### `guides/pocus-nephrology.html` · williamriveromd.com · Clinician + Trainee guide · Reviewed June 2026
 
-> **How to use:** Paste each `COPY-READY PROMPT` block directly into the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator). Generate every image, save each at the FILE NAME listed below into `/images/` (both `.png` and a WebP twin). The guide HTML already references these filenames — no markup changes are needed when the renders come back. After all are received, run `python3 patch_hero_fetchpriority.py --guide pocus-nephrology.html` (and the OG `<head>` width/height/alt lines are already in place).
+> **How to use:** Paste each `COPY-READY PROMPT` block directly into the [ChatGPT Image Generator GPT](https://chatgpt.com/). Generate every image, save each at the FILE NAME listed below into `/images/` (both `.png` and a WebP twin). The guide HTML already references these filenames — no markup changes are needed when the renders come back. After all are received, run `python3 patch_hero_fetchpriority.py --guide pocus-nephrology.html` (and the OG `<head>` width/height/alt lines are already in place).
 >
 > **House style:** williamriveromd.com nephrology clinician system — NAVY `#1F3864` (text/structure), TEAL `#1A6B72` (accents, decision diamonds), GREEN `#2E6B3E` (preferred path / restored state), AMBER `#C9A84C` (caveat / mismatch), RED `#C00000` (harm / severe), soft GOLD `#b8962e` (single accent line), soft warm-white background. All typography in **Inter** sans-serif. Every infographic carries the **© williamriveromd.com** attribution bottom-right (omitted on the hero vignette — it would be clipped by the circle).
 >

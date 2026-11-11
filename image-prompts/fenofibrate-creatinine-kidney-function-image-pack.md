@@ -3,7 +3,7 @@
 **Guide slug:** `fenofibrate-creatinine-kidney-function`
 **Guide URL:** https://renalcarematters.com/guides/fenofibrate-creatinine-kidney-function.html
 **Prepared with:** `williamriveromd-hero-vignette`, `williamriveromd-infographic-skill`, `williamriveromd-simple-figure`, `williamriveromd-algorithm-generator-skill`
-**Production target:** ChatGPT Image Generator GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT → https://chatgpt.com/
 
 > **How to use:** paste the fenced **PROMPT** block for each image straight into the Image Generator GPT.
 > Each block is self-contained (prompt + negatives + attribution). Save every output as `.png` under

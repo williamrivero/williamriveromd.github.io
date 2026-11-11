@@ -3,7 +3,7 @@
 
 **Stage 1 prompt pack** for the 12 raster assets that illustrate this guide. Each
 prompt is authored with the matching williamriveromd graphic skill, ready to
-paste into the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+paste into the [ChatGPT Image Generator GPT](https://chatgpt.com/).
 Save the PNG (+ `.webp` twin) outputs into `images/`, then optionally hand the
 pack to Stage 2 (`williamriveromd-local-image-generator`) for manifests + `og:image` wiring.
 

@@ -11,7 +11,7 @@
 
 ## How to produce these (workflow)
 
-1. Paste each **PROMPT** block below into the ChatGPT **Image Generator GPT** (`https://chatgpt.com/g/g-pmuQfob8d-image-generator`), one at a time.
+1. Paste each **PROMPT** block below into the ChatGPT **Image Generator GPT** (`https://chatgpt.com/`), one at a time.
 2. Verify every rendered word, unit, and arrow **by eye** — regenerate on any misspelling, wrong unit, reversed arrow, or misleading relationship (see each image's QUALITY CHECK). Do **not** trust generated typography blindly; if a label is critical and keeps garbling, render the figure without the dense label and overlay the text in HTML/CSS instead.
 3. Save each as `images/<filename>.png` **and** a WebP twin `images/<filename>.webp`.
 4. Wire images 04–07 into the guide (paste-ready `<figure>` HTML is under each). Images 01 (ladder), the hero vignette, and the OG card are **already referenced** in the guide/head — producing the files makes them appear.

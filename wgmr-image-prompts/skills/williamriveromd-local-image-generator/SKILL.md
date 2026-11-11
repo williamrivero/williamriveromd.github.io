@@ -47,7 +47,7 @@ Stage 2 (this skill) operationalizes those prompts locally:
 - appends OG image tags
 
 The actual image rendering still happens inside the ChatGPT Image Generator
-GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator). This skill does not
+GPT (https://chatgpt.com/). This skill does not
 call that API directly.
 
 ---
@@ -136,7 +136,7 @@ Missing fields must be flagged before proceeding.
    - numbered filename
    - archetype
    - pixel dimensions
-   - paste URL: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+   - paste URL: https://chatgpt.com/
    - save destination: `generated-images/[filename]`
 6. **Present** each prompt to the user one at a time (or as a batch if
    requested), clearly labelled with image number and file name.

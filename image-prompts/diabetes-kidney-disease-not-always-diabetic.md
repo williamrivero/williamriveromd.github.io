@@ -2,7 +2,7 @@
 
 **Guide:** `guides/diabetes-kidney-disease-not-always-diabetic.html`
 **Slug:** `diabetes-kidney-disease-not-always-diabetic`
-**Produced for:** ChatGPT Image Generator GPT → <https://chatgpt.com/g/g-pmuQfob8d-image-generator>
+**Produced for:** ChatGPT Image Generator GPT → <https://chatgpt.com/>
 **Stage 1 authoring skills used:** `williamriveromd-hero-vignette` (IMG‑01), `williamriveromd-infographic-skill` (IMG‑02), `williamriveromd-biomedical-mechanism-figure` (IMG‑03), `williamriveromd-simple-figure` (IMG‑04)
 
 ---

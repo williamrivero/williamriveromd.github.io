@@ -2,7 +2,7 @@
 
 **Guide:** Heat, typhoons, floods, power cuts, and smoke across CKD, dialysis, and transplant: dual patient/clinician, four languages
 **Prepared:** 2026-11-10 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the
-ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` ·
 `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill` (house flowchart rules)
 

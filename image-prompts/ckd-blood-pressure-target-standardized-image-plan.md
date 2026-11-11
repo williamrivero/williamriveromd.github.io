@@ -2,7 +2,7 @@
 
 **Guide:** KDIGO Blood Pressure Target in CKD — measurement-first, dual patient/clinician
 **Prepared:** 2026-08-09 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the
-ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` ·
 `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill`
 

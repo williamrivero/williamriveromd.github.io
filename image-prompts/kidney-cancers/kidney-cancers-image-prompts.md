@@ -1,7 +1,7 @@
 # Kidney Cancers — Image Prompt Pack
 
 **Guide:** williamriveromd.com/guides/kidney-cancers.html  
-**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator  
+**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/  
 **Save outputs to:** `generated-images/[file-name].png` (then ship .png + .webp to repo `/images/`)  
 **Stage 2 wiring:** run `williamriveromd-local-image-generator` to insert images 001–010 into the 9 `<!-- IMAGE PLACEHOLDER -->` slots.
 

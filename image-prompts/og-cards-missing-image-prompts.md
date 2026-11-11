@@ -11,7 +11,7 @@ mobile-readable, no clutter, and the mandatory semi-transparent navy
 `williamriveromd.com` attribution in the bottom-right corner.
 
 **Workflow:** paste each PROMPT into the ChatGPT Image Generator GPT
-(https://chatgpt.com/g/g-pmuQfob8d-image-generator), generate at 1200×630, and save
+(https://chatgpt.com/), generate at 1200×630, and save
 under `images/` with the exact FILE NAME below. The matching `og:image` /
 `og:image:width` / `og:image:height` / `og:image:alt` tags are already wired into
 each guide head, so the card drops straight in once uploaded.

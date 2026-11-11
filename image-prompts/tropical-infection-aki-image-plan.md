@@ -1,7 +1,7 @@
 # Image Plan — `tropical-infection-aki.html`
 ### Fever and Kidney Injury in the Tropics: Scrub Typhus, Malaria, Leptospirosis and Dengue · renalcarematters.com
 
-**Stage 1 prompt pack.** Each prompt was written with the matching house skill (`williamriveromd-hero-vignette`, `williamriveromd-infographic-skill`, `williamriveromd-simple-figure`, `williamriveromd-algorithm-generator-skill`, `williamriveromd-biomedical-mechanism-figure`, `williamriveromd-organ-crosstalk-sigil-graphic`) and is ready to paste into the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator). Generate at the stated size, save the PNG and a `.webp` twin to `images/`, then run Stage 2 (`williamriveromd-local-image-generator`) for manifests if wanted.
+**Stage 1 prompt pack.** Each prompt was written with the matching house skill (`williamriveromd-hero-vignette`, `williamriveromd-infographic-skill`, `williamriveromd-simple-figure`, `williamriveromd-algorithm-generator-skill`, `williamriveromd-biomedical-mechanism-figure`, `williamriveromd-organ-crosstalk-sigil-graphic`) and is ready to paste into the [ChatGPT Image Generator GPT](https://chatgpt.com/). Generate at the stated size, save the PNG and a `.webp` twin to `images/`, then run Stage 2 (`williamriveromd-local-image-generator`) for manifests if wanted.
 
 It replaces the earlier six-prompt pack and keeps the same six file names, so nothing in the HTML changes for those, and adds eleven new figures.
 

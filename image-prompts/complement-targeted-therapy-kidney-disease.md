@@ -4,7 +4,7 @@
 **Route:** https://renalcarematters.com/guides/complement-targeted-therapy-kidney-disease.html
 **Style system:** renalcarematters.com house style — light backgrounds only; sans-serif (Inter / Nunito Sans / IBM Plex Sans / Manrope) only; palette navy `#0f1e2e`, clinical teal `#1a6b72`, renal green `#1f7a4d`, amber/gold `#b8860b`, clinical red `#b91c1c`, backgrounds white `#ffffff` / off-white `#fafafa` / soft gray `#f3f4f6` / light teal `#eef6f7`.
 **Attribution:** every figure (except the wordless circular vignette hero) carries small semi-transparent navy `© renalcarematters.com` in the bottom-right corner (bottom-center for portrait). The vignette hero is wordless — no watermark.
-**Paste target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Paste target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 
 > **Skill provenance:** hero = `williamriveromd-hero-vignette` (v3); OG + spectrum + TMA algorithm + biopsy triptych + benefit/risk + before-first-dose + response hierarchy = `williamriveromd-infographic-skill` (v5); cascade + kidney-vulnerability = `williamriveromd-biomedical-mechanism-figure`.
 

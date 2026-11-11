@@ -4,7 +4,7 @@
 Timing Can Quietly Cause Kidney Failure
 **Author:** Dr. William Gregory M. Rivero, MD, FPCP, DPSN · williamriveromd.com
 **Prompt pack version:** v1.0
-**Target tool:** [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator)
+**Target tool:** [ChatGPT Image Generator GPT](https://chatgpt.com/)
 **Output format:** All images render as `.png`. Convert each to a `.webp` twin
 after download (site convention: `<picture><source srcset=".webp">` +
 `<img src=".png">`).

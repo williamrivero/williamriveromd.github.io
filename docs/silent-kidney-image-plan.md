@@ -1,7 +1,7 @@
 # Silent Kidney / Renal Plasticity — Image Production Plan
 
 **Guides:** `why-kidney-disease-is-silent.html` (patient) · `renal-plasticity-clinician.html` (clinician)
-**Compiled:** 2026-08-05 · **For production in:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Compiled:** 2026-08-05 · **For production in:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Authoring skills used:** `williamriveromd-hero-vignette` (heroes) · `williamriveromd-infographic-skill` (OG cards) · `williamriveromd-simple-figure` (in-body figures) · `williamriveromd-biomedical-mechanism-figure` (tubular-repair mechanism) · Constitution v1.0 anatomical rules for any kidney rendering.
 
 ---

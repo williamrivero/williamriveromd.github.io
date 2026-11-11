@@ -1,7 +1,7 @@
 # Image Generation Plan — Cholesterol and the Filipino Diet
 ### `guides/cholesterol-diet-guide.html` · williamriveromd.com · Reviewed May 2026
 
-> **How to use:** Paste each `COPY-READY PROMPT` block directly into the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator). Generate all images, then save using the `FILE NAME` listed for each. Suggested location: `guides/images/cholesterol-diet-guide/`.
+> **How to use:** Paste each `COPY-READY PROMPT` block directly into the [ChatGPT Image Generator GPT](https://chatgpt.com/). Generate all images, then save using the `FILE NAME` listed for each. Suggested location: `guides/images/cholesterol-diet-guide/`.
 >
 > **House style:** williamriveromd.com nephrology/cardiology education system — clinical teal `#1a6b72`, navy `#0f1e2e` (text/accent only), renal green `#1f7a4d`, amber `#b8860b`, clinical red `#b91c1c`. **All images use light backgrounds (white / off-white / soft gray) — never dark.** Every image carries the copyright line **© W Rivero, MD · williamriveromd.com** in the bottom-right corner. Photorealistic elements use Filipino patient, food, and clinic contexts for relatability.
 

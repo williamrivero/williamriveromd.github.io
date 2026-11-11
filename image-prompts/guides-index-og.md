@@ -1,7 +1,7 @@
 # guides/index.html — Unignorable OG Share Card
 
 Generated with **`williamriveromd-infographic-skill`**. Single prompt, ready to paste into the
-[ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+[ChatGPT Image Generator GPT](https://chatgpt.com/).
 
 **House rules respected:** light background only, fonts limited to **Inter / Nunito Sans / IBM Plex Sans / Manrope** (no serif), OG dimensions locked at **1200 × 630**, `williamriveromd.com` attribution in the bottom-right.
 

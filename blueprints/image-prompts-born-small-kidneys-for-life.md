@@ -1,6 +1,6 @@
 # Image prompt pack: Born Small, Kidneys for Life
 
-Stage 1 output for `guides/born-small-kidneys-for-life.html`. Hand to `williamriveromd-local-image-generator` (Stage 2) for validation, manifests, and wiring. Paste each COPY-READY prompt into https://chatgpt.com/g/g-pmuQfob8d-image-generator.
+Stage 1 output for `guides/born-small-kidneys-for-life.html`. Hand to `williamriveromd-local-image-generator` (Stage 2) for validation, manifests, and wiring. Paste each COPY-READY prompt into https://chatgpt.com/.
 
 House rules applied to every prompt: light background only; on-image text uses one named approved sans-serif font (Inter, Nunito Sans, IBM Plex Sans, or Manrope); `renalcarematters.com` attribution in the bottom corner (except the wordless vignette hero, which carries no text by spec); no journal names, guideline acronyms, brand names, or watermarks; no invented numbers. The study-data chart is deliberately **not** in this pack: it is drawn as code-native SVG from `assets/born-small-evidence-data.json`.
 

@@ -2,7 +2,7 @@
 
 **Guide:** `guides/strengthening-kidney-resilience-to-aki.html` · **Canonical:** https://renalcarematters.com/guides/strengthening-kidney-resilience-to-aki.html
 **Version:** v2.1 (November 9, 2026). v2.1 adds a STYLE LOCK to every prompt: the first v2 render came out as flat vector diagrams that did not match the rest of the site, so those files were removed from the guide. Generate every image in the Image Generator GPT, not as SVG or code-drawn graphics.
-**Pipeline:** Stage 1 (this file) → paste each prompt into the ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, `og:image` tags).
+**Pipeline:** Stage 1 (this file) → paste each prompt into the ChatGPT Image Generator GPT (https://chatgpt.com/) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, `og:image` tags).
 **Skills used:** `williamriveromd-hero-vignette` v3 · `williamriveromd-infographic-skill` v5 · `williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill` (Mode C) · `williamriveromd-organ-crosstalk-sigil-graphic`.
 
 **Number rule.** Every number that appears inside a prompt is taken from a source the guide cites and was checked for the guide: BigpAK-2 (Lancet 2025, Table 3 arm denominators), the 2012 international AKI guideline (timing windows), the 2020 ACR–NKF contrast consensus (eGFR bands), the 2020 UK follow-up appropriateness panel (review timing), and the guide's own synthetic teaching example (creatinine 1.00 / 2.10 / 1.40 mg/dL). Tell the generator not to add any other number, dose, fluid volume, drug brand, or name.

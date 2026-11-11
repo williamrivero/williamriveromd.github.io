@@ -2,7 +2,7 @@
 
 **Guide:** Timing of dialysis initiation in advanced CKD — dual patient/clinician, with a separate AKI pathway
 **Prepared:** 2026-08-10 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the
-ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` ·
 `williamriveromd-algorithm-generator-skill` · `williamriveromd-biomedical-mechanism-figure`
 

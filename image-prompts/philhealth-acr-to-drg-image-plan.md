@@ -3,7 +3,7 @@
 
 **Stage 1 prompt pack** for the four raster assets the guide references. Each
 figure is authored with the correct house skill. Generate in the
-[ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator),
+[ChatGPT Image Generator GPT](https://chatgpt.com/),
 save the PNG (+ `.webp` twin) outputs into `images/`, then optionally run
 Stage 2 (`williamriveromd-local-image-generator`) for manifests.
 

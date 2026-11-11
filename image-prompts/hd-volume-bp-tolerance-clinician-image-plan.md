@@ -4,7 +4,7 @@
 **Title:** Volume, Blood Pressure & Hemodynamic Tolerance in Maintenance HD — A Clinician's Guide
 **Audience:** Clinicians only (nephrologists, fellows, dialysis nurses, renal pharmacists, dietitians)
 **Prepared:** 2 November 2026 (Asia/Manila)
-**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Stage 2 handoff:** `williamriveromd-local-image-generator` (validation, manifests, og:image wiring)
 
 ---

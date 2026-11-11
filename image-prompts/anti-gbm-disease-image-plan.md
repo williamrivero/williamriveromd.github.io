@@ -2,7 +2,7 @@
 
 **Guide:** `guides/anti-gbm-disease.html` · **Calculator:** `guides/calc-anti-gbm-renal-risk.html`
 **Route:** https://renalcarematters.com/guides/anti-gbm-disease.html
-**Paste target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Paste target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Supersedes:** `image-prompts/anti-gbm-disease-image-prompts.md` (first-pass pack, retired)
 **Skill provenance:** hero = `williamriveromd-hero-vignette` (v3) · OG cards, warning-signs poster, plasma-exchange procedural, life-after grid, regimen card = `williamriveromd-infographic-skill` (v5) · filter-mesh comparison, tests sequence, treatment timeline, time-saves-filters, biopsy triptych, variant map, double-positive table, Alport comparison, antibody spectrum, children/adults card = `williamriveromd-simple-figure` (v1) · kidney–lung sigil = `williamriveromd-organ-crosstalk-sigil-graphic` · clinician mechanism = `williamriveromd-biomedical-mechanism-figure` · first-24-hours, who-to-treat, Philippine pathway = `williamriveromd-algorithm-generator-skill` (Modes A, B, C).
 

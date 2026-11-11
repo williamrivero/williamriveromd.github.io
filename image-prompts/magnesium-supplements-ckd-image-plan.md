@@ -3,7 +3,7 @@
 **Guide:** What the different magnesium forms really do — single-mode patient guide (EN/TL/CEB/KAP), 14 sections
 **Companion tool:** `calc-magnesium-replacement.html` (elemental conversion across 17 salts)
 **Prepared:** 2026-08-16 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the
-ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` ·
 `williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure` ·
 `williamriveromd-algorithm-generator-skill` · `williamriveromd-organ-crosstalk-sigil-graphic`
@@ -674,7 +674,7 @@ cleanly at thumbnail size. © renalcarematters.com bottom-right.
 
 ## Production checklist (after generating in GPT)
 
-1. **Generate** each prompt in the ChatGPT Image Generator GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+1. **Generate** each prompt in the ChatGPT Image Generator GPT → https://chatgpt.com/
 2. **Save** every asset under `images/` as **both** `.png` and a `.webp` twin, using the exact FILE NAME above.
 3. **Swap the hero and OG card.** Both currently point at the shared category placeholder. In
    `guides/magnesium-supplements-ckd.html` replace `hero-cat-electrolytes` with the new hero in the

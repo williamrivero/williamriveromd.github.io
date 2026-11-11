@@ -2,7 +2,7 @@
 
 **Guide:** [`guides/difficult-to-control-hypertension.html`](../guides/difficult-to-control-hypertension.html) · dual-mode (Patients & Families EN/TL/CEB/KAP · Clinicians EN) · 24 sections
 **Prepared:** 2026-09-27 · **Total assets:** 10 (8 in-body figures + 1 hero + 1 OG card) · **Status:** all slots wired in the HTML; images not yet generated
-**Where to generate:** ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Where to generate:** ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-image-planner` (architecture, style taxonomy, 10-point spec) · `williamriveromd-hero-vignette` ·
 `williamriveromd-infographic-skill` · `williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure` ·
 `williamriveromd-algorithm-generator-skill` · `medical-teaching-standard` (clinical accuracy of every label)

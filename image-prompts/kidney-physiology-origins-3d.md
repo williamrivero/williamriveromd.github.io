@@ -5,7 +5,7 @@
 (stage 1 → stage 8) so the kidney appears to *develop* as the visitor scrolls.
 **Save to:** `images/origins/` with the **exact filenames** below (`.png`). They replace
 the earlier SVGs (same base names).
-**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/
 
 ---
 

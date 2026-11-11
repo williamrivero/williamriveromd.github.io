@@ -1,7 +1,7 @@
 # Image Plan: *Workforce Issues in Nephrology: Crisis or Opportunity?* (`nephrology-workforce-crisis-or-opportunity.html`)
 
 **Guide:** Kidney care workforce (capacity, distribution, staffing and outcomes, redesign). Dual audience (Patients & Families in EN/TL/CEB/KAP; Clinicians in English).
-**Prepared:** 2026-11-11 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Prepared:** 2026-11-11 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-infographic-generator` (Constitution v1.0, 7-layer architecture, applied to every figure) · `williamriveromd-hero-vignette` v3 · `williamriveromd-infographic-skill` v5 · `williamriveromd-simple-figure` · `williamriveromd-algorithm-generator-skill` (flow and loop rules)
 
 ---

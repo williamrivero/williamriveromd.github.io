@@ -2,7 +2,7 @@
 ### Category hero for the "Other Tools" section of `guides/calculators.html`
 
 **Stage 1 prompt pack** for a single category hero image. Generate in the
-[ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator),
+[ChatGPT Image Generator GPT](https://chatgpt.com/),
 save the PNG (+ a paired `.webp` twin) to `images/`. Once present, the file
 auto-surfaces in the Latest-calculators carousel for any calc that lives under
 the `other-tools` section, including `calc-icd10-search.html`.

@@ -1,7 +1,7 @@
 # Green Nephrology 2026 — Replacement Image Prompts
 
 **Format:** williamriveromd-infographic-skill — Image Generator GPT Adapter (Constitution 1.0)
-**Generator:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generator:** https://chatgpt.com/
 **Purpose:** Regenerate the 3 images that failed QA against the 2026 KDIGO Green Dialysis article. Save each over the existing file with the same name, then push.
 
 **Constitution 1.0 house rules (apply to every image):** light background only (white / off-white #fafafa / soft gray #f3f4f6 / light teal tint #eef6f7) — never dark/navy/black. Palette: navy #0f1e2e (text/accents only), clinical teal #1a6b72, renal green #1f7a4d, amber #b8860b, red #b91c1c. Large bold navy titles, short mobile-readable labels, generous negative space, no AI gibberish text, clinically accurate. Every image carries a small, semi-transparent navy **williamriveromd.com** attribution — bottom-right for landscape, bottom-center for portrait. All files **.png**.

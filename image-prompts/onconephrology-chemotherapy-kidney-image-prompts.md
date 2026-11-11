@@ -1,7 +1,7 @@
 # Cancer Treatment and Your Kidneys — Image Plan Blueprint and GPT Prompt Pack
 
 **Guide:** `guides/onconephrology-chemotherapy-kidney.html`
-**Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator)
+**Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/)
 **Prepared:** November 6, 2026 · **Version:** 2 (replaces the 6-image v1 pack)
 **Skills used:** `williamriveromd-hero-vignette` (v3), `williamriveromd-biomedical-mechanism-figure`, `williamriveromd-algorithm-generator-skill` (Modes B and C), `williamriveromd-simple-figure` (Scaffolds B, C, E), `williamriveromd-infographic-skill` (OG card, multi-panel), `williamriveromd-organ-crosstalk-sigil-graphic`
 

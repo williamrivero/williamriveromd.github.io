@@ -1,7 +1,7 @@
 # Primary Aldosteronism — Image Plan Blueprint and GPT Prompt Pack
 
 **Guide:** `guides/primary-aldosteronism.html` · **Calculator:** `guides/calc-aldosterone-renin-ratio.html`
-**Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator)
+**Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/)
 **Prepared:** November 10, 2026 · **Version:** 2 (supersedes the 11-image v1 pack; all v1 file names are kept, so nothing already wired into the guide changes)
 **Skills used:** `williamriveromd-hero-vignette` (v3) · `williamriveromd-infographic-skill` (v5 archetypes 1, 2, 4, 5, 6, 8, 9) · `williamriveromd-simple-figure` (Scaffolds A–E) · `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill` (Modes B and C) · organ-crosstalk sigil style · Stage 2 handled by `williamriveromd-local-image-generator`
 

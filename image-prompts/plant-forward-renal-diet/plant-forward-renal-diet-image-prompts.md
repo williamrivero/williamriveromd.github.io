@@ -6,7 +6,7 @@
 **Category:** Nutrition & Diet (Filipino Context)
 **Site:** williamriveromd.com
 
-This is the Stage 1 image-prompt pack: **6 patient-mode panels** + **6 clinician-mode panels**, every prompt copy-ready for the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator). Three panels follow specialized templates per the house rules:
+This is the Stage 1 image-prompt pack: **6 patient-mode panels** + **6 clinician-mode panels**, every prompt copy-ready for the [ChatGPT Image Generator GPT](https://chatgpt.com/). Three panels follow specialized templates per the house rules:
 
 - **Image 5** uses the **organ-crosstalk sigil** style (`williamriveromd-organ-crosstalk-sigil-graphic`).
 - **Image 9** uses the **biomedical-mechanism review-article** template (`williamriveromd-biomedical-mechanism-figure`).
@@ -591,6 +591,6 @@ All panels share the williamriveromd.com house style: light backgrounds, **Inter
 
 # Next Steps
 
-1. **Confirm the plan.** If the brief is right, hand this batch to the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator) one prompt at a time — they're written to render independently.
+1. **Confirm the plan.** If the brief is right, hand this batch to the [ChatGPT Image Generator GPT](https://chatgpt.com/) one prompt at a time — they're written to render independently.
 2. **Stage 2 (filesystem + manifest).** Once the prompts are approved, invoke `williamriveromd-local-image-generator` to build the local guide folder under `/Users/williamgregoryrivero/Downloads/plant-forward-renal-diet/`, write `image-manifest.csv` + `image-manifest.json` + `README-image-generation.md`, and append the correct `og:image*` meta tags to the guide HTML once the files come back.
 3. **Drop into the guide.** The guide already references `plant-forward-renal-diet-vignette-hero.{webp,png}` (image 1) and `plant-forward-renal-diet-og.png` (image 2). Images 3–12 will need to be inserted as `<figure>` blocks inside their respective sections (§filipino-plate, §cooking, §fiber, §bp for patient mode; §md-trial, §md-data, §md-mechanisms, §md-bp, §md-implementation, §md-guidelines for clinician mode), each with `<picture>` webp+png pair and a `<figcaption class="fig-desc">` description.

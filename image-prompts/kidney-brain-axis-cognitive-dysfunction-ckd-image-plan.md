@@ -126,7 +126,7 @@ Images 000, 001, 002, 006, 007, 014, and 015 are already referenced in the guide
 
 # Part 2 — Production prompts
 
-Paste each prompt into the Image Generator GPT: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+Paste each prompt into the Image Generator GPT: https://chatgpt.com/
 
 ## 000 · Circular vignette hero v3 — Scaffold C anatomy, composition archetype F (Anatomy)
 

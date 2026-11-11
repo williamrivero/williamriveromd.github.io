@@ -479,7 +479,7 @@ Include a small professional footer reading "© williamriveromd.com" positioned 
 
 ## Generation Notes
 
-1. Paste each PROMPT block into [Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator) one at a time.
+1. Paste each PROMPT block into [Image Generator GPT](https://chatgpt.com/) one at a time.
 2. Save outputs with the exact **FILE NAME** specified above.
 3. Place generated `.png` files in `images/` (OG card) or `images/guides/` (inline guide images).
 4. After confirming receipt, run the local image generator skill to update `og:image` meta tags in `guides/high-flux-hd-optimization.html`.

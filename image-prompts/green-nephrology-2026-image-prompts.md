@@ -1,7 +1,7 @@
 # Green Nephrology 2026 — Image-Prompt Pack
 
 **Guide:** `guides/green-nephrology.html` — "Green Nephrology 2026 — How Sustainable Kidney Care Begins Before Dialysis"
-**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **House rules baked into every prompt:** light background only (white / off-white / soft gray / light teal tint); navy + teal as typography/accents only; English-only, mobile-readable labels; `williamriveromd.com` attribution in the corner; no AI gibberish text; clinically accurate. All files `.png`.
 
 > Paste each **COPY-READY … PROMPT** block into the Image Generator GPT, one at a time.

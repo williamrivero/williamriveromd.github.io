@@ -2,7 +2,7 @@
 
 **Guide:** `guides/magnesium-supplements-ckd.html` · **Tool:** `guides/calc-magnesium-replacement.html`
 **Prompts live in:** [`../magnesium-supplements-ckd-image-plan.md`](../magnesium-supplements-ckd-image-plan.md)
-**Generate in:** ChatGPT Image Generator GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generate in:** ChatGPT Image Generator GPT → https://chatgpt.com/
 **Save outputs to:** `generated-images/` in this folder, then copy the `.png` + `.webp` pair into `images/`.
 
 Work top to bottom. Each row's `PROMPT` block in the plan is copy-paste ready — paste the whole block,

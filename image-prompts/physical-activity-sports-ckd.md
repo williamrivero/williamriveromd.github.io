@@ -1,6 +1,6 @@
 # Image Plan — `physical-activity-sports-ckd.html`
 ### "Move Right, Kidneys Right" — Physical Activity & Sports for Filipino CKD Patients
-**Stage-1 prompt pack for the ChatGPT Image Generator GPT** → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Stage-1 prompt pack for the ChatGPT Image Generator GPT** → https://chatgpt.com/
 Authored with the `williamriveromd-hero-vignette`, `williamriveromd-organ-crosstalk-sigil-graphic`, and `williamriveromd-infographic-skill` skills.
 
 ---

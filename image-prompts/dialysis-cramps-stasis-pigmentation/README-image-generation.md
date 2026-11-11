@@ -2,7 +2,7 @@
 
 **Guide:** [`guides/dialysis-cramps-stasis-pigmentation.html`](../../guides/dialysis-cramps-stasis-pigmentation.html)
 **Pack contents:** 14 production-ready prompts (1 OG card + 1 hero vignette + 4 biomedical mechanism schematics + 5 simple figures + 1 organ-crosstalk sigil + 1 clinical algorithm + 1 circular workflow). 6 of the 14 are **clinician-only** (mode-physician scoped); 1 is **patient-only**; 1 is the OG share card; the remaining 6 are **shared** across both tracks of the dual-mode guide.
-**Target tool:** ChatGPT Image Generator GPT — <https://chatgpt.com/g/g-pmuQfob8d-image-generator>
+**Target tool:** ChatGPT Image Generator GPT — <https://chatgpt.com/>
 
 ---
 

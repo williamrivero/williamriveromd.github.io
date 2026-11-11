@@ -1,7 +1,7 @@
 # Image Plan Blueprint and Prompt Pack: Getting Fit for a Kidney Transplant
 
 **Guide:** `guides/transplant-prehabilitation.html` (dual-mode; patient EN/TL/CEB/KAP, clinician EN)
-**Stage 1 output** for `williamriveromd-local-image-generator` (Stage 2). Paste each COPY-READY prompt into the Image Generator GPT: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Stage 1 output** for `williamriveromd-local-image-generator` (Stage 2). Paste each COPY-READY prompt into the Image Generator GPT: https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` (001), `williamriveromd-infographic-skill` (002, 11, 12, 18), `williamriveromd-simple-figure` (02, 05–10, 13, 14, 16, 17), `williamriveromd-biomedical-mechanism-figure` (15), `williamriveromd-organ-crosstalk-sigil-graphic` (19).
 **Status:** Draft, 6 November 2026. Every number printed on an image is taken from the verified guide text; prompts that need no numbers carry none.
 

@@ -2,13 +2,13 @@
 
 **Guide:** `guides/code-blue-acls-dialysis-unit.html`
 **Prompt pack:** [`code-blue-acls-dialysis-unit-image-prompts.md`](../code-blue-acls-dialysis-unit-image-prompts.md)
-**Generator GPT:** https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generator GPT:** https://chatgpt.com/
 **Total images:** 9  ·  **OG image:** `code-blue-acls-dialysis-og.webp` (1200×630)
 
 ## How to use
 
 1. Open each **COPY-READY … PROMPT** block in the prompt pack.
-2. Paste it into the Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator), one at a time.
+2. Paste it into the Image Generator GPT (https://chatgpt.com/), one at a time.
 3. Save each output as the file name below into `generated-images/`.
 4. Convert each `.png` to `.webp` (keep both) and place the pair in `images/` in the repo.
 5. Wire the `<figure>`/`<img>` into the matching guide section (see prompt pack stage-2 checklist).

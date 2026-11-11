@@ -603,7 +603,7 @@ Generate in priority order: 3 → 5 → 4 → 7 → 6 → 8 → 9 → 10 → 2 �
 
 ### ChatGPT Image Generator GPT
 Paste each "COPY-READY IMAGE GENERATOR GPT PROMPT" block directly into:
-https://chatgpt.com/g/g-pmuQfob8d-image-generator
+https://chatgpt.com/
 
 ---
 

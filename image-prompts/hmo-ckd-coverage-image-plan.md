@@ -5,7 +5,7 @@
 **Audience:** Filipino CKD patients & families, plus a clinician/HR secondary audience (mixed, patient-first)
 **Category:** Perspectives · Philippines · Patient Rights · System Nav
 **House style:** williamriveromd.com — light backgrounds only, navy `#0f1e2e` / teal `#1a6b72` / green `#1f7a4d` / amber `#b8860b` / red `#b91c1c` (+ soft purple `#6c3d8e` for specialist/add-on). Every image carries a subtle `williamriveromd.com` attribution bottom-right (bottom-center for portrait). On-image type uses **Inter / Nunito Sans / IBM Plex Sans / Manrope only** — never serif.
-**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/
 
 > **Skill provenance.** This is a financial / legal / system-navigation Perspectives guide with no organ pathophysiology and a full-width (not circular) hero. Prompts are authored from **`williamriveromd-infographic-skill`** (hero, OG, matrices, multi-panel), **`williamriveromd-simple-figure`** (single comparisons, timeline, one-panel concept), and **`williamriveromd-algorithm-generator-skill`** (decision flow). The **biomedical-mechanism**, **organ-crosstalk-sigil**, and **circular-vignette-hero** skills are **N/A here** — there is no organ-to-cellular mechanism, no crosstalk loop, and the hero is a full-width editorial figure rather than a circle-cropped disc.
 

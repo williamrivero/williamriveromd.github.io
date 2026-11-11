@@ -3,7 +3,7 @@
 **Guide:** `guides/kidney-glucose-homeostasis.html`
 **Live URL (after merge):** https://renalcarematters.com/guides/kidney-glucose-homeostasis.html
 **Total images:** 13 (1 hero vignette · 1 OG card · 11 inline figures)
-**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Generated:** 30 August 2026
 
 ---

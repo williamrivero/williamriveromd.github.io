@@ -4,7 +4,7 @@
 **Route:** https://renalcarematters.com/guides/complement-mediated-kidney-disease.html
 **Style system:** renalcarematters.com house style — light backgrounds only; sans-serif (Inter / Nunito Sans / IBM Plex Sans / Manrope) only, named in every prompt; palette navy `#0f1e2e`, clinical teal `#1a6b72`, renal green `#1f7a4d`, amber/gold `#b8860b`, clinical red `#b91c1c`, soft purple `#6c3d8e`; backgrounds white `#ffffff` / off-white `#fafafa` / soft gray `#f3f4f6` / light teal `#eef6f7`.
 **Attribution:** every figure (except the wordless circular vignette hero) carries small semi-transparent navy `© renalcarematters.com` in the bottom-right corner (bottom-center for portrait). The vignette hero is wordless — no watermark.
-**Paste target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Paste target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 
 > **Editorial guardrails baked into every prompt (blueprint §21):** calm medical-editorial tone; **no** combat/war imagery, **no** "attacking" antibodies, **no** exploding or bleeding kidneys, **no** genetic-code "matrix rain," **no** neon/cybernetic look, **no** pharmaceutical branding or drug logos, **no** frightening needle imagery. Every diagram is a **clearly labelled educational illustration** — never a synthetic photomicrograph presented as real tissue. All on-image words are short and mirror the guide's own figure captions.
 

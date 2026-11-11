@@ -1,5 +1,5 @@
 # Image Generation Handoff — Substance Use & Chronic Kidney Disease
-**Guide:** `guides/substance-abuse-ckd.html` · **Tool:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Guide:** `guides/substance-abuse-ckd.html` · **Tool:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **14 prompts**, ordered by tab. Paste each **COPY-READY PROMPT** block (the indented text) one at a time.
 
 ### House rules (already baked into every prompt — do not remove)

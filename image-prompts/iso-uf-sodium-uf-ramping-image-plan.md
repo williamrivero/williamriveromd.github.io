@@ -1,7 +1,7 @@
 # Image Generation Plan — Isolated Ultrafiltration, Sodium & UF Ramping
 ### `guides/iso-uf-sodium-uf-ramping.html` · williamriveromd.com · Clinician guide · Reviewed June 2026
 
-> **How to use:** Paste each `COPY-READY PROMPT` block directly into the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator). Generate all four images, then save each at the FILE NAME listed below into `/images/` (both `.png` and a WebP twin). The guide HTML already references these filenames — no markup changes are needed when the renders come back.
+> **How to use:** Paste each `COPY-READY PROMPT` block directly into the [ChatGPT Image Generator GPT](https://chatgpt.com/). Generate all four images, then save each at the FILE NAME listed below into `/images/` (both `.png` and a WebP twin). The guide HTML already references these filenames — no markup changes are needed when the renders come back.
 >
 > **House style:** williamriveromd.com nephrology clinician system — NAVY `#1F3864` (text/structure), TEAL `#1A6B72` (accents, decision diamonds), GREEN `#2E6B3E` (preferred path / restored state), AMBER `#C9A84C` (caveat / mismatch), RED `#C00000` (harm / de-selection), soft GOLD `#b8962e` (single accent line), soft warm-white background. All typography in **Inter** sans-serif. Every image carries the **© williamriveromd.com** attribution bottom-right (bottom-center for the hero vignette, where it gets clipped by the circle). Light backgrounds only.
 

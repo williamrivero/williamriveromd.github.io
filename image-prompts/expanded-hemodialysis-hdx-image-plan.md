@@ -1,7 +1,7 @@
 # Image Plan: *Expanded Hemodialysis (HDx): What a Different Filter Can Change* (`expanded-hemodialysis-hdx.html`)
 
 **Guide:** Expanded hemodialysis with medium cut-off (MCO) and super high-flux (SHF) membranes. Dual audience: Patients & Families (EN/TL/CEB/KAP) and Clinicians.
-**Prepared:** 2026-11-10. **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT at https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Prepared:** 2026-11-10. **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT at https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` · `williamriveromd-simple-figure` · `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill` (Mode C) · `williamriveromd-organ-crosstalk-sigil-graphic`
 
 ---

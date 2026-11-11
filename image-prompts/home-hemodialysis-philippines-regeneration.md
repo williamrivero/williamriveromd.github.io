@@ -1,6 +1,6 @@
 # Image Regeneration Prompts — Home Hemodialysis in the Philippines
 
-**For:** ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator)
+**For:** ChatGPT Image Generator GPT (https://chatgpt.com/)
 **Guide:** `guides/home-hemodialysis-philippines.html` (live)
 **Date:** 2026-08-17
 **Replaces:** 5 of the 8 delivered figures. Same filenames, so the guide's

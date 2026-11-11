@@ -3,7 +3,7 @@
 
 **Stage 1 prompt pack** for the 10 raster assets that illustrate this guide. Each
 prompt is authored with the matching williamriveromd graphic skill, ready to
-paste into the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+paste into the [ChatGPT Image Generator GPT](https://chatgpt.com/).
 Save each PNG (+ a `.webp` twin) into `images/`, then hand the pack to Stage 2
 (`williamriveromd-local-image-generator`) for manifests + `og:image` wiring, **or**
 follow the *HTML integration* section at the bottom to swap each inline SVG for a
@@ -721,7 +721,7 @@ from the second `<style>` block, or left harmlessly.
 ## Production workflow
 
 1. Paste each prompt block (in order) into the
-   [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+   [ChatGPT Image Generator GPT](https://chatgpt.com/).
 2. Download each PNG; generate a `.webp` twin (`cwebp -q 82 in.png -o out.webp`).
 3. Drop both into `images/` using the exact file names above.
 4. Do the HTML swaps in the integration section, run the hero + lightbox patchers.

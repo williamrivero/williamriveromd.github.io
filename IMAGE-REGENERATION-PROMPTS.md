@@ -1,6 +1,6 @@
 # Image Regeneration Prompts — KDIGO Accuracy Remediation
 
-**For:** ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator)
+**For:** ChatGPT Image Generator GPT (https://chatgpt.com/)
 **Date:** 2026-08-09
 **Why:** These 13 figures were flagged during the KDIGO reconciliation because their
 **baked-in pixels still assert corrected/obsolete claims**. The guide alt text and

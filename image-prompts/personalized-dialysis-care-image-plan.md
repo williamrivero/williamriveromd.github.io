@@ -2,7 +2,7 @@
 
 **Guide:** `guides/personalized-dialysis-care.html` — *Precision Dialysis: From the Average Patient to You* (patient) · *Precision Dialysis: Population Evidence, Person-Centered Delivery* (clinician)
 **Prepared:** November 3, 2026 · renalcarematters.com
-**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Skills applied:** williamriveromd-hero-vignette v3 · williamriveromd-infographic-skill v5 · williamriveromd-simple-figure · williamriveromd-biomedical-mechanism-figure · williamriveromd-algorithm-generator-skill · williamriveromd-local-image-generator (Stage 2 schema)
 
 ---

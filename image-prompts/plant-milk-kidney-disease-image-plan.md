@@ -2,7 +2,7 @@
 
 **Guide:** *Plant Milk & Your Kidneys: The Additive Problem No Label Warns You About*
 **Audience:** Dual (patient-facing + clinician evidence layer) · **Category:** Nutrition
-**Production target:** ChatGPT Image Generator GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT → https://chatgpt.com/
 **House rules (all images):** light backgrounds only; sans-serif type only (Inter / Nunito Sans / IBM Plex Sans / Manrope); `renalcarematters.com` attribution bottom-right (bottom-center for portrait) — **except the wordless circular vignette hero, which carries no text at all.**
 
 ---

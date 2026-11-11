@@ -1,7 +1,7 @@
 # Image-Prompts Pack — Dialysis Cramps & Stasis Pigmentation
 
 **Guide:** `guides/dialysis-cramps-stasis-pigmentation.html`
-**Target generator:** ChatGPT Image Generator GPT — <https://chatgpt.com/g/g-pmuQfob8d-image-generator>
+**Target generator:** ChatGPT Image Generator GPT — <https://chatgpt.com/>
 **Skills used:** infographic-skill · hero-vignette · biomedical-mechanism-figure · simple-figure · organ-crosstalk-sigil · algorithm-generator
 
 > Workflow: paste each `COPY-READY IMAGE GENERATOR GPT PROMPT` block into the GPT, save the output to `generated-images/` under the filename in `FILE NAME:`, then hand the folder to Stage 2 (`williamriveromd-local-image-generator`) for manifest + HTML wiring.
@@ -768,7 +768,7 @@ OG HEIGHT: 1024
 ## Production checklist (for the human running the GPT)
 
 For each prompt above:
-1. Open <https://chatgpt.com/g/g-pmuQfob8d-image-generator>.
+1. Open <https://chatgpt.com/>.
 2. Paste the `COPY-READY IMAGE GENERATOR GPT PROMPT` block (everything between that line and the `NEGATIVE INSTRUCTIONS:` block — but pasting both is also fine; the GPT respects the negative block).
 3. Confirm the output matches `PIXEL DIMENSIONS` exactly (especially for #000 — 1200 × 630 is the OG sweet spot and must not be resized).
 4. Save with the `FILE NAME:` shown above into `generated-images/` (under the local Stage-2 folder if you're following the standard pipeline).

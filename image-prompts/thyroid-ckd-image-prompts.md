@@ -289,4 +289,4 @@ Anatomically plausible thyroid and kidney rendering, all pathway labels are legi
 
 ---
 
-*All prompts formatted for direct paste into [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator)*
+*All prompts formatted for direct paste into [ChatGPT Image Generator GPT](https://chatgpt.com/)*

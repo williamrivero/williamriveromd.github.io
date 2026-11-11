@@ -24,7 +24,7 @@ description: >-
 This skill creates production-ready prompts and visual plans for medical images and infographics for renalcarematters.com/guides.
 
 It is designed to work with ChatGPT image-generation workflows, including the custom Image Generator GPT:
-https://chatgpt.com/g/g-pmuQfob8d-image-generator
+https://chatgpt.com/
 
 Use this skill to convert guide content into:
 - photorealistic editorial hero images
@@ -100,7 +100,7 @@ inset labels) and had to be corrected, so treat this as ground truth:
 When the user says apply this skill, generate prompts, batch generate image prompts, make image-generator prompts, use Image Generator, use the Image Generator GPT, or use /generate-image, assume the output should be formatted for the ChatGPT Image Generator GPT unless another tool is specified.
 
 The skill should produce copy-ready prompts that can be pasted directly into:
-https://chatgpt.com/g/g-pmuQfob8d-image-generator
+https://chatgpt.com/
 
 ## CORE VISUAL PHILOSOPHY
 

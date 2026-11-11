@@ -1,7 +1,7 @@
 # Image Plan & Prompt Pack — Nephrotic Syndrome
 
 **Guide:** `guides/nephrotic-syndrome.html` · **Canonical:** https://renalcarematters.com/guides/nephrotic-syndrome.html
-**Pipeline:** Stage 1 (this file, written with the repo graphic skills) → generate in the ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, og:image wiring).
+**Pipeline:** Stage 1 (this file, written with the repo graphic skills) → generate in the ChatGPT Image Generator GPT (https://chatgpt.com/) → Stage 2 `williamriveromd-local-image-generator` (validation, manifests, og:image wiring).
 **Prepared:** 6 November 2026. Every number inside a prompt comes from a source verified for the guide (KDIGO 2021 Glomerular Diseases, KDIGO 2025 Nephrotic Syndrome in Children, and the 2026 papers cited in the guide). Do not let the generator add numbers that are not written in a prompt.
 
 **Skills used:** `williamriveromd-hero-vignette` (00) · `williamriveromd-biomedical-mechanism-figure` (01, 03, 17) · `williamriveromd-simple-figure` (02, 05, 07, 08, 10, 11, 13, 16, 20) · `williamriveromd-infographic-skill` (06, 09, 12, OG) · `williamriveromd-algorithm-generator-skill` (04, 15, 18, 19) · `williamriveromd-organ-crosstalk-sigil-graphic` (14).

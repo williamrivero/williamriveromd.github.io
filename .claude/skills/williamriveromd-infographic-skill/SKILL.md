@@ -23,8 +23,8 @@ description: >-
 
 This skill creates production-ready prompts and visual plans for medical images and infographics for renalcarematters.com/guides.
 
-It is designed to work with ChatGPT image-generation workflows, including the custom Image Generator GPT:
-https://chatgpt.com/g/g-pmuQfob8d-image-generator
+It is designed to work with ChatGPT image-generation workflows, including the custom ChatGPT image generation:
+https://chatgpt.com/ (ChatGPT image generation with the current GPT image model; the former "Image Generator" GPT link, chatgpt.com/g/g-pmuQfob8d-image-generator, was repurposed by its owner in November 2026 and must not be used)
 
 Use this skill to convert guide content into:
 - photorealistic editorial hero images
@@ -97,10 +97,10 @@ inset labels) and had to be corrected, so treat this as ground truth:
 
 ## DEFAULT EXECUTION TARGET
 
-When the user says apply this skill, generate prompts, batch generate image prompts, make image-generator prompts, use Image Generator, use the Image Generator GPT, or use /generate-image, assume the output should be formatted for the ChatGPT Image Generator GPT unless another tool is specified.
+When the user says apply this skill, generate prompts, batch generate image prompts, make image-generator prompts, use Image Generator, use the ChatGPT image generation, or use /generate-image, assume the output should be formatted for the ChatGPT image generation unless another tool is specified.
 
 The skill should produce copy-ready prompts that can be pasted directly into:
-https://chatgpt.com/g/g-pmuQfob8d-image-generator
+https://chatgpt.com/
 
 ## CORE VISUAL PHILOSOPHY
 
@@ -175,7 +175,7 @@ Copyright attribution (MANDATORY on every image):
 
 ## IMAGE GENERATOR GPT ADAPTER
 
-When writing prompts for the Image Generator GPT, use this structure:
+When writing prompts for the ChatGPT image generation, use this structure:
 
 FILE NAME:
 [recommended file name — always use .png extension; GPT-4o / gpt-image-1 outputs PNG by default]
@@ -314,7 +314,7 @@ Before generating image prompts:
 5. Decide where 3D components are needed.
 6. Decide where algorithmic flow is needed.
 7. Assign archetype.
-8. Generate batch-ready Image Generator GPT prompts.
+8. Generate batch-ready ChatGPT image generation prompts.
 
 ## OUTPUT FORMAT FOR BATCH PROMPTS
 

@@ -2,7 +2,7 @@
 ### Heart Failure & Chronic Kidney Disease — williamriveromd.com
 
 **Stage 1 prompt pack.** Six figures, each authored with the correct house skill.
-Generate in the [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator),
+Generate in the [ChatGPT Image Generator GPT](https://chatgpt.com/),
 save outputs to `images/`, then run Stage 2 (`williamriveromd-local-image-generator`)
 for manifests + `og:image` wiring.
 

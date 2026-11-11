@@ -4,7 +4,7 @@
 **Guide file:** `guides/dialysis-cramps-stasis-pigmentation.html`
 **Audience:** dual-mode (patients + clinicians); patient track multilingual EN/TL/CEB/KAP, clinician track English-only
 **Pipeline stage:** Stage 1 (prompt authoring) → feeds Stage 2 (`williamriveromd-local-image-generator`)
-**Target generator:** ChatGPT Image Generator GPT — <https://chatgpt.com/g/g-pmuQfob8d-image-generator>
+**Target generator:** ChatGPT Image Generator GPT — <https://chatgpt.com/>
 
 ---
 

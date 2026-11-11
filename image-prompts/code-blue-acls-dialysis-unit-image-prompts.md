@@ -1,7 +1,7 @@
 # Code Blue & ACLS in a Dialysis Unit — Image-Prompt Pack
 
 **Guide:** `guides/code-blue-acls-dialysis-unit.html` — "Efficient Handling of Code Blues & ACLS in a Dialysis Unit"
-**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generator:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **House rules baked into every prompt:** light background only (white / off-white / soft gray / light teal tint); navy (#0f1e2e) + teal (#1a6b72) as typography/accents only; English-only, mobile-readable labels; `williamriveromd.com` attribution in the corner; no AI gibberish text; clinically accurate; realistic anatomy/devices. All files `.png`.
 **Skill provenance:** Images 1–8 via `williamriveromd-infographic-skill`; Image 9 via `williamriveromd-simple-figure`.
 

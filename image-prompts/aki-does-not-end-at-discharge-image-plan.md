@@ -5,7 +5,7 @@
 guide *"AKI Does Not End at Discharge."* Each prompt below was authored with the
 correct house image skill (`/williamriveromd-hero-vignette`,
 `/williamriveromd-infographic-skill`) and is ready to paste into the
-[ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+[ChatGPT Image Generator GPT](https://chatgpt.com/).
 
 Generate each at the stated size, save the PNG **and** a `.webp` twin to
 `images/`, then optionally run Stage 2 (`williamriveromd-local-image-generator`)

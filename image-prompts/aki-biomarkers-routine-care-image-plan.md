@@ -1,7 +1,7 @@
 # Image Plan — *Kidney Stress Tests: AKI Biomarkers in Routine Care* (`aki-biomarkers-routine-care.html`)
 
 **Guide:** Dual-mode (Patients & Families · Clinicians) guide on when urine TIMP-2×IGFBP7 and NGAL change care, how to read them alongside KDIGO staging, and what the team does next.
-**Prepared:** 2026-11-09 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Prepared:** 2026-11-09 · **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT → https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` · `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill`
 
 ---

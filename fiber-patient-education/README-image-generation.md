@@ -6,7 +6,7 @@
 
 ## How to generate
 
-1. Open the Image Generator GPT: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+1. Open the Image Generator GPT: https://chatgpt.com/
 2. Copy the **COPY-READY IMAGE GENERATOR GPT PROMPT** from each prompt file below
 3. Paste into the GPT and generate
 4. Save the output to `generated-images/[filename]` as listed below

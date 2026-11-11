@@ -1,7 +1,7 @@
 # Image Plan: *Nephritic Syndrome: Recognize It, Act Fast, Find the Cause* (`nephritic-syndromes.html`)
 
 **Guide:** Nephritic syndromes primer. Dual audience: Patients & Families (EN/TL/CEB/KAP) and Clinicians.
-**Prepared:** 2026-11-10. **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT at https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Prepared:** 2026-11-10. **Pipeline:** Stage 1 (prompt authoring). Paste each `PROMPT` block into the ChatGPT **Image Generator** GPT at https://chatgpt.com/
 **Skills used:** `williamriveromd-hero-vignette` · `williamriveromd-infographic-skill` · `williamriveromd-biomedical-mechanism-figure` · `williamriveromd-algorithm-generator-skill` (Mode C) · `williamriveromd-local-image-generator` (schema and hand-off)
 
 ---

@@ -5,7 +5,7 @@ Two images are needed. This guide currently ships with **no hero image** (it
 was built with a text-only hero) and its `og:image` is a borrowed stopgap from
 `understanding-lab-results.html`. Both prompts below are copy-paste ready for
 the ChatGPT Image Generator GPT
-(https://chatgpt.com/g/g-pmuQfob8d-image-generator). No images are needed
+(https://chatgpt.com/). No images are needed
 inside the companion PDF itself — it is a typography/table document with no
 photographic figures.
 

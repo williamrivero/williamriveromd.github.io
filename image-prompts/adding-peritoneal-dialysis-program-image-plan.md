@@ -4,7 +4,7 @@
 **Live URL (after merge):** https://renalcarematters.com/guides/adding-peritoneal-dialysis-program.html
 **Total images:** 7 (1 hero vignette · 1 OG card · 5 inline figures)
 **Visual anchor:** `ckd-understanding-overview.webp`
-**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Production target:** ChatGPT Image Generator GPT — https://chatgpt.com/
 **Generated:** 17 August 2026
 
 ---

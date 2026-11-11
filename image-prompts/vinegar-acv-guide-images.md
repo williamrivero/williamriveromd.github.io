@@ -5,7 +5,7 @@
 **Total images:** 6
 **Recommended generation order:** 4 → 5 → 6 → 1 → 3 → 2
 
-Paste each prompt block into: https://chatgpt.com/g/g-pmuQfob8d-image-generator
+Paste each prompt block into: https://chatgpt.com/
 
 ---
 

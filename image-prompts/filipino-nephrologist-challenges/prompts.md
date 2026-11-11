@@ -1,7 +1,7 @@
 # Image Prompt Pack — "A Filipino Nephrologist's Challenges — A Perspective"
 
 **Guide:** `guides/filipino-nephrologist-challenges.html`
-**Generate in:** ChatGPT Image Generator GPT → https://chatgpt.com/g/g-pmuQfob8d-image-generator
+**Generate in:** ChatGPT Image Generator GPT → https://chatgpt.com/
 **House rules:** light background only (white / off-white / soft gray — never navy/dark); navy `#0f1e2e` + teal `#1a6b72` + gold `#b8860b` as type/accents; every image carries a small semi-transparent `williamriveromd.com` attribution in the bottom-right corner.
 
 After the three PNGs are generated and saved to `images/`, the `og:image*` meta in the guide already points to `filipino-nephrologist-challenges-og.png` (1200×630) — Asset 1 below. Assets 2 and 3 are inline figures; add each with a `<figure>` + `<figcaption><p class="fig-desc">…</p></figcaption>` so the lightbox shows a description (run `patch_image_lightbox.py` is already done).

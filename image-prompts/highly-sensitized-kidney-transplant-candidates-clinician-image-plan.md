@@ -7,7 +7,7 @@ house image skill (`/williamriveromd-hero-vignette`,
 `/williamriveromd-infographic-skill`,
 `/williamriveromd-biomedical-mechanism-figure`,
 `/williamriveromd-simple-figure`) and is ready to paste into the
-[ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+[ChatGPT Image Generator GPT](https://chatgpt.com/).
 
 Generate each at the stated size, save the PNG **and** a `.webp` twin to
 `images/` using the **exact filenames below** (they are already wired into the

@@ -1,6 +1,6 @@
 # Image Prompt Pack — Substance Use & Chronic Kidney Disease
 Guide: `guides/substance-abuse-ckd.html`
-Pipeline: Stage 1 output (williamriveromd-infographic-skill) → feed to ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator) → Stage 2 (williamriveromd-local-image-generator) appends og tags.
+Pipeline: Stage 1 output (williamriveromd-infographic-skill) → feed to ChatGPT Image Generator GPT (https://chatgpt.com/) → Stage 2 (williamriveromd-local-image-generator) appends og tags.
 House rules baked into every prompt: **light background only**, navy `#0f1e2e` / teal `#1a6b72` / renal-green `#1f7a4d` / amber `#b8860b` / red `#b91c1c` accents, Lora + DM Sans feel, Filipino context, **`williamriveromd.com` attribution bottom-right (bottom-center for portrait)**.
 
 ---

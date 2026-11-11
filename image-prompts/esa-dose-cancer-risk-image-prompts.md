@@ -2,7 +2,7 @@
 
 **Guide:** *More EPO Is Not Stronger Blood — ESA Dose, Hemoglobin Targets & Cancer Risk in Dialysis*
 **Pipeline:** Stage 1 prompt pack. Paste each `COPY-READY PROMPT` into the ChatGPT Image Generator GPT
-(https://chatgpt.com/g/g-pmuQfob8d-image-generator). Then hand this folder to Stage 2
+(https://chatgpt.com/). Then hand this folder to Stage 2
 (`williamriveromd-local-image-generator`) for manifests + `og:image` wiring.
 
 **Skills used:**

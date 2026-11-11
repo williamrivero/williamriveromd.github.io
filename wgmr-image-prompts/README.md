@@ -24,7 +24,7 @@ guideline brand names).
 1. **Stage 1** — invoke one of the prompt-authoring skills (`infographic-skill`, `simple-figure`,
    `biomedical-mechanism-figure`, `hero-vignette`, `algorithm-generator-skill`, or
    `organ-crosstalk-sigil-graphic`) to produce a copy-paste prompt for the
-   [ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator).
+   [ChatGPT Image Generator GPT](https://chatgpt.com/).
 2. **Stage 2** — invoke `williamriveromd-local-image-generator` to validate the prompt(s),
    build the local `image-prompts/` / `generated-images/` folder structure and manifest, and
    (once you've generated and saved the images) wire them into the guide's HTML.

@@ -5,7 +5,7 @@
 feeder, why-late barriers, reasons for hope, the data blind spot, diagnostic
 access, disaster continuity). Each figure is authored with the correct house
 skill. Generate in the
-[ChatGPT Image Generator GPT](https://chatgpt.com/g/g-pmuQfob8d-image-generator),
+[ChatGPT Image Generator GPT](https://chatgpt.com/),
 save PNG (+ `.webp`) outputs to `images/`, then optionally run Stage 2
 (`williamriveromd-local-image-generator`) for manifests.
 

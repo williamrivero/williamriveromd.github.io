@@ -1,6 +1,6 @@
 # AL Amyloidosis and Your Kidneys — Image Plan Blueprint and GPT Prompt Pack
 
-**Guide:** `guides/al-amyloidosis-kidneys.html` · **Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/g/g-pmuQfob8d-image-generator) · **Prepared:** November 6, 2026
+**Guide:** `guides/al-amyloidosis-kidneys.html` · **Production target:** ChatGPT Image Generator GPT (https://chatgpt.com/) · **Prepared:** November 6, 2026
 **House rules applied to every prompt:** light backgrounds only · fonts Inter / Nunito Sans / IBM Plex Sans / Manrope only · American English · attribution `renalcarematters.com` (public guide set) · `.png` masters + `.webp` twins at exact pixel size · no histology, no invented numbers, no copied journal figures.
 
 ---
