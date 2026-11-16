@@ -870,6 +870,10 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   never Lexicomp, UpToDate, Micromedex, MIMS, Renal Drug Handbook, Sanford. Kidney bands keep the label's
   measure (Cockcroft–Gault CrCl stays CrCl). Tile colors: green no change · amber dose/caution · red avoid ·
   gray not studied · `hide` = band not applicable.
+- **Variant spellings** (`data/drugs/aliases.json`, built by `tools/drugdb/build_aliases.py`; manual fixes in
+  `tools/drugdb/alias_overrides.json`): registry typos, salt leftovers and INN/USAN pairs (allopurino, aciciovir,
+  aciclovir) map to a main molecule page. High confidence: banner to the main page, canonical to it, `noindex`
+  (so off the sitemap), products also listed on the main page; medium: "Did you mean" only. Re-run after a registry rebuild.
 - **Build:** `python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.

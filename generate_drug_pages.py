@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og-drug-index.png"   # 1200x630 share card (Nov 17 2026)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "10"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "11"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -438,6 +438,19 @@ ol.dd-refs a { color: #1a6b72; }
 .dd-sev-adjust { color: #5b3a00; background: #fde68a; }
 .dd-sev-minor { color: #1f3864; background: #e3e8f2; }
 .dd-usbrand { font-size: 13.5px; color: #34455f; margin: -4px 0 8px; }
+.dd-alias { border: 2px solid #1a6b72; background: #e6f4f4; color: #12333a; border-radius: 12px; padding: 12px 16px; margin: 4px 0 12px;
+  font-size: 14.5px; line-height: 1.5; max-width: 720px; }
+.dd-alias p { margin: 0 0 6px; }
+.dd-alias-soft { border-width: 1px; border-style: dashed; background: #f3f7fa; }
+.dd-alias-soft p { margin: 0; }
+.dd-alias a { color: #0e4a50; font-weight: 700; }
+.dd-alias-go { display: inline-block; text-decoration: none; border-bottom: 2px solid currentColor; }
+.dd-alias-sub { font-weight: 500; }
+.dd-also { font-size: 14px; color: var(--text-mid); margin: 6px 0 10px; }
+.dd-also a { color: #0e4a50; font-weight: 600; }
+.dd-varnote { display: block; font-size: 11.5px; font-weight: 700; color: #7a3d00; margin-top: 3px; }
+.dd-varnote a { color: inherit; }
+.dd-arrow { font-weight: 600; color: #0e4a50; white-space: nowrap; }
 .hero-sub.dd-classline { font-size: 14.5px; }
 .dd-chip.dd-hr { color: #5b3a00; background: #fdf3dc; border-color: rgba(146,64,14,.35); }
 .dd-chip.dd-s2 { color: #fff; background: #991b1b; border-color: #991b1b; }
@@ -677,6 +690,10 @@ html[data-theme="dark"] .dd-sev-avoid { background: #b91c1c; color: #fff; }
 html[data-theme="dark"] .dd-sev-adjust { background: #5c4a00; color: #fde68a; }
 html[data-theme="dark"] .dd-sev-minor { background: #22304a; color: #dbe6f5; }
 html[data-theme="dark"] .dd-usbrand, html[data-theme="dark"] .dd-dispnote { color: rgba(238,242,251,.82); }
+html[data-theme="dark"] .dd-alias { background: #10303a; border-color: #4fb3bb; color: #e6f2f4; }
+html[data-theme="dark"] .dd-alias-soft { background: #16233a; }
+html[data-theme="dark"] .dd-alias a, html[data-theme="dark"] .dd-also a, html[data-theme="dark"] .dd-arrow { color: #7fd3da; }
+html[data-theme="dark"] .dd-varnote { color: #f6c27a; }
 html[data-theme="dark"] .dd-dispnote a { color: #dbe6f5; }
 html[data-theme="dark"] .dd-chip.dd-hr { color: #fde68a; background: rgba(251,191,36,.14); border-color: rgba(251,191,36,.4); }
 html[data-theme="dark"] .dd-chip.dd-s2 { color: #fff; background: #b91c1c; border-color: #f87171; }
@@ -902,8 +919,10 @@ if(idx){
         if(d.sup){why=(o.lab&&o.lab!=='supplement')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
           return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+(d.p?encodeURIComponent(d.s)+'.html':'view.html?b='+encodeURIComponent(d.s))+'">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
           '<span class="dd-sub">'+escH((d.i||[]).slice(0,4).join(' · '))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
+        if(d.m&&d.mh)return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.m)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+' <span class="dd-arrow">&rarr; '+escH(d.mn)+'</span></a>'+why+
+          '<span class="dd-sub">Registered under a variant spelling of '+escH(d.mn)+'; opens the main monograph</span></li>';
         return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
-          '<span class="dd-sub">'+escH(d.c||'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
+          '<span class="dd-sub">'+escH(d.c||'')+(d.m?' · Did you mean <a href="'+encodeURIComponent(d.m)+'.html">'+escH(d.mn)+'</a>?':'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
       res.hidden=false; az.hidden=true; sq.setAttribute('aria-expanded',out.length?'true':'false'); active=-1;
       info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
     });
@@ -1080,6 +1099,20 @@ class Ctx:
                 continue
             self.pharmacies.append(dict(x, link_type=lt))
         self.labels_dir, self.renal_dir = data_dir / "labels", data_dir / "renal"
+        # variant / misspelled generic names -> main molecule page (tools/drugdb/build_aliases.py)
+        self.aliases: dict[str, dict] = {}
+        self.variants_of: dict[str, list[str]] = defaultdict(list)
+        for v, e in sorted((load_json(data_dir / "aliases.json", {}) or {}).items()):
+            m = ws((e or {}).get("main")) if isinstance(e, dict) else ""
+            if (v.startswith("_") or not m or m == v or v not in self.generics or m not in self.generics
+                    or not self.by_slug.get(v) or not self.by_slug.get(m)):
+                continue
+            self.aliases[v] = {"main": m, "high": ws(e.get("confidence")) == "high", "reason": ws(e.get("reason"))}
+        for v, e in list(self.aliases.items()):
+            if e["main"] in self.aliases:          # never chain; a main must not itself be a variant
+                del self.aliases[v]
+        for v, e in self.aliases.items():
+            self.variants_of[e["main"]].append(v)
         cj = load_json(data_dir / "controlled.json", {}) or {}
         self._controlled = cj.get("items", {}) if isinstance(cj, dict) else {}
         srcs = cj.get("sources") if isinstance(cj, dict) else None
@@ -1122,7 +1155,7 @@ def header(current_drugs: bool) -> str:
             f'  <nav class="header-nav" aria-label="Site">{links}</nav>\n</header>\n')
 
 
-def head(title, desc, canonical, jsonld, content_hash, keywords="") -> str:
+def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="index, follow") -> str:
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1132,7 +1165,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="") -> str:
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 {f'<meta name="keywords" content="{esc(keywords)}">' if keywords else ''}
-<meta name="robots" content="index, follow">
+<meta name="robots" content="{robots}">
 <meta name="generator" content="{GENERATOR_TAG}">
 <meta name="rcm-content-hash" content="{content_hash}">
 <link rel="canonical" href="{canonical}">
@@ -1210,7 +1243,7 @@ def product_sort_key(p):
     return (b == "", b, ws(p.get("dosage_strength_form")).lower(), ws(p.get("registration_number")))
 
 
-def render_products(slug, g, products, today) -> str:
+def render_products(slug, g, products, today, also: str = "") -> str:
     rows, classes = [], {}
     for p in sorted(products, key=product_sort_key):
         c = classify(p)
@@ -1219,6 +1252,7 @@ def render_products(slug, g, products, today) -> str:
         past = bool(exp and exp < today)
         brand = ws(p.get("brand_name")) or "(no brand name)"
         reg_name = ws(p.get("generic_name"))
+        var_slug = p.get("_variant_of_main")
         mfr = ws(p.get("manufacturer"))
         country = ws(p.get("country_of_origin"))
         dist_bits = []
@@ -1236,7 +1270,9 @@ def render_products(slug, g, products, today) -> str:
         rows.append(
             f'<tr data-class="{esc(c)}" data-past="{1 if past else 0}">'
             f'<td data-label="Brand"><div><span class="dd-brand">{esc(brand)}</span>'
-            + (f'<span class="dd-sub">{esc(reg_name)}</span>' if reg_name else "") + "</div></td>"
+            + (f'<span class="dd-sub">{esc(reg_name)}</span>' if reg_name else "")
+            + (f'<span class="dd-varnote"><a href="{esc(var_slug)}.html" title="Registered under the variant spelling {esc(reg_name or var_slug)}">Variant spelling</a></span>'
+               if var_slug else "") + "</div></td>"
             f'<td data-label="Strength &amp; form"><div>{esc(ws(p.get("dosage_strength_form")))}'
             + (f'<span class="dd-sub">{esc(ws(p.get("packaging")))}</span>' if ws(p.get("packaging")) else "") + "</div></td>"
             f'<td data-label="Dispensing" data-sort="{esc(c)}"><div><span class="dd-tag {esc(c) if c in CLASS_LABEL else ""}" '
@@ -1258,7 +1294,8 @@ def render_products(slug, g, products, today) -> str:
 <div class="section-tag">Philippine products</div>
 <h2>Registered products in the Philippines</h2>
 <p class="dd-lead">{n:,} product{'s' if n != 1 else ''} registered with the Food and Drug Administration (FDA) Philippines list
-{esc(g['name'])} as the generic name. Registration status changes; confirm a product's current status on the FDA portal before relying on it.</p>
+{esc(g['name'])} as the generic name{" (including products registered under a variant spelling)" if also else ""}. Registration status changes; confirm a product's current status on the FDA portal before relying on it.</p>
+{also}
 <p><a class="dd-btn" href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">Verify on PH FDA portal {EXT_ICON}</a></p>
 {'<details class="dd-prod-acc" id="dd-prod-acc"><summary><span class="dd-prod-acc-show">Show all ' + f"{n:,}" + ' products</span><span class="dd-prod-acc-hide">Hide products</span></summary>' if n > 2 else ''}
 <div class="dd-toolbar no-print" role="search">
@@ -2107,6 +2144,12 @@ def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[d
     forms = sorted({form_group(f) for f, _, _ in available_forms(products)} - {""})
     inds = [re.sub(r"\s+", " ", x)[:90] for x in indication_items(label)] if label else []
     e = {"s": slug, "n": name, "c": class_group(uc, ph)}
+    al = ctx.aliases.get(slug)
+    if al:   # variant spelling: search results and A-Z rows point to the main molecule
+        e["m"] = al["main"]
+        e["mn"] = ws(ctx.generics[al["main"]].get("name")) or al["main"]
+        if al["high"]:
+            e["mh"] = 1
     ing = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
     if len(ing) > 1:
         e["i"] = ing
@@ -2294,8 +2337,42 @@ def render_alternate_label(alt: dict, i: int) -> tuple[str, str, str] | None:
     return sec(sid, title, html_, title)
 
 
+def alias_banner(slug: str, ctx: "Ctx") -> str:
+    """Banner under the brand line of a variant-spelling page, pointing to the main molecule page."""
+    a = ctx.aliases.get(slug)
+    if not a:
+        return ""
+    m = a["main"]
+    mn = ws(ctx.generics[m].get("name")) or m
+    if a["high"]:
+        return (f'<div class="dd-alias" role="note"><p>This entry appears to be <strong>{esc(mn)}</strong> registered under a '
+                f'variant spelling.</p><a class="dd-alias-go" href="{esc(m)}.html">See the main {esc(mn)} monograph '
+                '<span class="dd-alias-sub">(kidney dosing, prescribing information, all brands)</span> &rarr;</a></div>')
+    return (f'<div class="dd-alias dd-alias-soft" role="note"><p>Did you mean <a href="{esc(m)}.html"><strong>{esc(mn)}</strong></a>? '
+            'This generic name looks like a variant spelling of it.</p></div>')
+
+
+def also_registered(slug: str, ctx: "Ctx") -> str:
+    """'Also registered under: ...' line for a main page with variant spellings."""
+    vs = ctx.variants_of.get(slug) or []
+    if not vs:
+        return ""
+    def item(v):
+        n = len(ctx.by_slug.get(v, []))
+        reg = (ctx.generics[v].get("registered_names") or [ctx.generics[v].get("name") or v])[0]
+        soft = "" if ctx.aliases[v]["high"] else ", possible match"
+        return f'<a href="{esc(v)}.html">{esc(ws(reg))}</a> ({n:,} product{"s" if n != 1 else ""}{soft})'
+    hi = [v for v in vs if ctx.aliases[v]["high"]]
+    return (f'<p class="dd-also"><strong>Also registered under:</strong> {" · ".join(item(v) for v in vs)}'
+            + ('. Products registered under these spellings are included in the table and marked.' if hi else '.') + '</p>')
+
+
 def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
-    products = ctx.by_slug.get(slug, [])
+    products = list(ctx.by_slug.get(slug, []))
+    for v in ctx.variants_of.get(slug) or []:       # main page lists products registered under variant spellings
+        if ctx.aliases[v]["high"]:
+            products += [dict(p, _variant_of_main=v) for p in ctx.by_slug.get(v, [])]
+    alias = ctx.aliases.get(slug)
     name = ws(g.get("name")) or slug
     label = ctx.label(slug)
     lab = _lab(label)
@@ -2404,7 +2481,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
             f'<li><strong>{esc(f)}</strong>{": " + esc(", ".join(st[:10])) + (", …" if len(st) > 10 else "") if st else ""}</li>'
             for f, st, n in forms[:10]) + "</ul>"
             + (f'<p class="dd-note">and {len(forms) - 10} more forms; see the products table.</p>' if len(forms) > 10 else ""))
-    df += render_products(slug, g, products, ctx.today)
+    df += render_products(slug, g, products, ctx.today, also_registered(slug, ctx))
     us_df = label_html(label, "dosage_forms_and_strengths")
     if us_df:
         df += "<h3>United States (label)</h3>" + acc("Dosage forms and strengths (US label)", us_df)
@@ -2498,6 +2575,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     pills = "".join(f'<a class="nav-pill" href="#{sid}">{esc(nav)}</a>' for sid, nav, _ in S)
 
     canonical = f"{SITE}/drugs/{slug}.html"
+    # a high-confidence variant spelling consolidates to the main page (canonical + noindex; dropped from the sitemap)
+    head_canon = f"{SITE}/drugs/{alias['main']}.html" if alias and alias["high"] else canonical
+    robots = "noindex, follow" if alias and alias["high"] else "index, follow"
     rxstat = "https://schema.org/PrescriptionOnly" if classes == {"Rx"} else ("https://schema.org/OTC" if classes and "Rx" not in classes else None)
     drug = {"@type": "Drug", "@id": canonical + "#drug", "name": name, "nonProprietaryName": name, "url": canonical}
     if cat:
@@ -2520,7 +2600,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     brand_txt = ", ".join(brands_ranked[:6]) + ("…" if len(brands) > 6 else "")
     desc = (f"{name}{' (' + cat + ')' if cat else ''}: {len(products):,} FDA Philippines-registered products"
             + (f" including {brand_txt}" if brands else "") + ". Kidney dosing, US FDA label text, PNF and price references.")
-    body = (head(title, desc[:300], canonical, jsonld, "__HASH__", keywords=", ".join([name] + brands_ranked[:20]))
+    body = (head(title, desc[:300], head_canon, jsonld, "__HASH__", keywords=", ".join([name] + brands_ranked[:20]), robots=robots)
             + '<body class="physician-mode single-mode dd-mono">\n' + header(False) + f"""
 <section class="hero">
   <div class="container dd-hero-wide">
@@ -2530,6 +2610,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         <div class="hero-tag">Drug Database · Clinicians</div>
         <h1>{esc(name)}</h1>
         {render_brand_line(brands_ranked)}
+        {alias_banner(slug, ctx)}
         {f'<p class="dd-usbrand">US brand (reference label): <strong>{esc(us_brand)}</strong>; not a Philippine-registered brand.</p>' if us_brand else ''}
         <p class="hero-sub dd-classline">{"<br>".join(cls_line)}</p>
         <div class="dd-chips">{''.join(chips)}</div>
@@ -2571,8 +2652,12 @@ KIDNEY_BADGE = ('<span class="dd-kbadge" title="Has approved kidney dosing guida
 
 def _entry_li(e: dict, prefix: str = "") -> str:
     sub = " · ".join(x for x in (e.get("c", ""), ", ".join(e.get("b", [])[:3]) + ("…" if len(e.get("b", [])) > 3 else "")) if x)
+    if e.get("m") and e.get("mh"):   # high-confidence variant spelling: the row goes to the main molecule
+        return (f'<li class="dd-varli"><a href="{prefix}{esc(e["m"])}.html">{esc(e["n"])} <span class="dd-arrow">&rarr; {esc(e["mn"])}</span></a>'
+                f'<span class="dd-sub">Variant spelling of {esc(e["mn"])}{" · " + esc(", ".join(e.get("b", [])[:3])) if e.get("b") else ""}</span></li>')
+    did = (f'<span class="dd-sub">Did you mean <a href="{prefix}{esc(e["m"])}.html">{esc(e["mn"])}</a>?</span>' if e.get("m") else "")
     return (f'<li{" data-k=" + chr(34) + "1" + chr(34) if e.get("k") else ""}><a href="{prefix}{esc(e["s"])}.html">{esc(e["n"])}</a>'
-            + (KIDNEY_BADGE if e.get("k") else "") + (f'<span class="dd-sub">{esc(sub)}</span>' if sub else "") + "</li>")
+            + (KIDNEY_BADGE if e.get("k") else "") + (f'<span class="dd-sub">{esc(sub)}</span>' if sub else "") + did + "</li>")
 
 
 def category_groups(entries) -> dict[str, list[dict]]:

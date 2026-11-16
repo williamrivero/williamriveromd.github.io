@@ -111,6 +111,10 @@ class SCtx:
         drug_dir = out_dir.parent
         self.drug_pages = {f.stem for f in drug_dir.glob("*.html")} - {"index"}
         self.notes_dir = data_dir / "supplement-notes"
+        # variant generic spellings -> main molecule page (tools/drugdb/build_aliases.py; high confidence only)
+        al = load_json(data_dir / "aliases.json", {}) or {}
+        self.alias_main = {v: e["main"] for v, e in al.items()
+                           if isinstance(e, dict) and e.get("confidence") == "high" and e.get("main")}
 
     def notes(self, slug):
         return load_json(self.notes_dir / f"{slug}.json") if self.notes_dir.is_dir() else None
@@ -127,6 +131,7 @@ class SCtx:
         out, seen = [], set()
         for p in products:
             exact = slug_of(ingredients_of(p.get("ingredients_raw") or ""))
+            exact = self.alias_main.get(exact, exact)
             if self.drug_ok(exact) and exact not in seen:
                 seen.add(exact)
                 out.append((exact, self.generics.get(exact, {}).get("name") or exact, "same ingredients"))
@@ -136,7 +141,7 @@ class SCtx:
                     cands = ["diosmin"]
                 else:
                     cands = CROSS.get(i, [])
-                b = self.best(cands)
+                b = self.best([self.alias_main.get(c, c) for c in cands])
                 if b and b not in seen:
                     seen.add(b)
                     out.append((b, self.generics.get(b, {}).get("name") or b, "contains " + i.split(" (")[0]))

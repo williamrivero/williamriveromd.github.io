@@ -169,8 +169,10 @@ if(idx){
         if(d.sup){why=(o.lab&&o.lab!=='supplement')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
           return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+(d.p?encodeURIComponent(d.s)+'.html':'view.html?b='+encodeURIComponent(d.s))+'">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
           '<span class="dd-sub">'+escH((d.i||[]).slice(0,4).join(' · '))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
+        if(d.m&&d.mh)return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.m)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+' <span class="dd-arrow">&rarr; '+escH(d.mn)+'</span></a>'+why+
+          '<span class="dd-sub">Registered under a variant spelling of '+escH(d.mn)+'; opens the main monograph</span></li>';
         return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
-          '<span class="dd-sub">'+escH(d.c||'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
+          '<span class="dd-sub">'+escH(d.c||'')+(d.m?' · Did you mean <a href="'+encodeURIComponent(d.m)+'.html">'+escH(d.mn)+'</a>?':'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
       res.hidden=false; az.hidden=true; sq.setAttribute('aria-expanded',out.length?'true':'false'); active=-1;
       info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
     });
