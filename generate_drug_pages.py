@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "7"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "8"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
