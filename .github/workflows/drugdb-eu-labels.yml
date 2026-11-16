@@ -1,0 +1,79 @@
+name: drugdb-eu-labels
+# Weekly refresh of EU Summaries of Product Characteristics (EMA EPAR product information) for drug-database
+# generics that have no US FDA label, plus link-only national prescribing-information links (Health Canada DPD,
+# MHRA). Writes data/drugs/labels-eu/<slug>.json, _missing.json, _changes.json and the "links" field of
+# data/drugs/labels-intl/<slug>.json, then commits them to main. See data/drugs/SOURCES.md for the reuse terms.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "run = fetch and commit; probe = print source structure only (debug, no commit)"
+        default: "run"
+        type: choice
+        options: [run, probe]
+      only:
+        description: "Space-separated slugs to refetch (blank = every generic without a US label)"
+        default: ""
+      national:
+        description: "Also refresh link-only national sources (Health Canada DPD, MHRA)"
+        type: boolean
+        default: true
+      force:
+        description: "Re-download and re-extract every product-information PDF even if unchanged"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "30 18 * * 0"   # Mondays 02:30 Asia/Manila, 30 minutes after drugdb-labels (US)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: drugdb-eu-labels
+  cancel-in-progress: false
+
+jobs:
+  eu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install poppler (pdftotext)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils >/dev/null
+      - name: Probe sources (debug)
+        if: ${{ inputs.mode == 'probe' }}
+        env:
+          ONLY: ${{ inputs.only || '' }}
+        run: python3 tools/drugdb/fetch_eu_smpc.py --probe ${ONLY:+--only $ONLY}
+      - name: Fetch EU SmPCs and national links
+        if: ${{ inputs.mode != 'probe' }}
+        env:
+          FORCE: ${{ inputs.force && '--force' || '' }}
+          NATIONAL: ${{ (github.event_name == 'schedule' || inputs.national) && '--national' || '' }}
+          ONLY: ${{ inputs.only || '' }}
+        run: |
+          python3 tools/drugdb/fetch_eu_smpc.py $FORCE $NATIONAL ${ONLY:+--only $ONLY}
+      - name: Commit changes
+        if: ${{ inputs.mode != 'probe' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/drugs/labels-eu data/drugs/labels-intl
+          if git diff --cached --quiet; then
+            echo "No EU SmPC or link changes."; exit 0
+          fi
+          N=$(python3 -c "import json;d=json.load(open('data/drugs/labels-eu/_changes.json'));print(len(d['added']),'added,',len(d['changed']),'changed,',len(d.get('removed',[])),'removed')")
+          M=$(python3 -c "import json;d=json.load(open('data/drugs/labels-eu/_missing.json'));print(d['count'])")
+          git commit -m "Drug database: refresh EU SmPCs from EMA ($N; $M without an EU SmPC)" \
+                     -m "Automated EMA EPAR product-information refresh and national prescribing-information links. Review list: data/drugs/labels-eu/_changes.json"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash -X theirs origin main && git push origin HEAD:main && exit 0
+            git rebase --abort 2>/dev/null || true
+            sleep $((i * 10))
+          done
+          exit 1
