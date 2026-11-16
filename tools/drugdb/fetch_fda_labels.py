@@ -23,7 +23,8 @@ Biosimilar suffixes ("EPOETIN ALFA-EPBX") do NOT match the reference product's g
 Ranking: a label whose route matches the PH registrations (data/drugs/registry) first, then
 human Rx before OTC. Default --prefer innovator: NDA/BLA, then the lowest NDA/BLA number
 (the original reference listed drug rather than a later 505(b)(2) reformulation or a
-biosimilar), then the original manufacturer over a repackager, then newest effective_time. --prefer recent (the literal brief): newest
+biosimilar), then the original manufacturer over a repackager, then a true brand over an
+authorized generic, then newest effective_time. --prefer recent (the literal brief): newest
 effective_time, then NDA/BLA. Recent alone tends to pick repackager copies.
 Labels with no openfda block (some biologics) fall back to a single-ingredient match on the
 start of spl_product_data_elements; such files carry selection.match = "unindexed-spl".
@@ -325,6 +326,14 @@ def app_number(label: dict) -> int:
     return min(nums) if nums else 10**9
 
 
+def generic_branded(label: dict) -> int:
+    """1 when the brand name is just the generic name (authorized generic), 0 for a true brand."""
+    of = label.get("openfda") or {}
+    b = set(tokens(first(of.get("brand_name")))) - SALT_WORDS
+    g = {t for n in of.get("generic_name") or [] for t in tokens(n)} - SALT_WORDS
+    return 1 if (not b or b <= g) else 0
+
+
 def is_repackager(label: dict) -> bool:
     return bool(REPACKAGER_HINTS.search(first((label.get("openfda") or {}).get("manufacturer_name"))))
 
@@ -351,7 +360,7 @@ def rank_key(label: dict, prefer: str, ph_routes: dict | None = None):
     eff_key = "".join(chr(255 - ord(c)) for c in eff.ljust(8, "0"))  # descending date
     head = (-route_weight(label, ph_routes), product_rank(label))
     if prefer == "innovator":
-        return head + (inn, app_number(label), rep, eff_key, label.get("id", ""))
+        return head + (inn, app_number(label), rep, generic_branded(label), eff_key, label.get("id", ""))
     return head + (eff_key, inn, label.get("id", ""))
 
 
