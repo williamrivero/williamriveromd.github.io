@@ -21,8 +21,9 @@ all in the substance name and every extra word is a salt/hydrate word
 Biosimilar suffixes ("EPOETIN ALFA-EPBX") do NOT match the reference product's generic.
 
 Ranking: a label whose route matches the PH registrations (data/drugs/registry) first, then
-human Rx before OTC. Default --prefer innovator: NDA/BLA, original manufacturer (not a
-repackager), newest effective_time. --prefer recent (the literal brief): newest
+human Rx before OTC. Default --prefer innovator: NDA/BLA, then the lowest NDA/BLA number
+(the original reference listed drug rather than a later 505(b)(2) reformulation or a
+biosimilar), then the original manufacturer over a repackager, then newest effective_time. --prefer recent (the literal brief): newest
 effective_time, then NDA/BLA. Recent alone tends to pick repackager copies.
 Labels with no openfda block (some biologics) fall back to a single-ingredient match on the
 start of spl_product_data_elements; such files carry selection.match = "unindexed-spl".
@@ -318,6 +319,12 @@ def is_innovator(label: dict) -> bool:
     return any(a.upper().startswith(("NDA", "BLA")) for a in apps)
 
 
+def app_number(label: dict) -> int:
+    nums = [int(re.sub(r"\D", "", a) or 0) for a in (label.get("openfda") or {}).get("application_number") or []
+            if a.upper().startswith(("NDA", "BLA"))]
+    return min(nums) if nums else 10**9
+
+
 def is_repackager(label: dict) -> bool:
     return bool(REPACKAGER_HINTS.search(first((label.get("openfda") or {}).get("manufacturer_name"))))
 
@@ -335,6 +342,8 @@ def route_weight(label: dict, ph_routes: dict | None) -> int:
 def rank_key(label: dict, prefer: str, ph_routes: dict | None = None):
     """Smaller sorts first. Route match to the PH registrations, then Rx>OTC, then:
     innovator: NDA/BLA, original manufacturer (not a repackager), newest effective_time
+               (lowest NDA/BLA number = the original reference product, not a later
+               505(b)(2) reformulation or biosimilar)
     recent:    newest effective_time, NDA/BLA (the literal brief)"""
     eff = str(label.get("effective_time") or "0")
     inn = 0 if is_innovator(label) else 1
@@ -342,7 +351,7 @@ def rank_key(label: dict, prefer: str, ph_routes: dict | None = None):
     eff_key = "".join(chr(255 - ord(c)) for c in eff.ljust(8, "0"))  # descending date
     head = (-route_weight(label, ph_routes), product_rank(label))
     if prefer == "innovator":
-        return head + (inn, rep, eff_key, label.get("id", ""))
+        return head + (inn, app_number(label), rep, eff_key, label.get("id", ""))
     return head + (eff_key, inn, label.get("id", ""))
 
 
@@ -383,13 +392,27 @@ def extract_renal_from_pk(text: str) -> str:
 
 
 def extract_renal_from_dosing(text: str) -> str:
-    # PLR: "2.4 Dosage in Patients with Renal Impairment" up to the next "2.x" heading
-    m = re.search(r"(?:^|\s)(2\.\d+)\s+(?=[^.]{0,90}?(?:Renal|Kidney|eGFR|Creatinine Clearance|Dialysis))"
-                  r"[A-Z][^.]{0,90}?(?:Renal|Kidney|eGFR|Creatinine Clearance|Dialysis)", text)
-    if m:
-        nxt = re.search(r"\s2\.\d+\s+[A-Z]|\s3\s+DOSAGE FORMS", text[m.end():])
-        end = m.end() + nxt.start() if nxt else len(text)
-        return text[m.start(1):end].strip()
+    """PLR: every "2.x ..." subsection whose heading mentions renal function, kidney, eGFR,
+    creatinine clearance or dialysis (but not "Normal Renal Function"), verbatim and in order."""
+    heads = list(re.finditer(r"(?:^|\s)(2\.\d+)\s+(?=[A-Z])", text))
+    found = []
+    for i, h in enumerate(heads):
+        end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
+        dfm = re.search(r"\s3\s+DOSAGE FORMS", text[h.start():end])
+        if dfm:
+            end = h.start() + dfm.start()
+        chunk = text[h.start(1):end].strip()
+        title = re.sub(r"^2\.\d+\s+", "", chunk)[:110]
+        title = title[:6] + re.split(r"(?<=[a-z0-9)])\s+(?:The|For|Administer|No|Reduce|Adjust|Avoid|Initiate|"
+                                     r"If|When|Before|Measure|Assess|Monitor|A|An|In|It|This|Because)\s",
+                                     title[6:])[0]
+        if (re.search(r"Renal|Kidney|eGFR|Creatinine Clearance|Dialysis|CrCl|Hemodialysis", title)
+                and not re.search(r"Normal Renal", title)):
+            found.append(chunk)
+    if found:
+        return "\n\n".join(found)
+    if heads:  # PLR label without a renal dosing subsection
+        return ""
     return extract_renal_from_pk(text)
 
 

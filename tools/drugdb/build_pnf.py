@@ -19,7 +19,8 @@ import argparse, json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from build_registry import ingredients_of, slug_of  # noqa: E402
+from build_registry import ingredients_of, slug_of  # noqa: E402,F401
+from pnf_price_slugs import Resolver  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(HERE))
 SRC = os.path.join(HERE, "sources")
@@ -77,13 +78,27 @@ def form_codes(text):
     return codes
 
 
+def paren_groups(text):
+    """Top-level parenthetical groups, nesting-aware."""
+    out, depth, startpos = [], 0, None
+    for i, ch in enumerate(text):
+        if ch == "(":
+            if depth == 0:
+                startpos = i + 1
+            depth += 1
+        elif ch == ")" and depth:
+            depth -= 1
+            if depth == 0:
+                out.append(text[startpos:i])
+    return out
+
+
 def usage_notes(text):
     """Parenthetical program/facility restrictions written into a form line."""
     out = []
-    for m in re.finditer(r"\(([^()]{12,})\)", text):
-        t = m.group(1)
-        if re.search(r"\b(only|restricted|program|for use|use by|maintenance therapy|available under)\b", t, re.I):
-            out.append(re.sub(r"\s+", " ", t).strip())
+    for t in paren_groups(text):
+        if len(t) >= 12 and re.search(r"\b(only|restricted|program|for use|use by|maintenance therapy|available under)\b", t, re.I):
+            out.append(re.sub(r"\s+", " ", t).strip().rstrip("."))
     return out
 
 
@@ -145,31 +160,36 @@ def parse_pnf(path):
     for raw in lines[start:end]:
         line = raw.replace("\f", "")
         st = line.strip()
-        if not st or st.startswith(("Active Ingredient", "Route of Administration", "Pharmaceutical Forms")):
-            name_open = False if not st else name_open
+        if not st:
             continue
-        if re.fullmatch(r"[A-Z]", st) or re.fullmatch(r"\d{1,3}", st):
+        if st.startswith(("Active Ingredient", "Route of Administration", "Pharmaceutical Forms")) or re.fullmatch(r"\d{1,3}", st):
+            continue                      # page furniture: keeps a name that wraps across a page break open
+        if re.fullmatch(r"[A-Z]|OR", st):
             name_open = False
             continue
-        if st.startswith("*Reserve Antimicrobial") and len(st) < 40:
-            continue
         left, right, indent = split_cols(line)
+        if left is not None and left.startswith("*Reserve Antimicrobial"):
+            if cur is not None:
+                cur["raw"] += " *Reserve Antimicrobial"
+                if right:
+                    add_form(right, indent + 42)
+            name_open = False
+            continue
         if left is not None:
-            new_entry = True
-            if cur is not None and name_open:
-                # continuation of a wrapped name: no route on the right, or name still has an open paren
-                unbalanced = cur["raw"].count("(") > cur["raw"].count(")")
-                lower = left[:1].islower() or left.startswith(("(", "+", "-"))
-                right_is_cont = right is None or not ROUTE.match(right or "")
-                if unbalanced or lower or cur["raw"].rstrip().endswith(("+", "-", ",", "/")) or (right_is_cont and right is not None and not re.match(r"^\d", right)):
-                    new_entry = False
-                elif right is None and not cur["routes"]:
-                    new_entry = False
-            if new_entry:
-                cur = {"raw": left, "routes": []}
-                entries.append(cur)
-            else:
-                cur["raw"] += " " + left
+            paren_open = cur is not None and cur["raw"].count("(") > cur["raw"].count(")")
+            tail_open = cur is not None and cur["raw"].rstrip().endswith(("+", "-", " and", " or", " Sodium"))
+            raw_open = paren_open or tail_open
+            has_route = bool(right and ROUTE.match(right) and not re.match(r"^\d", right))
+            numbered = bool(right and re.match(r"^\d\)", right))
+            if paren_open and not tail_open and has_route and left[:1].isupper() and ")" not in left and left != "Antimicrobial":
+                raw_open = False      # an unclosed paren followed by a new heading with its own route
+            if cur is not None and name_open and not numbered and (raw_open or not has_route):
+                cur["raw"] += " " + left              # wrapped name
+                if right:
+                    add_form(right, 42)
+                continue
+            cur = {"raw": left, "routes": []}
+            entries.append(cur)
             name_open = True
             if right:
                 add_form(right, 40)
@@ -180,18 +200,22 @@ def parse_pnf(path):
 
 
 def build(args):
-    generics = json.load(open(os.path.join(REPO, "data", "drugs", "generics.json")))
+    generics = json.load(open(os.path.join(REPO, "data", "drugs", "generics.json"), encoding="utf-8"))
     out = {}
 
     def rec(slug):
         return out.setdefault(slug, {"in_pnf": True, "pnf_names": [], "pnf_entries": [],
                                      "philhealth_gamot": False, "gamot_source": None})
 
+    resolver = Resolver()
+    aliases = {}
+
     def to_slug(name):
-        n = name
-        for a, b in SPELLING.items():
-            n = re.sub(r"\b%s\b" % re.escape(a), b, n, flags=re.I)
-        return slug_of(ingredients_of(n)), ingredients_of(n)
+        primary, matches = resolver.resolve(name)
+        for m in matches:
+            if m != primary:
+                aliases.setdefault(primary, set()).add(m)
+        return primary, (resolver.candidates(name) or [("", [])])[0][1]
 
     unmatched = []
     for e in parse_pnf(PNF_TXT):
@@ -243,8 +267,33 @@ def build(args):
                          "gamot_source": None}
         out[slug]["philhealth_gamot"] = True
         out[slug]["gamot_source"] = gam["sources"][g["source"]]["title"]
-        if g.get("note"):
-            out[slug]["gamot_note"] = g["note"]
+        if g.get("konsulta_yakap"):
+            out[slug]["konsulta_yakap"] = True
+    # molecules priced in the GAMOT fixed fee schedule (Annex A.2) are covered too, e.g. tobramycin + dexamethasone
+    for line in open(os.path.join(SRC, "gamot_fixed_fee_pc2025-0013.tsv"), encoding="utf-8"):
+        if not line[:1].isdigit():
+            continue
+        slug, _ = to_slug(line.split("\t")[1])
+        if slug not in out:
+            out[slug] = {"in_pnf": None, "pnf_names": [], "pnf_entries": [], "philhealth_gamot": True,
+                         "gamot_source": None}
+        if not out[slug]["gamot_source"]:
+            out[slug]["philhealth_gamot"] = True
+            out[slug]["gamot_source"] = gam["sources"]["PC2025-0013"]["title"].replace("Annex A.i GAMOT List (75 molecules)", "Annex A.2 GAMOT Fixed Fee Schedule")
+
+    # copy each record under every registry slug judged to be the same generic
+    import copy
+    for primary, alts in aliases.items():
+        if primary not in out:
+            continue
+        for a in sorted(alts):
+            if a in out:
+                have = {e["dosage_form_strength"] for e in out[a]["pnf_entries"]}
+                out[a]["pnf_entries"] += [e for e in out[primary]["pnf_entries"] if e["dosage_form_strength"] not in have]
+                out[a]["philhealth_gamot"] = out[a]["philhealth_gamot"] or out[primary]["philhealth_gamot"]
+            else:
+                out[a] = copy.deepcopy(out[primary])
+                out[a]["same_as"] = primary
 
     result = {"_meta": {
         "description": "Philippine National Formulary (PNF) Essential Medicines List status and PhilHealth GAMOT coverage, keyed by generic slug.",
