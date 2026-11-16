@@ -172,17 +172,8 @@
     ]
   },
   "ibuprofen": {
-    "reason": "The ranked pick (IBU tablets, ANDA075682) carries no Warnings or Precautions text in openFDA, so the NSAID kidney warnings (renal effects, hyperkalemia, advanced renal disease) were missing. PH registers 200 mg and 400 mg tablets and softgels plus 100 mg/5 mL and 200 mg/5 mL suspensions. Prefer an oral solid label that has warnings text: current-format (PLR) first, else old-format with Warnings and Precautions.",
+    "reason": "The ranked pick (IBU tablets, ANDA075682) carries no Warnings or Precautions text in openFDA, so the NSAID kidney warnings (renal effects, hyperkalemia, advanced renal disease) were missing. PH registers 200 mg and 400 mg tablets and softgels plus 100 mg/5 mL and 200 mg/5 mL suspensions. Prefer an oral solid label that has warnings text: current-format (PLR) first, else old-format with Warnings and Precautions. The first run kept IBU because it carries a short warnings_and_cautions field; the old-format criterion (separate Warnings and Precautions) now comes first.",
     "primary": [
-      {
-        "route": "ORAL",
-        "form": "oral_ir",
-        "require_sections": [
-          "dosage_and_administration",
-          "dosage_forms_and_strengths",
-          "warnings_and_cautions"
-        ]
-      },
       {
         "route": "ORAL",
         "form": "oral_ir",
@@ -190,6 +181,16 @@
           "dosage_and_administration",
           "warnings",
           "precautions"
+        ]
+      },
+      {
+        "route": "ORAL",
+        "form": "oral_ir",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths",
+          "warnings_and_cautions",
+          "use_in_specific_populations"
         ]
       }
     ]
@@ -218,8 +219,16 @@
     ]
   },
   "zoledronic-acid": {
-    "reason": "62 of 72 PH products are zoledronic acid 4 mg (powder or 4 mg/5 mL concentrate) for oncology (hypercalcemia of malignancy, myeloma, bone metastases); the ranking had picked Reclast 5 mg/100 mL (NDA021817, osteoporosis), whose kidney rules differ (contraindicated at CrCl <35 instead of the oncology CrCl dose table). Zometa-type 4 mg label is primary; Reclast is kept as an alternate for the 5 mg/100 mL products.",
+    "reason": "62 of 72 PH products are zoledronic acid 4 mg (powder or 4 mg/5 mL concentrate) for oncology (hypercalcemia of malignancy, myeloma, bone metastases); the ranking had picked Reclast 5 mg/100 mL (NDA021817, osteoporosis), whose kidney rules differ (contraindicated at CrCl <35 instead of the oncology CrCl dose table). Zometa-type 4 mg label is primary; Reclast is kept as an alternate for the 5 mg/100 mL products. PH 4 mg products are 4 mg/5 mL concentrate or 4 mg powder; a 4 mg/5 mL concentrate label is preferred over the 4 mg/100 mL ready-to-use bag.",
     "primary": [
+      {
+        "route": "INTRAVENOUS",
+        "text_regex": "4\\s*mg\\s*(?:/|per|in)\\s*5\\s*mL",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths"
+        ]
+      },
       {
         "route": "INTRAVENOUS",
         "brand_regex": "zometa",
