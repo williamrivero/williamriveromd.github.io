@@ -62,11 +62,20 @@ if(tbl){
     var a=e.target.closest('a.dd-brand-link'); if(!a||!q)return;
     e.preventDefault();
     if(cls)cls.value=''; if(past)past.checked=false;
+    var acc=document.getElementById('dd-prod-acc'); if(acc)acc.open=true;
     q.value=a.getAttribute('data-brand'); filter();
     var sec=document.getElementById('products'); if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
     try{history.replaceState(null,'','#products');}catch(err){}
   });
 }
+
+/* ── Products table collapsed by default when >2 products: open on #products links and for print ── */
+(function(){
+  var acc=document.getElementById('dd-prod-acc'); if(!acc)return;
+  function chk(){ if(location.hash==='#products'||location.hash==='#dd-products')acc.open=true; }
+  chk(); window.addEventListener('hashchange',chk);
+  window.addEventListener('beforeprint',function(){acc.open=true;});
+})();
 
 /* ── Monograph: highlight the current section in the sticky table of contents ── */
 var toc=document.querySelector('.dd-toc');

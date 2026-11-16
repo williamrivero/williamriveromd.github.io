@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "8"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "9"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -533,6 +533,14 @@ table.dd-pk tr.dd-pk-renal th, table.dd-pk tr.dd-pk-renal td { background: #e9f6
 .dd-brands-acc[open] .dd-brands-hint { font-size: 0; }
 .dd-brands-acc[open] .dd-brands-hint::after { content: "Hide"; font-size: 12px; }
 .dd-brands-all { margin-top: 6px; }
+.dd-prod-acc > summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 12px;
+  padding: 9px 16px; border-radius: 999px; border: 1px solid #b9c6da; background: #fff; font-weight: 700; font-size: 14px; color: #1f3864; }
+.dd-prod-acc > summary::-webkit-details-marker { display: none; }
+.dd-prod-acc > summary::before { content: "▸"; font-size: 12px; transition: transform .15s; display: inline-block; }
+.dd-prod-acc[open] > summary::before { transform: rotate(90deg); }
+.dd-prod-acc .dd-prod-acc-hide, .dd-prod-acc[open] .dd-prod-acc-show { display: none; }
+.dd-prod-acc[open] .dd-prod-acc-hide { display: inline; }
+@media print { .dd-prod-acc > summary { display: none; } }
 /* At a glance card */
 .dd-glance { margin: 36px 0 0; background: var(--white); border: 1px solid #c9d3e3; border-top: 4px solid #1f3864;
   border-radius: 14px; padding: 18px 22px 8px; box-shadow: 0 1px 3px rgba(31,56,100,.06); }
@@ -686,6 +694,7 @@ html[data-theme="dark"] .dd-brands strong, html[data-theme="dark"] .dd-brands a.
 html[data-theme="dark"] .dd-brands-more > summary { color: #7fd3da; }
 html[data-theme="dark"] .dd-brands-acc > summary::before, html[data-theme="dark"] .dd-brands-hint { color: #7fd3da; }
 html[data-theme="dark"] .dd-brands-preview { color: rgba(238,242,251,.78); }
+html[data-theme="dark"] .dd-prod-acc > summary { background: #1a2535; border-color: #3a4a63; color: #eef2fb; }
 html[data-theme="dark"] .dd-glance { background: #1a2535; border-color: #2c3a52; border-top-color: #6f8fd0; box-shadow: none; }
 html[data-theme="dark"] .dd-glance h2 { color: #eef2fb; }
 html[data-theme="dark"] .dd-glance-row { border-color: #2a3548; }
@@ -784,11 +793,20 @@ if(tbl){
     var a=e.target.closest('a.dd-brand-link'); if(!a||!q)return;
     e.preventDefault();
     if(cls)cls.value=''; if(past)past.checked=false;
+    var acc=document.getElementById('dd-prod-acc'); if(acc)acc.open=true;
     q.value=a.getAttribute('data-brand'); filter();
     var sec=document.getElementById('products'); if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
     try{history.replaceState(null,'','#products');}catch(err){}
   });
 }
+
+/* ── Products table collapsed by default when >2 products: open on #products links and for print ── */
+(function(){
+  var acc=document.getElementById('dd-prod-acc'); if(!acc)return;
+  function chk(){ if(location.hash==='#products'||location.hash==='#dd-products')acc.open=true; }
+  chk(); window.addEventListener('hashchange',chk);
+  window.addEventListener('beforeprint',function(){acc.open=true;});
+})();
 
 /* ── Monograph: highlight the current section in the sticky table of contents ── */
 var toc=document.querySelector('.dd-toc');
@@ -1082,6 +1100,11 @@ class Ctx:
     def renal(self, slug):
         return load_json(self.renal_dir / f"{slug}.json") if self.renal_dir.is_dir() else None
 
+    def intl(self, slug):
+        """Non-US regulator product information metadata (labels-intl/<slug>.json) for generics without a US label."""
+        d = self.data_dir / "labels-intl"
+        return load_json(d / f"{slug}.json") if d.is_dir() else None
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # Page chrome
@@ -1231,6 +1254,7 @@ def render_products(slug, g, products, today) -> str:
 <p class="dd-lead">{n:,} product{'s' if n != 1 else ''} registered with the Food and Drug Administration (FDA) Philippines list
 {esc(g['name'])} as the generic name. Registration status changes; confirm a product's current status on the FDA portal before relying on it.</p>
 <p><a class="dd-btn" href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">Verify on PH FDA portal {EXT_ICON}</a></p>
+{'<details class="dd-prod-acc" id="dd-prod-acc"><summary><span class="dd-prod-acc-show">Show all ' + f"{n:,}" + ' products</span><span class="dd-prod-acc-hide">Hide products</span></summary>' if n > 2 else ''}
 <div class="dd-toolbar no-print" role="search">
 <label class="dd-hidden" for="dd-q">Filter products</label>
 <input id="dd-q" type="search" placeholder="Filter by brand, strength, manufacturer, or registration no." autocomplete="off">
@@ -1252,6 +1276,7 @@ def render_products(slug, g, products, today) -> str:
 </table>
 <div class="dd-empty" id="dd-empty" hidden>No products match these filters.</div>
 </div>
+{'</details>' if n > 2 else ''}
 <p class="dd-note" style="margin-top:10px">Source: FDA Philippines product registration database. "Valid until" is the registration validity date
 listed by the FDA; a past date may mean a renewal is pending. Package insert links point to files published by the FDA.</p>
 </section>
@@ -1870,7 +1895,32 @@ def kidney_block(renal: dict, pfx: str, children: bool = False) -> str:
             + f'<div class="dd-acc-body">{grid}</div></details>' + foot_html)
 
 
-def render_kidney_section(label, renal) -> str:
+def _intl_date(v) -> str:
+    """'2025-01-29' -> 'January 29, 2025'; '2025-03' -> 'March 2025'; '2004' -> '2004'."""
+    v = ws(v)
+    if re.fullmatch(r"\d{4}-\d{2}", v):
+        return dt.date.fromisoformat(v + "-01").strftime("%B %Y")
+    return us_date_str(v) if v else ""
+
+
+def intl_source(label, intl) -> dict:
+    """Source metadata of a non-US regulator document, used only when the generic has no US label."""
+    if _lab(label) or not isinstance(intl, dict) or not isinstance(intl.get("source"), dict):
+        return {}
+    src = intl["source"]
+    agency = ws(src.get("agency_short")) or ws(src.get("agency"))
+    return {"agency": agency, "agency_full": ws(src.get("agency")) or agency, "document": ws(src.get("document")),
+            "url": safe_url(src.get("url")), "date": _intl_date(src.get("version_date"))} if agency else {}
+
+
+def intl_attrib_line(isrc: dict) -> str:
+    if not isrc:
+        return ""
+    return (f'<p class="dd-note dd-intl-src"><strong>Source:</strong> {esc(isrc["agency"])} product information'
+            + (f' ({esc(isrc["date"])})' if isrc["date"] else "") + ". This generic has no US FDA label.</p>")
+
+
+def render_kidney_section(label, renal, intl=None) -> str:
     """'Dosing: Altered kidney function' — approved renalcarematters.com guidance, else verbatim label text."""
     head_ = ('<section class="dd-kidney dd-sec" id="kidney-dosing" aria-labelledby="kidney-h">\n'
              f'<div class="dd-kidney-head">{KIDNEY_ICON}<div><div class="section-tag">CKD · dialysis · CRRT</div>'
@@ -1893,6 +1943,7 @@ def render_kidney_section(label, renal) -> str:
         out.append('<p class="dd-note">renalcarematters.com guidance' + (f", reviewed by {esc(by)}" if by else "")
                    + (f" on {esc(on)}" if on else "") + '. Sources are listed under <a href="#references">References</a>. '
                    "Use with the product's package insert and the patient's current kidney function.</p>")
+        out.append(intl_attrib_line(intl_source(label, intl)))
         rb, which = label_renal_excerpt(label)
         if rb:
             out.append(acc(f"US label text: {which}", rb))
@@ -1919,7 +1970,7 @@ def sec(sid: str, title: str, body: str, nav: str = "") -> tuple[str, str, str] 
                                f'<h2 id="{sid}-h">{esc(title)}</h2>{body}</section>')
 
 
-def references_html(slug, label, renal, summ, ctx: Ctx) -> str:
+def references_html(slug, label, renal, summ, ctx: Ctx, intl=None) -> str:
     items = []
     lab = _lab(label)
     if lab:
@@ -1934,6 +1985,11 @@ def references_html(slug, label, renal, summ, ctx: Ctx) -> str:
                      f' [US FDA-approved label{", version " + esc(m["version"]) if m["version"] else ""}'
                      f'{", " + esc(m["date"]) if m["date"] else ""}]. Via {esc(m["via"])}.'
                      + (f' <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(m["url"])}</a>' if m["url"] else ""))
+    isrc = intl_source(label, intl)
+    if isrc and (renal_approved(renal) or summary_approved(summ)):
+        items.append(f'{esc(isrc["agency_full"])}. {esc(isrc["document"] or "Product information")}'
+                     f' [{esc(isrc["agency"])} product information{", " + esc(isrc["date"]) if isrc["date"] else ""}; no US FDA label].'
+                     + (f' <a href="{esc(isrc["url"])}" rel="noopener" target="_blank">{esc(isrc["url"])}</a>' if isrc["url"] else ""))
     items.append(f'Food and Drug Administration Philippines. Verification portal (product registrations). '
                  f'<a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">{FDA_VERIFY_URL}</a>')
     seen = set()
@@ -2313,7 +2369,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                          aid="label-dosage-and-administration")
     S.append(sec("dosing-adult", "Dosing: Adult", adult, "Adult dosing"))
     # 4. Kidney
-    S.append(("kidney-dosing", "Kidney dosing", render_kidney_section(label, renal)))
+    S.append(("kidney-dosing", "Kidney dosing", render_kidney_section(label, renal, ctx.intl(slug))))
     # 5. Hepatic
     hep = hepatic_text(label)
     S.append(sec("dosing-hepatic", "Dosing: Hepatic impairment", (f"{hep}{LABEL_CHIP}" if hep else ""), "Hepatic"))
@@ -2429,7 +2485,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         fp = re.sub(r"</section>\s*$", "", fp.strip())
     S.append(sec("formulary", "Formulary and pricing (Philippines)", fp, "Formulary & pricing"))
     # 18. References
-    S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx), "References"))
+    S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx, ctx.intl(slug)), "References"))
 
     S = [x for x in S if x]
     toc = "".join(f'<li><a href="#{sid}">{esc(nav)}</a></li>' for sid, nav, _ in S)
