@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "6"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "7"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -523,6 +523,16 @@ table.dd-pk tr.dd-pk-renal th, table.dd-pk tr.dd-pk-renal td { background: #e9f6
 .dd-brands-more > summary::-webkit-details-marker { display: none; }
 .dd-brands-more[open] > summary { display: none; }
 .dd-brands-rest::before { content: " · "; }
+.dd-brands-acc > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.dd-brands-acc > summary::-webkit-details-marker { display: none; }
+.dd-brands-acc > summary::before { content: "▸"; font-size: 12px; color: #0e4a50; transition: transform .15s; display: inline-block; }
+.dd-brands-acc[open] > summary::before { transform: rotate(90deg); }
+.dd-brands-preview { color: #4a5a72; overflow: hidden; text-overflow: ellipsis; }
+.dd-brands-hint { font-size: 12px; font-weight: 700; color: #0e4a50; text-decoration: underline dotted; }
+.dd-brands-acc[open] .dd-brands-preview { display: none; }
+.dd-brands-acc[open] .dd-brands-hint { font-size: 0; }
+.dd-brands-acc[open] .dd-brands-hint::after { content: "Hide"; font-size: 12px; }
+.dd-brands-all { margin-top: 6px; }
 /* At a glance card */
 .dd-glance { margin: 36px 0 0; background: var(--white); border: 1px solid #c9d3e3; border-top: 4px solid #1f3864;
   border-radius: 14px; padding: 18px 22px 8px; box-shadow: 0 1px 3px rgba(31,56,100,.06); }
@@ -674,6 +684,8 @@ html[data-theme="dark"] ul.dd-results li[aria-selected=true] { background: #1e30
 html[data-theme="dark"] .dd-brands { color: rgba(238,242,251,.82); }
 html[data-theme="dark"] .dd-brands strong, html[data-theme="dark"] .dd-brands a.dd-brand-link { color: #eef2fb; border-bottom-color: rgba(238,242,251,.5); }
 html[data-theme="dark"] .dd-brands-more > summary { color: #7fd3da; }
+html[data-theme="dark"] .dd-brands-acc > summary::before, html[data-theme="dark"] .dd-brands-hint { color: #7fd3da; }
+html[data-theme="dark"] .dd-brands-preview { color: rgba(238,242,251,.78); }
 html[data-theme="dark"] .dd-glance { background: #1a2535; border-color: #2c3a52; border-top-color: #6f8fd0; box-shadow: none; }
 html[data-theme="dark"] .dd-glance h2 { color: #eef2fb; }
 html[data-theme="dark"] .dd-glance-row { border-color: #2a3548; }
@@ -1660,16 +1672,17 @@ judgment and does not replace the prescribing information approved for the speci
 """
 
 
-def render_brand_line(brands: list[str], shown: int = 12) -> str:
+def render_brand_line(brands: list[str], shown: int = 3) -> str:
+    """Philippine brand names under the generic name, collapsed by default (Dr. Rivero, Nov 17 2026):
+    the summary shows the count and the first few brands; expanding lists every brand."""
     if not brands:
         return '<p class="dd-brands"><strong>Brands:</strong> none registered under a distinct brand name (generic name only).</p>'
     link = lambda b: f'<a class="dd-brand-link" href="#products" data-brand="{esc(b)}">{esc(b)}</a>'
-    head_, rest = brands[:shown], brands[shown:]
-    more = ""
-    if rest:
-        more = (f'<details class="dd-brands-more"><summary>+{len(rest):,} more</summary>'
-                f'<span class="dd-brands-rest">{" · ".join(link(b) for b in rest)}</span></details>')
-    return (f'<div class="dd-brands"><strong>Brands:</strong> {" · ".join(link(b) for b in head_)}{more}</div>')
+    preview = ", ".join(esc(b) for b in brands[:shown]) + ("…" if len(brands) > shown else "")
+    n = len(brands)
+    return (f'<details class="dd-brands dd-brands-acc"><summary><strong>Brands ({n:,})</strong>'
+            f'<span class="dd-brands-preview"> {preview}</span><span class="dd-brands-hint">Show all</span></summary>'
+            f'<div class="dd-brands-all">{" · ".join(link(b) for b in brands)}</div></details>')
 
 
 # ═════════════════════════════════════════════════════════════════════════════
