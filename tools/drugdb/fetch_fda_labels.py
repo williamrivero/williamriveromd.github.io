@@ -26,8 +26,9 @@ human Rx before OTC. Default --prefer innovator: NDA/BLA, then the lowest NDA/BL
 biosimilar), then the original manufacturer over a repackager, then a true brand over an
 authorized generic, then newest effective_time. --prefer recent (the literal brief): newest
 effective_time, then NDA/BLA. Recent alone tends to pick repackager copies.
-Labels with no openfda block (some biologics) fall back to a single-ingredient match on the
-start of spl_product_data_elements; such files carry selection.match = "unindexed-spl".
+Labels with no openfda block are skipped unless --unindexed-fallback is given (a weak match
+on the start of spl_product_data_elements; such files carry selection.match = "unindexed-spl"
+and selection.confidence = "low"). In testing it picked wrong products about half the time.
 
 Incremental: a slug whose stored set_id + effective_time is unchanged is not rewritten.
 The section text is copied verbatim from the label; nothing is paraphrased.
@@ -112,7 +113,8 @@ INN_TO_USAN = {
     "sodium cromoglicate": "cromolyn sodium", "cromoglicate": "cromolyn", "ethamsylate": "etamsylate",
     "trimeprazine": "alimemazine", "acetylcysteine": "acetylcysteine", "prednisolone": "prednisolone",
     "cetrizine": "cetirizine", "desloratidine": "desloratadine", "doxycyline": "doxycycline",
-    "potasium": "potassium", "potassiumn": "potassium",
+    "potasium": "potassium", "potassiumn": "potassium", "co-amoxoclav": "amoxicillin and clavulanate",
+    "guiafenesin": "guaifenesin",
 }
 # Words in a PH ingredient string that are not part of the drug name.
 NOISE_WORDS = {"as", "in", "rdna", "dna", "recombinant", "regular", "usp", "bp", "equivalent", "to"}
@@ -204,7 +206,7 @@ def tokens(s: str) -> list[str]:
 
 @functools.lru_cache(maxsize=None)
 def usan(ingredient: str) -> str:
-    s = " " + ingredient.lower().strip() + " "
+    s = " " + re.sub(r"\s*-\s*", "-", ingredient.lower().strip()) + " "
     for inn, us in INN_TO_USAN.items():
         s = re.sub(r"(?<![a-z])" + re.escape(inn) + r"(?![a-z])", us, s)
     return s.strip()
@@ -653,7 +655,7 @@ def run_api(generics: dict, col: Collector, args):
                     col.add(slug, l)
                 else:
                     col.near_miss(slug, l)
-            if slug not in col.best:
+            if slug not in col.best and args.unindexed_fallback:
                 for l in api_fallback(api, g):
                     head = join_text(l.get("spl_product_data_elements"))[:300]
                     if is_human(l) and unindexed_match(g["ingredients"][0], head):
@@ -717,7 +719,7 @@ def run_bulk(generics: dict, col: Collector, args):
                 hits = matcher.match(label)
                 for slug in hits:
                     col.add(slug, label)
-                if not hits:
+                if not hits and args.unindexed_fallback:
                     for slug in matcher.fallback(label):
                         col.add(slug, label, fallback=True)
             dest.unlink()
@@ -776,6 +778,9 @@ def main() -> int:
                     help="after route match and Rx>OTC: innovator = NDA/BLA, non-repackager, newest; "
                          "recent = newest effective_time, then NDA/BLA")
     ap.add_argument("--only", nargs="*", help="limit to these slugs")
+    ap.add_argument("--unindexed-fallback", action="store_true",
+                    help="also match labels with no openfda block by their SPL product data "
+                         "(low confidence; off by default because it picks wrong products)")
     ap.add_argument("--force", action="store_true", help="rewrite every file even if unchanged")
     ap.add_argument("--max-pages", type=int, default=10, help="API pages (x100) per generic")
     ap.add_argument("--min-interval", type=float, default=0.3, help="seconds between API calls")
