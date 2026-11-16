@@ -387,6 +387,7 @@ mark.dd-hl { background: #fff1b8; color: inherit; border-radius: 3px; padding: 0
 .dd-kidney-ico { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 .dd-kidney-head .dd-kidney-ico { width: 44px; height: 44px; padding: 9px; border-radius: 12px; background: #1a6b72; color: #fff; }
 .dd-kidney-sum { font-size: 15px; color: var(--text-mid); margin: 6px 0 12px; }
+.dd-kidney-sub { font-family: "Inter", sans-serif; font-size: 16px; font-weight: 700; color: var(--text); margin: 18px 0 8px; }
 table.dd-kidney-table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--white); border-radius: 10px; overflow: hidden; }
 .dd-kidney-table th { text-align: left; width: 34%; padding: 10px 14px; color: #0e4a50; font-weight: 700; background: #e1f2f1; border-bottom: 1px solid #cfe6e6; vertical-align: top; }
 .dd-kidney-table td { padding: 10px 14px; color: var(--text-mid); border-bottom: 1px solid #cfe6e6; }
@@ -674,6 +675,8 @@ LABEL_SECTIONS = [
     ("Adverse reactions", ["adverse_reactions"]),
     ("Pregnancy", ["pregnancy", "teratogenic_effects", "pregnancy_or_breast_feeding"]),
     ("Lactation", ["lactation", "nursing_mothers"]),
+    ("Pediatric use", ["pediatric_use"]),
+    ("Geriatric use", ["geriatric_use"]),
     ("Use in specific populations", ["use_in_specific_populations"]),
 ]
 
@@ -1028,6 +1031,42 @@ def kidney_chip(renal) -> str:
     return ws(renal.get("chip") or renal.get("kidney_status") or renal.get("summary_chip"))
 
 
+def render_pediatric_block(ped) -> str:
+    """'Children' sub-section of the APPROVED kidney panel (caller checks approval).
+    Pediatric eGFR bands use the bedside Schwartz equation (0.413 x height cm / SCr mg/dL)."""
+    if not isinstance(ped, dict):
+        return ""
+    rows = []
+    for key, lab in (("approved_ages", "Approved ages"), ("usual_dose", "Usual dose"), ("max_dose", "Maximum dose")):
+        v = ped.get(key)
+        if v not in (None, "", []):
+            rows.append((lab, "; ".join(map(ws, v)) if isinstance(v, list) else v))
+    for b in ped.get("renal") or []:
+        if isinstance(b, dict) and (b.get("range") or b.get("recommendation")):
+            rng = ws(b.get("range"))
+            if rng and not re.search(r"egfr|crcl|gfr|clearance|dialys|crrt|hd\b|pd\b", rng, re.I):
+                rng = f"eGFR {rng}"
+            rows.append((rng, b.get("recommendation")))
+    for key, lab in (("hd", "Hemodialysis"), ("pd", "Peritoneal dialysis"), ("crrt", "CRRT")):
+        v = ped.get(key)
+        if v not in (None, "", []):
+            rows.append((lab, v))
+    if not rows and not ped.get("notes"):
+        return ""
+    out = ['<h3 class="dd-kidney-sub" id="kidney-children">Children</h3>']
+    if rows:
+        trs = "".join(f'<tr><th scope="row">{esc(a)}</th><td>{esc(b)}</td></tr>' for a, b in rows)
+        out.append('<table class="dd-kidney-table"><caption class="dd-hidden">Pediatric dosing and kidney dosing in children '
+                   f'(eGFR by the bedside Schwartz equation)</caption><tbody>{trs}</tbody></table>')
+    notes = ped.get("notes")
+    if notes:
+        notes = notes if isinstance(notes, list) else [notes]
+        out.append("".join(f'<p class="dd-note">{esc(n)}</p>' for n in notes if ws(n)))
+    out.append('<p class="dd-note">Pediatric eGFR: bedside Schwartz equation, 0.413 &times; height (cm) / serum creatinine (mg/dL). '
+               'Weight-based doses should not exceed the adult maximum.</p>')
+    return "\n".join(out)
+
+
 def render_kidney_panel(label, renal) -> str:
     head_ = ('<section class="dd-kidney" id="kidney-dosing" aria-labelledby="kidney-h">\n'
              f'<div class="dd-kidney-head">{KIDNEY_ICON}<div><div class="section-tag">Kidney dosing · CKD and dialysis</div>'
@@ -1056,8 +1095,11 @@ def render_kidney_panel(label, renal) -> str:
             out.append(f'<p class="dd-kidney-sum">{esc(renal["summary"])}</p>')
         if trs:
             out.append(f'<table class="dd-kidney-table"><caption class="dd-hidden">Kidney dosing by kidney function and dialysis modality</caption><tbody>{trs}</tbody></table>')
+        out.append(render_pediatric_block(renal.get("pediatric")))
         srcs = []
-        for r in renal.get("sources") or renal.get("references") or []:
+        ped = renal.get("pediatric") if isinstance(renal.get("pediatric"), dict) else {}
+        for r in list(renal.get("sources") or renal.get("references") or []) + [
+                x for x in (ped.get("sources") or []) if x not in (renal.get("sources") or [])]:
             if isinstance(r, dict):
                 doi, url = ws(r.get("doi")), safe_url(r.get("url"))
                 link = f"https://doi.org/{doi}" if doi else url

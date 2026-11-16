@@ -155,6 +155,8 @@ SECTION_FIELDS = [
     "use_in_specific_populations",
     "pregnancy",
     "lactation",
+    "pediatric_use",
+    "geriatric_use",
     "overdosage",
     "mechanism_of_action",
     "pharmacokinetics",
