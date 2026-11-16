@@ -7,10 +7,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "run = fetch and commit; probe = print source structure only (debug, no commit)"
+        description: "run = fetch and commit; probe = print source structure only; probe-national = test national search URLs for the 'only' words (debug, no commit)"
         default: "run"
         type: choice
-        options: [run, probe]
+        options: [run, probe, probe-national]
       only:
         description: "Space-separated slugs to refetch (blank = every generic without a US label)"
         default: ""
@@ -50,8 +50,13 @@ jobs:
         env:
           ONLY: ${{ inputs.only || '' }}
         run: python3 tools/drugdb/fetch_eu_smpc.py --probe ${ONLY:+--only $ONLY}
+      - name: Probe national search URLs (debug)
+        if: ${{ inputs.mode == 'probe-national' }}
+        env:
+          ONLY: ${{ inputs.only || '' }}
+        run: python3 tools/drugdb/fetch_eu_smpc.py --probe-national $ONLY
       - name: Fetch EU SmPCs and national links
-        if: ${{ inputs.mode != 'probe' }}
+        if: ${{ inputs.mode != 'probe' && inputs.mode != 'probe-national' }}
         env:
           FORCE: ${{ inputs.force && '--force' || '' }}
           NATIONAL: ${{ (github.event_name == 'schedule' || inputs.national) && '--national' || '' }}
@@ -59,7 +64,7 @@ jobs:
         run: |
           python3 tools/drugdb/fetch_eu_smpc.py $FORCE $NATIONAL ${ONLY:+--only $ONLY}
       - name: Commit changes
-        if: ${{ inputs.mode != 'probe' }}
+        if: ${{ inputs.mode != 'probe' && inputs.mode != 'probe-national' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

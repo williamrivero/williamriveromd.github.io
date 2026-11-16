@@ -1,0 +1,55 @@
+{
+  "_doc": [
+    "Per-slug EU SmPC (EMA) choices for tools/drugdb/fetch_eu_smpc.py, kept so the weekly run does not drift back.",
+    "prefer: EMA medicine names tried first, in order (case-insensitive exact name); the normal ranking applies within and after them.",
+    "exclude: EMA medicine names never used for this slug. If nothing is left, the generic gets no EU SmPC.",
+    "valency: for vaccines, keep only EMA products with this valency (e.g. 10 for a 10-valent pneumococcal conjugate vaccine).",
+    "none: true = never show an EU SmPC for this slug (the matching EMA product is a different medicine).",
+    "A valency stated in the generic's own name or registered names is applied automatically; set it here to pin it or to supply it.",
+    "Decisions: Dr. Rivero, November 17, 2026."
+  ],
+  "ibandronic-acid": {
+    "reason": "PH ibandronic acid is used for osteoporosis; prefer Bonviva (osteoporosis) over Bondronat (oncology).",
+    "prefer": [
+      "Bonviva"
+    ]
+  },
+  "glycopyrronium-indacaterol": {
+    "reason": "Same product information; prefer Ultibro Breezhaler over the duplicate Xoterna Breezhaler.",
+    "prefer": [
+      "Ultibro Breezhaler"
+    ]
+  },
+  "pneumococcal-polysaccharide-conjugate-vaccine": {
+    "reason": "PH registrations are 10-valent (Synflorix BR-685/BR-800/BR-1310; Pneumosil BR-1350/BR-1351). Synflorix is the 10-valent EMA product.",
+    "valency": 10,
+    "prefer": [
+      "Synflorix"
+    ]
+  },
+  "pneumococcal-conjugate-vaccine-13-valent": {
+    "reason": "PH product is Prevenar 13 (BR-1133, BR-1308); match the 13-valent EMA product.",
+    "valency": 13,
+    "prefer": [
+      "Prevenar 13"
+    ]
+  },
+  "pneumococcal-polysaccharide-conjugate-vaccine-13-valent": {
+    "reason": "PH product is Pneumocon-13 (Yuxi Walvax; tetanus-toxoid carrier protein, BR-1451/BR-1452). The only 13-valent EMA product, Prevenar 13, is a different vaccine (CRM197 carrier), so its SmPC is not shown. Flagged for Dr. Rivero; to show Prevenar 13 instead, replace this entry with {\"valency\": 13, \"prefer\": [\"Prevenar 13\"]}.",
+    "valency": 13,
+    "none": true
+  },
+  "pneumococcal-polysaccharide-conjugate-vaccine-15-valent": {
+    "reason": "PH product is Vaxneuvance (BR-1425); match the 15-valent EMA product.",
+    "valency": 15,
+    "prefer": [
+      "Vaxneuvance"
+    ]
+  },
+  "amino-acids": {
+    "reason": "PH 'amino acids' products are parenteral nutrition solutions; Maapliv is a specific metabolic-disorder product and must not be used.",
+    "exclude": [
+      "Maapliv"
+    ]
+  }
+}

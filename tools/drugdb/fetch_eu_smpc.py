@@ -31,6 +31,10 @@ the source", so SmPC text is stored verbatim with that acknowledgment. National 
 permit reproduction (MHRA, HPRA, Medsafe data sheets, Health Canada product monographs) are stored as metadata and
 a deep link only.
 
+Overrides: tools/drugdb/eu_label_overrides.json pins per-slug choices (prefer / exclude / valency / none) so the weekly run
+keeps Dr. Rivero's decisions. Vaccines whose PH name states a valency ("13-valent", "(10-valent)") are matched to EMA
+products of the same valency only (pneumococcal conjugate vaccines carry the valency in the INN or product name).
+
 Incremental: a slug whose candidate set and product-information dates are unchanged is not refetched. Partial runs
 (--only) merge into _missing.json / _changes.json instead of replacing them.
 
@@ -68,6 +72,7 @@ UA = "Mozilla/5.0 (compatible; RenalCareMattersDrugDB/1.0; +https://renalcaremat
 MANILA = dt.timezone(dt.timedelta(hours=8))
 SCHEMA_VERSION = 1
 EXTRACT_REV = 1   # bump when extraction changes; older files are rewritten once
+OVERRIDES_FILE = Path(__file__).resolve().parent / "eu_label_overrides.json"
 
 EMA_MEDICINES = "https://www.ema.europa.eu/en/documents/report/medicines-output-medicines_json-report_en.json"
 EMA_DOCUMENTS = "https://www.ema.europa.eu/en/documents/report/documents-output-epar_documents_json-report_en.json"
@@ -200,6 +205,46 @@ def eu_substance_matches(ingredient: str, substance: str) -> bool:
 def split_substances(s: str) -> list[str]:
     parts = re.split(r"\s*/\s*|\s*;\s*|,\s*(?![^()]*\))|\s+\+\s+|\s+and\s+(?![^()]*\))", s or "", flags=re.I)
     return [p.strip() for p in parts if p and p.strip() and not re.fullmatch(r"\(?\s*\)?", p)]
+
+
+VALENT_RX = re.compile(r"\b(\d{1,2})\s*-?\s*valent\b", re.I)
+# EMA vaccines whose INN/substance does not state the valency
+KNOWN_VALENCY = {"synflorix": 10, "prevenar 13": 13, "vaxneuvance": 15, "prevenar 20": 20, "apexxnar": 20, "capvaxive": 21}
+VACCINE_STOP = {"vaccine", "vaccines", "valent", "polyvalent", "polysaccharide", "polysaccharides", "adsorbed", "conjugated"}
+
+
+def load_overrides(path: Path = OVERRIDES_FILE) -> dict:
+    try:
+        d = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return {k: v for k, v in d.items() if not k.startswith("_") and isinstance(v, dict)}
+
+
+def generic_valency(g: dict) -> int | None:
+    """The single valency stated in the generic's name or PH registered names (None if none or several)."""
+    vals = {int(m.group(1)) for t in [g.get("name", "")] + list(g.get("registered_names") or [])
+            for m in VALENT_RX.finditer(str(t))}
+    return vals.pop() if len(vals) == 1 else None
+
+
+def med_valency(m) -> int | None:
+    for t in (m.inn, m.substance, m.name):
+        x = VALENT_RX.search(t or "")
+        if x:
+            return int(x.group(1))
+    nm = (m.name or "").lower()
+    return next((v for k, v in KNOWN_VALENCY.items() if nm.startswith(k)), None)
+
+
+def vaccine_matches(ingredients: list[str], m) -> bool:
+    """Vaccine by key words (e.g. 'pneumococcal' + 'conjugate'), ignoring valency and form words; the valency is
+    checked separately."""
+    words = {w for i in ingredients for w in ing_tokens(re.sub(r"\d+", " ", i))} - VACCINE_STOP - SALT_WORDS
+    text = {w for t in (m.inn, m.substance, m.name) for w in ing_tokens(re.sub(r"\d+", " ", t or ""))}
+    if not words or not words <= text:
+        return False
+    return ("conjugate" in words) == ("conjugate" in text)
 
 
 def matches(ingredients: list[str], substances: list[str]) -> bool:
@@ -538,10 +583,13 @@ def smpc_route(sm: dict) -> tuple[str | None, str | None]:
 
 # --------------------------------------------------------------------------- selection
 def choose(slug: str, g: dict, cands: list[Medicine], ph_routes: dict, ph_forms: dict, pdf_cache: dict,
-           max_pdfs: int, log) -> tuple[Medicine | None, dict | None, dict, list[str]]:
-    """Download up to max_pdfs product-information PDFs, best-ranked first, and pick (medicine, smpc)."""
+           max_pdfs: int, log, prefer: list[str] | None = None) -> tuple[Medicine | None, dict | None, dict, list[str]]:
+    """Download up to max_pdfs product-information PDFs, best-ranked first, and pick (medicine, smpc).
+    prefer: EMA medicine names (eu_label_overrides.json) ranked ahead of everything else, in the order given."""
     errors = []
-    order = sorted(cands, key=lambda m: (not m.originator, m.decision or "9999", m.name.lower()))
+    pref = [p.lower() for p in (prefer or [])]
+    prank = lambda m: pref.index(m.name.lower()) if m.name.lower() in pref else len(pref)
+    order = sorted(cands, key=lambda m: (prank(m), not m.originator, m.decision or "9999", m.name.lower()))
     routes = ph_routes.get(slug) or {}
     forms = ph_forms.get(slug) or {}
     top_route = max(routes, key=routes.get) if routes else None
@@ -568,18 +616,19 @@ def choose(slug: str, g: dict, cands: list[Medicine], ph_routes: dict, ph_forms:
             if not sm["sections"]:
                 continue
             grp, fc = smpc_route(sm)
-            key = (0 if (top_route and grp == top_route) else 1 if (grp and grp in routes) else 2 if not routes else 3,
+            key = (prank(m),
+                   0 if (top_route and grp == top_route) else 1 if (grp and grp in routes) else 2 if not routes else 3,
                    0 if m.originator else 1,
                    0 if (fc and forms.get(fc)) else 1,
                    -len(sm["sections"]), m.decision or "9999", i)
             if best_key is None or key < best_key:
                 best, best_key = (m, sm, {"route": grp, "form_class": fc, "smpc_index": i}), key
-        if best_key and best_key[0] == 0 and best_key[1] == 0:
-            break          # originator in the main PH route: done
+        if best_key and best_key[1] == 0 and (best_key[2] == 0 or (pref and best_key[0] < len(pref))):
+            break          # originator (or the pinned product) in the main PH route: done
     if not best:
         return None, None, {}, errors
     m, sm, info = best
-    info.update({"ph_routes": routes, "route_match": best_key[0] <= 1 if routes else None,
+    info.update({"ph_routes": routes, "route_match": best_key[1] <= 1 if routes else None,
                  "originator": m.originator, "candidates": len(cands), "pdfs_checked": tried,
                  "ranked": [f"{c.name} ({'originator' if c.originator else 'generic/hybrid/biosimilar'}"
                             f"{', ' + c.decision if c.decision else ''})" for c in order[:6]]})
@@ -781,6 +830,58 @@ def probe(args, targets, generics, cache):
     return 0
 
 
+# --------------------------------------------------------------------------- national search-link probe (debug)
+NATIONAL_PROBE = {
+    "MHRA": ["https://products.mhra.gov.uk/search/?search={q}&page=1",
+             "https://products.mhra.gov.uk/substance/?substance={Q}"],
+    "HPRA": ["https://www.hpra.ie/find-a-medicine/results?query={q}",
+             "https://www.hpra.ie/find-a-medicine/for-human-use/authorised-medicines?query={q}",
+             "https://www.hpra.ie/find-a-medicine/for-human-use/authorised-medicines?searchTerm={q}",
+             "https://www.hpra.ie/homepage/medicines/medicines-information/find-a-medicine/results?query={q}&field="],
+    "Medsafe": ["https://www.medsafe.govt.nz/DbSearch/InfoSearch?searchText={q}",
+                "https://www.medsafe.govt.nz/Medicines/infoSearch.asp?txtSearch={q}",
+                "https://www.medsafe.govt.nz/DbSearch/infoSearch.asp?txtSearch={q}",
+                "https://www.medsafe.govt.nz/DbSearch/"],
+    "CIMA": ["https://cima.aemps.es/cima/publico/lista.html?nombre={q}",
+             "https://cima.aemps.es/cima/rest/medicamentos?nombre={q}",
+             "https://cima.aemps.es/cima/rest/medicamentos?practiv1={q}"],
+}
+DETAIL_RX = {"MHRA": r"/product/\?product=|/substance/\?substance=|PAR|SPC|spc-doc",
+             "HPRA": r"authorised-medicines/details/\d+",
+             "Medsafe": r"Datasheet/[^\"']+\.pdf|datasheet",
+             "CIMA": r"\"nregistro\"|/cima/(?:dochtml|pdfs)/ft/"}
+
+
+def probe_national(drugs: list[str]) -> int:
+    """Print what each candidate search URL returns to a plain HTTP client: status, size, how often the query word
+    appears, how many result/detail links, and the page's search forms (action + input names)."""
+    for agency, pats in NATIONAL_PROBE.items():
+        for pat in pats:
+            for q in drugs:
+                url = pat.format(q=urllib.parse.quote(q), Q=urllib.parse.quote(q.upper()))
+                try:
+                    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/json,*/*"})
+                    with urllib.request.urlopen(req, timeout=60) as r:
+                        code, body, final = r.status, r.read().decode("utf-8", "replace"), r.geturl()
+                except urllib.error.HTTPError as e:
+                    code, body, final = e.code, "", url
+                except Exception as e:
+                    print(f"== {agency} {url} -> ERROR {e}")
+                    continue
+                hits = len(re.findall(re.escape(q), body, re.I))
+                det = len(re.findall(DETAIL_RX[agency], body, re.I))
+                forms = re.findall(r"<form[^>]*>", body, re.I)[:3]
+                inputs = sorted(set(re.findall(r'<input[^>]+name="([^"]+)"', body, re.I)))[:12]
+                print(f"== {agency} {code} {url} final={final} bytes={len(body)} q_hits={hits} detail_links={det}")
+                if pat == pats[0] or det == 0:
+                    print("   forms:", forms, "inputs:", inputs)
+                    i = body.lower().find(q.lower())
+                    if i >= 0:
+                        print("   ctx:", re.sub(r"\s+", " ", body[max(0, i - 200):i + 300]))
+                time.sleep(0.5)
+    return 0
+
+
 # --------------------------------------------------------------------------- main
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -793,8 +894,12 @@ def main() -> int:
     ap.add_argument("--max-pdfs", type=int, default=4, help="product-information PDFs to check per generic")
     ap.add_argument("--cache-dir", default=str(Path(tempfile.gettempdir()) / "eu-smpc-cache"))
     ap.add_argument("--probe", action="store_true", help="print the structure of every source and exit")
+    ap.add_argument("--probe-national", nargs="*", metavar="INN",
+                    help="test the national search-URL patterns for these INNs (debug) and exit")
     args = ap.parse_args()
 
+    if args.probe_national is not None:
+        return probe_national(args.probe_national or ["betahistine", "trimetazidine", "aceclofenac"])
     cache = Path(args.cache_dir)
     cache.mkdir(parents=True, exist_ok=True)
     generics = json.loads(Path(args.generics_file).read_text(encoding="utf-8"))
@@ -830,6 +935,8 @@ def main() -> int:
                     if w not in SALT_WORDS:
                         index.setdefault(w, set()).add(i)
     ph_routes, ph_forms = load_ph_profile(DATA / "registry")
+    overrides = load_overrides()
+    print(f"overrides: {len(overrides)} slug(s) in {OVERRIDES_FILE.name}", flush=True)
     pdf_cache: dict = {}
     added, changed, removed, missing, unchanged = [], [], [], [], 0
     log = lambda s: print(s, flush=True)
@@ -838,24 +945,43 @@ def main() -> int:
         words = {w for i in expand_ingredients(tuple(g["ingredients"])) for w in ing_tokens(i) if w not in SALT_WORDS}
         pool = set.intersection(*(index.get(w, set()) for w in words)) if words else set()
         cands = [ok[i] for i in sorted(pool) if ok[i].matches(g["ingredients"])]
+        ov = overrides.get(slug) or {}
+        why_none = "no centrally authorised EU (EMA) product"
+        valency = ov.get("valency") or (generic_valency(g) if re.search(r"vaccin", g.get("name", ""), re.I) else None)
+        if valency:
+            pool_v = [m for m in ok if vaccine_matches(g["ingredients"], m)] if not cands else cands
+            cands = [m for m in pool_v if med_valency(m) == valency]
+            if not cands:
+                why_none = f"no centrally authorised EU (EMA) product with the same valency ({valency}-valent)"
+        if ov.get("exclude"):
+            ex = {x.lower() for x in ov["exclude"]}
+            if any(m.name.lower() in ex for m in cands):
+                why_none = "only EMA match excluded by eu_label_overrides.json (" + ", ".join(ov["exclude"]) + ")"
+            cands = [m for m in cands if m.name.lower() not in ex]
+        if ov.get("none"):
+            cands = []
+            why_none = "no EU SmPC by decision (eu_label_overrides.json): " + str(ov.get("reason", ""))[:200]
         path = OUT / f"{slug}.json"
         old = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
         if not cands:
             missing.append({"slug": slug, "name": g.get("name", slug), "ingredients": g["ingredients"],
-                            "reason": "no centrally authorised EU (EMA) product"})
+                            "reason": why_none})
             if old:
                 path.unlink()
                 removed.append({"slug": slug, "name": g.get("name", slug),
                                 "previous": {"product": old["source"].get("product"),
                                              "revision_date": old["source"].get("revision_date")}})
             continue
-        cand_key = hashlib.sha1(json.dumps(sorted((m.number, m.name, m.pi(), m.pi_updated or m.updated)
-                                                  for m in cands)).encode()).hexdigest()[:16]
+        cand_key = hashlib.sha1(json.dumps([sorted((m.number, m.name, m.pi(), m.pi_updated or m.updated) for m in cands),
+                                            ov], sort_keys=True).encode()).hexdigest()[:16]
         if (old and not args.force and old.get("extract_rev", 0) >= EXTRACT_REV
                 and (old.get("selection") or {}).get("candidates_key") == cand_key):
             unchanged += 1
             continue
-        m, sm, info, errors = choose(slug, g, cands, ph_routes, ph_forms, pdf_cache, args.max_pdfs, log)
+        m, sm, info, errors = choose(slug, g, cands, ph_routes, ph_forms, pdf_cache, args.max_pdfs, log,
+                                     prefer=ov.get("prefer") or [])
+        if m and ov:
+            info["override"] = {k: ov[k] for k in ("prefer", "exclude", "valency", "reason") if k in ov}
         if not m:
             missing.append({"slug": slug, "name": g.get("name", slug), "ingredients": g["ingredients"],
                             "reason": "EMA product found but the SmPC could not be fetched or parsed",
