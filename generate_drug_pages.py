@@ -1958,7 +1958,7 @@ def dispensing_chips(classes: set, ci, ctx: "Ctx") -> tuple[str, str]:
                 srcs.append(f'<a href="{esc(u)}" rel="noopener" target="_blank">{esc(t)}</a>' if u else esc(t))
         tip = "; ".join(x for x in (ws(ci.get("schedule")), ws(ci.get("rx_form")), ws(ci.get("notes"))) if x)
         if kind == "S2":
-            chips.insert(0, f'<span class="dd-chip dd-s2" title="{esc(tip)}">S2 · Dangerous drug — PDEA S2 license + special (yellow) prescription</span>')
+            chips.insert(0, f'<span class="dd-chip dd-s2" title="{esc(tip)}">S2 · Dangerous drug — PDEA S2 license required; see prescription rules below</span>')
         else:
             chips.insert(0, f'<span class="dd-chip dd-cp" title="{esc(tip)}">Controlled precursor</span>')
         if tip or srcs:
