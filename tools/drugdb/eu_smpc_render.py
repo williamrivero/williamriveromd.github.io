@@ -136,10 +136,21 @@ def links_of(intl) -> list[dict]:
     return [x for x in intl.get("links") or [] if isinstance(x, dict) and _url(x.get("url"))]
 
 
+def search_links_of(intl) -> list[dict]:
+    """External national search pages (Spain CIMA), stored only after the fetcher checked they return a product."""
+    if not isinstance(intl, dict):
+        return []
+    return [x for x in intl.get("search_links") or [] if isinstance(x, dict) and _url(x.get("url"))]
+
+
+def has_links(intl) -> bool:
+    return bool(links_of(intl) or search_links_of(intl))
+
+
 def links_html(intl) -> str:
     """'Prescribing information' link list from link-only national regulators (metadata + URL, no text)."""
-    ls = links_of(intl)
-    if not ls:
+    ls, ss = links_of(intl), search_links_of(intl)
+    if not (ls or ss):
         return ""
     items = []
     for x in ls:
@@ -151,7 +162,12 @@ def links_html(intl) -> str:
         items.append(f'<li><strong>{esc(x.get("agency_short") or x.get("agency") or "")}:</strong> '
                      f'<a href="{esc(x["url"])}" rel="noopener" target="_blank">{name}</a>'
                      f'{" (" + meta + ")" if meta else ""}{pm_html}</li>')
+    for x in ss:
+        items.append(f'<li><a href="{esc(x["url"])}" rel="noopener" target="_blank">{esc(x.get("label") or x.get("agency_short") or "")}</a>'
+                     f'{": search for " + chr(8220) + esc(x["query"]) + chr(8221) if x.get("query") else ""} '
+                     '<span class="dd-sub">(external search; text not reproduced)</span></li>')
+    note = ("Links only. These regulators' terms do not clearly permit reproducing the documents, so no text is shown "
+            "here." if ls else "External search; text not reproduced.")
     return ('<div class="dd-placeholder dd-pi-links"><strong>Prescribing information</strong> (no US FDA label or EU SmPC '
-            'for this generic):<ul class="dd-uselist">' + "".join(items) + '</ul><p class="dd-note">Links only. These '
-            "regulators' terms do not clearly permit reproducing the documents, so no text is shown here. Check the "
+            'for this generic):<ul class="dd-uselist">' + "".join(items) + f'</ul><p class="dd-note">{note} Check the '
             "Philippine package insert in the products table.</p></div>")

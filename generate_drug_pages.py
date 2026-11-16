@@ -59,7 +59,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og-drug-index.png"   # 1200x630 share card (Nov 17 2026)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "13"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "14"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -916,7 +916,7 @@ if(idx){
       fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
       /* food supplements: separate lazy file, merged into results with a "Supplement" badge */
       if(idx.getAttribute('data-supp'))fetch(idx.getAttribute('data-supp')).then(function(r){return r.json();}).then(function(x){
-        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,t:d.t,rf:d.rf,v:d.v,u:d.u,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&(F.t.value==='s'||F.t.value==='m')))run();}).catch(function(){});
+        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,t:d.t,mk:d.mk,rf:d.rf,v:d.v,u:d.u,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&(F.t.value==='s'||F.t.value==='m')))run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
@@ -959,8 +959,9 @@ if(idx){
     return true;
   }
   function filtersOn(){return drugFacets()||!!(F.t&&F.t.value);}
-  function chips(d){var o=[];if(d.sup){o.push(d.t==='m'?'<span class="dd-tag FSMP">Medical nutrition (FSMP)</span>':'<span class="dd-tag SUP">Supplement</span>');
-    if(d.t==='b')o.push('<span class="dd-tag FSMP">FSMP</span>');if(d.rf)o.push('<span class="dd-tag SUPK">Renal formula</span>');
+  function chips(d){var o=[];if(d.sup){var MK=d.mk==='fsdu'?'Special dietary food (FSDU)':d.mk==='both'?'Medical nutrition (FSMP, FSDU)':'Medical nutrition (FSMP)';
+    o.push(d.t==='m'?'<span class="dd-tag FSMP">'+MK+'</span>':'<span class="dd-tag SUP">Supplement</span>');
+    if(d.t==='b')o.push('<span class="dd-tag FSMP">'+(d.mk==='fsdu'?'FSDU':d.mk==='both'?'FSMP · FSDU':'FSMP')+'</span>');if(d.rf)o.push('<span class="dd-tag SUPK">Renal formula</span>');
     (d.v||[]).forEach(function(v){o.push('<span class="dd-tag FSMP">'+escH(v)+'</span>');});if(d.k)o.push('<span class="dd-tag SUPK">Kidney-marketed</span>');return o.join(' ');}
     var r=d.r||0;
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
@@ -2605,7 +2606,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                    + ". Reproduced verbatim. <strong>Philippine-approved indications and doses may differ: check the PH package insert.</strong></div>")
     elif eu:
         top.append(eu_r.attribution(eu))
-    elif eu_r.links_of(ctx.intl(slug)):
+    elif eu_r.has_links(ctx.intl(slug)):
         top.append(eu_r.links_html(ctx.intl(slug)))
     else:
         top.append('<div class="dd-placeholder">US label not yet available for this generic. Check the Philippine package insert '
@@ -3009,8 +3010,11 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
     supp_n = len(load_json(REPO / "drugs" / "supplements" / "search-index.json", []) or [])
     _supp = load_json(REPO / "drugs" / "supplements" / "search-index.json", []) or []
     fsmp_n = sum(1 for e in _supp if e.get("t"))
+    fsdu_n = sum(1 for e in _supp if e.get("mk") in ("fsdu", "both"))
+    fsmp_only = sum(1 for e in _supp if e.get("t") and e.get("mk", "fsmp") in ("fsmp", "both"))
     supp_chip = ((f'<a class="dd-chip" href="/drugs/supplements/">{supp_n - fsmp_n:,} food-supplement brands</a>'
-                  + (f'<a class="dd-chip" href="/drugs/supplements/?cat=fsmp">{fsmp_n:,} medical-nutrition (FSMP) brands</a>' if fsmp_n else ""))
+                  + (f'<a class="dd-chip" href="/drugs/supplements/?cat=fsmp">{fsmp_only:,} medical-nutrition (FSMP) brands</a>' if fsmp_only else "")
+                  + (f'<a class="dd-chip" href="/drugs/supplements/?cat=fsdu">{fsdu_n:,} special dietary food (FSDU) brands</a>' if fsdu_n else ""))
                  if supp_n else "")
     canonical = f"{SITE}/drugs/"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
@@ -3041,7 +3045,7 @@ Search by brand, generic, class, indication, manufacturer or registration number
  placeholder="{'Brand, generic, class, indication, supplement, or reg. no. (e.g., Norvasc)' if supp_n else 'Brand, generic, class, indication, manufacturer, or reg. no. (e.g., Norvasc)'}" autocomplete="off" spellcheck="false">
 </div>
 <div class="dd-facets" role="group" aria-label="Filters">
-{'<label><span class="dd-hidden">Type</span><select id="dd-f-type"><option value="">Type: drugs and food supplements</option><option value="d">Type: drugs</option><option value="s">Type: food supplements</option><option value="m">Type: medical nutrition (FSMP)</option></select></label>' if supp_n else ''}
+{'<label><span class="dd-hidden">Type</span><select id="dd-f-type"><option value="">Type: drugs and food supplements</option><option value="d">Type: drugs</option><option value="s">Type: food supplements</option><option value="m">Type: medical nutrition (FSMP, FSDU)</option></select></label>' if supp_n else ''}
 <label><span class="dd-hidden">Drug class</span><select id="dd-f-class"><option value="">All drug classes</option>{cat_opts}</select></label>
 <label><span class="dd-hidden">Dispensing category</span><select id="dd-f-rx"><option value="">All dispensing categories</option><option value="1">Rx · Prescription drug</option><option value="2">OTC · Over-the-counter</option><option value="4">HR · Household remedy</option><option value="8">S2 · Dangerous drug</option><option value="16">Controlled precursor</option></select></label>
 <label><span class="dd-hidden">Dosage form</span><select id="dd-f-form"><option value="">All dosage forms</option>{form_opts}</select></label>

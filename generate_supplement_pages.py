@@ -16,6 +16,8 @@ Writes (under --out-dir, default drugs/supplements/):
 Foods for special medical purposes (FSMP, type "fsmp": renal formulas such as Nepro, Kidneypro, Fresubin Renal and
 Nephrisol, plus other medical nutrition) get their own banner, chips, a Variants table (LP/HP) for renal formulas and a
 "Renal nutrition formulas" list on the index. Renal FSMP brands always get a static page.
+Foods for special dietary use (FSDU, type "fsdu": e.g. Glucerna, Efione Nu Reno, Efione Nu Lopo) get their own banner and chip;
+renal FSDU products join the renal list and always get a static page too.
 
 Registrations past their validity date (as of --as-of / today) or canceled are never rendered.
 Shares the page chrome, hash-aware writer and drugdb.css/js with generate_drug_pages.py.
@@ -43,10 +45,11 @@ sys.path.insert(0, str(REPO / "tools" / "drugdb"))
 from build_registry import ingredients_of, slug_of  # noqa: E402  (drug slug rule, shared contract)
 from build_supplements import slugify  # noqa: E402
 
-SUPP_ASSET_VERSION = "3"
+SUPP_ASSET_VERSION = "4"
 CAT_LABEL = {"probiotic": "Probiotic", "herbal/botanical": "Herbal / botanical", "vitamin/mineral": "Vitamin / mineral",
              "omega-3": "Omega-3", "amino acid/protein": "Amino acid / protein", "ketoanalogue": "Ketoanalogue",
-             "fiber/prebiotic": "Fiber / prebiotic", "fsmp": "Medical nutrition (FSMP)", "other": "Other"}
+             "fiber/prebiotic": "Fiber / prebiotic", "fsmp": "Medical nutrition (FSMP)", "fsdu": "Special dietary food (FSDU)",
+             "other": "Other"}
 FSMP_TAG_LABEL = {"renal": "Renal formula", "diabetes": "Diabetes", "high-protein": "High protein", "peptide": "Peptide-based",
                   "pediatric": "Infant / pediatric", "general": "General medical nutrition"}
 VARIANT_LABEL = {"LP": "LP · lower protein, for CKD not on dialysis", "HP": "HP · higher protein, for dialysis"}
@@ -54,6 +57,8 @@ VARIANT_SHORT = {"LP": "Lower protein (LP)", "HP": "Higher protein (HP)"}
 BANNER_FSMP = ('<div class="ds-banner ds-banner-fsmp" role="note"><strong>Registered with the Philippine FDA as a FOOD FOR SPECIAL MEDICAL '
                'PURPOSES</strong> — for the dietary management of patients under medical supervision. Use with a physician\'s or '
                'dietitian\'s guidance; it is a food, not a drug.</div>')
+BANNER_FSDU = ('<div class="ds-banner ds-banner-fsmp ds-banner-fsdu" role="note"><strong>Registered with the Philippine FDA as a FOOD FOR '
+               'SPECIAL DIETARY USE</strong> — a food formulated for a particular dietary need; not a medicine.</div>')
 BANNER = ('<div class="ds-banner" role="note"><strong>Registered with the Philippine FDA as a FOOD SUPPLEMENT — no approved '
           'therapeutic claims.</strong> Not a substitute for prescribed treatment.</div>')
 
@@ -111,25 +116,52 @@ def is_fsmp(p) -> bool:
     return p.get("type") == "fsmp"
 
 
+def is_fsdu(p) -> bool:
+    return p.get("type") == "fsdu"
+
+
+def is_med(p) -> bool:
+    """A medical or special dietary food (FSMP or FSDU): registered use, no ingredient list."""
+    return p.get("type") in ("fsmp", "fsdu")
+
+
 def banner_for(ps) -> str:
-    f = any(is_fsmp(p) for p in ps)
-    s = any(not is_fsmp(p) for p in ps)
-    return (BANNER_FSMP if f else "") + (BANNER if s or not f else "")
+    f, d = any(is_fsmp(p) for p in ps), any(is_fsdu(p) for p in ps)
+    s = any(not is_med(p) for p in ps)
+    return (BANNER_FSMP if f else "") + (BANNER_FSDU if d else "") + (BANNER if s or not (f or d) else "")
+
+
+def use_text(p) -> str:
+    """'For the dietary management of …' / 'For people on dialysis' as registered ('' if none)."""
+    if p.get("use_label"):
+        return p["use_label"]
+    return ("For the dietary management of " + p["fsmp_use"]) if p.get("fsmp_use") else ""
+
+
+def med_kind(ps) -> str:
+    """Hero/description wording for an all-FSMP / all-FSDU / mixed medical-food brand."""
+    f, d = any(is_fsmp(p) for p in ps), any(is_fsdu(p) for p in ps)
+    return "fsmp" if f and not d else "fsdu" if d and not f else "both"
 
 
 def fsmp_summary(ps) -> str:
     """One line for the hero: renal formula + variants, else the registered use."""
-    fs = [p for p in ps if is_fsmp(p)]
+    fs = [p for p in ps if is_med(p)]
     vs = sorted({p["variant"] for p in fs if p.get("variant")})
     if any(p.get("renal_formula") for p in fs):
         if vs == ["HP", "LP"]:
             return "Renal nutrition formula: LP (lower protein, CKD not on dialysis) and HP (higher protein, dialysis) variants"
         if vs:
             return "Renal nutrition formula: " + VARIANT_LABEL[vs[0]].split(" · ", 1)[1].replace(", for", " formula for")
-        uses = [p["fsmp_use"] for p in fs if p.get("fsmp_use")]
-        return "Renal nutrition formula" + (f" for the dietary management of {uses[0]}" if uses else "")
-    uses = [p["fsmp_use"] for p in fs if p.get("fsmp_use")]
-    return ("Medical nutrition for the dietary management of " + Counter(uses).most_common(1)[0][0]) if uses else "Medical nutrition (FSMP)"
+        uses = [use_text(p) for p in fs if use_text(p)]
+        return "Renal nutrition formula" + (f": {uses[0][0].lower() + uses[0][1:]}" if uses else "")
+    uses = [use_text(p) for p in fs if use_text(p)]
+    k = med_kind(fs)
+    lead = {"fsmp": "Medical nutrition", "fsdu": "Special dietary food", "both": "Medical and special dietary nutrition"}[k]
+    if uses:
+        u = Counter(uses).most_common(1)[0][0]
+        return f"{lead}: {u[0].lower() + u[1:]}"
+    return {"fsmp": "Medical nutrition (FSMP)", "fsdu": "Special dietary food (FSDU)", "both": "Medical nutrition (FSMP, FSDU)"}[k]
 
 
 class SCtx:
@@ -260,7 +292,7 @@ function renderView(v){
   var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function usd(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?MON[+m[2]-1]+' '+(+m[3])+', '+m[1]:'';}
   var CAT={'probiotic':'Probiotic','herbal/botanical':'Herbal / botanical','vitamin/mineral':'Vitamin / mineral','omega-3':'Omega-3',
-    'amino acid/protein':'Amino acid / protein','ketoanalogue':'Ketoanalogue','fiber/prebiotic':'Fiber / prebiotic','fsmp':'Medical nutrition (FSMP)'};
+    'amino acid/protein':'Amino acid / protein','ketoanalogue':'Ketoanalogue','fiber/prebiotic':'Fiber / prebiotic','fsmp':'Medical nutrition (FSMP)','fsdu':'Special dietary food (FSDU)'};
   var b=(new URLSearchParams(location.search).get('b')||'').toLowerCase(), lead=document.getElementById('dsv-lead');
   function fail(msg){lead.innerHTML=msg+' Search the <a href="/drugs/supplements/">food supplements index</a>.';}
   if(!/^[a-z0-9][a-z0-9-]{0,79}$/.test(b)){fail('No brand was given.');return;}
@@ -270,32 +302,35 @@ function renderView(v){
     var ps=all.filter(function(p){return p.brand_slug===b&&!p.canceled&&(!p.valid_until||!today||p.valid_until>=today);});
     if(!ps.length){fail('No current registration was found for this brand.');return;}
     ps.sort(function(x,y){return (y.valid_until||'').localeCompare(x.valid_until||'')||y.id.localeCompare(x.id);});
-    var name=ps[0].brand, ings=[], cats=[], cos=[], kid=false, nf=0, ren=false, uses=[];
+    var name=ps[0].brand, ings=[], cats=[], cos=[], kid=false, nf=0, nfs=0, nds=0, ren=false, uses=[];
+    function ut(p){return p.use_label||(p.fsmp_use?'For the dietary management of '+p.fsmp_use:'');}
     ps.forEach(function(p){(p.ingredients||[]).forEach(function(i){if(ings.indexOf(i)<0)ings.push(i);});
-      (p.categories||[]).forEach(function(x){if(cats.indexOf(x)<0&&x!=='other'&&x!=='fsmp')cats.push(x);});
-      if(p.type==='fsmp'){nf++;if(p.renal_formula)ren=true;if(p.fsmp_use&&uses.indexOf(p.fsmp_use)<0)uses.push(p.fsmp_use);}
+      (p.categories||[]).forEach(function(x){if(cats.indexOf(x)<0&&x!=='other'&&x!=='fsmp'&&x!=='fsdu')cats.push(x);});
+      if(p.type==='fsmp'||p.type==='fsdu'){nf++;if(p.type==='fsmp')nfs++;else nds++;if(p.renal_formula)ren=true;var u=ut(p);if(u&&uses.indexOf(u)<0)uses.push(u);}
       if(p.company&&cos.indexOf(p.company)<0)cos.push(p.company); if(p.kidney_marketed)kid=true;});
     var allF=nf===ps.length;
-    document.getElementById('dsv-bf').hidden=!nf; document.getElementById('dsv-bs').hidden=allF;
-    document.title=name+(allF?' (medical nutrition, FSMP)':' (food supplement)')+' · Renal Care Matters';
+    document.getElementById('dsv-bf').hidden=!nfs; document.getElementById('dsv-bd').hidden=!nds; document.getElementById('dsv-bs').hidden=allF;
+    var kl=nds&&!nfs?'special dietary food, FSDU':nfs&&!nds?'medical nutrition, FSMP':'medical nutrition, FSMP and FSDU';
+    document.title=name+(allF?' ('+kl+')':' (food supplement)')+' · Renal Care Matters';
     document.getElementById('dsv-name').textContent=name;
-    document.getElementById('dsv-ings').textContent=allF?((ren?'Renal nutrition formula':'Medical nutrition')+(uses.length?' for the dietary management of '+uses[0]:'')):
+    document.getElementById('dsv-ings').textContent=allF?((ren?'Renal nutrition formula':(nds&&!nfs?'Special dietary food':'Medical nutrition'))+(uses.length?': '+uses[0].charAt(0).toLowerCase()+uses[0].slice(1):'')):
       (ings.length?ings.slice(0,6).join(', ')+(ings.length>6?'…':''):'Ingredients not itemized in the FDA record.');
     document.getElementById('dsv-co').textContent=cos.slice(0,3).join('; ')+(cos.length>3?'; and others':'')||'Not listed';
-    document.getElementById('dsv-chips').innerHTML=(nf?'<span class="dd-chip ds-chip-fsmp">Medical nutrition (FSMP)</span>':'')+(allF?'':'<span class="dd-chip ds-chip-supp">Food supplement</span>')+
+    document.getElementById('dsv-chips').innerHTML=(nfs?'<span class="dd-chip ds-chip-fsmp">Medical nutrition (FSMP)</span>':'')+(nds?'<span class="dd-chip ds-chip-fsmp">Special dietary food (FSDU)</span>':'')+(allF?'':'<span class="dd-chip ds-chip-supp">Food supplement</span>')+
       (ren?'<span class="dd-chip ds-chip-kid">Renal formula</span>':'')+(kid?'<span class="dd-chip ds-chip-kid">Kidney-marketed</span>':'')+
       cats.map(function(x){return '<span class="dd-chip">'+escH(CAT[x]||x)+'</span>';}).join('')+'<span class="dd-chip">'+ps.length+' registration'+(ps.length===1?'':'s')+'</span>';
     var n=ps.length;
-    lead.textContent=n+' current '+(allF?'FSMP':'food-supplement')+' registration'+(n===1?'':'s')+' under the brand '+name+'. Registration status changes; confirm a product\'s current status on the FDA verification portal using its FR number.';
+    lead.textContent=n+' current '+(allF?(nds&&!nfs?'FSDU':nfs&&!nds?'FSMP':'FSMP/FSDU'):'food-supplement')+' registration'+(n===1?'':'s')+' under the brand '+name+'. Registration status changes; confirm a product\'s current status on the FDA verification portal using its FR number.';
     var vu=v.getAttribute('data-verify'), VL={LP:'LP · lower protein, for CKD not on dialysis',HP:'HP · higher protein, for dialysis'};
     document.getElementById('dsv-regs').innerHTML=ps.map(function(p){
-      var f=p.type==='fsmp';
+      var f=p.type==='fsmp'||p.type==='fsdu';
       var il=f?'<p class="dd-note">The FDA record names the product type and its registered use, not the full composition. Check the product label for protein, energy, potassium, phosphorus, sodium and fluid per serving.</p>':
         (p.ingredients||[]).length?'<ul class="ds-ings">'+p.ingredients.map(function(i){return '<li>'+escH(i)+'</li>';}).join('')+'</ul>':'<p class="dd-note">Ingredients are not itemized in the FDA record.</p>';
       var raw=p.ingredients_raw?'<span class="ds-raw">As registered: '+escH(p.ingredients_raw)+'</span>':'';
       var rows=[['FR number',escH(p.id)+' · <a href="'+escH(vu)+'" rel="noopener" target="_blank">verify on the FDA portal</a>']];
       if(f){if(p.variant)rows.push(['Variant',escH(VL[p.variant]||p.variant)]);
-        rows.push(['Registered use',p.fsmp_use?escH('For the dietary management of '+p.fsmp_use):'Not stated in the FDA record']);
+        rows.push(['Registered as',p.type==='fsdu'?'Food for special dietary use (FSDU)':'Food for special medical purposes (FSMP)']);
+        rows.push(['Registered use',ut(p)?escH(ut(p)):'Not stated in the FDA record']);
         if(p.flavor)rows.push(['Flavor',escH(p.flavor)]);}
       rows.push(['Form',(f&&(!p.form||p.form==='other'))?'Not stated in the FDA record':escH((p.form||'').charAt(0).toUpperCase()+(p.form||'').slice(1))],['Company',escH(p.company||'Not listed')],
         ['Issued',escH(usd(p.decision_date)||'Not listed')],['Valid until',escH(usd(p.valid_until)||'Not listed')],['FDA risk class',escH(p.risk_type||'Not listed')]);
@@ -333,7 +368,7 @@ function run(){
     res.innerHTML=out.slice(0,LIMIT).map(function(o){var d=o[0];
       var why=o[2]?'<span class="dd-why">'+escH(o[2])+': '+escH(o[3])+'</span>':'';
       var sub=(d.i||[]).length?(d.i||[]).slice(0,4).join(' · ')+((d.i||[]).length>4?' …':''):(d.u||'');
-      return '<li><a href="'+href(d)+'">'+escH(d.n)+'</a>'+(d.t?' <span class="dd-tag ds-tag-f">FSMP</span>':'')+(d.rf?' <span class="dd-tag ds-tag-k">Renal formula</span>':'')+(d.k?' <span class="dd-tag ds-tag-k">Kidney-marketed</span>':'')+why+
+      return '<li><a href="'+href(d)+'">'+escH(d.n)+'</a>'+(d.t?' <span class="dd-tag ds-tag-f">'+(d.mk==='fsdu'?'FSDU':d.mk==='both'?'FSMP · FSDU':'FSMP')+'</span>':'')+(d.rf?' <span class="dd-tag ds-tag-k">Renal formula</span>':'')+(d.k?' <span class="dd-tag ds-tag-k">Kidney-marketed</span>':'')+why+
         '<span class="dd-sub">'+escH(sub)+'</span></li>';}).join('');
     res.hidden=false;stat.hidden=true;
     info.textContent=out.length?(out.length>LIMIT?'Showing the first '+LIMIT+' of '+out.length.toLocaleString('en-US')+' brands':out.length.toLocaleString('en-US')+(out.length===1?' brand':' brands')):'No supplement matches.';
@@ -399,7 +434,7 @@ def render_notes(slug: str, notes) -> str:
 
 def reg_card(p, today) -> str:
     rid = esc(p["id"])
-    fs = is_fsmp(p)
+    fs = is_med(p)
     ings = p.get("ingredients") or []
     if fs:
         ing_html = ('<p class="dd-note">The FDA record names the product type and its registered use, not the full composition. '
@@ -416,7 +451,8 @@ def reg_card(p, today) -> str:
     if fs:
         if p.get("variant"):
             rows.append(("Variant", esc(VARIANT_LABEL[p["variant"]])))
-        rows.append(("Registered use", esc("For the dietary management of " + p["fsmp_use"]) if p.get("fsmp_use") else "Not stated in the FDA record"))
+        rows.append(("Registered as", "Food for special dietary use (FSDU)" if is_fsdu(p) else "Food for special medical purposes (FSMP)"))
+        rows.append(("Registered use", esc(use_text(p)) if use_text(p) else "Not stated in the FDA record"))
         if p.get("flavor"):
             rows.append(("Flavor", esc(p["flavor"])))
     rows += [("Form", esc(form.capitalize()) if form and not (fs and form == "other") else "Not stated in the FDA record"),
@@ -440,14 +476,18 @@ def brand_page(slug: str, ps: list, sctx: SCtx) -> str:
     notes = sctx.notes(slug)
     links = sctx.drug_links(ps)
     n = len(ps)
-    fs_ps = [p for p in ps if is_fsmp(p)]
+    fs_ps = [p for p in ps if is_med(p)]
     fsmp, all_fsmp = bool(fs_ps), len(fs_ps) == n
+    has_f, has_d = any(is_fsmp(p) for p in ps), any(is_fsdu(p) for p in ps)
+    mk = med_kind(fs_ps) if fs_ps else ""
     renal = any(p.get("renal_formula") for p in ps)
     variants = sorted({p["variant"] for p in fs_ps if p.get("variant")})
     tags = [t for t in FSMP_TAG_LABEL if any(t in (p.get("fsmp_tags") or []) for p in fs_ps)]
     chips = []
-    if fsmp:
+    if has_f:
         chips.append('<span class="dd-chip ds-chip-fsmp">Medical nutrition (FSMP)</span>')
+    if has_d:
+        chips.append('<span class="dd-chip ds-chip-fsmp">Special dietary food (FSDU)</span>')
     if not all_fsmp:
         chips.append('<span class="dd-chip ds-chip-supp">Food supplement</span>')
     if renal:
@@ -457,7 +497,7 @@ def brand_page(slug: str, ps: list, sctx: SCtx) -> str:
     chips.extend(f'<span class="dd-chip">{esc(FSMP_TAG_LABEL[t])}</span>' for t in tags
                  if t not in ("renal", "general") and not (t == "high-protein" and variants))
     chips.extend(f'<span class="dd-chip">{esc(VARIANT_SHORT[v])}</span>' for v in variants)
-    chips.append(cat_chips([c for c in cats if c != "fsmp"]))
+    chips.append(cat_chips([c for c in cats if c not in ("fsmp", "fsdu")]))
     chips.append(f'<span class="dd-chip">{n:,} registration{"s" if n != 1 else ""}</span>')
     if notes_approved(notes):
         chips.append(f'<a class="dd-chip dd-good" href="#kidney-notes">{KIDNEY_ICON} Kidney notes reviewed</a>')
@@ -467,18 +507,21 @@ def brand_page(slug: str, ps: list, sctx: SCtx) -> str:
             if i not in all_ings:
                 all_ings.append(i)
     lead_ings = ", ".join(all_ings[:6]) + ("…" if len(all_ings) > 6 else "")
+    reg_kind = {"fsmp": "food for special medical purposes (FSMP)", "fsdu": "food for special dietary use (FSDU)",
+                "both": "food for special medical purposes (FSMP) and food for special dietary use (FSDU)"}.get(mk, "")
     if all_fsmp:
         lead_ings = fsmp_summary(ps)
-        desc = (f"{name}: food for special medical purposes (FSMP) registered with the FDA Philippines. {lead_ings}. "
+        desc = (f"{name}: {reg_kind} registered with the FDA Philippines. {lead_ings}. "
                 "FR numbers, variants, validity and kidney notes.")
     else:
         desc = (f"{name}: food supplement registered with the FDA Philippines (no approved therapeutic claims)"
                 + (f". Ingredients: {lead_ings}" if lead_ings else "") + ". FR numbers, validity and kidney notes.")
-    kind = "medical nutrition, FSMP" if all_fsmp else "food supplement"
+    kind = ({"fsmp": "medical nutrition, FSMP", "fsdu": "special dietary food, FSDU", "both": "medical nutrition, FSMP and FSDU"}[mk]
+            if all_fsmp else "food supplement")
     canonical = f"{SITE}/drugs/supplements/{slug}.html"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "@id": canonical, "url": canonical,
                          "name": f"{name} ({kind})", "dateModified": "__ISO__", "inLanguage": "en",
-                         "about": ({"@type": "Product", "name": name, "category": "Food for special medical purposes",
+                         "about": ({"@type": "Product", "name": name, "category": reg_kind[:1].upper() + reg_kind[1:].split(" (")[0],
                                     "manufacturer": [{"@type": "Organization", "name": c} for c in companies[:5]]} if all_fsmp else
                                    {"@type": "DietarySupplement", "name": name, "activeIngredient": all_ings[:20],
                                     "manufacturer": [{"@type": "Organization", "name": c} for c in companies[:5]]}),
@@ -494,7 +537,7 @@ def brand_page(slug: str, ps: list, sctx: SCtx) -> str:
             vp = [p for p in fs_ps if p.get("variant") == v] if variants else fs_ps
             if not vp:
                 continue
-            uses = sorted({p["fsmp_use"] for p in vp if p.get("fsmp_use")}, key=len)
+            uses = sorted({use_text(p) for p in vp if use_text(p)}, key=len)
             uses = [u for u in uses if not any(u != w and (w.startswith(u) or re.sub(r"\bpatients?\b", "patients", u) ==
                                                                           re.sub(r"\bpatients?\b", "patients", w)) for w in uses if len(w) >= len(u))]
             flv = sorted({p["flavor"] for p in vp if p.get("flavor")})
@@ -505,7 +548,7 @@ def brand_page(slug: str, ps: list, sctx: SCtx) -> str:
         unl = [p for p in fs_ps if not p.get("variant")] if variants else []
         if unl:
             frs = " ".join(f'<a href="#{esc(p["id"])}">{esc(p["id"])}</a>' for p in unl)
-            rows.append(f'<tr><th scope="row">Variant not stated</th><td data-l="Registered use">{esc("; ".join(sorted({p["fsmp_use"] for p in unl if p.get("fsmp_use")})[:2])) or "Not stated in the FDA record"}</td>'
+            rows.append(f'<tr><th scope="row">Variant not stated</th><td data-l="Registered use">{esc("; ".join(sorted({use_text(p) for p in unl if use_text(p)})[:2])) or "Not stated in the FDA record"}</td>'
                         f'<td data-l="Flavor">{esc(", ".join(sorted({p["flavor"] for p in unl if p.get("flavor")}))) or "Not stated"}</td><td data-l="FR numbers">{frs}</td></tr>')
         vnote = ("LP and HP are the manufacturer's labels for the lower-protein and higher-protein versions, as registered. "
                  if variants else "")
@@ -513,12 +556,12 @@ def brand_page(slug: str, ps: list, sctx: SCtx) -> str:
 <h2 id="var-h">Variants and registered use</h2>
 <p class="dd-note">{vnote}Per-serving protein, energy, potassium, phosphorus, sodium and fluid differ between versions and change with
 reformulation: check the product label.</p>
-<div class="ds-vwrap"><table class="ds-vtable"><thead><tr><th scope="col">Variant</th><th scope="col">Registered use (for the dietary management of)</th>
+<div class="ds-vwrap"><table class="ds-vtable"><thead><tr><th scope="col">Variant</th><th scope="col">Registered use</th>
 <th scope="col">Flavor</th><th scope="col">FR numbers</th></tr></thead><tbody>{"".join(rows)}</tbody></table></div></section>"""))
     regs = "".join(reg_card(p, sctx.today) for p in ps)
     secs.append(("registrations", "Registrations", f"""<section class="dd-sec" id="registrations" aria-labelledby="reg-h">
 <h2 id="reg-h">FDA Philippines registration{"s" if n != 1 else ""}</h2>
-<p class="dd-lead">{n:,} current {"FSMP" if all_fsmp else "food-supplement"} registration{"s" if n != 1 else ""} under the brand {esc(name)}. Registration status changes;
+<p class="dd-lead">{n:,} current {({"fsmp": "FSMP", "fsdu": "FSDU", "both": "FSMP/FSDU"}[mk]) if all_fsmp else "food-supplement"} registration{"s" if n != 1 else ""} under the brand {esc(name)}. Registration status changes;
 confirm a product's current status on the FDA verification portal using its FR number.</p>
 <p><a class="dd-btn" href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">Verify on PH FDA portal {EXT_ICON}</a></p>
 {regs}</section>"""))
@@ -532,9 +575,14 @@ and labeling; a food supplement does not, and its content and quality are not ve
     toc = "".join(f'<li><a href="#{sid}">{esc(t)}</a></li>' for sid, t, _ in secs)
     pills = "".join(f'<a class="nav-pill" href="#{sid}">{esc(t)}</a>' for sid, t, _ in secs)
     body = "\n".join(h for _, _, h in secs)
-    hero_tag = "Medical nutrition (FSMP)" if all_fsmp else "Food supplement"
+    hero_tag = ({"fsmp": "Medical nutrition (FSMP)", "fsdu": "Special dietary food (FSDU)", "both": "Medical nutrition (FSMP, FSDU)"}[mk]
+                if all_fsmp else "Food supplement")
     disc = (("A food-for-special-medical-purposes registration means the product may be sold as a food for the dietary management of "
-             "patients under medical supervision; it is not a drug approval.") if all_fsmp else
+             "patients under medical supervision; it is not a drug approval.") if all_fsmp and mk == "fsmp" else
+            ("A food-for-special-dietary-use registration means the product may be sold as a food formulated for a particular dietary "
+             "need; it is not a drug approval.") if all_fsmp and mk == "fsdu" else
+            ("These registrations allow sale as foods for special medical purposes or for special dietary use; neither is a drug "
+             "approval.") if all_fsmp else
             "A food-supplement registration means the product may be sold as food; it is not an approval of safety or efficacy for any disease.")
     return (supp_head(f"{name} ({kind}) · Renal Care Matters", desc, canonical, jsonld)
             + '<body class="physician-mode single-mode dd-mono">\n' + header(True) + f"""
@@ -597,7 +645,7 @@ def viewer_page(sctx: "SCtx") -> str:
 <div class="dd-layout">
 <nav class="dd-toc" aria-label="On this page"><div class="dd-toc-h">On this page</div><ol><li><a href="#kidney-notes">Kidney notes</a></li><li><a href="#registrations">Registrations</a></li></ol></nav>
 <main class="dd-main" id="ds-view" data-base="/data/drugs/supplements/" data-split="{split}" data-today="__ISO__" data-verify="{FDA_VERIFY_URL}">
-<div id="dsv-bf" hidden>{BANNER_FSMP}</div><div id="dsv-bs">{BANNER}</div>
+<div id="dsv-bf" hidden>{BANNER_FSMP}</div><div id="dsv-bd" hidden>{BANNER_FSDU}</div><div id="dsv-bs">{BANNER}</div>
 <section class="dd-kidney dd-sec" id="kidney-notes" aria-labelledby="kn-h">
 <div class="dd-kidney-head">{KIDNEY_ICON}<div><div class="section-tag">CKD · dialysis · transplant</div><h2 id="kn-h">Kidney notes</h2></div></div>
 <p class="dd-kidney-pending">Kidney-specific notes from renalcarematters.com: in preparation.</p></section>
@@ -631,9 +679,10 @@ def search_entry(slug, ps, static: bool = True, sctx=None) -> dict:
          "f": sorted({p.get("form", "other") for p in ps})}
     if any(p.get("kidney_marketed") for p in ps):
         e["k"] = 1
-    fs = [p for p in ps if is_fsmp(p)]
+    fs = [p for p in ps if is_med(p)]
     if fs:
-        e["t"] = "m" if len(fs) == len(ps) else "b"      # m = FSMP only, b = both FSMP and food-supplement registrations
+        e["t"] = "m" if len(fs) == len(ps) else "b"      # m = FSMP/FSDU only, b = also food-supplement registrations
+        e["mk"] = med_kind(fs)                           # fsmp | fsdu | both
         if any(p.get("renal_formula") for p in fs):
             e["rf"] = 1
         vs = sorted({p["variant"] for p in fs if p.get("variant")})
@@ -649,9 +698,11 @@ def index_page(entries: list[dict], sctx: SCtx) -> str:
     kid = sorted((e for e in entries if e.get("k")), key=lambda e: e["n"].lower())
     ren = sorted((e for e in entries if e.get("rf")), key=lambda e: e["n"].lower())
     rlis = "".join(f'<li><a href="{esc(e["s"]) + ".html" if e.get("p") else "view.html?b=" + esc(e["s"])}">{esc(e["n"])}</a>'
+                   + (' <span class="dd-tag ds-tag-f">FSDU</span>' if e.get("mk") == "fsdu" else "")
                    + "".join(f' <span class="dd-tag ds-tag-f">{v}</span>' for v in e.get("v", []))
                    + f'<span class="dd-sub">{esc(e.get("u", ""))}</span></li>' for e in ren)
-    n_fsmp = sum(1 for e in entries if e.get("t"))
+    n_fsmp = sum(1 for e in entries if e.get("mk") in ("fsmp", "both"))
+    n_fsdu = sum(1 for e in entries if e.get("mk") in ("fsdu", "both"))
     klis = "".join(f'<li><a href="{esc(e["s"]) + ".html" if e.get("p") else "view.html?b=" + esc(e["s"])}">{esc(e["n"])}</a><span class="dd-sub">{esc(" · ".join(e["i"][:4]))}</span></li>' for e in kid)
     cats = Counter(c for e in entries for c in e["cat"])
     cat_opts = "".join(f'<option value="{esc(c)}">{esc(CAT_LABEL.get(c, c))} ({cats[c]:,})</option>' for c in CAT_LABEL if cats.get(c))
@@ -677,10 +728,11 @@ def index_page(entries: list[dict], sctx: SCtx) -> str:
         <div class="hero-tag">Drug Database · Food supplements</div>
         <h1>Food supplements &amp; medical nutrition</h1>
         <p class="hero-sub">Products registered with the Food and Drug Administration (FDA) Philippines as food supplements or as foods for
-special medical purposes (FSMP, such as renal nutrition formulas), with FR numbers, not as drugs. Search by brand, ingredient, company or FR number.</p>
+special medical purposes (FSMP, such as renal nutrition formulas) or for special dietary use (FSDU), with FR numbers, not as drugs. Search by brand, ingredient, company or FR number.</p>
         <div class="dd-chips"><span class="dd-chip">{len(entries):,} brands</span><span class="dd-chip">{n_regs:,} registrations</span>
 <a class="dd-chip ds-chip-fsmp" href="#renal-formulas">{len(ren):,} renal nutrition formulas</a>
 <a class="dd-chip ds-chip-fsmp" href="?cat=fsmp">{n_fsmp:,} medical-nutrition (FSMP) brands</a>
+<a class="dd-chip ds-chip-fsmp" href="?cat=fsdu">{n_fsdu:,} special dietary food (FSDU) brands</a>
 <a class="dd-chip ds-chip-kid" href="#kidney-marketed">{len(kid):,} kidney-marketed brands</a></div>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
     </div></div>
@@ -688,7 +740,8 @@ special medical purposes (FSMP, such as renal nutrition formulas), with FR numbe
 </section>
 <main class="container dd-wide" id="ds-index" data-src="/drugs/supplements/search-index.json">
 {BANNER}
-<p class="dd-note">Foods for special medical purposes carry a different registration: for the dietary management of patients under medical supervision.</p>
+<p class="dd-note">Foods for special medical purposes (FSMP) carry a different registration: for the dietary management of patients under medical
+supervision. Foods for special dietary use (FSDU) are foods formulated for a particular dietary need, such as diabetes or dialysis; not medicines.</p>
 <div class="dd-search" role="search">
 <label class="dd-hidden" for="ds-q">Search food supplements</label>
 <input id="ds-q" type="search" placeholder="Brand, ingredient, company, or FR number (e.g., probiotic, Renadyl, Nepro)" autocomplete="off" spellcheck="false">
@@ -705,9 +758,10 @@ special medical purposes (FSMP, such as renal nutrition formulas), with FR numbe
 <div id="ds-static">
 <section class="dd-sec" id="renal-formulas" aria-labelledby="rf-h">
 <h2 id="rf-h">Renal nutrition formulas</h2>
-<p class="dd-note">Registered as foods for special medical purposes (FSMP) for the dietary management of kidney disease. LP marks the
-lower-protein version (CKD not on dialysis) and HP the higher-protein version (dialysis), as registered. Check the product label for
-protein, potassium, phosphorus and fluid per serving. More medical nutrition: choose "Medical nutrition (FSMP)" under Category.</p>
+<p class="dd-note">Registered as foods for special medical purposes (FSMP) or, where marked, foods for special dietary use (FSDU), for
+kidney disease or dialysis. LP marks the lower-protein version (CKD not on dialysis) and HP the higher-protein version (dialysis), as registered. Check the product label for
+protein, potassium, phosphorus and fluid per serving. More medical nutrition: choose "Medical nutrition (FSMP)" or "Special dietary food
+(FSDU)" under Category.</p>
 <ul class="dd-list ds-list">{rlis}</ul>
 </section>
 <section class="dd-sec" id="kidney-marketed" aria-labelledby="km-h">
@@ -718,7 +772,7 @@ and brands on a short curated list. "Kidney-marketed" describes how a product is
 </section>
 </div>
 <div class="disclaimer" role="note"><strong>For health professionals.</strong> Data come from the FDA Philippines food-product registration
-database and may lag behind the official record. Foods for special dietary use (FSDU) are a separate FDA category and are not listed here. Verify a registration on <a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">verification.fda.gov.ph</a>.
+database and may lag behind the official record. Verify a registration on <a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">verification.fda.gov.ph</a>.
 Canceled registrations and registrations past their validity date are not listed. Not a substitute for clinical judgment.</div>
 </main>
 <script src="/drugs/supplements/supp.js?v={SUPP_ASSET_VERSION}" defer></script>
@@ -759,7 +813,7 @@ def site_file_count(out_dir: Path, data_dir: Path) -> int:
 
 def plan_static(sctx: "SCtx", out_dir: Path, data_dir: Path, budget_total: int) -> tuple[set, dict]:
     """Choose which brands get a static page: (a) renal FSMP formulas (always), kidney-marketed or with approved notes,
-    then (c) the allowlist and every other FSMP brand, then (b) brands with >= 3 active registrations by registration count; capped so the
+    then (c) the allowlist and every other FSMP/FSDU brand, then (b) brands with >= 3 active registrations by registration count; capped so the
     site stays within budget_total files."""
     base = site_file_count(out_dir, data_dir) + len(FIXED_FILES)
     cap = max(0, budget_total - base)
@@ -769,7 +823,7 @@ def plan_static(sctx: "SCtx", out_dir: Path, data_dir: Path, budget_total: int) 
                                                                        or notes_approved(sctx.notes(s)))),
                        key=lambda s: (-len(by[s]), s))
     c = [s for s in read_allowlist() if s in by]
-    c += sorted((s for s, ps in by.items() if any(is_fsmp(p) for p in ps) and s not in c), key=lambda s: (-len(by[s]), s))
+    c += sorted((s for s, ps in by.items() if any(is_med(p) for p in ps) and s not in c), key=lambda s: (-len(by[s]), s))
     b = sorted((s for s, ps in by.items() if len(ps) >= 3), key=lambda s: (-len(by[s]), s))
     chosen, order = [], []
     for s in a + c + b:

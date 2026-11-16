@@ -81,6 +81,8 @@ EMA_LICENSE = ("© European Medicines Agency. EMA content \"may be reproduced an
                "provided EMA is acknowledged as the source (EMA legal notice, "
                "https://www.ema.europa.eu/en/about-us/legal-notice).")
 
+CIMA_REST = "https://cima.aemps.es/cima/rest/medicamentos?practiv1={q}"
+CIMA_PAGE = "https://cima.aemps.es/cima/publico/lista.html?practiv1={q}"   # lista.js reads ?practiv1= and runs the search
 DPD_ZIP = "https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip"
 DPD_INFO = "https://health-products.canada.ca/dpd-bdpp/info?lang=eng&code={code}"
 
@@ -721,6 +723,46 @@ class DPD:
         return out
 
 
+ES_SUFFIX = [("ine", "ina"), ("ide", "ida"), ("one", "ona"), ("ole", "ol"), ("ate", "ato"), ("ium", "io"), ("yl", "ilo"),
+             ("in", "ina"), ("an", "an"), ("il", "il"), ("ol", "ol"), ("ac", "aco"), ("um", "o"), ("e", "a")]
+
+
+def spanish_inn_candidates(inn: str) -> list[str]:
+    """Spanish INN guesses for a one-word English INN (betahistine -> betahistina; 'X-ic acid' -> 'acido X-ico'),
+    the English INN itself first. Every guess is checked against CIMA before a link is stored."""
+    w = re.sub(r"\s+", " ", inn.lower().strip())
+    out = [w]
+    m = re.fullmatch(r"([a-z]+)ic acid", w)
+    if m:
+        out += [f"acido {m.group(1)}ico", f"ácido {m.group(1)}ico"]
+    elif re.fullmatch(r"[a-z]+", w):
+        for en, es in ES_SUFFIX:
+            if w.endswith(en):
+                out.append(w[: len(w) - len(en)] + es)
+                break
+        out.append(w.replace("ph", "f").replace("th", "t").replace("y", "i"))
+        out += [re.sub(r"(ine|ide|one)$", lambda x: {"ine": "ina", "ide": "ida", "one": "ona"}[x.group(1)], out[-1])]
+    return list(dict.fromkeys(x for x in out if x))
+
+
+def cima_link(ingredients: list[str]) -> dict | None:
+    """Spain CIMA search link for a single-ingredient generic, stored only when CIMA returns at least one product."""
+    if len(ingredients) != 1:
+        return None
+    for q in spanish_inn_candidates(ingredients[0])[:5]:
+        try:
+            data = json.loads(http_get(CIMA_REST.format(q=urllib.parse.quote(q)), retries=2, timeout=60) or b"{}")
+        except Exception:
+            continue
+        n = int(data.get("totalFilas") or len(data.get("resultados") or []) or 0)
+        time.sleep(0.3)
+        if n:
+            return {"agency": "AEMPS", "agency_short": "Spain CIMA (Spanish)", "kind": "search",
+                    "label": "Spain CIMA (Spanish)", "query": q, "results": n,
+                    "url": CIMA_PAGE.format(q=urllib.parse.quote(q)), "reuse": "link only (external search)"}
+    return None
+
+
 def dpd_monograph(link: dict) -> None:
     """Add the product-monograph PDF URL and date from the DPD record page, when the page shows them."""
     try:
@@ -980,8 +1022,9 @@ def main() -> int:
                                 "previous": {"product": old["source"].get("product"),
                                              "revision_date": old["source"].get("revision_date")}})
             continue
-        cand_key = hashlib.sha1(json.dumps([sorted((m.number, m.name, m.pi(), m.pi_updated or m.updated) for m in cands),
-                                            ov], sort_keys=True).encode()).hexdigest()[:16]
+        cset = sorted((m.number, m.name, m.pi(), m.pi_updated or m.updated) for m in cands)
+        # an override is part of the key (editing it refetches the slug); slugs without one keep the original key
+        cand_key = hashlib.sha1((json.dumps([cset, ov], sort_keys=True) if ov else json.dumps(cset)).encode()).hexdigest()[:16]
         if (old and not args.force and old.get("extract_rev", 0) >= EXTRACT_REV
                 and (old.get("selection") or {}).get("candidates_key") == cand_key):
             unchanged += 1
@@ -1056,38 +1099,52 @@ def national_links(targets, generics, cache, ph_routes):
         print(f"  ! Health Canada DPD unavailable: {e}", file=sys.stderr)
         dpd = None
     today = dt.datetime.now(MANILA).date().isoformat()
-    n_links = 0
+    n_links = n_search = 0
     for slug in targets:
         if (OUT / f"{slug}.json").exists():
-            want = []           # the EU SmPC already gives the text; no link list needed
+            want, search = [], []   # the EU SmPC already gives the text; no link list needed
         else:
             g = generics[slug]
-            want = []
+            want, search = [], []
             if dpd:
                 for link in dpd.find(g["ingredients"], ph_routes.get(slug) or {}):
                     dpd_monograph(link)
                     want.append(link)
                     time.sleep(0.3)
+            c = cima_link(g["ingredients"])
+            if c:
+                search.append(c)
         path = INTL / f"{slug}.json"
-        doc = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
-        if not want:
-            if doc and "links" in doc:
-                doc.pop("links", None)
-                doc.pop("links_retrieved", None)
-                if set(doc) <= {"slug"}:
-                    path.unlink()
-                else:
-                    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            continue
-        n_links += 1
-        doc = doc or {"slug": slug}
-        if doc.get("links") != want:
-            doc["links"] = want
-            doc["links_retrieved"] = today
+        doc = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"slug": slug}
+        before = json.dumps(doc, sort_keys=True)
+        for key, val in (("links", want), ("search_links", search)):
+            if val:
+                if doc.get(key) != val:
+                    doc[key] = val
+                    doc[key + "_retrieved"] = today
+            else:
+                doc.pop(key, None)
+                doc.pop(key + "_retrieved", None)
+        if want:
             doc["links_note"] = ("Metadata and deep links only. These regulators' terms do not clearly permit "
                                  "reproducing the documents, so no text is stored or shown.")
+        if search:
+            doc["search_links_note"] = ("External search pages (Spain CIMA, in Spanish), checked to return at least one "
+                                        "product; text not reproduced. UK MHRA, Ireland HPRA and NZ Medsafe are not linked: "
+                                        "their searches render in the browser or need a form post, so a link could not be verified.")
+        if not want:
+            doc.pop("links_note", None)
+        if not search:
+            doc.pop("search_links_note", None)
+        n_links += bool(want)
+        n_search += bool(search)
+        if set(doc) <= {"slug"}:
+            if path.exists():
+                path.unlink()
+        elif json.dumps(doc, sort_keys=True) != before or not path.exists():
             path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"national links: {n_links} generics with at least one link", flush=True)
+    print(f"national links: {n_links} generics with a Health Canada link; {n_search} with a Spain CIMA search link",
+          flush=True)
 
 
 if __name__ == "__main__":

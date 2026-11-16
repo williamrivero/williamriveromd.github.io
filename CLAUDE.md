@@ -870,6 +870,17 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   never Lexicomp, UpToDate, Micromedex, MIMS, Renal Drug Handbook, Sanford. Kidney bands keep the label's
   measure (Cockcroft–Gault CrCl stays CrCl). Tile colors: green no change · amber dose/caution · red avoid ·
   gray not studied · `hide` = band not applicable.
+- **Food supplements & medical foods** (`data/drugs/supplements/`, `tools/drugdb/build_supplements.py` →
+  `generate_supplement_pages.py` → `drugs/supplements/`): PH FDA food registrations (FR numbers) typed `supplement`,
+  `fsmp` (FOOD FOR SPECIAL MEDICAL PURPOSES) or `fsdu` (FOOD FOR SPECIAL DIETARY USE, e.g. Glucerna, Efione Nu Reno),
+  each with its own banner; renal FSMP/FSDU formulas join the "Renal nutrition formulas" list and always get a static
+  page; extra static pages via `tools/drugdb/supplement_pages_allowlist.txt`. Kidney notes in
+  `supplement-notes/<slug>.json` render only when approved.
+- **EU SmPC** (`data/drugs/labels-eu/`, `tools/drugdb/fetch_eu_smpc.py`, weekly `drugdb-eu-labels`): for generics with
+  no US label, EMA SmPC text reproduced verbatim with acknowledgment (Dr. Rivero's decision, Nov 17 2026). Per-slug
+  product picks (prefer / exclude / valency / none) are pinned in `tools/drugdb/eu_label_overrides.json`. National
+  sources are link-only (`labels-intl/<slug>.json`: Health Canada DPD records, Spain CIMA search links); never
+  reproduce their text. See `data/drugs/SOURCES.md`.
 - **Variant spellings** (`data/drugs/aliases.json`, built by `tools/drugdb/build_aliases.py`; manual fixes in
   `tools/drugdb/alias_overrides.json`): registry typos, salt leftovers and INN/USAN pairs (allopurino, aciciovir,
   aciclovir) map to a main molecule page. High confidence: banner to the main page, canonical to it, `noindex`

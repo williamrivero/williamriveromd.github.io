@@ -152,23 +152,30 @@ variants in `aliases.json` are skipped (their main slug is fetched instead). Reu
 |---|---|---|
 | European Medicines Agency (EMA), legal notice, https://www.ema.europa.eu/en/about-us/legal-notice | Content "may be reproduced and / or distributed, totally or in part" … "for non-commercial and commercial purposes, provided that EMA is always acknowledged as the source". Exception: the permissions "do not apply to content supplied by third parties." | **Verbatim** SmPC text (Annex I of the EPAR product information): sections 4.1–4.6, 4.8 (frequency tables kept), 4.9, 5.1, 5.2, and renal-impairment excerpts of 4.2/5.2. Stored in `data/drugs/labels-eu/<slug>.json`; each page carries the acknowledgment and links the EPAR and the PDF. |
 | EMA medicines data (JSON), https://www.ema.europa.eu/en/medicines/download-medicine-data | Same EMA legal notice. | `medicines-output-medicines_json-report_en.json` (active substance, INN, holder, generic/biosimilar flags, decision date) and `documents-output-epar_documents_json-report_en.json` (product-information PDF URL and last-updated date). |
-| UK MHRA, https://products.mhra.gov.uk/ and https://www.gov.uk/government/publications/reproduce-or-re-use-mhra-information | MHRA content is under the Open Government Licence "except where otherwise stated"; for third-party copyright "you will need to obtain permission". SPCs are written by the licence holder. | **Not used.** The products site renders its lists in the browser, so a verified deep link per substance could not be built. Not linked. |
-| Ireland HPRA, https://www.hpra.ie/terms-of-use | Reproduction needs permission: "without the express written permission of the HPRA." | **Not used** (no reproduction permission; the find-a-medicine search URL returned no results page to automated clients). |
-| New Zealand Medsafe, https://www.medsafe.govt.nz/Other/siteinfo.asp | Data sheets "remain the property of the sponsor"; commercial use: "contact the medicine sponsor for permission." | **Not used** (data-sheet search is a browser app; no stable deep link). |
+| UK MHRA, https://products.mhra.gov.uk/ and https://www.gov.uk/government/publications/reproduce-or-re-use-mhra-information | MHRA content is under the Open Government Licence "except where otherwise stated"; for third-party copyright "you will need to obtain permission". SPCs are written by the licence holder. | **Not linked.** Checked from GitHub Actions on November 17, 2026: `products.mhra.gov.uk/search/?search=<INN>` and `/substance/?substance=<INN>` return the same page for every query (results are drawn in the browser), so a per-drug link could not be verified. |
+| Ireland HPRA, https://www.hpra.ie/terms-of-use | Reproduction needs permission: "without the express written permission of the HPRA." | **Not linked.** `find-a-medicine/for-human-use/authorised-medicines?searchrequest=<INN>` (the form's own field) returns the same page for every query; results are drawn in the browser, so a link could not be verified. |
+| New Zealand Medsafe, https://www.medsafe.govt.nz/Other/siteinfo.asp | Data sheets "remain the property of the sponsor"; commercial use: "contact the medicine sponsor for permission." | **Not linked.** The data-sheet search (`/DbSearch/InfoSearch`, `/DbSearch/`) runs only as a form post with an anti-forgery token, so it works only interactively. |
 | Health Canada Drug Product Database (DPD), https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html | The DPD pages give no reuse licence for product monographs; they point to the DPD terms and conditions. Product monographs are sponsor documents. | **Link only.** The DPD data extract (`allfiles.zip`, marketed products) maps ingredients to products; `data/drugs/labels-intl/<slug>.json` → `links[]` stores brand, company, DIN, the DPD record URL and, when the record page shows them, the product-monograph PDF URL and date. No text is stored or shown. |
-| Spain AEMPS / CIMA, https://www.aemps.gob.es/aviso-legal/ | "Se autoriza la reproducción total o parcial … siempre que se cite expresamente su origen" (reproduction allowed with the source cited, and the last-update date). | **Not used:** CIMA fichas técnicas are in Spanish. Recorded for a future decision. |
+| Spain AEMPS / CIMA, https://www.aemps.gob.es/aviso-legal/ | "Se autoriza la reproducción total o parcial … siempre que se cite expresamente su origen" (reproduction allowed with the source cited, and the last-update date). | **Search link only, no text** (`labels-intl/<slug>.json` → `search_links[]`), for single-ingredient generics with no US label and no EU SmPC: `https://cima.aemps.es/cima/publico/lista.html?practiv1=<Spanish INN>` (the page script reads `practiv1` from the URL and runs the search). The fetcher tries the INN and Spanish forms (betahistine → betahistina, "X-ic acid" → "ácido X-ico") against the CIMA REST API (`/cima/rest/medicamentos?practiv1=`) and stores a link only when at least one product comes back. Labeled "Spain CIMA (Spanish)", with the note "external search; text not reproduced." |
 
 **Rules applied.** Verbatim text appears only from EMA, with the acknowledgment "EU Summary of Product
 Characteristics (EMA), <product>, revised <date>, reproduced with acknowledgment of the source" and a link to
 the EPAR. National sources whose terms do not clearly permit reproduction are shown as a "Prescribing
 information" link list only. SmPC text keeps its original British spelling because it is quoted verbatim; all
-of our own wording is American English.
+of our own wording is American English. Dr. Rivero asked (November 17, 2026) for search links to UK MHRA, Ireland
+HPRA and NZ Medsafe as well; none could be verified as a working deep link (see the table), so only Spain CIMA is linked.
 
-**Open question for Dr. Rivero.** The EMA notice excludes "content supplied by third parties". The SmPC is
-drafted by the marketing authorization holder but adopted as Annex I of the European Commission decision and
-published by EMA as an EMA document; this build treats it as EMA content. If he prefers the cautious reading,
-set `EU_VERBATIM = False` in `generate_drug_pages.py`: pages then show the EU SmPC as a link with its metadata
-only.
+**Decision (Dr. Rivero, November 17, 2026): verbatim EMA text stays.** SmPCs are reproduced as EMA-published product
+information (Annex I of the EPAR, adopted with the European Commission decision and published by EMA), with the
+acknowledgment of EMA as the source on every page (`EU_VERBATIM = True` in `tools/drugdb/eu_smpc_render.py`). The EMA
+notice excludes "content supplied by third parties"; the SmPC is drafted by the marketing authorization holder, and this
+was weighed and accepted. Setting `EU_VERBATIM = False` would switch pages to a metadata-and-link view.
+
+**Product picks** (`tools/drugdb/eu_label_overrides.json`, read by the fetcher every week): ibandronic acid uses
+Bonviva (osteoporosis), not Bondronat; glycopyrronium + indacaterol uses Ultibro Breezhaler, not Xoterna; pneumococcal
+conjugate vaccines are matched by valency to the PH registrations (10-valent → Synflorix, 13-valent Prevenar 13 →
+Prevenar 13, 15-valent → Vaxneuvance; Pneumocon-13, a different 13-valent vaccine with a tetanus-toxoid carrier, gets
+none); "amino acids" (parenteral nutrition) is never mapped to Maapliv.
 
 **Matching and ranking.** Ingredient-for-ingredient, as for the US labels (salts and hydrates ignored, INN and US
 names both accepted). Only authorized human medicines. The originator (EMA flags generic = No, biosimilar = No;

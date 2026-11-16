@@ -20,7 +20,10 @@ e.g. the renal formulas Nepro, Kidneypro, Fresubin Renal, Nephrisol) are kept as
 "Medical nutrition (FSMP)") with sub-tags (renal, diabetes, high-protein, peptide, pediatric, general), the registered
 "dietary management" use, the flavor and, for renal formulas, the LP/HP variant. Registrations of one renal product
 line are grouped on one brand (Nepro HP + Nepro LP -> "Nepro"; Nephrisol + Nephrisol-D -> "Nephrisol").
-Foods for special DIETARY use (FSDU, e.g. Glucerna) are a different FDA category and are not included.
+Foods for special DIETARY use (FSDU: "FOOD FOR SPECIAL DIETARY USE", e.g. Glucerna, Efione Nu Reno, Efione Nu Lopo) are a
+separate FDA category, kept as type "fsdu" (category "fsdu", "Special dietary food (FSDU)") with the same sub-tags, registered
+use and flavor; renal ones (dialysis, CKD) also get "renal_formula" and join the renal list. FSMP wording wins over FSDU
+when a product name carries both.
 
 A product is excluded when it is canceled (IS_CANCELED = "Y" or a "cancel this authorization"
 application), past its validity date, not approved, a raw material, or not a food supplement
@@ -437,6 +440,13 @@ FLAVOR_RX = re.compile(r"\b(" + "|".join(re.escape(f) for f in FLAVORS) + r")(?=
 def is_fsmp(rec):
     return bool(FSMP_RX.search(rec.get("PRODUCT_NAME") or ""))
 
+FSDU_RX = re.compile(r"SPECIAL\s+DIETARY", re.I)
+MEDFOOD = ("fsmp", "fsdu")
+
+def is_fsdu(rec):
+    """FOOD(S) FOR SPECIAL DIETARY USE(S), 'SPECIAL DIETARY POWDER DRINK MIX', 'FOOD FOR SPECIAL DIETARY MANAGEMENT'."""
+    return bool(FSDU_RX.search(rec.get("PRODUCT_NAME") or "")) and not is_fsmp(rec)
+
 def _balance(t):
     """Drop unmatched parentheses."""
     out, stack = list(t), []
@@ -452,7 +462,7 @@ def _balance(t):
         out[i] = ""
     return ws("".join(out))
 
-FSMP_PHRASE = re.compile(r"\(?\s*(?:foods?|formula|powder)?\s*(?:for\s+)?special\s+medical\s+purposes?\s*\)?", re.I)
+FSMP_PHRASE = re.compile(r"\(?\s*(?:foods?|formula|powder)?\s*(?:for\s+)?special\s+(?:medical\s+purposes?|dietary\s+uses?)\s*\)?", re.I)
 
 def fsmp_use(raw):
     """The registered 'for the dietary management of …' text, cleaned to lower case."""
@@ -460,7 +470,8 @@ def fsmp_use(raw):
     if m:
         t = m.group(1)
     else:  # "… FOOD FOR SPECIAL MEDICAL PURPOSES WITH HIGH PROTEIN FOR RENAL INSUFFICIENCY IN DIALYSIS STAGE"
-        m = re.search(r"\bfor\s+((?:renal|kidney|patients|people|infants|chronic|children|young)\b.*)", FSMP_PHRASE.sub(" ", raw), re.I)
+        m = re.search(r"\bfor\s+((?:renal|kidney|patients|people|persons|individuals|diabetics|infants|chronic|children|young)\b.*)",
+                      FSMP_PHRASE.sub(" ", raw), re.I)
         t = m.group(1) if m else ""
     t = FSMP_PHRASE.sub(" ", t)
     fl = "|".join(re.escape(f) for f in FLAVORS)
@@ -475,15 +486,24 @@ def fsmp_use(raw):
         t = re.sub(rf"(?<![a-z]){re.escape(a)}(?![a-z])", a.upper(), t)
     return t[:200]
 
+def use_label(raw, use):
+    """The registered use as a sentence: 'For the dietary management of …' when the record says so, else 'For …'."""
+    if not use:
+        return None
+    if re.search(r"dietary\s+management", raw, re.I):
+        return "For the dietary management of " + use
+    return "For " + use
+
 def fsmp_flavor(raw):
     m = FLAVOR_RX.search(raw)
     if not m:
         return None
     return (m.group(1) or m.group(2)).capitalize()
 
-def fsmp_variant(brand, raw):
-    """'LP' (lower protein, CKD not on dialysis) or 'HP' (higher protein, dialysis) for renal formulas."""
-    b, t = brand.upper(), raw.upper()
+def fsmp_variant(brand, raw, brand_only=False):
+    """'LP' (lower protein, CKD not on dialysis) or 'HP' (higher protein, dialysis) for renal formulas.
+    brand_only (FSDU): only an LP/HP label in the brand counts; the stage wording is not read as a protein variant."""
+    b, t = brand.upper(), ("" if brand_only else raw.upper())
     if re.search(r"\bLP\b|LOWER\s+PROTEIN|LOW\s+PROTEIN", b):
         return "LP"
     if re.search(r"\bHP\b|HIGH(?:ER)?\s+PROTEIN|-\s*D\b", b):
@@ -495,7 +515,7 @@ def fsmp_variant(brand, raw):
         return "HP"
     return None
 
-def fsmp_tags(brand, raw):
+def fsmp_tags(brand, raw, brand_only=False):
     t = brand + " " + raw
     tags = []
     if RENAL_RX.search(t):
@@ -504,7 +524,7 @@ def fsmp_tags(brand, raw):
         tags.append("diabetes")
     ped = bool(PEDIA_RX.search(raw))
     if re.search(r"high(?:er)?\s+protein|increased\s+protein|protein\s+content|loss\s+of\s+muscle", t, re.I) or \
-            ("renal" in tags and fsmp_variant(brand, raw) == "HP") or (re.search(r"\bHP\b", brand) and not ped):
+            ("renal" in tags and fsmp_variant(brand, raw, brand_only) == "HP") or (re.search(r"\bHP\b", brand) and not ped):
         tags.append("high-protein")
     if re.search(r"peptide", t, re.I):
         tags.append("peptide")
@@ -528,7 +548,7 @@ def brand_display(b):
 def group_fsmp(products):
     """One page per renal product line: strip LP/HP/-D suffixes; a brand that holds both renal and non-renal FSMP
     registrations (Fresubin) gets its renal line as '<brand> Renal'. Display name prefers the mixed-case spelling."""
-    fs = [p for p in products if p.get("type") == "fsmp"]
+    fs = [p for p in products if p.get("type") in MEDFOOD]
     base = defaultdict(list)
     for p in fs:
         base[slugify(p["brand"])].append(p)
@@ -566,7 +586,9 @@ def main():
         raw = ws(r.get("PRODUCT_NAME"))
         clean = clean_product_name(raw)
         brand = brand_display(r.get("BRAND_NAME"))
-        fsmp = is_fsmp(r) and "RAW MATERIAL" not in (r.get("TYPE_FOOD_PRODUCT_LABEL") or "").upper()
+        raw_mat = "RAW MATERIAL" in (r.get("TYPE_FOOD_PRODUCT_LABEL") or "").upper()
+        kind = "fsmp" if (is_fsmp(r) and not raw_mat) else "fsdu" if (is_fsdu(r) and not raw_mat) else "supplement"
+        fsmp = kind in MEDFOOD          # FSMP or FSDU: registered use + tags, no ingredient parsing
         ok, why = (True, "") if fsmp else is_supplement(r, clean)
         valid = parse_date(r.get("DATE_VALIDITY"))
         app = ws(r.get("APPLICATION_TYPE_LABEL"))
@@ -609,18 +631,19 @@ def main():
             "risk_type": ws(r.get("TYPE_FOOD_PRODUCT_LABEL")).replace(" Food Product", "") or None,
             "application_type": app or None,
             "no_therapeutic_claims": bool(re.search(r"no\s+approved\s+therapeutic", raw, re.I)),
-            "categories": ["fsmp"] if fsmp else categories_of(ing_text, ings, kinds),
+            "categories": [kind] if fsmp else categories_of(ing_text, ings, kinds),
             "kidney_marketed": kflag,
-            "type": "fsmp" if fsmp else "supplement",
+            "type": kind,
         }
         if fsmp:
-            tags = fsmp_tags(brand, raw)
+            tags = fsmp_tags(brand, raw, kind == "fsdu")
             p["fsmp_tags"] = tags
             p["fsmp_use"] = fsmp_use(raw)
+            p["use_label"] = use_label(raw, p["fsmp_use"])
             p["flavor"] = fsmp_flavor(raw)
             if "renal" in tags:
                 p["renal_formula"] = True
-                p["variant"] = fsmp_variant(brand, raw)
+                p["variant"] = fsmp_variant(brand, raw, kind == "fsdu")
         if kflag:
             p["kidney_reason"] = kwhy
         products.append(p)
@@ -671,8 +694,7 @@ def main():
             "forms": sorted({p["form"] for p in ps}),
             "categories": sorted({c for p in ps for c in p["categories"]}),
             "kidney_marketed": any(p["kidney_marketed"] for p in ps),
-            "type": "fsmp" if all(p.get("type") == "fsmp" for p in ps) else (
-                "mixed" if any(p.get("type") == "fsmp" for p in ps) else "supplement"),
+            "type": (lambda ts: ts.pop() if len(ts) == 1 else "mixed")({p.get("type", "supplement") for p in ps}),
         }
         if any(p.get("renal_formula") for p in ps):
             brands[slug]["renal_formula"] = True
@@ -685,7 +707,9 @@ def main():
     counts = {"records_in": len(recs), "products": len(products), "brands": len(brands),
               "kidney_marketed_brands": sum(1 for b in brands.values() if b["kidney_marketed"]),
               "fsmp_products": sum(1 for p in products if p.get("type") == "fsmp"),
-              "fsmp_brands": sum(1 for b in brands.values() if b["type"] != "supplement"),
+              "fsmp_brands": sum(1 for s, b in brands.items() if any(p.get("type") == "fsmp" for p in by[s])),
+              "fsdu_products": sum(1 for p in products if p.get("type") == "fsdu"),
+              "fsdu_brands": sum(1 for s, b in brands.items() if any(p.get("type") == "fsdu" for p in by[s])),
               "renal_fsmp_brands": sum(1 for b in brands.values() if b.get("renal_formula")),
               "fsmp_tags": dict(Counter(t for p in products for t in p.get("fsmp_tags", [])).most_common()),
               "excluded": {k: len(v) for k, v in sorted(excluded.items())},
