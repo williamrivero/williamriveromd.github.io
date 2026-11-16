@@ -201,18 +201,37 @@ def substance_matches(ingredient: str, substance: str) -> bool:
     return (sset - iset) <= SALT_WORDS
 
 
-def label_substances(label: dict) -> list[str]:
-    of = label.get("openfda") or {}
-    subs = of.get("substance_name") or []
-    if subs:
-        return [s for s in subs if s.strip()]
-    names = of.get("generic_name") or []
+def split_generic_names(names: list[str]) -> list[str]:
     out: list[str] = []
     for n in names:
         for part in re.split(r",|\s+and\s+|/|\+", n, flags=re.I):
             if part.strip():
                 out.append(part.strip())
     return out
+
+
+def label_substance_sets(label: dict) -> list[list[str]]:
+    """Candidate ingredient lists for a label: openfda.substance_name (UNII names), then
+    openfda.generic_name. Both are tried because UNII names sometimes drop a word the
+    generic name keeps (Epogen: substance "EPOETIN", generic "EPOETIN ALFA")."""
+    of = label.get("openfda") or {}
+    sets = []
+    subs = [x for x in of.get("substance_name") or [] if x.strip()]
+    if subs:
+        sets.append(subs)
+    gen = split_generic_names(of.get("generic_name") or [])
+    if gen and gen != subs:
+        sets.append(gen)
+    return sets
+
+
+def label_substances(label: dict) -> list[str]:
+    sets = label_substance_sets(label)
+    return sets[0] if sets else []
+
+
+def label_matches_any(ingredients: list[str], label: dict) -> bool:
+    return any(label_matches(ingredients, subs) for subs in label_substance_sets(label))
 
 
 def label_matches(ingredients: list[str], substances: list[str]) -> bool:
@@ -271,12 +290,11 @@ class Matcher:
                 if slug in self.single and unindexed_match(self.single[slug], head)]
 
     def match(self, label: dict) -> list[str]:
-        subs = label_substances(label)
-        if not subs:
+        sets = label_substance_sets(label)
+        if not sets:
             return []
-        cands = self.candidates(w for s in subs for w in tokens(s))
-        return [slug for slug in cands
-                if label_matches(self.generics[slug]["ingredients"], subs)]
+        cands = self.candidates(w for subs in sets for s in subs for w in tokens(s))
+        return [slug for slug in cands if label_matches_any(self.generics[slug]["ingredients"], label)]
 
 
 # --------------------------------------------------------------------------- ranking
@@ -566,7 +584,7 @@ def run_api(generics: dict, col: Collector, args):
         try:
             labels = api_candidates(api, g, args.max_pages)
             for l in labels:
-                if is_human(l) and label_matches(g["ingredients"], label_substances(l)):
+                if is_human(l) and label_matches_any(g["ingredients"], l):
                     col.add(slug, l)
                 else:
                     col.near_miss(slug, l)
