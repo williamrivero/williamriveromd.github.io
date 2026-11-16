@@ -47,7 +47,8 @@ def base_ingredient(part):
 SYNONYMS = {"potassium clavulanate": "clavulanic acid", "clavulanate potassium": "clavulanic acid",
             "clavulanate": "clavulanic acid", "paracetamol": "paracetamol", "acetaminophen": "paracetamol",
             "salbutamol": "salbutamol", "albuterol": "salbutamol", "vitamin b1": "thiamine",
-            "vitamin c": "ascorbic acid", "co-trimoxazole": "sulfamethoxazole + trimethoprim"}
+            "vitamin c": "ascorbic acid", "co-trimoxazole": "sulfamethoxazole + trimethoprim",
+            "trimetazidime": "trimetazidine"}
 COMBO_ALIASES = {"co-amoxiclav": ["amoxicillin", "clavulanic acid"], "co-trimoxazole": ["sulfamethoxazole", "trimethoprim"],
                  "cotrimoxazole": ["sulfamethoxazole", "trimethoprim"], "ampicillin sulbactam": ["ampicillin", "sulbactam"]}
 def is_veterinary(rec):
