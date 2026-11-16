@@ -174,8 +174,11 @@ SECTION_FIELDS = [
     "geriatric_use",
     "overdosage",
     "mechanism_of_action",
+    "pharmacodynamics",
     "pharmacokinetics",
+    "adverse_reactions_table",   # HTML frequency tables, kept for the drug page
 ]
+EXTRACT_REV = 3   # bump when build_record() starts extracting something new; older files are rewritten once
 # label field -> our field, used when the primary field is absent
 FALLBACKS = {
     "warnings_and_cautions": ["warnings", "precautions"],
@@ -421,6 +424,23 @@ def extract_renal_from_populations(text: str) -> str:
     return ""
 
 
+def extract_hepatic(pop: str, dosing: str) -> str:
+    """Verbatim hepatic-impairment text: "8.x Hepatic Impairment" from Use in Specific Populations, plus any
+    "2.x ..." dosing subsection whose heading mentions hepatic impairment."""
+    found = []
+    m = re.search(r"(?:^|\s)(8\.\d+)\s+(?:Patients\s+with\s+)?(?:Hepatic\s+Impairment|Hepatic\s+Insufficiency|Impaired\s+Hepatic)", pop or "")
+    if m:
+        nxt = re.search(r"\s8\.\d+\s+[A-Z]|\s10\s+OVERDOSAGE", pop[m.end():])
+        found.append(pop[m.start(1):m.end() + nxt.start() if nxt else len(pop)].strip())
+    heads = list(re.finditer(r"(?:^|\s)(2\.\d+)\s+(?=[A-Z])", dosing or ""))
+    for i, h in enumerate(heads):
+        end = heads[i + 1].start() if i + 1 < len(heads) else len(dosing)
+        chunk = dosing[h.start(1):end].strip()
+        if re.match(r"2\.\d+\s+[^.]{0,80}\b(Hepatic|Liver)\b", chunk):
+            found.append(chunk)
+    return "\n\n".join(found)
+
+
 def extract_renal_from_pk(text: str) -> str:
     # A title-case heading inside clinical pharmacology / pharmacokinetics.
     m = re.search(r"(?:^|\s)(" + RENAL_HEAD + r")(?!\s*\(\d)(?=\s*[:.\-–—]|\s+[A-Z(])", text)
@@ -496,6 +516,10 @@ def build_record(slug: str, g: dict, label: dict, n_candidates: int, prefer: str
             break
     if renal:
         sections["renal_impairment"] = "\n\n".join(r["text"] for r in renal)
+    hep = extract_hepatic(join_text(label.get("use_in_specific_populations")),
+                          join_text(label.get("dosage_and_administration")))
+    if hep:
+        sections["hepatic_impairment"] = hep
 
     set_id = label.get("set_id", "")
     meta = {
@@ -516,6 +540,7 @@ def build_record(slug: str, g: dict, label: dict, n_candidates: int, prefer: str
         "pharm_class_pe": of.get("pharm_class_pe") or [],
         "pharm_class_cs": of.get("pharm_class_cs") or [],
         "innovator": is_innovator(label),
+        "extract_rev": EXTRACT_REV,
     }
     return {
         "schema_version": SCHEMA_VERSION,
@@ -843,8 +868,9 @@ def main() -> int:
                 old_meta = None
         new_key = (label.get("set_id", ""), label.get("effective_time", ""))
         old_key = (old_meta.get("set_id"), old_meta.get("effective_time")) if old_meta else None
-        # Records written before the pharm_class_* fields existed are rewritten once (silently).
-        if old_key == new_key and not args.force and "pharm_class_epc" in old_meta:
+        # Records written by an older build_record() (no pharm_class_*, no hepatic_impairment, no
+        # adverse_reactions_table) are rewritten once, silently.
+        if old_key == new_key and not args.force and (old_meta or {}).get("extract_rev", 0) >= EXTRACT_REV:
             unchanged += 1
             continue
         rec = build_record(slug, g, label, n_cand, args.prefer, how, ph_routes.get(slug))

@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "3"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "5"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -100,12 +100,18 @@ def us_date_str(s, short=False) -> str:
     return us_date(d, short) if d else ws(s)
 
 
-def classify(c: str) -> str:
-    """Normalize the many registry spellings to Rx / OTC / HR (or the raw text)."""
+def classify(c) -> str:
+    """Normalize the many registry spellings to Rx / OTC / HR (or the raw text). Accepts a product dict
+    (uses its normalized "dispensing" field when present) or a classification string."""
+    if isinstance(c, dict):
+        d = ws(c.get("dispensing")).upper()
+        if d in ("RX", "OTC", "HR"):
+            return {"RX": "Rx"}.get(d, d)
+        c = c.get("classification")
     t = ws(c).lower()
     if not t:
         return ""
-    if "household" in t or "hone remedy" in t or "(hr)" in t:
+    if "household" in t or "hone remedy" in t or "(hr)" in t or t == "hr":
         return "HR"
     if "otc" in t or "over-the" in t or "over the" in t:
         return "OTC"
@@ -393,6 +399,118 @@ ul.dd-list a:hover { text-decoration: underline; }
 mark.dd-hl { background: #fff1b8; color: inherit; border-radius: 3px; padding: 0 1px; }
 .dd-results { margin: 14px 0; }
 .disclaimer a, .dd-acc-body a, .dd-kidney a, .dd-note a { color: #1a6b72; font-weight: 600; word-break: break-word; }
+/* Monograph layout (section order modeled on clinical drug monographs) */
+.container.dd-hero-wide { max-width: 1240px; }
+.dd-layout { max-width: 1240px; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; }
+.dd-toc { position: sticky; top: 72px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; padding: 24px 0; }
+.dd-toc-h { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.dd-toc ol { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--border); }
+.dd-toc a { display: block; padding: 5px 12px; margin-left: -2px; border-left: 2px solid transparent; font-size: 13.5px; color: var(--text-mid); text-decoration: none; }
+.dd-toc a:hover { color: #1f3864; background: var(--bg); }
+.dd-toc a[aria-current] { border-left-color: #1a6b72; color: #0e4a50; font-weight: 700; }
+.dd-main { min-width: 0; padding-top: 20px; }
+body.dd-mono .nav-strip.dd-pills { display: none; }
+.dd-sec { padding: 26px 0; border-bottom: 1px solid var(--border); scroll-margin-top: 72px; }
+.dd-sec:last-child { border-bottom: 0; }
+.dd-sec > h2 { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 700; color: var(--navy); margin: 0 0 12px; }
+.dd-sec h3 { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--navy); margin: 16px 0 8px; }
+.dd-sec p { text-align: left; hyphens: manual; }
+.dd-kidney.dd-sec { padding: 22px 24px 18px; margin: 18px 0; border-bottom: 1px solid #cfe6e6; }
+.dd-kidney-inline { margin: 6px 0 10px; padding: 12px 16px; }
+.dd-kidney-table tr.dd-kgroup th { background: #1a6b72; color: #fff; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; width: auto; padding: 7px 14px; }
+ul.dd-uselist { margin: 4px 0 8px 20px; padding: 0; }
+ul.dd-uselist li { margin: 3px 0; font-size: 15px; color: var(--text-mid); }
+.dd-src-ours { color: #0e4a50; border-color: rgba(14,74,80,.35); background: #e1f5f0; }
+.dd-boxed-alert { border: 2px solid #b91c1c; background: #fff5f5; border-radius: 12px; padding: 14px 18px; margin: 4px 0 14px; }
+.dd-boxed-h { font-family: 'Inter', sans-serif; font-weight: 800; color: #7a1d1d; text-transform: uppercase; letter-spacing: .06em; font-size: 13px; margin-bottom: 6px; }
+.dd-boxed-body { max-height: 280px; overflow: auto; font-size: 14px; color: #3b0d0d; }
+.dd-boxed-body p { margin: 6px 0; white-space: pre-line; }
+.dd-twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+.dd-pk-hi { background: #eef2f8; border-left: 4px solid #1f3864; border-radius: 8px; padding: 6px 14px; margin: 6px 0 10px; }
+.dd-pk-hi p { font-size: 14px; color: var(--text-mid); margin: 6px 0; }
+.dd-tables { overflow-x: auto; }
+.dd-tables table { font-size: 12.5px; }
+ol.dd-refs { margin: 4px 0 12px 20px; font-size: 13.5px; color: var(--text-mid); }
+ol.dd-refs li { margin: 4px 0; overflow-wrap: anywhere; }
+ol.dd-refs a { color: #1a6b72; }
+.dd-sev { display: inline-block; font-size: 11.5px; font-weight: 700; border-radius: 6px; padding: 1px 8px; white-space: nowrap; }
+.dd-sev-avoid { color: #fff; background: #b91c1c; }
+.dd-sev-adjust { color: #5b3a00; background: #fde68a; }
+.dd-sev-minor { color: #1f3864; background: #e3e8f2; }
+.dd-usbrand { font-size: 13.5px; color: #34455f; margin: -4px 0 8px; }
+.hero-sub.dd-classline { font-size: 14.5px; }
+.dd-chip.dd-hr { color: #5b3a00; background: #fdf3dc; border-color: rgba(146,64,14,.35); }
+.dd-chip.dd-s2 { color: #fff; background: #991b1b; border-color: #991b1b; }
+.dd-chip.dd-cp { color: #4a2800; background: #fcd34d; border-color: #b45309; }
+a.dd-chip { text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
+.dd-dispnote { font-size: 12.5px; color: #34455f; margin: -8px 0 12px; }
+.dd-dispnote a { color: #1f3864; font-weight: 600; }
+.dd-tag.S2 { color: #fff; background: #991b1b; }
+.dd-tag.CP { color: #4a2800; background: #fcd34d; }
+.dd-tag.PNF { color: #0e4a50; background: #e1f5f0; }
+.dd-tag.KD { color: #fff; background: #1a6b72; }
+.dd-tag.US { color: #1f3864; background: #e3e8f2; }
+.dd-facets { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin: 10px 0 4px; }
+.dd-facets select { font: inherit; font-size: 14px; color: var(--text); background: var(--white); border: 1px solid #8a96a8; border-radius: 8px; padding: 7px 10px; min-height: 40px; max-width: 320px; }
+.dd-facets > label:not(.dd-check) { flex: 0 1 260px; min-width: 0; max-width: 100%; }
+.dd-facets > label:not(.dd-check) select { width: 100%; }
+.dd-facets .dd-check { font-size: 14px; color: var(--text-mid); display: inline-flex; gap: 6px; align-items: center; }
+.dd-facets .dd-check .dd-kidney-ico { width: 16px; height: 16px; color: #0e4a50; }
+ul.dd-results li[aria-selected=true] { background: #eef2f8; outline: 2px solid #1a6b72; outline-offset: -2px; }
+.dd-why { display: block; font-size: 12.5px; color: var(--text-mid); }
+.dd-tags { display: block; margin-top: 3px; }
+.dd-tags .dd-tag { margin-right: 3px; }
+@media (max-width: 1023px) {
+  .dd-layout { grid-template-columns: 1fr; padding: 0 20px; gap: 0; }
+  .dd-toc { display: none; }
+  body.dd-mono .nav-strip.dd-pills { display: block; }
+  .dd-sec { scroll-margin-top: 112px; }
+}
+@media (max-width: 640px) {
+  .dd-layout { padding: 0 16px; }
+  .dd-twocol { grid-template-columns: 1fr; }
+  .dd-kidney.dd-sec { padding: 16px 14px; }
+  .dd-facets > label:not(.dd-check) { flex: 1 1 100%; }
+  .dd-facets select { max-width: 100%; }
+}
+@media print { .dd-toc { display: none !important; } .dd-layout { display: block; } }
+.dd-labgroup { margin: 8px 0; }
+.dd-labgroup-h { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; color: var(--navy); margin: 6px 0; }
+.dd-labpre { font-size: 14px; line-height: 1.6; color: var(--text-mid); background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin: 6px 0 8px; }
+.dd-acc.dd-acc-sm { margin: 6px 0; border-radius: 10px; }
+.dd-acc.dd-acc-sm > summary { font-size: 14px; padding: 10px 14px; }
+.dd-acc.dd-acc-sm .dd-acc-body p { font-size: 14px; }
+/* Kidney strip */
+.dd-kstrip { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; margin: 10px 0 8px; }
+.dd-ktile { display: flex; flex-direction: column; gap: 2px; min-height: 86px; padding: 9px 10px; border-radius: 10px; text-decoration: none;
+  border: 1px solid; border-top-width: 5px; background: var(--white); }
+.dd-ktile:focus-visible { outline: 3px solid #1f3864; outline-offset: 2px; }
+.dd-kt-h { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .03em; color: #1e2a38; }
+.dd-kt-s { font-size: 13px; line-height: 1.3; color: #1e2a38; font-weight: 600; }
+.dd-kt-l { margin-top: auto; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.dd-lv-none { border-color: #86c29b; border-top-color: #15803d; background: #f0fdf4; } .dd-lv-none .dd-kt-l { color: #166534; }
+.dd-lv-adjust { border-color: #e8c27a; border-top-color: #d97706; background: #fffbeb; } .dd-lv-adjust .dd-kt-l { color: #92400e; }
+.dd-lv-avoid { border-color: #f0a3a3; border-top-color: #b91c1c; background: #fff1f1; } .dd-lv-avoid .dd-kt-l { color: #991b1b; }
+.dd-lv-nodata { border-color: #c5cbd5; border-top-color: #6b7280; background: #f5f6f8; } .dd-lv-nodata .dd-kt-l { color: #4a5568; }
+dl.dd-kgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 6px 0; background: var(--white);
+  border: 1px solid #cfe6e6; border-radius: 10px; overflow: hidden; }
+.dd-kcell { padding: 8px 12px; border-bottom: 1px solid #e3efef; border-right: 1px solid #e3efef; scroll-margin-top: 120px; }
+.dd-kcell:target { background: #fff7d6; }
+.dd-kcell dt { font-size: 11.5px; font-weight: 700; color: #0e4a50; text-transform: uppercase; letter-spacing: .04em; }
+.dd-kcell dd { margin: 2px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--text-mid); }
+ul.dd-kfoot { list-style: none; margin: 8px 0 0; padding: 0; font-size: 13px; color: var(--text-mid); }
+ul.dd-kfoot li { margin: 3px 0; }
+ul.dd-kfoot strong { color: #0e4a50; margin-right: 4px; }
+.dd-kidney .dd-acc { margin: 8px 0; }
+table.dd-pk tr.dd-pk-renal th, table.dd-pk tr.dd-pk-renal td { background: #e9f6f5; }
+.dd-pk-kid { font-size: 10.5px; font-weight: 700; color: #fff; background: #1a6b72; border-radius: 5px; padding: 0 5px; margin-left: 4px; text-transform: uppercase; }
+@media (max-width: 640px) {
+  .dd-kstrip { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .dd-ktile { min-height: 92px; padding: 7px 6px; }
+  .dd-kt-s { font-size: 11.5px; } .dd-kt-h { font-size: 11px; } .dd-kt-l { font-size: 9.5px; }
+  dl.dd-kgrid { grid-template-columns: 1fr; }
+}
 /* Brands line under the h1 */
 .dd-brands { font-size: 14px; line-height: 1.7; color: #34455f; margin: -4px 0 10px; }
 .dd-brands strong { color: #1f3864; }
@@ -507,6 +625,48 @@ html[data-theme="dark"] mark.dd-hl { background: #5c4a00; color: #fff; }
 html[data-theme="dark"] .dd-attrib, html[data-theme="dark"] .dd-acc-body { color: var(--text-mid); }
 html[data-theme="dark"] .disclaimer a, html[data-theme="dark"] .dd-acc-body a, html[data-theme="dark"] .dd-kidney a,
 html[data-theme="dark"] .dd-note a { color: #7fd3da; }
+html[data-theme="dark"] .dd-labgroup-h { color: #eef2fb; }
+html[data-theme="dark"] .dd-labpre { background: #141c2a; border-color: #2a3548; }
+html[data-theme="dark"] .dd-kt-h, html[data-theme="dark"] .dd-kt-s { color: #eef2fb; }
+html[data-theme="dark"] .dd-lv-none { background: #0e2a1c; border-color: #2f6b45; border-top-color: #4ade80; } html[data-theme="dark"] .dd-lv-none .dd-kt-l { color: #86efac; }
+html[data-theme="dark"] .dd-lv-adjust { background: #2a1d05; border-color: #6b4f12; border-top-color: #fbbf24; } html[data-theme="dark"] .dd-lv-adjust .dd-kt-l { color: #fde68a; }
+html[data-theme="dark"] .dd-lv-avoid { background: #2a1212; border-color: #7a2a2a; border-top-color: #f87171; } html[data-theme="dark"] .dd-lv-avoid .dd-kt-l { color: #fecaca; }
+html[data-theme="dark"] .dd-lv-nodata { background: #1a2230; border-color: #3a4658; border-top-color: #9ba6b8; } html[data-theme="dark"] .dd-lv-nodata .dd-kt-l { color: #c9d3e1; }
+html[data-theme="dark"] dl.dd-kgrid { background: #1a2535; border-color: #23414a; }
+html[data-theme="dark"] .dd-kcell { border-color: #23414a; }
+html[data-theme="dark"] .dd-kcell:target { background: #3a3110; }
+html[data-theme="dark"] .dd-kcell dt, html[data-theme="dark"] ul.dd-kfoot strong { color: #a5eef2; }
+html[data-theme="dark"] table.dd-pk tr.dd-pk-renal th, html[data-theme="dark"] table.dd-pk tr.dd-pk-renal td { background: #10323a; }
+html[data-theme="dark"] .dd-pk-kid { background: #0e4a50; color: #e6fbfc; }
+html[data-theme="dark"] .dd-toc a { color: #c9d3e1; }
+html[data-theme="dark"] .dd-toc a:hover { background: #1a2535; color: #fff; }
+html[data-theme="dark"] .dd-toc a[aria-current] { color: #7fd3da; border-left-color: #7fd3da; }
+html[data-theme="dark"] .dd-toc ol { border-color: #2a3548; }
+html[data-theme="dark"] .dd-sec { border-color: #2a3548; }
+html[data-theme="dark"] .dd-sec > h2, html[data-theme="dark"] .dd-sec h3 { color: #eef2fb; }
+html[data-theme="dark"] .dd-kidney-table tr.dd-kgroup th { background: #0e4a50; color: #e6fbfc; }
+html[data-theme="dark"] .dd-src-ours { color: #a5f3fc; background: #10323a; border-color: #23414a; }
+html[data-theme="dark"] .dd-boxed-alert { background: #2a1515; border-color: #f87171; }
+html[data-theme="dark"] .dd-boxed-h { color: #fecaca; }
+html[data-theme="dark"] .dd-boxed-body { color: #fde2e2; }
+html[data-theme="dark"] .dd-pk-hi { background: #16233a; border-left-color: #6f8fd0; }
+html[data-theme="dark"] ol.dd-refs a { color: #7fd3da; }
+html[data-theme="dark"] .dd-sev-avoid { background: #b91c1c; color: #fff; }
+html[data-theme="dark"] .dd-sev-adjust { background: #5c4a00; color: #fde68a; }
+html[data-theme="dark"] .dd-sev-minor { background: #22304a; color: #dbe6f5; }
+html[data-theme="dark"] .dd-usbrand, html[data-theme="dark"] .dd-dispnote { color: rgba(238,242,251,.82); }
+html[data-theme="dark"] .dd-dispnote a { color: #dbe6f5; }
+html[data-theme="dark"] .dd-chip.dd-hr { color: #fde68a; background: rgba(251,191,36,.14); border-color: rgba(251,191,36,.4); }
+html[data-theme="dark"] .dd-chip.dd-s2 { color: #fff; background: #b91c1c; border-color: #f87171; }
+html[data-theme="dark"] .dd-chip.dd-cp { color: #2a1900; background: #fbbf24; border-color: #fbbf24; }
+html[data-theme="dark"] .dd-tag.PNF { color: #a5f3fc; background: #10323a; }
+html[data-theme="dark"] .dd-tag.KD { color: #e6fbfc; background: #0e4a50; }
+html[data-theme="dark"] .dd-tag.US { color: #dbe6f5; background: #22304a; }
+html[data-theme="dark"] .dd-tag.S2 { color: #fff; background: #b91c1c; }
+html[data-theme="dark"] .dd-tag.CP { color: #2a1900; background: #fbbf24; }
+html[data-theme="dark"] .dd-facets select { background: #1a2535; color: var(--text); border-color: #4a5a72; }
+html[data-theme="dark"] .dd-facets .dd-check .dd-kidney-ico { color: #7fd3da; }
+html[data-theme="dark"] ul.dd-results li[aria-selected=true] { background: #1e3040; outline-color: #7fd3da; }
 html[data-theme="dark"] .dd-brands { color: rgba(238,242,251,.82); }
 html[data-theme="dark"] .dd-brands strong, html[data-theme="dark"] .dd-brands a.dd-brand-link { color: #eef2fb; border-bottom-color: rgba(238,242,251,.5); }
 html[data-theme="dark"] .dd-brands-more > summary { color: #7fd3da; }
@@ -565,8 +725,9 @@ if(top)window.addEventListener('scroll',function(){top.classList.toggle('visible
 function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
 
 /* ── Open a label accordion when linked to (e.g. "Full indications") ── */
-function openFromHash(h){var el=h&&document.getElementById(h.replace(/^#/,''));if(el&&el.tagName==='DETAILS'){el.open=true;}}
-document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#label-"]');if(a)openFromHash(a.getAttribute('href'));});
+function openFromHash(h){var el=h&&document.getElementById(h.replace(/^#/,''));if(!el)return;
+  for(var p=el;p;p=p.parentElement){if(p.tagName==='DETAILS')p.open=true;}}
+document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#"]');if(a&&a.getAttribute('href').length>1)openFromHash(a.getAttribute('href'));});
 openFromHash(location.hash);
 
 /* ── Product table: text filter, class filter, hide-past-validity, column sort ── */
@@ -613,68 +774,101 @@ if(tbl){
   });
 }
 
-/* ── Drug Index: A–Z filter + brand/generic search over search-index.json ── */
+/* ── Monograph: highlight the current section in the sticky table of contents ── */
+var toc=document.querySelector('.dd-toc');
+if(toc&&'IntersectionObserver' in window){
+  var links={};Array.prototype.forEach.call(toc.querySelectorAll('a'),function(a){links[a.getAttribute('href').slice(1)]=a;});
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){
+    Object.keys(links).forEach(function(k){links[k].removeAttribute('aria-current');});
+    var a=links[en.target.id]; if(a)a.setAttribute('aria-current','true');}});},{rootMargin:'-20% 0px -70% 0px'});
+  Object.keys(links).forEach(function(k){var el=document.getElementById(k);if(el)io.observe(el);});
+}
+
+/* ── Category list filter ── */
+var cq=document.getElementById('dd-cq');
+if(cq){var cl=document.querySelectorAll('#dd-catlist li');cq.addEventListener('input',function(){var t=norm(cq.value);
+  Array.prototype.forEach.call(cl,function(li){li.hidden=!!t&&norm(li.getAttribute('data-n')).indexOf(t)<0;});});}
+
+/* ── Drug Index: faceted instant search (ARIA combobox) over search-index.json (+ lazy search-extra.json) ── */
 var idx=document.getElementById('dd-index');
 if(idx){
-  var letters=Array.prototype.slice.call(document.querySelectorAll('.dd-letter'));
-  var alpha=document.getElementById('dd-alpha'), sq=document.getElementById('dd-sq'),
-      res=document.getElementById('dd-results'), info=document.getElementById('dd-sinfo'), data=null, loading=null;
-  function setLetter(L){
-    Array.prototype.forEach.call(alpha.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-l')===L?'true':'false');});
-    letters.forEach(function(s){s.hidden=!(L==='all'||s.getAttribute('data-l')===L);});
-  }
-  alpha.addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b||b.disabled)return;
-    if(sq.value){sq.value='';search();}
-    setLetter(b.getAttribute('data-l'));
-    try{history.replaceState(null,'',b.getAttribute('data-l')==='all'?location.pathname:'#letter-'+b.getAttribute('data-l'));}catch(e){}
-  });
-  var h=(location.hash.match(/^#letter-([a-z0])$/i)||[])[1]; if(h)setLetter(h.toLowerCase());
+  var az=document.getElementById('dd-az'), alpha=document.getElementById('dd-alpha'), letters=Array.prototype.slice.call(document.querySelectorAll('.dd-letter'));
+  var sq=document.getElementById('dd-sq'), res=document.getElementById('dd-results'), info=document.getElementById('dd-sinfo');
+  var F={c:document.getElementById('dd-f-class'),r:document.getElementById('dd-f-rx'),f:document.getElementById('dd-f-form'),
+         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l')};
+  var data=null, extra=null, loading=null, active=-1, letter='all';
+  function escH(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function hl(text,t){var i=text.toLowerCase().indexOf(t);if(!t||i<0)return escH(text);return escH(text.slice(0,i))+'<mark class="dd-hl">'+escH(text.slice(i,i+t.length))+'</mark>'+escH(text.slice(i+t.length));}
   function load(){
     if(!loading)loading=fetch(idx.getAttribute('data-src')).then(function(r){return r.json();}).then(function(j){
-      data=j.map(function(d){return {s:d.s,n:d.n,c:d.c||'',k:d.k||0,b:d.b||[],nn:norm(d.n),nb:(d.b||[]).map(norm)};});
+      data=j.map(function(d){d.nn=norm(d.n);return d;});
+      fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
-  function hl(text,t){var i=text.toLowerCase().indexOf(t);if(!t||i<0)return escH(text);return escH(text.slice(0,i))+'<mark class="dd-hl">'+escH(text.slice(i,i+t.length))+'</mark>'+escH(text.slice(i+t.length));}
-  function escH(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-  var timer=null, KB=(document.querySelector('.dd-kbadge')||{outerHTML:''}).outerHTML;
-  function search(){
+  function score(s,t){if(!s)return 0;if(s===t)return 100;if(s.indexOf(t)===0)return 80;if((' '+s).indexOf(' '+t)>=0)return 60;if(s.indexOf(t)>=0)return 35;return 0;}
+  var FIELDS=[['n','generic',1],['i','ingredient',.95],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
+  function match(d,t,raw){
+    var best=0,lab='',val='';
+    FIELDS.forEach(function(f){var v=d[f[0]];if(!v)return;var arr=Array.isArray(v)?v:[v];
+      arr.forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
+    if(extra&&extra[d.s]&&best<60){var e=extra[d.s];
+      (e.r||[]).forEach(function(x){var s=score(norm(x),t)*.9;if(s>best){best=s;lab='reg. no.';val=x;}});
+      (e.m||[]).forEach(function(x){var s=score(norm(x),t)*.5;if(s>best){best=s;lab='manufacturer';val=x;}});}
+    return best?{s:best,lab:lab,val:val}:null;
+  }
+  function pass(d){
+    if(F.c.value&&d.c!==F.c.value)return false;
+    if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
+    if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
+    if(F.k.checked&&!d.k)return false; if(F.p.checked&&!d.p)return false; if(F.h.checked&&!d.h)return false; if(F.l.checked&&!d.l)return false;
+    if(letter!=='all'){var c=(d.n||'?')[0].toLowerCase();if((c>='a'&&c<='z'?c:'0')!==letter)return false;}
+    return true;
+  }
+  function filtersOn(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
+  function chips(d){var o=[];var r=d.r||0;
+    if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
+    if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
+    if(d.p)o.push('<span class="dd-tag PNF">PNF</span>');if(d.h)o.push('<span class="dd-tag PNF">GAMOT</span>');
+    if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');return o.join(' ');}
+  function setActive(i){var opts=res.querySelectorAll('[role=option]');if(!opts.length){active=-1;sq.removeAttribute('aria-activedescendant');return;}
+    active=Math.max(0,Math.min(i,opts.length-1));Array.prototype.forEach.call(opts,function(o,j){o.setAttribute('aria-selected',j===active?'true':'false');});
+    sq.setAttribute('aria-activedescendant',opts[active].id);opts[active].scrollIntoView({block:'nearest'});}
+  function run(){
     var raw=sq.value.trim(), t=norm(raw);
-    if(!t){res.hidden=true;res.innerHTML='';info.textContent='';letters.forEach(function(s){s.classList.remove('dd-hidden');});alpha.classList.remove('dd-hidden');return;}
+    if(!t&&!filtersOn()){res.hidden=true;res.innerHTML='';info.textContent='';sq.setAttribute('aria-expanded','false');az.hidden=false;
+      letters.forEach(function(s){s.hidden=!(letter==='all'||s.getAttribute('data-l')===letter);});return;}
     load().then(function(){
       if(!data)return;
       var out=[];
-      var konlyOn=konly&&konly.checked;
-      data.forEach(function(d){
-        if(konlyOn&&!d.k)return;
-        var score=0, brand=null;
-        if(d.nn===t)score=100; else if(d.nn.indexOf(t)===0)score=80; else if((' '+d.nn).indexOf(' '+t)>=0)score=60; else if(d.nn.indexOf(t)>=0)score=40;
-        for(var i=0;i<d.nb.length;i++){var b=d.nb[i],s=0;
-          if(b===t)s=95; else if(b.indexOf(t)===0)s=75; else if((' '+b).indexOf(' '+t)>=0)s=55; else if(b.indexOf(t)>=0)s=35;
-          if(s>score){score=s;brand=d.b[i];}}
-        if(score)out.push({d:d,score:score,brand:brand});
-      });
-      out.sort(function(a,b){return b.score-a.score||a.d.n.localeCompare(b.d.n);});
-      var shown=out.slice(0,150), tl=raw.toLowerCase();
-      res.innerHTML='<ul class="dd-list">'+shown.map(function(o){
-        var d=o.d;
-        return '<li><a href="'+encodeURIComponent(d.s)+'.html">'+(o.brand?'<span class="dd-res-brand">'+hl(o.brand,tl)+'</span> → '+escH(d.n):hl(d.n,tl))+'</a>'+(d.k?KB:'')+
-          (d.c?'<span class="dd-sub">'+escH(d.c)+'</span>':'')+'</li>';}).join('')+'</ul>';
-      res.hidden=false;
-      info.textContent=out.length?(out.length>150?'Showing the top 150 of '+out.length.toLocaleString('en-US')+' matches':out.length+(out.length===1?' match':' matches')):'No generic or brand matches “'+raw+'”.';
-      letters.forEach(function(s){s.classList.add('dd-hidden');}); alpha.classList.add('dd-hidden');
+      data.forEach(function(d){if(!pass(d))return;if(!t){out.push({d:d,s:0});return;}var m=match(d,t,raw);if(m)out.push({d:d,s:m.s,lab:m.lab,val:m.val});});
+      out.sort(function(a,b){return b.s-a.s||a.d.n.localeCompare(b.d.n);});
+      var shown=out.slice(0,200), tl=raw.toLowerCase();
+      res.innerHTML=shown.map(function(o,i){var d=o.d;
+        var why=(o.lab&&o.lab!=='generic')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
+        return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
+          '<span class="dd-sub">'+escH(d.c||'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
+      res.hidden=false; az.hidden=true; sq.setAttribute('aria-expanded',out.length?'true':'false'); active=-1;
+      info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class or product matches.';
     });
   }
-  var konly=document.getElementById('dd-konly');
-  function applyK(){var on=konly&&konly.checked;
-    Array.prototype.forEach.call(document.querySelectorAll('.dd-letter li'),function(li){li.hidden=on&&!li.hasAttribute('data-k');});
-    letters.forEach(function(s){s.classList.toggle('dd-kempty',on&&!s.querySelector('li[data-k]'));});
-    if(sq.value)search();}
-  if(konly)konly.addEventListener('change',applyK);
-  sq.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(search,120);});
+  var timer=null;
+  sq.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(run,90);});
   sq.addEventListener('focus',load,{once:true});
-  if(sq.value)search();
+  sq.addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'){e.preventDefault();setActive(active+1);}
+    else if(e.key==='ArrowUp'){e.preventDefault();setActive(active-1);}
+    else if(e.key==='Enter'&&active>=0){var o=res.querySelectorAll('[role=option] a')[active];if(o){e.preventDefault();location.href=o.href;}}
+    else if(e.key==='Escape'){sq.value='';run();}
+  });
+  Object.keys(F).forEach(function(k){F[k].addEventListener('change',run);});
+  document.getElementById('dd-f-clear').addEventListener('click',function(){Object.keys(F).forEach(function(k){if(F[k].type==='checkbox')F[k].checked=false;else F[k].value='';});sq.value='';letter='all';setLetter('all');run();});
+  function setLetter(L){letter=L;Array.prototype.forEach.call(alpha.querySelectorAll('button'),function(b){b.setAttribute('aria-pressed',b.getAttribute('data-l')===L?'true':'false');});
+    letters.forEach(function(s){s.hidden=!(L==='all'||s.getAttribute('data-l')===L);});}
+  alpha.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.disabled)return;setLetter(b.getAttribute('data-l'));run();
+    try{history.replaceState(null,'',b.getAttribute('data-l')==='all'?location.pathname:'#letter-'+b.getAttribute('data-l'));}catch(err){}});
+  var h=(location.hash.match(/^#letter-([a-z0])$/i)||[])[1]; if(h)setLetter(h.toLowerCase());
+  if(sq.value)run();
 }
 })();
 """
@@ -823,9 +1017,20 @@ class Ctx:
                 continue
             self.pharmacies.append(dict(x, link_type=lt))
         self.labels_dir, self.renal_dir = data_dir / "labels", data_dir / "renal"
+        cj = load_json(data_dir / "controlled.json", {}) or {}
+        self._controlled = cj.get("items", {}) if isinstance(cj, dict) else {}
+        srcs = cj.get("sources") if isinstance(cj, dict) else None
+        self.controlled_sources = {}
+        for x in srcs or []:
+            if isinstance(x, dict):
+                self.controlled_sources[ws(x.get("id"))] = x
 
     def label(self, slug):
         return load_json(self.labels_dir / f"{slug}.json") if self.labels_dir.is_dir() else None
+
+    def controlled(self, slug):
+        it = self._controlled.get(slug)
+        return it if isinstance(it, dict) else None
 
     def summary(self, slug):
         d = self.data_dir / "summary"
@@ -935,7 +1140,7 @@ def product_sort_key(p):
 def render_products(slug, g, products, today) -> str:
     rows, classes = [], {}
     for p in sorted(products, key=product_sort_key):
-        c = classify(p.get("classification"))
+        c = classify(p)
         classes[c] = classes.get(c, 0) + 1
         exp = parse_date(p.get("expiry_date"))
         past = bool(exp and exp < today)
@@ -961,7 +1166,7 @@ def render_products(slug, g, products, today) -> str:
             + (f'<span class="dd-sub">{esc(reg_name)}</span>' if reg_name else "") + "</div></td>"
             f'<td data-label="Strength &amp; form"><div>{esc(ws(p.get("dosage_strength_form")))}'
             + (f'<span class="dd-sub">{esc(ws(p.get("packaging")))}</span>' if ws(p.get("packaging")) else "") + "</div></td>"
-            f'<td data-label="Class" data-sort="{esc(c)}"><div><span class="dd-tag {esc(c) if c in CLASS_LABEL else ""}" '
+            f'<td data-label="Dispensing" data-sort="{esc(c)}"><div><span class="dd-tag {esc(c) if c in CLASS_LABEL else ""}" '
             f'title="{esc(ws(p.get("classification")))}">{esc(c or "—")}</span>{vat}</div></td>'
             f'<td data-label="Manufacturer"><div>{esc(mfr) or "—"}' + (f'<span class="dd-sub">{esc(country)}</span>' if country else "") + "</div></td>"
             f'<td data-label="Distributor"><div>{"".join(dist_bits) or "—"}</div></td>'
@@ -972,7 +1177,7 @@ def render_products(slug, g, products, today) -> str:
     opts = "".join(f'<option value="{esc(c)}">{esc(CLASS_LABEL.get(c, c))} ({n})</option>'
                    for c, n in sorted(classes.items(), key=lambda kv: -kv[1]) if c)
     n = len(products)
-    heads = ["Brand", "Strength &amp; form", "Class", "Manufacturer / country", "Distributor", "Reg. no.", "Valid until", "Package insert"]
+    heads = ["Brand", "Strength &amp; form", "Dispensing", "Manufacturer / country", "Distributor", "Reg. no.", "Valid until", "Package insert"]
     th = "".join(f'<th scope="col"><button type="button">{h}</button></th>' if h != "Package insert"
                  else f'<th scope="col"><span style="display:block;padding:10px 12px">{h}</span></th>' for h in heads)
     return f"""
@@ -985,7 +1190,7 @@ def render_products(slug, g, products, today) -> str:
 <div class="dd-toolbar no-print" role="search">
 <label class="dd-hidden" for="dd-q">Filter products</label>
 <input id="dd-q" type="search" placeholder="Filter by brand, strength, manufacturer, or registration no." autocomplete="off">
-{f'<label class="dd-hidden" for="dd-class">Classification</label><select id="dd-class"><option value="">All classifications</option>{opts}</select>' if len(classes) > 1 else ''}
+{f'<label class="dd-hidden" for="dd-class">Dispensing category</label><select id="dd-class"><option value="">All dispensing categories</option>{opts}</select>' if len(classes) > 1 else ''}
 <label class="dd-hidden" for="dd-sort">Sort products</label>
 <select id="dd-sort" class="dd-sort-sel"><option value="0:1">Sort: brand A–Z</option><option value="0:-1">Sort: brand Z–A</option>
 <option value="6:-1">Sort: validity, latest first</option><option value="6:1">Sort: validity, earliest first</option>
@@ -1007,54 +1212,6 @@ def render_products(slug, g, products, today) -> str:
 listed by the FDA; a past date may mean a renewal is pending. Package insert links point to files published by the FDA.</p>
 </section>
 """
-
-
-def render_label(slug, g, label) -> str:
-    head_ = """
-<section class="section" id="label">
-<div class="section-tag">Prescribing information</div>
-<h2>Prescribing information (US FDA label)</h2>
-"""
-    if not label:
-        return head_ + """<div class="dd-placeholder">Label not yet available. US prescribing information for this generic has not been
-added to the database yet. Check the Philippine package insert in the product table above.</div>
-</section>
-"""
-    if isinstance(label.get("labels"), list) and label["labels"]:
-        label = label["labels"][0]
-    secs = label_sections(label)
-    m = label_meta(label)
-    set_id, ver, vdate_s, title, url, src = m["set_id"], m["version"], m["date"], m["title"], m["url"], m["via"]
-    attrib = (f'<div class="dd-attrib"><strong>Source:</strong> US FDA-approved label via {esc(src)}'
-              + (f', set ID <a href="{esc(url)}" rel="noopener" target="_blank">{esc(set_id)}</a>' if set_id and url else (f", set ID {esc(set_id)}" if set_id else ""))
-              + (f", version {esc(ver)}" if ver else "")
-              + (f", version date {esc(vdate_s)}" if vdate_s else "") + "."
-              + (f" Label: {esc(title.rstrip('.'))}." if title else "")
-              + " Text is reproduced verbatim; renal-impairment text from the label, when present, is shown in the Kidney dosing panel above. <strong>Philippine-approved indications may differ: check the PH package insert.</strong></div>")
-    accs, first = [], True
-    used = set()
-    for heading, keys in LABEL_SECTIONS:
-        if heading == "Use in specific populations" and "Pregnancy" in used:
-            continue
-        body = ""
-        for k in keys:
-            if secs.get(k):
-                body = render_label_value(secs[k])
-                if body:
-                    break
-        if not body:
-            continue
-        used.add(heading)
-        boxed = heading == "Boxed warning"
-        open_ = " open" if (boxed or first) else ""
-        if not boxed:
-            first = False
-        aid = "label-" + re.sub(r"[^a-z0-9]+", "-", heading.lower()).strip("-")
-        accs.append(f'<details class="dd-acc{" dd-boxed" if boxed else ""}" id="{aid}"{open_}><summary>{esc(heading)}</summary>'
-                    f'<div class="dd-acc-body">{body}</div></details>')
-    if not accs:
-        return head_ + attrib + '<div class="dd-placeholder">Label not yet available for the sections shown here.</div>\n</section>\n'
-    return head_ + attrib + "\n" + "\n".join(accs) + "\n</section>\n"
 
 
 KIDNEY_ICON = ('<svg class="dd-kidney-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 3C5.4 3 3 6.6 3 11.2 3 16.6 5.6 21 9 21'
@@ -1107,110 +1264,6 @@ def kidney_chip(renal) -> str:
     if not renal_approved(renal):
         return ""
     return ws(renal.get("chip") or renal.get("kidney_status") or renal.get("summary_chip"))
-
-
-def render_pediatric_block(ped) -> str:
-    """'Children' sub-section of the APPROVED kidney panel (caller checks approval).
-    Pediatric eGFR bands use the bedside Schwartz equation (0.413 x height cm / SCr mg/dL)."""
-    if not isinstance(ped, dict):
-        return ""
-    rows = []
-    for key, lab in (("approved_ages", "Approved ages"), ("usual_dose", "Usual dose"), ("max_dose", "Maximum dose")):
-        v = ped.get(key)
-        if v not in (None, "", []):
-            rows.append((lab, "; ".join(map(ws, v)) if isinstance(v, list) else v))
-    for b in ped.get("renal") or []:
-        if isinstance(b, dict) and (b.get("range") or b.get("recommendation")):
-            rng = ws(b.get("range"))
-            if rng and not re.search(r"egfr|crcl|gfr|clearance|dialys|crrt|hd\b|pd\b", rng, re.I):
-                rng = f"eGFR {rng}"
-            rows.append((rng, b.get("recommendation")))
-    for key, lab in (("hd", "Hemodialysis"), ("pd", "Peritoneal dialysis"), ("crrt", "CRRT")):
-        v = ped.get(key)
-        if v not in (None, "", []):
-            rows.append((lab, v))
-    if not rows and not ped.get("notes"):
-        return ""
-    out = ['<h3 class="dd-kidney-sub" id="kidney-children">Children</h3>']
-    if rows:
-        trs = "".join(f'<tr><th scope="row">{esc(a)}</th><td>{esc(b)}</td></tr>' for a, b in rows)
-        out.append('<table class="dd-kidney-table"><caption class="dd-hidden">Pediatric dosing and kidney dosing in children '
-                   f'(eGFR by the bedside Schwartz equation)</caption><tbody>{trs}</tbody></table>')
-    notes = ped.get("notes")
-    if notes:
-        notes = notes if isinstance(notes, list) else [notes]
-        out.append("".join(f'<p class="dd-note">{esc(n)}</p>' for n in notes if ws(n)))
-    out.append('<p class="dd-note">Pediatric eGFR: bedside Schwartz equation, 0.413 &times; height (cm) / serum creatinine (mg/dL). '
-               'Weight-based doses should not exceed the adult maximum.</p>')
-    return "\n".join(out)
-
-
-def render_kidney_panel(label, renal) -> str:
-    head_ = ('<section class="dd-kidney" id="kidney-dosing" aria-labelledby="kidney-h">\n'
-             f'<div class="dd-kidney-head">{KIDNEY_ICON}<div><div class="section-tag">Kidney dosing · CKD and dialysis</div>'
-             '<h2 id="kidney-h">Kidney dosing</h2></div></div>\n')
-    if renal_approved(renal):
-        rows = []
-        for b in renal.get("bands") or []:
-            if isinstance(b, dict) and (b.get("range") or b.get("recommendation")):
-                rng = ws(b.get("range"))
-                if rng and not re.search(r"egfr|crcl|gfr|clearance", rng, re.I):
-                    rng = f"eGFR/CrCl {rng}"
-                rows.append((rng, b.get("recommendation")))
-        for key, lab in (("hd", "Hemodialysis"), ("pd", "Peritoneal dialysis"), ("crrt", "CRRT"),
-                         ("dialyzable", "Dialyzable?"), ("monitoring", "Nephrotoxicity / kidney monitoring")):
-            v = renal.get(key)
-            if v in (None, "", []):
-                continue
-            if isinstance(v, bool):
-                v = "Yes" if v else "No"
-            if isinstance(v, list):
-                v = "; ".join(map(ws, v))
-            rows.append((lab, v))
-        trs = "".join(f'<tr><th scope="row">{esc(a)}</th><td>{esc(b)}</td></tr>' for a, b in rows)
-        out = [head_]
-        if renal.get("summary"):
-            out.append(f'<p class="dd-kidney-sum">{esc(renal["summary"])}</p>')
-        if trs:
-            out.append(f'<table class="dd-kidney-table"><caption class="dd-hidden">Kidney dosing by kidney function and dialysis modality</caption><tbody>{trs}</tbody></table>')
-        out.append(render_pediatric_block(renal.get("pediatric")))
-        srcs = []
-        ped = renal.get("pediatric") if isinstance(renal.get("pediatric"), dict) else {}
-        for r in list(renal.get("sources") or renal.get("references") or []) + [
-                x for x in (ped.get("sources") or []) if x not in (renal.get("sources") or [])]:
-            if isinstance(r, dict):
-                doi, url = ws(r.get("doi")), safe_url(r.get("url"))
-                link = f"https://doi.org/{doi}" if doi else url
-                srcs.append(f'<li>{esc(r.get("citation") or r.get("title") or "")}'
-                            + (f' <a href="{esc(link)}" rel="noopener" target="_blank">{esc(link)}</a>' if link else "") + "</li>")
-            elif ws(r):
-                srcs.append(f"<li>{esc(r)}</li>")
-        if srcs:
-            out.append('<details class="dd-acc"><summary>Sources</summary><div class="dd-acc-body"><ol>' + "".join(srcs) + "</ol></div></details>")
-        by, on = ws(renal.get("reviewed_by")), us_date_str(renal.get("reviewed_date") or renal.get("reviewed_on"))
-        out.append('<p class="dd-note">renalcarematters.com guidance'
-                   + (f", reviewed by {esc(by)}" if by else "") + (f" on {esc(on)}" if on else "")
-                   + ". Use with the product's package insert and the patient's current kidney function.</p>")
-        return "\n".join(out) + "\n</section>\n"
-    # No approved guidance: verbatim US label text (if any) + neutral note. Never invent dosing.
-    body, which = label_renal_excerpt(label)
-    out = [head_]
-    if body:
-        lab = label["labels"][0] if isinstance(label.get("labels"), list) and label["labels"] else label
-        m = label_meta(lab)
-        set_id, vdate = m["set_id"], m["date"]
-        srcs = [ws(r.get("source")) for r in (lab.get("renal_impairment_sources") or []) if isinstance(r, dict)]
-        if which == "Renal impairment" and srcs:
-            which = "Renal impairment (" + ", ".join(dict.fromkeys(x.replace("_", " ") for x in srcs if x)) + ")"
-        out.append(f'<div class="dd-kidney-label"><div class="dd-kidney-src">From the US FDA label · {esc(which)}</div>{body}</div>')
-        out.append(f'<p class="dd-note">Verbatim text from the US FDA-approved label via {esc(m["via"])}'
-                   + (f', set ID <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(set_id)}</a>' if set_id and m["url"] else (f", set ID {esc(set_id)}" if set_id else "")) + (f", version date {esc(vdate)}" if vdate else "")
-                   + ". Philippine-approved labeling may differ: check the PH package insert.</p>")
-    else:
-        out.append('<p class="dd-note">No kidney-specific text is available from the US label for this generic yet. '
-                   'Check the Philippine package insert in the product table below.</p>')
-    out.append('<p class="dd-kidney-pending">Kidney-specific guidance from renalcarematters.com: in preparation.</p>')
-    return "\n".join(out) + "\n</section>\n"
 
 
 def _entries(v):
@@ -1564,111 +1617,6 @@ def summary_approved(summ) -> bool:
     return isinstance(summ, dict) and ws(summ.get("review_status")).lower() == "approved"
 
 
-def render_glance(slug, g, products, label, ctx: Ctx, classes, brands) -> str:
-    rows: list[tuple[str, str]] = []
-    uc = us_classes(label)
-    ph = ph_categories(products, g)
-    cls_bits = []
-    if uc.get("epc"):
-        cls_bits.append(f'{esc("; ".join(uc["epc"]))} <span class="dd-src">US FDA established pharmacologic class</span>')
-    if uc.get("moa"):
-        cls_bits.append(f'{esc("; ".join(uc["moa"]))} <span class="dd-src">mechanism class (US FDA)</span>')
-    if uc.get("cs"):
-        cls_bits.append(f'{esc("; ".join(uc["cs"]))} <span class="dd-src">chemical structure (US FDA)</span>')
-    if ph:
-        cls_bits.append(f'{esc("; ".join(ph[:3]))} <span class="dd-src">PH FDA pharmacologic category</span>')
-
-    lm = label.get("label") if isinstance(label, dict) and isinstance(label.get("label"), dict) else {}
-    us_brand = ws(lm.get("brand_name"))
-    if us_brand and _brand_key(us_brand) not in {_brand_key(b) for b in brands} and _brand_key(us_brand) != _brand_key(g.get("name", "")):
-        cls_bits.append(f'US brand: {esc(us_brand)} <span class="dd-src">US label brand; not registered in the PH</span>')
-    if cls_bits:
-        rows.append(("Drug class", "<br>".join(cls_bits)))
-    inds = indication_items(label)
-    pi = next((x for p in products for x in (p.get("pi_links") or [])
-               if isinstance(x, dict) and safe_url(x.get("file_link"))), None)
-    if inds:
-        rows.append(("Indications", '<ul class="dd-glance-list">' + "".join(f"<li>{esc(i)}</li>" for i in inds) + "</ul>"
-                     '<span class="dd-src">US FDA label</span> · <a href="#label-indications-and-usage" class="dd-open-acc">Full indications</a>'))
-    else:
-        rows.append(("Indications", "See the Philippine package insert"
-                     + (f' (<a href="{esc(pi["file_link"])}" rel="noopener nofollow" target="_blank">open a package insert</a>).' if pi
-                        else '; package inserts are linked in the <a href="#products">product table</a> where the FDA has published one.')))
-
-    moa = mechanism_text(label)
-    if moa:
-        rows.append(("Mechanism of action", f'{esc(moa)} <span class="dd-src">US FDA label</span>'))
-
-    forms = available_forms(products)
-    if forms:
-        parts = []
-        for lab, sts, n in forms[:6]:
-            sts_txt = ", ".join(sts[:8]) + (", …" if len(sts) > 8 else "")
-            parts.append(f"{esc(lab)}{' ' + esc(sts_txt) if sts_txt else ''}")
-        more = f"; and {len(forms) - 6} more form{'s' if len(forms) - 6 != 1 else ''}" if len(forms) > 6 else ""
-        cl = (" · ".join(CLASS_LABEL.get(c, c) for c in sorted(classes))) if classes else ""
-        rows.append(("Available in the Philippines",
-                     "; ".join(parts) + more + '<span class="dd-glance-sub">'
-                     + (esc(cl) + " · " if cl else "")
-                     + f'{len(brands):,} brand name{"s" if len(brands) != 1 else ""} · {len(products):,} registered product{"s" if len(products) != 1 else ""}</span>'))
-
-    pnf = ctx.pnf.get(slug)
-    form_bits = []
-    if isinstance(pnf, dict) and pnf.get("in_pnf", pnf.get("listed", False)):
-        notes = []
-        for e in pnf.get("pnf_entries") or []:
-            for n in e.get("restriction_notes") or []:
-                if ws(n) and ws(n) not in notes:
-                    notes.append(ws(n))
-        listed = "; ".join(ws(e.get("dosage_form_strength")) for e in (pnf.get("pnf_entries") or []) if ws(e.get("dosage_form_strength")))
-        form_bits.append("<strong>PNF:</strong> listed" + (f" ({esc(listed)})" if listed else "")
-                         + (f'. Restrictions: {esc("; ".join(notes))}' if notes else ""))
-    if isinstance(pnf, dict) and pnf.get("philhealth_gamot") is True:
-        form_bits.append("<strong>PhilHealth GAMOT:</strong> yes" + (" (also YAKAP)" if pnf.get("konsulta_yakap") else ""))
-    elif isinstance(pnf, dict) and pnf.get("philhealth_gamot") is False:
-        form_bits.append("<strong>PhilHealth GAMOT:</strong> no")
-    pe = _entries(ctx.prices.get(slug))
-    dpri = _price_range(pe, "dpri")
-    if dpri:
-        form_bits.append(f"<strong>DOH price reference (DPRI 2021):</strong> {esc(dpri)}")
-    fee = _price_range(pe, "philhealth_gamot")
-    if fee:
-        form_bits.append(f"<strong>GAMOT fixed fee:</strong> {esc(fee)}")
-    if form_bits:
-        rows.append(("Formulary", "<br>".join(form_bits) + ' · <a href="#price">Details and sources</a>'))
-
-    summ = ctx.summary(slug)
-    if summary_approved(summ):
-        dose = [d for d in summ.get("usual_adult_dose") or [] if isinstance(d, dict)]
-        if dose:
-            rows.append(("Usual adult dose", '<ul class="dd-glance-list">' + "".join(
-                f'<li>{"<strong>" + esc(d.get("indication")) + ":</strong> " if ws(d.get("indication")) else ""}{esc(d.get("dose"))}</li>' for d in dose) + "</ul>"))
-        ki = [d for d in summ.get("key_interactions") or [] if isinstance(d, dict)]
-        if ki:
-            rows.append(("Key interactions", '<ul class="dd-glance-list">' + "".join(
-                f'<li><strong>{esc(d.get("drug_or_class"))}</strong>'
-                + (f' <span class="dd-sev">{esc(d.get("severity"))}</span>' if ws(d.get("severity")) else "")
-                + f': {esc(d.get("effect"))}' + (f' {esc(d.get("action"))}' if ws(d.get("action")) else "") + "</li>" for d in ki) + "</ul>"))
-        ae = summ.get("adverse_effects") if isinstance(summ.get("adverse_effects"), dict) else {}
-        if ae.get("common") or ae.get("serious"):
-            rows.append(("Common and serious adverse effects",
-                         (f'<strong>Common:</strong> {esc("; ".join(map(ws, ae.get("common") or [])))}' if ae.get("common") else "")
-                         + ("<br>" if ae.get("common") and ae.get("serious") else "")
-                         + (f'<strong>Serious:</strong> {esc("; ".join(map(ws, ae.get("serious") or [])))}' if ae.get("serious") else "")))
-        if summ.get("contraindications"):
-            rows.append(("Contraindications", esc("; ".join(map(ws, summ["contraindications"])))))
-        by, on = ws(summ.get("reviewed_by")), us_date_str(summ.get("reviewed_date"))
-        if by or on:
-            rows.append(("Reviewed", f'renalcarematters.com summary{", reviewed by " + esc(by) if by else ""}{" on " + esc(on) if on else ""}.'))
-
-    if not rows:
-        return ""
-    body = "".join(f'<div class="dd-glance-row"><dt>{esc(a)}</dt><dd>{b}</dd></div>' for a, b in rows)
-    return ('<section class="dd-glance" id="at-a-glance" aria-labelledby="glance-h">\n'
-            '<h2 id="glance-h">At a glance</h2>\n'
-            f'<dl class="dd-glance-dl">{body}</dl>\n</section>\n')
-
-
 DISCLAIMER = """
 <section class="section" id="disclaimer">
 <div class="disclaimer" role="note"><strong>For health professionals.</strong> This page is a reference compiled from public
@@ -1692,52 +1640,703 @@ def render_brand_line(brands: list[str], shown: int = 12) -> str:
     return (f'<div class="dd-brands"><strong>Brands:</strong> {" · ".join(link(b) for b in head_)}{more}</div>')
 
 
-def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict]:
+# ═════════════════════════════════════════════════════════════════════════════
+# Monograph layout (Lexi-style section ORDER only; all content from US labels, PH registry,
+# PNF/DPRI and our approved JSON — no third-party compendium text)
+# ═════════════════════════════════════════════════════════════════════════════
+SEVERITY_SCALE = {  # our own interaction severity scale (see DRUGDB-CONTRACT.md)
+    "avoid": ("Avoid", "dd-sev-avoid"),
+    "adjust or monitor": ("Adjust or monitor", "dd-sev-adjust"),
+    "adjust": ("Adjust or monitor", "dd-sev-adjust"),
+    "monitor": ("Adjust or monitor", "dd-sev-adjust"),
+    "minor": ("Minor", "dd-sev-minor"),
+}
+LABEL_CHIP = '<span class="dd-src">US FDA label</span>'
+OURS_CHIP = '<span class="dd-src dd-src-ours">renalcarematters.com, reviewed</span>'
+
+
+def _lab(label):
+    if isinstance(label, dict) and isinstance(label.get("labels"), list) and label["labels"]:
+        return label["labels"][0]
+    return label if isinstance(label, dict) else None
+
+
+def label_html(label, *keys) -> str:
+    """Rendered verbatim label text for the first non-empty key; *_table keys are sanitized HTML."""
+    lab = _lab(label)
+    if not lab:
+        return ""
+    secs = label_sections(lab)
+    for k in keys:
+        v = secs.get(k)
+        if not v:
+            continue
+        if k.endswith("_table"):
+            vv = v if isinstance(v, list) else [v]
+            h = "".join(sanitize_html(str(x)) for x in vv if str(x).strip())
+            if h:
+                return f'<div class="dd-tables">{h}</div>'
+            continue
+        h = render_label_value(v)
+        if h:
+            return h
+    return ""
+
+
+def acc(title: str, body: str, open_=False, src=LABEL_CHIP, aid="") -> str:
+    if not body:
+        return ""
+    return (f'<details class="dd-acc"{f" id={chr(34)}{aid}{chr(34)}" if aid else ""}{" open" if open_ else ""}>'
+            f'<summary><span>{esc(title)} {src}</span></summary><div class="dd-acc-body">{body}</div></details>')
+
+
+def _subsections(text: str, num: str, head_re: str) -> list[str]:
+    """Verbatim 'N.x Heading …' chunks whose heading matches head_re."""
+    heads = list(re.finditer(r"(?:^|\s)(" + num + r"\.\d+)\s+(?=[A-Z])", text or ""))
+    out = []
+    for i, h in enumerate(heads):
+        end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
+        chunk = text[h.start(1):end].strip()
+        if re.match(num + r"\.\d+\s+[^.]{0,90}?(" + head_re + r")", chunk, re.I):
+            out.append(chunk)
+    return out
+
+
+def hepatic_text(label) -> str:
+    lab = _lab(label)
+    if not lab:
+        return ""
+    secs = label_sections(lab)
+    if secs.get("hepatic_impairment"):
+        return render_label_value(secs["hepatic_impairment"])
+    pop = ws(secs.get("use_in_specific_populations") if isinstance(secs.get("use_in_specific_populations"), str) else "")
+    found = []
+    m = re.search(r"(?:^|\s)(8\.\d+)\s+(?:Patients\s+with\s+)?(?:Hepatic\s+Impairment|Hepatic\s+Insufficiency|Impaired\s+Hepatic)", pop)
+    if m:
+        nxt = re.search(r"\s8\.\d+\s+[A-Z]|\s10\s+OVERDOSAGE", pop[m.end():])
+        found.append(pop[m.start(1):m.end() + nxt.start() if nxt else len(pop)].strip())
+    da = secs.get("dosage_and_administration")
+    found += _subsections(da if isinstance(da, str) else "", "2", r"\bHepatic\b|\bLiver\b")
+    return "".join(f"<p>{esc(x)}</p>" for x in found)
+
+
+def administration_text(label) -> str:
+    lab = _lab(label)
+    if not lab:
+        return ""
+    da = label_sections(lab).get("dosage_and_administration")
+    chunks = _subsections(da if isinstance(da, str) else "", "2",
+                          r"Administration|Preparation|Reconstitution|Dilution|Infusion|Instructions for Use|Compatib")
+    return "".join(f"<p>{esc(x)}</p>" for x in chunks)
+
+
+def _sentences(text: str) -> list[str]:
+    return [x.strip() for x in re.split(r"(?<=[.;])\s+(?=[A-Z(\[])", ws(text)) if x.strip()]
+
+
+def pick_sentences(label, keys, pattern, limit=8) -> list[str]:
+    lab = _lab(label)
+    if not lab:
+        return []
+    secs, out = label_sections(lab), []
+    rx = re.compile(pattern, re.I)
+    for k in keys:
+        v = secs.get(k)
+        if isinstance(v, list):
+            v = " ".join(map(str, v))
+        if not isinstance(v, str):
+            continue
+        for snt in _sentences(v):
+            if rx.search(snt) and 20 < len(snt) < 600 and snt not in out:
+                out.append(snt)
+                if len(out) >= limit:
+                    return out
+    return out
+
+
+CYP_RE = r"\bCYP\s?\d[A-Z]?\d*|P-gp\b|P-glycoprotein|\bOATP\d|\bBCRP\b|\bOCT\d\b|\bMATE\d?|\bUGT\d|\bOAT\d\b"
+PK_RE = r"half-life|\bt\s?½|\bt1/2\b|excreted|excretion|eliminated in (the )?urine|renal clearance|urinary"
+
+
+LEVELS = {"none": ("No change", "dd-lv-none"), "adjust": ("Adjust", "dd-lv-adjust"),
+          "avoid": ("Avoid", "dd-lv-avoid"), "nodata": ("No data", "dd-lv-nodata")}
+
+
+def _kval(v) -> tuple[str, str, str]:
+    """(full text, short, level) from a plain string/bool/list or a {text, short, level} object."""
+    if isinstance(v, dict):
+        t = v.get("text") or v.get("recommendation") or ""
+        return (ws(t) if not isinstance(t, list) else "; ".join(map(ws, t)), ws(v.get("short")), ws(v.get("level")).lower())
+    if isinstance(v, bool):
+        return ("Yes" if v else "No", "", "")
+    if isinstance(v, list):
+        return ("; ".join(map(ws, v)), "", "")
+    return (ws(v), "", "")
+
+
+def _band_label(rng: str) -> str:
+    rng = ws(rng)
+    if rng and not re.search(r"egfr|crcl|gfr|clearance|dialys|crrt|hd\b|pd\b", rng, re.I):
+        rng = f"eGFR {rng}"
+    return rng
+
+
+def kidney_block(renal: dict, pfx: str, children: bool = False) -> str:
+    """Compact kidney dosing: a color-coded strip (only from approved short/level fields) with the full text
+    in an expander, or, without short/level, a dense two-column grid of the full text."""
+    tiles = []   # (key, tile label, row label, full, short, level)
+    for i, b in enumerate(renal.get("bands") or []):
+        if isinstance(b, dict) and (b.get("range") or b.get("recommendation") or b.get("text")):
+            full, short, lvl = _kval(b)
+            rl = _band_label(b.get("range"))
+            tl = re.sub(r"^\s*(eGFR|CrCl|eGFR/CrCl)\s*", "", rl, flags=re.I) or rl
+            tl = "eGFR " + tl if tl and tl[0] in "<>≥≤0123456789" else tl
+            tiles.append((f"{pfx}-b{i}", tl, rl, full, short, lvl))
+    for k, tl, rl in (("hd", "HD", "Hemodialysis (intermittent)"), ("pd", "PD", "Peritoneal dialysis"),
+                      ("crrt", "CRRT", "CRRT"), ("pirrt", "PIRRT", "PIRRT / SLED")):
+        if renal.get(k) not in (None, "", []):
+            full, short, lvl = _kval(renal[k])
+            if full or short:
+                tiles.append((f"{pfx}-{k}", tl, rl, full, short, lvl))
+    foot = []
+    for k, lab in (("dialyzable", "Dialyzable?"), ("monitoring", "Monitoring")):
+        if renal.get(k) not in (None, "", []):
+            foot.append(f'<li><strong>{lab}</strong> {esc(_kval(renal[k])[0])}</li>')
+    foot_html = f'<ul class="dd-kfoot">{"".join(foot)}</ul>' if foot else ""
+    grid = ('<dl class="dd-kgrid">' + "".join(f'<div class="dd-kcell" id="{key}"><dt>{esc(rl)}</dt><dd>{esc(full)}</dd></div>'
+                                             for key, tl, rl, full, short, lvl in tiles) + "</dl>") if tiles else ""
+    has_strip = any(short and lvl in LEVELS for *_, short, lvl in tiles)
+    if not has_strip:
+        return grid + foot_html
+    strip = []
+    for key, tl, rl, full, short, lvl in tiles:
+        lab, cls = LEVELS.get(lvl, LEVELS["nodata"])
+        sh = short[:40] if short else "See details"
+        strip.append(f'<a class="dd-ktile {cls}" href="#{key}" data-open="{pfx}-full"><span class="dd-kt-h">{esc(tl)}</span>'
+                     f'<span class="dd-kt-s">{esc(sh)}</span><span class="dd-kt-l">{lab}</span></a>')
+    return (f'<div class="dd-kstrip" role="list" aria-label="{"Children: " if children else ""}kidney dosing summary">'
+            + "".join(f'<div role="listitem">{x}</div>' for x in strip) + "</div>"
+            + f'<details class="dd-acc dd-kfull" id="{pfx}-full"><summary><span>Show full dosing details</span></summary>'
+            + f'<div class="dd-acc-body">{grid}</div></details>' + foot_html)
+
+
+def render_kidney_section(label, renal) -> str:
+    """'Dosing: Altered kidney function' — approved renalcarematters.com guidance, else verbatim label text."""
+    head_ = ('<section class="dd-kidney dd-sec" id="kidney-dosing" aria-labelledby="kidney-h">\n'
+             f'<div class="dd-kidney-head">{KIDNEY_ICON}<div><div class="section-tag">CKD · dialysis · CRRT</div>'
+             '<h2 id="kidney-h">Dosing: Altered kidney function</h2></div></div>\n')
+    if renal_approved(renal):
+        out = [head_]
+        if renal.get("summary"):
+            out.append(f'<p class="dd-kidney-sum">{esc(renal["summary"])}</p>')
+        out.append(kidney_block(renal, "kd"))
+        ped = renal.get("pediatric") if isinstance(renal.get("pediatric"), dict) else {}
+        if ped.get("renal") or any(ped.get(k) for k in ("hd", "pd", "crrt", "pirrt")):
+            out.append('<details class="dd-acc dd-kchildren"><summary><span>Children (kidney dosing)</span></summary>'
+                       '<div class="dd-acc-body">' + kidney_block(dict(ped, bands=ped.get("renal") or []), "kdc", children=True)
+                       + '<p class="dd-note">Pediatric eGFR: bedside Schwartz equation, 0.413 &times; height (cm) / serum creatinine '
+                       '(mg/dL). Weight-based doses should not exceed the adult maximum.</p></div></details>')
+        by, on = ws(renal.get("reviewed_by")), us_date_str(renal.get("reviewed_date") or renal.get("reviewed_on"))
+        out.append('<p class="dd-note">renalcarematters.com guidance' + (f", reviewed by {esc(by)}" if by else "")
+                   + (f" on {esc(on)}" if on else "") + '. Sources are listed under <a href="#references">References</a>. '
+                   "Use with the product's package insert and the patient's current kidney function.</p>")
+        rb, which = label_renal_excerpt(label)
+        if rb:
+            out.append(acc(f"US label text: {which}", rb))
+        return "\n".join(out) + "\n</section>\n"
+    body, which = label_renal_excerpt(label)
+    out = [head_]
+    if body:
+        lab = _lab(label)
+        srcs = [ws(r.get("source")) for r in (lab.get("renal_impairment_sources") or []) if isinstance(r, dict)]
+        if which == "Renal impairment" and srcs:
+            which = "Renal impairment (" + ", ".join(dict.fromkeys(x.replace("_", " ") for x in srcs if x)) + ")"
+        out.append(f'<div class="dd-kidney-label"><div class="dd-kidney-src">From the US FDA label · {esc(which)}</div>{body}</div>')
+    else:
+        out.append('<p class="dd-note">No kidney-specific text is available from the US label for this generic yet. '
+                   'Check the Philippine package insert in the products table.</p>')
+    out.append('<p class="dd-kidney-pending">Kidney-specific guidance from renalcarematters.com: in preparation.</p>')
+    return "\n".join(out) + "\n</section>\n"
+
+
+def sec(sid: str, title: str, body: str, nav: str = "") -> tuple[str, str, str] | None:
+    if not body or not body.strip():
+        return None
+    return (sid, nav or title, f'<section class="dd-sec" id="{sid}" aria-labelledby="{sid}-h">'
+                               f'<h2 id="{sid}-h">{esc(title)}</h2>{body}</section>')
+
+
+def references_html(slug, label, renal, summ, ctx: Ctx) -> str:
+    items = []
+    lab = _lab(label)
+    if lab:
+        m = label_meta(lab)
+        items.append(f'U.S. Food and Drug Administration. {esc(m["title"] or "Prescribing information")}'
+                     f' [US FDA-approved label{", version " + esc(m["version"]) if m["version"] else ""}'
+                     f'{", " + esc(m["date"]) if m["date"] else ""}]. Via {esc(m["via"])}.'
+                     + (f' <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(m["url"])}</a>' if m["url"] else ""))
+    items.append(f'Food and Drug Administration Philippines. Verification portal (product registrations). '
+                 f'<a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">{FDA_VERIFY_URL}</a>')
+    seen = set()
+    pnf = ctx.pnf.get(slug)
+    if isinstance(pnf, dict):
+        for e in pnf.get("pnf_entries") or []:
+            if isinstance(e, dict) and ws(e.get("source")) and ws(e["source"]) not in seen:
+                seen.add(ws(e["source"]))
+                items.append(_linkify_source(ws(e["source"])))
+        if ws(pnf.get("gamot_source")) and ws(pnf["gamot_source"]) not in seen:
+            seen.add(ws(pnf["gamot_source"]))
+            items.append(_linkify_source(ws(pnf["gamot_source"])))
+    for e in _entries(ctx.prices.get(slug)):
+        if isinstance(e, dict) and ws(e.get("source")) and ws(e["source"]) not in seen:
+            seen.add(ws(e["source"]))
+            items.append(_linkify_source(ws(e["source"])))
+
+    def ours(srcs):
+        for r in srcs or []:
+            if isinstance(r, dict):
+                doi, url = ws(r.get("doi")), safe_url(r.get("url"))
+                link = f"https://doi.org/{doi}" if doi else url
+                t = esc(r.get("citation") or r.get("title") or "")
+                if t or link:
+                    items.append(t + (f' <a href="{esc(link)}" rel="noopener" target="_blank">{esc(link)}</a>' if link else ""))
+            elif ws(r):
+                items.append(esc(r))
+    reviewed = []
+    if renal_approved(renal):
+        ped = renal.get("pediatric") if isinstance(renal.get("pediatric"), dict) else {}
+        ours(list(renal.get("sources") or renal.get("references") or []) + [x for x in (ped.get("sources") or [])
+                                                                            if x not in (renal.get("sources") or [])])
+        by, on = ws(renal.get("reviewed_by")), us_date_str(renal.get("reviewed_date"))
+        reviewed.append(f'Kidney and pediatric dosing{": reviewed by " + esc(by) if by else ""}{" on " + esc(on) if on else ""}.')
+    if summary_approved(summ):
+        ours(summ.get("sources"))
+        by, on = ws(summ.get("reviewed_by")), us_date_str(summ.get("reviewed_date"))
+        reviewed.append(f'Dosing, interaction, adverse-effect and monitoring summary{": reviewed by " + esc(by) if by else ""}'
+                        f'{" on " + esc(on) if on else ""}.')
+    out = '<ol class="dd-refs">' + "".join(f"<li>{x}</li>" for x in dict.fromkeys(items)) + "</ol>"
+    if reviewed:
+        out += '<p class="dd-note"><strong>renalcarematters.com content:</strong> ' + " ".join(reviewed) + "</p>"
+    else:
+        out += ('<p class="dd-note">This page shows official label and registry text only; no renalcarematters.com '
+                'clinical summary has been approved for it yet.</p>')
+    out += ('<div class="disclaimer" role="note"><strong>For health professionals.</strong> This page is a reference compiled '
+            'from public regulatory sources for licensed health professionals in the Philippines. Verify every product detail '
+            'against the current Philippine package insert and the FDA Philippines registration record. Information here is not '
+            'a substitute for clinical judgment and does not replace the prescribing information approved for the specific '
+            'product you dispense or prescribe.<br><br>Last updated: <time datetime="__ISO__">__DATE__</time>.</div>')
+    return out
+
+
+def controlled_kind(ci) -> str:
+    """'S2' (dangerous drug) | 'CP' (controlled precursor) | '' from a controlled.json item."""
+    if not isinstance(ci, dict):
+        return ""
+    t = (ws(ci.get("category")) + " " + ws(ci.get("schedule"))).lower()
+    if "precursor" in t or "essential chemical" in t:
+        return "CP"
+    if "dangerous" in t or "s2" in t or "schedule" in t:
+        return "S2"
+    return ""
+
+
+def dispensing_chips(classes: set, ci, ctx: "Ctx") -> tuple[str, str]:
+    """(chips html, notes html) for the hero: Rx / OTC / HR for every category present, plus S2 / precursor."""
+    chips = []
+    for c, lab, cls in (("Rx", "Rx · Prescription drug", "dd-rx"), ("OTC", "OTC · Over-the-counter", "dd-otc"),
+                        ("HR", "HR · Household remedy", "dd-hr")):
+        if c in classes:
+            chips.append(f'<span class="dd-chip {cls}">{lab}</span>')
+    kind = controlled_kind(ci)
+    note = ""
+    if kind:
+        srcs = []
+        for sid in ci.get("source_ids") or []:
+            x = ctx.controlled_sources.get(ws(sid))
+            if x:
+                t, u = ws(x.get("title") or x.get("name") or sid), safe_url(x.get("url"))
+                srcs.append(f'<a href="{esc(u)}" rel="noopener" target="_blank">{esc(t)}</a>' if u else esc(t))
+        tip = "; ".join(x for x in (ws(ci.get("schedule")), ws(ci.get("rx_form")), ws(ci.get("notes"))) if x)
+        if kind == "S2":
+            chips.insert(0, f'<span class="dd-chip dd-s2" title="{esc(tip)}">S2 · Dangerous drug — PDEA S2 license + special (yellow) prescription</span>')
+        else:
+            chips.insert(0, f'<span class="dd-chip dd-cp" title="{esc(tip)}">Controlled precursor</span>')
+        if tip or srcs:
+            note = (f'<p class="dd-dispnote">{esc(tip)}' + (f'{" " if tip else ""}Source: {"; ".join(srcs)}.' if srcs else "") + "</p>")
+    return "".join(chips), note
+
+
+def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[dict, dict]:
+    """(core search record, extra record with manufacturers and registration numbers)."""
     products = ctx.by_slug.get(slug, [])
     name = ws(g.get("name")) or slug
-    cats = ph_categories(products, g)
-    cat = cats[0] if cats else ""
-    classes = {classify(p.get("classification")) for p in products} - {""}
+    if label is None:
+        label = ctx.label(slug)
+    if renal is None:
+        renal = ctx.renal(slug)
+    uc = us_classes(label)
+    ph = ph_categories(products, g)
+    lm = (_lab(label) or {}).get("label") if isinstance((_lab(label) or {}).get("label"), dict) else {}
+    brands = brand_list(products, name)
+    ub = ws(lm.get("brand_name"))
+    if ub and (_brand_key(ub) in {_brand_key(b) for b in brands} or _brand_key(ub) == _brand_key(name)):
+        ub = ""
+    classes = {classify(p) for p in products} - {""}
+    pnf = ctx.pnf.get(slug) if isinstance(ctx.pnf.get(slug), dict) else {}
+    forms = sorted({form_group(f) for f, _, _ in available_forms(products)} - {""})
+    inds = [re.sub(r"\s+", " ", x)[:90] for x in indication_items(label)] if label else []
+    e = {"s": slug, "n": name, "c": class_group(uc, ph)}
+    ing = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
+    if len(ing) > 1:
+        e["i"] = ing
+    if brands:
+        e["b"] = brands
+    if ub:
+        e["u"] = ub
+    cl = list(dict.fromkeys((uc.get("epc") or []) + (uc.get("moa") or []) + ph[:3]))
+    if cl:
+        e["cl"] = cl
+    if inds:
+        e["x"] = inds[:6]
+    if forms:
+        e["f"] = forms
+    ck = controlled_kind(ctx.controlled(slug))
+    rx = ((1 if "Rx" in classes else 0) | (2 if "OTC" in classes else 0) | (4 if "HR" in classes else 0)
+          | (8 if ck == "S2" else 0) | (16 if ck == "CP" else 0))
+    if rx:
+        e["r"] = rx
+    if pnf.get("in_pnf"):
+        e["p"] = 1
+    if pnf.get("philhealth_gamot") is True:
+        e["h"] = 1
+    if renal_approved(renal):
+        e["k"] = 1
+    if _lab(label):
+        e["l"] = 1
+    mf = sorted({ws(p.get(k)) for p in products for k in ("manufacturer", "distributor") if ws(p.get(k))}, key=str.lower)
+    rg = sorted({ws(p.get("registration_number")) for p in products if ws(p.get("registration_number"))})
+    return e, {"s": slug, "m": mf, "r": rg}
+
+
+FORM_GROUPS = [
+    ("injection", r"inject|infusion|vial|ampul|ampoul|i\.v\.|intravenous|parenteral|for solution for|pre-?filled|syringe|lyophili"),
+    ("inhalation", r"inhal|nebul|respule|aerosol|rotacap|turbuhaler|evohaler"),
+    ("eye/ear/nose", r"ophth|eye|otic|ear|nasal"),
+    ("topical", r"cream|ointment|gel|lotion|topical|patch|transdermal|shampoo|soap|spray|powder for topical|emulsion"),
+    ("suppository", r"suppos|rectal|enema|vaginal|pessar|ovule"),
+    ("oral liquid", r"syrup|suspension|solution|elixir|drops|liquid|oral emulsion|granules for|powder for oral|sachet"),
+    ("capsule", r"capsule"),
+    ("tablet", r"tablet|caplet|lozenge|troche"),
+]
+
+
+def form_group(form: str) -> str:
+    f = form.lower()
+    for name, rx in FORM_GROUPS:
+        if re.search(rx, f):
+            return name
+    return "other"
+
+
+def class_group(uc: dict, ph: list[str]) -> str:
+    if uc.get("epc"):
+        return sentence_case(uc["epc"][0])
+    return ph[0] if ph else ""
+
+
+def cat_slug(name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")[:80] or "other"
+
+
+PK_ROWS = [("bioavailability", "Bioavailability", False), ("onset", "Onset", False), ("peak", "Time to peak", False),
+           ("half_life", "Half-life", False), ("half_life_eskd", "Half-life in kidney failure (ESKD)", True),
+           ("vd", "Volume of distribution", False), ("protein_binding", "Protein binding", False),
+           ("metabolism", "Metabolism (CYP, transporters)", False), ("active_metabolites", "Active metabolites", False),
+           ("excretion_renal_pct", "Renal excretion", True), ("dialyzability", "Dialyzability", True)]
+
+
+def render_pk_table(summ) -> str:
+    pk = summ.get("pk") if isinstance(summ, dict) and isinstance(summ.get("pk"), dict) else {}
+    rows = []
+    for k, lab, renal_row in PK_ROWS:
+        v = pk.get(k)
+        if v in (None, "", []):
+            continue
+        v = "; ".join(map(ws, v)) if isinstance(v, list) else ws(v)
+        if k == "excretion_renal_pct" and re.fullmatch(r"\d+(\.\d+)?", v):
+            v += "% unchanged in urine"
+        rows.append(f'<tr{" class=" + chr(34) + "dd-pk-renal" + chr(34) if renal_row else ""}><th scope="row">{esc(lab)}'
+                    + (' <span class="dd-pk-kid">kidney</span>' if renal_row else "") + f"</th><td>{esc(v)}</td></tr>")
+    if not rows:
+        return ""
+    return ('<h3>Key PK parameters</h3><div class="table-wrap"><table class="drug-table dd-pk"><tbody>' + "".join(rows)
+            + f"</tbody></table></div>{OURS_CHIP}")
+
+
+_HEAD_WORD = r"(?:[A-Z][\w'’/&-]*|of|and|in|with|the|for|or|to|on|by|at|a|an|\([^)]{1,40}\))"
+
+
+def split_numbered(text: str, num: str) -> tuple[str, list[tuple[str, str]]]:
+    """Split a run-on label section into (preamble, [(heading, verbatim chunk)]) at 'N.x Heading' markers."""
+    text = ws(text)
+    marks = [m for m in re.finditer(r"(?:^|\s)(" + num + r"\.\d+)\s+(?=[A-Z])", text)]
+    if len(marks) < 2:
+        return "", []
+    pre = text[:marks[0].start()].strip()
+    pre = re.sub(r"^\s*" + num + r"\s+(?:DOSAGE\s*(?:AND|&)\s*ADMINISTRATION|WARNINGS\s*(?:AND|&)\s*PRECAUTIONS|WARNINGS|"
+                 r"ADVERSE\s+REACTIONS|DRUG\s+INTERACTIONS)\b\s*", "", pre)   # drop the section title only
+    out = []
+    for i, m in enumerate(marks):
+        end = marks[i + 1].start() if i + 1 < len(marks) else len(text)
+        chunk = text[m.start(1):end].strip()
+        after = chunk[len(m.group(1)):].strip()
+        hm = re.match(_HEAD_WORD + r"(?:\s+" + _HEAD_WORD + r"){0,13}", after)
+        head = hm.group(0) if hm else after[:60]
+        rest = after[len(head):].lstrip()
+        head = re.sub(r"\s+[A-Z]{3,}\b.*$", "", head).strip() or head
+        words = head.split()
+        if rest[:1].islower() and len(words) > 1:      # the last capitalized word starts the body sentence
+            while len(words) > 1:
+                w = words.pop()
+                if w[:1].isupper():
+                    break
+        while len(words) > 1 and words[-1] in ("of", "and", "in", "with", "the", "for", "or", "to", "on", "by", "at", "a", "an"):
+            words.pop()
+        if len(words) > 1 and words[-1].lower() in {w.lower() for w in words[:-1]}:
+            words.pop()
+        head = " ".join(words) or after[:60]
+        out.append((f"{m.group(1)} {head[:90]}", chunk))
+    return pre, out
+
+
+def label_split(label, keys, num, title, open_pre=True, aid="") -> str:
+    """Label section as a short preamble (open) + one collapsed accordion per numbered subsection; falls back to
+    a single collapsed accordion when the text has no numbered subsections."""
+    lab = _lab(label)
+    if not lab:
+        return ""
+    secs = label_sections(lab)
+    for k in keys:
+        v = secs.get(k)
+        if isinstance(v, list):
+            v = "\n\n".join(map(str, v))
+        if not isinstance(v, str) or not v.strip():
+            continue
+        pre, subs = split_numbered(v, num)
+        if not subs:
+            return acc(title, render_label_value(v), aid=aid)
+        html_ = f'<div class="dd-labgroup"{f" id={chr(34)}{aid}{chr(34)}" if aid else ""}><div class="dd-labgroup-h">{esc(title)} {LABEL_CHIP}</div>'
+        if pre and len(pre) > 20:
+            html_ += f'<div class="dd-labpre">{esc(pre if len(pre) < 1400 else pre[:1400].rsplit(" ", 1)[0] + " …")}</div>'
+        html_ += "".join(f'<details class="dd-acc dd-acc-sm"><summary><span>{esc(h)}</span></summary>'
+                         f'<div class="dd-acc-body"><p>{esc(c)}</p></div></details>' for h, c in subs)
+        return html_ + "</div>"
+    return ""
+
+
+def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
+    products = ctx.by_slug.get(slug, [])
+    name = ws(g.get("name")) or slug
+    label = ctx.label(slug)
+    lab = _lab(label)
+    renal = ctx.renal(slug)
+    summ = ctx.summary(slug)
+    summ_ok = summary_approved(summ)
+    pnf = ctx.pnf.get(slug) if isinstance(ctx.pnf.get(slug), dict) else {}
+    classes = {classify(p) for p in products} - {""}
     brands = brand_list(products, name)
     brands_ranked = brand_list(products, name, ranked=True)
-    vat_n = sum(1 for p in products if p.get("vat_exempt"))
-    label = ctx.label(slug)
-    renal = ctx.renal(slug)
-    pnf = ctx.pnf.get(slug)
+    uc = us_classes(label)
+    ph = ph_categories(products, g)
+    cat = class_group(uc, ph)
+    ingredients = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
+    entry, extra = index_entry(slug, g, ctx, label, renal)
 
+    # ── header: chips + class line + US brand note
     chips = []
-    if classes == {"Rx"}:
-        chips.append('<span class="dd-chip dd-rx">Prescription only (Rx)</span>')
-    elif classes == {"OTC"}:
-        chips.append('<span class="dd-chip dd-otc">Over-the-counter (OTC)</span>')
-    elif classes:
-        chips.append(f'<span class="dd-chip">{esc(" · ".join(sorted(classes)))} products</span>')
     kc = kidney_chip(renal)
     if kc:
-        chips.insert(0, f'<span class="dd-chip dd-kchip">{KIDNEY_ICON}{esc(kc)}</span>')
+        chips.append(f'<span class="dd-chip dd-kchip">{KIDNEY_ICON}{esc(kc)}</span>')
+    dchips, dnote = dispensing_chips(classes, ctx.controlled(slug), ctx)
+    chips.append(dchips)
     chips.append(f'<span class="dd-chip">{len(products):,} PH product{"s" if len(products) != 1 else ""}</span>')
-    chips.append(f'<span class="dd-chip">{len(brands):,} brand name{"s" if len(brands) != 1 else ""}</span>')
-    if isinstance(pnf, dict) and pnf.get("in_pnf", pnf.get("listed", False)):
+    if pnf.get("in_pnf"):
         chips.append('<span class="dd-chip dd-good">PNF-listed</span>')
-    if isinstance(pnf, dict) and (pnf.get("philhealth_gamot") is True or pnf.get("philhealth") is True):
+    if pnf.get("philhealth_gamot") is True:
         chips.append('<span class="dd-chip dd-good">PhilHealth GAMOT</span>')
+    vat_n = sum(1 for p in products if p.get("vat_exempt"))
     if vat_n:
         chips.append(f'<span class="dd-chip dd-good">VAT-exempt{"" if vat_n == len(products) else " (some products)"}</span>')
+    if renal_approved(renal):
+        chips.append(f'<a class="dd-chip dd-good" href="#kidney-dosing">{KIDNEY_ICON} Kidney dosing reviewed</a>')
+    cls_line = []
+    if uc.get("epc"):
+        cls_line.append(f'{esc("; ".join(uc["epc"]))}{" (" + esc("; ".join(uc["moa"])) + ")" if uc.get("moa") else ""} '
+                        '<span class="dd-src">US FDA class</span>')
+    if ph:
+        cls_line.append(f'{esc("; ".join(ph[:2]))}{"; and others" if len(ph) > 2 else ""} <span class="dd-src">PH FDA category</span>')
+    if len(ingredients) > 1:
+        cls_line.append("Fixed-dose combination.")
+    us_brand = entry.get("u", "")
 
-    ingredients = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
-    combo = len(ingredients) > 1
-    sub = (f"{esc('; '.join(cats[:2]))}{'; and others' if len(cats) > 2 else ''}." if cats else "") + (" Fixed-dose combination." if combo else "")
-    price_html = render_price_block(slug, g, ctx)
-    kidney_html = render_kidney_panel(label, renal)
-    glance_html = render_glance(slug, g, products, label, ctx, classes, brands)
-    pills = ([("#at-a-glance", "At a glance")] if glance_html else []) + [("#kidney-dosing", "Kidney dosing"), ("#products", "Philippine products"), ("#label", "Prescribing information")]
-    if price_html:
-        pills.append(("#price", "Price &amp; availability"))
-    pills.append(("#disclaimer", "Disclaimer"))
+    # ── boxed warning + label attribution (top of page)
+    top = []
+    bw = label_html(label, "boxed_warning")
+    if bw:
+        top.append(f'<div class="dd-boxed-alert" role="alert" id="boxed-warning"><div class="dd-boxed-h">Boxed warning '
+                   f'{LABEL_CHIP}</div><div class="dd-boxed-body">{bw}</div></div>')
+    if lab:
+        m = label_meta(lab)
+        top.append(f'<div class="dd-attrib"><strong>Label text on this page:</strong> US FDA-approved label via {esc(m["via"])}'
+                   + (f', set ID <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(m["set_id"])}</a>' if m["set_id"] and m["url"] else "")
+                   + (f", version date {esc(m['date'])}" if m["date"] else "")
+                   + (f" ({esc(m['title'])})" if m["title"] else "")
+                   + ". Reproduced verbatim. <strong>Philippine-approved indications and doses may differ: check the PH package insert.</strong></div>")
+    else:
+        top.append('<div class="dd-placeholder">US label not yet available for this generic. Check the Philippine package insert '
+                   '(linked in the products table where the FDA has published one).</div>')
+
+    S = []
+    # 2. Use
+    inds = indication_items(label)
+    use = ""
+    if inds:
+        use = ('<ul class="dd-uselist">' + "".join(f"<li>{esc(i)}</li>" for i in inds) + f"</ul>{LABEL_CHIP}"
+               + acc("Full indications and usage", label_html(label, "indications_and_usage"), aid="label-indications-and-usage"))
+    S.append(sec("use", "Use: Labeled indications", use, "Use"))
+    # 3. Dosing: Adult
+    adult = ""
+    dose = [d for d in (summ.get("usual_adult_dose") if summ_ok else []) or [] if isinstance(d, dict)]
+    if dose:
+        adult = ('<ul class="dd-uselist">' + "".join(
+            f'<li>{"<strong>" + esc(d.get("indication")) + ":</strong> " if ws(d.get("indication")) else ""}{esc(d.get("dose"))}</li>'
+            for d in dose) + f"</ul>{OURS_CHIP}")
+    adult += label_split(label, ("dosage_and_administration",), "2", "Dosage and administration (US label)",
+                         aid="label-dosage-and-administration")
+    S.append(sec("dosing-adult", "Dosing: Adult", adult, "Adult dosing"))
+    # 4. Kidney
+    S.append(("kidney-dosing", "Kidney dosing", render_kidney_section(label, renal)))
+    # 5. Hepatic
+    hep = hepatic_text(label)
+    S.append(sec("dosing-hepatic", "Dosing: Hepatic impairment", (f"{hep}{LABEL_CHIP}" if hep else ""), "Hepatic"))
+    # 6. Pediatric
+    ped = ""
+    if renal_approved(renal) and isinstance(renal.get("pediatric"), dict):
+        pr = renal["pediatric"]
+        rows = [(lab, _kval(pr.get(k))[0]) for k, lab in (("approved_ages", "Approved ages"), ("usual_dose", "Usual dose"),
+                                                          ("max_dose", "Maximum dose")) if pr.get(k) not in (None, "", [])]
+        notes = pr.get("notes") if isinstance(pr.get("notes"), list) else ([pr["notes"]] if pr.get("notes") else [])
+        if rows or notes:
+            ped = ('<dl class="dd-kgrid">' + "".join(f'<div class="dd-kcell"><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>' for a, b in rows)
+                   + "</dl>" + "".join(f'<p class="dd-note">{esc(n)}</p>' for n in notes if ws(n))
+                   + '<p class="dd-note">Kidney dosing in children: see <a href="#kidney-dosing">Dosing: Altered kidney function</a>.</p>'
+                   + OURS_CHIP)
+    ped += acc("Pediatric use (US label)", label_html(label, "pediatric_use"), open_=not ped)
+    S.append(sec("dosing-pediatric", "Dosing: Pediatric", ped, "Pediatric"))
+    # 7. Older adult
+    S.append(sec("dosing-older", "Dosing: Older adult", acc("Geriatric use (US label)", label_html(label, "geriatric_use"), open_=True),
+                 "Older adult"))
+    # 8. Dosage forms
+    forms = available_forms(products)
+    df = ""
+    if forms:
+        df += ('<h3>Philippines</h3><ul class="dd-uselist">' + "".join(
+            f'<li><strong>{esc(f)}</strong>{": " + esc(", ".join(st[:10])) + (", …" if len(st) > 10 else "") if st else ""}</li>'
+            for f, st, n in forms[:10]) + "</ul>"
+            + (f'<p class="dd-note">and {len(forms) - 10} more forms; see the products table.</p>' if len(forms) > 10 else ""))
+    df += render_products(slug, g, products, ctx.today)
+    us_df = label_html(label, "dosage_forms_and_strengths")
+    if us_df:
+        df += "<h3>United States (label)</h3>" + acc("Dosage forms and strengths (US label)", us_df)
+    S.append(sec("dosage-forms", "Dosage forms", df, "Dosage forms"))
+    # 9. Administration
+    adm = administration_text(label)
+    S.append(sec("administration", "Administration", f"{adm}{LABEL_CHIP}" if adm else "", "Administration"))
+    # 10. Adverse reactions
+    ar = ""
+    ae = summ.get("adverse_effects") if summ_ok and isinstance(summ.get("adverse_effects"), dict) else {}
+    if ae.get("common") or ae.get("serious"):
+        ar += ('<div class="dd-twocol">'
+               + (f'<div><h3>Common</h3><ul class="dd-uselist">{"".join(f"<li>{esc(x)}</li>" for x in ae.get("common") or [])}</ul></div>' if ae.get("common") else "")
+               + (f'<div><h3>Serious</h3><ul class="dd-uselist">{"".join(f"<li>{esc(x)}</li>" for x in ae.get("serious") or [])}</ul></div>' if ae.get("serious") else "")
+               + f"</div>{OURS_CHIP}")
+    ar += label_split(label, ("adverse_reactions",), "6", "Adverse reactions (US label)")
+    ar += acc("Adverse reaction frequency tables (US label)", label_html(label, "adverse_reactions_table"))
+    S.append(sec("adverse-reactions", "Adverse reactions", ar, "Adverse reactions"))
+    # 11. Contraindications
+    ci = ""
+    if summ_ok and summ.get("contraindications"):
+        ci = '<ul class="dd-uselist">' + "".join(f"<li>{esc(x)}</li>" for x in summ["contraindications"]) + f"</ul>{OURS_CHIP}"
+    lci = label_html(label, "contraindications")
+    ci += (acc("Contraindications (US label)", lci) if ci else (f"{lci}{LABEL_CHIP}" if lci else ""))
+    S.append(sec("contraindications", "Contraindications", ci, "Contraindications"))
+    # 12. Warnings/Precautions
+    wp = ""
+    if bw:
+        wp += '<p class="dd-note">The boxed warning is shown at the <a href="#boxed-warning">top of this page</a>.</p>'
+    wp += label_split(label, ("warnings_and_cautions", "warnings_and_precautions", "warnings", "precautions"), "5",
+                      "Warnings and precautions (US label)", aid="label-warnings-and-precautions")
+    S.append(sec("warnings", "Warnings/Precautions", wp if ("dd-acc" in wp or "dd-labgroup" in wp) else "", "Warnings"))
+    # 13. Interactions
+    di = ""
+    ki = [d for d in (summ.get("key_interactions") if summ_ok else []) or [] if isinstance(d, dict)]
+    if ki:
+        trs = []
+        for d in ki:
+            sv = SEVERITY_SCALE.get(ws(d.get("severity")).lower(), (ws(d.get("severity")) or "—", "dd-sev-minor"))
+            trs.append(f'<tr><td><strong>{esc(d.get("drug_or_class"))}</strong></td><td><span class="dd-sev {sv[1]}">{esc(sv[0])}</span></td>'
+                       f'<td>{esc(d.get("effect"))}</td><td>{esc(d.get("action"))}</td></tr>')
+        di += ('<div class="table-wrap"><table class="drug-table dd-ix"><thead><tr><th>Drug or class</th><th>Severity</th><th>Effect</th>'
+               f'<th>What to do</th></tr></thead><tbody>{"".join(trs)}</tbody></table></div>'
+               '<p class="dd-note">Severity scale (renalcarematters.com): <strong>Avoid</strong>: do not combine; '
+               '<strong>Adjust or monitor</strong>: change the dose or monitor closely; <strong>Minor</strong>: usually no action.</p>'
+               f"{OURS_CHIP}")
+    di += label_split(label, ("drug_interactions",), "7", "Drug interactions (US label)")
+    cyp = pick_sentences(label, ("pharmacokinetics", "drug_interactions", "clinical_pharmacology"), CYP_RE)
+    if cyp:
+        di += acc("Metabolism and transporters (CYP, P-gp, OATP; US label)", "".join(f"<p>{esc(x)}</p>" for x in cyp))
+    S.append(sec("interactions", "Drug interactions", di if ("dd-acc" in di or "dd-labgroup" in di or ki) else "", "Interactions"))
+    # 14. Pregnancy; Breastfeeding
+    S.append(sec("pregnancy", "Pregnancy considerations", acc("Pregnancy (US label)", label_html(label, "pregnancy", "teratogenic_effects"), open_=True), "Pregnancy"))
+    S.append(sec("breastfeeding", "Breastfeeding considerations", acc("Lactation (US label)", label_html(label, "lactation", "nursing_mothers"), open_=True), "Breastfeeding"))
+    # 15. Monitoring
+    mon = []
+    if renal_approved(renal) and ws(renal.get("monitoring")):
+        mon.append(f"<li>{esc(renal['monitoring'])} <span class=\"dd-sub\">Kidney</span></li>")
+    if summ_ok:
+        for x in summ.get("monitoring") or []:
+            if ws(x):
+                mon.append(f"<li>{esc(x)}</li>")
+    S.append(sec("monitoring", "Monitoring parameters", (f'<ul class="dd-uselist">{"".join(mon)}</ul>{OURS_CHIP}' if mon else ""), "Monitoring"))
+    # 16. Mechanism; Pharmacokinetics
+    moa = label_html(label, "mechanism_of_action")
+    S.append(sec("mechanism", "Mechanism of action", (f"{moa}{LABEL_CHIP}" if moa else ""), "Mechanism"))
+    S.append(sec("pharmacodynamics", "Pharmacodynamics",
+                 acc("Pharmacodynamics (US label)", label_html(label, "pharmacodynamics")), "Pharmacodynamics"))
+    pk_full = label_html(label, "pharmacokinetics")
+    pk = render_pk_table(summ) if summ_ok else ""
+    hi = pick_sentences(label, ("pharmacokinetics",), PK_RE, limit=5)
+    if hi:
+        pk += ('<div class="dd-pk-hi"><div class="dd-kidney-src">Half-life and elimination (verbatim, US label)</div>'
+               + "".join(f"<p>{esc(x)}</p>" for x in hi) + "</div>")
+    pk += acc("Pharmacokinetics (US label)", pk_full)
+    S.append(sec("pharmacokinetics", "Pharmacokinetics", pk, "Pharmacokinetics"))
+    # 17. Formulary & pricing
+    fp = render_price_block(slug, g, ctx)
+    if fp:
+        fp = re.sub(r'^\s*<section class="section" id="price">\s*<div class="section-tag">.*?</div>\s*<h2>.*?</h2>', "", fp, flags=re.S)
+        fp = re.sub(r"</section>\s*$", "", fp.strip())
+    S.append(sec("formulary", "Formulary and pricing (Philippines)", fp, "Formulary & pricing"))
+    # 18. References
+    S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx), "References"))
+
+    S = [x for x in S if x]
+    toc = "".join(f'<li><a href="#{sid}">{esc(nav)}</a></li>' for sid, nav, _ in S)
+    pills = "".join(f'<a class="nav-pill" href="#{sid}">{esc(nav)}</a>' for sid, nav, _ in S)
 
     canonical = f"{SITE}/drugs/{slug}.html"
     rxstat = "https://schema.org/PrescriptionOnly" if classes == {"Rx"} else ("https://schema.org/OTC" if classes and "Rx" not in classes else None)
-    drug = {"@type": "Drug", "name": name, "nonProprietaryName": name, "url": canonical}
+    drug = {"@type": "Drug", "@id": canonical + "#drug", "name": name, "nonProprietaryName": name, "url": canonical}
     if cat:
         drug["drugClass"] = {"@type": "DrugClass", "name": cat}
     if ingredients:
@@ -1745,35 +2344,35 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict]:
     if rxstat:
         drug["prescriptionStatus"] = rxstat
     if brands:
-        drug["alternateName"] = brands[:25]
+        drug["alternateName"] = brands_ranked[:25]
     jsonld = json.dumps({"@context": "https://schema.org", "@graph": [
         {"@type": "MedicalWebPage", "@id": canonical, "url": canonical, "name": f"{name}: Philippine products and prescribing information",
          "dateModified": "__ISO__", "inLanguage": "en", "audience": {"@type": "MedicalAudience", "audienceType": "Clinician"},
          "publisher": {"@type": "Organization", "name": "Renal Care Matters", "url": SITE,
                        "logo": {"@type": "ImageObject", "url": f"{SITE}/android-chrome-512x512.png"}},
-         "about": {"@id": canonical + "#drug"}},
-        dict(drug, **{"@id": canonical + "#drug"})]}, ensure_ascii=False).replace("</", "<\\/")
-
-    title = f"{name}: Philippine Brands, Products & Prescribing Information"
+         "about": {"@id": canonical + "#drug"}}, drug]}, ensure_ascii=False).replace("</", "<\\/")
+    title = f"{name}: Philippine Brands, Dosing & Prescribing Information"
     if len(title) > 95:
-        title = f"{name[:60].rstrip()}…: PH Products & Prescribing Info"
-    brand_txt = ", ".join(brands[:6]) + ("…" if len(brands) > 6 else "")
+        title = f"{name[:60].rstrip()}…: PH Brands & Prescribing Info"
+    brand_txt = ", ".join(brands_ranked[:6]) + ("…" if len(brands) > 6 else "")
     desc = (f"{name}{' (' + cat + ')' if cat else ''}: {len(products):,} FDA Philippines-registered products"
-            + (f" including {brand_txt}" if brands else "") + ". Registration numbers, manufacturers, package inserts, and US FDA label text.")
-    body = (head(title, desc[:300], canonical, jsonld, "__HASH__", keywords=", ".join([name] + brands[:20]))
-            + '<body class="physician-mode single-mode">\n' + header(False)
-            + f"""
+            + (f" including {brand_txt}" if brands else "") + ". Kidney dosing, US FDA label text, PNF and price references.")
+    body = (head(title, desc[:300], canonical, jsonld, "__HASH__", keywords=", ".join([name] + brands_ranked[:20]))
+            + '<body class="physician-mode single-mode dd-mono">\n' + header(False) + f"""
 <section class="hero">
-  <div class="container">
+  <div class="container dd-hero-wide">
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="dd-crumb"><a href="/drugs/">Drug Index</a> › {esc(name[:1].upper())}</div>
+        <div class="dd-crumb"><a href="/drugs/">Drug Index</a>{f' › <a href="/drugs/category/{cat_slug(cat)}.html">{esc(cat)}</a>' if cat else ''}</div>
         <div class="hero-tag">Drug Database · Clinicians</div>
         <h1>{esc(name)}</h1>
         {render_brand_line(brands_ranked)}
-        <p class="hero-sub">{sub}</p>
+        {f'<p class="dd-usbrand">US brand (reference label): <strong>{esc(us_brand)}</strong>; not a Philippine-registered brand.</p>' if us_brand else ''}
+        <p class="hero-sub dd-classline">{"<br>".join(cls_line)}</p>
         <div class="dd-chips">{''.join(chips)}</div>
+        {dnote}
         <div class="hero-meta">
+<span><strong>Dispensing:</strong> {esc(" · ".join(CLASS_LABEL.get(c, c) for c in sorted(classes)) or "not stated")}{" · " + ("Dangerous drug (S2)" if controlled_kind(ctx.controlled(slug)) == "S2" else "Controlled precursor") if controlled_kind(ctx.controlled(slug)) else ""}</span>
 <span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span>
 <span><strong>Audience:</strong> Licensed health professionals</span>
 </div>
@@ -1782,31 +2381,21 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict]:
   </div>
 </section>
 
-<nav class="nav-strip" aria-label="On this page"><div class="nav-pills">{''.join(f'<a class="nav-pill" href="{h}">{t}</a>' for h, t in pills)}</div></nav>
+<nav class="nav-strip dd-pills" aria-label="Sections"><div class="nav-pills">{pills}</div></nav>
 
-<main>
-<div class="container">
-{glance_html}
-{kidney_html}
-</div>
-<div class="container dd-wide">
-{render_products(slug, g, products, ctx.today)}
-</div>
-<div class="container">
-{render_label(slug, g, label)}
-{price_html}
-{DISCLAIMER}
-</div>
+<div class="dd-layout">
+<nav class="dd-toc" aria-label="On this page"><div class="dd-toc-h">On this page</div><ol>{toc}</ol></nav>
+<main class="dd-main" id="main">
+{''.join(top)}
+{chr(10).join(h for _, _, h in S)}
 </main>
+</div>
 """ + FOOTER + FLOAT)
-    entry = {"s": slug, "n": name, "b": brands, "c": cat}
-    if renal_approved(renal):
-        entry["k"] = 1
-    return body, entry
+    return body, entry, extra
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# Index page
+# Index, search index, and category pages
 # ═════════════════════════════════════════════════════════════════════════════
 def letter_of(name: str) -> str:
     c = (name or "?")[:1].lower()
@@ -1817,7 +2406,31 @@ KIDNEY_BADGE = ('<span class="dd-kbadge" title="Has approved kidney dosing guida
                 + '<span class="dd-hidden">Kidney dosing guidance</span></span>')
 
 
-def index_page(entries: list[dict], ctx: Ctx) -> str:
+def _entry_li(e: dict, prefix: str = "") -> str:
+    sub = " · ".join(x for x in (e.get("c", ""), ", ".join(e.get("b", [])[:3]) + ("…" if len(e.get("b", [])) > 3 else "")) if x)
+    return (f'<li{" data-k=" + chr(34) + "1" + chr(34) if e.get("k") else ""}><a href="{prefix}{esc(e["s"])}.html">{esc(e["n"])}</a>'
+            + (KIDNEY_BADGE if e.get("k") else "") + (f'<span class="dd-sub">{esc(sub)}</span>' if sub else "") + "</li>")
+
+
+def category_groups(entries) -> dict[str, list[dict]]:
+    """Group by class slug; every entry's "c" is rewritten to the group's most common spelling."""
+    by: dict[str, list[dict]] = defaultdict(list)
+    for e in entries:
+        if e.get("c"):
+            by[cat_slug(e["c"])].append(e)
+    groups: dict[str, list[dict]] = {}
+    for items in by.values():
+        cnt: dict[str, int] = {}
+        for e in items:
+            cnt[e["c"]] = cnt.get(e["c"], 0) + 1
+        name = max(cnt.items(), key=lambda kv: (kv[1], kv[0]))[0]
+        for e in items:
+            e["c"] = name
+        groups[name] = items
+    return groups
+
+
+def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
     groups = defaultdict(list)
     for e in sorted(entries, key=lambda e: e["n"].lower()):
         groups[letter_of(e["n"])].append(e)
@@ -1826,54 +2439,101 @@ def index_page(entries: list[dict], ctx: Ctx) -> str:
         f'<button type="button" data-l="{l}" aria-pressed="false"{"" if groups.get(l) else " disabled"} '
         f'aria-label="{"Names starting with a number or symbol" if l == "0" else "Letter " + l.upper()}">{"#" if l == "0" else l.upper()}</button>'
         for l in letters)
-    secs = []
-    for l in letters:
-        if not groups.get(l):
-            continue
-        lis = "".join(
-            f'<li{" data-k=" + chr(34) + "1" + chr(34) if e.get("k") else ""}><a href="{esc(e["s"])}.html">{esc(e["n"])}</a>'
-            + (KIDNEY_BADGE if e.get("k") else "")
-            + (f'<span class="dd-sub">{esc(e["c"])}' + (f' · {esc(", ".join(e["b"][:3]))}{"…" if len(e["b"]) > 3 else ""}' if e["b"] else "") + "</span>"
-               if (e["c"] or e["b"]) else "") + "</li>" for e in groups[l])
-        secs.append(f'<section class="dd-letter" id="letter-{l}" data-l="{l}"><h2>{"#" if l == "0" else l.upper()}</h2>'
-                    f'<ul class="dd-list">{lis}</ul></section>')
+    secs = "".join(f'<section class="dd-letter" id="letter-{l}" data-l="{l}"><h2>{"#" if l == "0" else l.upper()}</h2>'
+                   f'<ul class="dd-list">{"".join(_entry_li(e) for e in groups[l])}</ul></section>' for l in letters if groups.get(l))
+    cg = category_groups(entries)
+    cat_opts = "".join(f'<option value="{esc(c)}">{esc(c)} ({len(v)})</option>'
+                       for c, v in sorted(cg.items(), key=lambda kv: kv[0].lower()) if len(v) >= 2)
+    form_opts = "".join(f'<option value="{f}">{f.capitalize()}</option>' for f, _ in FORM_GROUPS[::-1]) + '<option value="other">Other</option>'
     n_products = len(ctx.products)
     canonical = f"{SITE}/drugs/"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
                          "name": "Drug Index · Renal Care Matters", "dateModified": "__ISO__", "inLanguage": "en",
                          "audience": {"@type": "MedicalAudience", "audienceType": "Clinician"},
                          "publisher": {"@type": "Organization", "name": "Renal Care Matters", "url": SITE}}).replace("</", "<\\/")
-    desc = (f"Search {len(entries):,} generics and {n_products:,} FDA Philippines-registered drug products by brand or generic name, "
-            "with registration details, package inserts, and US FDA prescribing information.")
+    desc = (f"Search {len(entries):,} generics and {n_products:,} FDA Philippines-registered drug products by brand, generic, class, "
+            "indication, manufacturer or registration number, with kidney dosing and US FDA prescribing information.")
     return (head("Drug Index · Renal Care Matters", desc, canonical, jsonld, "__HASH__")
             + '<body class="physician-mode single-mode">\n' + header(True) + f"""
 <section class="hero">
-  <div class="container">
-    <div class="hero-grid">
-      <div class="hero-copy">
+  <div class="container dd-hero-wide">
+    <div class="hero-grid"><div class="hero-copy">
         <div class="hero-tag">Drug Database · Clinicians</div>
         <h1>Drug Index</h1>
         <p class="hero-sub">Every drug product registered with the Food and Drug Administration (FDA) Philippines, grouped by generic name.
-Search by brand or generic; each page lists the Philippine products and the US FDA prescribing information.</p>
-        <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span></div>
+Search by brand, generic, class, indication, manufacturer or registration number.</p>
+        <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span>
+<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a></div>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
-      </div>
-    </div>
+    </div></div>
   </div>
 </section>
-<main class="container dd-wide" id="dd-index" data-src="/drugs/search-index.json">
+<main class="container dd-wide" id="dd-index" data-src="/drugs/search-index.json" data-extra="/drugs/search-extra.json">
 <div class="dd-search" role="search">
-<label class="dd-hidden" for="dd-sq">Search by brand or generic name</label>
-<input id="dd-sq" type="search" placeholder="Search a brand or generic name (e.g., Norvasc, amlodipine)" autocomplete="off" spellcheck="false">
+<label class="dd-hidden" for="dd-sq">Search the drug index</label>
+<input id="dd-sq" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="dd-results"
+ placeholder="Brand, generic, class, indication, manufacturer, or reg. no. (e.g., Norvasc)" autocomplete="off" spellcheck="false">
 </div>
-<label class="dd-check dd-kfilter"><input id="dd-konly" type="checkbox"{"" if any(e.get("k") for e in entries) else " disabled"}> {KIDNEY_ICON} Has kidney dosing guidance ({sum(1 for e in entries if e.get("k")):,})</label>
+<div class="dd-facets" role="group" aria-label="Filters">
+<label><span class="dd-hidden">Drug class</span><select id="dd-f-class"><option value="">All drug classes</option>{cat_opts}</select></label>
+<label><span class="dd-hidden">Dispensing category</span><select id="dd-f-rx"><option value="">All dispensing categories</option><option value="1">Rx · Prescription drug</option><option value="2">OTC · Over-the-counter</option><option value="4">HR · Household remedy</option><option value="8">S2 · Dangerous drug</option><option value="16">Controlled precursor</option></select></label>
+<label><span class="dd-hidden">Dosage form</span><select id="dd-f-form"><option value="">All dosage forms</option>{form_opts}</select></label>
+<label class="dd-check"><input type="checkbox" id="dd-f-k"> {KIDNEY_ICON} Has kidney dosing</label>
+<label class="dd-check"><input type="checkbox" id="dd-f-p"> PNF-listed</label>
+<label class="dd-check"><input type="checkbox" id="dd-f-h"> PhilHealth GAMOT</label>
+<label class="dd-check"><input type="checkbox" id="dd-f-l"> Has US label</label>
+<button type="button" class="dd-btn dd-btn-ghost" id="dd-f-clear">Clear</button>
+</div>
 <p class="dd-note" id="dd-sinfo" aria-live="polite"></p>
-<div class="dd-results" id="dd-results" hidden></div>
+<ul class="dd-results dd-list" id="dd-results" role="listbox" aria-label="Search results" hidden></ul>
 <nav class="dd-alpha" id="dd-alpha" aria-label="Filter by first letter">{btns}</nav>
-{''.join(secs)}
+<div id="dd-az">{secs}</div>
 <div class="disclaimer" role="note"><strong>For health professionals.</strong> Product data come from the FDA Philippines registration
 database and may lag behind the official record; verify on <a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">verification.fda.gov.ph</a>
 and the current Philippine package insert. Not a substitute for clinical judgment.</div>
+</main>
+""" + FOOTER + FLOAT)
+
+
+def category_page(cat: str, items: list[dict]) -> str:
+    slug = cat_slug(cat)
+    canonical = f"{SITE}/drugs/category/{slug}.html"
+    jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
+                         "name": f"{cat} · Drug Index", "dateModified": "__ISO__", "inLanguage": "en"}, ensure_ascii=False).replace("</", "<\\/")
+    lis = "".join(_entry_li(e, "/drugs/") for e in sorted(items, key=lambda e: e["n"].lower()))
+    return (head(f"{cat}: drugs in this class · Renal Care Matters", f"{len(items)} generics in the class {cat}, with Philippine brands, kidney dosing and US FDA label text.",
+                 canonical, jsonld, "__HASH__")
+            + '<body class="physician-mode single-mode">\n' + header(True) + f"""
+<section class="hero"><div class="container dd-hero-wide"><div class="hero-grid"><div class="hero-copy">
+<div class="dd-crumb"><a href="/drugs/">Drug Index</a> › <a href="/drugs/category/">Drug classes</a></div>
+<div class="hero-tag">Drug class</div>
+<h1>{esc(cat)}</h1>
+<p class="hero-sub">{len(items):,} generic{'s' if len(items) != 1 else ''} in this class. Class names come from the US FDA established
+pharmacologic class when a US label is available, otherwise from the FDA Philippines pharmacologic category.</p>
+<div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
+</div></div></div></section>
+<main class="container dd-wide"><ul class="dd-list dd-catlist">{lis}</ul></main>
+""" + FOOTER + FLOAT)
+
+
+def category_index_page(groups: dict[str, list[dict]]) -> str:
+    canonical = f"{SITE}/drugs/category/"
+    jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
+                         "name": "Drug classes · Drug Index", "dateModified": "__ISO__", "inLanguage": "en"}).replace("</", "<\\/")
+    lis = "".join(f'<li data-n="{esc(c.lower())}"><a href="{cat_slug(c)}.html">{esc(c)}</a> <span class="dd-sub">{len(v):,} generic{"s" if len(v) != 1 else ""}</span></li>'
+                  for c, v in sorted(groups.items(), key=lambda kv: kv[0].lower()))
+    return (head("Drug classes · Renal Care Matters", f"Browse {len(groups):,} drug classes in the Philippine drug index.", canonical, jsonld, "__HASH__")
+            + '<body class="physician-mode single-mode">\n' + header(True) + f"""
+<section class="hero"><div class="container dd-hero-wide"><div class="hero-grid"><div class="hero-copy">
+<div class="dd-crumb"><a href="/drugs/">Drug Index</a></div>
+<div class="hero-tag">Drug Database · Clinicians</div>
+<h1>Browse by drug class</h1>
+<p class="hero-sub">{len(groups):,} classes. US FDA established pharmacologic class when a US label is available, otherwise the FDA Philippines category.</p>
+<div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
+</div></div></div></section>
+<main class="container dd-wide" id="dd-cats">
+<div class="dd-search"><label class="dd-hidden" for="dd-cq">Filter classes</label><input id="dd-cq" type="search" placeholder="Filter classes (e.g., calcium channel)" autocomplete="off"></div>
+<ul class="dd-list" id="dd-catlist">{lis}</ul>
 </main>
 """ + FOOTER + FLOAT)
 
@@ -1944,7 +2604,7 @@ def main():
 
     only = set(s.strip() for s in a.only.split(",")) if a.only else None
     stats = defaultdict(int)
-    entries = []
+    entries, extras = [], []
     for slug in sorted(ctx.generics):
         g = ctx.generics[slug]
         if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", slug):
@@ -1954,32 +2614,38 @@ def main():
             stats["no-products"] += 1
             continue
         if only is not None and slug not in only:
-            products = ctx.by_slug[slug]
-            entries.append({"s": slug, "n": ws(g.get("name")) or slug,
-                            "b": brand_list(products, ws(g.get("name")) or slug),
-                            "c": ws((g.get("categories") or [""])[0])})
-            if renal_approved(ctx.renal(slug)):
-                entries[-1]["k"] = 1
-            continue
-        html_, entry = page_for(slug, g, ctx)
-        entries.append(entry)
-        stats[finalize(out_dir / f"{slug}.html", html_, today, a.dry_run, False)] += 1
+            e, x = index_entry(slug, g, ctx)
+        else:
+            html_, e, x = page_for(slug, g, ctx)
+            stats[finalize(out_dir / f"{slug}.html", html_, today, a.dry_run, False)] += 1
+        entries.append(e)
+        extras.append(x)
 
-    # search index (compact, one object per generic)
-    si = json.dumps(sorted(entries, key=lambda e: e["n"].lower()), ensure_ascii=False, separators=(",", ":"))
-    write_if_changed(out_dir / "search-index.json", si, a.dry_run)
-    stats["index-" + finalize(out_dir / "index.html", index_page(entries, ctx), today, a.dry_run, False)] += 1
+    entries.sort(key=lambda e: e["n"].lower())
+    groups = category_groups(entries)
+    write_if_changed(out_dir / "search-index.json", json.dumps(entries, ensure_ascii=False, separators=(",", ":")), a.dry_run)
+    write_if_changed(out_dir / "search-extra.json", json.dumps(extras, ensure_ascii=False, separators=(",", ":")), a.dry_run)
+    stats["index-" + finalize(out_dir / "index.html", index_page(entries, ctx, len(groups)), today, a.dry_run, False)] += 1
+    cdir = out_dir / "category"
+    cdir.mkdir(exist_ok=True)
+    stats["catindex-" + finalize(cdir / "index.html", category_index_page(groups), today, a.dry_run, False)] += 1
+    cat_keep = {"index"}
+    for c, items in groups.items():
+        cs = cat_slug(c)
+        cat_keep.add(cs)
+        stats["cat-" + finalize(cdir / f"{cs}.html", category_page(c, items), today, a.dry_run, False)] += 1
 
     if not a.no_prune and only is None:
         keep = {e["s"] for e in entries} | {"index"}
-        for f in out_dir.glob("*.html"):
-            if f.stem in keep:
-                continue
-            with open(f, encoding="utf-8") as fh:
-                if f'content="{GENERATOR_TAG}"' in fh.read(2048):
-                    stats["pruned"] += 1
-                    if not a.dry_run:
-                        f.unlink()
+        for d, kp in ((out_dir, keep), (cdir, cat_keep)):
+            for f in d.glob("*.html"):
+                if f.stem in kp:
+                    continue
+                with open(f, encoding="utf-8") as fh:
+                    if f'content="{GENERATOR_TAG}"' in fh.read(2048):
+                        stats["pruned"] += 1
+                        if not a.dry_run:
+                            f.unlink()
 
     print(f"{len(ctx.products):,} products · {len(entries):,} generic pages · "
           + " · ".join(f"{k}: {v}" for k, v in sorted(stats.items()))
