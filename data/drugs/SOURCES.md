@@ -140,3 +140,38 @@ thiopental, methylergometrine (a distinct compound from ergometrine), gabapentin
 **Updating.** When the DDB posts a new consolidated list or Board Regulation, add its URL to
 `tools/drugdb/sources/ddb_urls.txt`, dispatch `drugdb-fetch-ddb`, update `ddb_schedules.tsv` (and `SOURCES` in
 `build_controlled.py` for a new issuance), then run `python3 tools/drugdb/build_controlled.py`.
+
+# Prescribing information for generics with no US FDA label: EU SmPCs and national links
+
+Built by `tools/drugdb/fetch_eu_smpc.py` (weekly workflow `.github/workflows/drugdb-eu-labels.yml`, Mondays
+02:30 Manila, after the US label run). Targets are the generics in `data/drugs/labels/_missing.json`; alias
+variants in `aliases.json` are skipped (their main slug is fetched instead). Reuse terms were read on
+**November 17, 2026**. Quotes are verbatim and short; read the linked page for the full terms.
+
+| Source | Reuse terms (verbatim excerpt) | How it is used |
+|---|---|---|
+| European Medicines Agency (EMA), legal notice, https://www.ema.europa.eu/en/about-us/legal-notice | Content "may be reproduced and / or distributed, totally or in part" … "for non-commercial and commercial purposes, provided that EMA is always acknowledged as the source". Exception: the permissions "do not apply to content supplied by third parties." | **Verbatim** SmPC text (Annex I of the EPAR product information): sections 4.1–4.6, 4.8 (frequency tables kept), 4.9, 5.1, 5.2, and renal-impairment excerpts of 4.2/5.2. Stored in `data/drugs/labels-eu/<slug>.json`; each page carries the acknowledgment and links the EPAR and the PDF. |
+| EMA medicines data (JSON), https://www.ema.europa.eu/en/medicines/download-medicine-data | Same EMA legal notice. | `medicines-output-medicines_json-report_en.json` (active substance, INN, holder, generic/biosimilar flags, decision date) and `documents-output-epar_documents_json-report_en.json` (product-information PDF URL and last-updated date). |
+| UK MHRA, https://products.mhra.gov.uk/ and https://www.gov.uk/government/publications/reproduce-or-re-use-mhra-information | MHRA content is under the Open Government Licence "except where otherwise stated"; for third-party copyright "you will need to obtain permission". SPCs are written by the licence holder. | **Not used.** The products site renders its lists in the browser, so a verified deep link per substance could not be built. Not linked. |
+| Ireland HPRA, https://www.hpra.ie/terms-of-use | Reproduction needs permission: "without the express written permission of the HPRA." | **Not used** (no reproduction permission; the find-a-medicine search URL returned no results page to automated clients). |
+| New Zealand Medsafe, https://www.medsafe.govt.nz/Other/siteinfo.asp | Data sheets "remain the property of the sponsor"; commercial use: "contact the medicine sponsor for permission." | **Not used** (data-sheet search is a browser app; no stable deep link). |
+| Health Canada Drug Product Database (DPD), https://www.canada.ca/en/health-canada/services/drugs-health-products/drug-products/drug-product-database/what-data-extract-drug-product-database.html | The DPD pages give no reuse licence for product monographs; they point to the DPD terms and conditions. Product monographs are sponsor documents. | **Link only.** The DPD data extract (`allfiles.zip`, marketed products) maps ingredients to products; `data/drugs/labels-intl/<slug>.json` → `links[]` stores brand, company, DIN, the DPD record URL and, when the record page shows them, the product-monograph PDF URL and date. No text is stored or shown. |
+| Spain AEMPS / CIMA, https://www.aemps.gob.es/aviso-legal/ | "Se autoriza la reproducción total o parcial … siempre que se cite expresamente su origen" (reproduction allowed with the source cited, and the last-update date). | **Not used:** CIMA fichas técnicas are in Spanish. Recorded for a future decision. |
+
+**Rules applied.** Verbatim text appears only from EMA, with the acknowledgment "EU Summary of Product
+Characteristics (EMA), <product>, revised <date>, reproduced with acknowledgment of the source" and a link to
+the EPAR. National sources whose terms do not clearly permit reproduction are shown as a "Prescribing
+information" link list only. SmPC text keeps its original British spelling because it is quoted verbatim; all
+of our own wording is American English.
+
+**Open question for Dr. Rivero.** The EMA notice excludes "content supplied by third parties". The SmPC is
+drafted by the marketing authorization holder but adopted as Annex I of the European Commission decision and
+published by EMA as an EMA document; this build treats it as EMA content. If he prefers the cautious reading,
+set `EU_VERBATIM = False` in `generate_drug_pages.py`: pages then show the EU SmPC as a link with its metadata
+only.
+
+**Matching and ranking.** Ingredient-for-ingredient, as for the US labels (salts and hydrates ignored, INN and US
+names both accepted). Only authorized human medicines. The originator (EMA flags generic = No, biosimilar = No;
+earliest Commission decision) is preferred, then the SmPC whose pharmaceutical form matches the PH route and form.
+A product-information PDF holding several SmPCs is split and the matching one used. Review lists:
+`data/drugs/labels-eu/_changes.json` (added/changed/removed) and `_missing.json`.

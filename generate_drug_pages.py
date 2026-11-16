@@ -49,6 +49,9 @@ from collections import defaultdict
 from html.parser import HTMLParser
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "tools" / "drugdb"))
+import eu_smpc_render as eu_r  # noqa: E402  (EU SmPC text for generics with no US label)
+
 REPO = Path(__file__).resolve().parent
 SITE = "https://renalcarematters.com"
 GENERATOR_TAG = "generate_drug_pages.py"
@@ -459,6 +462,10 @@ ul.dd-uselist li { margin: 3px 0; font-size: 15px; color: var(--text-mid); }
 .dd-pk-hi p { font-size: 14px; color: var(--text-mid); margin: 6px 0; }
 .dd-tables { overflow-x: auto; }
 .dd-tables table { font-size: 12.5px; }
+pre.dd-pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.45; white-space: pre; margin: 8px 0; padding: 10px 12px; background: #f4f6f9; border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+.dd-eu-h { font-weight: 700; color: var(--navy); margin: 12px 0 4px; }
+.dd-src-eu { color: #1e3a8a; border-color: rgba(30,58,138,.35); background: #e8edfb; }
+.dd-pi-links ul { margin-top: 6px; }
 ol.dd-refs { margin: 4px 0 12px 20px; font-size: 13.5px; color: var(--text-mid); }
 ol.dd-refs li { margin: 4px 0; overflow-wrap: anywhere; }
 ol.dd-refs a { color: #1a6b72; }
@@ -680,6 +687,9 @@ html[data-theme="dark"] .dd-acc .dd-acc-body { border-color: #2a3548; }
 html[data-theme="dark"] .dd-acc.dd-boxed { border-color: #f87171; }
 html[data-theme="dark"] .dd-acc.dd-boxed > summary { color: #fecaca; }
 html[data-theme="dark"] .dd-attrib { background: #16233a; border-color: #2c3a52; }
+html[data-theme="dark"] pre.dd-pre { background: #141c2a; border-color: #2c3a52; color: var(--text); }
+html[data-theme="dark"] .dd-eu-h { color: var(--text); }
+html[data-theme="dark"] .dd-src-eu { color: #dbe6f5; background: #22304a; border-color: #4a5a72; }
 html[data-theme="dark"] .dd-placeholder { background: #141c2a; border-color: #4a5a72; }
 html[data-theme="dark"] .dd-alpha button { background: #1a2535; color: #dbe6f5; border-color: #3a4a62; }
 html[data-theme="dark"] .dd-browse { background: #141c2a; border-color: #3a4a62; }
@@ -892,7 +902,7 @@ if(idx){
   var az=document.getElementById('dd-az'), alpha=document.getElementById('dd-alpha'), letters=Array.prototype.slice.call(document.querySelectorAll('.dd-letter'));
   var sq=document.getElementById('dd-sq'), res=document.getElementById('dd-results'), info=document.getElementById('dd-sinfo');
   var F={c:document.getElementById('dd-f-class'),r:document.getElementById('dd-f-rx'),f:document.getElementById('dd-f-form'),
-         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),
+         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),e:document.getElementById('dd-f-e'),
          t:document.getElementById('dd-f-type')};
   if(!F.t)delete F.t;
   var data=null, extra=null, supp=null, loading=null, active=-1, letter='all';
@@ -925,13 +935,13 @@ if(idx){
       (e.m||[]).forEach(function(x){var s=score(norm(x),t)*.5;if(s>best){best=s;lab='manufacturer';val=x;}});}
     return best?{s:best,lab:lab,val:val}:null;
   }
-  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
+  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked||(F.e&&F.e.checked));}
   function facetPass(d){
     if(F.t&&F.t.value==='s')return false;
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
-    return !(F.k.checked&&!d.k)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l);
+    return !(F.k.checked&&!d.k)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l)&&!(F.e&&F.e.checked&&!d.e);
   }
   function pass(d){
     var ty=F.t?F.t.value:'';
@@ -941,7 +951,7 @@ if(idx){
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
-    if(F.k.checked&&!d.k)return false; if(F.p.checked&&!d.p)return false; if(F.h.checked&&!d.h)return false; if(F.l.checked&&!d.l)return false;
+    if(F.k.checked&&!d.k)return false; if(F.p.checked&&!d.p)return false; if(F.h.checked&&!d.h)return false; if(F.l.checked&&!d.l)return false; if(F.e&&F.e.checked&&!d.e)return false;
     if(letter!=='all'){var c=(d.n||'?')[0].toLowerCase();if((c>='a'&&c<='z'?c:'0')!==letter)return false;}
     return true;
   }
@@ -951,7 +961,7 @@ if(idx){
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
     if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
     if(d.p)o.push('<span class="dd-tag PNF">PNF</span>');if(d.h)o.push('<span class="dd-tag PNF">GAMOT</span>');
-    if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');return o.join(' ');}
+    if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');if(d.e)o.push('<span class="dd-tag US">EU SmPC</span>');return o.join(' ');}
   function setActive(i){var opts=res.querySelectorAll('[role=option]');if(!opts.length){active=-1;sq.removeAttribute('aria-activedescendant');return;}
     active=Math.max(0,Math.min(i,opts.length-1));Array.prototype.forEach.call(opts,function(o,j){o.setAttribute('aria-selected',j===active?'true':'false');});
     sq.setAttribute('aria-activedescendant',opts[active].id);opts[active].scrollIntoView({block:'nearest'});}
@@ -1276,6 +1286,12 @@ class Ctx:
         """Non-US regulator product information metadata (labels-intl/<slug>.json) for generics without a US label."""
         d = self.data_dir / "labels-intl"
         return load_json(d / f"{slug}.json") if d.is_dir() else None
+
+    def eu(self, slug):
+        """EU SmPC (EMA) record (labels-eu/<slug>.json); used only when the generic has no US label."""
+        d = self.data_dir / "labels-eu"
+        e = load_json(d / f"{slug}.json") if d.is_dir() else None
+        return e if eu_r.usable(e) else None
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -2100,7 +2116,7 @@ def intl_attrib_line(isrc: dict) -> str:
             + (f' ({esc(isrc["date"])})' if isrc["date"] else "") + ". This generic has no US FDA label.</p>")
 
 
-def render_kidney_section(label, renal, intl=None) -> str:
+def render_kidney_section(label, renal, intl=None, eu=None) -> str:
     """'Dosing: Altered kidney function' — approved renalcarematters.com guidance, else verbatim label text."""
     head_ = ('<section class="dd-kidney dd-sec" id="kidney-dosing" aria-labelledby="kidney-h">\n'
              f'<div class="dd-kidney-head">{KIDNEY_ICON}<div><div class="section-tag">CKD · dialysis · CRRT</div>'
@@ -2127,6 +2143,9 @@ def render_kidney_section(label, renal, intl=None) -> str:
         rb, which = label_renal_excerpt(label)
         if rb:
             out.append(acc(f"US label text: {which}", rb))
+        elif eu and not _lab(label) and eu_r.renal_html(eu):
+            out.append(f'<details class="dd-acc"><summary><span>EU SmPC text: renal impairment {eu_r.EU_CHIP}</span></summary>'
+                       f'<div class="dd-acc-body">{eu_r.renal_html(eu)}</div></details>')
         return "\n".join(out) + "\n</section>\n"
     body, which = label_renal_excerpt(label)
     out = [head_]
@@ -2136,6 +2155,13 @@ def render_kidney_section(label, renal, intl=None) -> str:
         if which == "Renal impairment" and srcs:
             which = "Renal impairment (" + ", ".join(dict.fromkeys(x.replace("_", " ") for x in srcs if x)) + ")"
         out.append(f'<div class="dd-kidney-label"><div class="dd-kidney-src">From the US FDA label · {esc(which)}</div>{body}</div>')
+    elif eu and not _lab(label) and eu_r.renal_html(eu):
+        out.append(f'<div class="dd-kidney-label">{eu_r.renal_html(eu)}</div><p class="dd-note dd-intl-src">Source: '
+                   f'{eu_r.attribution_text(eu)}, reproduced with acknowledgment of the source (verbatim). '
+                   'This generic has no US FDA label.</p>')
+    elif eu and not _lab(label):
+        out.append('<p class="dd-note">The EU SmPC (EMA) for this generic has no separate kidney-specific text. See '
+                   '<a href="#smpc-4-2">SmPC 4.2</a> and <a href="#smpc-5-2">5.2</a> below, and the Philippine package insert.</p>')
     else:
         out.append('<p class="dd-note">No kidney-specific text is available from the US label for this generic yet. '
                    'Check the Philippine package insert in the products table.</p>')
@@ -2165,6 +2191,9 @@ def references_html(slug, label, renal, summ, ctx: Ctx, intl=None) -> str:
                      f' [US FDA-approved label{", version " + esc(m["version"]) if m["version"] else ""}'
                      f'{", " + esc(m["date"]) if m["date"] else ""}]. Via {esc(m["via"])}.'
                      + (f' <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(m["url"])}</a>' if m["url"] else ""))
+    eu = ctx.eu(slug) if not lab else None
+    if eu:
+        items.append(eu_r.reference(eu))
     isrc = intl_source(label, intl)
     if isrc and (renal_approved(renal) or summary_approved(summ)):
         items.append(f'{esc(isrc["agency_full"])}. {esc(isrc["document"] or "Product information")}'
@@ -2314,6 +2343,8 @@ def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[d
         e["k"] = 1
     if _lab(label):
         e["l"] = 1
+    elif ctx.eu(slug):
+        e["e"] = 1
     mf = sorted({ws(p.get(k)) for p in products for k in ("manufacturer", "distributor") if ws(p.get(k))}, key=str.lower)
     rg = sorted({ws(p.get("registration_number")) for p in products if ws(p.get("registration_number"))})
     return e, {"s": slug, "m": mf, "r": rg}
@@ -2525,6 +2556,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     cat = class_group(uc, ph)
     ingredients = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
     entry, extra = index_entry(slug, g, ctx, label, renal)
+    eu = ctx.eu(slug) if not lab else None     # EU SmPC (EMA): only for generics with no US label
 
     # ── header: chips + class line + US brand note
     chips = []
@@ -2566,6 +2598,10 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                    + (f", version date {esc(m['date'])}" if m["date"] else "")
                    + (f" ({esc(m['title'])})" if m["title"] else "")
                    + ". Reproduced verbatim. <strong>Philippine-approved indications and doses may differ: check the PH package insert.</strong></div>")
+    elif eu:
+        top.append(eu_r.attribution(eu))
+    elif eu_r.links_of(ctx.intl(slug)):
+        top.append(eu_r.links_html(ctx.intl(slug)))
     else:
         top.append('<div class="dd-placeholder">US label not yet available for this generic. Check the Philippine package insert '
                    '(linked in the products table where the FDA has published one).</div>')
@@ -2577,6 +2613,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     if inds:
         use = ('<ul class="dd-uselist">' + "".join(f"<li>{esc(i)}</li>" for i in inds) + f"</ul>{LABEL_CHIP}"
                + acc("Full indications and usage", label_html(label, "indications_and_usage"), aid="label-indications-and-usage"))
+    use = use or eu_r.section(eu, "4.1", open_=True)
     S.append(sec("use", "Use: Labeled indications", use, "Use"))
     # 3. Dosing: Adult
     adult = ""
@@ -2587,12 +2624,14 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
             for d in dose) + f"</ul>{OURS_CHIP}")
     adult += label_split(label, ("dosage_and_administration",), "2", "Dosage and administration (US label)",
                          aid="label-dosage-and-administration")
+    adult += eu_r.section(eu, "4.2")
     S.append(sec("dosing-adult", "Dosing: Adult", adult, "Adult dosing"))
     # 4. Kidney
-    S.append(("kidney-dosing", "Kidney dosing", render_kidney_section(label, renal, ctx.intl(slug))))
+    S.append(("kidney-dosing", "Kidney dosing", render_kidney_section(label, renal, ctx.intl(slug), eu)))
     # 5. Hepatic
     hep = hepatic_text(label)
-    S.append(sec("dosing-hepatic", "Dosing: Hepatic impairment", (f"{hep}{LABEL_CHIP}" if hep else ""), "Hepatic"))
+    S.append(sec("dosing-hepatic", "Dosing: Hepatic impairment",
+                 (f"{hep}{LABEL_CHIP}" if hep else eu_r.subsection(eu, "hepatic", "Hepatic impairment")), "Hepatic"))
     # 6. Pediatric
     ped = ""
     if renal_approved(renal) and isinstance(renal.get("pediatric"), dict):
@@ -2606,10 +2645,11 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                    + '<p class="dd-note">Kidney dosing in children: see <a href="#kidney-dosing">Dosing: Altered kidney function</a>.</p>'
                    + OURS_CHIP)
     ped += acc("Pediatric use (US label)", label_html(label, "pediatric_use"), open_=not ped)
+    ped += eu_r.subsection(eu, "pediatric", "Pediatric population")
     S.append(sec("dosing-pediatric", "Dosing: Pediatric", ped, "Pediatric"))
     # 7. Older adult
-    S.append(sec("dosing-older", "Dosing: Older adult", acc("Geriatric use (US label)", label_html(label, "geriatric_use"), open_=True),
-                 "Older adult"))
+    S.append(sec("dosing-older", "Dosing: Older adult", acc("Geriatric use (US label)", label_html(label, "geriatric_use"), open_=True)
+                 or eu_r.subsection(eu, "elderly", "Older adults"), "Older adult"))
     # 8. Dosage forms
     forms = available_forms(products)
     df = ""
@@ -2639,6 +2679,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                + f"</div>{OURS_CHIP}")
     ar += label_split(label, ("adverse_reactions",), "6", "Adverse reactions (US label)")
     ar += acc("Adverse reaction frequency tables (US label)", label_html(label, "adverse_reactions_table"))
+    ar += eu_r.section(eu, "4.8")
     S.append(sec("adverse-reactions", "Adverse reactions", ar, "Adverse reactions"))
     # 11. Contraindications
     ci = ""
@@ -2646,6 +2687,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         ci = '<ul class="dd-uselist">' + "".join(f"<li>{esc(x)}</li>" for x in summ["contraindications"]) + f"</ul>{OURS_CHIP}"
     lci = label_html(label, "contraindications")
     ci += (acc("Contraindications (US label)", lci) if ci else (f"{lci}{LABEL_CHIP}" if lci else ""))
+    ci += eu_r.section(eu, "4.3", open_=not ci)
     S.append(sec("contraindications", "Contraindications", ci, "Contraindications"))
     # 12. Warnings/Precautions
     wp = ""
@@ -2653,6 +2695,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         wp += '<p class="dd-note">The boxed warning is shown at the <a href="#boxed-warning">top of this page</a>.</p>'
     wp += label_split(label, ("warnings_and_cautions", "warnings_and_precautions", "warnings", "precautions"), "5",
                       "Warnings and precautions (US label)", aid="label-warnings-and-precautions")
+    wp += eu_r.section(eu, "4.4")
     S.append(sec("warnings", "Warnings/Precautions", wp if ("dd-acc" in wp or "dd-labgroup" in wp) else "", "Warnings"))
     # 13. Interactions
     di = ""
@@ -2669,13 +2712,17 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                '<strong>Adjust or monitor</strong>: change the dose or monitor closely; <strong>Minor</strong>: usually no action.</p>'
                f"{OURS_CHIP}")
     di += label_split(label, ("drug_interactions",), "7", "Drug interactions (US label)")
+    di += eu_r.section(eu, "4.5")
     cyp = pick_sentences(label, ("pharmacokinetics", "drug_interactions", "clinical_pharmacology"), CYP_RE)
     if cyp:
         di += acc("Metabolism and transporters (CYP, P-gp, OATP; US label)", "".join(f"<p>{esc(x)}</p>" for x in cyp))
     S.append(sec("interactions", "Drug interactions", di if ("dd-acc" in di or "dd-labgroup" in di or ki) else "", "Interactions"))
     # 14. Pregnancy; Breastfeeding
-    S.append(sec("pregnancy", "Pregnancy considerations", acc("Pregnancy (US label)", label_html(label, "pregnancy", "teratogenic_effects"), open_=True), "Pregnancy"))
-    S.append(sec("breastfeeding", "Breastfeeding considerations", acc("Lactation (US label)", label_html(label, "lactation", "nursing_mothers"), open_=True), "Breastfeeding"))
+    S.append(sec("pregnancy", "Pregnancy considerations", acc("Pregnancy (US label)", label_html(label, "pregnancy", "teratogenic_effects"), open_=True)
+                 or eu_r.section(eu, "4.6"), "Pregnancy"))
+    S.append(sec("breastfeeding", "Breastfeeding considerations", acc("Lactation (US label)", label_html(label, "lactation", "nursing_mothers"), open_=True)
+                 or ('<p class="dd-note">Breastfeeding is covered in <a href="#smpc-4-6">SmPC 4.6 Fertility, pregnancy and lactation</a>, '
+                     'under Pregnancy considerations above.</p>' if eu_r.section(eu, "4.6") else ""), "Breastfeeding"))
     # 15. Monitoring
     mon = []
     if renal_approved(renal) and ws(renal.get("monitoring")):
@@ -2687,7 +2734,8 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     S.append(sec("monitoring", "Monitoring parameters", (f'<ul class="dd-uselist">{"".join(mon)}</ul>{OURS_CHIP}' if mon else ""), "Monitoring"))
     # 16. Mechanism; Pharmacokinetics
     moa = label_html(label, "mechanism_of_action")
-    S.append(sec("mechanism", "Mechanism of action", (f"{moa}{LABEL_CHIP}" if moa else ""), "Mechanism"))
+    S.append(sec("overdose", "Overdose", eu_r.section(eu, "4.9"), "Overdose"))
+    S.append(sec("mechanism", "Mechanism of action", (f"{moa}{LABEL_CHIP}" if moa else eu_r.section(eu, "5.1")), "Mechanism"))
     S.append(sec("pharmacodynamics", "Pharmacodynamics",
                  acc("Pharmacodynamics (US label)", label_html(label, "pharmacodynamics")), "Pharmacodynamics"))
     pk_full = label_html(label, "pharmacokinetics")
@@ -2697,6 +2745,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         pk += ('<div class="dd-pk-hi"><div class="dd-kidney-src">Half-life and elimination (verbatim, US label)</div>'
                + "".join(f"<p>{esc(x)}</p>" for x in hi) + "</div>")
     pk += acc("Pharmacokinetics (US label)", pk_full)
+    pk += eu_r.section(eu, "5.2")
     S.append(sec("pharmacokinetics", "Pharmacokinetics", pk, "Pharmacokinetics"))
     # 17. Formulary & pricing
     fp = render_price_block(slug, g, ctx)
@@ -2991,6 +3040,7 @@ Search by brand, generic, class, indication, manufacturer or registration number
 <label class="dd-check"><input type="checkbox" id="dd-f-p"> PNF-listed</label>
 <label class="dd-check"><input type="checkbox" id="dd-f-h"> PhilHealth GAMOT</label>
 <label class="dd-check"><input type="checkbox" id="dd-f-l"> Has US label</label>
+<label class="dd-check"><input type="checkbox" id="dd-f-e"> Has EU SmPC</label>
 <button type="button" class="dd-btn dd-btn-ghost" id="dd-f-clear">Clear</button>
 </div>
 <p class="dd-note" id="dd-sinfo" aria-live="polite"></p>

@@ -226,7 +226,8 @@ class Medicine:
         self.generic = is_yes(pick(r, r"^generic")) or "generic" in val(r, "generic_or_hybrid").lower()
         self.biosimilar = is_yes(pick(r, r"biosimilar"))
         self.hybrid = is_yes(pick(r, r"hybrid"))
-        self.decision = parse_date(val(r, "european_commission_decision_date", "marketing_authorisation_date",
+        # first authorization date orders originators; european_commission_decision_date moves with every variation
+        self.decision = parse_date(val(r, "marketing_authorisation_date", "european_commission_decision_date",
                                        "date_of_issue_of_marketing_authorisation_valid_throughout_the_european_union"))
         self.updated = parse_date(val(r, "last_updated_date", "revision_date"))
         self.revision = val(r, "revision_number")
