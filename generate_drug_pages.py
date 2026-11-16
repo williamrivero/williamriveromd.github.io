@@ -985,6 +985,13 @@ def load_registry(data_dir: Path) -> list[dict]:
     else:
         legacy = load_json(data_dir / "registry.json", [])
         products = legacy.get("products", []) if isinstance(legacy, dict) else legacy
+    # reviewed dispensing corrections for single registrations (e.g. an ARB coded OTC), keyed by registration number
+    ov = load_json(data_dir / "dispensing_overrides.json", {}) or {}
+    ov = ov.get("items", {}) if isinstance(ov, dict) else {}
+    for p in products:
+        o = ov.get(ws(p.get("registration_number")).upper())
+        if isinstance(o, dict) and ws(o.get("dispensing")) in ("Rx", "OTC", "HR"):
+            p["dispensing"] = ws(o["dispensing"])
     return [p for p in products if not ws(p.get("registration_number")).upper().startswith("VR-")]
 
 
@@ -1834,6 +1841,9 @@ def render_kidney_section(label, renal) -> str:
         out = [head_]
         if renal.get("summary"):
             out.append(f'<p class="dd-kidney-sum">{esc(renal["summary"])}</p>')
+        if ws(renal.get("kidney_function_basis")):   # which measure the bands use (CrCl vs eGFR), shown above the strip
+            out.append(f'<p class="dd-note dd-kbasis"><strong>Kidney function measure:</strong> '
+                       f'{esc(renal["kidney_function_basis"])}</p>')
         out.append(kidney_block(renal, "kd"))
         ped = renal.get("pediatric") if isinstance(renal.get("pediatric"), dict) else {}
         if ped.get("renal") or any(ped.get(k) for k in ("hd", "pd", "crrt", "pirrt")):
