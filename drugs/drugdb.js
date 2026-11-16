@@ -114,7 +114,7 @@ if(idx){
       fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
       /* food supplements: separate lazy file, merged into results with a "Supplement" badge */
       if(idx.getAttribute('data-supp'))fetch(idx.getAttribute('data-supp')).then(function(r){return r.json();}).then(function(x){
-        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&F.t.value==='s'))run();}).catch(function(){});
+        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,t:d.t,rf:d.rf,v:d.v,u:d.u,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&(F.t.value==='s'||F.t.value==='m')))run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
@@ -137,7 +137,7 @@ if(idx){
   }
   function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked||(F.e&&F.e.checked));}
   function facetPass(d){
-    if(F.t&&F.t.value==='s')return false;
+    if(F.t&&(F.t.value==='s'||F.t.value==='m'))return false;
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
@@ -146,8 +146,9 @@ if(idx){
   function pass(d){
     var ty=F.t?F.t.value:'';
     if(d.sup){if(ty==='d'||drugFacets())return false;
+      if(ty==='s'&&d.t==='m')return false; if(ty==='m'&&!d.t)return false;
       if(letter!=='all'){var c0=(d.n||'?')[0].toLowerCase();if((c0>='a'&&c0<='z'?c0:'0')!==letter)return false;}return true;}
-    if(ty==='s')return false;
+    if(ty==='s'||ty==='m')return false;
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
@@ -156,7 +157,9 @@ if(idx){
     return true;
   }
   function filtersOn(){return drugFacets()||!!(F.t&&F.t.value);}
-  function chips(d){var o=[];if(d.sup){o.push('<span class="dd-tag SUP">Supplement</span>');if(d.k)o.push('<span class="dd-tag SUPK">Kidney-marketed</span>');return o.join(' ');}
+  function chips(d){var o=[];if(d.sup){o.push(d.t==='m'?'<span class="dd-tag FSMP">Medical nutrition (FSMP)</span>':'<span class="dd-tag SUP">Supplement</span>');
+    if(d.t==='b')o.push('<span class="dd-tag FSMP">FSMP</span>');if(d.rf)o.push('<span class="dd-tag SUPK">Renal formula</span>');
+    (d.v||[]).forEach(function(v){o.push('<span class="dd-tag FSMP">'+escH(v)+'</span>');});if(d.k)o.push('<span class="dd-tag SUPK">Kidney-marketed</span>');return o.join(' ');}
     var r=d.r||0;
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
     if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
@@ -180,7 +183,7 @@ if(idx){
         var why=(o.lab&&o.lab!=='generic')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
         if(d.sup){why=(o.lab&&o.lab!=='supplement')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
           return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+(d.p?encodeURIComponent(d.s)+'.html':'view.html?b='+encodeURIComponent(d.s))+'">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
-          '<span class="dd-sub">'+escH((d.i||[]).slice(0,4).join(' · '))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
+          '<span class="dd-sub">'+escH((d.i||[]).length?(d.i||[]).slice(0,4).join(' · '):(d.u||''))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
         if(d.m&&d.mh)return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.m)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+' <span class="dd-arrow">&rarr; '+escH(d.mn)+'</span></a>'+why+
           '<span class="dd-sub">Registered under a variant spelling of '+escH(d.mn)+'; opens the main monograph</span></li>';
         return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
@@ -237,7 +240,7 @@ if(idx){
     res.hidden=true; res.innerHTML=''; sq.setAttribute('aria-expanded','false'); az.hidden=true;
     needData(v).then(function(){
       if(view!==v)return;
-      var div=built[v]||build(v), on=!!t||drugFacets()||(F.t&&F.t.value==='s');
+      var div=built[v]||build(v), on=!!t||drugFacets()||(F.t&&(F.t.value==='s'||F.t.value==='m'));
       Object.keys(built).forEach(function(k){built[k].hidden=k!==v;});
       var shown=0,total=0;
       div.querySelectorAll('.dd-vg').forEach(function(g){
