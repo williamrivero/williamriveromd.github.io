@@ -874,6 +874,11 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   `tools/drugdb/alias_overrides.json`): registry typos, salt leftovers and INN/USAN pairs (allopurino, aciciovir,
   aciclovir) map to a main molecule page. High confidence: banner to the main page, canonical to it, `noindex`
   (so off the sitemap), products also listed on the main page; medium: "Did you mean" only. Re-run after a registry rebuild.
+- **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
+  Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
+  (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come
+  from the editable keyword map in `tools/drugdb/therapeutic_areas.py` (no WHO ATC; `python3 tools/drugdb/therapeutic_areas.py`
+  prints the share per area and a spot-check sample). Brand rows link to `<generic>.html?brand=<name>#products`.
 - **Build:** `python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.

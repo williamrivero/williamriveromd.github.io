@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og-drug-index.png"   # 1200x630 share card (Nov 17 2026)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "11"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "12"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -382,7 +382,36 @@ table.dd-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   font-size: 14px; color: var(--text-muted); }
 .dd-renal-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
 .dd-pharm { display: flex; flex-wrap: wrap; gap: 4px 0; margin: 10px 0 4px; }
+/* Browse-by segmented control (Drug Index) */
+.dd-browse-wrap { display: flex; align-items: center; gap: 10px; margin: 18px 0 4px; min-width: 0; }
+.dd-browse-l { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text-muted); white-space: nowrap; }
+.dd-browse { position: relative; display: flex; gap: 4px; padding: 4px; border: 1px solid var(--border); border-radius: 12px; background: #eef2f8;
+  overflow-x: auto; scrollbar-width: thin; -webkit-overflow-scrolling: touch; max-width: 100%; }
+.dd-browse button { font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 700; white-space: nowrap; border: 0; cursor: pointer;
+  background: transparent; color: #1f3864; padding: 8px 14px; border-radius: 9px; min-height: 38px; }
+.dd-browse button:hover { background: rgba(31,56,100,.08); }
+.dd-browse button[aria-selected=true] { background: #1f3864; color: #fff; box-shadow: 0 1px 3px rgba(15,30,51,.25); }
+.dd-browse button:focus-visible { outline: 3px solid #1a6b72; outline-offset: 1px; }
+.dd-vnote { margin: 14px 0 6px; }
+.dd-vg { content-visibility: auto; contain-intrinsic-size: auto 60px; border-bottom: 1px solid var(--border); }
+.dd-vletter { contain-intrinsic-size: auto 1200px; border: 0; }
+.dd-vletter h2 { font-family: 'Inter', sans-serif; font-size: 22px; color: var(--navy); margin: 28px 0 8px; }
+details.dd-vg > summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 8px; padding: 12px 4px;
+  font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15.5px; color: var(--navy); }
+details.dd-vg > summary::-webkit-details-marker { display: none; }
+details.dd-vg > summary::before { content: "▸"; color: #1a6b72; transition: transform .15s; display: inline-block; }
+details.dd-vg[open] > summary::before { transform: rotate(90deg); }
+.dd-vg-n { font-size: 12px; font-weight: 700; color: #0e4a50; background: #e1f2f1; border-radius: 999px; padding: 1px 9px; }
+.dd-vg-link { margin: 0 0 6px; font-size: 13.5px; }
+.dd-vg-link a { color: #0e4a50; font-weight: 700; }
+details.dd-vg > ul.dd-list { padding: 0 4px 12px 22px; }
+@media (max-width: 640px) {
+  .dd-browse-wrap { flex-direction: column; align-items: stretch; gap: 6px; }
+  .dd-browse { border-radius: 10px; }
+}
 .dd-alpha { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 6px; }
+.dd-alpha[hidden] { display: none; }
 .dd-alpha button { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; min-width: 36px; min-height: 36px;
   border-radius: 8px; border: 1px solid rgba(31,56,100,.3); background: var(--white); color: #1f3864; cursor: pointer; }
 .dd-alpha button[aria-pressed=true] { background: #1f3864; color: #fff; border-color: #1f3864; }
@@ -620,7 +649,7 @@ table.dd-kidney-table { width: 100%; border-collapse: collapse; font-size: 14px;
   .container.dd-wide { padding: 0 16px; }
 }
 @media print {
-  .dd-toolbar, .dd-alpha, .dd-search, .float-controls, .print-btn, .scroll-top-btn, .nav-strip { display: none !important; }
+  .dd-toolbar, .dd-alpha, .dd-browse-wrap, .dd-search, .float-controls, .print-btn, .scroll-top-btn, .nav-strip { display: none !important; }
   .dd-acc .dd-acc-body { display: block !important; }
 }
 /* Dark mode (aliased to body.dark-mode by the generator) */
@@ -653,6 +682,17 @@ html[data-theme="dark"] .dd-acc.dd-boxed > summary { color: #fecaca; }
 html[data-theme="dark"] .dd-attrib { background: #16233a; border-color: #2c3a52; }
 html[data-theme="dark"] .dd-placeholder { background: #141c2a; border-color: #4a5a72; }
 html[data-theme="dark"] .dd-alpha button { background: #1a2535; color: #dbe6f5; border-color: #3a4a62; }
+html[data-theme="dark"] .dd-browse { background: #141c2a; border-color: #3a4a62; }
+html[data-theme="dark"] .dd-browse button { color: #dbe6f5; }
+html[data-theme="dark"] .dd-browse button:hover { background: rgba(219,230,245,.08); }
+html[data-theme="dark"] .dd-browse button[aria-selected=true] { background: #dbe6f5; color: #0f1520; }
+html[data-theme="dark"] .dd-browse button:focus-visible { outline-color: #7fd3da; }
+html[data-theme="dark"] .dd-browse-l { color: #9ba6b8; }
+html[data-theme="dark"] .dd-vg { border-color: #2a3548; }
+html[data-theme="dark"] details.dd-vg > summary, html[data-theme="dark"] .dd-vletter h2 { color: #eef2fb; }
+html[data-theme="dark"] details.dd-vg > summary::before { color: #7fd3da; }
+html[data-theme="dark"] .dd-vg-n { background: #16323a; color: #a5eef2; }
+html[data-theme="dark"] .dd-vg-link a { color: #7fd3da; }
 html[data-theme="dark"] .dd-alpha button[aria-pressed=true] { background: #dbe6f5; color: #0f1520; border-color: #dbe6f5; }
 html[data-theme="dark"] .dd-letter h2 { color: #eef2fb; border-color: #2a3548; }
 html[data-theme="dark"] ul.dd-list li { border-color: #2a3548; }
@@ -808,6 +848,10 @@ if(tbl){
   });
   if(sortSel)sortSel.addEventListener('change',function(){var v=sortSel.value.split(':');sortBy(+v[0],+v[1]);});
   filter();
+  /* ?brand=<name> (from the Drug Index brand view): filter the products table to that brand */
+  try{var qb=new URLSearchParams(location.search).get('brand');
+    if(qb&&q){q.value=qb;var acc0=document.getElementById('dd-prod-acc');if(acc0)acc0.open=true;filter();
+      var sec0=document.getElementById('products');if(sec0)setTimeout(function(){sec0.scrollIntoView({block:'start'});},0);}}catch(e){}
   document.addEventListener('click',function(e){
     var a=e.target.closest('a.dd-brand-link'); if(!a||!q)return;
     e.preventDefault();
@@ -882,6 +926,13 @@ if(idx){
     return best?{s:best,lab:lab,val:val}:null;
   }
   function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
+  function facetPass(d){
+    if(F.t&&F.t.value==='s')return false;
+    if(F.c.value&&d.c!==F.c.value)return false;
+    if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
+    if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
+    return !(F.k.checked&&!d.k)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l);
+  }
   function pass(d){
     var ty=F.t?F.t.value:'';
     if(d.sup){if(ty==='d'||drugFacets())return false;
@@ -905,6 +956,7 @@ if(idx){
     active=Math.max(0,Math.min(i,opts.length-1));Array.prototype.forEach.call(opts,function(o,j){o.setAttribute('aria-selected',j===active?'true':'false');});
     sq.setAttribute('aria-activedescendant',opts[active].id);opts[active].scrollIntoView({block:'nearest'});}
   function run(){
+    if(view!=='generic'){runView();return;}
     var raw=sq.value.trim(), t=norm(raw);
     if(!t&&!filtersOn()){res.hidden=true;res.innerHTML='';info.textContent='';sq.setAttribute('aria-expanded','false');az.hidden=false;
       letters.forEach(function(s){s.hidden=!(letter==='all'||s.getAttribute('data-l')===letter);});return;}
@@ -927,6 +979,89 @@ if(idx){
       info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
     });
   }
+  /* ── Browse by: generic (A–Z, server-rendered) / brand / class / area / dispensing / kidney (lazy browse*.json) ── */
+  var tabs=Array.prototype.slice.call(document.querySelectorAll('#dd-browse [role=tab]')), vbox=document.getElementById('dd-view');
+  var VIEWS=tabs.map(function(b){return b.getAttribute('data-v');}), view='generic', bcore=null, bbr=null, bySlug={}, built={};
+  function getJSON(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});}
+  function needData(v){
+    var p=[load()];
+    if(v==='brand'){if(!bbr)p.push(getJSON(vbox.getAttribute('data-brands')).then(function(j){bbr=j;}));}
+    else if(!bcore)p.push(getJSON(vbox.getAttribute('data-src')).then(function(j){bcore=j;}));
+    return Promise.all(p).then(function(){if(data&&!bySlug.__ok){data.forEach(function(d){bySlug[d.s]=d;});bySlug.__ok=1;}});
+  }
+  var KB='<span class="dd-kbadge" title="Has approved kidney dosing guidance">'+(document.querySelector('#dd-az .dd-kbadge')||{innerHTML:''}).innerHTML+'</span>';
+  function gli(slug){var d=bySlug[slug];if(!d)return '';
+    return '<li data-s="'+escH(slug)+'"><a href="'+encodeURIComponent(slug)+'.html">'+escH(d.n)+'</a>'+(d.k?KB:'')+(d.c?'<span class="dd-sub">'+escH(d.c)+'</span>':'')+'</li>';}
+  function grp(title,ids,G,extra,open){
+    var lis=ids.map(function(i){return gli(G[i]);}).join('');
+    return '<details class="dd-vg"'+(open?' open':'')+' data-open="'+(open?1:0)+'"><summary><span class="dd-vg-t">'+escH(title)+'</span> <span class="dd-vg-n" data-n="'+ids.length+'">'+ids.length.toLocaleString('en-US')+'</span></summary>'+(extra||'')+'<ul class="dd-list">'+lis+'</ul></details>';
+  }
+  function build(v){
+    var h='';
+    if(v==='brand'){
+      var G=bbr.g, by={};
+      bbr.b.forEach(function(r){var c=(r[0]||'?')[0].toLowerCase();c=(c>='a'&&c<='z')?c:'0';(by[c]=by[c]||[]).push(r);});
+      Object.keys(by).sort().forEach(function(L){
+        h+='<section class="dd-vg dd-vletter" data-l="'+L+'"><h2>'+(L==='0'?'#':L.toUpperCase())+'</h2><ul class="dd-list dd-blist">'+by[L].map(function(r){
+          var s=G[r[1]], d=bySlug[s]||{n:s};
+          return '<li data-s="'+escH(s)+'" data-t="'+escH(norm(r[0]+' '+d.n))+'"><a href="'+encodeURIComponent(s)+'.html?brand='+encodeURIComponent(r[0])+'#products">'+escH(r[0])+
+            ' <span class="dd-arrow">&rarr; '+escH(d.n)+'</span></a><span class="dd-sub">'+escH(r[2]||'')+(r[3]?' · registered as '+escH(r[3]):'')+'</span></li>';}).join('')+'</ul></section>';});
+      h='<p class="dd-note dd-vnote">'+bbr.b.length.toLocaleString('en-US')+' Philippine brands. Each brand opens its generic page with the products table filtered to that brand.</p>'+h;
+    }else{
+      var G=bcore.g;
+      if(v==='class')h='<p class="dd-note dd-vnote">'+bcore['class'].length.toLocaleString('en-US')+' drug classes (US FDA established pharmacologic class where a US label exists, else the FDA Philippines category).</p>'+
+        bcore['class'].map(function(c){return grp(c[0],c[2],G,'<p class="dd-vg-link"><a href="category/'+encodeURIComponent(c[1])+'.html">Open the '+escH(c[0])+' class page &rarr;</a></p>',false);}).join('');
+      if(v==='area')h='<p class="dd-note dd-vnote">Coarse body-system groups from keyword rules over each drug\'s class (not WHO ATC). Each generic is listed once.</p>'+
+        bcore.area.map(function(a){return grp(a[0],a[1],G,'',false);}).join('');
+      if(v==='disp')h='<p class="dd-note dd-vnote">From the FDA Philippines classification and the Dangerous Drugs Board lists. A generic with products in more than one category appears in each.</p>'+
+        bcore.disp.map(function(a){return grp(a[0],a[2],G,'',false);}).join('');
+      if(v==='kidney')h='<p class="dd-note dd-vnote">Generics with kidney guidance reviewed by renalcarematters.com, grouped by the most restrictive level across eGFR bands and dialysis.</p>'+
+        bcore.kidney.map(function(a){return grp(a[0],a[2],G,'',true);}).join('')+'<p class="dd-note">'+escH(bcore.kidneyNote)+'</p>';
+    }
+    var div=document.createElement('div');div.className='dd-vbody';div.setAttribute('data-v',v);div.innerHTML=h;
+    div.querySelectorAll('li').forEach(function(li){if(!li.hasAttribute('data-t')){var d=bySlug[li.getAttribute('data-s')];li._d=d;}});
+    vbox.appendChild(div); built[v]=div; return div;
+  }
+  function runView(){
+    var raw=sq.value.trim(), t=norm(raw), v=view;
+    res.hidden=true; res.innerHTML=''; sq.setAttribute('aria-expanded','false'); az.hidden=true;
+    needData(v).then(function(){
+      if(view!==v)return;
+      var div=built[v]||build(v), on=!!t||drugFacets()||(F.t&&F.t.value==='s');
+      Object.keys(built).forEach(function(k){built[k].hidden=k!==v;});
+      var shown=0,total=0;
+      div.querySelectorAll('.dd-vg').forEach(function(g){
+        var n=0,lis=g.querySelectorAll('li');
+        if(g.classList.contains('dd-vletter')&&letter!=='all'&&g.getAttribute('data-l')!==letter){g.hidden=true;total+=lis.length;return;}
+        lis.forEach(function(li){var d=bySlug[li.getAttribute('data-s')]||{},ok=facetPass(d);
+          if(ok&&t)ok=li.hasAttribute('data-t')?li.getAttribute('data-t').indexOf(t)>=0:!!match(d,t);
+          li.hidden=!ok;if(ok)n++;});
+        total+=lis.length; shown+=n; g.hidden=!n;
+        var c=g.querySelector('.dd-vg-n');if(c)c.textContent=(n===lis.length?'':n.toLocaleString('en-US')+' of ')+lis.length.toLocaleString('en-US');
+        if(g.tagName==='DETAILS'){if(on&&n){if(!g.open){g.open=true;g._auto=1;}}else if(!on&&g._auto){g.open=false;g._auto=0;}}
+      });
+      info.textContent=on?(shown?shown.toLocaleString('en-US')+' of '+total.toLocaleString('en-US')+' entries match':'Nothing in this view matches the search or filters.'):'';
+    }).catch(function(){info.textContent='This view could not be loaded. Use the generic A–Z list.';});
+  }
+  function setView(v,focus,save){
+    if(VIEWS.indexOf(v)<0)v='generic';
+    view=v;
+    tabs.forEach(function(b){var on=b.getAttribute('data-v')===v;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1;if(on&&focus)b.focus();
+      if(on){var bar=b.parentNode;if(b.offsetLeft<bar.scrollLeft||b.offsetLeft+b.offsetWidth>bar.scrollLeft+bar.clientWidth)bar.scrollLeft=b.offsetLeft-12;}});
+    vbox.setAttribute('aria-labelledby','dd-tab-'+v);
+    vbox.hidden=v==='generic'; alpha.hidden=!(v==='generic'||v==='brand');
+    if(v==='generic'){Object.keys(built).forEach(function(k){built[k].hidden=true;});}
+    if(save){try{localStorage.setItem('wgmr-drug-view',v);}catch(e){}
+      try{var u=new URL(location.href);if(v==='generic')u.searchParams.delete('view');else u.searchParams.set('view',v);history.replaceState(null,'',u.pathname+u.search+u.hash);}catch(e){}}
+    if(v==='generic'){info.textContent='';run();}else runView();
+  }
+  tabs.forEach(function(b,i){
+    b.addEventListener('click',function(){setView(b.getAttribute('data-v'),false,true);});
+    b.addEventListener('keydown',function(e){var j=-1;
+      if(e.key==='ArrowRight'||e.key==='ArrowDown')j=(i+1)%tabs.length;else if(e.key==='ArrowLeft'||e.key==='ArrowUp')j=(i-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')j=0;else if(e.key==='End')j=tabs.length-1;
+      if(j>=0){e.preventDefault();setView(tabs[j].getAttribute('data-v'),true,true);}});
+  });
   var timer=null;
   sq.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(run,90);});
   sq.addEventListener('focus',load,{once:true});
@@ -943,7 +1078,9 @@ if(idx){
   alpha.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.disabled)return;setLetter(b.getAttribute('data-l'));run();
     try{history.replaceState(null,'',b.getAttribute('data-l')==='all'?location.pathname:'#letter-'+b.getAttribute('data-l'));}catch(err){}});
   var h=(location.hash.match(/^#letter-([a-z0])$/i)||[])[1]; if(h)setLetter(h.toLowerCase());
-  if(sq.value)run();
+  var v0=null;try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem('wgmr-drug-view');}catch(e){}
+  if(v0&&v0!=='generic'&&VIEWS.indexOf(v0)>=0)setView(v0,false,false);
+  else if(sq.value)run();
 }
 })();
 """
@@ -2678,6 +2815,127 @@ def category_groups(entries) -> dict[str, list[dict]]:
     return groups
 
 
+# ═════════════════════════════════════════════════════════════════════════════
+# "Browse by" views on the Drug Index (lazy JSON: browse.json + browse-brands.json)
+# ═════════════════════════════════════════════════════════════════════════════
+def _load_areas():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("therapeutic_areas", REPO / "tools" / "drugdb" / "therapeutic_areas.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+BROWSE_VIEWS = [("generic", "Generic name"), ("brand", "Brand name"), ("class", "Drug class"), ("area", "Therapeutic area"),
+                ("disp", "Dispensing category"), ("kidney", "Kidney dosing")]
+KIDNEY_GROUPS = [("avoid", "Avoid or contraindicated at low kidney function"), ("adjust", "Dose adjustment or caution needed"),
+                 ("none", "No dose adjustment needed"), ("nodata", "Reviewed: no kidney dosing data")]
+DISP_GROUPS = [(1, "Rx · Prescription drugs"), (2, "OTC · Over-the-counter"), (4, "HR · Household remedies"),
+               (8, "S2 · Dangerous drugs (Dangerous Drugs Board)"), (16, "Controlled precursors and essential chemicals")]
+
+
+def kidney_level(renal) -> str:
+    """Most restrictive tile level across an APPROVED renal file's bands and dialysis entries ('' if none)."""
+    if not renal_approved(renal):
+        return ""
+    lv = set()
+    def walk(x):
+        if isinstance(x, dict):
+            if isinstance(x.get("level"), str):
+                lv.add(x["level"].lower())
+            for v in x.values():
+                walk(v)
+        elif isinstance(x, list):
+            for v in x:
+                walk(v)
+    walk(renal.get("bands"))
+    walk({k: renal.get(k) for k in ("hd", "pd", "crrt", "pirrt")})
+    for k, _ in KIDNEY_GROUPS:
+        if k in lv:
+            return k
+    return "nodata"
+
+
+def _strength_summary(products) -> str:
+    """Short '100 mg, 300 mg · tablet' line: up to three strengths and the dosage-form groups."""
+    st, fm = [], []
+    for p in products:
+        t = ws(p.get("dosage_strength_form"))
+        m = _STRENGTH.search(t)
+        if m:
+            x = re.sub(r"\s+", " ", m.group(0)).strip()
+            if x.lower() not in (y.lower() for y in st):
+                st.append(x)
+        f = form_group(t)
+        if f != "other" and f not in fm:
+            fm.append(f)
+    st.sort(key=lambda x: (_num(x), x))
+    out = ", ".join(st[:3]) + ("…" if len(st) > 3 else "")
+    return " · ".join(x for x in (out, ", ".join(fm[:2])) if x)
+
+
+def browse_data(entries: list[dict], groups: dict, ctx: Ctx) -> tuple[dict, dict]:
+    """Compact data for the non-default Browse-by views. Rows reference generics by index into "g"
+    (the page JS reads names and filter facets from search-index.json)."""
+    main = [e for e in entries if not e.get("mh")]          # high-confidence variant spellings are folded into their main page
+    gi = {e["s"]: i for i, e in enumerate(main)}
+    G = [e["s"] for e in main]
+    # brands: every PH brand -> its generic page (variant spellings -> main molecule, spelling noted)
+    by_key: dict[tuple, dict] = {}
+    for slug in G + [v for v, a in ctx.aliases.items() if a["high"]]:
+        target = ctx.aliases[slug]["main"] if slug in ctx.aliases and ctx.aliases[slug]["high"] else slug
+        if target not in gi:
+            continue
+        g = ctx.generics.get(slug, {})
+        gname = ws(g.get("name"))
+        for p in ctx.by_slug.get(slug, []):
+            b = ws(p.get("brand_name"))
+            k = _brand_key(b)
+            if (not k or b.lower().strip(" .") in _NO_BRAND or k == _brand_key(gname)
+                    or k == _brand_key(ws(p.get("generic_name")))):
+                continue
+            r = by_key.setdefault((k, target), {"names": {}, "prods": [], "var": set()})
+            r["names"][b] = r["names"].get(b, 0) + 1
+            r["prods"].append(p)
+            if slug != target:
+                r["var"].add(ws(p.get("generic_name")) or gname)
+    brands = []
+    for (k, target), r in by_key.items():
+        name = max(r["names"].items(), key=lambda kv: (kv[1], kv[0]))[0]
+        row = [name, gi[target], _strength_summary(r["prods"])]
+        if r["var"]:
+            row.append(sorted(r["var"])[0])
+        brands.append(row)
+    brands.sort(key=lambda r: (r[0].lower(), G[r[1]]))
+    # drug class (same grouping and slugs as the class pages)
+    cls = []
+    for name, items in sorted(groups.items(), key=lambda kv: kv[0].lower()):
+        ids = sorted({gi[e["s"]] for e in items if e["s"] in gi})
+        if ids:
+            cls.append([name, cat_slug(name), ids])
+    # therapeutic area (tools/drugdb/therapeutic_areas.py)
+    TA = _load_areas()
+    area: dict[str, list[int]] = defaultdict(list)
+    for e in main:
+        area[TA.assign(e)[0]].append(gi[e["s"]])
+    areas = [[a, area[a]] for a in TA.ORDER if area.get(a)]
+    # dispensing category
+    disp = [[lab, bit, [gi[e["s"]] for e in main if (e.get("r") or 0) & bit]] for bit, lab in DISP_GROUPS]
+    disp = [d for d in disp if d[2]]
+    # kidney dosing (approved guidance only)
+    kg: dict[str, list[int]] = defaultdict(list)
+    for e in main:
+        lv = kidney_level(ctx.renal(e["s"]))
+        if lv:
+            kg[lv].append(gi[e["s"]])
+    kid = [[lab, k, kg[k]] for k, lab in KIDNEY_GROUPS if kg.get(k)]
+    n_k = sum(len(x[2]) for x in kid)
+    core = {"v": 1, "g": G, "class": cls, "area": areas, "disp": disp, "kidney": kid,
+            "kidneyNote": f"The other {len(G) - n_k:,} generics show US label kidney text only, where the label has it; "
+                          "reviewed kidney guidance is being added."}
+    return core, {"v": 1, "g": G, "b": brands}
+
+
 def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
     groups = defaultdict(list)
     for e in sorted(entries, key=lambda e: e["n"].lower()):
@@ -2737,8 +2995,14 @@ Search by brand, generic, class, indication, manufacturer or registration number
 </div>
 <p class="dd-note" id="dd-sinfo" aria-live="polite"></p>
 <ul class="dd-results dd-list" id="dd-results" role="listbox" aria-label="Search results" hidden></ul>
+<div class="dd-browse-wrap no-print"><span class="dd-browse-l" id="dd-browse-l">Browse by</span>
+<div class="dd-browse" id="dd-browse" role="tablist" aria-labelledby="dd-browse-l">{"".join(
+    f'<button type="button" role="tab" id="dd-tab-{v}" data-v="{v}" aria-controls="{"dd-az" if v == "generic" else "dd-view"}" '
+    f'aria-selected="{"true" if v == "generic" else "false"}" tabindex="{0 if v == "generic" else -1}">{lab}</button>'
+    for v, lab in BROWSE_VIEWS)}</div></div>
 <nav class="dd-alpha" id="dd-alpha" aria-label="Filter by first letter">{btns}</nav>
-<div id="dd-az">{secs}</div>
+<div id="dd-az" role="tabpanel" aria-labelledby="dd-tab-generic">{secs}</div>
+<div id="dd-view" role="tabpanel" aria-labelledby="dd-tab-generic" hidden data-src="/drugs/browse.json?v={ASSET_VERSION}" data-brands="/drugs/browse-brands.json?v={ASSET_VERSION}"></div>
 <div class="disclaimer" role="note"><strong>For health professionals.</strong> Product data come from the FDA Philippines registration
 database and may lag behind the official record; verify on <a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">verification.fda.gov.ph</a>
 and the current Philippine package insert. Not a substitute for clinical judgment.</div>
@@ -2876,6 +3140,9 @@ def main():
     groups = category_groups(entries)
     write_if_changed(out_dir / "search-index.json", json.dumps(entries, ensure_ascii=False, separators=(",", ":")), a.dry_run)
     write_if_changed(out_dir / "search-extra.json", json.dumps(extras, ensure_ascii=False, separators=(",", ":")), a.dry_run)
+    bcore, bbrands = browse_data(entries, groups, ctx)
+    write_if_changed(out_dir / "browse.json", json.dumps(bcore, ensure_ascii=False, separators=(",", ":")), a.dry_run)
+    write_if_changed(out_dir / "browse-brands.json", json.dumps(bbrands, ensure_ascii=False, separators=(",", ":")), a.dry_run)
     stats["index-" + finalize(out_dir / "index.html", index_page(entries, ctx, len(groups)), today, a.dry_run, False)] += 1
     cdir = out_dir / "category"
     cdir.mkdir(exist_ok=True)

@@ -58,6 +58,10 @@ if(tbl){
   });
   if(sortSel)sortSel.addEventListener('change',function(){var v=sortSel.value.split(':');sortBy(+v[0],+v[1]);});
   filter();
+  /* ?brand=<name> (from the Drug Index brand view): filter the products table to that brand */
+  try{var qb=new URLSearchParams(location.search).get('brand');
+    if(qb&&q){q.value=qb;var acc0=document.getElementById('dd-prod-acc');if(acc0)acc0.open=true;filter();
+      var sec0=document.getElementById('products');if(sec0)setTimeout(function(){sec0.scrollIntoView({block:'start'});},0);}}catch(e){}
   document.addEventListener('click',function(e){
     var a=e.target.closest('a.dd-brand-link'); if(!a||!q)return;
     e.preventDefault();
@@ -132,6 +136,13 @@ if(idx){
     return best?{s:best,lab:lab,val:val}:null;
   }
   function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
+  function facetPass(d){
+    if(F.t&&F.t.value==='s')return false;
+    if(F.c.value&&d.c!==F.c.value)return false;
+    if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
+    if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
+    return !(F.k.checked&&!d.k)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l);
+  }
   function pass(d){
     var ty=F.t?F.t.value:'';
     if(d.sup){if(ty==='d'||drugFacets())return false;
@@ -155,6 +166,7 @@ if(idx){
     active=Math.max(0,Math.min(i,opts.length-1));Array.prototype.forEach.call(opts,function(o,j){o.setAttribute('aria-selected',j===active?'true':'false');});
     sq.setAttribute('aria-activedescendant',opts[active].id);opts[active].scrollIntoView({block:'nearest'});}
   function run(){
+    if(view!=='generic'){runView();return;}
     var raw=sq.value.trim(), t=norm(raw);
     if(!t&&!filtersOn()){res.hidden=true;res.innerHTML='';info.textContent='';sq.setAttribute('aria-expanded','false');az.hidden=false;
       letters.forEach(function(s){s.hidden=!(letter==='all'||s.getAttribute('data-l')===letter);});return;}
@@ -177,6 +189,89 @@ if(idx){
       info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
     });
   }
+  /* ── Browse by: generic (A–Z, server-rendered) / brand / class / area / dispensing / kidney (lazy browse*.json) ── */
+  var tabs=Array.prototype.slice.call(document.querySelectorAll('#dd-browse [role=tab]')), vbox=document.getElementById('dd-view');
+  var VIEWS=tabs.map(function(b){return b.getAttribute('data-v');}), view='generic', bcore=null, bbr=null, bySlug={}, built={};
+  function getJSON(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});}
+  function needData(v){
+    var p=[load()];
+    if(v==='brand'){if(!bbr)p.push(getJSON(vbox.getAttribute('data-brands')).then(function(j){bbr=j;}));}
+    else if(!bcore)p.push(getJSON(vbox.getAttribute('data-src')).then(function(j){bcore=j;}));
+    return Promise.all(p).then(function(){if(data&&!bySlug.__ok){data.forEach(function(d){bySlug[d.s]=d;});bySlug.__ok=1;}});
+  }
+  var KB='<span class="dd-kbadge" title="Has approved kidney dosing guidance">'+(document.querySelector('#dd-az .dd-kbadge')||{innerHTML:''}).innerHTML+'</span>';
+  function gli(slug){var d=bySlug[slug];if(!d)return '';
+    return '<li data-s="'+escH(slug)+'"><a href="'+encodeURIComponent(slug)+'.html">'+escH(d.n)+'</a>'+(d.k?KB:'')+(d.c?'<span class="dd-sub">'+escH(d.c)+'</span>':'')+'</li>';}
+  function grp(title,ids,G,extra,open){
+    var lis=ids.map(function(i){return gli(G[i]);}).join('');
+    return '<details class="dd-vg"'+(open?' open':'')+' data-open="'+(open?1:0)+'"><summary><span class="dd-vg-t">'+escH(title)+'</span> <span class="dd-vg-n" data-n="'+ids.length+'">'+ids.length.toLocaleString('en-US')+'</span></summary>'+(extra||'')+'<ul class="dd-list">'+lis+'</ul></details>';
+  }
+  function build(v){
+    var h='';
+    if(v==='brand'){
+      var G=bbr.g, by={};
+      bbr.b.forEach(function(r){var c=(r[0]||'?')[0].toLowerCase();c=(c>='a'&&c<='z')?c:'0';(by[c]=by[c]||[]).push(r);});
+      Object.keys(by).sort().forEach(function(L){
+        h+='<section class="dd-vg dd-vletter" data-l="'+L+'"><h2>'+(L==='0'?'#':L.toUpperCase())+'</h2><ul class="dd-list dd-blist">'+by[L].map(function(r){
+          var s=G[r[1]], d=bySlug[s]||{n:s};
+          return '<li data-s="'+escH(s)+'" data-t="'+escH(norm(r[0]+' '+d.n))+'"><a href="'+encodeURIComponent(s)+'.html?brand='+encodeURIComponent(r[0])+'#products">'+escH(r[0])+
+            ' <span class="dd-arrow">&rarr; '+escH(d.n)+'</span></a><span class="dd-sub">'+escH(r[2]||'')+(r[3]?' · registered as '+escH(r[3]):'')+'</span></li>';}).join('')+'</ul></section>';});
+      h='<p class="dd-note dd-vnote">'+bbr.b.length.toLocaleString('en-US')+' Philippine brands. Each brand opens its generic page with the products table filtered to that brand.</p>'+h;
+    }else{
+      var G=bcore.g;
+      if(v==='class')h='<p class="dd-note dd-vnote">'+bcore['class'].length.toLocaleString('en-US')+' drug classes (US FDA established pharmacologic class where a US label exists, else the FDA Philippines category).</p>'+
+        bcore['class'].map(function(c){return grp(c[0],c[2],G,'<p class="dd-vg-link"><a href="category/'+encodeURIComponent(c[1])+'.html">Open the '+escH(c[0])+' class page &rarr;</a></p>',false);}).join('');
+      if(v==='area')h='<p class="dd-note dd-vnote">Coarse body-system groups from keyword rules over each drug\'s class (not WHO ATC). Each generic is listed once.</p>'+
+        bcore.area.map(function(a){return grp(a[0],a[1],G,'',false);}).join('');
+      if(v==='disp')h='<p class="dd-note dd-vnote">From the FDA Philippines classification and the Dangerous Drugs Board lists. A generic with products in more than one category appears in each.</p>'+
+        bcore.disp.map(function(a){return grp(a[0],a[2],G,'',false);}).join('');
+      if(v==='kidney')h='<p class="dd-note dd-vnote">Generics with kidney guidance reviewed by renalcarematters.com, grouped by the most restrictive level across eGFR bands and dialysis.</p>'+
+        bcore.kidney.map(function(a){return grp(a[0],a[2],G,'',true);}).join('')+'<p class="dd-note">'+escH(bcore.kidneyNote)+'</p>';
+    }
+    var div=document.createElement('div');div.className='dd-vbody';div.setAttribute('data-v',v);div.innerHTML=h;
+    div.querySelectorAll('li').forEach(function(li){if(!li.hasAttribute('data-t')){var d=bySlug[li.getAttribute('data-s')];li._d=d;}});
+    vbox.appendChild(div); built[v]=div; return div;
+  }
+  function runView(){
+    var raw=sq.value.trim(), t=norm(raw), v=view;
+    res.hidden=true; res.innerHTML=''; sq.setAttribute('aria-expanded','false'); az.hidden=true;
+    needData(v).then(function(){
+      if(view!==v)return;
+      var div=built[v]||build(v), on=!!t||drugFacets()||(F.t&&F.t.value==='s');
+      Object.keys(built).forEach(function(k){built[k].hidden=k!==v;});
+      var shown=0,total=0;
+      div.querySelectorAll('.dd-vg').forEach(function(g){
+        var n=0,lis=g.querySelectorAll('li');
+        if(g.classList.contains('dd-vletter')&&letter!=='all'&&g.getAttribute('data-l')!==letter){g.hidden=true;total+=lis.length;return;}
+        lis.forEach(function(li){var d=bySlug[li.getAttribute('data-s')]||{},ok=facetPass(d);
+          if(ok&&t)ok=li.hasAttribute('data-t')?li.getAttribute('data-t').indexOf(t)>=0:!!match(d,t);
+          li.hidden=!ok;if(ok)n++;});
+        total+=lis.length; shown+=n; g.hidden=!n;
+        var c=g.querySelector('.dd-vg-n');if(c)c.textContent=(n===lis.length?'':n.toLocaleString('en-US')+' of ')+lis.length.toLocaleString('en-US');
+        if(g.tagName==='DETAILS'){if(on&&n){if(!g.open){g.open=true;g._auto=1;}}else if(!on&&g._auto){g.open=false;g._auto=0;}}
+      });
+      info.textContent=on?(shown?shown.toLocaleString('en-US')+' of '+total.toLocaleString('en-US')+' entries match':'Nothing in this view matches the search or filters.'):'';
+    }).catch(function(){info.textContent='This view could not be loaded. Use the generic A–Z list.';});
+  }
+  function setView(v,focus,save){
+    if(VIEWS.indexOf(v)<0)v='generic';
+    view=v;
+    tabs.forEach(function(b){var on=b.getAttribute('data-v')===v;b.setAttribute('aria-selected',on?'true':'false');b.tabIndex=on?0:-1;if(on&&focus)b.focus();
+      if(on){var bar=b.parentNode;if(b.offsetLeft<bar.scrollLeft||b.offsetLeft+b.offsetWidth>bar.scrollLeft+bar.clientWidth)bar.scrollLeft=b.offsetLeft-12;}});
+    vbox.setAttribute('aria-labelledby','dd-tab-'+v);
+    vbox.hidden=v==='generic'; alpha.hidden=!(v==='generic'||v==='brand');
+    if(v==='generic'){Object.keys(built).forEach(function(k){built[k].hidden=true;});}
+    if(save){try{localStorage.setItem('wgmr-drug-view',v);}catch(e){}
+      try{var u=new URL(location.href);if(v==='generic')u.searchParams.delete('view');else u.searchParams.set('view',v);history.replaceState(null,'',u.pathname+u.search+u.hash);}catch(e){}}
+    if(v==='generic'){info.textContent='';run();}else runView();
+  }
+  tabs.forEach(function(b,i){
+    b.addEventListener('click',function(){setView(b.getAttribute('data-v'),false,true);});
+    b.addEventListener('keydown',function(e){var j=-1;
+      if(e.key==='ArrowRight'||e.key==='ArrowDown')j=(i+1)%tabs.length;else if(e.key==='ArrowLeft'||e.key==='ArrowUp')j=(i-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')j=0;else if(e.key==='End')j=tabs.length-1;
+      if(j>=0){e.preventDefault();setView(tabs[j].getAttribute('data-v'),true,true);}});
+  });
   var timer=null;
   sq.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(run,90);});
   sq.addEventListener('focus',load,{once:true});
@@ -193,6 +288,8 @@ if(idx){
   alpha.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||b.disabled)return;setLetter(b.getAttribute('data-l'));run();
     try{history.replaceState(null,'',b.getAttribute('data-l')==='all'?location.pathname:'#letter-'+b.getAttribute('data-l'));}catch(err){}});
   var h=(location.hash.match(/^#letter-([a-z0])$/i)||[])[1]; if(h)setLetter(h.toLowerCase());
-  if(sq.value)run();
+  var v0=null;try{v0=new URLSearchParams(location.search).get('view')||localStorage.getItem('wgmr-drug-view');}catch(e){}
+  if(v0&&v0!=='generic'&&VIEWS.indexOf(v0)>=0)setView(v0,false,false);
+  else if(sq.value)run();
 }
 })();
