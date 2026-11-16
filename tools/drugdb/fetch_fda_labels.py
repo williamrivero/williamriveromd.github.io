@@ -75,7 +75,8 @@ lactobionate lysine magnesium maleate malate mandelate medoxomil megluminate meg
 mesylate methylbromide methylsulfate monohydrate monosodium napsylate nitrate oxalate
 pamoate pentahydrate phosphate potassium propanediol propionate saccharate salicylate sesquihydrate
 sodium stearate succinate sulfate sulphate tartrate tebutate teoclate tetrahydrate tosylate
-trifenatate trihydrate trometamol tromethamine valerate xinafoate zinc amorphous crystalline
+trifenatate trihydrate trometamol axetil proxetil pivoxil cilexetil mofetil
+etexilate dipivoxil hexetil marboxil tromethamine valerate xinafoate zinc amorphous crystalline
 """.split())
 
 # Philippine/INN names -> US (USAN) names used in openFDA substance names.
@@ -101,6 +102,17 @@ INN_TO_USAN = {
     "ergocalciferol": "ergocalciferol", "alfacalcidol": "alfacalcidol", "ketoprofen": "ketoprofen",
     "trihexyphenidyl": "trihexyphenidyl", "levonorgestrel": "levonorgestrel", "retinol": "vitamin a",
     "tocopherol": "vitamin e", "insulin isophane human": "insulin isophane human",
+    "isophane insulin human": "insulin isophane human", "leuprorelin": "leuprolide",
+    "clomifene": "clomiphene", "methylergometrine": "methylergonovine", "carmellose": "carboxymethylcellulose",
+    "dicycloverine": "dicyclomine", "co-amoxiclav": "amoxicillin and clavulanate",
+    "amoxicillin clavulanic acid": "amoxicillin and clavulanate", "benzylpenicillin benzathine": "penicillin g benzathine",
+    "benzathine benzylpenicillin": "penicillin g benzathine", "procaine benzylpenicillin": "penicillin g procaine",
+    "eformoterol": "formoterol", "cholecalciferol": "cholecalciferol", "levosalbutamol": "levalbuterol",
+    "tretinoin": "tretinoin", "busulfan": "busulfan", "lidocaine": "lidocaine", "mitoxantrone": "mitoxantrone",
+    "sodium cromoglicate": "cromolyn sodium", "cromoglicate": "cromolyn", "ethamsylate": "etamsylate",
+    "trimeprazine": "alimemazine", "acetylcysteine": "acetylcysteine", "prednisolone": "prednisolone",
+    "cetrizine": "cetirizine", "desloratidine": "desloratadine", "doxycyline": "doxycycline",
+    "potasium": "potassium", "potassiumn": "potassium",
 }
 # Words in a PH ingredient string that are not part of the drug name.
 NOISE_WORDS = {"as", "in", "rdna", "dna", "recombinant", "regular", "usp", "bp", "equivalent", "to"}
@@ -233,7 +245,7 @@ def label_substance_sets(label: dict) -> list[list[str]]:
     if subs:
         sets.append(subs)
     gen = split_generic_names(of.get("generic_name") or [])
-    if gen and gen != subs:
+    if gen and gen != subs and (not subs or len(gen) == len(subs)):
         sets.append(gen)
     return sets
 
@@ -269,11 +281,15 @@ def label_matches(ingredients: list[str], substances: list[str]) -> bool:
 
 
 def unindexed_match(ingredient: str, text: str) -> bool:
+    """spl_product_data_elements reads "<Brand> <generic name> <ACTIVE> <MOIETY> <inactives...>".
+    Require the ingredient to appear within the first 60 characters and at least twice in the
+    first 200 (generic name + active ingredient), which excludes inactive ingredients."""
     words = ing_tokens(ingredient)
     if not words:
         return False
     pat = r"(?<![a-z0-9-])" + r"[\s,]+".join(map(re.escape, words)) + r"(?![a-z0-9]|-[a-z])"
-    return re.search(pat, text.lower()) is not None
+    hits = [m.start() for m in re.finditer(pat, text[:200].lower())]
+    return len(hits) >= 2 and hits[0] < 60
 
 
 class Matcher:
@@ -507,6 +523,7 @@ def build_record(slug: str, g: dict, label: dict, n_candidates: int, prefer: str
             "license_note": "U.S. government work; label text reproduced verbatim.",
         },
         "selection": {"candidates": n_candidates, "rule": prefer, "match": match,
+                      "confidence": "high" if match == "openfda" else "low",
                       "ph_routes": ph_routes or {}, "repackager": is_repackager(label)},
         "label": meta,
         "sections": sections,
@@ -783,7 +800,7 @@ def main() -> int:
     col = Collector(generics, args.prefer, ph_routes)
     (run_api if source == "api" else run_bulk)(generics, col, args)
 
-    added, changed, unchanged, missing = [], [], 0, []
+    added, changed, removed, unchanged, missing = [], [], [], 0, []
     stats = {"openfda": 0, "unindexed-spl": 0, "innovator": 0, "repackager": 0}
     for slug, g in sorted(generics.items()):
         label, how, n_cand = col.result(slug)
@@ -793,6 +810,16 @@ def main() -> int:
             if col.near.get(slug):
                 m["near_misses"] = sorted(col.near[slug])
             missing.append(m)
+            stale = out_dir / f"{slug}.json"
+            if stale.exists() and slug not in col.errors:  # previously matched, no longer does
+                try:
+                    old = json.loads(stale.read_text(encoding="utf-8")).get("label", {})
+                except Exception:
+                    old = {}
+                stale.unlink()
+                removed.append({"slug": slug, "name": g.get("name", slug), "previous": {
+                    "set_id": old.get("set_id"), "effective_time": old.get("effective_time"),
+                    "brand_name": old.get("brand_name")}})
             continue
         stats[how] += 1
         stats["innovator"] += is_innovator(label)
@@ -832,13 +859,13 @@ def main() -> int:
     write_if_changed(out_dir / "_changes.json", {
         "generated_at": now,
         "note": "US FDA labels added or changed in the latest run; for Dr. Rivero's weekly review.",
-        "source": source, "added": added, "changed": changed,
+        "source": source, "added": added, "changed": changed, "removed": removed,
     }, ignore=("generated_at",))
 
     total = len(generics)
     hits = total - len(missing)
     print(f"matched {hits}/{total} ({100 * hits / max(total, 1):.1f}%) {stats}; added {len(added)}, "
-          f"changed {len(changed)}, unchanged {unchanged}, missing {len(missing)}")
+          f"changed {len(changed)}, removed {len(removed)}, unchanged {unchanged}, missing {len(missing)}")
     for m in missing[:60]:
         print(f"  missing: {m['slug']} ({m['reason']}) {m.get('near_misses', [])[:3]}")
     return 0
