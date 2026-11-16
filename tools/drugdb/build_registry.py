@@ -5,7 +5,9 @@ Input (from the crawler, run on a Philippine connection):
   --crawl-dir DIR  containing ph-fda-drugs.json, ph-fda-pipil.json, ph-fda-vat-exempt.json
 Output:
   data/drugs/registry/<a-z|0>.json  sharded list of products (Cloudflare 25 MB file cap), each with generic_slug + ingredients[] + pi_links[] + vat_exempt
-  data/drugs/generics.json   {slug: {name, ingredients[], products, categories[], rx, otc}}
+  data/drugs/generics.json   {slug: {name, ingredients[], products, categories[], rx, otc, hr, dispensing[]}}
+  data/drugs/_dispensing_flags.json  products whose classification text is contradictory or unrecognized
+Each product also gets "dispensing": "Rx" | "OTC" | "HR" normalized from the free-text classification.
 Slug rule (shared contract): lowercase base ingredient names (parenthetical salts / "as ..." removed,
 trailing salt words removed unless the salt IS the drug, e.g. potassium chloride), combinations sorted
 alphabetically and joined with "-".
@@ -53,6 +55,27 @@ def is_veterinary(rec):
     txt = " ".join(str(rec.get(k) or "") for k in ("generic_name", "pharmacologic_category", "classification")).lower()
     return rn.startswith("VR") or "veterinary" in txt or "(vet)" in txt or " vet " in f" {txt} "
 
+def normalize_dispensing(classification):
+    """Map the PH FDA classification text (many spellings and typos) to "Rx" | "OTC" | "HR".
+    Returns (code or None, flag or None). A text naming both prescription and OTC (the one
+    'Prescription Drug (OTC)' record) is resolved to the stricter "Rx" and flagged for review."""
+    t = re.sub(r"\s+", " ", (classification or "")).strip().lower()
+    if not t:
+        return None, "missing classification"
+    hr = "household" in t or "hone remedy" in t or "home remedy" in t or re.search(r"\(hr\)", t) is not None
+    otc = "over-the" in t or "over the" in t or re.search(r"\botc\b", t) is not None
+    rx = "prescri" in t or re.search(r"\brx\b", t) is not None
+    if hr and not (otc or rx):
+        return "HR", None
+    if rx and otc:
+        return "Rx", f"conflicting classification text {classification!r}: resolved to Rx (stricter); verify with FDA PH"
+    if rx:
+        return "Rx", None
+    if otc:
+        return "OTC", None
+    return None, f"unrecognized classification {classification!r}"
+
+
 def ingredients_of(generic_name):
     g = ascii_fold(generic_name or "")
     m = re.search(r"\(([^()]*\+[^()]*)\)", g)       # "Co-amoxiclav (Amoxicillin + Clavulanic Acid)"
@@ -89,7 +112,9 @@ def main():
             if e not in pi_by_rn[rn]: pi_by_rn[rn].append(e)
     vat_slugs = {slug_of(ingredients_of(v.get("generic_name"))) for v in vat}
     products, gen = [], defaultdict(lambda: {"name": Counter(), "ingredients": None, "products": 0,
-                                             "categories": Counter(), "rx": 0, "otc": 0})
+                                             "categories": Counter(), "rx": 0, "otc": 0, "hr": 0,
+                                             "dispensing": set()})
+    flags = []
     vet = 0
     for rn, r in sorted(drugs.items()):
         if is_veterinary(dict(r, registration_number=rn)):
@@ -103,15 +128,23 @@ def main():
         p["ingredients"] = ings
         p["pi_links"] = pi_by_rn.get(rn, [])
         p["vat_exempt"] = slug in vat_slugs
+        disp, flag = normalize_dispensing(r.get("classification"))
+        p["dispensing"] = disp
+        if flag:
+            p["dispensing_flag"] = flag
+            flags.append({"registration_number": rn, "brand_name": p.get("brand_name"), "generic_name": p.get("generic_name"),
+                          "classification": r.get("classification"), "dispensing": disp, "flag": flag})
         products.append(p)
         g = gen[slug]
         g["name"][re.sub(r"\s+", " ", r.get("generic_name") or "").strip()] += 1
         g["ingredients"] = ings
         g["products"] += 1
         if r.get("pharmacologic_category"): g["categories"][r["pharmacologic_category"].strip()] += 1
-        cls = (r.get("classification") or "").lower()
-        if "rx" in cls or "prescription" in cls: g["rx"] += 1
-        elif "otc" in cls or "over" in cls or "household" in cls: g["otc"] += 1
+        # rx / otc counts keep their historical meaning (household remedies counted with OTC); hr is separate
+        if disp == "Rx": g["rx"] += 1
+        elif disp in ("OTC", "HR"): g["otc"] += 1
+        if disp == "HR": g["hr"] += 1
+        if disp: g["dispensing"].add(disp)
     generics = {}
     for slug, g in sorted(gen.items()):
         # display name: title-cased base ingredients joined with " + "
@@ -119,7 +152,9 @@ def main():
         generics[slug] = {"name": disp, "ingredients": g["ingredients"], "products": g["products"],
                           "registered_names": [n for n, _ in g["name"].most_common(5)],
                           "categories": [c for c, _ in g["categories"].most_common(3)],
-                          "rx": g["rx"], "otc": g["otc"], "vat_exempt": slug in vat_slugs}
+                          "rx": g["rx"], "otc": g["otc"], "hr": g["hr"],
+                          "dispensing": [d for d in ("Rx", "OTC", "HR") if d in g["dispensing"]],
+                          "vat_exempt": slug in vat_slugs}
     # Cloudflare Pages caps files at 25 MB, so the registry is sharded by the slug's first character.
     shard_dir = os.path.join(a.out_dir, "registry"); os.makedirs(shard_dir, exist_ok=True)
     for f in os.listdir(shard_dir):
@@ -133,6 +168,9 @@ def main():
     old = os.path.join(a.out_dir, "registry.json")
     if os.path.exists(old): os.remove(old)
     json.dump(generics, open(os.path.join(a.out_dir, "generics.json"), "w"), ensure_ascii=False, indent=1)
+    # products whose classification text could not be normalized cleanly, for Dr. Rivero's review
+    json.dump(flags, open(os.path.join(a.out_dir, "_dispensing_flags.json"), "w"), ensure_ascii=False, indent=1)
+    print("dispensing:", dict(Counter(p["dispensing"] for p in products)), " flagged:", len(flags))
     print(f"veterinary skipped {vet}  products {len(products)}  generics {len(generics)}  with PI {sum(1 for p in products if p['pi_links'])}  VAT-exempt generics {sum(1 for g in generics.values() if g['vat_exempt'])}")
 
 if __name__ == "__main__":
