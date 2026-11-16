@@ -13,10 +13,10 @@ on:
         type: choice
         options: [auto, api, bulk]
       prefer:
-        description: "Tie-break after Rx>OTC: recent (newest label) or innovator (NDA/BLA first)"
-        default: "recent"
+        description: "Ranking after route match and Rx>OTC: innovator (NDA/BLA, non-repackager, newest) or recent (newest first)"
+        default: "innovator"
         type: choice
-        options: [recent, innovator]
+        options: [innovator, recent]
       force:
         description: "Rewrite every label file even if set_id + effective_time are unchanged"
         type: boolean
@@ -49,7 +49,7 @@ jobs:
           OPENFDA_API_KEY: ${{ secrets.OPENFDA_API_KEY }}
           GENERICS_FILE: ${{ inputs.generics_file || 'data/drugs/generics.json' }}
           SOURCE: ${{ inputs.source || 'auto' }}
-          PREFER: ${{ inputs.prefer || 'recent' }}
+          PREFER: ${{ inputs.prefer || 'innovator' }}
           FORCE: ${{ inputs.force && '--force' || '' }}
         run: |
           python3 tools/drugdb/fetch_fda_labels.py --generics-file "$GENERICS_FILE" \
