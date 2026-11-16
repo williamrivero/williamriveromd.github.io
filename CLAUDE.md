@@ -579,7 +579,9 @@ Viber (opens the app / Viber Desktop; on computers it also copies the link), Ema
 the page's canonical URL, carries EN/TL/CEB/KAP labels, injects its own scoped `.rcm-share`
 styles (white-on-brand buttons all ≥ 4.5:1), and hides in print. `patch_share_buttons.py`
 installs the tag idempotently using the **same eligibility rules as the Symptom-Checker
-widget** (imported from `patch_symptom_widget.py`). Run it (or rely on `/setup-guide`) after
+widget** (imported from `patch_symptom_widget.py`) **plus every calculator** (`calc-*`, `calculators.html`,
+`ckd-dri-calculator.html`; Nov 17 2026), where the end panel reads "Share this calculator". The drug
+database pages load it from `generate_drug_pages.py`. Run it (or rely on `/setup-guide`) after
 adding any new guide; `--report` audits coverage. Never hand-author share markup in a guide.
 
 **Side rail (desktop/tablet ≥ 1024px, Nov 2026).** Every content guide also loads

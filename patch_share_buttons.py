@@ -37,7 +37,15 @@ Usage:
 import argparse
 from pathlib import Path
 
-from patch_symptom_widget import eligible, find_project_dir
+from patch_symptom_widget import eligible as _guide_eligible, find_project_dir
+
+# Calculators get the share bar too (Nov 17 2026): every calc-* page, the calculators index and the
+# CKD DRI calculator. Other tools (index, symptom checker, atlas/interpreters, printable logs) stay excluded.
+CALC_EXTRA = {"calculators.html", "ckd-dri-calculator.html"}
+
+
+def eligible(name: str) -> bool:
+    return _guide_eligible(name) or name.startswith("calc-") or name in CALC_EXTRA
 
 TAG = '<script src="../assets/share-buttons.js" defer></script>'
 MARK = "assets/share-buttons.js"

@@ -184,7 +184,9 @@
     if (sig) {
       var p = document.createElement('section');
       p.className = 'rcm-share-panel'; p.setAttribute('aria-label', 'Share this guide');
-      p.innerHTML = '<h2>' + langSpans({ en: 'Share this guide', tl: 'Ibahagi ang gabay na ito', ceb: 'Ipaambit kini nga giya', kap: 'Ibahagi me ing gabay a iti' }) + '</h2>' +
+      var isCalc = document.body.classList.contains('calc-page') || /\/calc-|calculator/.test(location.pathname);
+      p.innerHTML = '<h2>' + (isCalc ? 'Share this calculator'
+        : langSpans({ en: 'Share this guide', tl: 'Ibahagi ang gabay na ito', ceb: 'Ipaambit kini nga giya', kap: 'Ibahagi me ing gabay a iti' })) + '</h2>' +
         '<div class="rcm-share-grid">' + list.map(function (n) { return item(n, true); }).join('') + '</div>';
       sig.parentNode.insertBefore(p, sig);
       wire(p);
