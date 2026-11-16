@@ -53,7 +53,7 @@ REPO = Path(__file__).resolve().parent
 SITE = "https://renalcarematters.com"
 GENERATOR_TAG = "generate_drug_pages.py"
 FDA_VERIFY_URL = "https://verification.fda.gov.ph"
-OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
+OG_IMAGE = f"{SITE}/images/og-drug-index.png"   # 1200x630 share card (Nov 17 2026)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
 ASSET_VERSION = "10"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
@@ -1146,7 +1146,9 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="") -> str:
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{OG_IMAGE}">
-<meta property="og:image:alt" content="Renal Care Matters Drug Database">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Drug Index · Every Philippine-registered drug, with kidney dosing · renalcarematters.com">
 <meta property="og:locale" content="en_PH">
 <meta property="article:modified_time" content="__ISO__">
 <meta name="twitter:card" content="summary_large_image">
