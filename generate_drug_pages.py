@@ -678,6 +678,23 @@ LABEL_SECTIONS = [
 ]
 
 
+def label_meta(label: dict) -> dict:
+    """Attribution fields from either the workstream-B schema (source{}, label{}) or a flat/openFDA record."""
+    lm = label.get("label") if isinstance(label.get("label"), dict) else {}
+    src = label.get("source")
+    sd = src if isinstance(src, dict) else {}
+    of = label.get("openfda") if isinstance(label.get("openfda"), dict) else {}
+    set_id = ws(lm.get("set_id") or label.get("set_id") or (of.get("spl_set_id") or [""])[0])
+    date = lm.get("effective_time") or label.get("version_date") or label.get("effective_date") or label.get("effective_time")
+    title = ws(label.get("title") or label.get("spl_title") or " · ".join(x for x in (ws(lm.get("brand_name")), ws(lm.get("manufacturer_name"))) if x))
+    url = safe_url(sd.get("dailymed_url") or label.get("url")) or (
+        f"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid={set_id}" if set_id else "")
+    via = ws(sd.get("via")) if sd else ws(src)
+    return {"set_id": set_id, "version": ws(lm.get("version") or label.get("version")),
+            "date": us_date_str(date) if date else "", "title": title, "url": url,
+            "via": "DailyMed/openFDA" if not via else ("DailyMed/openFDA" if "openfda" in via.lower() else via)}
+
+
 def label_sections(label: dict) -> dict:
     secs = label.get("sections") if isinstance(label.get("sections"), dict) else label
     return secs if isinstance(secs, dict) else {}
@@ -926,20 +943,14 @@ added to the database yet. Check the Philippine package insert in the product ta
     if isinstance(label.get("labels"), list) and label["labels"]:
         label = label["labels"][0]
     secs = label_sections(label)
-    of = label.get("openfda") if isinstance(label.get("openfda"), dict) else {}
-    set_id = ws(label.get("set_id") or (of.get("spl_set_id") or [""])[0] if isinstance(of.get("spl_set_id"), list) else label.get("set_id"))
-    ver = ws(label.get("version"))
-    vdate = label.get("version_date") or label.get("effective_date") or label.get("effective_time")
-    vdate_s = us_date_str(vdate) if vdate else ""
-    title = ws(label.get("title") or label.get("spl_title") or "")
-    url = safe_url(label.get("url")) or (f"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid={set_id}" if set_id else "")
-    src = ws(label.get("source")) or "DailyMed/openFDA"
+    m = label_meta(label)
+    set_id, ver, vdate_s, title, url, src = m["set_id"], m["version"], m["date"], m["title"], m["url"], m["via"]
     attrib = (f'<div class="dd-attrib"><strong>Source:</strong> US FDA-approved label via {esc(src)}'
               + (f', set ID <a href="{esc(url)}" rel="noopener" target="_blank">{esc(set_id)}</a>' if set_id and url else (f", set ID {esc(set_id)}" if set_id else ""))
               + (f", version {esc(ver)}" if ver else "")
               + (f", version date {esc(vdate_s)}" if vdate_s else "") + "."
-              + (f" Label: {esc(title)}." if title else "")
-              + " Text is reproduced verbatim; renal-impairment text appears in the Kidney dosing panel above. <strong>Philippine-approved indications may differ: check the PH package insert.</strong></div>")
+              + (f" Label: {esc(title.rstrip('.'))}." if title else "")
+              + " Text is reproduced verbatim; renal-impairment text from the label, when present, is shown in the Kidney dosing panel above. <strong>Philippine-approved indications may differ: check the PH package insert.</strong></div>")
     accs, first = [], True
     used = set()
     for heading, keys in LABEL_SECTIONS:
@@ -1066,11 +1077,14 @@ def render_kidney_panel(label, renal) -> str:
     out = [head_]
     if body:
         lab = label["labels"][0] if isinstance(label.get("labels"), list) and label["labels"] else label
-        set_id = ws(lab.get("set_id"))
-        vdate = us_date_str(lab.get("version_date") or lab.get("effective_date") or lab.get("effective_time"))
+        m = label_meta(lab)
+        set_id, vdate = m["set_id"], m["date"]
+        srcs = [ws(r.get("source")) for r in (lab.get("renal_impairment_sources") or []) if isinstance(r, dict)]
+        if which == "Renal impairment" and srcs:
+            which = "Renal impairment (" + ", ".join(dict.fromkeys(x.replace("_", " ") for x in srcs if x)) + ")"
         out.append(f'<div class="dd-kidney-label"><div class="dd-kidney-src">From the US FDA label · {esc(which)}</div>{body}</div>')
-        out.append('<p class="dd-note">Verbatim text from the US FDA-approved label via DailyMed/openFDA'
-                   + (f", set ID {esc(set_id)}" if set_id else "") + (f", version date {esc(vdate)}" if vdate else "")
+        out.append(f'<p class="dd-note">Verbatim text from the US FDA-approved label via {esc(m["via"])}'
+                   + (f', set ID <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(set_id)}</a>' if set_id and m["url"] else (f", set ID {esc(set_id)}" if set_id else "")) + (f", version date {esc(vdate)}" if vdate else "")
                    + ". Philippine-approved labeling may differ: check the PH package insert.</p>")
     else:
         out.append('<p class="dd-note">No kidney-specific text is available from the US label for this generic yet. '
