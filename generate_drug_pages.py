@@ -1789,8 +1789,11 @@ def kidney_block(renal: dict, pfx: str, children: bool = False) -> str:
         if isinstance(b, dict) and (b.get("range") or b.get("recommendation") or b.get("text")):
             full, short, lvl = _kval(b)
             rl = _band_label(b.get("range"))
-            tl = re.sub(r"^\s*(eGFR|CrCl|eGFR/CrCl)\s*", "", rl, flags=re.I) or rl
-            tl = "eGFR " + tl if tl and tl[0] in "<>≥≤0123456789" else tl
+            # keep the measure the source uses (CrCl stays CrCl; never relabel Cockcroft-Gault CrCl as eGFR)
+            m = re.match(r"^\s*(eGFR/CrCl|eGFR|CrCl)\s*", rl, flags=re.I)
+            meas = m.group(1) if m else "eGFR"
+            tl = re.sub(r"^\s*(eGFR/CrCl|eGFR|CrCl)\s*", "", rl, flags=re.I) or rl
+            tl = f"{meas} " + tl if tl and tl[0] in "<>≥≤0123456789" else tl
             tiles.append((f"{pfx}-b{i}", tl, rl, full, short, lvl))
     for k, tl, rl in (("hd", "HD", "Hemodialysis (intermittent)"), ("pd", "PD", "Peritoneal dialysis"),
                       ("crrt", "CRRT", "CRRT"), ("pirrt", "PIRRT", "PIRRT / SLED")):
