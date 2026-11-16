@@ -574,9 +574,12 @@ adding any new guide; `--report` audits coverage. Never hand-author share markup
 
 **Side rail (desktop/tablet ≥ 1024px, Nov 2026).** Every content guide also loads
 `assets/guide-rail.js` (tag placed right **after** the share-buttons tag; its Share tab calls
-`window.rcmShare.renderGrid`). It adds a slim sticky icon rail on the right edge — **Scorecard** (the clinician Evidence
+`window.rcmShare.renderGrid`). It adds a slim sticky icon rail on the right edge — **Summary** (the clinician hero Summary
+abstract, rule 14, cloned; Clinicians mode only), **Scorecard** (the clinician Evidence
 Scorecard card, cloned from the hero; the tab shows only while that card is visible, i.e. in
-Clinicians mode), **References** (with source count), **Glossary**, **Share**, each only if the
+Clinicians mode), **Graphics** (a gallery of the guide's content figures visible in the current
+audience view, with the `.fig-desc` caption; tapping a thumbnail scrolls to the figure and opens it
+in the image lightbox; hero, signature and related-guide images are excluded), **References** (with source count), **Glossary**, **Share**, each only if the
 guide has it — that slides out a tabbed drawer. Drawer content is **cloned at load** from the guide's own References accordion
 (`.ref-section`) and Glossary accordion (`.glossary-section`), so those accordions stay the single
 source of truth: keep authoring them exactly as rules 5 and 12 say. While the rail is active, the

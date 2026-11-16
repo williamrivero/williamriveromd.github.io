@@ -2,8 +2,12 @@
  * guide-rail.js — renalcarematters.com
  * Slim side rail for content guides (desktop + tablet, ≥ 1024px wide).
  *
- * A thin sticky icon rail on the right edge opens a slide-out drawer with up
- * to three tabs, built from what the guide already has:
+ * A thin sticky icon rail on the right edge opens a slide-out drawer with tabs
+ * built from what the guide already has:
+ *   Summary     ← cloned from the clinician hero abstract (.hero-abstract; Clinicians mode only)
+ *   Scorecard   ← cloned from the clinician Evidence Scorecard (.hero-cards .ov-card)
+ *   Graphics    ← gallery of the guide's figures visible in the current mode;
+ *                 a tap opens that figure in the image lightbox
  *   References  ← cloned from the References accordion (.ref-section .ref-acc)
  *   Glossary    ← cloned from the Glossary accordion (.glossary-section)
  *   Share       ← rendered by share-buttons.js (window.rcmShare.renderGrid)
@@ -29,6 +33,8 @@
   var I = {
     refs: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/>',
     gloss: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+    summ: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M8 11h8M8 15h6"/>',
+    gfx: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
     score: '<path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17v-9"/>',
     share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
     close: '<path d="M18 6 6 18M6 6l12 12"/>'
@@ -60,13 +66,14 @@
     '.rcm-rail-btn:hover .rcm-rail-tip,.rcm-rail-btn:focus-visible .rcm-rail-tip{opacity:1;}',
     '.rcm-scrim{position:fixed;inset:0;background:rgba(15,23,42,.28);z-index:950;opacity:0;pointer-events:none;transition:opacity .2s;}',
     '.rcm-scrim.is-open{opacity:1;pointer-events:auto;}',
-    '.rcm-drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,92vw);z-index:960;display:flex;flex-direction:column;background:var(--white,#fff);color:var(--text,#1e2a38);box-shadow:-12px 0 36px rgba(15,23,42,.22);transform:translateX(102%);transition:transform .24s ease;visibility:hidden;}',
+    '.rcm-drawer{position:fixed;top:0;right:0;bottom:0;width:min(540px,94vw);z-index:960;display:flex;flex-direction:column;background:var(--white,#fff);color:var(--text,#1e2a38);box-shadow:-12px 0 36px rgba(15,23,42,.22);transform:translateX(102%);transition:transform .24s ease;visibility:hidden;}',
     '.rcm-drawer.is-open{transform:none;visibility:visible;}',
-    '.rcm-drawer-head{display:flex;align-items:center;gap:4px;padding:10px 10px 0 14px;border-bottom:1px solid var(--border,#d8dee8);}',
-    '.rcm-tab{border:0;background:transparent;padding:12px 10px 11px;font:700 12px/1 Inter,Manrope,system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted,#5b6678);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;}',
+    '.rcm-drawer-head{display:flex;align-items:center;gap:2px;padding:10px 0 0 10px;border-bottom:1px solid var(--border,#d8dee8);overflow-x:auto;scrollbar-width:none;white-space:nowrap;}',
+    '.rcm-drawer-head::-webkit-scrollbar{display:none;}',
+    '.rcm-tab{flex:0 0 auto;border:0;background:transparent;padding:12px 7px 11px;font:700 11.5px/1 Inter,Manrope,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted,#5b6678);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;}',
     '.rcm-tab[aria-selected="true"]{color:#1A6B72;border-bottom-color:#1A6B72;}',
     '.rcm-tab:focus-visible{outline:2px solid #1A6B72;outline-offset:-2px;}',
-    '.rcm-close{margin-left:auto;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--text-mid,#3d4a5c);cursor:pointer;}',
+    '.rcm-close{position:sticky;right:0;flex:0 0 auto;margin-left:auto;box-shadow:-8px 0 8px var(--white,#fff);background:var(--white,#fff)!important;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--text-mid,#3d4a5c);cursor:pointer;}',
     '.rcm-close svg{width:18px;height:18px;}',
     '.rcm-close:hover,.rcm-close:focus-visible{background:rgba(15,23,42,.07);outline:none;}',
     '.rcm-pane{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:16px 22px 28px;font-size:13.5px;line-height:1.7;color:var(--text-mid,#3d4a5c);}',
@@ -81,6 +88,20 @@
     '.rcm-pane .rcm-share-grid{grid-template-columns:1fr 1fr;}',
     '.rcm-pane > .rcm-score-card{margin:0;box-shadow:none;max-width:none;padding:16px 18px!important;}',
     '.rcm-pane .rcm-score-card .ov-list{display:block!important;}',
+    '.rcm-pane > .rcm-summ{margin:0;max-width:none;padding:14px 16px 6px 18px!important;}',
+    '.rcm-pane > .rcm-summ p{font-size:13.5px!important;line-height:1.65!important;margin:0 0 10px!important;}',
+    '.rcm-gfx{display:grid;grid-template-columns:1fr 1fr;gap:12px;}',
+    '.rcm-gfx-item{display:flex;flex-direction:column;gap:6px;padding:0;border:1px solid var(--border,#d8dee8);border-radius:10px;overflow:hidden;background:var(--white,#fff);color:inherit;text-align:left;cursor:zoom-in;font:inherit;}',
+    '.rcm-gfx-item:hover,.rcm-gfx-item:focus-visible{border-color:#1A6B72;box-shadow:0 4px 14px rgba(26,107,114,.16);outline:none;}',
+    '.rcm-gfx-item img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eef2f6;}',
+    '.rcm-gfx-cap{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;padding:0;margin:0 9px 10px;font-size:11.5px;line-height:1.45;color:var(--text-mid,#3d4a5c);}',
+    '.rcm-gfx-n{font:700 10px/1 Inter,system-ui,sans-serif;letter-spacing:.06em;color:#1A6B72;padding:0 9px;}',
+    'html[data-theme="dark"] .rcm-gfx-item,body.dark-mode .rcm-gfx-item{background:#1a2535;border-color:#2c3a52;}',
+    'html[data-theme="dark"] .rcm-gfx-cap,body.dark-mode .rcm-gfx-cap{color:#c9d3e1;}',
+    'html[data-theme="dark"] .rcm-gfx-n,body.dark-mode .rcm-gfx-n{color:#7fd3da;}',
+    'html[data-theme="dark"] .rcm-close,body.dark-mode .rcm-close{background:#141d2b!important;box-shadow:-8px 0 8px #141d2b;}',
+    'html[data-theme="dark"] .rcm-pane > .rcm-summ,body.dark-mode .rcm-pane > .rcm-summ{background:#1a2535!important;border-color:#2c3a52!important;color:#c9d3e1!important;}',
+    'html[data-theme="dark"] .rcm-pane > .rcm-summ strong,body.dark-mode .rcm-pane > .rcm-summ strong{color:#e6ecf5!important;}',
     'html.rcm-rail-on .ref-section,html.rcm-rail-on .glossary-section,html.rcm-rail-on .rcm-share-panel{display:none!important;}',
     'html[data-theme="dark"] .rcm-rail,body.dark-mode .rcm-rail{background:#1a2535;border-color:#2c3a52;}',
     'html[data-theme="dark"] .rcm-rail-btn,body.dark-mode .rcm-rail-btn{color:#d6deea;}',
@@ -122,13 +143,22 @@
       if (c.querySelector('.ov-stat') || /evidence/i.test((c.querySelector('.ov-title') || {}).textContent || '')) { scoreCard = c; return true; }
       return false;
     });
-    if (!refSec && !glossSec && !canShare && !scoreCard) return;
+    // Clinician hero Summary abstract, if any.
+    var summ = document.querySelector('.hero-abstract');
+    // Figures for the Graphics gallery (content figures only; skip hero, signature, related guides).
+    var SKIP = '.hero-figure,.hero-vignette,.hero,.dr-card-wrap,.related-guides,.site-header,.guide-footer,.rcm-drawer,.latest-guides';
+    var figImgs = Array.prototype.filter.call(document.querySelectorAll('figure img, .illus-wrap img'), function (im) {
+      return !im.closest(SKIP) && (im.getAttribute('src') || im.getAttribute('data-src'));
+    });
+    if (!refSec && !glossSec && !canShare && !scoreCard && !summ && !figImgs.length) return;
 
     var st = document.createElement('style'); st.id = 'rcm-rail-css'; st.textContent = CSS;
     document.head.appendChild(st);
 
     var tabs = [];
+    if (summ) tabs.push({ k: 'summ', en: 'Summary', tl: 'Summary', ceb: 'Summary', kap: 'Summary', tip: 'Clinical summary', icon: I.summ, clinician: true });
     if (scoreCard) tabs.push({ k: 'score', en: 'Scorecard', tl: 'Scorecard', ceb: 'Scorecard', kap: 'Scorecard', icon: I.score, clinician: true });
+    if (figImgs.length) tabs.push({ k: 'gfx', en: 'Graphics', tl: 'Mga Larawan', ceb: 'Mga Hulagway', kap: 'Deng Larawan', icon: I.gfx, n: figImgs.length });
     if (refSec) tabs.push({ k: 'refs', en: 'References', tl: 'Mga Sanggunian', ceb: 'Mga Tinubdan', kap: 'Deng Pikuanan', icon: I.refs,
       n: refSec.querySelectorAll('ol > li').length });
     if (glossSec) tabs.push({ k: 'gloss', en: 'Glossary', tl: 'Glosaryo', ceb: 'Glosaryo', kap: 'Glosaryo', icon: I.gloss });
@@ -140,13 +170,13 @@
     rail.innerHTML = tabs.map(function (t) {
       return '<button type="button" class="rcm-rail-btn" data-tab="' + t.k + '" aria-label="' + t.en + '" aria-controls="rcm-pane-' + t.k + '">' +
         svg(t.icon) + (t.n ? '<span class="rcm-rail-n" aria-hidden="true">' + t.n + '</span>' : '') +
-        '<span class="rcm-rail-tip">' + langSpans(t) + '</span></button>';
+        '<span class="rcm-rail-tip">' + (t.tip || langSpans(t)) + '</span></button>';
     }).join('');
 
     // Drawer
     var scrim = document.createElement('div'); scrim.className = 'rcm-scrim';
     var dr = document.createElement('aside');
-    dr.className = 'rcm-drawer'; dr.setAttribute('role', 'dialog'); dr.setAttribute('aria-label', 'Guide references, glossary and sharing'); dr.setAttribute('aria-hidden', 'true');
+    dr.className = 'rcm-drawer'; dr.setAttribute('role', 'dialog'); dr.setAttribute('aria-label', 'Guide tools: summary, graphics, references, glossary and sharing'); dr.setAttribute('aria-hidden', 'true');
     dr.innerHTML = '<div class="rcm-drawer-head" role="tablist">' + tabs.map(function (t) {
       return '<button type="button" class="rcm-tab" role="tab" id="rcm-tab-' + t.k + '" data-tab="' + t.k + '" aria-selected="false" aria-controls="rcm-pane-' + t.k + '">' + langSpans(t) + '</button>';
     }).join('') + '<button type="button" class="rcm-close" aria-label="Close">' + svg(I.close) + '</button></div>' +
@@ -165,6 +195,38 @@
       var t0 = cc.querySelector('.ov-head'); if (t0) t0.remove();
       sc.appendChild(cc);
     }
+    if (summ) {
+      var sm = dr.querySelector('#rcm-pane-summ');
+      sm.innerHTML = '<p class="rcm-pane-title">Clinical summary</p><p class="rcm-pane-sub">The bottom line for clinicians, from this guide</p>';
+      var smc = strip(summ.cloneNode(true)); smc.classList.add('rcm-summ'); smc.classList.remove('mode-physician');
+      var lab = smc.querySelector('.ha-label'); if (lab) lab.remove();
+      sm.appendChild(smc);
+    }
+    function figVisible(im) { return im.getClientRects().length > 0; }
+    function buildGfx() { // rebuilt on open so the gallery follows the active audience tab
+      var gp2 = dr.querySelector('#rcm-pane-gfx'); if (!gp2) return;
+      var vis = figImgs.filter(figVisible);
+      var head = '<p class="rcm-pane-title">' + langSpans({ en: 'Graphics', tl: 'Mga Larawan', ceb: 'Mga Hulagway', kap: 'Deng Larawan' }) + '</p>' +
+        '<p class="rcm-pane-sub">' + langSpans({ en: vis.length + ' figures in this view · tap to enlarge', tl: vis.length + ' larawan · i-tap para palakihin', ceb: vis.length + ' ka hulagway · i-tap aron padakoon', kap: vis.length + ' larawan · i-tap ban palakwan' }) + '</p>';
+      gp2.innerHTML = head + '<div class="rcm-gfx"></div>';
+      var grid = gp2.querySelector('.rcm-gfx');
+      vis.forEach(function (im, i) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'rcm-gfx-item'; b.setAttribute('data-i', figImgs.indexOf(im));
+        b.setAttribute('aria-label', 'Open figure ' + (i + 1) + (im.alt ? ': ' + im.alt : ''));
+        var th = document.createElement('img');
+        th.src = im.currentSrc || im.getAttribute('src') || im.getAttribute('data-src'); th.alt = ''; th.loading = 'lazy'; th.decoding = 'async';
+        b.appendChild(th);
+        var n = document.createElement('span'); n.className = 'rcm-gfx-n'; n.textContent = 'FIG ' + (i + 1); b.appendChild(n);
+        var cap = document.createElement('span'); cap.className = 'rcm-gfx-cap';
+        var fig = im.closest('figure'), desc = fig && (fig.querySelector('.fig-desc') || fig.querySelector('figcaption'));
+        if (desc && desc.textContent.trim()) cap.innerHTML = strip(desc.cloneNode(true)).innerHTML; else cap.textContent = im.alt || '';
+        Array.prototype.forEach.call(cap.querySelectorAll('dl, .fig-abbrevs'), function (x) { x.remove(); });
+        b.appendChild(cap);
+        grid.appendChild(b);
+      });
+    }
+
     var refTab = tabs.filter(function (t) { return t.k === 'refs'; })[0];
     if (refSec) {
       var pane = dr.querySelector('#rcm-pane-refs');
@@ -197,6 +259,7 @@
     function open(k, hit) {
       if (!isOpen()) lastFocus = document.activeElement;
       dr.classList.add('is-open'); scrim.classList.add('is-open'); dr.setAttribute('aria-hidden', 'false');
+      if (k === 'gfx') buildGfx();
       select(k);
       var pane = dr.querySelector('#rcm-pane-' + k);
       Array.prototype.forEach.call(pane.querySelectorAll('.rcm-hit'), function (e) { e.classList.remove('rcm-hit'); });
@@ -218,7 +281,13 @@
       if (isOpen() && current === k) close(); else open(k);
     });
     dr.addEventListener('click', function (e) {
-      var t = e.target.closest('.rcm-tab'); if (t) { select(t.getAttribute('data-tab')); return; }
+      var t = e.target.closest('.rcm-tab'); if (t) { if (t.getAttribute('data-tab') === 'gfx') buildGfx(); select(t.getAttribute('data-tab')); return; }
+      var g = e.target.closest('.rcm-gfx-item');
+      if (g) { // jump to the figure in the page, then open it in the image lightbox
+        var orig = figImgs[+g.getAttribute('data-i')]; close();
+        if (orig) { orig.scrollIntoView({ block: 'center' }); setTimeout(function () { orig.click(); }, 30); }
+        return;
+      }
       if (e.target.closest('.rcm-close')) { close(); return; }
       var jump = e.target.closest('#rcm-pane-score a[href^="#"]');
       if (jump) close(); // e.g. "View evidence" -> let the page scroll to that section
@@ -262,15 +331,26 @@
 
     // The Scorecard tab follows the guide's audience tab: shown only while the
     // clinician card itself is visible (Clinicians mode / clinician-only guides).
-    function syncScore() {
-      if (!scoreCard) return;
-      var on = scoreCard.getClientRects().length > 0;
-      var rb = rail.querySelector('[data-tab="score"]'), tb = dr.querySelector('#rcm-tab-score');
+    function syncTab(k, el) {
+      if (!el) return;
+      var on = el.getClientRects().length > 0;
+      var rb = rail.querySelector('[data-tab="' + k + '"]'), tb = dr.querySelector('#rcm-tab-' + k);
       if (rb) rb.style.display = on ? '' : 'none';
       if (tb) tb.style.display = on ? '' : 'none';
-      if (!on && current === 'score') { var first = tabs.filter(function (t) { return t.k !== 'score'; })[0]; if (first) select(first.k); else close(); }
+      if (!on && current === k) { var first = tabs.filter(function (t) { return !t.clinician; })[0]; if (first) select(first.k); else close(); }
     }
-    if (scoreCard && window.MutationObserver) {
+    function syncScore() {
+      syncTab('score', scoreCard); syncTab('summ', summ);
+      if (figImgs.length) { // Graphics badge = figures visible in the current audience view
+        var nv = figImgs.filter(figVisible).length;
+        var gb = rail.querySelector('[data-tab="gfx"]'), badge = gb && gb.querySelector('.rcm-rail-n');
+        if (badge) badge.textContent = nv;
+        if (gb) gb.style.display = nv ? '' : 'none';
+        var gt2 = dr.querySelector('#rcm-tab-gfx'); if (gt2) gt2.style.display = nv ? '' : 'none';
+        if (current === 'gfx' && isOpen()) buildGfx();
+      }
+    }
+    if ((scoreCard || summ || figImgs.length) && window.MutationObserver) {
       new MutationObserver(function () { syncScore(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
     }
     function apply() {
