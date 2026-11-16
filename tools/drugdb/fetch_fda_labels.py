@@ -38,6 +38,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import functools
 import io
 import json
 import os
@@ -180,10 +181,16 @@ OTHER_POP_HEADS = (r"Hepatic\s+Impairment|Hepatic\s+Insufficiency|Impaired\s+Hep
 
 
 # --------------------------------------------------------------------------- matching
+@functools.lru_cache(maxsize=None)
+def _tokens(s: str) -> tuple:
+    return tuple(t for t in re.split(r"[^a-z0-9]+", s.lower()) if t)
+
+
 def tokens(s: str) -> list[str]:
-    return [t for t in re.split(r"[^a-z0-9]+", s.lower()) if t]
+    return list(_tokens(s))
 
 
+@functools.lru_cache(maxsize=None)
 def usan(ingredient: str) -> str:
     s = " " + ingredient.lower().strip() + " "
     for inn, us in INN_TO_USAN.items():
@@ -191,10 +198,12 @@ def usan(ingredient: str) -> str:
     return s.strip()
 
 
-def ing_tokens(ingredient: str) -> list[str]:
-    return [t for t in tokens(usan(ingredient)) if t not in NOISE_WORDS and not t.isdigit()]
+@functools.lru_cache(maxsize=None)
+def ing_tokens(ingredient: str) -> tuple:
+    return tuple(t for t in tokens(usan(ingredient)) if t not in NOISE_WORDS and not t.isdigit())
 
 
+@functools.lru_cache(maxsize=1 << 20)
 def substance_matches(ingredient: str, substance: str) -> bool:
     it, st = ing_tokens(ingredient), tokens(substance)
     if not it or not st:
@@ -238,11 +247,16 @@ def label_matches_any(ingredients: list[str], label: dict) -> bool:
     return any(label_matches(ingredients, subs) for subs in label_substance_sets(label))
 
 
+@functools.lru_cache(maxsize=None)
+def expand_ingredients(ingredients: tuple) -> list[str]:
+    return [p for i in ingredients for p in re.split(r"\s+and\s+", usan(i))]
+
+
 def label_matches(ingredients: list[str], substances: list[str]) -> bool:
     if not substances or not ingredients:
         return False
     # an alias may expand to a combination ("co-trimoxazole")
-    ingredients = [p for i in ingredients for p in re.split(r"\s+and\s+", usan(i))]
+    ingredients = expand_ingredients(tuple(ingredients))
     # every substance must be one of the ingredients (no extras)
     for s in substances:
         if not any(substance_matches(i, s) for i in ingredients):
