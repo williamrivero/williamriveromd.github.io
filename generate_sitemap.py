@@ -47,6 +47,8 @@ DEFAULTS = {
     "guide": ("monthly", "0.7"),
     "download": ("monthly", "0.6"),
     "toplevel": ("monthly", "0.7"),
+    "drugs_index": ("weekly", "0.8"),
+    "drug": ("weekly", "0.5"),
 }
 
 NOINDEX_RE = re.compile(
@@ -92,6 +94,10 @@ def classify(rel_path: str) -> tuple[str, str] | None:
         return "/guides/", "guides_index"
     if rel_path.startswith("guides/"):
         return "/" + rel_path, "guide"
+    if rel_path == "drugs/index.html":
+        return "/drugs/", "drugs_index"
+    if rel_path.startswith("drugs/") and rel_path.count("/") == 1:   # drug monographs only (not drugs/category/)
+        return "/" + rel_path, "drug"
     if rel_path.startswith("downloads/"):
         return "/" + rel_path, "download"
     if "/" not in rel_path:                  # other top-level .html page
@@ -102,7 +108,7 @@ def classify(rel_path: str) -> tuple[str, str] | None:
 def discover_pages() -> list[tuple[str, str]]:
     """Walk the repo and return sorted (url_path, kind) for indexable pages."""
     found: list[tuple[str, str]] = []
-    scan_dirs = [REPO_ROOT, REPO_ROOT / "guides", REPO_ROOT / "downloads"]
+    scan_dirs = [REPO_ROOT, REPO_ROOT / "guides", REPO_ROOT / "downloads", REPO_ROOT / "drugs"]
     seen: set[str] = set()
     for base in scan_dirs:
         if not base.is_dir():
@@ -145,6 +151,8 @@ def sort_key(item: tuple[str, str]) -> tuple[int, str]:
         "toplevel": 2,
         "guide": 3,
         "download": 4,
+        "drugs_index": 5,
+        "drug": 6,
     }
     return (order.get(kind, 9), url_path)
 

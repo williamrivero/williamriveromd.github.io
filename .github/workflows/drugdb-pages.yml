@@ -1,0 +1,54 @@
+name: drugdb-pages
+# Rebuilds the drug database pages (drugs/) from data/drugs/.
+# Runs after the Monday label refresh, and whenever drug data or the generator changes on main.
+# Only approved renal/summary content renders; pending drafts never appear.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 19 * * 0"   # Mondays 03:00 Asia/Manila, one hour after drugdb-labels
+  push:
+    branches: [main]
+    paths:
+      - "data/drugs/**"
+      - "generate_drug_pages.py"
+      - "tools/drugdb/merge_renal_short.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: drugdb-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Merge approved kidney tiles
+        run: python3 tools/drugdb/merge_renal_short.py
+      - name: Build drug pages
+        run: python3 generate_drug_pages.py
+      - name: Refresh sitemap
+        run: python3 generate_sitemap.py
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add drugs data/drugs/renal sitemap.xml
+          if git diff --cached --quiet; then
+            echo "No page changes."; exit 0
+          fi
+          N=$(git diff --cached --name-only -- drugs | wc -l)
+          git commit -m "Drug database: rebuild pages ($N files changed)" \
+                     -m "Automated rebuild from data/drugs (approved content only)."
+          for i in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin main && git push origin HEAD:main && exit 0
+            git rebase --abort 2>/dev/null || true
+            sleep $((i * 10))
+          done
+          exit 1

@@ -854,3 +854,20 @@ it produces cleaner structured text (headings, tables, lists) than ad hoc PDF
 text extraction. This applies to reference PDFs, lab reports, journal articles,
 etc. provided for a guide. Pure image PDFs (scans with no text layer) may still
 need a different approach.
+
+## Drug database (`/drugs/`, Nov 2026)
+
+A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `drugs/`.
+- **Data** (`data/drugs/`): PH FDA registry shards + `generics.json` (`tools/drugdb/build_registry.py`, from the
+  crawl run on Dr. Rivero's Mac), US labels `labels/<slug>.json` (`tools/drugdb/fetch_fda_labels.py`, weekly
+  workflow `drugdb-labels`; per-drug label picks pinned in `tools/drugdb/label_overrides.json`), `pnf.json`,
+  `prices.json`, `controlled.json` (DDB S2 / precursors), `pharmacies.json` (link-outs only — no scraped prices).
+- **Clinical content** (`renal/`, `renal-short/`, `summary/<slug>.json`) renders **only** when
+  `review_status == "approved"` (Dr. Rivero's sign-off). Agents draft as `"pending"`; never set "approved"
+  without his explicit approval. Sources: US labels (public domain) and PubMed-verified literature/guidelines —
+  never Lexicomp, UpToDate, Micromedex, MIMS, Renal Drug Handbook, Sanford. Kidney bands keep the label's
+  measure (Cockcroft–Gault CrCl stays CrCl). Tile colors: green no change · amber dose/caution · red avoid ·
+  gray not studied · `hide` = band not applicable.
+- **Build:** `python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
+  `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
+  (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.
