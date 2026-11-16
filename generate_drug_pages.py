@@ -823,7 +823,7 @@ if(idx){
       fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
       /* food supplements: separate lazy file, merged into results with a "Supplement" badge */
       if(idx.getAttribute('data-supp'))fetch(idx.getAttribute('data-supp')).then(function(r){return r.json();}).then(function(x){
-        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&F.t.value==='s'))run();}).catch(function(){});
+        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&F.t.value==='s'))run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
@@ -880,7 +880,7 @@ if(idx){
       res.innerHTML=shown.map(function(o,i){var d=o.d;
         var why=(o.lab&&o.lab!=='generic')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
         if(d.sup){why=(o.lab&&o.lab!=='supplement')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
-          return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+encodeURIComponent(d.s)+'.html">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
+          return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+(d.p?encodeURIComponent(d.s)+'.html':'view.html?b='+encodeURIComponent(d.s))+'">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
           '<span class="dd-sub">'+escH((d.i||[]).slice(0,4).join(' · '))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
         return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
           '<span class="dd-sub">'+escH(d.c||'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');

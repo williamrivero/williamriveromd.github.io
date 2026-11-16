@@ -158,7 +158,7 @@ BOTANICALS = [
     ("Astragalus", "Astragalus membranaceus", r"astragalus"),
     ("Rhubarb", "Rheum spp.", r"rhubarb|rheum\b"),
     ("Licorice", "Glycyrrhiza glabra", r"licorice|liquorice|glycyrrhiza"),
-    ("Cat's whiskers", "Orthosiphon aristatus", r"orthosiphon|cat'?s\s+whisker|java\s+tea"),
+    ("Cat's whiskers, balbas pusa", "Orthosiphon aristatus", r"orthosiphon|cat'?s\s+whisker|java\s+tea|balbas[- ]?pusa"),
 ]
 _BOT = [(c, l, re.compile(rx, re.I)) for c, l, rx in BOTANICALS]
 
@@ -376,9 +376,12 @@ def categories_of(text, ingredients, kinds):
 CURATED_KIDNEY = ["renadyl", "renakult", "cudo", "cudo forte", "renalin", "venamax", "flavos", "probiorenal", "renoprotect",
                   "renoprime", "renoaid", "nephriclear", "trinephron", "neprisafe", "renalsia", "renalcare", "renosafe", "renomax",
                   "renalof", "nephrolit", "renochlor", "equirenal", "kidneylife", "kidneypro", "kidnycare", "renalite", "uniherb kidney care",
-                  "royale kidney complex", "finamin nephro", "fin-montabon"]
+                  "royale kidney complex", "finamin nephro", "fin-montabon", "renivra"]
 NOT_KIDNEY = re.compile(r"vrenala|prenal|(?:white\s+)?kidney\s+(?:beans?|extract)|gokidneybean", re.I)
 KIDNEY_NAME = re.compile(r"kidn?ey|renal|\breno|\brena|\brenbio|\brenpro|nephr|\buric\b|\buric\s*acid|\buric|urinar|dialysis|\bkidny", re.I)
+
+# Herbs sold in the Philippines for kidney stones or "kidney cleansing" (not P. emblica/amla or P. amarus)
+KIDNEY_HERBS = re.compile(r"phyll?anth?us\s+(?:niruri|urinaria)|chanca\s+piedra|stone\s*breaker|sambong|blumea|orthosiphon|balbas[- ]?pusa|cat'?s\s+whisker", re.I)
 
 def kidney_flag(brand, clean, ingredients):
     b = fold(brand).lower()
@@ -388,10 +391,12 @@ def kidney_flag(brand, clean, ingredients):
     if KIDNEY_NAME.search(bb):
         return True, "brand name"
     pn = NOT_KIDNEY.sub(" ", fold(clean).lower())
-    if re.search(r"\bkidney\b|\brenal|dialysis|urinary|\buric acid|\bnephr", pn):
+    if re.search(r"\bkidney\b|\brenal|dialysis|urinary|\buric\b|\bnephr", pn):
         return True, "product name"
-    if any(i.startswith("Ketoanalogues") for i in ingredients):
+    if any(i.startswith("Ketoanalogues") for i in ingredients) or re.search(r"keto[- ]?anal?og", pn):
         return True, "ketoanalogue"
+    if KIDNEY_HERBS.search(pn) or any(KIDNEY_HERBS.search(i) for i in ingredients):
+        return True, "kidney-associated herb"
     return False, ""
 
 # ─────────────────────────────────────────────────────────────────────────────
