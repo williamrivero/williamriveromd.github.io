@@ -441,6 +441,16 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
       inside a clinician-only wrapper it is harmless.
     - Styling is in `MASTER_CSS` (`.hero-abstract`, light, dark, print, plus a dark-glass
       variant for navy `.md-hero` heroes). **Do not add per-guide CSS for it.**
+    - **Full clinical abstract for the side rail (Nov 16 2026, every new dual-mode guide; existing
+      guides on touch).** Directly after the hero Summary's closing `</div>`, add a
+      `<template class="clinical-abstract">` holding a longer structured abstract (about 350–600
+      words): `<h4>` headings such as **Background**, the topic's mechanism/risk, **What to do**
+      (or Diagnosis / Treatment), **Evidence**, **Practice**, and **Bottom line** (last one as
+      `<p class="ca-bottom">`), with `<p>` and `<ul><li>` bodies. A `<template>` never renders on
+      the page; the side rail's **Abstract** tab shows it (Clinicians mode only) and falls back to
+      the short hero Summary when a guide has none. Same content rules as the hero Summary: only
+      claims, numbers and guideline positions that are in the guide body, English only, acronyms
+      expanded on first use inside it. Canonical example: `guides/vitamin-b1-niacin-kidney-care.html`.
     - **`audit_hero_abstract.py`** enforces presence, label, 2–3 bold-led paragraphs,
       ≤ 130 words and hero placement: `python3 audit_hero_abstract.py` (exits 1 on any problem)
       or `--guide <file>`. Run it before declaring a dual-mode guide done.

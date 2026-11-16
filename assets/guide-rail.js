@@ -4,7 +4,8 @@
  *
  * A thin sticky icon rail on the right edge opens a slide-out drawer with tabs
  * built from what the guide already has:
- *   Summary     ← cloned from the clinician hero abstract (.hero-abstract; Clinicians mode only)
+ *   Abstract    ← the guide's full structured clinical abstract (<template class="clinical-abstract">),
+ *                 falling back to the short hero Summary (.hero-abstract); Clinicians mode only
  *   Scorecard   ← cloned from the clinician Evidence Scorecard (.hero-cards .ov-card)
  *   Graphics    ← gallery of the guide's figures visible in the current mode;
  *                 a tap opens that figure in the image lightbox
@@ -90,6 +91,15 @@
     '.rcm-pane .rcm-score-card .ov-list{display:block!important;}',
     '.rcm-pane > .rcm-summ{margin:0;max-width:none;padding:14px 16px 6px 18px!important;}',
     '.rcm-pane > .rcm-summ p{font-size:13.5px!important;line-height:1.65!important;margin:0 0 10px!important;}',
+    '.rcm-ca{border:1px solid var(--border,#d8dee8);border-left:4px solid #1A6B72;border-radius:10px;background:#f7fafc;}',
+    '.rcm-ca h4{font:700 11px/1.3 Inter,system-ui,sans-serif!important;letter-spacing:.08em;text-transform:uppercase;color:#14575d!important;margin:14px 0 4px!important;}',
+    '.rcm-ca h4:first-child{margin-top:2px!important;}',
+    '.rcm-ca ul{margin:0 0 10px!important;padding-left:18px!important;}',
+    '.rcm-ca li{margin:0 0 5px;font-size:13.5px;line-height:1.6;}',
+    '.rcm-ca .ca-bottom{background:rgba(26,107,114,.08);border-radius:8px;padding:10px 12px!important;}',
+    'html[data-theme="dark"] .rcm-ca h4,body.dark-mode .rcm-ca h4{color:#7fd3da!important;}',
+    'html[data-theme="dark"] .rcm-pane > .rcm-ca,body.dark-mode .rcm-pane > .rcm-ca{border-left-color:#7fd3da!important;}',
+    'html[data-theme="dark"] .rcm-ca .ca-bottom,body.dark-mode .rcm-ca .ca-bottom{background:rgba(127,211,218,.08);}',
     '.rcm-gfx{display:grid;grid-template-columns:1fr 1fr;gap:12px;}',
     '.rcm-gfx-item{display:flex;flex-direction:column;gap:6px;padding:0;border:1px solid var(--border,#d8dee8);border-radius:10px;overflow:hidden;background:var(--white,#fff);color:inherit;text-align:left;cursor:zoom-in;font:inherit;}',
     '.rcm-gfx-item:hover,.rcm-gfx-item:focus-visible{border-color:#1A6B72;box-shadow:0 4px 14px rgba(26,107,114,.16);outline:none;}',
@@ -156,7 +166,8 @@
     document.head.appendChild(st);
 
     var tabs = [];
-    if (summ) tabs.push({ k: 'summ', en: 'Summary', tl: 'Summary', ceb: 'Summary', kap: 'Summary', tip: 'Clinical summary', icon: I.summ, clinician: true });
+    var fullAbs = document.querySelector('template.clinical-abstract');
+    if (summ) tabs.push({ k: 'summ', en: 'Abstract', tl: 'Abstract', ceb: 'Abstract', kap: 'Abstract', tip: 'Clinical abstract', icon: I.summ, clinician: true });
     if (scoreCard) tabs.push({ k: 'score', en: 'Scorecard', tl: 'Scorecard', ceb: 'Scorecard', kap: 'Scorecard', icon: I.score, clinician: true });
     if (figImgs.length) tabs.push({ k: 'gfx', en: 'Graphics', tl: 'Mga Larawan', ceb: 'Mga Hulagway', kap: 'Deng Larawan', icon: I.gfx, n: figImgs.length });
     if (refSec) tabs.push({ k: 'refs', en: 'References', tl: 'Mga Sanggunian', ceb: 'Mga Tinubdan', kap: 'Deng Pikuanan', icon: I.refs,
@@ -197,10 +208,16 @@
     }
     if (summ) {
       var sm = dr.querySelector('#rcm-pane-summ');
-      sm.innerHTML = '<p class="rcm-pane-title">Clinical summary</p><p class="rcm-pane-sub">The bottom line for clinicians, from this guide</p>';
-      var smc = strip(summ.cloneNode(true)); smc.classList.add('rcm-summ'); smc.classList.remove('mode-physician');
-      var lab = smc.querySelector('.ha-label'); if (lab) lab.remove();
-      sm.appendChild(smc);
+      if (fullAbs) {
+        sm.innerHTML = '<p class="rcm-pane-title">Clinical abstract</p><p class="rcm-pane-sub">Structured summary for clinicians, drawn from this guide</p>';
+        var fa = document.createElement('div'); fa.className = 'rcm-summ rcm-ca';
+        fa.appendChild(document.importNode(fullAbs.content, true)); sm.appendChild(strip(fa));
+      } else {
+        sm.innerHTML = '<p class="rcm-pane-title">Clinical summary</p><p class="rcm-pane-sub">The bottom line for clinicians, from this guide</p>';
+        var smc = strip(summ.cloneNode(true)); smc.classList.add('rcm-summ'); smc.classList.remove('mode-physician');
+        var lab = smc.querySelector('.ha-label'); if (lab) lab.remove();
+        sm.appendChild(smc);
+      }
     }
     function figVisible(im) { return im.getClientRects().length > 0; }
     function buildGfx() { // rebuilt on open so the gallery follows the active audience tab

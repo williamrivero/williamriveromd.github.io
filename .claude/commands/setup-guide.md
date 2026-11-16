@@ -99,6 +99,7 @@ and replace its content — do not invent a new layout.
   per-guide `min-width`/`flex-shrink` on `.ov-stat .v`.
 - **Clinician hero Summary abstract (dual-mode guides).** Directly under the clinician
   subtitle and above `.hero-meta`, add `<div class="hero-abstract mode-physician" role="note"
+- **Full clinical abstract.** Right after the hero Summary, add `<template class="clinical-abstract">` with a 350–600-word structured abstract (Background · mechanism/risk · What to do · Evidence · Practice · Bottom line); see CLAUDE.md rule 14.
   aria-label="Summary"><div class="ha-label">Summary</div><p><strong>Lead.</strong> …</p>…</div>`:
   2–3 bold-led paragraphs, ≤ 130 words, English only, written **only** from the guide's own
   clinical content, acronyms expanded on first use. Styling comes from `MASTER_CSS`. Canonical
