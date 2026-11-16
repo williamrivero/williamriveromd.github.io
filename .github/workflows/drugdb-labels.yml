@@ -67,7 +67,9 @@ jobs:
           git commit -m "Drug database: refresh US FDA labels ($N; $M without a US label)" \
                      -m "Automated openFDA label refresh. Review list: data/drugs/labels/_changes.json"
           for i in 1 2 3 4 5; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            # this run's label files are the newest data: on a conflict, keep ours (-X theirs in a rebase)
+            git pull --rebase -X theirs origin main && git push origin HEAD:main && exit 0
+            git rebase --abort 2>/dev/null || true
             sleep $((i * 10))
           done
           exit 1

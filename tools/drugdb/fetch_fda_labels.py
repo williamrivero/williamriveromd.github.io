@@ -850,17 +850,34 @@ def main() -> int:
         # a forced rewrite of an unchanged label is not a review item
 
     now = dt.datetime.now(MANILA).isoformat(timespec="seconds")
-    mpath = out_dir / "_missing.json"
-    if args.only and mpath.exists():  # subset run: keep earlier misses for other slugs
-        prev = json.loads(mpath.read_text(encoding="utf-8")).get("missing", [])
-        missing = sorted([m for m in prev if m["slug"] not in generics] + missing, key=lambda m: m["slug"])
-    write_if_changed(mpath, {"generated_at": now, "generics_file": gpath.name, "count": len(missing),
-                             "missing": missing}, ignore=("generated_at",))
-    write_if_changed(out_dir / "_changes.json", {
-        "generated_at": now,
-        "note": "US FDA labels added or changed in the latest run; for Dr. Rivero's weekly review.",
-        "source": source, "added": added, "changed": changed, "removed": removed,
-    }, ignore=("generated_at",))
+    # A partial run (a list other than the full generics.json, or --only) must not clobber the
+    # full-catalog review files: it merges into them instead of replacing them.
+    partial = bool(args.only) or gpath.resolve() != DEFAULT_GENERICS.resolve()
+    mpath, cpath = out_dir / "_missing.json", out_dir / "_changes.json"
+    missing_doc = {"generated_at": now, "generics_file": gpath.name, "count": len(missing), "missing": missing}
+    changes_doc = {"generated_at": now,
+                   "note": "US FDA labels added, changed or removed since the last full run; "
+                           "for Dr. Rivero's weekly review.",
+                   "source": source, "added": added, "changed": changed, "removed": removed}
+    if partial:
+        ran = set(generics)
+        if mpath.exists():
+            prev = json.loads(mpath.read_text(encoding="utf-8"))
+            merged = sorted([m for m in prev.get("missing", []) if m["slug"] not in ran] + missing,
+                            key=lambda m: m["slug"])
+            missing_doc = {**prev, "missing": merged, "count": len(merged)}
+        if cpath.exists():
+            prev = json.loads(cpath.read_text(encoding="utf-8"))
+            mine = {e["slug"] for e in added + changed + removed}
+            if not mine:
+                changes_doc = prev
+            else:
+                changes_doc = {**prev, "generated_at": now}
+                for key, new in (("added", added), ("changed", changed), ("removed", removed)):
+                    changes_doc[key] = sorted([e for e in prev.get(key, []) if e["slug"] not in mine] + new,
+                                              key=lambda e: e["slug"])
+    write_if_changed(mpath, missing_doc, ignore=("generated_at",))
+    write_if_changed(cpath, changes_doc, ignore=("generated_at",))
 
     total = len(generics)
     hits = total - len(missing)
