@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "5"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "6"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -451,6 +451,8 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-tag.PNF { color: #0e4a50; background: #e1f5f0; }
 .dd-tag.KD { color: #fff; background: #1a6b72; }
 .dd-tag.US { color: #1f3864; background: #e3e8f2; }
+.dd-tag.SUP { color: #3d4656; background: #eceff3; border: 1px solid rgba(61,70,86,.35); }
+.dd-tag.SUPK { color: #4a2800; background: #fdf3dc; }
 .dd-facets { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin: 10px 0 4px; }
 .dd-facets select { font: inherit; font-size: 14px; color: var(--text); background: var(--white); border: 1px solid #8a96a8; border-radius: 8px; padding: 7px 10px; min-height: 40px; max-width: 320px; }
 .dd-facets > label:not(.dd-check) { flex: 0 1 260px; min-width: 0; max-width: 100%; }
@@ -662,6 +664,8 @@ html[data-theme="dark"] .dd-chip.dd-cp { color: #2a1900; background: #fbbf24; bo
 html[data-theme="dark"] .dd-tag.PNF { color: #a5f3fc; background: #10323a; }
 html[data-theme="dark"] .dd-tag.KD { color: #e6fbfc; background: #0e4a50; }
 html[data-theme="dark"] .dd-tag.US { color: #dbe6f5; background: #22304a; }
+html[data-theme="dark"] .dd-tag.SUP { color: #e5e9f0; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); }
+html[data-theme="dark"] .dd-tag.SUPK { color: #fde7c2; background: rgba(245,158,11,.16); }
 html[data-theme="dark"] .dd-tag.S2 { color: #fff; background: #b91c1c; }
 html[data-theme="dark"] .dd-tag.CP { color: #2a1900; background: #fbbf24; }
 html[data-theme="dark"] .dd-facets select { background: #1a2535; color: var(--text); border-color: #4a5a72; }
@@ -795,20 +799,31 @@ if(idx){
   var az=document.getElementById('dd-az'), alpha=document.getElementById('dd-alpha'), letters=Array.prototype.slice.call(document.querySelectorAll('.dd-letter'));
   var sq=document.getElementById('dd-sq'), res=document.getElementById('dd-results'), info=document.getElementById('dd-sinfo');
   var F={c:document.getElementById('dd-f-class'),r:document.getElementById('dd-f-rx'),f:document.getElementById('dd-f-form'),
-         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l')};
-  var data=null, extra=null, loading=null, active=-1, letter='all';
+         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),
+         t:document.getElementById('dd-f-type')};
+  if(!F.t)delete F.t;
+  var data=null, extra=null, supp=null, loading=null, active=-1, letter='all';
   function escH(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function hl(text,t){var i=text.toLowerCase().indexOf(t);if(!t||i<0)return escH(text);return escH(text.slice(0,i))+'<mark class="dd-hl">'+escH(text.slice(i,i+t.length))+'</mark>'+escH(text.slice(i+t.length));}
   function load(){
     if(!loading)loading=fetch(idx.getAttribute('data-src')).then(function(r){return r.json();}).then(function(j){
       data=j.map(function(d){d.nn=norm(d.n);return d;});
       fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
+      /* food supplements: separate lazy file, merged into results with a "Supplement" badge */
+      if(idx.getAttribute('data-supp'))fetch(idx.getAttribute('data-supp')).then(function(r){return r.json();}).then(function(x){
+        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&F.t.value==='s'))run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
   function score(s,t){if(!s)return 0;if(s===t)return 100;if(s.indexOf(t)===0)return 80;if((' '+s).indexOf(' '+t)>=0)return 60;if(s.indexOf(t)>=0)return 35;return 0;}
   var FIELDS=[['n','generic',1],['i','ingredient',.95],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
+  function smatch(d,t){
+    var best=score(d.nn,t)*.97,lab=best?'supplement':'',val=d.n;
+    [['i','ingredient',.85],['r','FR no.',.9],['co','company',.5]].forEach(function(f){(d[f[0]]||[]).forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
+    return best?{s:best,lab:lab,val:val}:null;
+  }
   function match(d,t,raw){
+    if(d.sup)return smatch(d,t);
     var best=0,lab='',val='';
     FIELDS.forEach(function(f){var v=d[f[0]];if(!v)return;var arr=Array.isArray(v)?v:[v];
       arr.forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
@@ -817,7 +832,12 @@ if(idx){
       (e.m||[]).forEach(function(x){var s=score(norm(x),t)*.5;if(s>best){best=s;lab='manufacturer';val=x;}});}
     return best?{s:best,lab:lab,val:val}:null;
   }
+  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
   function pass(d){
+    var ty=F.t?F.t.value:'';
+    if(d.sup){if(ty==='d'||drugFacets())return false;
+      if(letter!=='all'){var c0=(d.n||'?')[0].toLowerCase();if((c0>='a'&&c0<='z'?c0:'0')!==letter)return false;}return true;}
+    if(ty==='s')return false;
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
@@ -825,8 +845,9 @@ if(idx){
     if(letter!=='all'){var c=(d.n||'?')[0].toLowerCase();if((c>='a'&&c<='z'?c:'0')!==letter)return false;}
     return true;
   }
-  function filtersOn(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
-  function chips(d){var o=[];var r=d.r||0;
+  function filtersOn(){return drugFacets()||!!(F.t&&F.t.value);}
+  function chips(d){var o=[];if(d.sup){o.push('<span class="dd-tag SUP">Supplement</span>');if(d.k)o.push('<span class="dd-tag SUPK">Kidney-marketed</span>');return o.join(' ');}
+    var r=d.r||0;
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
     if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
     if(d.p)o.push('<span class="dd-tag PNF">PNF</span>');if(d.h)o.push('<span class="dd-tag PNF">GAMOT</span>');
@@ -841,15 +862,18 @@ if(idx){
     load().then(function(){
       if(!data)return;
       var out=[];
-      data.forEach(function(d){if(!pass(d))return;if(!t){out.push({d:d,s:0});return;}var m=match(d,t,raw);if(m)out.push({d:d,s:m.s,lab:m.lab,val:m.val});});
+      (supp?data.concat(supp):data).forEach(function(d){if(!pass(d))return;if(!t){out.push({d:d,s:0});return;}var m=match(d,t,raw);if(m)out.push({d:d,s:d.sup?m.s*.95:m.s,lab:m.lab,val:m.val});});
       out.sort(function(a,b){return b.s-a.s||a.d.n.localeCompare(b.d.n);});
       var shown=out.slice(0,200), tl=raw.toLowerCase();
       res.innerHTML=shown.map(function(o,i){var d=o.d;
         var why=(o.lab&&o.lab!=='generic')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
+        if(d.sup){why=(o.lab&&o.lab!=='supplement')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
+          return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+encodeURIComponent(d.s)+'.html">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
+          '<span class="dd-sub">'+escH((d.i||[]).slice(0,4).join(' · '))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
         return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
           '<span class="dd-sub">'+escH(d.c||'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
       res.hidden=false; az.hidden=true; sq.setAttribute('aria-expanded',out.length?'true':'false'); active=-1;
-      info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class or product matches.';
+      info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
     });
   }
   var timer=null;
@@ -1128,6 +1152,7 @@ FLOAT = """
 <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
 </button>
 </div>
+<script src="/assets/drug-hero.js?v=1" defer></script>
 <script src="/drugs/drugdb.js?v=""" + ASSET_VERSION + """" defer></script>
 </body>
 </html>
@@ -2509,6 +2534,8 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
                        for c, v in sorted(cg.items(), key=lambda kv: kv[0].lower()) if len(v) >= 2)
     form_opts = "".join(f'<option value="{f}">{f.capitalize()}</option>' for f, _ in FORM_GROUPS[::-1]) + '<option value="other">Other</option>'
     n_products = len(ctx.products)
+    supp_n = len(load_json(REPO / "drugs" / "supplements" / "search-index.json", []) or [])
+    supp_chip = (f'<a class="dd-chip" href="/drugs/supplements/">{supp_n:,} food-supplement brands</a>' if supp_n else "")
     canonical = f"{SITE}/drugs/"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
                          "name": "Drug Index · Renal Care Matters", "dateModified": "__ISO__", "inLanguage": "en",
@@ -2517,7 +2544,7 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
     desc = (f"Search {len(entries):,} generics and {n_products:,} FDA Philippines-registered drug products by brand, generic, class, "
             "indication, manufacturer or registration number, with kidney dosing and US FDA prescribing information.")
     return (head("Drug Index · Renal Care Matters", desc, canonical, jsonld, "__HASH__")
-            + '<body class="physician-mode single-mode">\n' + header(True) + f"""
+            + '<body class="physician-mode single-mode dd-index-page">\n' + header(True) + f"""
 <section class="hero">
   <div class="container dd-hero-wide">
     <div class="hero-grid"><div class="hero-copy">
@@ -2526,18 +2553,19 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
         <p class="hero-sub">Every drug product registered with the Food and Drug Administration (FDA) Philippines, grouped by generic name.
 Search by brand, generic, class, indication, manufacturer or registration number.</p>
         <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span>
-<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a></div>
+<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}</div>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
     </div></div>
   </div>
 </section>
-<main class="container dd-wide" id="dd-index" data-src="/drugs/search-index.json" data-extra="/drugs/search-extra.json">
+<main class="container dd-wide" id="dd-index" data-src="/drugs/search-index.json" data-extra="/drugs/search-extra.json"{' data-supp="/drugs/supplements/search-index.json"' if supp_n else ''}>
 <div class="dd-search" role="search">
 <label class="dd-hidden" for="dd-sq">Search the drug index</label>
 <input id="dd-sq" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="dd-results"
- placeholder="Brand, generic, class, indication, manufacturer, or reg. no. (e.g., Norvasc)" autocomplete="off" spellcheck="false">
+ placeholder="{'Brand, generic, class, indication, supplement, or reg. no. (e.g., Norvasc)' if supp_n else 'Brand, generic, class, indication, manufacturer, or reg. no. (e.g., Norvasc)'}" autocomplete="off" spellcheck="false">
 </div>
 <div class="dd-facets" role="group" aria-label="Filters">
+{'<label><span class="dd-hidden">Type</span><select id="dd-f-type"><option value="">Type: drugs and food supplements</option><option value="d">Type: drugs</option><option value="s">Type: food supplements</option></select></label>' if supp_n else ''}
 <label><span class="dd-hidden">Drug class</span><select id="dd-f-class"><option value="">All drug classes</option>{cat_opts}</select></label>
 <label><span class="dd-hidden">Dispensing category</span><select id="dd-f-rx"><option value="">All dispensing categories</option><option value="1">Rx · Prescription drug</option><option value="2">OTC · Over-the-counter</option><option value="4">HR · Household remedy</option><option value="8">S2 · Dangerous drug</option><option value="16">Controlled precursor</option></select></label>
 <label><span class="dd-hidden">Dosage form</span><select id="dd-f-form"><option value="">All dosage forms</option>{form_opts}</select></label>
@@ -2586,7 +2614,7 @@ def category_index_page(groups: dict[str, list[dict]]) -> str:
     lis = "".join(f'<li data-n="{esc(c.lower())}"><a href="{cat_slug(c)}.html">{esc(c)}</a> <span class="dd-sub">{len(v):,} generic{"s" if len(v) != 1 else ""}</span></li>'
                   for c, v in sorted(groups.items(), key=lambda kv: kv[0].lower()))
     return (head("Drug classes · Renal Care Matters", f"Browse {len(groups):,} drug classes in the Philippine drug index.", canonical, jsonld, "__HASH__")
-            + '<body class="physician-mode single-mode">\n' + header(True) + f"""
+            + '<body class="physician-mode single-mode dd-index-page">\n' + header(True) + f"""
 <section class="hero"><div class="container dd-hero-wide"><div class="hero-grid"><div class="hero-copy">
 <div class="dd-crumb"><a href="/drugs/">Drug Index</a></div>
 <div class="hero-tag">Drug Database · Clinicians</div>

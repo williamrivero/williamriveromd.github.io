@@ -12,6 +12,7 @@ on:
     paths:
       - "data/drugs/**"
       - "generate_drug_pages.py"
+      - "generate_supplement_pages.py"
       - "tools/drugdb/merge_renal_short.py"
 
 permissions:
@@ -31,6 +32,8 @@ jobs:
           python-version: "3.12"
       - name: Merge approved kidney tiles
         run: python3 tools/drugdb/merge_renal_short.py
+      - name: Build food-supplement pages
+        run: python3 generate_supplement_pages.py
       - name: Build drug pages
         run: python3 generate_drug_pages.py
       - name: Refresh sitemap

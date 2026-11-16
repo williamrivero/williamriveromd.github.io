@@ -89,20 +89,31 @@ if(idx){
   var az=document.getElementById('dd-az'), alpha=document.getElementById('dd-alpha'), letters=Array.prototype.slice.call(document.querySelectorAll('.dd-letter'));
   var sq=document.getElementById('dd-sq'), res=document.getElementById('dd-results'), info=document.getElementById('dd-sinfo');
   var F={c:document.getElementById('dd-f-class'),r:document.getElementById('dd-f-rx'),f:document.getElementById('dd-f-form'),
-         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l')};
-  var data=null, extra=null, loading=null, active=-1, letter='all';
+         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),
+         t:document.getElementById('dd-f-type')};
+  if(!F.t)delete F.t;
+  var data=null, extra=null, supp=null, loading=null, active=-1, letter='all';
   function escH(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function hl(text,t){var i=text.toLowerCase().indexOf(t);if(!t||i<0)return escH(text);return escH(text.slice(0,i))+'<mark class="dd-hl">'+escH(text.slice(i,i+t.length))+'</mark>'+escH(text.slice(i+t.length));}
   function load(){
     if(!loading)loading=fetch(idx.getAttribute('data-src')).then(function(r){return r.json();}).then(function(j){
       data=j.map(function(d){d.nn=norm(d.n);return d;});
       fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
+      /* food supplements: separate lazy file, merged into results with a "Supplement" badge */
+      if(idx.getAttribute('data-supp'))fetch(idx.getAttribute('data-supp')).then(function(r){return r.json();}).then(function(x){
+        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&F.t.value==='s'))run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
   function score(s,t){if(!s)return 0;if(s===t)return 100;if(s.indexOf(t)===0)return 80;if((' '+s).indexOf(' '+t)>=0)return 60;if(s.indexOf(t)>=0)return 35;return 0;}
   var FIELDS=[['n','generic',1],['i','ingredient',.95],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
+  function smatch(d,t){
+    var best=score(d.nn,t)*.97,lab=best?'supplement':'',val=d.n;
+    [['i','ingredient',.85],['r','FR no.',.9],['co','company',.5]].forEach(function(f){(d[f[0]]||[]).forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
+    return best?{s:best,lab:lab,val:val}:null;
+  }
   function match(d,t,raw){
+    if(d.sup)return smatch(d,t);
     var best=0,lab='',val='';
     FIELDS.forEach(function(f){var v=d[f[0]];if(!v)return;var arr=Array.isArray(v)?v:[v];
       arr.forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
@@ -111,7 +122,12 @@ if(idx){
       (e.m||[]).forEach(function(x){var s=score(norm(x),t)*.5;if(s>best){best=s;lab='manufacturer';val=x;}});}
     return best?{s:best,lab:lab,val:val}:null;
   }
+  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
   function pass(d){
+    var ty=F.t?F.t.value:'';
+    if(d.sup){if(ty==='d'||drugFacets())return false;
+      if(letter!=='all'){var c0=(d.n||'?')[0].toLowerCase();if((c0>='a'&&c0<='z'?c0:'0')!==letter)return false;}return true;}
+    if(ty==='s')return false;
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
@@ -119,8 +135,9 @@ if(idx){
     if(letter!=='all'){var c=(d.n||'?')[0].toLowerCase();if((c>='a'&&c<='z'?c:'0')!==letter)return false;}
     return true;
   }
-  function filtersOn(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked);}
-  function chips(d){var o=[];var r=d.r||0;
+  function filtersOn(){return drugFacets()||!!(F.t&&F.t.value);}
+  function chips(d){var o=[];if(d.sup){o.push('<span class="dd-tag SUP">Supplement</span>');if(d.k)o.push('<span class="dd-tag SUPK">Kidney-marketed</span>');return o.join(' ');}
+    var r=d.r||0;
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
     if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
     if(d.p)o.push('<span class="dd-tag PNF">PNF</span>');if(d.h)o.push('<span class="dd-tag PNF">GAMOT</span>');
@@ -135,15 +152,18 @@ if(idx){
     load().then(function(){
       if(!data)return;
       var out=[];
-      data.forEach(function(d){if(!pass(d))return;if(!t){out.push({d:d,s:0});return;}var m=match(d,t,raw);if(m)out.push({d:d,s:m.s,lab:m.lab,val:m.val});});
+      (supp?data.concat(supp):data).forEach(function(d){if(!pass(d))return;if(!t){out.push({d:d,s:0});return;}var m=match(d,t,raw);if(m)out.push({d:d,s:d.sup?m.s*.95:m.s,lab:m.lab,val:m.val});});
       out.sort(function(a,b){return b.s-a.s||a.d.n.localeCompare(b.d.n);});
       var shown=out.slice(0,200), tl=raw.toLowerCase();
       res.innerHTML=shown.map(function(o,i){var d=o.d;
         var why=(o.lab&&o.lab!=='generic')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
+        if(d.sup){why=(o.lab&&o.lab!=='supplement')?'<span class="dd-why">'+escH(o.lab)+': '+hl(o.val,tl)+'</span>':'';
+          return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+encodeURIComponent(d.s)+'.html">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
+          '<span class="dd-sub">'+escH((d.i||[]).slice(0,4).join(' · '))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
         return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
           '<span class="dd-sub">'+escH(d.c||'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
       res.hidden=false; az.hidden=true; sq.setAttribute('aria-expanded',out.length?'true':'false'); active=-1;
-      info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class or product matches.';
+      info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
     });
   }
   var timer=null;
