@@ -6,6 +6,7 @@
     "Criterion keys (all given keys must hold): set_id, application_number (exact, or a bare prefix such as ANDA),",
     "route (any of), form (any of), not_form (none of), brand_regex, manufacturer_regex.",
     "text_regex is matched against the label's dosage-forms text (section 3, else description); use it to require the PH strengths. Every criterion also requires dosage_and_administration text unless require_sections is [].",
+    "require_sections [dosage_and_administration, dosage_forms_and_strengths] selects current-format (PLR) labels, which have a section 3.",
     "Form classes: oral_ir, oral_er, oral_liquid, inj_powder, inj_solution, inj_premix (see label_forms()).",
     "Put a set_id first once a run has confirmed the right label; keep the descriptive criteria after it as fallbacks."
   ],
@@ -68,29 +69,36 @@
     ]
   },
   "vancomycin": {
-    "reason": "PH products are 500 mg and 1 g powder for injection in vials. The ranking had picked the Baxter GALAXY frozen premixed bag (NDA050671). The reference Vancocin vial is no longer marketed, so prefer a plain ANDA vial (Hospira) over 505(b)(2) vials whose labels carry product-specific text (Mylan NDA209481: odd strengths; Avenacy NDA210274: polysorbate 80 contraindication, oral-use indications).",
+    "reason": "PH products are 500 mg and 1 g powder for injection in vials. The ranking had picked the Baxter GALAXY frozen premixed bag (NDA050671). The reference Vancocin vial is no longer marketed: prefer a current-format (PLR) ANDA single-dose vial label listing 500 mg and 1 g, not a pharmacy bulk package (Hospira ANDA063076 is old-format bulk) and not 505(b)(2) vials with product-specific text (Mylan NDA209481: odd strengths; Avenacy NDA210274: polysorbate 80 contraindication).",
     "primary": [
-      {
-        "set_id": "b01aaa02-8f1d-4b57-96a5-337503428af1",
-        "text_regex": "500\\s*mg.*\\b1\\s*g(?:ram)?\\b|\\b1\\s*g(?:ram)?\\b.*500\\s*mg"
-      },
       {
         "application_number": "ANDA",
         "route": "INTRAVENOUS",
         "form": "inj_powder",
         "not_form": "inj_premix",
-        "text_regex": "500\\s*mg.*\\b1\\s*g(?:ram)?\\b|\\b1\\s*g(?:ram)?\\b.*500\\s*mg"
+        "text_regex": "500\\s*mg.*\\b1\\s*g(?:ram)?\\b|\\b1\\s*g(?:ram)?\\b.*500\\s*mg",
+        "not_text_regex": "pharmacy bulk",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths"
+        ]
+      },
+      {
+        "route": "INTRAVENOUS",
+        "form": "inj_powder",
+        "not_form": "inj_premix",
+        "text_regex": "500\\s*mg.*\\b1\\s*g(?:ram)?\\b|\\b1\\s*g(?:ram)?\\b.*500\\s*mg",
+        "not_text_regex": "pharmacy bulk",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths"
+        ]
       },
       {
         "route": "INTRAVENOUS",
         "form": "inj_powder",
         "not_form": "inj_premix",
         "text_regex": "500\\s*mg.*\\b1\\s*g(?:ram)?\\b|\\b1\\s*g(?:ram)?\\b.*500\\s*mg"
-      },
-      {
-        "route": "INTRAVENOUS",
-        "form": "inj_powder",
-        "not_form": "inj_premix"
       }
     ]
   },
