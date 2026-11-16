@@ -25,6 +25,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Manila   # page dates must match local (Manila) builds, or CI and local rebuilds flip-flop
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,7 +44,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add drugs data/drugs/renal sitemap.xml
+          git add drugs data/drugs/renal data/drugs/supplements/_pages.json sitemap.xml
           if git diff --cached --quiet; then
             echo "No page changes."; exit 0
           fi
@@ -50,7 +52,7 @@ jobs:
           git commit -m "Drug database: rebuild pages ($N files changed)" \
                      -m "Automated rebuild from data/drugs (approved content only)."
           for i in 1 2 3 4 5; do
-            git pull --rebase -X theirs origin main && git push origin HEAD:main && exit 0
+            git pull --rebase --autostash -X theirs origin main && git push origin HEAD:main && exit 0
             git rebase --abort 2>/dev/null || true
             sleep $((i * 10))
           done
