@@ -1,0 +1,29 @@
+# Cloudflare Pages response headers (renalcarematters.com)
+# HTML keeps Cloudflare's default (revalidate every visit). Static assets and search data get
+# browser caching so moving between guides, calculators and the drug database stays fast.
+
+# Versioned drug-database assets (?v= changes whenever they change)
+/drugs/drugdb.css
+  Cache-Control: public, max-age=31536000, immutable
+/drugs/drugdb.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# Shared scripts (unversioned): short cache, refreshed in the background
+/assets/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Search indexes and drug/supplement data: 1 hour, refreshed in the background
+/drugs/*.json
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+/drugs/supplements/*.json
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+/data/drugs/supplements/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+/guides/search-index.json
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Images and fonts rarely change
+/images/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/brand/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400

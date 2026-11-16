@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "9"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "10"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -565,6 +565,8 @@ ul.dd-srclist li { margin: 2px 0; overflow-wrap: anywhere; }
 }
 .dd-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dd-letter.dd-kempty, .dd-letter.dd-hidden { display: none !important; }
+/* render off-screen letter groups lazily (big win on phones; the index lists 2,300+ generics) */
+.dd-letter { content-visibility: auto; contain-intrinsic-size: auto 1200px; }
 #dd-alpha.dd-hidden { display: none !important; }
 /* Kidney dosing panel */
 .dd-kidney { margin: 36px 0 8px; padding: 22px 24px 18px; background: #f2f9f9; border: 1px solid #cfe6e6;
@@ -1156,6 +1158,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="") -> str:
 <link href="{FONTS}" rel="stylesheet"/>
 <link rel="stylesheet" href="/drugs/drugdb.css?v={ASSET_VERSION}">
 <script type="application/ld+json">{jsonld}</script>
+<script type="speculationrules">{{"prefetch":[{{"where":{{"and":[{{"href_matches":"/*"}},{{"not":{{"href_matches":"*.json"}}}}]}},"eagerness":"moderate"}}],"prerender":[{{"urls":["/guides/","/drugs/","/"],"eagerness":"moderate"}}]}}</script>
 </head>
 """
 
