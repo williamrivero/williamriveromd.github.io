@@ -2,35 +2,55 @@
   "schema_version": 1,
   "slug": "lornoxicam",
   "name": "Lornoxicam",
-  "review_status": "pending",
-  "reviewed_by": null,
-  "reviewed_date": null,
+  "review_status": "approved",
+  "reviewed_by": "William Gregory M. Rivero, MD, FPCP, DPSN",
+  "reviewed_date": "2026-11-17",
   "drafted_by": "AI-assisted draft (Claude) for review by Dr. W. Rivero",
   "drafted_date": "2026-11-17",
   "summary": "Lornoxicam is an oxicam nonsteroidal anti-inflammatory drug (NSAID) metabolized by CYP2C9; its pharmacokinetics change little in kidney failure, but NSAID effects on kidney blood flow still apply. The Irish label reduces dosing to once daily in kidney impairment and contraindicates it in severe impairment, defined by serum creatinine above 700 µmol/L. It has no US FDA label.",
-  "kidney_function_basis": "The SmPC grades kidney impairment by serum creatinine: mild 150–300 µmol/L, moderate 300–700 µmol/L, severe above 700 µmol/L (about 7.9 mg/dL). Bands are mapped to creatinine clearance (CrCl) by judgment.",
-  "chip": "CKD: once daily only",
+  "kidney_function_basis": "The SmPC grades kidney impairment by serum creatinine: mild 150–300 µmol/L (1.7–3.4 mg/dL), moderate 300–700 µmol/L (3.4–7.9 mg/dL), severe above 700 µmol/L (above 7.9 mg/dL). Bands are mapped to creatinine clearance (CrCl) by judgment; we advise avoiding it below CrCl 30.",
+  "chip": "Avoid if CrCl <30",
   "bands": [
     {
       "range": "CrCl ≥60 mL/min",
-      "recommendation": "Usual (acute pain): 8 to 16 mg/day in 8 mg doses; day 1 may be 16 mg then 8 mg 12 hours later; maximum 16 mg/day after day 1 (SmPC)."
+      "recommendation": "Usual (acute pain): 8 to 16 mg/day in 8 mg doses; day 1 may be 16 mg then 8 mg 12 hours later; maximum 16 mg/day after day 1 (SmPC).",
+      "short": "Usual: 8 mg twice daily",
+      "level": "none"
     },
     {
       "range": "CrCl 30–59 mL/min",
-      "recommendation": "Kidney impairment: reduce dosing frequency to once daily (SmPC). Use with caution; stop if kidney function worsens."
+      "recommendation": "Kidney impairment: reduce dosing frequency to once daily (SmPC). Use with caution; stop if kidney function worsens.",
+      "short": "Once daily; caution",
+      "level": "adjust"
     },
     {
       "range": "CrCl 15–29 mL/min",
-      "recommendation": "Kidney impairment: reduce dosing frequency to once daily (SmPC). Use with caution; stop if kidney function worsens."
+      "recommendation": "Avoid. The SmPC contraindicates only at serum creatinine above 700 µmol/L (above 7.9 mg/dL), but that threshold is outdated; NSAIDs at CrCl <30 risk acute kidney injury, hyperkalemia and fluid overload (our judgment, consistent with other EU NSAID labels).",
+      "short": "Avoid (CrCl <30)",
+      "level": "avoid"
     },
     {
       "range": "CrCl <15 mL/min (not on dialysis)",
-      "recommendation": "Severe impairment (serum creatinine above 700 µmol/L): contraindicated (SmPC). Below that, once daily with caution. Our judgment: avoid at CrCl <15."
+      "recommendation": "Avoid (our judgment: CrCl <30). Severe impairment (serum creatinine above 700 µmol/L [above 7.9 mg/dL]) is contraindicated in the SmPC.",
+      "short": "Avoid (CrCl <30)",
+      "level": "avoid"
     }
   ],
-  "hd": "Avoid: contraindicated in severe kidney impairment (SmPC). NSAIDs threaten residual kidney function.",
-  "pd": "Avoid: contraindicated in severe kidney impairment (SmPC).",
-  "crrt": "Avoid; NSAIDs worsen acute kidney injury.",
+  "hd": {
+    "text": "Avoid: contraindicated in severe kidney impairment (SmPC). NSAIDs threaten residual kidney function.",
+    "short": "Avoid",
+    "level": "avoid"
+  },
+  "pd": {
+    "text": "Avoid: contraindicated in severe kidney impairment (SmPC).",
+    "short": "Avoid",
+    "level": "avoid"
+  },
+  "crrt": {
+    "text": "Avoid; NSAIDs worsen acute kidney injury.",
+    "short": "Avoid",
+    "level": "avoid"
+  },
   "dialyzable": "Not stated (99% protein-bound).",
   "monitoring": "Kidney function in surgery, heart failure, diuretic or nephrotoxic co-therapy; stop if kidney function deteriorates. Hemoglobin, creatinine and liver enzymes regularly if used beyond 3 months (SmPC 4.4).",
   "pediatric": {
@@ -39,24 +59,44 @@
     "renal": [
       {
         "range": "eGFR ≥60",
-        "recommendation": "Not established in children; kidney dosing not applicable."
+        "recommendation": "Not established in children; kidney dosing not applicable.",
+        "short": "Not established in children",
+        "level": "hide"
       },
       {
         "range": "eGFR 30–59",
-        "recommendation": "Not established in children; kidney dosing not applicable."
+        "recommendation": "Not established in children; kidney dosing not applicable.",
+        "short": "Not established in children",
+        "level": "hide"
       },
       {
         "range": "eGFR 15–29",
-        "recommendation": "Not established in children; kidney dosing not applicable."
+        "recommendation": "Not established in children; kidney dosing not applicable.",
+        "short": "Not established in children",
+        "level": "hide"
       },
       {
         "range": "eGFR <15 (not on dialysis)",
-        "recommendation": "Not established in children; kidney dosing not applicable."
+        "recommendation": "Not established in children; kidney dosing not applicable.",
+        "short": "Not established in children",
+        "level": "hide"
       }
     ],
-    "hd": "Not established in children; kidney dosing not applicable.",
-    "pd": "Not established in children; kidney dosing not applicable.",
-    "crrt": "Not established in children; kidney dosing not applicable."
+    "hd": {
+      "text": "Not established in children; kidney dosing not applicable.",
+      "short": "Not established in children",
+      "level": "hide"
+    },
+    "pd": {
+      "text": "Not established in children; kidney dosing not applicable.",
+      "short": "Not established in children",
+      "level": "hide"
+    },
+    "crrt": {
+      "text": "Not established in children; kidney dosing not applicable.",
+      "short": "Not established in children",
+      "level": "hide"
+    }
   },
   "sources": [
     {
@@ -77,5 +117,24 @@
       "SmPC 5.2 internally inconsistent on excretion split (50% feces/42% urine vs 2/3 liver, 1/3 kidney)."
     ],
     "pediatric": []
+  },
+  "revision_log": [
+    {
+      "date": "2026-11-17",
+      "finding": 18,
+      "change": "CrCl 15–29 now red 'Avoid (CrCl <30)' (judgment, consistent with etoricoxib and dexketoprofen); chip 'Avoid if CrCl <30'.",
+      "approved_by": "W. G. M. Rivero, MD"
+    },
+    {
+      "date": "2026-11-17",
+      "finding": 66,
+      "change": "Kidney basis gives mg/dL conversions for each serum-creatinine grade.",
+      "approved_by": "W. G. M. Rivero, MD"
+    }
+  ],
+  "strip_review": {
+    "source": "renal-short/lornoxicam.json",
+    "reviewed_by": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "reviewed_date": "2026-11-17"
   }
 }
