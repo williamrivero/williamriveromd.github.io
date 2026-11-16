@@ -510,6 +510,11 @@ def build_record(slug: str, g: dict, label: dict, n_candidates: int, prefer: str
         "product_type": first(of.get("product_type")),
         "generic_name": first(of.get("generic_name")),
         "substance_name": of.get("substance_name") or [],
+        # openFDA pharmacologic classes (public domain; used for the drug-page "At a glance" card)
+        "pharm_class_epc": of.get("pharm_class_epc") or [],
+        "pharm_class_moa": of.get("pharm_class_moa") or [],
+        "pharm_class_pe": of.get("pharm_class_pe") or [],
+        "pharm_class_cs": of.get("pharm_class_cs") or [],
         "innovator": is_innovator(label),
     }
     return {
@@ -838,7 +843,8 @@ def main() -> int:
                 old_meta = None
         new_key = (label.get("set_id", ""), label.get("effective_time", ""))
         old_key = (old_meta.get("set_id"), old_meta.get("effective_time")) if old_meta else None
-        if old_key == new_key and not args.force:
+        # Records written before the pharm_class_* fields existed are rewritten once (silently).
+        if old_key == new_key and not args.force and "pharm_class_epc" in old_meta:
             unchanged += 1
             continue
         rec = build_record(slug, g, label, n_cand, args.prefer, how, ph_routes.get(slug))

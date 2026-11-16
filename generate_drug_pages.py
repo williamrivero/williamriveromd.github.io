@@ -56,7 +56,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/hero-cat-pharmacology.png"
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "1"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "3"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -117,15 +117,31 @@ def classify(c: str) -> str:
 CLASS_LABEL = {"Rx": "Prescription (Rx)", "OTC": "Over-the-counter (OTC)", "HR": "Household remedy (HR)"}
 
 
-def brand_list(products) -> list[str]:
-    """Distinct brand names, case-insensitive, sorted; keeps the most common spelling."""
+_NO_BRAND = {"", "n/a", "na", "none", "unbranded", "un-branded", "non-branded", "-", "--", "not applicable", "no brand", "no brand name", "generic"}
+
+
+def _brand_key(b: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", b.lower()).strip()
+
+
+def brand_list(products, generic_name: str = "", ranked: bool = False) -> list[str]:
+    """Distinct PH brand names (case-insensitive; the most common registered spelling is kept). Blank, "N/A" and
+    brand == generic name are excluded. ranked=True: most products first, then A–Z; otherwise A–Z."""
     seen: dict[str, dict[str, int]] = {}
+    gk = _brand_key(generic_name)
     for p in products:
         b = ws(p.get("brand_name"))
-        if b:
-            seen.setdefault(b.lower(), {}).setdefault(b, 0)
-            seen[b.lower()][b] += 1
-    return [max(v.items(), key=lambda kv: (kv[1], kv[0]))[0] for _, v in sorted(seen.items())]
+        k = _brand_key(b)
+        if not k or b.lower().strip(" .") in _NO_BRAND or k == gk or k == _brand_key(ws(p.get("generic_name"))):
+            continue
+        seen.setdefault(k, {}).setdefault(b, 0)
+        seen[k][b] += 1
+    rows = [(sum(v.values()), max(v.items(), key=lambda kv: (kv[1], kv[0]))[0]) for v in seen.values()]
+    if ranked:
+        rows.sort(key=lambda r: (-r[0], r[1].lower(), r[1]))
+    else:
+        rows.sort(key=lambda r: (r[1].lower(), r[1]))
+    return [b for _, b in rows]
 
 
 def safe_url(u) -> str:
@@ -148,6 +164,8 @@ def unwrap(dataset):
     """Accept {"source", "as_of", "items": {...}} or a bare {slug: ...} mapping."""
     if not isinstance(dataset, dict):
         return {}, {}
+    if isinstance(dataset.get("_meta"), dict):
+        return dataset["_meta"], {k: v for k, v in dataset.items() if k != "_meta"}
     if isinstance(dataset.get("items"), dict):
         meta = {k: v for k, v in dataset.items() if k != "items"}
         return meta, dataset["items"]
@@ -375,6 +393,38 @@ ul.dd-list a:hover { text-decoration: underline; }
 mark.dd-hl { background: #fff1b8; color: inherit; border-radius: 3px; padding: 0 1px; }
 .dd-results { margin: 14px 0; }
 .disclaimer a, .dd-acc-body a, .dd-kidney a, .dd-note a { color: #1a6b72; font-weight: 600; word-break: break-word; }
+/* Brands line under the h1 */
+.dd-brands { font-size: 14px; line-height: 1.7; color: #34455f; margin: -4px 0 10px; }
+.dd-brands strong { color: #1f3864; }
+.dd-brands a.dd-brand-link { color: #1f3864; text-decoration: none; border-bottom: 1px dotted rgba(31,56,100,.5); font-weight: 600; }
+.dd-brands a.dd-brand-link:hover { border-bottom-style: solid; }
+.dd-brands-more { display: inline; }
+.dd-brands-more > summary { display: inline; cursor: pointer; list-style: none; font-weight: 700; color: #0e4a50; margin-left: 6px; }
+.dd-brands-more > summary::-webkit-details-marker { display: none; }
+.dd-brands-more[open] > summary { display: none; }
+.dd-brands-rest::before { content: " · "; }
+/* At a glance card */
+.dd-glance { margin: 36px 0 0; background: var(--white); border: 1px solid #c9d3e3; border-top: 4px solid #1f3864;
+  border-radius: 14px; padding: 18px 22px 8px; box-shadow: 0 1px 3px rgba(31,56,100,.06); }
+.dd-glance h2 { font-family: 'Inter', sans-serif; font-size: 20px; color: var(--navy); margin: 0 0 6px; }
+.dd-glance-dl { margin: 0; }
+.dd-glance-row { display: grid; grid-template-columns: 190px 1fr; gap: 16px; padding: 11px 0; border-top: 1px solid var(--border); }
+.dd-glance-row:first-child { border-top: 0; }
+.dd-glance dt { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #1f3864; padding-top: 2px; }
+.dd-glance dd { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--text-mid); }
+.dd-glance a { color: #1a6b72; font-weight: 600; }
+ul.dd-glance-list { margin: 0 0 4px 18px; padding: 0; }
+ul.dd-glance-list li { margin: 2px 0; }
+.dd-src { display: inline-block; font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 6px; padding: 0 6px; margin-left: 2px; white-space: normal; }
+.dd-glance-sub { display: block; font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+.dd-sev { font-size: 11px; font-weight: 700; color: #7a1d1d; background: #fdecec; border-radius: 6px; padding: 0 6px; }
+ul.dd-srclist { margin: 4px 0 8px 18px; }
+ul.dd-srclist li { margin: 2px 0; overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  .dd-glance { padding: 14px 16px 6px; }
+  .dd-glance-row { grid-template-columns: 1fr; gap: 4px; }
+}
 .dd-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .dd-letter.dd-kempty, .dd-letter.dd-hidden { display: none !important; }
 #dd-alpha.dd-hidden { display: none !important; }
@@ -457,6 +507,16 @@ html[data-theme="dark"] mark.dd-hl { background: #5c4a00; color: #fff; }
 html[data-theme="dark"] .dd-attrib, html[data-theme="dark"] .dd-acc-body { color: var(--text-mid); }
 html[data-theme="dark"] .disclaimer a, html[data-theme="dark"] .dd-acc-body a, html[data-theme="dark"] .dd-kidney a,
 html[data-theme="dark"] .dd-note a { color: #7fd3da; }
+html[data-theme="dark"] .dd-brands { color: rgba(238,242,251,.82); }
+html[data-theme="dark"] .dd-brands strong, html[data-theme="dark"] .dd-brands a.dd-brand-link { color: #eef2fb; border-bottom-color: rgba(238,242,251,.5); }
+html[data-theme="dark"] .dd-brands-more > summary { color: #7fd3da; }
+html[data-theme="dark"] .dd-glance { background: #1a2535; border-color: #2c3a52; border-top-color: #6f8fd0; box-shadow: none; }
+html[data-theme="dark"] .dd-glance h2 { color: #eef2fb; }
+html[data-theme="dark"] .dd-glance-row { border-color: #2a3548; }
+html[data-theme="dark"] .dd-glance dt { color: #b9c9ea; }
+html[data-theme="dark"] .dd-glance a { color: #7fd3da; }
+html[data-theme="dark"] .dd-src { background: #141c2a; border-color: #2c3a52; color: #b4bfcf; }
+html[data-theme="dark"] .dd-sev { color: #fecaca; background: rgba(248,113,113,.16); }
 html[data-theme="dark"] .dd-kidney { background: #10232a; border-color: #23414a; border-left-color: #2ba8b0; }
 html[data-theme="dark"] .dd-kidney h2 { color: #eef2fb; }
 html[data-theme="dark"] .dd-kidney-head .section-tag, html[data-theme="dark"] .dd-kidney-src,
@@ -504,6 +564,11 @@ if(top)window.addEventListener('scroll',function(){top.classList.toggle('visible
 
 function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
 
+/* ── Open a label accordion when linked to (e.g. "Full indications") ── */
+function openFromHash(h){var el=h&&document.getElementById(h.replace(/^#/,''));if(el&&el.tagName==='DETAILS'){el.open=true;}}
+document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#label-"]');if(a)openFromHash(a.getAttribute('href'));});
+openFromHash(location.hash);
+
 /* ── Product table: text filter, class filter, hide-past-validity, column sort ── */
 var tbl=document.getElementById('dd-products');
 if(tbl){
@@ -538,6 +603,14 @@ if(tbl){
   });
   if(sortSel)sortSel.addEventListener('change',function(){var v=sortSel.value.split(':');sortBy(+v[0],+v[1]);});
   filter();
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a.dd-brand-link'); if(!a||!q)return;
+    e.preventDefault();
+    if(cls)cls.value=''; if(past)past.checked=false;
+    q.value=a.getAttribute('data-brand'); filter();
+    var sec=document.getElementById('products'); if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});
+    try{history.replaceState(null,'','#products');}catch(err){}
+  });
 }
 
 /* ── Drug Index: A–Z filter + brand/generic search over search-index.json ── */
@@ -753,6 +826,10 @@ class Ctx:
 
     def label(self, slug):
         return load_json(self.labels_dir / f"{slug}.json") if self.labels_dir.is_dir() else None
+
+    def summary(self, slug):
+        d = self.data_dir / "summary"
+        return load_json(d / f"{slug}.json") if d.is_dir() else None
 
     def renal(self, slug):
         return load_json(self.renal_dir / f"{slug}.json") if self.renal_dir.is_dir() else None
@@ -972,7 +1049,8 @@ added to the database yet. Check the Philippine package insert in the product ta
         open_ = " open" if (boxed or first) else ""
         if not boxed:
             first = False
-        accs.append(f'<details class="dd-acc{" dd-boxed" if boxed else ""}"{open_}><summary>{esc(heading)}</summary>'
+        aid = "label-" + re.sub(r"[^a-z0-9]+", "-", heading.lower()).strip("-")
+        accs.append(f'<details class="dd-acc{" dd-boxed" if boxed else ""}" id="{aid}"{open_}><summary>{esc(heading)}</summary>'
                     f'<div class="dd-acc-body">{body}</div></details>')
     if not accs:
         return head_ + attrib + '<div class="dd-placeholder">Label not yet available for the sections shown here.</div>\n</section>\n'
@@ -1141,39 +1219,71 @@ def _entries(v):
     return v if isinstance(v, list) else [v]
 
 
+def _linkify_source(src: str) -> str:
+    """'Title; https://url' → escaped title with the URL as a link."""
+    m = re.search(r"(https?://\S+)\s*$", src)
+    if not m:
+        return esc(src)
+    title = src[:m.start()].rstrip(" ;,")
+    return f'{esc(title)}; <a href="{esc(m.group(1))}" rel="noopener" target="_blank">{esc(m.group(1))}</a>'
+
+
 def render_price_block(slug, g, ctx: Ctx) -> str:
     parts = []
-    # Reference prices (e.g. DPRI)
+    # Government price references (DOH DPRI, PhilHealth GAMOT fixed fees) — not retail prices
     pe = [e for e in _entries(ctx.prices.get(slug)) if isinstance(e, dict)]
     if pe:
-        src = ws(pe[0].get("source") or ctx.price_meta.get("source")) or "Reference price list"
-        asof = us_date_str(pe[0].get("as_of") or ctx.price_meta.get("as_of"))
-        surl = safe_url(pe[0].get("source_url") or ctx.price_meta.get("source_url"))
-        trs = "".join(f'<tr><td>{esc(e.get("product") or e.get("description") or e.get("strength_form") or "")}</td>'
-                      f'<td>{esc(peso(e.get("price")))}</td><td>{esc(e.get("unit") or "")}</td></tr>' for e in pe)
-        parts.append('<h3>Reference prices</h3><div class="table-wrap"><table class="drug-table"><thead><tr><th>Product / strength</th>'
-                     f'<th>Price</th><th>Unit</th></tr></thead><tbody>{trs}</tbody></table></div>'
-                     f'<p class="dd-note">Source: {f"<a href={chr(34)}{esc(surl)}{chr(34)} rel=noopener target=_blank>{esc(src)}</a>" if surl else esc(src)}'
-                     f'{", as of " + esc(asof) if asof else ""}.</p>')
-    # Formulary
+        TYPES = {"dpri_range": "DPRI procurement range", "dpri_reference": "DPRI reference price",
+                 "philhealth_gamot_fixed_fee": "PhilHealth GAMOT fixed fee"}
+        trs, srcs = [], {}
+        for e in sorted(pe, key=lambda e: (ws(e.get("price_type")), _num(ws(e.get("dosage_form_strength"))), ws(e.get("dosage_form_strength")))):
+            lo, hi = e.get("price_low", e.get("price")), e.get("price_high", e.get("price_low", e.get("price")))
+            price = peso(lo) if lo == hi or hi is None else f"{peso(lo)}–{peso(hi)}"
+            ref = e.get("reference_price")
+            src = ws(e.get("source"))
+            if src:
+                srcs.setdefault(src, us_date_str(e.get("source_date") or e.get("as_of")))
+            trs.append(f'<tr><td>{esc(e.get("dosage_form_strength") or e.get("product") or e.get("description") or "")}</td>'
+                       f'<td>{esc(price)}{"<span class=dd-sub>Reference " + esc(peso(ref)) + "</span>" if ref not in (None, "") and e.get("price_type") == "dpri_range" else ""}</td>'
+                       f'<td>{esc(e.get("unit") or "")}</td><td>{esc(TYPES.get(ws(e.get("price_type")), ws(e.get("price_type"))))}</td></tr>')
+        notes = []
+        for e in pe:
+            for n in e.get("notes") or []:
+                if ws(n) and ws(n) not in notes:
+                    notes.append(ws(n))
+        src_html = "".join(f"<li>{_linkify_source(k)}{', as of ' + esc(v) if v else ''}</li>" for k, v in srcs.items())
+        parts.append('<h3>Government price references</h3><div class="table-wrap"><table class="drug-table"><thead><tr>'
+                     f'<th>Preparation</th><th>Price (PHP)</th><th>Unit</th><th>Type</th></tr></thead><tbody>{"".join(trs)}</tbody></table></div>'
+                     + (f'<p class="dd-note">{esc(" ".join(notes))}</p>' if notes else "")
+                     + f'<p class="dd-note">These are government procurement and reimbursement references, not retail prices. Sources:</p><ul class="dd-note dd-srclist">{src_html}</ul>')
+    # Formulary (PNF / PhilHealth GAMOT)
     pnf = ctx.pnf.get(slug)
-    if isinstance(pnf, dict) and (pnf.get("listed", True)):
-        rows = []
-        for k, lab in (("edition", "Edition"), ("section", "Section"), ("category", "Category"), ("dosage_forms", "Listed forms"),
-                       ("restrictions", "Restrictions"), ("remarks", "Remarks"), ("philhealth", "PhilHealth")):
-            v = pnf.get(k)
-            if v in (None, "", []):
+    if isinstance(pnf, dict) and (pnf.get("in_pnf") or pnf.get("listed") or pnf.get("philhealth_gamot") is not None):
+        rows, srcs = [], {}
+        if pnf.get("in_pnf") or pnf.get("listed"):
+            names = "; ".join(map(ws, pnf.get("pnf_names") or []))
+            rows.append(f"<tr><td>Philippine National Formulary</td><td>Listed{' as ' + esc(names) if names else ''}</td></tr>")
+        for e in pnf.get("pnf_entries") or []:
+            if not isinstance(e, dict):
                 continue
-            if isinstance(v, bool):
-                v = "Yes" if v else "No"
-            if isinstance(v, list):
-                v = "; ".join(map(ws, v))
-            rows.append(f"<tr><td>{lab}</td><td>{esc(v)}</td></tr>")
-        src = ws(pnf.get("source") or ctx.pnf_meta.get("source")) or "Philippine National Formulary"
-        asof = us_date_str(pnf.get("as_of") or ctx.pnf_meta.get("as_of"))
-        parts.append('<h3>Philippine National Formulary</h3><p>Listed in the Philippine National Formulary (PNF).</p>'
-                     + (f'<div class="table-wrap"><table class="drug-table"><tbody>{"".join(rows)}</tbody></table></div>' if rows else "")
-                     + f'<p class="dd-note">Source: {esc(src)}{", as of " + esc(asof) if asof else ""}.</p>')
+            notes = "; ".join(map(ws, e.get("restriction_notes") or []))
+            rows.append(f'<tr><td>PNF listing</td><td>{esc(e.get("dosage_form_strength"))}'
+                        + (f'<span class="dd-sub">Restrictions: {esc(notes)}</span>' if notes else "") + "</td></tr>")
+            if ws(e.get("source")):
+                srcs.setdefault(ws(e["source"]), us_date_str(e.get("source_date")))
+        if pnf.get("philhealth_gamot") is not None:
+            g_ = "Yes" if pnf["philhealth_gamot"] else "No"
+            if pnf.get("philhealth_gamot") and pnf.get("gamot_listed_since"):
+                g_ += f" (listed since {us_date_str(pnf['gamot_listed_since'])})"
+            rows.append(f"<tr><td>PhilHealth GAMOT</td><td>{esc(g_)}</td></tr>")
+            if ws(pnf.get("gamot_source")):
+                srcs.setdefault(ws(pnf["gamot_source"]), "")
+        if pnf.get("konsulta_yakap"):
+            rows.append("<tr><td>PhilHealth YAKAP (formerly Konsulta)</td><td>Yes</td></tr>")
+        src_html = "".join(f"<li>{_linkify_source(k)}{', as of ' + esc(v) if v else ''}</li>" for k, v in srcs.items())
+        parts.append('<h3>Formulary and coverage</h3>'
+                     f'<div class="table-wrap"><table class="drug-table"><tbody>{"".join(rows)}</tbody></table></div>'
+                     + (f'<p class="dd-note">Sources:</p><ul class="dd-note dd-srclist">{src_html}</ul>' if src_html else ""))
     # Retail checks + pharmacy deep links
     re_rows = [e for e in _entries(ctx.retail.get(slug)) if isinstance(e, dict)]
     if re_rows:
@@ -1207,6 +1317,358 @@ def render_price_block(slug, g, ctx: Ctx) -> str:
             '<h2>Price, formulary, and availability</h2>\n' + "\n".join(parts) + "\n</section>\n")
 
 
+# ═════════════════════════════════════════════════════════════════════════════
+# "At a glance" card (class, indications, mechanism, PH availability, formulary)
+# ═════════════════════════════════════════════════════════════════════════════
+_ACRONYM = re.compile(r"^[A-Z0-9][A-Z0-9-]*[A-Z0-9]$|[a-z][A-Z]|^[A-Z]{2,}")
+
+
+def sentence_case(t: str) -> str:
+    """Lowercase ordinary words, keep acronyms/mixed-case tokens (ACE, HMG-CoA, NSAID), capitalize the first letter."""
+    words = ws(t).split(" ")
+    out = []
+    for w in words:
+        core = re.sub(r"[^A-Za-z0-9-]", "", w)
+        out.append(w if (core and _ACRONYM.search(core)) else w.lower())
+    r = " ".join(out)
+    return r[:1].upper() + r[1:] if r else r
+
+
+def ph_categories(products, g) -> list[str]:
+    """PH FDA pharmacologic categories, de-duplicated case-insensitively, collapsed to the most specific variant,
+    most frequent first, sentence case."""
+    counts: dict[str, int] = {}
+    shown: dict[str, str] = {}
+    for c in [p.get("pharmacologic_category") for p in products] or (g.get("categories") or []):
+        c = ws(c).rstrip(" .;")
+        if not c:
+            continue
+        k = re.sub(r"[^a-z0-9]+", " ", c.lower()).strip()
+        k = " ".join(w[:-1] if len(w) > 3 and w.endswith("s") and not w.endswith("ss") else w for w in k.split())
+        counts[k] = counts.get(k, 0) + 1
+        shown.setdefault(k, c)
+    keys = sorted(counts, key=lambda k: (-counts[k], k))
+    kept: list[str] = []
+    for k in keys:
+        if any(o != k and o.startswith(k) for o in counts):      # a more specific variant exists
+            continue
+        kept.append(k)
+    # fold counts of generic prefixes into their specific variant for ordering
+    score = {k: counts[k] + sum(counts[o] for o in counts if o != k and k.startswith(o)) for k in kept}
+    kept.sort(key=lambda k: (-score[k], k))
+    return [sentence_case(shown[k]) for k in kept]
+
+
+def us_classes(label) -> dict:
+    if not isinstance(label, dict):
+        return {}
+    lm = label.get("label") if isinstance(label.get("label"), dict) else {}
+    of = label.get("openfda") if isinstance(label.get("openfda"), dict) else {}
+    out = {}
+    for k in ("epc", "moa", "pe", "cs"):
+        v = lm.get(f"pharm_class_{k}") or of.get(f"pharm_class_{k}") or []
+        v = [re.sub(r"\s*\[(EPC|MoA|PE|CS|Chemical/Ingredient)\]\s*$", "", ws(x)) for x in (v if isinstance(v, list) else [v])]
+        v = list(dict.fromkeys(x for x in v if x))
+        if v:
+            out[k] = v
+    return out
+
+
+_SECT_HEAD = re.compile(r"^\s*\d+(\.\d+)?\s+(INDICATIONS\s*(AND|&)\s*USAGE|MECHANISM OF ACTION|Mechanism of Action)\s*", re.I)
+_SENT_END = re.compile(r"(?<!\be\.g)(?<!\bi\.e)(?<!\bvs)(?<![A-Z])\.\s+(?=[A-Z(•])")
+
+
+def _first_sentence(t: str, limit=240) -> str:
+    t = ws(t)
+    m = _SENT_END.search(t)
+    if m:
+        t = t[:m.start() + 1]
+    if len(t) > limit:
+        t = t[:limit].rsplit(" ", 1)[0].rstrip(",;:") + "…"
+    return t
+
+
+def _section_text(label, keys) -> str:
+    if not isinstance(label, dict):
+        return ""
+    secs = label_sections(label)
+    for k in keys:
+        v = secs.get(k)
+        if isinstance(v, list):
+            v = "\n\n".join(map(str, v))
+        if isinstance(v, dict):
+            v = v.get("text") or re.sub(r"<[^>]+>", " ", v.get("html") or "")
+        if v and ws(v):
+            return str(v)
+    return ""
+
+
+def indication_items(label) -> list[str]:
+    """Compact, verbatim-derived list of indications from indications_and_usage."""
+    raw = _section_text(label, ("indications_and_usage", "indications"))
+    if not raw:
+        return []
+    t = _SECT_HEAD.sub("", ws(raw))
+    t = re.split(r"\bLimitations? of Use\b", t)[0]
+    items: list[str] = []
+
+    def add(x):
+        x = ws(x).strip(" •o:;,-")
+        x = re.sub(r"^(o|•)\s+", "", x)
+        if len(x) < 3:
+            return
+        x = _first_sentence(x, 220)
+        if x.lower() not in {i.lower() for i in items}:
+            items.append(x)
+
+    # (a) Highlights style: "... ( 1.1 )" markers
+    marks = list(re.finditer(r"\(\s*1(?:\.\d+)?\s*\)", t))
+    if marks:
+        prev = 0
+        for m in marks:
+            seg = t[prev:m.start()]
+            prev = m.end()
+            if "•" in seg:
+                seg = seg.rsplit("•", 1)[1]
+            elif ":" in seg[:200] and re.search(r"indicated[^:]{0,80}:", seg):
+                seg = re.split(r"indicated[^:]{0,80}:", seg, maxsplit=1)[1]
+            add(seg)
+        if items:
+            return items[:8]
+    # (b) bullet list
+    if "•" in t:
+        for seg in t.split("•")[1:]:
+            seg = re.split(r"\s\d\.\d+\s+[A-Z]", seg)[0]        # stop at the next numbered subsection
+            seg = re.sub(r"\s+o\s+", "; ", seg)
+            add(seg)
+        if items:
+            return items[:8]
+    # (c) numbered subsections "1.1 Hypertension ..."
+    for m in re.finditer(r"(?:^|\s)1\.(\d+)\s+((?:[A-Z][\w'’/-]*|of|and|in|with|the|for|or|to|\([^)]{1,40}\))(?:\s+(?:[A-Z][\w'’/-]*|of|and|in|with|the|for|or|to|\([^)]{1,40}\))){0,8})", t):
+        head = re.sub(r"\s+[A-Z]{3,}\b.*$", "", m.group(2))      # cut at an ALL-CAPS brand name
+        add(head)
+    if items:
+        return items[:8]
+    # (d) "indicated for: The management of … The management of …" (repeated lead phrase)
+    m = re.search(r"indicated[^:]{0,80}:\s*", t)
+    if m:
+        after = t[m.end():]
+        lead = " ".join(after.split()[:3])
+        if lead and after.count(lead) >= 2:
+            for seg in after.split(lead)[1:]:
+                add(lead + seg)
+            if items:
+                return items[:8]
+    # (e) first sentence of the section
+    add(t)
+    return items[:1]
+
+
+def mechanism_text(label) -> str:
+    raw = _section_text(label, ("mechanism_of_action",))
+    if not raw:
+        return ""
+    t = _SECT_HEAD.sub("", ws(raw.split("\n\n")[0]))
+    t = re.sub(r"^\s*12\.1\s+Mechanism of Action\s*", "", t, flags=re.I)
+    sents, rest = [], t
+    for _ in range(2):
+        m = _SENT_END.search(rest)
+        if not m:
+            sents.append(rest)
+            break
+        sents.append(rest[:m.start() + 1])
+        rest = rest[m.end():]
+    out = " ".join(x.strip() for x in sents if x.strip())
+    return out if len(out) <= 520 else out[:520].rsplit(" ", 1)[0] + "…"
+
+
+_UNIT = r"(?:mg|mcg|µg|μg|g|kg|mL|ml|L|IU|I\.U\.|units?|U|%|mmol|mEq|mOsm|million|billion|CFU|ppm)"
+_STRENGTH = re.compile(r"\d[\d.,]*\s*" + _UNIT + r"\b(?:\s*(?:/|per)\s*(?:\d[\d.,]*\s*)?(?:" + _UNIT + r"|tablet|capsule|dose|actuation|spray|drop|sachet|vial|ampule|kg|hr|h|24 hours)\b)?", re.I)
+_FORM_FIX = {"tab": "tablet", "tabs": "tablet", "cap": "capsule", "caps": "capsule"}
+
+
+def _norm_form(form: str) -> str:
+    k = ws(form.lower())
+    k = re.sub(r"\b(film|enteric|sugar)\s*-?\s*coated\b", r"\1-coated", k)
+    k = re.sub(r"\b(extended|sustained|prolonged|modified|delayed|controlled)\s*-?\s*release[ds]?\b", r"\1-release", k)
+    k = re.sub(r"\borally\s+disintegrating\b", "orally disintegrating", k)
+    k = re.sub(r"\btab[a-z]{0,4}\b", "tablet", k)          # tab, tabs, tablets, tabelt, tabler
+    k = re.sub(r"\bcaps?\b|\bcapsules\b", "capsule", k)
+    k = re.sub(r"\b(capsule|sachet|vial|ampule|ampoule|suppositor(?:y|ies)|patch|lozenge|granule)s\b", r"\1", k)
+    return _FORM_FIX.get(k, k)
+
+
+def _norm_strength(s: str) -> str:
+    s = re.sub(r"(\d)\s*(?=[A-Za-zµμ%])", r"\1 ", ws(s))
+    s = re.sub(r"\s*/\s*", "/", s)
+    s = re.sub(r"\bml\b", "mL", s)
+    return s
+
+
+def _num(s):
+    m = re.search(r"\d[\d.,]*", s)
+    try:
+        return float(m.group(0).replace(",", "")) if m else 0.0
+    except ValueError:
+        return 0.0
+
+
+def available_forms(products) -> list[tuple[str, list[str], int]]:
+    """[(form, [strengths], n_products)] from dosage_strength_form, most common form first."""
+    forms: dict[str, dict] = {}
+    for p in products:
+        dsf = ws(p.get("dosage_strength_form"))
+        if not dsf:
+            continue
+        ms = list(_STRENGTH.finditer(dsf))
+        if ms:
+            strength = dsf[ms[0].start():ms[-1].end()]
+            form = dsf[ms[-1].end():]
+            if not ws(form):
+                form = dsf[:ms[0].start()]
+        else:
+            strength, form = "", dsf
+        form = ws(re.sub(r"^[\s,/+-]+|[\s.,;]+$", "", form))
+        form = re.sub(r"\(.*?\)", "", form).strip()
+        if not form or len(form) > 60 or re.search(r"\d", form):
+            continue
+        key = _norm_form(form)
+        f = forms.setdefault(key, {"label": sentence_case(key), "strengths": {}, "n": 0})
+        f["n"] += 1
+        if strength:
+            st = _norm_strength(strength)
+            f["strengths"].setdefault(st.lower(), st)
+    out = []
+    for key, f in sorted(forms.items(), key=lambda kv: (-kv[1]["n"], kv[0])):
+        sts = sorted(f["strengths"].values(), key=lambda x: (_num(x), x))
+        out.append((f["label"], sts, f["n"]))
+    return out
+
+
+def _price_range(entries, kind) -> str:
+    rows = [e for e in entries if isinstance(e, dict) and ws(e.get("price_type")).startswith(kind)
+            and isinstance(e.get("price_low"), (int, float))]
+    if not rows:
+        return ""
+    by_unit: dict[str, list] = {}
+    for e in rows:
+        by_unit.setdefault(ws(e.get("unit")) or "per unit", []).append(e)
+    unit, rs = max(by_unit.items(), key=lambda kv: len(kv[1]))
+    lo = min(e["price_low"] for e in rs)
+    hi = max(e.get("price_high") if isinstance(e.get("price_high"), (int, float)) else e["price_low"] for e in rs)
+    rng = peso(lo) if lo == hi else f"{peso(lo)}–{peso(hi)}"
+    return f"{rng} {unit}"
+
+
+def summary_approved(summ) -> bool:
+    return isinstance(summ, dict) and ws(summ.get("review_status")).lower() == "approved"
+
+
+def render_glance(slug, g, products, label, ctx: Ctx, classes, brands) -> str:
+    rows: list[tuple[str, str]] = []
+    uc = us_classes(label)
+    ph = ph_categories(products, g)
+    cls_bits = []
+    if uc.get("epc"):
+        cls_bits.append(f'{esc("; ".join(uc["epc"]))} <span class="dd-src">US FDA established pharmacologic class</span>')
+    if uc.get("moa"):
+        cls_bits.append(f'{esc("; ".join(uc["moa"]))} <span class="dd-src">mechanism class (US FDA)</span>')
+    if uc.get("cs"):
+        cls_bits.append(f'{esc("; ".join(uc["cs"]))} <span class="dd-src">chemical structure (US FDA)</span>')
+    if ph:
+        cls_bits.append(f'{esc("; ".join(ph[:3]))} <span class="dd-src">PH FDA pharmacologic category</span>')
+
+    lm = label.get("label") if isinstance(label, dict) and isinstance(label.get("label"), dict) else {}
+    us_brand = ws(lm.get("brand_name"))
+    if us_brand and _brand_key(us_brand) not in {_brand_key(b) for b in brands} and _brand_key(us_brand) != _brand_key(g.get("name", "")):
+        cls_bits.append(f'US brand: {esc(us_brand)} <span class="dd-src">US label brand; not registered in the PH</span>')
+    if cls_bits:
+        rows.append(("Drug class", "<br>".join(cls_bits)))
+    inds = indication_items(label)
+    pi = next((x for p in products for x in (p.get("pi_links") or [])
+               if isinstance(x, dict) and safe_url(x.get("file_link"))), None)
+    if inds:
+        rows.append(("Indications", '<ul class="dd-glance-list">' + "".join(f"<li>{esc(i)}</li>" for i in inds) + "</ul>"
+                     '<span class="dd-src">US FDA label</span> · <a href="#label-indications-and-usage" class="dd-open-acc">Full indications</a>'))
+    else:
+        rows.append(("Indications", "See the Philippine package insert"
+                     + (f' (<a href="{esc(pi["file_link"])}" rel="noopener nofollow" target="_blank">open a package insert</a>).' if pi
+                        else '; package inserts are linked in the <a href="#products">product table</a> where the FDA has published one.')))
+
+    moa = mechanism_text(label)
+    if moa:
+        rows.append(("Mechanism of action", f'{esc(moa)} <span class="dd-src">US FDA label</span>'))
+
+    forms = available_forms(products)
+    if forms:
+        parts = []
+        for lab, sts, n in forms[:6]:
+            sts_txt = ", ".join(sts[:8]) + (", …" if len(sts) > 8 else "")
+            parts.append(f"{esc(lab)}{' ' + esc(sts_txt) if sts_txt else ''}")
+        more = f"; and {len(forms) - 6} more form{'s' if len(forms) - 6 != 1 else ''}" if len(forms) > 6 else ""
+        cl = (" · ".join(CLASS_LABEL.get(c, c) for c in sorted(classes))) if classes else ""
+        rows.append(("Available in the Philippines",
+                     "; ".join(parts) + more + '<span class="dd-glance-sub">'
+                     + (esc(cl) + " · " if cl else "")
+                     + f'{len(brands):,} brand name{"s" if len(brands) != 1 else ""} · {len(products):,} registered product{"s" if len(products) != 1 else ""}</span>'))
+
+    pnf = ctx.pnf.get(slug)
+    form_bits = []
+    if isinstance(pnf, dict) and pnf.get("in_pnf", pnf.get("listed", False)):
+        notes = []
+        for e in pnf.get("pnf_entries") or []:
+            for n in e.get("restriction_notes") or []:
+                if ws(n) and ws(n) not in notes:
+                    notes.append(ws(n))
+        listed = "; ".join(ws(e.get("dosage_form_strength")) for e in (pnf.get("pnf_entries") or []) if ws(e.get("dosage_form_strength")))
+        form_bits.append("<strong>PNF:</strong> listed" + (f" ({esc(listed)})" if listed else "")
+                         + (f'. Restrictions: {esc("; ".join(notes))}' if notes else ""))
+    if isinstance(pnf, dict) and pnf.get("philhealth_gamot") is True:
+        form_bits.append("<strong>PhilHealth GAMOT:</strong> yes" + (" (also YAKAP)" if pnf.get("konsulta_yakap") else ""))
+    elif isinstance(pnf, dict) and pnf.get("philhealth_gamot") is False:
+        form_bits.append("<strong>PhilHealth GAMOT:</strong> no")
+    pe = _entries(ctx.prices.get(slug))
+    dpri = _price_range(pe, "dpri")
+    if dpri:
+        form_bits.append(f"<strong>DOH price reference (DPRI 2021):</strong> {esc(dpri)}")
+    fee = _price_range(pe, "philhealth_gamot")
+    if fee:
+        form_bits.append(f"<strong>GAMOT fixed fee:</strong> {esc(fee)}")
+    if form_bits:
+        rows.append(("Formulary", "<br>".join(form_bits) + ' · <a href="#price">Details and sources</a>'))
+
+    summ = ctx.summary(slug)
+    if summary_approved(summ):
+        dose = [d for d in summ.get("usual_adult_dose") or [] if isinstance(d, dict)]
+        if dose:
+            rows.append(("Usual adult dose", '<ul class="dd-glance-list">' + "".join(
+                f'<li>{"<strong>" + esc(d.get("indication")) + ":</strong> " if ws(d.get("indication")) else ""}{esc(d.get("dose"))}</li>' for d in dose) + "</ul>"))
+        ki = [d for d in summ.get("key_interactions") or [] if isinstance(d, dict)]
+        if ki:
+            rows.append(("Key interactions", '<ul class="dd-glance-list">' + "".join(
+                f'<li><strong>{esc(d.get("drug_or_class"))}</strong>'
+                + (f' <span class="dd-sev">{esc(d.get("severity"))}</span>' if ws(d.get("severity")) else "")
+                + f': {esc(d.get("effect"))}' + (f' {esc(d.get("action"))}' if ws(d.get("action")) else "") + "</li>" for d in ki) + "</ul>"))
+        ae = summ.get("adverse_effects") if isinstance(summ.get("adverse_effects"), dict) else {}
+        if ae.get("common") or ae.get("serious"):
+            rows.append(("Common and serious adverse effects",
+                         (f'<strong>Common:</strong> {esc("; ".join(map(ws, ae.get("common") or [])))}' if ae.get("common") else "")
+                         + ("<br>" if ae.get("common") and ae.get("serious") else "")
+                         + (f'<strong>Serious:</strong> {esc("; ".join(map(ws, ae.get("serious") or [])))}' if ae.get("serious") else "")))
+        if summ.get("contraindications"):
+            rows.append(("Contraindications", esc("; ".join(map(ws, summ["contraindications"])))))
+        by, on = ws(summ.get("reviewed_by")), us_date_str(summ.get("reviewed_date"))
+        if by or on:
+            rows.append(("Reviewed", f'renalcarematters.com summary{", reviewed by " + esc(by) if by else ""}{" on " + esc(on) if on else ""}.'))
+
+    if not rows:
+        return ""
+    body = "".join(f'<div class="dd-glance-row"><dt>{esc(a)}</dt><dd>{b}</dd></div>' for a, b in rows)
+    return ('<section class="dd-glance" id="at-a-glance" aria-labelledby="glance-h">\n'
+            '<h2 id="glance-h">At a glance</h2>\n'
+            f'<dl class="dd-glance-dl">{body}</dl>\n</section>\n')
+
+
 DISCLAIMER = """
 <section class="section" id="disclaimer">
 <div class="disclaimer" role="note"><strong>For health professionals.</strong> This page is a reference compiled from public
@@ -1218,17 +1680,26 @@ judgment and does not replace the prescribing information approved for the speci
 """
 
 
+def render_brand_line(brands: list[str], shown: int = 12) -> str:
+    if not brands:
+        return '<p class="dd-brands"><strong>Brands:</strong> none registered under a distinct brand name (generic name only).</p>'
+    link = lambda b: f'<a class="dd-brand-link" href="#products" data-brand="{esc(b)}">{esc(b)}</a>'
+    head_, rest = brands[:shown], brands[shown:]
+    more = ""
+    if rest:
+        more = (f'<details class="dd-brands-more"><summary>+{len(rest):,} more</summary>'
+                f'<span class="dd-brands-rest">{" · ".join(link(b) for b in rest)}</span></details>')
+    return (f'<div class="dd-brands"><strong>Brands:</strong> {" · ".join(link(b) for b in head_)}{more}</div>')
+
+
 def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict]:
     products = ctx.by_slug.get(slug, [])
     name = ws(g.get("name")) or slug
-    cats = []
-    for c in (g.get("categories") or []):
-        c = ws(c)
-        if c and c.lower().rstrip(".") not in {x.lower().rstrip(".") for x in cats}:
-            cats.append(c.rstrip("."))
+    cats = ph_categories(products, g)
     cat = cats[0] if cats else ""
     classes = {classify(p.get("classification")) for p in products} - {""}
-    brands = brand_list(products)
+    brands = brand_list(products, name)
+    brands_ranked = brand_list(products, name, ranked=True)
     vat_n = sum(1 for p in products if p.get("vat_exempt"))
     label = ctx.label(slug)
     renal = ctx.renal(slug)
@@ -1246,19 +1717,20 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict]:
         chips.insert(0, f'<span class="dd-chip dd-kchip">{KIDNEY_ICON}{esc(kc)}</span>')
     chips.append(f'<span class="dd-chip">{len(products):,} PH product{"s" if len(products) != 1 else ""}</span>')
     chips.append(f'<span class="dd-chip">{len(brands):,} brand name{"s" if len(brands) != 1 else ""}</span>')
-    if isinstance(pnf, dict) and pnf.get("listed", True):
+    if isinstance(pnf, dict) and pnf.get("in_pnf", pnf.get("listed", False)):
         chips.append('<span class="dd-chip dd-good">PNF-listed</span>')
-        if pnf.get("philhealth") is True:
-            chips.append('<span class="dd-chip dd-good">PhilHealth-covered</span>')
+    if isinstance(pnf, dict) and (pnf.get("philhealth_gamot") is True or pnf.get("philhealth") is True):
+        chips.append('<span class="dd-chip dd-good">PhilHealth GAMOT</span>')
     if vat_n:
         chips.append(f'<span class="dd-chip dd-good">VAT-exempt{"" if vat_n == len(products) else " (some products)"}</span>')
 
     ingredients = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
     combo = len(ingredients) > 1
-    sub = (f"{esc(' / '.join(cats[:2]))}{' and others' if len(cats) > 2 else ''}." if cats else "") + (" Fixed-dose combination." if combo else "")
+    sub = (f"{esc('; '.join(cats[:2]))}{'; and others' if len(cats) > 2 else ''}." if cats else "") + (" Fixed-dose combination." if combo else "")
     price_html = render_price_block(slug, g, ctx)
     kidney_html = render_kidney_panel(label, renal)
-    pills = [("#kidney-dosing", "Kidney dosing"), ("#products", "Philippine products"), ("#label", "Prescribing information")]
+    glance_html = render_glance(slug, g, products, label, ctx, classes, brands)
+    pills = ([("#at-a-glance", "At a glance")] if glance_html else []) + [("#kidney-dosing", "Kidney dosing"), ("#products", "Philippine products"), ("#label", "Prescribing information")]
     if price_html:
         pills.append(("#price", "Price &amp; availability"))
     pills.append(("#disclaimer", "Disclaimer"))
@@ -1298,6 +1770,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict]:
         <div class="dd-crumb"><a href="/drugs/">Drug Index</a> › {esc(name[:1].upper())}</div>
         <div class="hero-tag">Drug Database · Clinicians</div>
         <h1>{esc(name)}</h1>
+        {render_brand_line(brands_ranked)}
         <p class="hero-sub">{sub}</p>
         <div class="dd-chips">{''.join(chips)}</div>
         <div class="hero-meta">
@@ -1313,6 +1786,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict]:
 
 <main>
 <div class="container">
+{glance_html}
 {kidney_html}
 </div>
 <div class="container dd-wide">
@@ -1482,7 +1956,7 @@ def main():
         if only is not None and slug not in only:
             products = ctx.by_slug[slug]
             entries.append({"s": slug, "n": ws(g.get("name")) or slug,
-                            "b": brand_list(products),
+                            "b": brand_list(products, ws(g.get("name")) or slug),
                             "c": ws((g.get("categories") or [""])[0])})
             if renal_approved(ctx.renal(slug)):
                 entries[-1]["k"] = 1
