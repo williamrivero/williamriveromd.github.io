@@ -17,6 +17,9 @@ on:
         default: "innovator"
         type: choice
         options: [innovator, recent]
+      only:
+        description: "Space-separated slugs to refetch (blank = all)"
+        default: ""
       force:
         description: "Rewrite every label file even if set_id + effective_time are unchanged"
         type: boolean
@@ -51,9 +54,10 @@ jobs:
           SOURCE: ${{ inputs.source || 'auto' }}
           PREFER: ${{ inputs.prefer || 'innovator' }}
           FORCE: ${{ inputs.force && '--force' || '' }}
+          ONLY: ${{ inputs.only || '' }}
         run: |
           python3 tools/drugdb/fetch_fda_labels.py --generics-file "$GENERICS_FILE" \
-            --source "$SOURCE" --prefer "$PREFER" $FORCE
+            --source "$SOURCE" --prefer "$PREFER" $FORCE ${ONLY:+--only $ONLY --explain 12}
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"

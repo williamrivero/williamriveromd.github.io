@@ -1755,7 +1755,7 @@ def pick_sentences(label, keys, pattern, limit=8) -> list[str]:
 
 
 CYP_RE = r"\bCYP\s?\d[A-Z]?\d*|P-gp\b|P-glycoprotein|\bOATP\d|\bBCRP\b|\bOCT\d\b|\bMATE\d?|\bUGT\d|\bOAT\d\b"
-PK_RE = r"half-life|\bt\s?½|\bt1/2\b|excreted|excretion|eliminated in (the )?urine|renal clearance|urinary"
+PK_RE = r"half[-\u2010\u2011\u2012\u2013\s]?life|\bt\s?½|\bt1/2\b|excreted|excretion|eliminated in (the )?urine|renal clearance|urinary"
 
 
 LEVELS = {"none": ("No change", "dd-lv-none"), "adjust": ("Adjust", "dd-lv-adjust"),
@@ -1873,6 +1873,12 @@ def references_html(slug, label, renal, summ, ctx: Ctx) -> str:
     lab = _lab(label)
     if lab:
         m = label_meta(lab)
+        items.append(f'U.S. Food and Drug Administration. {esc(m["title"] or "Prescribing information")}'
+                     f' [US FDA-approved label{", version " + esc(m["version"]) if m["version"] else ""}'
+                     f'{", " + esc(m["date"]) if m["date"] else ""}]. Via {esc(m["via"])}.'
+                     + (f' <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(m["url"])}</a>' if m["url"] else ""))
+    for alt in alternate_labels(label):
+        m = label_meta(alt)
         items.append(f'U.S. Food and Drug Administration. {esc(m["title"] or "Prescribing information")}'
                      f' [US FDA-approved label{", version " + esc(m["version"]) if m["version"] else ""}'
                      f'{", " + esc(m["date"]) if m["date"] else ""}]. Via {esc(m["via"])}.'
@@ -2136,6 +2142,45 @@ def label_split(label, keys, num, title, open_pre=True, aid="") -> str:
     return ""
 
 
+def alternate_labels(label) -> list[dict]:
+    """Secondary US labels stored by the fetcher (e.g. the IV acyclovir label beside the oral one)."""
+    if not isinstance(label, dict):
+        return []
+    return [a for a in label.get("alternate_labels") or [] if isinstance(a, dict) and isinstance(a.get("sections"), dict)]
+
+
+def alt_section_id(alt: dict, i: int) -> str:
+    role = re.sub(r"[^a-z0-9]+", "-", ws(alt.get("role")).lower()).strip("-") or str(i + 1)
+    return f"us-label-{role}"
+
+
+def render_alternate_label(alt: dict, i: int) -> tuple[str, str, str] | None:
+    """'US label: intravenous' section: verbatim text of a secondary US label, same helpers as the primary."""
+    m = label_meta(alt)
+    sid = alt_section_id(alt, i)
+    title = ws(alt.get("heading")) or f"US label: {ws(alt.get('role')) or 'alternate'}"
+    body = [f'<div class="dd-attrib"><strong>Second US label for this generic</strong>'
+            + (f" ({esc(m['title'])})" if m["title"] else "")
+            + (f', set ID <a href="{esc(m["url"])}" rel="noopener" target="_blank">{esc(m["set_id"])}</a>' if m["set_id"] and m["url"] else "")
+            + (f", version date {esc(m['date'])}" if m["date"] else "")
+            + ". Reproduced verbatim. The rest of this page quotes the primary US label.</div>"]
+    body.append(acc("Indications and usage (US label)", label_html(alt, "indications_and_usage"), aid=f"{sid}-indications"))
+    body.append(label_split(alt, ("dosage_and_administration",), "2", "Dosage and administration (US label)", aid=f"{sid}-dosing"))
+    rb, which = label_renal_excerpt(alt)
+    if rb:
+        body.append(acc(f"Kidney dosing: {which} (US label)", rb, open_=True))
+    body.append(acc("Dosage forms and strengths (US label)", label_html(alt, "dosage_forms_and_strengths")))
+    body.append(label_split(alt, ("warnings_and_cautions", "warnings_and_precautions", "warnings", "precautions"), "5",
+                            "Warnings and precautions (US label)"))
+    body.append(label_split(alt, ("adverse_reactions",), "6", "Adverse reactions (US label)"))
+    body.append(acc("Pediatric use (US label)", label_html(alt, "pediatric_use")))
+    body.append(acc("Pharmacokinetics (US label)", label_html(alt, "pharmacokinetics")))
+    html_ = "".join(x for x in body if x)
+    if "dd-acc" not in html_ and "dd-labgroup" not in html_:
+        return None
+    return sec(sid, title, html_, title)
+
+
 def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     products = ctx.by_slug.get(slug, [])
     name = ws(g.get("name")) or slug
@@ -2254,6 +2299,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     # 9. Administration
     adm = administration_text(label)
     S.append(sec("administration", "Administration", f"{adm}{LABEL_CHIP}" if adm else "", "Administration"))
+    # 9b. Secondary US labels (e.g. "US label: intravenous" for acyclovir, whose primary label is oral)
+    for i, alt in enumerate(alternate_labels(label)):
+        S.append(render_alternate_label(alt, i))
     # 10. Adverse reactions
     ar = ""
     ae = summ.get("adverse_effects") if summ_ok and isinstance(summ.get("adverse_effects"), dict) else {}

@@ -1,0 +1,118 @@
+{
+  "_doc": [
+    "Per-slug US label choices for tools/drugdb/fetch_fda_labels.py, kept so the weekly run does not drift back.",
+    "primary: criteria tried in order; the first one any candidate meets wins, and the normal ranking breaks ties.",
+    "alternates: secondary labels stored under alternate_labels[] in data/drugs/labels/<slug>.json (role, title, criteria).",
+    "Criterion keys (all given keys must hold): set_id, application_number (exact, or a bare prefix such as ANDA),",
+    "route (any of), form (any of), not_form (none of), brand_regex, manufacturer_regex.",
+    "Form classes: oral_ir, oral_er, oral_liquid, inj_powder, inj_solution, inj_premix (see label_forms()).",
+    "Put a set_id first once a run has confirmed the right label; keep the descriptive criteria after it as fallbacks."
+  ],
+  "metformin": {
+    "reason": "PH market is mostly immediate-release film-coated tablets (500 mg, 850 mg, 1 g); the ranking had picked Glumetza (extended-release, NDA021748).",
+    "primary": [
+      {
+        "application_number": "NDA020357"
+      },
+      {
+        "route": "ORAL",
+        "form": "oral_ir",
+        "not_form": "oral_er"
+      },
+      {
+        "route": "ORAL",
+        "form": "oral_ir"
+      }
+    ]
+  },
+  "tramadol": {
+    "reason": "PH oral products are immediate-release 50 mg capsules/tablets; the ranking had picked an extended-release capsule label (NDA022370).",
+    "primary": [
+      {
+        "application_number": "NDA020281"
+      },
+      {
+        "route": "ORAL",
+        "form": "oral_ir",
+        "not_form": "oral_er"
+      }
+    ]
+  },
+  "meropenem": {
+    "reason": "PH products are powder for injection in vials; the ranking had picked the B. Braun DUPLEX premixed container (NDA202106).",
+    "primary": [
+      {
+        "application_number": "NDA050706"
+      },
+      {
+        "route": "INTRAVENOUS",
+        "form": "inj_powder",
+        "not_form": "inj_premix"
+      }
+    ]
+  },
+  "vancomycin": {
+    "reason": "PH products are powder for injection in vials; the ranking had picked the Baxter GALAXY frozen premixed bag (NDA050671).",
+    "primary": [
+      {
+        "route": "INTRAVENOUS",
+        "form": "inj_powder",
+        "not_form": "inj_premix"
+      }
+    ]
+  },
+  "acyclovir": {
+    "reason": "PH registers 200/400/800 mg tablets and 250 mg powder for IV infusion; the ranking had picked an oral suspension (ANDA217393). Oral solid label is primary; the IV label is kept as an alternate.",
+    "primary": [
+      {
+        "route": "ORAL",
+        "form": "oral_ir"
+      }
+    ],
+    "alternates": [
+      {
+        "role": "intravenous",
+        "title": "US label: intravenous",
+        "criteria": [
+          {
+            "route": "INTRAVENOUS",
+            "form": "inj_powder",
+            "not_form": "inj_premix"
+          },
+          {
+            "route": "INTRAVENOUS",
+            "form": "inj_solution",
+            "not_form": "inj_premix"
+          }
+        ]
+      }
+    ]
+  },
+  "aciclovir": {
+    "reason": "Same product as acyclovir (PH INN spelling 'aciclovir' registers as a separate generic): oral IR primary, IV alternate.",
+    "primary": [
+      {
+        "route": "ORAL",
+        "form": "oral_ir"
+      }
+    ],
+    "alternates": [
+      {
+        "role": "intravenous",
+        "title": "US label: intravenous",
+        "criteria": [
+          {
+            "route": "INTRAVENOUS",
+            "form": "inj_powder",
+            "not_form": "inj_premix"
+          },
+          {
+            "route": "INTRAVENOUS",
+            "form": "inj_solution",
+            "not_form": "inj_premix"
+          }
+        ]
+      }
+    ]
+  }
+}
