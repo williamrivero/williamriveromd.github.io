@@ -29,7 +29,7 @@ import re
 import sys
 from pathlib import Path
 
-LEVELS = {"none", "adjust", "avoid", "nodata"}
+LEVELS = {"none", "adjust", "avoid", "nodata", "hide"}
 MODALITIES = ("hd", "pd", "crrt", "pirrt")
 MAX_SHORT = 40
 

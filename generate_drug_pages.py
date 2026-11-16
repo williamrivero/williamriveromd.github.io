@@ -1810,6 +1810,8 @@ def kidney_block(renal: dict, pfx: str, children: bool = False) -> str:
         return grid + foot_html
     strip = []
     for key, tl, rl, full, short, lvl in tiles:
+        if lvl == "hide":   # band not applicable to this drug: no tile; full text stays in the details grid
+            continue
         lab, cls = LEVELS.get(lvl, LEVELS["nodata"])
         sh = short[:40] if short else "See details"
         strip.append(f'<a class="dd-ktile {cls}" href="#{key}" data-open="{pfx}-full"><span class="dd-kt-h">{esc(tl)}</span>'
