@@ -2,35 +2,55 @@
   "schema_version": 1,
   "slug": "cyclophosphamide",
   "name": "Cyclophosphamide",
-  "review_status": "pending",
-  "reviewed_by": null,
-  "reviewed_date": null,
+  "review_status": "approved",
+  "reviewed_by": "William Gregory M. Rivero, MD, FPCP, DPSN",
+  "reviewed_date": "2026-11-17",
   "drafted_by": "AI-assisted draft (Claude) for review by Dr. W. Rivero",
   "drafted_date": "2026-11-17",
-  "summary": "Cyclophosphamide is an alkylating prodrug activated in the liver; 10% to 20% is excreted unchanged in urine, and metabolites cause hemorrhagic cystitis. In kidney impairment exposure rises (AUC up 38% at CrCl 25–50 and 77% at 10–24 mL/min), and the US label asks for toxicity monitoring in severe impairment but gives no numeric dose cut. It is dialyzable (about 37% removed in 4 hours), so the label advises a consistent interval between dose and dialysis.",
+  "summary": "Cyclophosphamide is an alkylating prodrug activated in the liver; 10% to 20% is excreted unchanged in urine, and metabolites cause hemorrhagic cystitis. In kidney impairment exposure rises (AUC up 38% at CrCl 25–50 and 77% at 10–24 mL/min), and the US label asks for toxicity monitoring in severe impairment but gives no numeric dose cut. It is dialyzable (about 37% removed in 4 hours), so the label advises a consistent interval between dose and dialysis. Glomerular disease regimens (lupus nephritis, ANCA vasculitis) use much lower IV doses than the oncology doses shown, with reductions for age and kidney function; follow the KDIGO 2024 lupus nephritis or ANCA-associated vasculitis guideline and a nephrologist.",
   "kidney_function_basis": "Label uses CrCl (CLcr, mL/min): 25–50, 10–24, <10 on hemodialysis. No dose bands.",
   "chip": "Severe CKD: monitor toxicity",
   "bands": [
     {
       "range": "CrCl ≥60 mL/min",
-      "recommendation": "Usual regimen-specific dose (label); adjust for blood counts and toxicity. Hydrate well to protect the bladder."
+      "recommendation": "Usual regimen-specific dose (label); adjust for blood counts and toxicity. Hydrate well to protect the bladder.",
+      "short": "Usual regimen dose; hydrate",
+      "level": "none"
     },
     {
       "range": "CrCl 30–59 mL/min",
-      "recommendation": "No label dose change; exposure 38% higher at CrCl 25–50 (label). Monitor blood counts and bladder toxicity; adjust by response and adverse reactions."
+      "recommendation": "No label dose change; exposure 38% higher at CrCl 25–50 (label). Monitor blood counts and bladder toxicity; adjust by response and adverse reactions.",
+      "short": "No label change; AUC +38%",
+      "level": "adjust"
     },
     {
       "range": "CrCl 15–29 mL/min",
-      "recommendation": "Severe impairment (CrCl 10–24): exposure 77% higher; monitor for toxicity (label 8.6). No numeric dose cut in label; specialist dose decision."
+      "recommendation": "Severe impairment (CrCl 10–24): exposure 77% higher; monitor for toxicity (label 8.6). No numeric dose cut in label; specialist dose decision.",
+      "short": "Monitor toxicity; AUC +77%",
+      "level": "adjust"
     },
     {
       "range": "CrCl <15 mL/min (not on dialysis)",
-      "recommendation": "Severe impairment: monitor closely for toxicity (label). No numeric dose cut in label; specialist dose decision."
+      "recommendation": "Severe impairment: monitor closely for toxicity (label). No numeric dose cut in label; specialist dose decision.",
+      "short": "Monitor toxicity; specialist",
+      "level": "adjust"
     }
   ],
-  "hd": "Dialyzable: about 37% of a dose removed in a 4-hour hemodialysis (clearance about 104 mL/min). Keep a consistent interval between the dose and dialysis (label 8.6). Specialist dose decision.",
-  "pd": "No PD data in label (label says removal varies with the dialysis system). Specialist input.",
-  "crrt": "No data in label. Specialist input.",
+  "hd": {
+    "text": "Dialyzable: about 37% of a dose removed in a 4-hour hemodialysis (clearance about 104 mL/min). Keep a consistent interval between the dose and dialysis (label 8.6). Specialist dose decision.",
+    "short": "Consistent dose–HD interval (label)",
+    "level": "adjust"
+  },
+  "pd": {
+    "text": "No PD data in label (label says removal varies with the dialysis system). Specialist input.",
+    "short": "No PD data; specialist",
+    "level": "nodata"
+  },
+  "crrt": {
+    "text": "No data in label. Specialist input.",
+    "short": "No data; specialist",
+    "level": "nodata"
+  },
   "dialyzable": "Yes: dialysis clearance about 104 mL/min; mean 37% of the dose removed in a 4-hour hemodialysis; half-life 3.3 hours on dialysis versus 6.5 hours in uremic patients (label 12.3). Rapid hemodialysis is indicated in overdose (label 10).",
   "monitoring": "Complete blood count before each dose; urinalysis for hematuria (hemorrhagic cystitis); serum creatinine; sodium (hyponatremia); signs of infection; pregnancy test before treatment.",
   "pediatric": {
@@ -40,24 +60,44 @@
     "renal": [
       {
         "range": "eGFR ≥60",
-        "recommendation": "Usual regimen dose (label)."
+        "recommendation": "Usual regimen dose (label).",
+        "short": "Usual regimen dose",
+        "level": "none"
       },
       {
         "range": "eGFR 30–59",
-        "recommendation": "No pediatric kidney data; label renal statements apply: monitor toxicity."
+        "recommendation": "No pediatric kidney data; label renal statements apply: monitor toxicity.",
+        "short": "No data; monitor toxicity",
+        "level": "adjust"
       },
       {
         "range": "eGFR 15–29",
-        "recommendation": "Monitor for toxicity in severe impairment (label); specialist dose decision."
+        "recommendation": "Monitor for toxicity in severe impairment (label); specialist dose decision.",
+        "short": "Monitor toxicity; specialist",
+        "level": "adjust"
       },
       {
         "range": "eGFR <15 (not on dialysis)",
-        "recommendation": "Monitor for toxicity; specialist dose decision."
+        "recommendation": "Monitor for toxicity; specialist dose decision.",
+        "short": "Monitor toxicity; specialist",
+        "level": "adjust"
       }
     ],
-    "hd": "Dialyzable; consistent dose–dialysis interval (label); specialist.",
-    "pd": "No data; specialist.",
-    "crrt": "No data; specialist."
+    "hd": {
+      "text": "Dialyzable; consistent dose–dialysis interval (label); specialist.",
+      "short": "Consistent dose–HD interval",
+      "level": "adjust"
+    },
+    "pd": {
+      "text": "No data; specialist.",
+      "short": "No PD data; specialist",
+      "level": "nodata"
+    },
+    "crrt": {
+      "text": "No data; specialist.",
+      "short": "No data; specialist",
+      "level": "nodata"
+    }
   },
   "sources": [
     {
@@ -75,9 +115,22 @@
   },
   "draft_notes": {
     "adult": [
-      "No label dose reduction numbers. KDIGO 2021 glomerular diseases guideline (ANCA vasculitis, lupus nephritis) uses age- and kidney-function-based cyclophosphamide reductions, but its full text was not read in this batch, so no numbers are given. Dr. Rivero to decide whether to add guideline regimens.",
+      "No label dose reduction numbers. KDIGO 2024 lupus nephritis and ANCA-associated vasculitis guidelines uses age- and kidney-function-based cyclophosphamide reductions, but its full text was not read in this batch, so no numbers are given. Numbers withheld until the full texts are read.",
       "PH products are IV powder (200 mg, 500 mg, 1 g); the oral nephrotic-syndrome dose in the label needs oral tablets, which are not in the PH registry list for this slug."
     ],
     "pediatric": []
+  },
+  "revision_log": [
+    {
+      "date": "2026-11-17",
+      "finding": 12,
+      "change": "Visible pointer: glomerular-disease regimens use much lower doses than the oncology doses; follow KDIGO 2024 lupus nephritis / ANCA vasculitis guidelines. No GN numbers added (full texts not read).",
+      "approved_by": "W. G. M. Rivero, MD"
+    }
+  ],
+  "strip_review": {
+    "source": "renal-short/cyclophosphamide.json",
+    "reviewed_by": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "reviewed_date": "2026-11-17"
   }
 }
