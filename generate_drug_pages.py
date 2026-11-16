@@ -1193,6 +1193,7 @@ FLOAT = """
 </button>
 </div>
 <script src="/assets/drug-hero.js?v=1" defer></script>
+<script src="/assets/share-buttons.js" defer></script>
 <script src="/drugs/drugdb.js?v=""" + ASSET_VERSION + """" defer></script>
 </body>
 </html>
