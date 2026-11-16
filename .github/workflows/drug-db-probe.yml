@@ -1,0 +1,21 @@
+name: drug-db-probe
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch sample pages
+        run: |
+          mkdir -p probe
+          UA="Mozilla/5.0 (compatible; RenalCareMattersDrugRef/1.0; +https://renalcarematters.com)"
+          curl -sSL -A "$UA" -o probe/list1.html "https://verification.fda.gov.ph/ALL_DrugProductslist.php?start=1" -w "%{http_code} list1\n" || true
+          curl -sSL -A "$UA" -o probe/list2.html "https://verification.fda.gov.ph/ALL_DrugProductslist.php?start=1081" -w "%{http_code} list2\n" || true
+          curl -sSL -A "$UA" -o probe/robots.txt "https://verification.fda.gov.ph/robots.txt" -w "%{http_code} robots\n" || true
+          curl -sSL -A "$UA" -o probe/root.html "https://verification.fda.gov.ph/" -w "%{http_code} root\n" || true
+          curl -sSL -A "$UA" -o probe/pnf.html "https://pnf.doh.gov.ph/" -w "%{http_code} pnf\n" || true
+          ls -la probe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: probe
+          path: probe
