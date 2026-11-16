@@ -4,7 +4,7 @@
 Inputs (tools/drugdb/sources/):
   raw/DPRI-<edition>.txt               pdftotext -layout of a DOH Drug Price Reference Index booklet
                                        (currently the 2021, 9th edition, hosted by DOH CHD-CAR)
-  gamot_fixed_fee_pc2025-0013.tsv      PhilHealth GAMOT fixed fee schedule (PC2025-0013 Annex A.2), hand-transcribed
+  gamot_fixed_fee_*.tsv                PhilHealth GAMOT fixed fee schedule (PC2025-0013 Annex A.2 + PC-2026-0018 additions)
   dpri_<edition>.tsv  (optional)       a newer DPRI edition exported from dpri.doh.gov.ph on a Philippine connection,
                                        columns: drugname, price_low, price_high[, reference_price] (see SOURCES.md)
 
@@ -31,9 +31,10 @@ DPRI_2021 = {
     "date": "2021-09-17",
 }
 GAMOT = {
-    "tsv": os.path.join(SRC, "gamot_fixed_fee_pc2025-0013.tsv"),
-    "source": "PhilHealth Circular No. 2025-0013, Annex A.2 GAMOT Fixed Fee Schedule; https://www.philhealth.gov.ph/circulars/2025/PC2025-0013.pdf",
-    "date": "2025-07-28",
+    # 242 rows transcribed from PC2025-0013 (unchanged in PC-2026-0018) + the 7 anti-TB rows PC-2026-0018 added
+    "tsv": [os.path.join(SRC, "gamot_fixed_fee_pc2025-0013.tsv"), os.path.join(SRC, "gamot_fixed_fee_pc2026-0018_additions.tsv")],
+    "source": "PhilHealth Circular No. 2026-0018, Annex A.2 GAMOT Fixed Fee Schedule (249 preparations; fees otherwise unchanged from PC2025-0013); https://www.philhealth.gov.ph/circulars/2026/PC-2026-0018.pdf",
+    "date": "2026-10-13",
 }
 MARK_NOTES = {
     "*": "Reference price based on the DOH Central Office Bids and Awards Committee procurement price 2020",
@@ -125,14 +126,15 @@ FORM_TAIL = re.compile(r"\s+(eye drops solution|eye drops|ear drops|eye ointment
 
 def dpri_name(desc):
     """Generic name part of a DPRI drug description, with list-style prefixes and dosage-form words removed."""
-    name, _ = split_name(desc)
-    for pat, rep in [(r"^Vaccine, (.*)$", r"\1 Vaccine"), (r"^I\.V\. Fluids, (.*)$", r"\1"),
+    name, _ = split_name(re.sub(r"^I\.V\. Fluids,\s*", "", desc))
+    for pat, rep in [(r"^Vaccine, (.*)$", r"\1 Vaccine"),
                      (r"^Serum, (.*?)( \(.*)?$", r"\1 serum"), (r"^Insulin, (.*)$", r"\1 Insulin"),
                      (r"^Immunoglobulin, (Normal, Human.*)$", r"Immunoglobulin Normal, Human"),
                      (r"^Immunoglobulin, (\w+)(.*)$", r"\1 Immunoglobulin"), (r"^Multivitamins.*", "Multivitamins")]:
         if re.match(pat, name):
             name = re.sub(pat, rep, name)
             break
+    name = re.sub(r"\s+equiv\.?( to)?$", "", name, flags=re.I)
     prev = None
     while prev != name:
         prev, name = name, FORM_TAIL.sub("", name)
@@ -168,10 +170,13 @@ def main(args):
         n_dpri += 1
 
     n_gamot = 0
-    for line in open(GAMOT["tsv"], encoding="utf-8"):
+    gamot_lines = []
+    for fn in GAMOT["tsv"]:
+        gamot_lines += open(fn, encoding="utf-8").read().splitlines()
+    for line in gamot_lines:
         if not line[:1].isdigit():
             continue
-        no, mol, prep, fee, kons = line.rstrip("\n").split("\t")
+        no, mol, prep, fee, kons = (line.rstrip("\n").split("\t") + [""])[:5]
         fee = float(fee)
         e = {"dosage_form_strength": prep, "price_low": fee, "price_high": fee, "unit": unit_of(prep), "currency": "PHP",
              "price_type": "philhealth_gamot_fixed_fee", "source": GAMOT["source"], "source_date": GAMOT["date"],

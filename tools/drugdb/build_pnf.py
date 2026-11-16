@@ -6,7 +6,8 @@ Inputs (all under tools/drugdb/sources/):
                                hosted by PhilHealth (fetched by .github/workflows/drugdb-fetch-pnf-prices.yml)
   pnf_additions.json           medicines added to the PNF after Nov 2022, transcribed from PhilHealth advisories
                                PA2024-0026, PA2025-0013 and PA2025-0060 (each row keeps its DOH Department Circular)
-  gamot_list.json              PhilHealth GAMOT List (PC2025-0013 Annex A.i, plus later circulars)
+  gamot_list.json              PhilHealth GAMOT List (PC2025-0013 Annex A.i, updated by PC-2026-0018 Annex A.i)
+  gamot_fixed_fee_*.tsv        GAMOT Fixed Fee Schedule rows (molecules priced there count as GAMOT-covered)
 
 Output: data/drugs/pnf.json
   {slug: {in_pnf: bool, pnf_names: [...], pnf_entries: [{dosage_form_strength, restriction_notes, source,
@@ -266,11 +267,16 @@ def build(args):
             out[slug] = {"in_pnf": None, "pnf_names": [], "pnf_entries": [], "philhealth_gamot": True,
                          "gamot_source": None}
         out[slug]["philhealth_gamot"] = True
-        out[slug]["gamot_source"] = gam["sources"][g["source"]]["title"]
+        cur_src = gam["sources"]["PC2026-0018"]
+        out[slug]["gamot_source"] = f'{cur_src["title"]}; {cur_src["url"]}'
+        out[slug]["gamot_listed_since"] = gam["sources"][g["source"]]["date"]
         if g.get("konsulta_yakap"):
             out[slug]["konsulta_yakap"] = True
     # molecules priced in the GAMOT fixed fee schedule (Annex A.2) are covered too, e.g. tobramycin + dexamethasone
-    for line in open(os.path.join(SRC, "gamot_fixed_fee_pc2025-0013.tsv"), encoding="utf-8"):
+    fee_lines = []
+    for fn in ("gamot_fixed_fee_pc2025-0013.tsv", "gamot_fixed_fee_pc2026-0018_additions.tsv"):
+        fee_lines += open(os.path.join(SRC, fn), encoding="utf-8").read().splitlines()
+    for line in fee_lines:
         if not line[:1].isdigit():
             continue
         slug, _ = to_slug(line.split("\t")[1])
@@ -279,7 +285,7 @@ def build(args):
                          "gamot_source": None}
         if not out[slug]["gamot_source"]:
             out[slug]["philhealth_gamot"] = True
-            out[slug]["gamot_source"] = gam["sources"]["PC2025-0013"]["title"].replace("Annex A.i GAMOT List (75 molecules)", "Annex A.2 GAMOT Fixed Fee Schedule")
+            out[slug]["gamot_source"] = "PhilHealth Circular No. 2026-0018, Annex A.2 GAMOT Fixed Fee Schedule; https://www.philhealth.gov.ph/circulars/2026/PC-2026-0018.pdf"
 
     # copy each record under every registry slug judged to be the same generic
     import copy
