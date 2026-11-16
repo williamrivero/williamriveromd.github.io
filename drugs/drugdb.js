@@ -114,7 +114,7 @@ if(idx){
       fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
       /* food supplements: separate lazy file, merged into results with a "Supplement" badge */
       if(idx.getAttribute('data-supp'))fetch(idx.getAttribute('data-supp')).then(function(r){return r.json();}).then(function(x){
-        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,t:d.t,rf:d.rf,v:d.v,u:d.u,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&(F.t.value==='s'||F.t.value==='m')))run();}).catch(function(){});
+        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,t:d.t,mk:d.mk,rf:d.rf,v:d.v,u:d.u,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&(F.t.value==='s'||F.t.value==='m')))run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
@@ -157,8 +157,9 @@ if(idx){
     return true;
   }
   function filtersOn(){return drugFacets()||!!(F.t&&F.t.value);}
-  function chips(d){var o=[];if(d.sup){o.push(d.t==='m'?'<span class="dd-tag FSMP">Medical nutrition (FSMP)</span>':'<span class="dd-tag SUP">Supplement</span>');
-    if(d.t==='b')o.push('<span class="dd-tag FSMP">FSMP</span>');if(d.rf)o.push('<span class="dd-tag SUPK">Renal formula</span>');
+  function chips(d){var o=[];if(d.sup){var MK=d.mk==='fsdu'?'Special dietary food (FSDU)':d.mk==='both'?'Medical nutrition (FSMP, FSDU)':'Medical nutrition (FSMP)';
+    o.push(d.t==='m'?'<span class="dd-tag FSMP">'+MK+'</span>':'<span class="dd-tag SUP">Supplement</span>');
+    if(d.t==='b')o.push('<span class="dd-tag FSMP">'+(d.mk==='fsdu'?'FSDU':d.mk==='both'?'FSMP · FSDU':'FSMP')+'</span>');if(d.rf)o.push('<span class="dd-tag SUPK">Renal formula</span>');
     (d.v||[]).forEach(function(v){o.push('<span class="dd-tag FSMP">'+escH(v)+'</span>');});if(d.k)o.push('<span class="dd-tag SUPK">Kidney-marketed</span>');return o.join(' ');}
     var r=d.r||0;
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
