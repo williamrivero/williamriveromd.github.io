@@ -62,7 +62,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No label changes."; exit 0
           fi
-          N=$(python3 -c "import json;d=json.load(open('data/drugs/labels/_changes.json'));print(len(d['added']),'added,',len(d['changed']),'changed')")
+          N=$(python3 -c "import json;d=json.load(open('data/drugs/labels/_changes.json'));print(len(d['added']),'added,',len(d['changed']),'changed,',len(d.get('removed',[])),'removed')")
           M=$(python3 -c "import json;print(json.load(open('data/drugs/labels/_missing.json'))['count'])")
           git commit -m "Drug database: refresh US FDA labels ($N; $M without a US label)" \
                      -m "Automated openFDA label refresh. Review list: data/drugs/labels/_changes.json"
