@@ -78,13 +78,19 @@ EMA_LICENSE = ("© European Medicines Agency. EMA content \"may be reproduced an
 
 DPD_ZIP = "https://www.canada.ca/content/dam/hc-sc/documents/services/drug-product-database/allfiles.zip"
 DPD_INFO = "https://health-products.canada.ca/dpd-bdpp/info?lang=eng&code={code}"
-MHRA_SUBSTANCE = "https://products.mhra.gov.uk/substance/?substance={q}"
 
 # SmPC sections kept, in display order (number, our key)
 SECTIONS = [("4.1", "indications"), ("4.2", "posology"), ("4.3", "contraindications"), ("4.4", "warnings"),
             ("4.5", "interactions"), ("4.6", "pregnancy_lactation"), ("4.8", "undesirable_effects"),
             ("4.9", "overdose"), ("5.1", "pharmacodynamics"), ("5.2", "pharmacokinetics")]
 KEEP = {n for n, _ in SECTIONS}
+# QRD human product-information template headings (used when a long heading wraps onto a second line in the PDF)
+QRD_TITLES = {"4.1": "Therapeutic indications", "4.2": "Posology and method of administration",
+              "4.3": "Contraindications", "4.4": "Special warnings and precautions for use",
+              "4.5": "Interaction with other medicinal products and other forms of interaction",
+              "4.6": "Fertility, pregnancy and lactation", "4.7": "Effects on ability to drive and use machines",
+              "4.8": "Undesirable effects", "4.9": "Overdose", "5.1": "Pharmacodynamic properties",
+              "5.2": "Pharmacokinetic properties"}
 
 RENAL_RX = re.compile(r"\brenal\b|\bkidney|dialys|haemofiltration|hemofiltration|creatinine clearance|\bCrCl\b|\bGFR\b|"
                       r"\beGFR\b|nephr", re.I)
@@ -346,7 +352,16 @@ def smpc_sections(smpc: str) -> dict[str, tuple[str, str]]:
     for i, (key, title, s, e) in enumerate(kept):
         end = kept[i + 1][2] if i + 1 < len(kept) else len(smpc)
         num = f"{key[0]}.{key[1]}" if key[1] else str(key[0])
-        out[num] = (title, smpc[e:end])
+        body = smpc[e:end]
+        full = QRD_TITLES.get(num)
+        if full and title != full and full.lower().startswith(title.lower()):
+            # wrapped heading: drop the continuation line ("products and other forms of interaction")
+            rest = full[len(title):].strip().lower()
+            m = re.match(r"\s*\n[ \t]*(\S[^\n]*)", body)
+            if m and rest and rest.startswith(m.group(1).strip().lower()[:12]):
+                body = body[m.end():]
+            title = full
+        out[num] = (title, body)
     return out
 
 
@@ -400,8 +415,9 @@ def blocks_of(raw: str) -> list[dict]:
                 and len(first.split()) <= 12 and not BULLET.match(p[0])):
             out.append({"h": first})
             continue
-        if (len(p) > 1 and len(first) <= 60 and len(first) < 0.6 * width and not re.search(r"[.;:,]$", first)
-                and re.match(r"[A-Z]", first) and len(first.split()) <= 9 and not BULLET.match(p[0])):
+        if (len(p) > 1 and len(first) <= 95 and len(first) < 0.75 * width and not re.search(r"[.;:,]$", first)
+                and re.match(r"[A-Z]", first) and len(first.split()) <= 14 and not BULLET.match(p[0])
+                and re.match(r"[A-Z(]", p[1].strip())):
             out.append({"h": first})
             p = p[1:]
         items, buf = [], []
@@ -669,22 +685,6 @@ def dpd_monograph(link: dict) -> None:
         link["monograph_date"] = d.group(1)
 
 
-def mhra_link(name: str) -> dict | None:
-    """MHRA products: the substance page lists every UK product with its SPC (link only)."""
-    q = urllib.parse.quote(name.upper())
-    url = MHRA_SUBSTANCE.format(q=q)
-    try:
-        page = http_get(url, retries=2, timeout=60).decode("utf-8", "replace")
-    except Exception:
-        return None
-    n = len(set(re.findall(r'href="[^"]*product/\?product=[^"]+"', page)))
-    if not n:
-        return None
-    return {"agency": "Medicines and Healthcare products Regulatory Agency (UK)", "agency_short": "MHRA",
-            "kind": "Summaries of Product Characteristics (UK products list)", "product": name.title(),
-            "products_listed": n, "url": url, "reuse": "link only"}
-
-
 # --------------------------------------------------------------------------- probe (debug)
 def probe(args, targets, generics, cache):
     print("== EMA medicines JSON")
@@ -746,6 +746,9 @@ def probe(args, targets, generics, cache):
             print(json.dumps(p["sections"].get("4.2", {}), ensure_ascii=False, indent=1)[:2500])
             print(json.dumps(renal_excerpts(p["sections"]), ensure_ascii=False, indent=1)[:2000])
             print(json.dumps(p["sections"].get("4.8", {}), ensure_ascii=False, indent=1)[:3000])
+            print(f"<<<DUMP {slug}>>>")
+            print("\n<<<SMPC>>>\n".join(sm))
+            print(f"<<<END {slug}>>>")
     print("== Health Canada DPD")
     try:
         z = zipfile.ZipFile(io.BytesIO(fetch_cached(DPD_ZIP, cache / "dpd-allfiles.zip")))
@@ -755,7 +758,9 @@ def probe(args, targets, generics, cache):
                 print(n, z.open(n).read(400).decode("utf-8", "replace").splitlines()[:2])
         dpd = DPD(cache)
         print("human marketed products:", len(dpd.drugs))
-        for slug in (sample or list(targets)[:5]):
+        for slug in ["betahistine", "alfacalcidol", "ambroxol", "trimetazidine", "domperidone", "bilastine"]:
+            if slug not in generics:
+                continue
             links = dpd.find(generics[slug]["ingredients"], {})
             print(" ", slug, links[:2])
             if links:
@@ -765,14 +770,6 @@ def probe(args, targets, generics, cache):
                 break
     except Exception as e:
         print("DPD failed:", e)
-    for name in ("aceclofenac", "betahistine"):
-        print("== MHRA", name)
-        try:
-            pg = http_get(MHRA_SUBSTANCE.format(q=name.upper()), retries=2).decode("utf-8", "replace")
-            print(len(pg), re.findall(r'href="[^"]{0,160}"', pg)[:40])
-            print(re.sub(r"\s+", " ", pg[:1500]))
-        except Exception as e:
-            print("MHRA failed:", e)
     for label, url in (("HPRA", "https://www.hpra.ie/find-a-medicine/results?query=aceclofenac"),
                        ("Medsafe", "https://www.medsafe.govt.nz/Medicines/infoSearch.asp")):
         try:
@@ -936,11 +933,6 @@ def national_links(targets, generics, cache, ph_routes):
                     dpd_monograph(link)
                     want.append(link)
                     time.sleep(0.3)
-            if len(g["ingredients"]) == 1:
-                ml = mhra_link(g["ingredients"][0])
-                if ml:
-                    want.append(ml)
-                time.sleep(0.3)
         path = INTL / f"{slug}.json"
         doc = json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
         if not want:
