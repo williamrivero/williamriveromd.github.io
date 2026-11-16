@@ -1,0 +1,73 @@
+name: drugdb-labels
+# Weekly refresh of US FDA labels (openFDA) for the renalcarematters.com Drug Database.
+# Writes data/drugs/labels/<slug>.json, _missing.json and _changes.json and commits them to main.
+on:
+  workflow_dispatch:
+    inputs:
+      generics_file:
+        description: "Generics list (repo-relative path)"
+        default: "data/drugs/generics.json"
+      source:
+        description: "openFDA source: auto (api <=200 generics, else bulk), api, bulk"
+        default: "auto"
+        type: choice
+        options: [auto, api, bulk]
+      prefer:
+        description: "Tie-break after Rx>OTC: recent (newest label) or innovator (NDA/BLA first)"
+        default: "recent"
+        type: choice
+        options: [recent, innovator]
+      force:
+        description: "Rewrite every label file even if set_id + effective_time are unchanged"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "0 18 * * 0"   # Mondays 02:00 Asia/Manila
+
+permissions:
+  contents: write
+
+concurrency:
+  group: drugdb-labels
+  cancel-in-progress: false
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ijson (streaming parser for bulk files)
+        run: pip install ijson
+      - name: Fetch labels
+        env:
+          OPENFDA_API_KEY: ${{ secrets.OPENFDA_API_KEY }}
+          GENERICS_FILE: ${{ inputs.generics_file || 'data/drugs/generics.json' }}
+          SOURCE: ${{ inputs.source || 'auto' }}
+          PREFER: ${{ inputs.prefer || 'recent' }}
+          FORCE: ${{ inputs.force && '--force' || '' }}
+        run: |
+          python3 tools/drugdb/fetch_fda_labels.py --generics-file "$GENERICS_FILE" \
+            --source "$SOURCE" --prefer "$PREFER" $FORCE
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/drugs/labels
+          if git diff --cached --quiet; then
+            echo "No label changes."; exit 0
+          fi
+          N=$(python3 -c "import json;d=json.load(open('data/drugs/labels/_changes.json'));print(len(d['added']),'added,',len(d['changed']),'changed')")
+          M=$(python3 -c "import json;print(json.load(open('data/drugs/labels/_missing.json'))['count'])")
+          git commit -m "Drug database: refresh US FDA labels ($N; $M without a US label)" \
+                     -m "Automated openFDA label refresh. Review list: data/drugs/labels/_changes.json"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i * 10))
+          done
+          exit 1
