@@ -1758,7 +1758,7 @@ CYP_RE = r"\bCYP\s?\d[A-Z]?\d*|P-gp\b|P-glycoprotein|\bOATP\d|\bBCRP\b|\bOCT\d\b
 PK_RE = r"half[-\u2010\u2011\u2012\u2013\s]?life|\bt\s?½|\bt1/2\b|excreted|excretion|eliminated in (the )?urine|renal clearance|urinary"
 
 
-LEVELS = {"none": ("No change", "dd-lv-none"), "adjust": ("Adjust", "dd-lv-adjust"),
+LEVELS = {"none": ("No change", "dd-lv-none"), "adjust": ("Adjust / caution", "dd-lv-adjust"),
           "avoid": ("Avoid", "dd-lv-avoid"), "nodata": ("No data", "dd-lv-nodata")}
 
 
