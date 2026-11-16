@@ -170,5 +170,88 @@
         ]
       }
     ]
+  },
+  "ibuprofen": {
+    "reason": "The ranked pick (IBU tablets, ANDA075682) carries no Warnings or Precautions text in openFDA, so the NSAID kidney warnings (renal effects, hyperkalemia, advanced renal disease) were missing. PH registers 200 mg and 400 mg tablets and softgels plus 100 mg/5 mL and 200 mg/5 mL suspensions. Prefer an oral solid label that has warnings text: current-format (PLR) first, else old-format with Warnings and Precautions.",
+    "primary": [
+      {
+        "route": "ORAL",
+        "form": "oral_ir",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths",
+          "warnings_and_cautions"
+        ]
+      },
+      {
+        "route": "ORAL",
+        "form": "oral_ir",
+        "require_sections": [
+          "dosage_and_administration",
+          "warnings",
+          "precautions"
+        ]
+      }
+    ]
+  },
+  "diclofenac": {
+    "reason": "PH market is mainly diclofenac 50 mg enteric-coated (delayed-release) tablets, plus 25 mg/mL injection, 100 mg sustained-release tablets, gel and suppositories. The ranking had picked Zipsor (diclofenac potassium 25 mg liquid-filled capsules, NDA022202), a strength and form not registered in PH. Prefer a delayed-release tablet label listing 50 mg.",
+    "primary": [
+      {
+        "route": "ORAL",
+        "text_regex": "delayed[\\s-]*release.*\\b50\\s*mg|\\b50\\s*mg.*delayed[\\s-]*release",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths"
+        ]
+      },
+      {
+        "route": "ORAL",
+        "text_regex": "delayed[\\s-]*release.*\\b50\\s*mg|\\b50\\s*mg.*delayed[\\s-]*release"
+      },
+      {
+        "route": "ORAL",
+        "form": "oral_ir",
+        "text_regex": "\\b50\\s*mg",
+        "not_text_regex": "liquid[\\s-]*filled"
+      }
+    ]
+  },
+  "zoledronic-acid": {
+    "reason": "62 of 72 PH products are zoledronic acid 4 mg (powder or 4 mg/5 mL concentrate) for oncology (hypercalcemia of malignancy, myeloma, bone metastases); the ranking had picked Reclast 5 mg/100 mL (NDA021817, osteoporosis), whose kidney rules differ (contraindicated at CrCl <35 instead of the oncology CrCl dose table). Zometa-type 4 mg label is primary; Reclast is kept as an alternate for the 5 mg/100 mL products.",
+    "primary": [
+      {
+        "route": "INTRAVENOUS",
+        "brand_regex": "zometa",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths"
+        ]
+      },
+      {
+        "route": "INTRAVENOUS",
+        "text_regex": "\\b4\\s*mg",
+        "not_text_regex": "5\\s*mg\\s*(?:/|per|in)\\s*100\\s*mL",
+        "require_sections": [
+          "dosage_and_administration",
+          "dosage_forms_and_strengths"
+        ]
+      }
+    ],
+    "alternates": [
+      {
+        "role": "osteoporosis",
+        "title": "US label: 5 mg/100 mL (osteoporosis, Paget's disease)",
+        "criteria": [
+          {
+            "application_number": "NDA021817"
+          },
+          {
+            "route": "INTRAVENOUS",
+            "text_regex": "5\\s*mg\\s*(?:/|per|in)\\s*100\\s*mL"
+          }
+        ]
+      }
+    ]
   }
 }
