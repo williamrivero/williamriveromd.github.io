@@ -62,6 +62,9 @@ EXISTING_ENTRY_RE = re.compile(
 
 # Files that exist on disk but must never appear in the sitemap.
 EXCLUDE_NAMES = {"404.html"}
+# iCloud Documents sync clones files as "name 2.html"; .gitignore drops them
+# from the repo, but a local run would otherwise list them in the sitemap.
+ICLOUD_CLONE_RE = re.compile(r" \d+\.html$")
 
 
 def is_noindex(path: Path) -> bool:
@@ -79,6 +82,8 @@ def classify(rel_path: str) -> tuple[str, str] | None:
         return None
     name = parts[-1]
     if name in EXCLUDE_NAMES:
+        return None
+    if ICLOUD_CLONE_RE.search(name):        # "name 2.html" iCloud/Finder clones (gitignored)
         return None
 
     if rel_path == "index.html":

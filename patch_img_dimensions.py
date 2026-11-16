@@ -143,9 +143,21 @@ def patch_guide(html_path: Path, dry_run: bool = False) -> int:
 def main():
     dry_run = '--dry-run' in sys.argv
     target  = None
-    for arg in sys.argv[1:]:
+    args = sys.argv[1:]
+    # Accept both --guide=<file> and --guide <file> (the form every other
+    # patch script uses). The space form used to be ignored silently, which
+    # made a single-guide run patch the whole library.
+    for i, arg in enumerate(args):
         if arg.startswith('--guide='):
             target = arg.split('=', 1)[1]
+        elif arg == '--guide':
+            if i + 1 >= len(args) or args[i + 1].startswith('--'):
+                sys.exit('error: --guide needs a filename, e.g. --guide igan-guide.html')
+            target = args[i + 1]
+        elif arg.startswith('--') and arg != '--dry-run':
+            sys.exit(f'error: unknown option {arg}')
+    if target and not target.endswith('.html'):
+        target += '.html'
 
     guides = ([GUIDES_DIR / target] if target
               else sorted(GUIDES_DIR.glob('*.html')))
