@@ -83,7 +83,7 @@ AREAS = [
      r"colecalciferol|ergocalciferol|retinol|tocopherol|niacin|riboflavin|zinc|calcium|magnesium|selenium|"
      r"amino acid|ketoanalog|lysine|carnitine|omega|fish oil|lecithin|biotin|coenzyme|glutathione|collagen|"
      r"probiotic|lactobacillus|bacillus|saccharomyces"),
-    (DIAG, r"contrast|diagnostic|radiopharm|antidote|chelating agent|reversal|tuberculin|detoxif",
+    (DIAG, r"contrast|diagnostic|skin test|radiopharm|antidote|chelating agent|reversal|tuberculin|detoxif",
      r"gadolinium|gado|iohexol|iopamidol|iodixanol|ioversol|iopromide|naloxone|flumazenil|acetylcysteine inj|"
      r"atropine|pralidoxime|methylene blue|sugammadex|neostigmine|protamine|tuberculin|fluorescein|indocyanine"),
     (ANES, r"general anesth|general anaesth|local anesth|local anaesth|neuromuscular block|anesthetic|anaesthetic|"
@@ -94,11 +94,11 @@ AREAS = [
      r"dopamine|dobutamine|vasopressin|milrinone|poractant|beractant"),
     (INFECT, r"antibacter|antibiotic|cephalospor|penicillin|macrolide|quinolone|aminoglycoside|carbapenem|"
              r"tetracycline|antifung|antimycot|antivir|antiretrovir|\bhiv\b|reverse transcriptase|protease inhib|"
-             r"integrase|nucleoside|antitubercul|anti-tubercul|antimalar|anthelmint|antiprotozo|antiparasit|"
-             r"sulfonamide|lincosamide|glycopeptide|polymyxin|nitroimidazole|monobactam|oxazolidinone|"
+             r"integrase|nucleoside reverse|nucleotide reverse|hepatitis [bc] virus|\bhcv\b|\bhbv\b|ns5a|ns5b|antitubercul|anti-tubercul|antimalar|anthelmint|antiprotozo|antiparasit|"
+             r"sulfonamide antibacter|antibacterial sulfonamide|lincosamide|glycopeptide|polymyxin|nitroimidazole|monobactam|oxazolidinone|"
              r"azole antifungal|antiinfective|anti-infective|antimicrob|beta-lactam|urinary antiseptic|"
              r"leprostatic|scabicide|pediculicide|antimycobact|tubercul|amebicid|anti-retrovir",
-     r"cillin|cef|ceph|mycin|micin|cycline|floxacin|azole$|conazole|vir$|vir\b|penem|bactam|sulfamethoxazole|"
+     r"cillin|\bcef|\bceph|mycin|micin|cycline|floxacin|azole$|conazole|vir$|vir\b|penem|bactam|sulfamethoxazole|"
      r"trimethoprim|isoniazid|rifamp|ethambutol|pyrazinamide|metronidazole|tinidazole|albendazole|mebendazole|"
      r"praziquantel|ivermectin|chloroquine|artemether|primaquine|nitrofurantoin|fosfomycin|colistin|polymyxin|"
      r"terbinafine|nystatin|amphotericin|griseofulvin|linezolid|vancomycin|teicoplanin|dapsone|fungin"),
@@ -122,7 +122,7 @@ AREAS = [
      r"methylprednisolone|dexamethasone|hydrocortisone|betamethasone|fludrocortisone|cinacalcet|calcitriol|"
      r"paricalcitol|alfacalcidol|doxercalciferol|testosterone|desmopressin|octreotide|somatropin"),
     (RESP, r"bronchodil|beta-?2|β2|adrenergic agonist|antiasthm|leukotriene|mucolytic|expectorant|antitussive|"
-           r"cough|decongest|antihistamine|anti-allerg|antiallerg|xanthine|methylxanthine|respiratory|"
+           r"cough|(?<!ocular )decongest|antihistamine|anti-allerg|antiallerg|xanthine|methylxanthine|respiratory|"
            r"histamine-1|h1 receptor|histamine h1|mast cell stabil|common cold|cold preparation|airway|angioedema",
      r"salbutamol|albuterol|terbutaline|salmeterol|formoterol|tiotropium|ipratropium|budesonide|fluticasone|"
      r"montelukast|theophylline|doxofylline|aminophylline|ambroxol|carbocisteine|bromhexine|guaifenesin|"
@@ -178,8 +178,8 @@ AREAS = [
      r"cerumen|pirenoxine|fluorometholone|loteprednol|nepafenac|bromfenac"),
     (WOMEN, r"contracept|progest|estrogen|oestrogen|oxytoc|uterotonic|tocoly|gonadotropin|fertility|ovulat|"
             r"urolog|urinary|bladder|prostat|5-alpha|5α|erectile|phosphodiesterase.?5|pde-?5|vaginal|"
-            r"menopaus|lactation|uterine|obstetric|gynecolog|alpha-?1|alpha-adreno|prolactin|gonadotroph|cholinergic|litholytic",
-     r"levonorgestrel|ethinylestradiol|ethinyl estradiol|drospirenone|desogestrel|norethisterone|"
+            r"menopaus|menstru|lactation|uterine|obstetric|gynecolog|alpha-?1|alpha-adreno|prolactin|gonadotroph|litholytic",
+     r"bethanechol|levonorgestrel|ethinylestradiol|ethinyl estradiol|drospirenone|desogestrel|norethisterone|"
      r"medroxyprogesterone|dydrogesterone|progesterone|estradiol|clomifene|clomiphene|oxytocin|carbetocin|"
      r"methylergometrine|methylergonovine|misoprostol|tamsulosin|alfuzosin|silodosin|finasteride|dutasteride|"
      r"solifenacin|tolterodine|oxybutynin|mirabegron|tadalafil|vardenafil|follitropin|menotropin|"
@@ -208,6 +208,13 @@ def assign(e: dict) -> tuple[str, str]:
     for only, area in ROUTE:
         if forms and forms <= only:
             return area, f"route: {'/'.join(sorted(only))} only"
+    # the primary class (US established class when there is one) decides first, so a stray PH category
+    # (e.g. "Antibacterial" on one flurbiprofen lozenge, "Antihypertensive (sulfonamide)") cannot override it
+    primary = e.get("c") or ""
+    for area, crx, _ in _AREAS:
+        m = crx.search(primary)
+        if m:
+            return area, f"primary class: {m.group(0)}"
     for area, crx, _ in _AREAS:
         m = crx.search(ct)
         if m:
