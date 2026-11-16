@@ -833,18 +833,17 @@ def probe(args, targets, generics, cache):
 # --------------------------------------------------------------------------- national search-link probe (debug)
 NATIONAL_PROBE = {
     "MHRA": ["https://products.mhra.gov.uk/search/?search={q}&page=1",
-             "https://products.mhra.gov.uk/substance/?substance={Q}"],
-    "HPRA": ["https://www.hpra.ie/find-a-medicine/results?query={q}",
-             "https://www.hpra.ie/find-a-medicine/for-human-use/authorised-medicines?query={q}",
-             "https://www.hpra.ie/find-a-medicine/for-human-use/authorised-medicines?searchTerm={q}",
-             "https://www.hpra.ie/homepage/medicines/medicines-information/find-a-medicine/results?query={q}&field="],
+             "https://products.mhra.gov.uk/substance-index/?letter={L}",
+             "https://products.mhra.gov.uk/substance/?substance={Q}%20DIHYDROCHLORIDE"],
+    "HPRA": ["https://www.hpra.ie/find-a-medicine/for-human-use/authorised-medicines?searchrequest={q}",
+             "https://www.hpra.ie/find-a-medicine/for-human-use/authorised-medicines?searchrequest={q}&page=1"],
     "Medsafe": ["https://www.medsafe.govt.nz/DbSearch/InfoSearch?searchText={q}",
-                "https://www.medsafe.govt.nz/Medicines/infoSearch.asp?txtSearch={q}",
-                "https://www.medsafe.govt.nz/DbSearch/infoSearch.asp?txtSearch={q}",
-                "https://www.medsafe.govt.nz/DbSearch/"],
+                "https://www.medsafe.govt.nz/DbSearch/InfoSearch?handler=SearchForm&reportQuery.Medicine={q}",
+                "https://www.medsafe.govt.nz/DbSearch/?handler=SearchForm&query.Ingredient={q}&query.SearchType=0",
+                "https://www.medsafe.govt.nz/DbSearch/?query.Ingredient={q}"],
     "CIMA": ["https://cima.aemps.es/cima/publico/lista.html?nombre={q}",
-             "https://cima.aemps.es/cima/rest/medicamentos?nombre={q}",
-             "https://cima.aemps.es/cima/rest/medicamentos?practiv1={q}"],
+             "https://cima.aemps.es/cima/rest/medicamentos?practiv1={q}",
+             "https://cima.aemps.es/cima/rest/medicamentos?nombre={q}"],
 }
 DETAIL_RX = {"MHRA": r"/product/\?product=|/substance/\?substance=|PAR|SPC|spc-doc",
              "HPRA": r"authorised-medicines/details/\d+",
@@ -858,7 +857,7 @@ def probe_national(drugs: list[str]) -> int:
     for agency, pats in NATIONAL_PROBE.items():
         for pat in pats:
             for q in drugs:
-                url = pat.format(q=urllib.parse.quote(q), Q=urllib.parse.quote(q.upper()))
+                url = pat.format(q=urllib.parse.quote(q), Q=urllib.parse.quote(q.upper()), L=q[:1].upper())
                 try:
                     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/json,*/*"})
                     with urllib.request.urlopen(req, timeout=60) as r:
@@ -873,6 +872,15 @@ def probe_national(drugs: list[str]) -> int:
                 forms = re.findall(r"<form[^>]*>", body, re.I)[:3]
                 inputs = sorted(set(re.findall(r'<input[^>]+name="([^"]+)"', body, re.I)))[:12]
                 print(f"== {agency} {code} {url} final={final} bytes={len(body)} q_hits={hits} detail_links={det}")
+                if agency == "CIMA" and "lista.html" in pat and q == drugs[0]:
+                    for src in re.findall(r'<script[^>]+src="([^"]+)"', body)[:12]:
+                        js_url = urllib.parse.urljoin(url, src)
+                        try:
+                            js = http_get(js_url, retries=1, timeout=60).decode("utf-8", "replace")
+                        except Exception:
+                            continue
+                        for mm in list(re.finditer(r"location\.(?:search|hash)|getParam|\$location|searchParams|nombre", js))[:6]:
+                            print(f"   js {src}: …{re.sub(r'\s+', ' ', js[max(0, mm.start() - 120):mm.end() + 160])}…")
                 if pat == pats[0] or det == 0:
                     print("   forms:", forms, "inputs:", inputs)
                     i = body.lower().find(q.lower())
