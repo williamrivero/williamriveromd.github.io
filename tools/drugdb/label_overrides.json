@@ -5,6 +5,7 @@
     "alternates: secondary labels stored under alternate_labels[] in data/drugs/labels/<slug>.json (role, title, criteria).",
     "Criterion keys (all given keys must hold): set_id, application_number (exact, or a bare prefix such as ANDA),",
     "route (any of), form (any of), not_form (none of), brand_regex, manufacturer_regex.",
+    "text_regex is matched against the label's dosage-forms text (section 3, else description); use it to require the PH strengths. Every criterion also requires dosage_and_administration text unless require_sections is [].",
     "Form classes: oral_ir, oral_er, oral_liquid, inj_powder, inj_solution, inj_premix (see label_forms()).",
     "Put a set_id first once a run has confirmed the right label; keep the descriptive criteria after it as fallbacks."
   ],
@@ -39,10 +40,16 @@
     ]
   },
   "meropenem": {
-    "reason": "PH products are powder for injection in vials; the ranking had picked the B. Braun DUPLEX premixed container (NDA202106).",
+    "reason": "PH products are powder for injection in vials; the ranking had picked the B. Braun DUPLEX premixed container (NDA202106). Prefer a vial label listing the PH strengths (500 mg and 1 g); the first run without that picked a 2 g-only 505(b)(2) vial (NDA215212).",
     "primary": [
       {
         "application_number": "NDA050706"
+      },
+      {
+        "route": "INTRAVENOUS",
+        "form": "inj_powder",
+        "not_form": "inj_premix",
+        "text_regex": "500\\s*mg.*\\b1\\s*g(?:ram)?\\b|\\b1\\s*g(?:ram)?\\b.*500\\s*mg"
       },
       {
         "route": "INTRAVENOUS",
@@ -52,8 +59,14 @@
     ]
   },
   "vancomycin": {
-    "reason": "PH products are powder for injection in vials; the ranking had picked the Baxter GALAXY frozen premixed bag (NDA050671).",
+    "reason": "PH products are powder for injection in vials; the ranking had picked the Baxter GALAXY frozen premixed bag (NDA050671). Prefer a vial label listing the PH strengths (500 mg and 1 g); the first run without that picked Mylan NDA209481 (250 mg, 750 mg, 1.25 to 2 g only).",
     "primary": [
+      {
+        "route": "INTRAVENOUS",
+        "form": "inj_powder",
+        "not_form": "inj_premix",
+        "text_regex": "500\\s*mg.*\\b1\\s*g(?:ram)?\\b|\\b1\\s*g(?:ram)?\\b.*500\\s*mg"
+      },
       {
         "route": "INTRAVENOUS",
         "form": "inj_powder",

@@ -508,7 +508,8 @@ def _as_list(v) -> list:
 def criterion_matches(label: dict, c: dict) -> bool:
     """Every key given in the criterion must hold:
     set_id, application_number (exact, or a prefix such as "ANDA"), route (any of), form (any of),
-    not_form (none of), brand_regex, manufacturer_regex."""
+    not_form (none of), text_regex (on the dosage-forms text, e.g. the PH strengths), brand_regex,
+    manufacturer_regex, require_sections (default ["dosage_and_administration"]; [] to allow any)."""
     of = label.get("openfda") or {}
     if c.get("set_id") and label.get("set_id") not in _as_list(c["set_id"]):
         return False
@@ -526,6 +527,12 @@ def criterion_matches(label: dict, c: dict) -> bool:
         return False
     if c.get("not_form") and forms & set(_as_list(c["not_form"])):
         return False
+    if c.get("text_regex") and not re.search(c["text_regex"], label_form_text(label), re.I | re.S):
+        return False
+    # A pinned label must carry real prescribing text (some SPL records index only the carton).
+    for f in _as_list(c.get("require_sections", ["dosage_and_administration"])):
+        if not join_text(label.get(f)):
+            return False
     if c.get("brand_regex") and not re.search(c["brand_regex"], " ".join(of.get("brand_name") or []), re.I):
         return False
     if c.get("manufacturer_regex") and not re.search(c["manufacturer_regex"], " ".join(of.get("manufacturer_name") or []), re.I):
