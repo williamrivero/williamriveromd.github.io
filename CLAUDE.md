@@ -614,7 +614,10 @@ or glossary (e.g. citation links `#ref-3`) open the drawer on that item; a `#ref
 matching anchor opens reference N. Esc / scrim click / ✕ closes. Scoped `.rcm-rail` /
 `.rcm-drawer` styles are injected by the script (light + dark, hidden in print).
 `patch_guide_rail.py` installs it with the same eligibility rules; run it (or `/setup-guide`) after
-adding any new guide.
+adding any new guide. **The rail script is fingerprinted (Nov 18 2026):** pages load `assets/guide-rail.<hash>.js`; edit the unhashed
+`assets/guide-rail.js`, then run `patch_guide_rail.py` (writes the hashed copy, prunes old ones, repoints all pages; the
+sitemap workflow also runs it). `_headers` caches `/assets/guide-rail.*` immutable. Never link the unhashed file: a 4-hour
+Cloudflare cache kept the pre-calculator rail live for hours.
 
 ```bash
 python3 add_calc_nav_pill.py               # add floating bottom-center nav pill to all calculator pages
