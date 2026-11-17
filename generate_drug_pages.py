@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "23"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "24"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 HASH_ASSET_VERSION = "22"   # version used inside page content hashes, so an asset-only bump does not change every page's "Last updated" date
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
@@ -877,6 +877,22 @@ html[data-theme="dark"] .dd-comp-kh { color: #a5eef2; }
 html[data-theme="dark"] .dd-comp-kh .dd-kidney-ico { color: #a5eef2; }
 html[data-theme="dark"] .dd-comp-caveat { color: #fde68a; background: #2a1d05; border-color: #6b4f12; }
 
+/* Installed app: bottom app bar (no browser toolbar in standalone mode) */
+html.dd-standalone body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+.dd-appbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 9000; display: flex; gap: 2px; padding: 5px; border-radius: 999px; background: #1f3864;
+  box-shadow: 0 6px 22px rgba(15,30,51,.28); }
+.dd-appbar a, .dd-appbar button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px;
+  border: 0; border-radius: 999px; background: transparent; color: #fff; font: 600 13.5px/1 'Inter', sans-serif;
+  text-decoration: none; cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+.dd-appbar a:active, .dd-appbar button:active, .dd-appbar [aria-current="page"] { background: rgba(255,255,255,.16); }
+.dd-appbar svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+html.dd-standalone .print-btn, html.dd-standalone .float-controls, html.dd-standalone .scroll-top-btn {
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+@media (max-width: 380px) { .dd-appbar a, .dd-appbar button { padding: 0 11px; font-size: 12.5px; } }
+html[data-theme="dark"] .dd-appbar { background: #0e4a50; }
+@media print { .dd-appbar { display: none !important; } }
+
 /* Installable app + offline panel (index) */
 .dd-app { margin: 34px 0 22px; padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); }
 .dd-app h2 { font-family: 'Inter', sans-serif; font-size: 20px; margin: 0 0 14px; color: var(--navy); }
@@ -1249,8 +1265,24 @@ if(idx){
 var SAVED='rcm-drugs-saved',KEY='wgmr-drug-offline',deferred=null;
 function net(){document.documentElement.classList.toggle('dd-offline',navigator.onLine===false);}
 window.addEventListener('online',net);window.addEventListener('offline',net);net();
-var box=document.getElementById('dd-app');
 function standalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+/* Installed app has no browser toolbar: add Back / Drug Index / Search */
+if(standalone()&&!document.querySelector('.dd-appbar')){
+  document.documentElement.classList.add('dd-standalone');
+  var onIndex=location.pathname==='/drugs/'||location.pathname==='/drugs/index.html';
+  var bar=document.createElement('nav');bar.className='dd-appbar no-print';bar.setAttribute('aria-label','App navigation');
+  bar.innerHTML='<button type="button" data-ab="back" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg><span>Back</span></button>'
+   +'<a href="/drugs/" data-ab="home"'+(onIndex?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span>Drug Index</span></a>'
+   +'<a href="/drugs/#search" data-ab="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></a>';
+  document.body.appendChild(bar);
+  bar.querySelector('[data-ab="back"]').addEventListener('click',function(){
+    if(history.length>1)history.back();else location.href='/drugs/';});
+  bar.querySelector('[data-ab="search"]').addEventListener('click',function(e){
+    var sq=document.getElementById('dd-sq')||document.getElementById('ds-q');
+    if(sq){e.preventDefault();sq.scrollIntoView({block:'center'});sq.focus();}});
+}
+if(location.hash==='#search'){var sq0=document.getElementById('dd-sq');if(sq0){sq0.scrollIntoView({block:'center'});try{sq0.focus();}catch(e){}}}
+var box=document.getElementById('dd-app');
 function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
 function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
 function showInstall(){

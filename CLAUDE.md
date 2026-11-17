@@ -970,7 +970,8 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   manifest network-first. **iPhone/iPad:** no install prompt exists, so the panel shows Share → Add to Home Screen steps and a
   warning to install first and download inside the Home Screen app (Safari tabs and the Home Screen app keep separate storage,
   and Safari may clear tab storage after 7 days); the Home Screen icon is `images/app/drug-index-180.png` (full-bleed; page hashes
-  treat it as the legacy `/apple-touch-icon.png` tag); worker `waitUntil` calls are wrapped (`keep()`) for Safari. Content hashes ignore `APP_HEAD` and asset-version bumps
+  treat it as the legacy `/apple-touch-icon.png` tag); worker `waitUntil` calls are wrapped (`keep()`) for Safari. In the installed app (`display-mode: standalone` /
+  `navigator.standalone`) `drugdb.js` adds a bottom app bar (`.dd-appbar`: Back · Drug Index · Search), since there is no browser toolbar. Content hashes ignore `APP_HEAD` and asset-version bumps
   (`HASH_ASSET_VERSION`), so chrome-only changes rewrite pages but keep their "Last updated" date. `_headers` serves `sw.js` with
   `no-cache`. Clinical rules are unchanged: only approved content is on the pages that get saved.
 - **Build:** `python3 tools/drugdb/build_related_guides.py && python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
