@@ -17,6 +17,10 @@ What it does
 - Applies sensible defaults only to brand-new pages.
 - Drops entries whose files no longer exist (dead-link cleanup).
 - Emits a deterministic ordering so future diffs stay small.
+- Writes extensionless <loc> URLs (/guides/igan-guide, /drugs/meropenem, /about),
+  because Cloudflare Pages 308-redirects every /page.html to /page and
+  /folder/index.html to /folder/. Entries from an older sitemap that still
+  carry .html keep their lastmod/changefreq/priority under the clean URL.
 
 Usage
 -----
@@ -78,8 +82,22 @@ def is_noindex(path: Path) -> bool:
     return bool(NOINDEX_RE.search(head))
 
 
+def clean(url_path: str) -> str:
+    """'/guides/igan-guide.html' -> '/guides/igan-guide'; '/x/index.html' -> '/x/' (as Cloudflare Pages serves them)."""
+    if url_path.endswith("/index.html"):
+        return url_path[: -len("index.html")]
+    if url_path.endswith(".html"):
+        return url_path[: -len(".html")]
+    return url_path
+
+
 def classify(rel_path: str) -> tuple[str, str] | None:
-    """Return (url_path, kind) for an indexable file, or None to skip."""
+    """Return (url_path, kind) for an indexable file, or None to skip. url_path is extensionless."""
+    hit = _classify(rel_path)
+    return (clean(hit[0]), hit[1]) if hit else None
+
+
+def _classify(rel_path: str) -> tuple[str, str] | None:
     parts = rel_path.split("/")
     if "px" in parts:                       # robots.txt Disallow: /guides/px/
         return None
@@ -140,7 +158,10 @@ def load_existing() -> dict[str, dict[str, str]]:
     text = SITEMAP_PATH.read_text(encoding="utf-8")
     out: dict[str, dict[str, str]] = {}
     for m in EXISTING_ENTRY_RE.finditer(text):
-        out[m.group("loc").strip()] = {
+        loc = m.group("loc").strip()
+        if loc.startswith(SITE):            # legacy .html entries map onto their clean URL
+            loc = SITE + clean(loc[len(SITE):])
+        out[loc] = {
             "lastmod": m.group("lastmod").strip(),
             "changefreq": m.group("changefreq").strip(),
             "priority": m.group("priority").strip(),

@@ -2917,9 +2917,10 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     toc = "".join(f'<li><a href="#{href(sid)}">{esc(nav)}</a></li>' for sid, nav, _ in S)
     pills = "".join(f'<a class="nav-pill" href="#{href(sid)}">{esc(nav)}</a>' for sid, nav, _ in S)
 
-    canonical = f"{SITE}/drugs/{slug}.html"
+    # extensionless: Cloudflare Pages 308-redirects /drugs/<slug>.html to /drugs/<slug> (see patch_canonical_clean_urls.py)
+    canonical = f"{SITE}/drugs/{slug}"
     # a high-confidence variant spelling consolidates to the main page (canonical + noindex; dropped from the sitemap)
-    head_canon = f"{SITE}/drugs/{alias['main']}.html" if alias and alias["high"] else canonical
+    head_canon = f"{SITE}/drugs/{alias['main']}" if alias and alias["high"] else canonical
     robots = "noindex, follow" if alias and alias["high"] else "index, follow"
     rxstat = "https://schema.org/PrescriptionOnly" if classes == {"Rx"} else ("https://schema.org/OTC" if classes and "Rx" not in classes else None)
     drug = {"@type": "Drug", "@id": canonical + "#drug", "name": name, "nonProprietaryName": name, "url": canonical}
@@ -3227,7 +3228,7 @@ and the current Philippine package insert. Not a substitute for clinical judgmen
 
 def category_page(cat: str, items: list[dict]) -> str:
     slug = cat_slug(cat)
-    canonical = f"{SITE}/drugs/category/{slug}.html"
+    canonical = f"{SITE}/drugs/category/{slug}"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
                          "name": f"{cat} · Drug Index", "dateModified": "__ISO__", "inLanguage": "en"}, ensure_ascii=False).replace("</", "<\\/")
     lis = "".join(_entry_li(e, "/drugs/") for e in sorted(items, key=lambda e: e["n"].lower()))

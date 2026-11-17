@@ -518,7 +518,7 @@ def brand_page(slug: str, ps: list, sctx: SCtx) -> str:
                 + (f". Ingredients: {lead_ings}" if lead_ings else "") + ". FR numbers, validity and kidney notes.")
     kind = ({"fsmp": "medical nutrition, FSMP", "fsdu": "special dietary food, FSDU", "both": "medical nutrition, FSMP and FSDU"}[mk]
             if all_fsmp else "food supplement")
-    canonical = f"{SITE}/drugs/supplements/{slug}.html"
+    canonical = f"{SITE}/drugs/supplements/{slug}"  # extensionless (Cloudflare 308)
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "@id": canonical, "url": canonical,
                          "name": f"{name} ({kind})", "dateModified": "__ISO__", "inLanguage": "en",
                          "about": ({"@type": "Product", "name": name, "category": reg_kind[:1].upper() + reg_kind[1:].split(" (")[0],
@@ -619,7 +619,7 @@ def viewer_page(sctx: "SCtx") -> str:
     """One page for every brand without a static page: view.html?b=<brand-slug> renders it in the browser."""
     shards = {b.get("shard", "") for b in (sctx.index.get("brands") or {}).values()}
     split = ",".join(sorted({x[0] for x in shards if len(x) == 2}))
-    canonical = f"{SITE}/drugs/supplements/view.html"
+    canonical = f"{SITE}/drugs/supplements/view"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "@id": canonical, "url": canonical,
                          "name": "Food supplement · Drug Index", "inLanguage": "en"}).replace("</", "<\\/")
     page = (supp_head("Food supplement · Renal Care Matters",
