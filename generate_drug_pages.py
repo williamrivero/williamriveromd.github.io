@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "18"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "19"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -1576,9 +1576,8 @@ listed by the FDA; a past date may mean a renewal is pending. Package insert lin
 """
 
 
-KIDNEY_ICON = ('<svg class="dd-kidney-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 3C5.4 3 3 6.6 3 11.2 3 16.6 5.6 21 9 21'
-               'c2.3 0 3.4-1.7 3.4-3.6 0-1.6-.9-2.5-.9-4.1 0-1.4 1.4-1.9 1.4-3.6 0-1.6-1.1-2.3-1.1-3.6C11.8 4.4 10.6 3 8.5 3z"/>'
-               '<path d="M15.5 3c3.1 0 5.5 3.6 5.5 8.2 0 5.4-2.6 9.8-6 9.8"/><path d="M12.5 12h3.5"/></svg>')
+KIDNEY_ICON = ('<svg class="dd-kidney-ico" viewBox="0 0 24 24" aria-hidden="true">'  # pair of kidneys (Nov 17 2026: old glyph read as a stone)
+               '<path d="M7 3C4.2 3 2 6.6 2 11.5S4.4 21 7.4 21c2.2 0 3.6-1.6 3.1-3.6-.4-1.7-1.9-2.8-1.9-4.9s1.5-3.2 1.9-4.9C11 5.3 9.4 3 7 3z"/><path d="M17 3c2.8 0 5 3.6 5 8.5S19.6 21 16.6 21c-2.2 0-3.6-1.6-3.1-3.6.4-1.7 1.9-2.8 1.9-4.9s-1.5-3.2-1.9-4.9C13 5.3 14.6 3 17 3z"/></svg>')
 RENAL_KW = re.compile(r"renal|kidney|creatinine clearance|\bCrCl\b|\beGFR\b|\bGFR\b|dialys|hemodial|haemodial|ESRD|ESKD|nephro", re.I)
 
 
