@@ -121,6 +121,9 @@ python3 generate_latest_calculators.py --count 16  # show N cards (default 12; s
 python3 generate_sitemap.py               # regenerate sitemap.xml from files on disk
 python3 generate_sitemap.py --dry-run     # preview added/removed URLs without writing
 
+python3 patch_og_images.py                # share images ≤300 KB JPEG (images/og/) so Messenger/WhatsApp show the preview card
+python3 patch_og_images.py --dry-run
+python3 patch_og_images.py --guide igan-guide.html   # single guide
 python3 patch_hero_fetchpriority.py             # make each guide's hero (LCP) image load eager + high priority
 python3 patch_hero_fetchpriority.py --dry-run   # preview changes without writing
 python3 patch_hero_fetchpriority.py --guide understanding-ckd.html  # single guide
