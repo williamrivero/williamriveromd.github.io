@@ -37,6 +37,7 @@
     summ: '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M8 11h8M8 15h6"/>',
     gfx: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
     score: '<path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17v-9"/>',
+    evid: '<path d="M18 4H6l6 8-6 8h12"/>',
     share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
     close: '<path d="M18 6 6 18M6 6l12 12"/>'
   };
@@ -113,6 +114,17 @@
     'html[data-theme="dark"] .rcm-pane > .rcm-summ,body.dark-mode .rcm-pane > .rcm-summ{background:#1a2535!important;border-color:#2c3a52!important;color:#c9d3e1!important;}',
     'html[data-theme="dark"] .rcm-pane > .rcm-summ strong,body.dark-mode .rcm-pane > .rcm-summ strong{color:#e6ecf5!important;}',
     'html.rcm-rail-on .ref-section,html.rcm-rail-on .glossary-section,html.rcm-rail-on .rcm-share-panel{display:none!important;}',
+    'html.rcm-rail-on .rcm-moved{display:none!important;}',
+    '.rcm-evid h3,.rcm-evid h4{font:700 12px/1.3 Inter,system-ui,sans-serif!important;letter-spacing:.06em;text-transform:uppercase;color:#14575d!important;margin:18px 0 8px!important;}',
+    '.rcm-evid > :first-child{margin-top:0!important;}',
+    '.rcm-evid p,.rcm-evid li{font-size:13.5px!important;line-height:1.65!important;}',
+    '.rcm-evid table{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.5;margin:0 0 10px;}',
+    '.rcm-evid th,.rcm-evid td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--border,#d8dee8);}',
+    '.rcm-evid th{font:700 11px/1.3 Inter,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted,#5b6678);background:#f3f6f9;}',
+    '.rcm-evid td:last-child{font-variant-numeric:tabular-nums;}',
+    'html[data-theme="dark"] .rcm-evid h3,html[data-theme="dark"] .rcm-evid h4,body.dark-mode .rcm-evid h3,body.dark-mode .rcm-evid h4{color:#7fd3da!important;}',
+    'html[data-theme="dark"] .rcm-evid th,body.dark-mode .rcm-evid th{background:#1a2535;color:#9ba6b8;}',
+    'html[data-theme="dark"] .rcm-evid th,html[data-theme="dark"] .rcm-evid td,body.dark-mode .rcm-evid th,body.dark-mode .rcm-evid td{border-color:#2c3a52;}',
     'html[data-theme="dark"] .rcm-rail,body.dark-mode .rcm-rail{background:#1a2535;border-color:#2c3a52;}',
     'html[data-theme="dark"] .rcm-rail-btn,body.dark-mode .rcm-rail-btn{color:#d6deea;}',
     'html[data-theme="dark"] .rcm-rail-btn:hover,html[data-theme="dark"] .rcm-rail-btn.is-on,body.dark-mode .rcm-rail-btn:hover,body.dark-mode .rcm-rail-btn.is-on{color:#7fd3da;background:rgba(127,211,218,.10);}',
@@ -134,7 +146,7 @@
     'html[data-theme="dark"] .rcm-pane .rcm-score-card .ov-src,body.dark-mode .rcm-pane .rcm-score-card .ov-src{color:#9ba6b8!important;border-color:#2c3a52!important;}',
     'html[data-theme="dark"] .rcm-pane .rcm-score-card .ov-foot,body.dark-mode .rcm-pane .rcm-score-card .ov-foot{color:#7fd3da!important;}',
     '@media (max-width:1023.98px){.rcm-rail,.rcm-drawer,.rcm-scrim{display:none!important;}}',
-    '@media print{.rcm-rail,.rcm-drawer,.rcm-scrim{display:none!important;}html.rcm-rail-on .ref-section,html.rcm-rail-on .glossary-section{display:block!important;}}'
+    '@media print{.rcm-rail,.rcm-drawer,.rcm-scrim{display:none!important;}html.rcm-rail-on .ref-section,html.rcm-rail-on .glossary-section,html.rcm-rail-on .rcm-moved{display:block!important;}}'
   ].join('\n');
 
   function init() {
@@ -166,6 +178,10 @@
     document.head.appendChild(st);
 
     var tabs = [];
+    // Calculators (Nov 18 2026): the Formula & evidence block moves to the rail too, so the page is the calculator.
+    var isCalc = document.body.classList.contains('calc-page') || /\/(calc-[^\/]+|ckd-dri-calculator)(\.html)?$/.test(location.pathname);
+    var evid = isCalc ? document.querySelector('main details#evidence, main section#evidence, main details#methods, main details#formula') : null;
+    if (evid) tabs.push({ k: 'evid', en: 'Formula & evidence', tl: 'Formula & evidence', ceb: 'Formula & evidence', kap: 'Formula & evidence', icon: I.evid });
     var fullAbs = document.querySelector('template.clinical-abstract');
     if (summ) tabs.push({ k: 'summ', en: 'Abstract', tl: 'Abstract', ceb: 'Abstract', kap: 'Abstract', tip: 'Clinical abstract', icon: I.summ, clinician: true });
     if (scoreCard) tabs.push({ k: 'score', en: 'Scorecard', tl: 'Scorecard', ceb: 'Scorecard', kap: 'Scorecard', icon: I.score, clinician: true });
@@ -199,6 +215,18 @@
       return node;
     }
 
+    if (evid) {
+      var ep = dr.querySelector('#rcm-pane-evid');
+      ep.innerHTML = '<p class="rcm-pane-title">Formula &amp; evidence</p><p class="rcm-pane-sub">Equations, thresholds and the studies behind this calculator</p>';
+      var eb = document.createElement('div'); eb.className = 'rcm-evid';
+      var src = evid.tagName === 'DETAILS' ? (evid.querySelector(':scope > .mdc-acc-body') || evid) : evid;
+      Array.prototype.forEach.call(src.children, function (c) {
+        if (c.tagName === 'SUMMARY' || c.classList.contains('section-tag') || (evid.tagName === 'SECTION' && c.tagName === 'H2')) return;
+        eb.appendChild(strip(c.cloneNode(true)));
+      });
+      ep.appendChild(eb);
+      evid.classList.add('rcm-moved');
+    }
     if (scoreCard) {
       var sc = dr.querySelector('#rcm-pane-score');
       sc.innerHTML = '<p class="rcm-pane-title">Evidence Scorecard</p><p class="rcm-pane-sub">Key numbers for clinicians, from this guide</p>';
@@ -331,6 +359,7 @@
         return;
       }
       if (!target) return;
+      if (evid && (target === evid || evid.contains(target))) { e.preventDefault(); open('evid'); return; }
       var sec = target.closest('.ref-section, .glossary-section');
       if (!sec) return;
       e.preventDefault();

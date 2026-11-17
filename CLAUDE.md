@@ -681,6 +681,12 @@ calculators: a middle answer; up to 3 date fields), marks them amber, and **Clea
 pages that already have their own Example buttons are skipped. Sample values never reach the shared patient store
 (`calc-handoff.js` ignores fields marked `data-rcm-sample`). New calculators get all of this automatically; give their
 inputs an `e.g. <value>` placeholder so the Sample button has something sensible to fill.
+**Calculator side rail (Nov 18 2026).** Calculators load `assets/guide-rail.js` too (`patch_guide_rail.py` now uses the
+share-bar eligibility minus `calculators.html`). On calculators the rail shows **Formula & evidence** (the page's
+`details#evidence` / `section#evidence` / `details#methods` / `details#formula` block, moved off the page on screens
+≥ 1024px; the nav-strip "Evidence" link opens it), **References** and **Share**. Calculators carry **no author panel**:
+`calc-ui.css` hides `.dr-card-wrap` (the markup stays because `patch_references_accordion.py` anchors on it), and every
+calculator footer ends with `© 2026 renalcarematters.com`.
 
 ```bash
 python3 patch_calc_english_only.py         # strip translations from all calculators (English-only)

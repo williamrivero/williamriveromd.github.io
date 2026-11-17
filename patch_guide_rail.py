@@ -26,7 +26,14 @@ Usage:
 import argparse
 from pathlib import Path
 
-from patch_symptom_widget import eligible, find_project_dir
+from patch_symptom_widget import find_project_dir
+from patch_share_buttons import eligible as _share_eligible
+
+
+def eligible(name: str) -> bool:
+    # Content guides plus every calculator (Nov 18 2026: Author / References / Share in the rail);
+    # the calculators index has no references or author panel, so it stays out.
+    return _share_eligible(name) and name != "calculators.html"
 
 TAG = '<script src="../assets/guide-rail.js" defer></script>'
 MARK = "assets/guide-rail.js"
