@@ -194,6 +194,32 @@ Updates download only the calculators that changed, and saved calculators refres
 {PANEL_END}"""
 
 
+UI_START, UI_END = "<!-- CALC-UI-START -->", "<!-- CALC-UI-END -->"
+UI_SRC = {"css": REPO / "assets" / "calc-ui.css", "js": REPO / "assets" / "calc-ui.js"}
+
+
+def ui_assets() -> dict:
+    """Fingerprinted copies of assets/calc-ui.css/js (a new name per change, so no edge cache can serve stale)."""
+    out = {}
+    for ext, src in UI_SRC.items():
+        raw = src.read_bytes()
+        out[ext] = (f"/assets/calc-ui.{hashlib.sha1(raw).hexdigest()[:10]}.{ext}", raw)
+    return out
+
+
+def ui_block(ui: dict) -> str:
+    return (UI_START + "\n"
+            f'<link rel="stylesheet" href="{ui["css"][0]}">\n'
+            f'<script src="{ui["js"][0]}" defer></script>\n' + UI_END)
+
+
+def patch_ui(t: str, ui: dict) -> str:
+    """Compact calculator design + collapsible calculators + Sample data, last in <head> so it wins the cascade."""
+    t = strip_block(t, UI_START, UI_END)
+    i = t.find("</head>")
+    return t if i < 0 else t[:i] + ui_block(ui) + "\n" + t[i:]
+
+
 def pages() -> list[Path]:
     return sorted(G.glob("calc-*.html")) + [G / "calculators.html"]
 
@@ -284,9 +310,23 @@ def main():
             if not a.check:
                 path.write_text(content, encoding="utf-8")
 
+    ui = ui_assets()
+    for ext, (url, raw) in ui.items():
+        dest = REPO / url.lstrip("/")
+        if not dest.exists():
+            changed.append(url.lstrip("/"))
+            if not a.check:
+                dest.write_bytes(raw)
+        for old in (REPO / "assets").glob(f"calc-ui.*.{ext}"):
+            if old != dest and not a.check:
+                old.unlink()
     texts = {}
     for p in pages():
-        texts[p] = patch_page(p.read_text(encoding="utf-8"))
+        t = patch_page(p.read_text(encoding="utf-8"))
+        texts[p] = patch_ui(t, ui) if p.name.startswith("calc-") else t
+    dri = G / "ckd-dri-calculator.html"   # a calculator outside the Calculo scope: design layer only
+    if dri.exists():
+        write(dri, patch_ui(dri.read_text(encoding="utf-8"), ui))
     idx = G / "calculators.html"
     # sizes are rounded, so a first pass is enough to fill the panel
     texts[idx] = patch_index(texts[idx], sizes_of(offline_manifest(texts)))

@@ -27,6 +27,8 @@
   function one(sel) { return document.querySelector(sel); }
   function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
   function val(e) { return e ? String(e.value).trim() : ''; }
+  // Sample data (assets/calc-ui.js) marks its fields; those never reach the shared store.
+  function mine(e) { return e && !e.hasAttribute('data-rcm-sample') ? e : null; }
   function active(id) { var b = document.getElementById(id); return !!(b && b.classList.contains('active')); }
   function prefixOf(id, suffix) { return id.slice(0, id.length - suffix.length); }
 
@@ -62,16 +64,16 @@
 
   // ── Save canonical values back whenever a shared field changes ──────────────
   function save() {
-    var st = read();
-    var a = one('input[id$="-age"]'); if (a && val(a)) st.age = val(a);
-    var x = one('[id$="-sex"]'); if (x && val(x)) st.sex = val(x);
-    var g = one('input[id$="-egfr"]'); if (g && val(g)) st.egfr = val(g);
-    var h = one('input[id$="-height"], input[id$="-ht"]'); if (h && val(h)) st.heightCm = val(h);
-    var w = one('input[id$="-weight"]');
+    var st = read(), was = JSON.stringify(st);
+    var a = mine(one('input[id$="-age"]')); if (a && val(a)) st.age = val(a);
+    var x = mine(one('[id$="-sex"]')); if (x && val(x)) st.sex = val(x);
+    var g = mine(one('input[id$="-egfr"]')); if (g && val(g)) st.egfr = val(g);
+    var h = mine(one('input[id$="-height"], input[id$="-ht"]')); if (h && val(h)) st.heightCm = val(h);
+    var w = mine(one('input[id$="-weight"]'));
     if (w && val(w) && weightIsKg(prefixOf(w.id, '-weight'))) st.weightKg = val(w);
-    var c = one('input[id$="-scr"], input[id$="-creat"]');
+    var c = mine(one('input[id$="-scr"], input[id$="-creat"]'));
     if (c && val(c) && scrIsMgdl(prefixOf(c.id, scrSuffix(c.id)))) st.scrMgdl = val(c);
-    write(st);
+    if (JSON.stringify(st) !== was) write(st);
   }
   ['-age', '-sex', '-egfr', '-height', '-ht', '-weight', '-scr', '-creat'].forEach(function (suf) {
     all('[id$="' + suf + '"]').forEach(function (e) {

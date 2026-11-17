@@ -669,6 +669,19 @@ hides the desktop/mobile toggles. The sitemap workflow runs it on every push, so
 automatically; run it locally too. Bump `ASSET_V` in the script when `assets/calc-app.js` changes.
 `guides/ckd-dri-calculator.html` is outside the app scope (its name does not start with `calc`).
 
+**Calculator design layer (Nov 18 2026).** `build_calc_app.py` also puts a `<!-- CALC-UI-START/END -->` block last in
+the `<head>` of every `guides/calc-*.html` and `guides/ckd-dri-calculator.html`, loading fingerprinted copies of
+`assets/calc-ui.css` and `assets/calc-ui.js` (`assets/calc-ui.<hash>.css|js`; old copies are pruned, `_headers` caches
+them immutable). Edit the unhashed sources, then run `build_calc_app.py`. The layer gives every calculator one compact
+"clinical instrument" design (white card with a teal top rule, one Units row, sentence-case labels, 16 px inputs so iOS
+does not zoom, tabular-number result readout, a folded "Formula, sources & limitations" note) without editing pages. On a
+page with 2+ calculators, each starts collapsed to its numbered title ("Expand all", #hash links and printing open them).
+Each calculator gets a **Sample data** button that fills the fields from the page's own `e.g.` placeholders (score-type
+calculators: a middle answer; up to 3 date fields), marks them amber, and **Clear sample** restores the previous values;
+pages that already have their own Example buttons are skipped. Sample values never reach the shared patient store
+(`calc-handoff.js` ignores fields marked `data-rcm-sample`). New calculators get all of this automatically; give their
+inputs an `e.g. <value>` placeholder so the Sample button has something sensible to fill.
+
 ```bash
 python3 patch_calc_english_only.py         # strip translations from all calculators (English-only)
 python3 patch_calc_english_only.py --dry-run

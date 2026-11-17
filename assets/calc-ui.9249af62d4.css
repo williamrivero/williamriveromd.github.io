@@ -1,0 +1,159 @@
+/* Calculator UI layer (Nov 18 2026). One compact, consistent "clinical instrument" design for every
+   calculator page: inputs → units → result readout → formula & sources. Loaded last in <head> by
+   build_calc_app.py as a fingerprinted copy (assets/calc-ui.<hash>.css), so it refines each page's own
+   styles without editing 219 files. Also styles what assets/calc-ui.js adds: the grouped Units row
+   (.cu-units), the collapsible calculators (.cx-*), the Sample data bar (.cs-*) and the folded
+   formula/source note (.cu-fine). Do not edit the hashed copy; edit this file and run build_calc_app.py. */
+
+/* ── Section heading + intro above a calculator ── */
+main #calculator > h2 { font-size: clamp(21px, 2.3vw, 26px); line-height: 1.22; letter-spacing: -.01em; margin-bottom: 6px; }
+main #calculator > h2 + p { font-size: 15px; line-height: 1.6; color: var(--text-mid); margin-bottom: 12px; }
+
+/* ── The instrument card ── */
+.calc-wrap, .calc-card {
+  position: relative;
+  padding: 16px 18px 14px !important;
+  margin: 10px 0 18px !important;
+  border-radius: 16px !important;
+  background: var(--white, #fff) !important;
+  border: 1px solid var(--border, #dfe6f0) !important;
+  box-shadow: 0 1px 2px rgba(15, 30, 51, .05), 0 8px 24px -12px rgba(15, 30, 51, .14) !important;
+}
+.calc-wrap, .calc-card { border-top: 3px solid var(--teal, #1a6b72) !important; }
+
+/* ── Units: one quiet row of segmented controls ── */
+.cu-units { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 2px 0 12px; margin: 0 0 12px;
+  border-bottom: 1px dashed var(--border, #dfe6f0); }
+.cu-units .unit-toggle-wrap, .calc-wrap > .unit-toggle-wrap { display: inline-flex !important; align-items: center; gap: 7px; margin: 0 !important; }
+.calc-wrap > .unit-toggle-wrap { margin: 0 16px 10px 0 !important; }
+.unit-toggle-wrap .ut-label { font-size: 12px !important; font-weight: 600 !important; letter-spacing: 0 !important; text-transform: none !important;
+  color: var(--text-muted) !important; margin: 0 !important; white-space: nowrap; }
+.unit-toggle { border-radius: 9px !important; overflow: hidden; }
+.unit-toggle .unit-btn { padding: 5px 11px !important; font-size: 12.5px !important; min-height: 30px; line-height: 1; }
+
+/* ── Fields ── */
+.calc-grid { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important; gap: 12px 14px !important; margin: 4px 0 6px !important; }
+.calc-field { margin: 0 !important; min-width: 0; display: flex; flex-direction: column; }
+.calc-field > label, .calc-card label {
+  font-size: 12.5px !important; font-weight: 650 !important; letter-spacing: 0 !important; text-transform: none !important;
+  color: var(--text) !important; line-height: 1.3 !important; margin: 0 0 5px !important;
+}
+.calc-field input:not([type=checkbox]):not([type=radio]), .calc-field select,
+.calc-wrap input[type=number], .calc-wrap input[type=text], .calc-wrap select,
+.calc-card input[type=number], .calc-card input[type=text], .calc-card select {
+  height: 42px; min-height: 42px; padding: 8px 11px !important; box-sizing: border-box; width: 100%;
+  font-size: 16px !important;              /* 16px: iOS does not zoom the page on focus */
+  font-variant-numeric: tabular-nums; border-radius: 10px !important;
+  transition: border-color .15s, box-shadow .15s, background-color .15s;
+}
+.calc-wrap input::placeholder, .calc-card input::placeholder { color: var(--text-faint, #8a96a8); opacity: .85; }
+.calc-wrap input:focus, .calc-wrap select:focus, .calc-card input:focus, .calc-card select:focus {
+  outline: none; border-color: var(--teal, #1a6b72) !important; box-shadow: 0 0 0 3px rgba(26, 107, 114, .16) !important;
+}
+.calc-wrap .field-hint, .calc-card .field-hint { font-size: 11.5px !important; line-height: 1.4 !important; margin-top: 4px !important; color: var(--text-muted); }
+
+/* ── Result readout ── */
+.calc-result-box { margin-top: 14px !important; padding: 14px 16px !important; border-radius: 14px !important; border-width: 1.5px !important; }
+.calc-metrics-row { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)) !important; gap: 8px !important; margin-bottom: 10px; }
+.calc-metric-card { padding: 10px 10px 9px !important; border-radius: 11px !important; background: rgba(255, 255, 255, .78) !important; }
+.calc-metric-card .cmv { font-size: clamp(22px, 2.6vw, 27px) !important; font-weight: 700 !important; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.calc-metric-card .cml { font-size: 10.5px !important; letter-spacing: .06em; margin-top: 5px !important; }
+.calc-metric-card .cmt { font-size: 11.5px !important; margin-top: 3px !important; }
+.calc-verdict-text { font-size: 14.5px !important; line-height: 1.55 !important; margin: 6px 0 6px !important; }
+.calc-action-text { font-size: 13.5px !important; line-height: 1.55 !important; }
+.calc-btn, .calc-wrap button[type=submit] { min-height: 42px; border-radius: 10px !important; font-weight: 700; }
+
+/* ── Formula, sources & limitations (folded) ── */
+.calc-disclaimer { font-size: 12px !important; line-height: 1.55 !important; color: var(--text-muted) !important; }
+details.cu-fine { margin-top: 12px; border-top: 1px solid var(--border, #dfe6f0); padding-top: 8px; }
+details.cu-fine > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  font: 600 12.5px/1.3 Inter, system-ui, sans-serif; color: var(--text-muted); padding: 4px 0; }
+details.cu-fine > summary::-webkit-details-marker { display: none; }
+details.cu-fine > summary::before { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg); transition: transform .15s; margin-right: 2px; }
+details.cu-fine[open] > summary::before { transform: rotate(45deg); }
+details.cu-fine > summary:hover { color: var(--teal, #1a6b72); }
+details.cu-fine .calc-disclaimer { margin: 6px 0 0 !important; padding: 0 !important; border: 0 !important; }
+
+/* ── Phones: two fields per row, aligned inputs ── */
+@media (max-width: 600px) {
+  .calc-wrap, .calc-card { padding: 14px 13px 12px !important; border-radius: 14px !important; }
+  .calc-grid { grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)) !important; gap: 11px 10px !important; }
+  .calc-field > label { font-size: 12px !important; }
+  .cu-units { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, max-content)); gap: 8px 14px; }
+  .cu-units .unit-toggle-wrap { flex-direction: column; align-items: flex-start !important; gap: 4px; }
+  .cu-units .ut-label { font-size: 11px !important; }
+  .calc-field .field-hint { font-size: 11px !important; }
+  .cu-units { gap: 8px 12px; }
+  .calc-metrics-row { grid-template-columns: repeat(auto-fit, minmax(86px, 1fr)) !important; gap: 6px !important; }
+  .calc-metric-card { padding: 8px 6px 7px !important; }
+  .calc-metric-card .cmv { font-size: 19px !important; }
+  .calc-metric-card .cml { font-size: 9.5px !important; letter-spacing: .04em; }
+}
+
+/* ── Collapsible calculators (pages with 2+ calculators) ── */
+.cx-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0 10px;
+  font: 600 13px/1.3 Inter, system-ui, sans-serif; color: var(--text-muted); }
+.cx-bar button { font: 600 13px/1 Inter, system-ui, sans-serif; color: var(--teal, #1a6b72); background: none; border: 0; padding: 8px 2px; cursor: pointer; }
+.cx-bar button:hover { text-decoration: underline; }
+.cx-unit { border: 1px solid var(--border, #dfe6f0); border-radius: 16px; background: var(--white, #fff); margin: 0 0 10px;
+  box-shadow: 0 1px 2px rgba(15, 30, 51, .04); transition: box-shadow .2s, border-color .2s; scroll-margin-top: 90px; }
+.cx-unit.cx-open { border-color: rgba(26, 107, 114, .4); box-shadow: 0 10px 30px -16px rgba(15, 30, 51, .28); }
+.cx-head { display: flex !important; align-items: center; gap: 12px; margin: 0 !important; padding: 14px 16px !important; cursor: pointer;
+  font-size: clamp(16px, 1.8vw, 18px) !important; line-height: 1.35 !important; border-radius: 16px;
+  user-select: none; -webkit-tap-highlight-color: transparent; }
+.cx-head:hover { background: rgba(26, 107, 114, .045); }
+.cx-head:focus-visible { outline: 3px solid rgba(26, 107, 114, .35); outline-offset: -3px; }
+.cx-num { flex: none; display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 9px;
+  background: rgba(26, 107, 114, .11); color: var(--teal, #1a6b72); font: 700 13px/1 Inter, system-ui, sans-serif; }
+.cx-unit.cx-open .cx-num { background: var(--teal, #1a6b72); color: #fff; }
+.cx-title { flex: 1; min-width: 0; }
+.cx-chev { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round;
+  stroke-linejoin: round; transition: transform .2s; opacity: .6; }
+.cx-unit.cx-open .cx-chev { transform: rotate(180deg); }
+.cx-body { padding: 0 16px 6px; }
+.cx-unit:not(.cx-open) .cx-body { display: none; }
+.cx-body > :first-child { margin-top: 0 !important; }
+.cx-body .calc-wrap, .cx-body .calc-card { margin: 8px 0 12px !important; }
+@media (max-width: 600px) { .cx-body { padding: 0 10px 4px; } .cx-head { padding: 13px 12px !important; gap: 10px; } }
+
+/* a section that only holds a collapsed calculator sheds its big padding and eyebrow (the number badge replaces it) */
+section.section:has(> .cx-unit) { padding-top: 3px; padding-bottom: 3px; border-bottom: 0; }
+section.section:has(> .cx-bar) { padding-top: 48px; }
+section.section:has(> .cx-unit) > .section-tag { display: none; }
+
+/* ── Sample data bar ── */
+.cs-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px; margin: -2px 0 10px; }
+.cs-btn { display: inline-flex; align-items: center; gap: 6px; font: 600 12.5px/1 Inter, system-ui, sans-serif; padding: 7px 12px; min-height: 32px;
+  border-radius: 999px; border: 1px solid rgba(26, 107, 114, .35); background: rgba(26, 107, 114, .06); color: var(--teal, #1a6b72); cursor: pointer; }
+.cs-bar [hidden] { display: none !important; }
+.cs-btn:hover { background: rgba(26, 107, 114, .12); }
+.cs-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.cs-btn.cs-clear { border-color: var(--border, #dfe6f0); background: transparent; color: var(--text-muted); }
+.cs-note { margin-right: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #7a4b00; }
+.cs-note::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: #fff8e6; border: 1.5px solid #e5bd6b; }
+.calc-wrap [data-rcm-sample], .calc-card [data-rcm-sample], [data-rcm-sample] { background-color: #fff8e6 !important; border-color: #e5bd6b !important; }
+
+/* ── Dark mode ── */
+html[data-theme="dark"] .calc-wrap, html[data-theme="dark"] .calc-card, html[data-theme="dark"] .cx-unit { background: #1a2535 !important; border-color: #2c3a52 !important; }
+html[data-theme="dark"] .calc-wrap, html[data-theme="dark"] .calc-card { border-top-color: #3aa3ab !important; }
+html[data-theme="dark"] .cx-unit.cx-open { border-color: #3aa3ab !important; }
+html[data-theme="dark"] .calc-metric-card { background: rgba(255, 255, 255, .05) !important; }
+html[data-theme="dark"] .cx-num { background: rgba(79, 179, 187, .18); color: #9fdde2; }
+html[data-theme="dark"] .cx-unit.cx-open .cx-num { background: #0e4a50; color: #fff; }
+html[data-theme="dark"] .cx-bar button, html[data-theme="dark"] .cs-btn, html[data-theme="dark"] details.cu-fine > summary:hover { color: #9fdde2; }
+html[data-theme="dark"] .cs-btn { border-color: rgba(79, 179, 187, .45); background: rgba(79, 179, 187, .08); }
+html[data-theme="dark"] .cs-btn.cs-clear { color: #b4bfcf; border-color: #2c3a52; background: transparent; }
+html[data-theme="dark"] .cs-note { color: #fde68a; }
+html[data-theme="dark"] .cs-note::before { background: #2a2210; border-color: #7a5d1d; }
+html[data-theme="dark"] [data-rcm-sample] { background-color: #2a2210 !important; border-color: #7a5d1d !important; color: #f8e7c2 !important; }
+html[data-theme="dark"] .cx-head:hover { background: rgba(79, 179, 187, .07); }
+html[data-theme="dark"] .cu-units, html[data-theme="dark"] details.cu-fine { border-color: #2c3a52; }
+
+@media print {
+  .cs-bar, .cx-bar, .cx-chev { display: none !important; }
+  .cx-unit .cx-body { display: block !important; }
+  .cx-unit { border: 0; box-shadow: none; }
+  details.cu-fine > summary { display: none; }
+  details.cu-fine > :not(summary) { display: block !important; }
+}
