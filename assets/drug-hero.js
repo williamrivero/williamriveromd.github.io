@@ -35,7 +35,11 @@
     'html[data-theme="dark"] .dd-hero-tok.t3,body.dark-mode .dd-hero-tok.t3{color:#f472a6}',
     '.dd-hero-cap{display:inline-block;width:2.4em;height:1em;border-radius:.5em;',
     ' background:linear-gradient(90deg,currentColor 0 50%,transparent 50%);border:2px solid currentColor;box-sizing:border-box}',
-    '.dd-hero-ico{display:block;width:1em;height:1em;fill:currentColor}',
+    '.dd-hero-ico{display:block;width:1em;height:1em;fill:currentColor;transform-origin:50% 50%}',
+    '.dd-hero-ico.flip{animation:dd-hero-flip var(--fd) linear infinite}',
+    '.dd-hero-ico.rock{animation:dd-hero-rock var(--fd) ease-in-out infinite alternate}',
+    '@keyframes dd-hero-flip{from{transform:perspective(200px) rotateY(0deg)}to{transform:perspective(200px) rotateY(360deg)}}',
+    '@keyframes dd-hero-rock{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}',
     '@keyframes dd-hero-drift{0%{transform:translate(var(--x0),var(--y0)) rotate(var(--r0));opacity:0}',
     ' 10%{opacity:var(--op)}90%{opacity:var(--op)}100%{transform:translate(var(--x1),var(--y1)) rotate(var(--r1));opacity:0}}',
     '@keyframes dd-hero-float{0%{transform:translate(var(--x0),var(--y0)) rotate(var(--rot));opacity:0}',
@@ -109,7 +113,12 @@
     var w = document.createElement('span');
     w.className = 'dd-hero-tok ico t' + (k % 4);
     var nm = NAMES[k % NAMES.length];
-    w.innerHTML = '<svg class="dd-hero-ico" viewBox="0 0 24 24"><path d="' + ICONS[nm] + '"/></svg>';
+    /* how each one turns: a third spin end-over-end (flat rotation), a third flip like a coin
+       (3D turn about the vertical axis), a third rock back and forth; spin direction and speed vary */
+    var mode = k % 3;
+    var turn = mode === 1 ? ' flip' : mode === 2 ? ' rock' : '';
+    w.innerHTML = '<svg class="dd-hero-ico' + turn + '" viewBox="0 0 24 24"><path d="' + ICONS[nm] + '"/></svg>';
+    if (turn) w.firstChild.style.setProperty('--fd', rnd(mode === 1 ? 4 : 2.5, mode === 1 ? 11 : 6).toFixed(1) + 's');
     w.style.fontSize = rnd(18, 46).toFixed(0) + 'px';
     w.style.top = rnd(-6, 96).toFixed(1) + '%';
     var dir = k % 3 === 0 ? -1 : 1;            /* a third drift right-to-left */
@@ -119,7 +128,8 @@
     w.style.setProperty('--y0', yi.toFixed(1) + 'px');
     w.style.setProperty('--y1', (yi + rnd(-60, 60)).toFixed(1) + 'px');
     w.style.setProperty('--r0', r0.toFixed(0) + 'deg');
-    w.style.setProperty('--r1', (r0 + rnd(-140, 140)).toFixed(0) + 'deg');
+    var spin = mode === 0 ? (Math.random() < 0.5 ? -1 : 1) * rnd(360, 900) : rnd(-90, 90);
+    w.style.setProperty('--r1', (r0 + spin).toFixed(0) + 'deg');
     w.style.setProperty('--op', rnd(0.08, 0.22).toFixed(2));
     var d = rnd(9, 58), dl = -rnd(0, d);         /* very different speeds: 9 s to almost a minute */
     w.style.animation = 'dd-hero-drift ' + d.toFixed(1) + 's ' + dl.toFixed(1) + 's linear infinite';
