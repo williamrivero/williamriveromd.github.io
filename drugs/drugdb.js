@@ -343,47 +343,85 @@ showInstall();
 q('install').addEventListener('click',function(){if(!deferred)return;deferred.prompt();
   (deferred.userChoice||Promise.resolve()).then(function(){deferred=null;showInstall();});});
 
-var dl=q('dl'),rm=q('rm'),st=q('status'),bar=q('bar');
+var btns=Array.prototype.slice.call(box.querySelectorAll('[data-app="dl"]')),rm=q('rm'),st=q('status'),bar=q('bar');
 if(!('caches' in window)||!('serviceWorker' in navigator)){q('off').hidden=true;return;}
-var t=document.querySelector('.dd-meta-time'),dataDate=t?t.getAttribute('datetime')||'':'';
+var MAN='/drugs/offline-manifest.json',busy=false,cur=null;
+var LABEL={all:'Download all drugs',kidney:'Kidney-dosing drugs only'};
 function rec(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
+function setRec(r){try{localStorage.setItem(KEY,JSON.stringify(r));}catch(e){}}
 function fmtDate(ms){try{return new Date(ms).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return '';}}
+function num(n){return Number(n).toLocaleString('en-US');}
+function manifest(){return fetch(MAN,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});}
 function status(){
   var r=rec();
-  if(!r){st.textContent='Not downloaded yet.';rm.hidden=true;dl.textContent='Download kidney-dosing drugs';return;}
-  var msg=r.n+' kidney-dosing drug pages saved on '+fmtDate(r.at)+'.';
+  btns.forEach(function(b){b.disabled=busy;b.textContent=LABEL[b.getAttribute('data-set')];});
+  rm.disabled=busy;
+  if(!r||r.v!==2){st.textContent=r&&r.n?'Saved pages from an earlier download are kept; download again to include every drug.':'Nothing downloaded yet.';rm.hidden=!(r&&r.n);return;}
   rm.hidden=false;
-  if(dataDate&&r.data&&r.data<dataDate){msg+=' The Drug Index was updated after that; update your saved pages.';dl.textContent='Update saved pages';}
-  else dl.textContent='Download again';
+  var what=r.set==='all'?'All drugs':'Kidney-dosing drugs';
+  var msg=r.done?what+' saved on this device ('+num(r.n)+' pages, '+fmtDate(r.at)+').'
+               :what+': download interrupted at '+num(r.n)+' of '+num(r.total)+' pages. Tap the button again to resume.';
+  var b=box.querySelector('[data-app="dl"][data-set="'+r.set+'"]');
+  if(cur&&r.done){if(cur.h!==r.h){msg+=' Updates are available.';if(b)b.textContent='Update '+(r.set==='all'?'all drugs':'kidney-dosing drugs');}
+                  else if(b)b.textContent=(r.set==='all'?'All drugs':'Kidney-dosing drugs')+': up to date';}
+  else if(!r.done&&b)b.textContent='Resume download';
   st.textContent=msg;
   if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(function(x){
-    if(x&&x.usage)st.textContent=msg+' Using about '+Math.max(1,Math.round(x.usage/1e6))+' MB on this device.';}).catch(function(){});
+    if(x&&x.usage&&!busy)st.textContent=msg+' Using about '+num(Math.max(1,Math.round(x.usage/1e6)))+' MB on this device.';}).catch(function(){});
 }
 status();
-dl.addEventListener('click',function(){
+if(navigator.onLine!==false)manifest().then(function(m){cur=m;if(!busy)status();},function(){});
+
+function run(set){
+  if(busy)return;
   if(navigator.onLine===false){st.textContent='You are offline. Connect to the internet to download.';return;}
-  dl.disabled=true;rm.disabled=true;bar.hidden=false;bar.value=0;st.textContent='Preparing the download…';
+  busy=true;status();bar.hidden=false;bar.value=0;st.textContent='Checking what needs downloading…';
+  var lock=null;try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(l){lock=l;},function(){});}catch(e){}
   if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});
-  fetch('/drugs/search-index.json').then(function(r){return r.json();}).then(function(idx){
-    var list=idx.filter(function(e){return e.k&&!e.m;}).map(function(e){return '/drugs/'+e.s;});
-    bar.max=list.length;
-    return caches.open(SAVED).then(function(c){
-      var i=0,done=0,ok=0;
+  var m,c,want={},have={},todo=[],ok=0,failed=0,total=0;
+  manifest().then(function(x){
+    m=x;cur=x;
+    m.pages.forEach(function(p){if(set==='all'||p[3])want[location.origin+'/drugs/'+p[0]]=p;});
+    return caches.open(SAVED);
+  }).then(function(cache){
+    c=cache;return c.keys();
+  }).then(function(keys){                       // what is already saved, and at which version
+    return Promise.all(keys.map(function(k){
+      if(!want[k.url])return c.delete(k);         // not in this set (or no longer published)
+      return c.match(k).then(function(res){have[k.url]=res&&res.headers.get('X-RCM-Hash');});
+    }));
+  }).then(function(){
+    Object.keys(want).forEach(function(u){if(have[u]!==want[u][1])todo.push(u);});
+    total=Object.keys(want).length;ok=total-todo.length;
+    var need=todo.reduce(function(a,u){return a+want[u][2];},0);
+    var room=(navigator.storage&&navigator.storage.estimate)?navigator.storage.estimate():Promise.resolve(null);
+    return room.then(function(e){
+      if(e&&e.quota&&e.quota-e.usage<need*1.15)throw {msg:'Not enough free storage for this download (about '+num(Math.ceil(need/1e6))+' MB needed). Free some space, or download the kidney-dosing drugs only.'};
+      bar.max=total;bar.value=ok;
+      if(!todo.length)return;
+      var i=0;
+      function save(){setRec({v:2,set:set,n:ok,total:total,at:Date.now(),h:m.h,done:false});}
       function next(){
-        if(i>=list.length)return Promise.resolve();
-        var u=list[i++];
+        if(i>=todo.length)return Promise.resolve();
+        var u=todo[i++],p=want[u];
         return fetch(u,{credentials:'same-origin',cache:'no-cache'}).then(function(res){
           if(!res.ok)throw new Error(res.status);
-          return res.blob().then(function(b){return c.put(location.origin+u,new Response(b,{headers:{'Content-Type':'text/html; charset=utf-8'}}));});
-        }).then(function(){ok++;},function(){}).then(function(){done++;bar.value=done;st.textContent='Saving '+done+' of '+list.length+'…';return next();});
+          return res.blob().then(function(bl){return c.put(u,new Response(bl,{headers:{'Content-Type':'text/html; charset=utf-8','X-RCM-Hash':p[1]}}));});
+        }).then(function(){ok++;if(ok%40===0)save();},function(){failed++;})
+          .then(function(){bar.value=ok;st.textContent='Saving '+num(ok)+' of '+num(total)+' pages… keep this page open.';return next();});
       }
-      return Promise.all([next(),next(),next(),next()]).then(function(){return {ok:ok,n:list.length};});
+      save();
+      return Promise.all([next(),next(),next(),next(),next(),next()]);
     });
-  }).then(function(r){
-    try{localStorage.setItem(KEY,JSON.stringify({n:r.ok,at:Date.now(),data:dataDate}));}catch(e){}
-    dl.disabled=false;rm.disabled=false;bar.hidden=true;status();
-    if(r.ok<r.n)st.textContent+=' '+(r.n-r.ok)+' could not be saved; try again on a better connection.';
-  }).catch(function(){dl.disabled=false;rm.disabled=false;bar.hidden=true;st.textContent='The download did not finish. Check your connection and try again.';});
-});
-rm.addEventListener('click',function(){caches.delete(SAVED).then(function(){try{localStorage.removeItem(KEY);}catch(e){}status();});});
+  }).then(function(){
+    setRec({v:2,set:set,n:ok,total:total,at:Date.now(),h:failed?'':m.h,done:!failed});
+    busy=false;bar.hidden=true;status();
+    if(failed)st.textContent=num(failed)+' pages could not be saved. Tap the button again on a better connection to finish.';
+  }).catch(function(err){
+    busy=false;bar.hidden=true;status();
+    st.textContent=(err&&err.msg)||'The download stopped. Check your connection and tap the button again; pages already saved are kept.';
+  }).then(function(){try{if(lock)lock.release();}catch(e){}});
+}
+btns.forEach(function(b){b.addEventListener('click',function(){run(b.getAttribute('data-set'));});});
+rm.addEventListener('click',function(){if(busy)return;caches.delete(SAVED).then(function(){try{localStorage.removeItem(KEY);}catch(e){}status();});});
 })();
