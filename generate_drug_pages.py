@@ -59,7 +59,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og-drug-index.png"   # 1200x630 share card (Nov 17 2026)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "14"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "15"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -583,13 +583,17 @@ table.dd-pk tr.dd-pk-renal th, table.dd-pk tr.dd-pk-renal td { background: #e9f6
 .dd-brands-acc[open] .dd-brands-hint { font-size: 0; }
 .dd-brands-acc[open] .dd-brands-hint::after { content: "Hide"; font-size: 12px; }
 .dd-brands-all { margin-top: 6px; }
-.dd-prod-acc > summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 12px;
-  padding: 9px 16px; border-radius: 999px; border: 1px solid #b9c6da; background: #fff; font-weight: 700; font-size: 14px; color: #1f3864; }
+.dd-prod-acc { border: 1px solid var(--border); border-radius: 12px; margin: 12px 0; background: var(--white); }
+.dd-prod-acc > summary { cursor: pointer; list-style: none; padding: 14px 18px; font-family: 'Inter', sans-serif;
+  font-weight: 600; font-size: 15.5px; color: var(--navy); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .dd-prod-acc > summary::-webkit-details-marker { display: none; }
-.dd-prod-acc > summary::before { content: "▸"; font-size: 12px; transition: transform .15s; display: inline-block; }
-.dd-prod-acc[open] > summary::before { transform: rotate(90deg); }
-.dd-prod-acc .dd-prod-acc-hide, .dd-prod-acc[open] .dd-prod-acc-show { display: none; }
-.dd-prod-acc[open] .dd-prod-acc-hide { display: inline; }
+.dd-prod-acc > summary::after { content: "+"; font-size: 20px; line-height: 1; color: #1a6b72; }
+.dd-prod-acc[open] > summary::after { content: "\2212"; }
+.dd-prod-acc > summary:focus-visible { outline: 2px solid #1a6b72; outline-offset: 2px; border-radius: 12px; }
+.dd-prod-acc[open] > summary { border-bottom: 1px solid var(--border); }
+.dd-prod-acc > .dd-toolbar, .dd-prod-acc > .dd-table-wrap { margin-left: 14px; margin-right: 14px; }
+.dd-prod-acc > :last-child { margin-bottom: 14px; }
+.dd-prod-acc-n { font-size: 12px; font-weight: 700; color: #0e4a50; background: #e6f2f3; border-radius: 999px; padding: 2px 9px; margin-left: 8px; }
 @media print { .dd-prod-acc > summary { display: none; } }
 /* At a glance card */
 .dd-glance { margin: 36px 0 0; background: var(--white); border: 1px solid #c9d3e3; border-top: 4px solid #1f3864;
@@ -765,7 +769,10 @@ html[data-theme="dark"] .dd-brands strong, html[data-theme="dark"] .dd-brands a.
 html[data-theme="dark"] .dd-brands-more > summary { color: #7fd3da; }
 html[data-theme="dark"] .dd-brands-acc > summary::before, html[data-theme="dark"] .dd-brands-hint { color: #7fd3da; }
 html[data-theme="dark"] .dd-brands-preview { color: rgba(238,242,251,.78); }
-html[data-theme="dark"] .dd-prod-acc > summary { background: #1a2535; border-color: #3a4a63; color: #eef2fb; }
+html[data-theme="dark"] .dd-prod-acc { background: #1a2535; border-color: #3a4a63; }
+html[data-theme="dark"] .dd-prod-acc > summary { color: #eef2fb; }
+html[data-theme="dark"] .dd-prod-acc > summary::after { color: #7fd3da; }
+html[data-theme="dark"] .dd-prod-acc-n { background: #0e4a50; color: #eef2fb; }
 html[data-theme="dark"] .dd-glance { background: #1a2535; border-color: #2c3a52; border-top-color: #6f8fd0; box-shadow: none; }
 html[data-theme="dark"] .dd-glance h2 { color: #eef2fb; }
 html[data-theme="dark"] .dd-glance-row { border-color: #2a3548; }
@@ -1456,7 +1463,7 @@ def render_products(slug, g, products, today, also: str = "") -> str:
 {esc(g['name'])} as the generic name{" (including products registered under a variant spelling)" if also else ""}. Registration status changes; confirm a product's current status on the FDA portal before relying on it.</p>
 {also}
 <p><a class="dd-btn" href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">Verify on PH FDA portal {EXT_ICON}</a></p>
-{'<details class="dd-prod-acc" id="dd-prod-acc"><summary><span class="dd-prod-acc-show">Show all ' + f"{n:,}" + ' products</span><span class="dd-prod-acc-hide">Hide products</span></summary>' if n > 2 else ''}
+{'<details class="dd-prod-acc" id="dd-prod-acc"><summary><span>All registered products<span class="dd-prod-acc-n">' + f"{n:,}" + '</span></span></summary>' if n > 2 else ''}
 <div class="dd-toolbar no-print" role="search">
 <label class="dd-hidden" for="dd-q">Filter products</label>
 <input id="dd-q" type="search" placeholder="Filter by brand, strength, manufacturer, or registration no." autocomplete="off">
