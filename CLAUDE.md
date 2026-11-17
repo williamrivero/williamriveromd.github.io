@@ -938,6 +938,17 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   unbranded product, `r[-ref-1]`). A company match is labeled "company" and lists that company's brands under the
   generic as `Brands: Renvex · (unbranded, DRP-19166)`, each linking to `<generic>.html?brand=<brand or reg. no.>#products`
   (12 shown, then "+N more"). Built by `company_brands()` in `generate_drug_pages.py`.
-- **Build:** `python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
+- **Related guides** (Nov 17 2026): drug pages and supplement brand pages end with a "Related guides" card list (title,
+  OG thumbnail, meta description; extensionless guide URLs) before References, plus a TOC entry, only when a guide
+  qualifies. `tools/drugdb/build_related_guides.py` scans each content guide's English text (skips tl/ceb/kap spans,
+  nav, footer, references, glossary, signature, related-guides block; calculators, logs, atlas/physiology and
+  interpreter pages excluded) for generic names, salt-stripped ingredients, `synonyms.py` names, a few class terms
+  (SGLT2 inhibitor, ESA, phosphate binder, IV iron ...) and brand names of 5+ letters that are not ordinary words.
+  Score: title hit +10, heading mention x3, body mention x1; qualifies with a title/heading hit or 3+ body mentions;
+  top 4 per drug (3 per supplement brand, from its name, top-3 ingredients and probiotic/omega-3/ketoanalogue/fiber
+  category). Writes `data/drugs/related_guides.json`; manual add/remove in `tools/drugdb/related_guides_overrides.json`;
+  `--show <slug> ...` prints picks with scores. `drugdb-pages` CI runs it before the generators and re-runs when
+  `guides/*.html` change, so new guides get linked automatically.
+- **Build:** `python3 tools/drugdb/build_related_guides.py && python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.

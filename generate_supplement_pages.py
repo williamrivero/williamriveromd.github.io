@@ -48,6 +48,7 @@ REPO = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO / "tools" / "drugdb"))
 from build_registry import ingredients_of, slug_of  # noqa: E402  (drug slug rule, shared contract)
 from build_supplements import slugify  # noqa: E402
+from build_related_guides import supp_keys  # noqa: E402  (same keys the related-guides builder scored)
 
 SUPP_ASSET_VERSION = "5"
 CAT_LABEL = {"probiotic": "Probiotic", "herbal/botanical": "Herbal / botanical", "vitamin/mineral": "Vitamin / mineral",
@@ -241,6 +242,7 @@ class SCtx:
             else:
                 self.dropped["expired" if not p.get("canceled") else "canceled"] += 1
         self.generics = load_json(data_dir / "generics.json", {}) or {}
+        self.related_guides = load_json(data_dir / "related_guides.json", {}) or {}   # tools/drugdb/build_related_guides.py
         drug_dir = out_dir.parent
         self.drug_pages = {f.stem for f in drug_dir.glob("*.html")} - {"index"}
         self.notes_dir = data_dir / "supplement-notes"
@@ -251,6 +253,17 @@ class SCtx:
 
     def notes(self, slug):
         return load_json(self.notes_dir / f"{slug}.json") if self.notes_dir.is_dir() else None
+
+    def guides_for(self, slug, ps, limit=3) -> list:
+        """Related guides for a brand: its own name in a guide (strongest), then its top ingredients and categories."""
+        rg = self.related_guides
+        best: dict[str, int] = {}
+        for f, sc in (rg.get("supplement_brands") or {}).get(slug, []):
+            best[f] = max(best.get(f, 0), sc + 1000)
+        for k in supp_keys(ps):
+            for f, sc in (rg.get("supplement_keys") or {}).get(k, []):
+                best[f] = max(best.get(f, 0), sc)
+        return [[f, sc] for f, sc in sorted(best.items(), key=lambda x: (-x[1], x[0]))[:limit]]
 
     def drug_ok(self, slug) -> bool:
         return slug in self.drug_pages and slug not in VAGUE_SLUGS
@@ -702,6 +715,11 @@ confirm a product's current status on the FDA verification portal using its FR n
 <p class="dd-note">Registered drug products that share an ingredient with this supplement. A drug registration carries approved indications
 and labeling; a food supplement does not, and its content and quality are not verified in the same way.</p>
 <ul class="ds-druglinks">{lis}</ul></section>"""))
+    rgh = gdp.related_guides_html(sctx.guides_for(slug, ps), sctx.related_guides, 3)
+    if rgh:
+        secs.append(("related-guides", "Related guides", f"""<section class="dd-sec" id="related-guides" aria-labelledby="rg-h">
+<h2 id="rg-h">Related guides</h2>
+{rgh.replace("discuss this medicine", "discuss this product or its main ingredients")}</section>"""))
     toc = "".join(f'<li><a href="#{sid}">{esc(t)}</a></li>' for sid, t, _ in secs)
     pills = "".join(f'<a class="nav-pill" href="#{sid}">{esc(t)}</a>' for sid, t, _ in secs)
     body = "\n".join(h for _, _, h in secs)

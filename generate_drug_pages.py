@@ -524,6 +524,14 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-tag.SUPK { color: #4a2800; background: #fdf3dc; }
 .dd-tag.HEP { color: #3b2a66; background: #efe9fb; }
 .dd-partof { font-size: 13.5px; margin: 6px 0 8px; color: var(--text-mid); }
+.dd-rg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.dd-rg a { display: flex; gap: 12px; align-items: flex-start; height: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--border);
+  border-radius: 12px; background: var(--white); color: var(--text); text-decoration: none; }
+.dd-rg a:hover, .dd-rg a:focus-visible { border-color: #1a6b72; box-shadow: 0 2px 10px rgba(26,107,114,.15); }
+.dd-rg img { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; flex: none; background: var(--bg); }
+.dd-rg .dd-rg-t { display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14.5px; color: #0e4a50; line-height: 1.35; }
+.dd-rg .dd-rg-d { display: block; font-size: 13px; line-height: 1.5; color: var(--text-mid); margin-top: 4px;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .dd-partof a { color: #0e4a50; font-weight: 700; }
 .dd-partof .dd-sub-inline { color: var(--text-mid); font-size: 12.5px; }
 .dd-tag.FSMP { color: #0b3a3f; background: #e3f2f2; border: 1px solid rgba(26,107,114,.4); }
@@ -789,6 +797,10 @@ html[data-theme="dark"] .dd-tag.SUP { color: #e5e9f0; background: rgba(255,255,2
 html[data-theme="dark"] .dd-tag.SUPK { color: #fde7c2; background: rgba(245,158,11,.16); }
 html[data-theme="dark"] .dd-tag.HEP { color: #e6dcff; background: rgba(139,92,246,.2); }
 html[data-theme="dark"] .dd-partof a { color: #7fd3da; }
+html[data-theme="dark"] .dd-rg a { background: #1a2535; border-color: rgba(255,255,255,.14); color: #e5e9f0; }
+html[data-theme="dark"] .dd-rg a:hover, html[data-theme="dark"] .dd-rg a:focus-visible { border-color: #7fd3da; }
+html[data-theme="dark"] .dd-rg .dd-rg-t { color: #a5f3fc; }
+html[data-theme="dark"] .dd-rg .dd-rg-d { color: #cbd3df; }
 html[data-theme="dark"] .dd-tag.FSMP { color: #c9f0f1; background: rgba(43,168,176,.16); border-color: rgba(43,168,176,.45); }
 html[data-theme="dark"] .dd-tag.S2 { color: #fff; background: #b91c1c; }
 html[data-theme="dark"] .dd-tag.CP { color: #2a1900; background: #fbbf24; }
@@ -1298,6 +1310,7 @@ class Ctx:
     def __init__(self, data_dir: Path, today: dt.date):
         self.data_dir, self.today = data_dir, today
         self.generics = load_json(data_dir / "generics.json", {}) or {}
+        self.related_guides = load_json(data_dir / "related_guides.json", {}) or {}   # tools/drugdb/build_related_guides.py
         self.products = load_registry(data_dir)
         self.by_slug: dict[str, list] = defaultdict(list)
         for p in self.products:
@@ -2275,6 +2288,23 @@ def sec(sid: str, title: str, body: str, nav: str = "") -> tuple[str, str, str] 
                                f'<h2 id="{sid}-h">{esc(title)}</h2>{body}</section>')
 
 
+def related_guides_html(picks, rg: dict, limit: int = 4) -> str:
+    """Card list of renalcarematters.com guides that discuss this drug (data/drugs/related_guides.json)."""
+    gm = (rg or {}).get("guides") or {}
+    lis = []
+    for f, _score in (picks or [])[:limit]:
+        m = gm.get(f)
+        if not m:
+            continue
+        img = (f'<img src="{esc(m["img"])}" alt="" loading="lazy" decoding="async" width="72" height="72">' if m.get("img") else "")
+        desc = ('<span class="dd-rg-d">' + esc(m["d"]) + "</span>") if m.get("d") else ""
+        lis.append(f'<li><a href="{esc(m["url"])}">{img}<span><span class="dd-rg-t">{esc(m["t"])}</span>{desc}</span></a></li>')
+    if not lis:
+        return ""
+    return ('<p class="dd-note">Guides on renalcarematters.com that discuss this medicine, for patients and clinicians.</p>'
+            f'<ul class="dd-rg">{"".join(lis)}</ul>')
+
+
 def references_html(slug, label, renal, summ, ctx: Ctx, intl=None) -> str:
     items = []
     lab = _lab(label)
@@ -2980,7 +3010,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         fp = re.sub(r'^\s*<section class="section" id="price">\s*<div class="section-tag">.*?</div>\s*<h2>.*?</h2>', "", fp, flags=re.S)
         fp = re.sub(r"</section>\s*$", "", fp.strip())
     S.append(sec("formulary", "Formulary and pricing (Philippines)", fp, "Formulary & pricing"))
-    # 18. References
+    # 18. Related guides (site guides that discuss this drug); 19. References
+    S.append(sec("related-guides", "Related guides", related_guides_html((ctx.related_guides.get("drugs") or {}).get(slug), ctx.related_guides),
+                 "Related guides"))
     S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx, ctx.intl(slug)), "References"))
 
     S = [x for x in S if x]
