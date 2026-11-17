@@ -877,6 +877,20 @@ html[data-theme="dark"] .dd-comp-kh { color: #a5eef2; }
 html[data-theme="dark"] .dd-comp-kh .dd-kidney-ico { color: #a5eef2; }
 html[data-theme="dark"] .dd-comp-caveat { color: #fde68a; background: #2a1d05; border-color: #6b4f12; }
 
+/* Readability (Nov 17 2026): 16 px body text, ~72-character lines, darker text, more line spacing */
+.dd-sec p, .dd-sec li, .dd-acc .dd-acc-body, .section .dd-acc-body p, .dd-acc-body p, .dd-acc-body li, .dd-labpre,
+.dd-lead, .dd-kidney-sum, ul.dd-uselist li, .dd-comp-intro { font-size: 16px; line-height: 1.7; color: var(--text); }
+.dd-sec p, .dd-sec ul, .dd-sec ol, .dd-acc-body p, .dd-acc-body ul, .dd-acc-body ol, .dd-labpre, .dd-lead,
+.dd-kidney-sum, .dd-comp-intro { max-width: 72ch; }
+.dd-acc-body p { margin: 0 0 12px; }
+.dd-acc-body p:first-child { margin-top: 12px; }
+.dd-acc-body li, .dd-labpre li, .dd-sec li { margin: 0 0 6px; }
+.dd-labpre { padding: 12px 18px; }
+.dd-labpre ul { margin: 0; padding-left: 20px; }
+.dd-labpre p { margin: 0 0 8px; }
+.dd-acc > summary span { line-height: 1.4; }
+.dd-note { font-size: 14px; line-height: 1.6; }
+
 /* Installed app: bottom app bar (no browser toolbar in standalone mode) */
 html.dd-standalone body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 .dd-appbar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
@@ -1445,6 +1459,74 @@ def sanitize_html(s: str) -> str:
     return "".join(p.out)
 
 
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Readability helpers for verbatim label text (words are never changed: only spacing
+# inside "( 5.1 )" cross-references, "B 12" → "B12", and where paragraphs/list items break)
+# ═════════════════════════════════════════════════════════════════════════════
+def tidy_label(t: str) -> str:
+    t = re.sub(r"\(\s*(\d+(?:\.\d+)*(?:\s*,\s*\d+(?:\.\d+)*)*)\s*\)",
+               lambda m: "(" + re.sub(r"\s*,\s*", ", ", m.group(1).strip()) + ")", t)
+    t = re.sub(r"(?<=[^\s(])\((\d+\.\d)", r" (\1", t)          # "warning.(5.1)" → "warning. (5.1)"
+    t = re.sub(r"\bB\s+12\b", "B12", t)
+    t = re.sub(r"(\d)\s*m\s+2\b", "\\1 m\u00b2", t)                     # "1.73 m 2" → "1.73 m²" (lost superscript)
+    t = re.sub(r"\s+([,;:.)\]])(?=[\s,;:.)\]]|$)", r"\1", t)        # "m² ," → "m²,"; "(4) ]." → "(4)]."
+    t = re.sub(r"([\[(])\s+", r"\1", t)                             # "[ see" → "[see"
+    return t
+
+
+_SENT_SPLIT = re.compile(r"(?<=[.!?])\s+(?=[A-Z(•])")
+
+
+_RUNIN = re.compile(r"(?<=[.!?])\s+(?=[A-Z][^.!?\u2014]{2,60}?\s\u2014\s)")
+
+
+def label_paras(t: str, min_chars: int = 320) -> str:
+    """Long verbatim passage → short paragraphs (2–4 sentences); run-in subheadings ('Age 65 or greater — …')
+    start their own paragraph in bold; '•' runs → a bulleted list."""
+    t = tidy_label(ws(t))
+    if not t:
+        return ""
+    blocks = _RUNIN.split(t)
+    if len(blocks) > 1:
+        out = []
+        for b in blocks:
+            m = re.match(r"([A-Z][^.!?\u2014]{2,60}?)\s\u2014\s(.*)$", b)
+            if m:
+                inner = label_paras(m.group(2), min_chars)
+                inner = re.sub(r"^<p>", f"<p><strong>{esc(m.group(1))}</strong> \u2014 ", inner, count=1) if inner.startswith("<p>") \
+                    else f"<p><strong>{esc(m.group(1))}</strong></p>" + inner
+                out.append(inner)
+            else:
+                out.append(label_paras(b, min_chars))
+        return "".join(out)
+    parts = [x.strip() for x in re.split(r"\s*[•●▪]\s+", t)]
+    lead, items = parts[0], [x for x in parts[1:] if x]
+    out, buf, n = [], [], 0
+    for snt in _SENT_SPLIT.split(lead):
+        buf.append(snt)
+        n += len(snt)
+        if n >= min_chars and len(buf) >= 2:
+            out.append(f"<p>{esc(' '.join(buf))}</p>")
+            buf, n = [], 0
+    if buf:
+        out.append(f"<p>{esc(' '.join(buf))}</p>")
+    if items:
+        out.append("<ul>" + "".join(f"<li>{esc(x)}</li>" for x in items) + "</ul>")
+    return "".join(out)
+
+
+def highlights_html(t: str) -> str:
+    """Label 'highlights' preamble: one list item per cross-referenced point, e.g. '… abnormalities. (5.2)'."""
+    t = tidy_label(ws(t))
+    bits = re.split(r"(\(\d+\.\d+(?:, \d+\.\d+)*\))\s+", t)
+    items = [(bits[i] + (" " + bits[i + 1] if i + 1 < len(bits) else "")).strip() for i in range(0, len(bits), 2)]
+    items = [x for x in items if x]
+    if len(items) >= 2:
+        return "<ul>" + "".join(f"<li>{esc(x)}</li>" for x in items) + "</ul>"
+    return label_paras(t)
+
+
 def render_label_value(v) -> str:
     """Verbatim text → escaped paragraphs; {"html": ...} → whitelisted HTML."""
     if v is None:
@@ -1461,7 +1543,8 @@ def render_label_value(v) -> str:
             continue
         for para in re.split(r"\n\s*\n", str(item).strip()):
             if para.strip():
-                out.append(f"<p>{esc(para.strip())}</p>")
+                out.append(label_paras(para) if len(para) > 600 and "\n" not in para.strip()
+                           else f"<p>{esc(tidy_label(para.strip()))}</p>")
     return "".join(out)
 
 
@@ -2737,6 +2820,18 @@ def render_kidney_section(label, renal, intl=None, eu=None) -> str:
     return "\n".join(out) + "\n</section>\n"
 
 
+CLINICAL_ORDER = [
+    "component-info",
+    "use", "contraindications",
+    "dosing-adult", "kidney-dosing", "pn-kidney-notes", "dosing-hepatic", "dosing-pediatric", "dosing-older",
+    "administration", "dosage-forms",
+    "warnings", "interactions", "adverse-reactions", "monitoring",
+    "pregnancy", "breastfeeding", "overdose",
+    "mechanism", "pharmacodynamics", "pharmacokinetics",
+    "formulary", "related-guides", "references",
+]
+
+
 def sec(sid: str, title: str, body: str, nav: str = "") -> tuple[str, str, str] | None:
     if not body or not body.strip():
         return None
@@ -3075,10 +3170,17 @@ def render_pk_table(summ) -> str:
             + f"</tbody></table></div>{OURS_CHIP}")
 
 
-_HEAD_WORD = r"(?:[A-Z][\w'’/&-]*|of|and|in|with|the|for|or|to|on|by|at|a|an|\([^)]{1,40}\))"
+_HEAD_WORD = (r"(?:[A-Z][\w'’/&-]*,?|\d+,?|of|and|in|with|the|for|or|to|on|by|at|a|an|during|from|into|after|before|"
+              r"without|within|between|versus|vs\.?|per|via|as|than|following|including|due|associated|related|induced|"
+              r"difficile[\w-]*|\([^)]{1,40}\))")
 
 
-def split_numbered(text: str, num: str) -> tuple[str, list[tuple[str, str]]]:
+_BODY_STARTERS = {"Assess", "Discontinue", "Initiate", "Monitor", "Administer", "Take", "Obtain", "Measure",
+                  "Before", "If", "The", "Do", "Avoid", "Consider", "Reduce", "Start", "Evaluate", "Instruct",
+                  "Inform", "Advise", "Swallow", "Dilute", "Reconstitute", "Inspect", "Infuse", "Inject", "In"}
+
+
+def split_numbered(text: str, num: str, name_words: frozenset = frozenset()) -> tuple[str, list[tuple[str, str]]]:
     """Split a run-on label section into (preamble, [(heading, verbatim chunk)]) at 'N.x Heading' markers."""
     text = ws(text)
     marks = [m for m in re.finditer(r"(?:^|\s)(" + num + r"\.\d+)\s+(?=[A-Z])", text)]
@@ -3095,9 +3197,11 @@ def split_numbered(text: str, num: str) -> tuple[str, list[tuple[str, str]]]:
         hm = re.match(_HEAD_WORD + r"(?:\s+" + _HEAD_WORD + r"){0,13}", after)
         head = hm.group(0) if hm else after[:60]
         rest = after[len(head):].lstrip()
-        head = re.sub(r"\s+[A-Z]{3,}\b.*$", "", head).strip() or head
+        capped = re.sub(r"\s+[A-Z]{5,}\b.*$", "", head).strip()      # an all-caps brand name starts the body
+        cut_found = bool(capped) and capped != head
+        head = capped or head
         words = head.split()
-        if rest[:1].islower() and len(words) > 1:      # the last capitalized word starts the body sentence
+        if not cut_found and rest[:1].islower() and len(words) > 1:      # the last capitalized word starts the body sentence
             while len(words) > 1:
                 w = words.pop()
                 if w[:1].isupper():
@@ -3106,8 +3210,21 @@ def split_numbered(text: str, num: str) -> tuple[str, list[tuple[str, str]]]:
             words.pop()
         if len(words) > 1 and words[-1].lower() in {w.lower() for w in words[:-1]}:
             words.pop()
-        head = " ".join(words) or after[:60]
-        out.append((f"{m.group(1)} {head[:90]}", chunk))
+        stems: set = set()
+        for i, w in enumerate(words):        # the body often starts by restating a title word or the drug name
+            if i >= 2 and w[:1].isupper() and (
+                    (len(w) >= 6 and w.lower()[:6] in stems) or w in _BODY_STARTERS
+                    or (w.lower() in name_words and words[i - 1] not in ("of", "for", "on", "with", "to", "and", "by", "from"))
+                    or w in ("Table", "Drug/Substance", "Drug/Drug")):
+                words = words[:i]
+                break
+            stems.add(w.lower()[:6])
+        while len(words) > 1 and words[-1] in ("of", "and", "in", "with", "the", "for", "or", "to", "on", "by", "at", "a", "an"):
+            words.pop()
+        head = tidy_label(" ".join(words).rstrip(",")) or after[:60]
+        if len(head) > 90:
+            head = head[:90].rsplit(" ", 1)[0] + "…"
+        out.append((f"{m.group(1)} {head}", chunk))
     return pre, out
 
 
@@ -3124,14 +3241,15 @@ def label_split(label, keys, num, title, open_pre=True, aid="") -> str:
             v = "\n\n".join(map(str, v))
         if not isinstance(v, str) or not v.strip():
             continue
-        pre, subs = split_numbered(v, num)
+        nm = " ".join(str(x) for x in ((label or {}).get("name", ""), *((label or {}).get("ingredients") or [])) if x)
+        pre, subs = split_numbered(v, num, frozenset(w.lower() for w in re.findall(r"[A-Za-z]{4,}", nm)))
         if not subs:
             return acc(title, render_label_value(v), aid=aid)
         html_ = f'<div class="dd-labgroup"{f" id={chr(34)}{aid}{chr(34)}" if aid else ""}><div class="dd-labgroup-h">{esc(title)} {LABEL_CHIP}</div>'
         if pre and len(pre) > 20:
-            html_ += f'<div class="dd-labpre">{esc(pre if len(pre) < 1400 else pre[:1400].rsplit(" ", 1)[0] + " …")}</div>'
+            html_ += f'<div class="dd-labpre">{highlights_html(pre if len(pre) < 1400 else pre[:1400].rsplit(" ", 1)[0] + " …")}</div>'
         html_ += "".join(f'<details class="dd-acc dd-acc-sm"><summary><span>{esc(h)}</span></summary>'
-                         f'<div class="dd-acc-body"><p>{esc(c)}</p></div></details>' for h, c in subs)
+                         f'<div class="dd-acc-body">{label_paras(c)}</div></details>' for h, c in subs)
         return html_ + "</div>"
     return ""
 
@@ -3510,6 +3628,11 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx, ctx.intl(slug), pnn), "References"))
 
     S = [x for x in S if x]
+    # Clinical reading order (Dr. Rivero, Nov 17 2026): what it is for → who must not get it → how much (adult, then
+    # kidney, liver, children, older adults) → how to give it and what is available → what to watch for → special
+    # situations → background pharmacology → formulary, related reading, references.
+    _rank = {sid: i for i, sid in enumerate(CLINICAL_ORDER)}
+    S.sort(key=lambda x: _rank.get(x[0], len(CLINICAL_ORDER)))
     # on a combination with a component cross-reference, "Kidney dosing" in the TOC opens the per-component strips
     href = lambda sid: "component-info" if (sid == "kidney-dosing" and comp_html and not renal_approved(renal)) else sid
     toc = "".join(f'<li><a href="#{href(sid)}">{esc(nav)}</a></li>' for sid, nav, _ in S)
@@ -4101,6 +4224,9 @@ def fill_assets(text: str) -> str:
     a = drugdb_assets()
     return text.replace("__DRUGDB_CSS__", a["css_url"]).replace("__DRUGDB_JS__", a["js_url"])
 
+KEEP_DATES = False   # --keep-dates: presentation-only rebuild keeps each page's "Last updated" date
+
+
 def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: bool) -> str:
     """Fill hash/date placeholders. Keeps the previous date when content is unchanged.
     Returns 'new' | 'changed' | 'same'."""
@@ -4126,6 +4252,8 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
             state = "chrome"
         else:
             state = "changed"
+            if KEEP_DATES and d:          # layout-only rebuild: the clinical content did not change
+                when = dt.date.fromisoformat(d.group(1))
     out = (template.replace("__HASH__", h).replace("__ISO__", when.isoformat()).replace("__DATE__", us_date(when)))
     if not dry:
         tmp = path.with_suffix(path.suffix + ".tmp")
@@ -4149,11 +4277,15 @@ def main():
     ap.add_argument("--out-dir", default=str(REPO / "drugs"))
     ap.add_argument("--only", help="comma-separated slugs to (re)build; index and search index are still rebuilt")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--keep-dates", action="store_true",
+                    help="layout/wording-of-presentation change only: rewrite pages but keep their Last updated dates")
     ap.add_argument("--no-prune", action="store_true", help="keep generated pages whose slug is no longer in the data")
     ap.add_argument("--as-of", help="override today's date (YYYY-MM-DD) for 'Last updated' and validity checks")
     ap.add_argument("--from-api-sample", metavar="FILE", help="derive a synthetic registry from a raw PH FDA API response")
     ap.add_argument("--build", action="store_true", help="with --from-api-sample: also generate pages")
     a = ap.parse_args()
+    global KEEP_DATES
+    KEEP_DATES = a.keep_dates
 
     data_dir, out_dir = Path(a.data_dir), Path(a.out_dir)
     today = dt.date.fromisoformat(a.as_of) if a.as_of else dt.date.today()

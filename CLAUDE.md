@@ -999,6 +999,17 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   immutable for a year via `_headers` (`/drugs/drugdb.*`). Never go back to `drugdb.css?v=N`: during a deploy Cloudflare
   edge-cached the OLD file under the NEW query twice; a new file name cannot be pre-cached. `ASSET_VERSION` now only
   versions `browse*.json`; no bump is needed when CSS/JS change.
+- **Clinical section order + readability (Nov 17 2026):** drug pages follow `CLINICAL_ORDER` in `generate_drug_pages.py`
+  (Use → Contraindications → Dosing: adult, kidney, hepatic, pediatric, older adult → Administration → Dosage forms →
+  Warnings → Interactions → Adverse reactions → Monitoring → Pregnancy → Breastfeeding → Overdose → Mechanism →
+  Pharmacodynamics → Pharmacokinetics → Formulary → Related → References); new sections must be added to that list.
+  Verbatim label text is laid out, never reworded: `label_paras()` (2–4 sentence paragraphs, bold run-in subheadings
+  such as "Age 65 or greater —", '•' lists), `highlights_html()` (highlights preamble as one bullet per cross-referenced
+  point) and `tidy_label()` (spacing only: "( 5.1 )"→"(5.1)", "B 12"→"B12", "m 2"→"m²", stray spaces before
+  punctuation). `split_numbered()` ends a subsection title where the body begins (drug name not after of/for/on, a
+  repeated title stem, an all-caps brand, a body-starter verb); titles never break mid-word. Prose is 16 px, line-height
+  1.7, max 72ch. **Presentation-only changes: build with `python3 generate_drug_pages.py --keep-dates`** (keeps every page's
+  Last updated date; commit the output so CI finds the same hashes), never let a layout change re-date 2,000+ pages.
 - **Build:** `python3 tools/drugdb/build_related_guides.py && python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.
