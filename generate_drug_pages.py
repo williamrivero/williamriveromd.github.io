@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "17"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "18"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -522,6 +522,10 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-tag.US { color: #1f3864; background: #e3e8f2; }
 .dd-tag.SUP { color: #3d4656; background: #eceff3; border: 1px solid rgba(61,70,86,.35); }
 .dd-tag.SUPK { color: #4a2800; background: #fdf3dc; }
+.dd-tag.HEP { color: #3b2a66; background: #efe9fb; }
+.dd-partof { font-size: 13.5px; margin: 6px 0 8px; color: var(--text-mid); }
+.dd-partof a { color: #0e4a50; font-weight: 700; }
+.dd-partof .dd-sub-inline { color: var(--text-mid); font-size: 12.5px; }
 .dd-tag.FSMP { color: #0b3a3f; background: #e3f2f2; border: 1px solid rgba(26,107,114,.4); }
 .dd-facets { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin: 10px 0 4px; }
 .dd-facets select { font: inherit; font-size: 14px; color: var(--text); background: var(--white); border: 1px solid #8a96a8; border-radius: 8px; padding: 7px 10px; min-height: 40px; max-width: 320px; }
@@ -783,6 +787,8 @@ html[data-theme="dark"] .dd-tag.KD { color: #e6fbfc; background: #0e4a50; }
 html[data-theme="dark"] .dd-tag.US { color: #dbe6f5; background: #22304a; }
 html[data-theme="dark"] .dd-tag.SUP { color: #e5e9f0; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); }
 html[data-theme="dark"] .dd-tag.SUPK { color: #fde7c2; background: rgba(245,158,11,.16); }
+html[data-theme="dark"] .dd-tag.HEP { color: #e6dcff; background: rgba(139,92,246,.2); }
+html[data-theme="dark"] .dd-partof a { color: #7fd3da; }
 html[data-theme="dark"] .dd-tag.FSMP { color: #c9f0f1; background: rgba(43,168,176,.16); border-color: rgba(43,168,176,.45); }
 html[data-theme="dark"] .dd-tag.S2 { color: #fff; background: #b91c1c; }
 html[data-theme="dark"] .dd-tag.CP { color: #2a1900; background: #fbbf24; }
@@ -1088,6 +1094,13 @@ if(idx){
         bcore.disp.map(function(a){return grp(a[0],a[2],G,'',false);}).join('');
       if(v==='kidney')h='<p class="dd-note dd-vnote">Generics with kidney guidance reviewed by renalcarematters.com, grouped by the most restrictive level across eGFR bands and dialysis.</p>'+
         bcore.kidney.map(function(a){return grp(a[0],a[2],G,'',true);}).join('')+'<p class="dd-note">'+escH(bcore.kidneyNote)+'</p>';
+      if(v==='pn'&&bcore.pn){var PT=bcore.pn.t,PR=bcore.pn.r;
+        h='<p class="dd-note dd-vnote">'+PR.length.toLocaleString('en-US')+' intravenous nutrition products registered with FDA Philippines, sorted by product type. Each opens its generic page with the products table filtered to that brand. Product types only; no dosing guidance.</p>'+
+        PT.map(function(t){var rs=PR.filter(function(r){return r[2]===t[0];});if(!rs.length)return '';
+          return '<details class="dd-vg" open data-open="1"><summary><span class="dd-vg-t">'+escH(t[1])+'</span> <span class="dd-vg-n" data-n="'+rs.length+'">'+rs.length.toLocaleString('en-US')+'</span></summary><ul class="dd-list dd-blist">'+rs.map(function(r){
+            var s=G[r[1]],d=bySlug[s]||{n:s},tag=r[4]==='renal'?'<span class="dd-tag SUPK">Renal formula</span>':r[4]==='hepatic'?'<span class="dd-tag HEP">Hepatic formula</span>':'';
+            return '<li data-s="'+escH(s)+'" data-t="'+escH(norm(r[0]+' '+d.n+' '+(r[3]||'')+' '+t[1]+(r[4]?' '+r[4]+' formula':'')+(r[6]&&r[6]!==r[0]?' '+r[6]:'')))+'"><a href="'+encodeURIComponent(s)+'.html?brand='+encodeURIComponent(r[6]||r[0])+'#products">'+escH(r[0])+
+              ' <span class="dd-arrow">&rarr; '+escH(d.n)+'</span></a>'+(tag?'<span class="dd-tags">'+tag+'</span>':'')+'<span class="dd-sub">'+escH([r[3],r[5]].filter(Boolean).join(' · '))+'</span></li>';}).join('')+'</ul></details>';}).join('');}
     }
     var div=document.createElement('div');div.className='dd-vbody';div.setAttribute('data-v',v);div.innerHTML=h;
     div.querySelectorAll('li').forEach(function(li){if(!li.hasAttribute('data-t')){var d=bySlug[li.getAttribute('data-s')];li._d=d;}});
@@ -3013,6 +3026,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         {aka_html}
         {render_brand_line(brands_ranked)}
         {alias_banner(slug, ctx)}
+        {pn_partof(slug, ctx)}
         {f'<p class="dd-usbrand">US brand (reference label): <strong>{esc(us_brand)}</strong>; not a Philippine-registered brand.</p>' if us_brand else ''}
         <p class="hero-sub dd-classline">{"<br>".join(cls_line)}</p>
         <div class="dd-chips">{''.join(chips)}</div>
@@ -3092,7 +3106,7 @@ def _load_areas():
 
 
 BROWSE_VIEWS = [("generic", "Generic name"), ("brand", "Brand name"), ("class", "Drug class"), ("area", "Therapeutic area"),
-                ("disp", "Dispensing category"), ("kidney", "Kidney dosing")]
+                ("disp", "Dispensing category"), ("kidney", "Kidney dosing"), ("pn", "Parenteral nutrition")]
 KIDNEY_GROUPS = [("avoid", "Avoid or contraindicated at low kidney function"), ("adjust", "Dose adjustment or caution needed"),
                  ("none", "No dose adjustment needed"), ("nodata", "Reviewed: no kidney dosing data")]
 DISP_GROUPS = [(1, "Rx · Prescription drugs"), (2, "OTC · Over-the-counter"), (4, "HR · Household remedies"),
@@ -3137,6 +3151,69 @@ def _strength_summary(products) -> str:
     st.sort(key=lambda x: (_num(x), x))
     out = ", ".join(st[:3]) + ("…" if len(st) > 3 else "")
     return " · ".join(x for x in (out, ", ".join(fm[:2])) if x)
+
+
+# Parenteral nutrition group (tools/drugdb/pn_products.json; product types only, no clinical content)
+PN_FILE = REPO / "tools" / "drugdb" / "pn_products.json"
+_PN_ORAL = re.compile(r"\boral\b|tablet|capsule|granule|syrup|sachet|lozenge|chewable|suspension\b(?!.*infus)", re.I)
+
+
+def pn_index(ctx: "Ctx") -> dict:
+    """{"types": [[key, label]], "rows": [{name, link, slug, type, detail, badge, prods}], "slugs": set}.
+    Membership and sub-types come from pn_products.json (see its _doc); rows are one per (brand, main generic page),
+    unbranded products one per registration number. Cached on ctx."""
+    if getattr(ctx, "_pn", None) is not None:
+        return ctx._pn
+    cfg = load_json(PN_FILE, {}) or {}
+    inc, exc = set(cfg.get("include_generics") or []), set(cfg.get("exclude_generics") or [])
+    cre = re.compile(cfg.get("include_category_regex") or r"(?!)", re.I)
+    bmap = {_brand_key(k): v for k, v in (cfg.get("brands") or {}).items()}
+    rmap = cfg.get("registrations") or {}
+    gdef = cfg.get("generic_defaults") or {}
+    types = [list(t) for t in (cfg.get("subtypes") or [])] or [["other", "Other parenteral nutrition"]]
+    tkeys = {t[0] for t in types}
+    rows: dict[tuple, dict] = {}
+    slugs: set = set()
+    for slug, ps in ctx.by_slug.items():
+        if slug in exc:
+            continue
+        al = ctx.aliases.get(slug)
+        target = al["main"] if al and al["high"] else slug
+        gname = ws(ctx.generics.get(slug, {}).get("name"))
+        for p in ps:
+            b, rn = ws(p.get("brand_name")), ws(p.get("registration_number"))
+            bk = _brand_key(b)
+            info = bmap.get(bk) or rmap.get(rn)
+            if not (slug in inc or info or cre.search(ws(p.get("pharmacologic_category")))):
+                continue
+            if _PN_ORAL.search(ws(p.get("dosage_strength_form"))):
+                continue                                  # oral amino acids / vitamins / ketoanalogues are not PN
+            info = info or gdef.get(slug) or gdef.get(target) or {}
+            no_brand = (not bk or b.lower().strip(" .") in _NO_BRAND or bk == _brand_key(gname)
+                        or bk == _brand_key(ws(p.get("generic_name"))))
+            key = (rn if no_brand else bk, target)
+            r = rows.setdefault(key, {"names": Counter(), "slug": target, "prods": [],
+                                      "type": info.get("type") if info.get("type") in tkeys else "other",
+                                      "detail": ws(info.get("detail")), "badge": info.get("badge") or "",
+                                      "unbranded": rn if no_brand else ""})
+            r["names"][b] += 1
+            r["prods"].append(p)
+            slugs.update({slug, target})
+    out = []
+    for r in rows.values():
+        name = f"(unbranded, {r['unbranded']})" if r["unbranded"] else r["names"].most_common(1)[0][0]
+        out.append(dict(r, name=name, link=r["unbranded"] or name))
+    order = {t[0]: i for i, t in enumerate(types)}
+    out.sort(key=lambda r: (order.get(r["type"], 99), r["name"].lower().lstrip("("), r["slug"]))
+    ctx._pn = {"types": types, "rows": out, "slugs": slugs}
+    return ctx._pn
+
+
+def pn_partof(slug: str, ctx: "Ctx") -> str:
+    if slug not in pn_index(ctx)["slugs"]:
+        return ""
+    return ('<p class="dd-partof">Part of: <a href="/drugs/?view=pn">Parenteral nutrition products</a> '
+            '<span class="dd-sub-inline">(Drug Index, by product type)</span></p>')
 
 
 def browse_data(entries: list[dict], groups: dict, ctx: Ctx) -> tuple[dict, dict]:
@@ -3195,7 +3272,12 @@ def browse_data(entries: list[dict], groups: dict, ctx: Ctx) -> tuple[dict, dict
             kg[lv].append(gi[e["s"]])
     kid = [[lab, k, kg[k]] for k, lab in KIDNEY_GROUPS if kg.get(k)]
     n_k = sum(len(x[2]) for x in kid)
+    # parenteral nutrition: [brand, generic index, sub-type, detail, badge, strengths, link term]
+    PN = pn_index(ctx)
+    pn_rows = [[r["name"], gi[r["slug"]], r["type"], r["detail"], r["badge"], _strength_summary(r["prods"]), r["link"]]
+               for r in PN["rows"] if r["slug"] in gi]
     core = {"v": 1, "g": G, "class": cls, "area": areas, "disp": disp, "kidney": kid,
+            "pn": {"t": PN["types"], "r": pn_rows},
             "kidneyNote": f"The other {len(G) - n_k:,} generics show US label kidney text only, where the label has it; "
                           "reviewed kidney guidance is being added."}
     return core, {"v": 1, "g": G, "b": brands}

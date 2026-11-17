@@ -916,6 +916,13 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come
   from the editable keyword map in `tools/drugdb/therapeutic_areas.py` (no WHO ATC; `python3 tools/drugdb/therapeutic_areas.py`
   prints the share per area and a spot-check sample). Brand rows link to `<generic>.html?brand=<name>#products`.
+- **Parenteral nutrition** (Browse by > Parenteral nutrition, `?view=pn`; Nov 17 2026): intravenous nutrition products
+  listed by BRAND under sub-types (multi-chamber bags, amino acids, lipid emulsions, additives, other), each linking to
+  `<generic>.html?brand=<brand>#products`; Nephrosteril carries the "Renal formula" tag and hepatic formulas a "Hepatic
+  formula" tag. Member generic pages show "Part of: Parenteral nutrition products". Product types only, no clinical
+  content. Membership and sub-types live in the editable `tools/drugdb/pn_products.json` (brands, registrations for
+  unbranded products, generic_defaults, include/exclude generics, category regex); an unmapped PN brand falls into
+  "Other parenteral nutrition", so add new brands there. Built by `pn_index()` in `generate_drug_pages.py`.
 - **Company search** (Drug Index search box): `drugs/search-extra.json` carries `m` (every manufacturer, distributor
   and importer) and `mb` (index-aligned with `m`: refs into the core record's brand list `b`; a negative ref is an
   unbranded product, `r[-ref-1]`). A company match is labeled "company" and lists that company's brands under the
