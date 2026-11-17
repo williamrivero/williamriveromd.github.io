@@ -21,6 +21,9 @@ Idempotent. patch_font_link.py calls strip_async()/make_async() so a font-link r
 import argparse, glob, html, re, sys
 
 BLOCK_RE = re.compile(r"<!-- FONTS-ASYNC -->.*?<!-- /FONTS-ASYNC -->", re.S)
+# Pages kept on blocking fonts: the guides index's long Lora/DM Sans intro text reflows when the font swaps in
+# (Lighthouse CLS 0.36 with async fonts vs 0.06 blocking, Nov 17 2026).
+EXCLUDE = {"guides/index.html"}
 LINK_RE = re.compile(r'<link\b[^>]*href=["\'](https://fonts\.googleapis\.com/css2[^"\']*)["\'][^>]*>')
 
 
@@ -67,6 +70,8 @@ def main():
              sorted(glob.glob("*.html") + glob.glob("guides/*.html") + glob.glob("downloads/*.html")))
     n = 0
     for f in files:
+        if f in EXCLUDE:
+            continue
         s = open(f, encoding="utf-8").read()
         t = make_async(s)
         if t != s:
