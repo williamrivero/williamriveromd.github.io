@@ -117,6 +117,8 @@
     'html.rcm-rail-on .rcm-moved{display:none!important;}',
     '.rcm-evid h3,.rcm-evid h4{font:700 12px/1.3 Inter,system-ui,sans-serif!important;letter-spacing:.06em;text-transform:uppercase;color:#14575d!important;margin:18px 0 8px!important;}',
     '.rcm-evid > :first-child{margin-top:0!important;}',
+    '.rcm-evid .rcm-note{margin:0 0 10px!important;padding:10px 12px!important;border:1px solid var(--border,#d8dee8)!important;border-left:3px solid #1A6B72!important;border-radius:8px;background:#f7fafc;font-size:12.5px!important;line-height:1.6!important;color:var(--text-mid,#3d4a5c)!important;}',
+    'html[data-theme="dark"] .rcm-evid .rcm-note,body.dark-mode .rcm-evid .rcm-note{background:#1a2535;border-color:#2c3a52!important;border-left-color:#7fd3da!important;color:#c9d3e1!important;}',
     '.rcm-evid p,.rcm-evid li{font-size:13.5px!important;line-height:1.65!important;}',
     '.rcm-evid table{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.5;margin:0 0 10px;}',
     '.rcm-evid th,.rcm-evid td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--border,#d8dee8);}',
@@ -181,7 +183,11 @@
     // Calculators (Nov 18 2026): the Formula & evidence block moves to the rail too, so the page is the calculator.
     var isCalc = document.body.classList.contains('calc-page') || /\/(calc-[^\/]+|ckd-dri-calculator)(\.html)?$/.test(location.pathname);
     var evid = isCalc ? document.querySelector('main details#evidence, main section#evidence, main details#methods, main details#formula') : null;
-    if (evid) tabs.push({ k: 'evid', en: 'Formula & evidence', tl: 'Formula & evidence', ceb: 'Formula & evidence', kap: 'Formula & evidence', icon: I.evid });
+    // ...and each calculator's own formula/source/limitations note (folded by calc-ui.js as details.cu-fine)
+    var notes = isCalc ? Array.prototype.filter.call(document.querySelectorAll('main p.calc-disclaimer'), function (n) {
+      return !(evid && evid.contains(n));
+    }) : [];
+    if (evid || notes.length) tabs.push({ k: 'evid', en: 'Formula & evidence', tl: 'Formula & evidence', ceb: 'Formula & evidence', kap: 'Formula & evidence', icon: I.evid });
     var fullAbs = document.querySelector('template.clinical-abstract');
     if (summ) tabs.push({ k: 'summ', en: 'Abstract', tl: 'Abstract', ceb: 'Abstract', kap: 'Abstract', tip: 'Clinical abstract', icon: I.summ, clinician: true });
     if (scoreCard) tabs.push({ k: 'score', en: 'Scorecard', tl: 'Scorecard', ceb: 'Scorecard', kap: 'Scorecard', icon: I.score, clinician: true });
@@ -215,18 +221,27 @@
       return node;
     }
 
-    if (evid) {
+    if (evid || notes.length) {
       var ep = dr.querySelector('#rcm-pane-evid');
       ep.innerHTML = '<p class="rcm-pane-title">Formula &amp; evidence</p><p class="rcm-pane-sub">Equations, thresholds and the studies behind this calculator</p>';
       var eb = document.createElement('div'); eb.className = 'rcm-evid';
+      if (notes.length) {
+        var nh = document.createElement('h3'); nh.textContent = 'Formula, sources & limitations'; eb.appendChild(nh);
+        notes.forEach(function (n) {
+          var q = strip(n.cloneNode(true)); q.className = 'rcm-note'; eb.appendChild(q);
+          var holder = n.closest('details.cu-fine') || n; holder.classList.add('rcm-moved');
+        });
+      }
+    }
+    if (evid) {
       var src = evid.tagName === 'DETAILS' ? (evid.querySelector(':scope > .mdc-acc-body') || evid) : evid;
       Array.prototype.forEach.call(src.children, function (c) {
         if (c.tagName === 'SUMMARY' || c.classList.contains('section-tag') || (evid.tagName === 'SECTION' && c.tagName === 'H2')) return;
         eb.appendChild(strip(c.cloneNode(true)));
       });
-      ep.appendChild(eb);
       evid.classList.add('rcm-moved');
     }
+    if (evid || notes.length) ep.appendChild(eb);
     if (scoreCard) {
       var sc = dr.querySelector('#rcm-pane-score');
       sc.innerHTML = '<p class="rcm-pane-title">Evidence Scorecard</p><p class="rcm-pane-sub">Key numbers for clinicians, from this guide</p>';
