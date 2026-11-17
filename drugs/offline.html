@@ -15,7 +15,7 @@
 
 <meta name="robots" content="noindex, nofollow">
 <meta name="generator" content="generate_drug_pages.py">
-<meta name="rcm-content-hash" content="020de8e0afd822e6">
+<meta name="rcm-content-hash" content="bbb24565cfff0eef">
 <link rel="canonical" href="https://renalcarematters.com/drugs/offline">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -68,11 +68,18 @@ if(!('caches' in window)){N.textContent='This browser does not keep pages for of
 var seen={},items=[],names={};
 fetch('/drugs/search-index.json').then(function(r){return r.json();}).then(function(d){d.forEach(function(e){names[e.s]=e.n;});},function(){})
 .then(function(){return Promise.all(['rcm-drugs-saved','rcm-drugs-pages'].map(function(n){return caches.open(n).then(function(c){return c.keys();});}));}).then(function(all){
+  var dl=all[0].length,app=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true,
+      ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   all.forEach(function(ks){ks.forEach(function(r){var p=new URL(r.url).pathname,m=p.match(/^\/drugs\/(?:supplements\/)?([a-z0-9][a-z0-9-]*)$/);
     if(!m||seen[p]||m[1]==='offline'||m[1]==='view'||m[1]==='index')return;seen[p]=1;
     var t=(!/supplements/.test(p)&&names[m[1]])||m[1].replace(/-/g,' ');items.push({p:p,t:t.charAt(0).toUpperCase()+t.slice(1),s:p.indexOf('/supplements/')>0});});});
   items.sort(function(a,b){return a.t.localeCompare(b.t);});
   N.textContent=items.length?items.length+' page'+(items.length===1?'':'s')+' available offline.':'No drug pages are saved yet. Open the Drug Index while online to save pages as you browse.';
+  if(!dl){var w=document.createElement('p');w.className='dd-app-warn';
+    w.innerHTML='<strong>No downloads in '+(app?'this app':'this browser')+' yet.</strong> '+(ios&&app
+      ?'On iPhone and iPad, the Home Screen app keeps its own storage: pages downloaded in a Safari tab do not carry over. Connect to the internet, open the Drug Index from your Home Screen, go to <strong>Use the Drug Index as an app</strong> and tap <strong>Download all drugs</strong>.'
+      :'Connect to the internet, open the Drug Index and use <strong>Download all drugs</strong> under <strong>Use the Drug Index as an app</strong>.');
+    N.parentNode.insertBefore(w,N);}
   items.forEach(function(it){var li=document.createElement('li'),a=document.createElement('a');a.href=it.p;a.textContent=it.t+(it.s?' (supplement)':'');li.appendChild(a);L.appendChild(li);});
 }).catch(function(){N.textContent='Could not read saved pages.';});})();
 </script>
