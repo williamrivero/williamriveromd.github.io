@@ -325,8 +325,24 @@ if(idx){
 var SAVED='rcm-drugs-saved',KEY='wgmr-drug-offline',deferred=null;
 function net(){document.documentElement.classList.toggle('dd-offline',navigator.onLine===false);}
 window.addEventListener('online',net);window.addEventListener('offline',net);net();
-var box=document.getElementById('dd-app');
 function standalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+/* Installed app has no browser toolbar: add Back / Drug Index / Search */
+if(standalone()&&!document.querySelector('.dd-appbar')){
+  document.documentElement.classList.add('dd-standalone');
+  var onIndex=location.pathname==='/drugs/'||location.pathname==='/drugs/index.html';
+  var bar=document.createElement('nav');bar.className='dd-appbar no-print';bar.setAttribute('aria-label','App navigation');
+  bar.innerHTML='<button type="button" data-ab="back" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg><span>Back</span></button>'
+   +'<a href="/drugs/" data-ab="home"'+(onIndex?' aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span>Drug Index</span></a>'
+   +'<a href="/drugs/#search" data-ab="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></a>';
+  document.body.appendChild(bar);
+  bar.querySelector('[data-ab="back"]').addEventListener('click',function(){
+    if(history.length>1)history.back();else location.href='/drugs/';});
+  bar.querySelector('[data-ab="search"]').addEventListener('click',function(e){
+    var sq=document.getElementById('dd-sq')||document.getElementById('ds-q');
+    if(sq){e.preventDefault();sq.scrollIntoView({block:'center'});sq.focus();}});
+}
+if(location.hash==='#search'){var sq0=document.getElementById('dd-sq');if(sq0){sq0.scrollIntoView({block:'center'});try{sq0.focus();}catch(e){}}}
+var box=document.getElementById('dd-app');
 function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
 function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
 function showInstall(){
