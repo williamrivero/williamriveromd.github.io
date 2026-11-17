@@ -901,7 +901,15 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   `fsmp` (FOOD FOR SPECIAL MEDICAL PURPOSES) or `fsdu` (FOOD FOR SPECIAL DIETARY USE, e.g. Glucerna, Efione Nu Reno),
   each with its own banner; renal FSMP/FSDU formulas join the "Renal nutrition formulas" list and always get a static
   page; extra static pages via `tools/drugdb/supplement_pages_allowlist.txt`. Kidney notes in
-  `supplement-notes/<slug>.json` render only when approved.
+  `supplement-notes/<slug>.json` render only when approved; the Kidney notes section (and its TOC/pill) appears only for
+  kidney-marketed brands, renal formulas and brands with a notes file ("in preparation" until approved).
+  Registrations that state no supplement wording (milk supplements, adult nutrition drinks, RUSF, snack wafers) are type
+  `other`, "Other food registration", with a neutral food-product banner; only a stated FOOD/DIETARY/HERBAL SUPPLEMENT (or
+  "no approved therapeutic claims") gets the food-supplement banner and chip. Mixed-type brands show one banner/chip per
+  type, a "Registered as" row per registration, and a hero line from the most common type (ties: most recent).
+  **Brand families** (`tools/drugdb/supplement_brand_families.json`): variant brand names merged onto one page (Ferolip +
+  Ferolip CT + Ferolip Chews); merged names stay searchable (`a` in the search index), `view.html?b=<old>` forwards, and
+  an old slug that had a static page needs a 301 in `_redirects`.
 - **EU SmPC** (`data/drugs/labels-eu/`, `tools/drugdb/fetch_eu_smpc.py`, weekly `drugdb-eu-labels`): for generics with
   no US label, EMA SmPC text reproduced verbatim with acknowledgment (Dr. Rivero's decision, Nov 17 2026). Per-slug
   product picks (prefer / exclude / valency / none) are pinned in `tools/drugdb/eu_label_overrides.json`. National
@@ -922,7 +930,9 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   formula" tag. Member generic pages show "Part of: Parenteral nutrition products". Product types only, no clinical
   content. Membership and sub-types live in the editable `tools/drugdb/pn_products.json` (brands, registrations for
   unbranded products, generic_defaults, include/exclude generics, category regex); an unmapped PN brand falls into
-  "Other parenteral nutrition", so add new brands there. Built by `pn_index()` in `generate_drug_pages.py`.
+  "Other parenteral nutrition", so add new brands there. Dextrose/glucose infusions with vitamins are excluded (not PN
+  clinically); Livamin stays excluded; Moriavit is "Essential amino acids" with no Renal formula tag. Built by `pn_index()`
+  in `generate_drug_pages.py`.
 - **Company search** (Drug Index search box): `drugs/search-extra.json` carries `m` (every manufacturer, distributor
   and importer) and `mb` (index-aligned with `m`: refs into the core record's brand list `b`; a negative ref is an
   unbranded product, `r[-ref-1]`). A company match is labeled "company" and lists that company's brands under the

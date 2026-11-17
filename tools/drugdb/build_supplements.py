@@ -25,6 +25,15 @@ separate FDA category, kept as type "fsdu" (category "fsdu", "Special dietary fo
 use and flavor; renal ones (dialysis, CKD) also get "renal_formula" and join the renal list. FSMP wording wins over FSDU
 when a product name carries both.
 
+Registrations that are neither FSMP, FSDU nor a stated food supplement (the product name says FOOD/DIETARY/HERBAL/
+BOTANICAL SUPPLEMENT, or "SUPPLEMENT CAPSULE/TABLET/SOFTGEL", or carries "no approved therapeutic claims") are type "other"
+("Other food registration", category "food"): milk supplements, adult nutrition drinks, ready-to-use supplementary foods,
+lipid-based nutrient supplements, snack wafers. They make no supplement claim, so the pages give them a neutral banner.
+
+Brand families (tools/drugdb/supplement_brand_families.json) merge registrations filed under spelling or line variants of
+one brand onto a single page (Ferolip + Ferolip CT + Ferolip Chews -> "Ferolip"); each product keeps its registered brand in
+"brand_registered", the brand index lists the other names under "aka", and "retired" maps the merged slugs to the main one.
+
 A product is excluded when it is canceled (IS_CANCELED = "Y" or a "cancel this authorization"
 application), past its validity date, not approved, a raw material, or not a food supplement
 (coffee mixes, teas, juices, wine and similar foods that came back from the same search).
@@ -424,6 +433,55 @@ def is_supplement(rec, clean):
         return False, "not a food supplement"
     return True, ""
 
+STATED_SUPP_RX = re.compile(r"\b(?:FOOD|FODD|DIETARY|HERBAL|BOTANICAL)\s+(?:[A-Z]+\s+)?SUPPLEMENTS?\b|"
+                            r"\bSUPPLEMENTS?\s+(?:CAPSULES?|TABLETS?|SOFT\s*GELS?|CAPLETS?)\b", re.I)
+
+def is_stated_supplement(raw):
+    """The registration says it is a food supplement: 'FOOD SUPPLEMENT', 'DIETARY SUPPLEMENT', 'HERBAL SUPPLEMENT',
+    'FOOD LIQUID SUPPLEMENT', '... SUPPLEMENT CAPSULE', or the 'no approved therapeutic claims' statement. 'MILK SUPPLEMENT',
+    'NUTRITIONAL SUPPLEMENT DRINK', 'SUPPLEMENTARY FOOD/SNACKS' and 'LIPID-BASED NUTRIENT SUPPLEMENT' are not."""
+    return bool(STATED_SUPP_RX.search(raw or "") or re.search(r"no\s+approved\s+therapeutic", raw or "", re.I))
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Brand families: registrations of one brand filed under variant names, merged onto one page
+# ─────────────────────────────────────────────────────────────────────────────
+FAMILIES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "supplement_brand_families.json")
+
+def load_families(path=FAMILIES_FILE):
+    """{main slug: {"name": display name or None, "members": [slug, ...]}} from supplement_brand_families.json."""
+    if not os.path.exists(path):
+        return {}
+    raw = json.load(open(path, encoding="utf-8")).get("families") or {}
+    out = {}
+    for main, v in raw.items():
+        if isinstance(v, list):
+            v = {"members": v}
+        out[slugify(main)] = {"name": v.get("name"), "members": [slugify(m) for m in v.get("members") or [] if slugify(m) != slugify(main)]}
+    return out
+
+def apply_families(products, families):
+    """Move each member slug's products onto its main slug. Returns {retired slug: main slug}."""
+    member_of = {m: main for main, f in families.items() for m in f["members"]}
+    retired = {}
+    for p in products:
+        main = member_of.get(p["brand_slug"])
+        if main or p["brand_slug"] in families:
+            p.setdefault("brand_registered", p["brand"])
+        if main:
+            retired[p["brand_slug"]] = main
+            p["brand_slug"] = main
+    for main, f in families.items():
+        ps = [p for p in products if p["brand_slug"] == main]
+        if not ps:
+            continue
+        name = f.get("name")
+        if not name:  # the main slug's own registered name, mixed case preferred
+            own = Counter(p["brand_registered"] for p in ps if slugify(p["brand_registered"]) == main) or Counter(p["brand"] for p in ps)
+            name = sorted(own, key=lambda n: (n.isupper(), -own[n], n))[0]
+        for p in ps:
+            p["brand"] = name
+    return retired
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Foods for special medical purposes (FSMP)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -588,6 +646,8 @@ def main():
         brand = brand_display(r.get("BRAND_NAME"))
         raw_mat = "RAW MATERIAL" in (r.get("TYPE_FOOD_PRODUCT_LABEL") or "").upper()
         kind = "fsmp" if (is_fsmp(r) and not raw_mat) else "fsdu" if (is_fsdu(r) and not raw_mat) else "supplement"
+        if kind == "supplement" and not is_stated_supplement(raw):
+            kind = "other"              # food registration with no supplement statement (milk supplement, nutrition drink, RUSF, snack)
         fsmp = kind in MEDFOOD          # FSMP or FSDU: registered use + tags, no ingredient parsing
         ok, why = (True, "") if fsmp else is_supplement(r, clean)
         valid = parse_date(r.get("DATE_VALIDITY"))
@@ -610,6 +670,10 @@ def main():
             # the FDA record names the product type and its registered use, not a composition
             ings, kinds, ing_text = [], [], ""
             kflag, kwhy = False, ""
+        elif kind == "other":
+            # a food product name, not an ingredient list; kidney marketing is still flagged (Neprisafe)
+            ings, kinds, ing_text = [], [], ""
+            kflag, kwhy = kidney_flag(brand, clean, ings)
         else:
             ings, kinds, ing_text = parse_ingredients(clean)
             kflag, kwhy = kidney_flag(brand, clean, ings)
@@ -631,7 +695,7 @@ def main():
             "risk_type": ws(r.get("TYPE_FOOD_PRODUCT_LABEL")).replace(" Food Product", "") or None,
             "application_type": app or None,
             "no_therapeutic_claims": bool(re.search(r"no\s+approved\s+therapeutic", raw, re.I)),
-            "categories": [kind] if fsmp else categories_of(ing_text, ings, kinds),
+            "categories": [kind] if fsmp else ["food"] if kind == "other" else categories_of(ing_text, ings, kinds),
             "kidney_marketed": kflag,
             "type": kind,
         }
@@ -644,11 +708,19 @@ def main():
             if "renal" in tags:
                 p["renal_formula"] = True
                 p["variant"] = fsmp_variant(brand, raw, kind == "fsdu")
+        if kind == "other":
+            u = fsmp_use(raw) if re.search(r"dietary\s+management|\bfor\s+(?:pregnant|patients|children|older\s+infants|adults?)\b", raw, re.I) else None
+            if u:
+                p["use_label"] = use_label(raw, u)
+            fl = fsmp_flavor(raw)
+            if fl:
+                p["flavor"] = fl
         if kflag:
             p["kidney_reason"] = kwhy
         products.append(p)
 
     group_fsmp(products)
+    retired = apply_families(products, load_families())
 
     # shards by first character of the brand slug
     sdir = os.path.join(a.out_dir, "supplements")
@@ -695,7 +767,11 @@ def main():
             "categories": sorted({c for p in ps for c in p["categories"]}),
             "kidney_marketed": any(p["kidney_marketed"] for p in ps),
             "type": (lambda ts: ts.pop() if len(ts) == 1 else "mixed")({p.get("type", "supplement") for p in ps}),
+            "types": dict(Counter(p.get("type", "supplement") for p in ps).most_common()),
         }
+        aka = sorted({p["brand_registered"] for p in ps if p.get("brand_registered") and p["brand_registered"].lower() != brands[slug]["brand"].lower()})
+        if aka:
+            brands[slug]["aka"] = aka
         if any(p.get("renal_formula") for p in ps):
             brands[slug]["renal_formula"] = True
         tags = sorted({t for p in ps for t in p.get("fsmp_tags", [])}, key=FSMP_TAGS.index)
@@ -710,6 +786,9 @@ def main():
               "fsmp_brands": sum(1 for s, b in brands.items() if any(p.get("type") == "fsmp" for p in by[s])),
               "fsdu_products": sum(1 for p in products if p.get("type") == "fsdu"),
               "fsdu_brands": sum(1 for s, b in brands.items() if any(p.get("type") == "fsdu" for p in by[s])),
+              "other_food_products": sum(1 for p in products if p.get("type") == "other"),
+              "other_food_brands": sum(1 for s, b in brands.items() if any(p.get("type") == "other" for p in by[s])),
+              "mixed_type_brands": sorted(s for s, b in brands.items() if len(b["types"]) > 1),
               "renal_fsmp_brands": sum(1 for b in brands.values() if b.get("renal_formula")),
               "fsmp_tags": dict(Counter(t for p in products for t in p.get("fsmp_tags", [])).most_common()),
               "excluded": {k: len(v) for k, v in sorted(excluded.items())},
@@ -717,7 +796,7 @@ def main():
               "forms": dict(Counter(p["form"] for p in products).most_common())}
     index = {"as_of": today.isoformat(), "source": os.path.basename(a.supp_file),
              "source_note": "FDA Philippines food-product registrations (fdafoodproducts); DENIAL_DATE field read as the decision/issue date.",
-             "counts": counts, "brands": brands}
+             "counts": counts, "brands": brands, "retired": dict(sorted(retired.items()))}
     with open(os.path.join(a.out_dir, "supplements.json"), "w", encoding="utf-8") as fh:
         json.dump(index, fh, ensure_ascii=False, separators=(",", ":"))
     with open(os.path.join(sdir, "_report.json"), "w", encoding="utf-8") as fh:

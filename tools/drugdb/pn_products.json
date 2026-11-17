@@ -8,7 +8,9 @@
   "Sub-type: brands[<brand, case-insensitive>] first, then registrations[<registration number>] (for unbranded products),",
   "  then generic_defaults[<generic slug>], else 'other' (the 'Other parenteral nutrition' bucket). To file a new brand, add it to brands.",
   "Brand entry: {type: one of the subtypes keys, detail: short plain-text descriptor shown under the brand, badge: renal | hepatic (optional)}.",
-  "badge renal = 'Renal formula' tag, hepatic = 'Hepatic formula' tag (descriptive product-type tags, not dosing advice)."
+  "badge renal = 'Renal formula' tag, hepatic = 'Hepatic formula' tag (descriptive product-type tags, not dosing advice).",
+  "Dextrose/glucose infusions with vitamins (dextrose-multivitamins, glucose-multivitamins) are excluded: not parenteral nutrition clinically.",
+  "exclude_generics is matched against both the registered generic slug and its main (alias-merged) page."
  ],
  "subtypes": [
   ["mcb", "Multi-chamber bags (3-in-1 and 2-in-1)"],
@@ -30,7 +32,8 @@
  "include_category_regex": "parenteral nutrition",
  "exclude_generics": [
   "dextrose", "glucose", "sodium-chloride", "lactated-ringers", "ringers", "mannitol", "tranexamic-acid",
-  "levocarnitine", "l-carnitine", "branched-chain-amino-acids"
+  "levocarnitine", "l-carnitine", "branched-chain-amino-acids",
+  "dextrose-multivitamins", "glucose-multivitamins"
  ],
  "brands": {
   "kabiven central": {"type": "mcb", "detail": "3-in-1, central vein"},
@@ -105,10 +108,7 @@
   "tracutil": {"type": "add", "detail": "Trace elements"},
   "addaven": {"type": "add", "detail": "Trace elements"}
  },
- "generic_defaults": {
-  "dextrose-multivitamins": {"type": "other", "detail": "Dextrose with vitamins"},
-  "glucose-multivitamins": {"type": "other", "detail": "Glucose with vitamins"}
- },
+ "generic_defaults": {},
  "registrations": {
   "DRP-4289-05": {"type": "aa", "detail": "Standard, with sorbitol"},
   "DRP-12056": {"type": "lipid", "detail": "Soybean oil"}
