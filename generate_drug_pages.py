@@ -889,6 +889,12 @@ html[data-theme="dark"] .dd-comp-caveat { color: #fde68a; background: #2a1d05; b
 .dd-app-opt { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; margin: 0 0 8px; }
 .dd-app-opt .dd-btn { margin: 2px 0; }
 .dd-app-meta { font-size: 13px; color: var(--text-muted); }
+.dd-app-ios { margin: 4px 0 6px 20px; padding: 0; font-size: 14px; line-height: 1.6; color: var(--text-mid); }
+.dd-app-ios li { margin: 0 0 4px; }
+.dd-app-warn { font-size: 13.5px; line-height: 1.55; color: #6b4200; background: #fff7e6; border: 1px solid #f0c674;
+  border-radius: 10px; padding: 10px 12px; margin: 6px 0 10px; }
+html[data-theme="dark"] .dd-app-ios { color: #c9d2e0; }
+html[data-theme="dark"] .dd-app-warn { color: #fde68a; background: #2a1d05; border-color: #6b4f12; }
 html[data-theme="dark"] .dd-app-meta { color: #b4bfcf; }
 .dd-off-h { font-family: 'Inter', sans-serif; font-size: 18px; margin: 26px 0 6px; }
 html.dd-offline body::after { content: "Offline · showing saved pages"; position: fixed; left: 50%; top: 10px; transform: translateX(-50%);
@@ -1249,10 +1255,12 @@ function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.
 function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
 function showInstall(){
   var hint=q('hint'),btn=q('install');if(!hint)return;
-  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Drug Index app.';return;}
-  if(deferred){btn.hidden=false;hint.textContent='Adds a Drug Index icon to your home screen or desktop. It opens full screen and works offline.';return;}
+  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Drug Index app.';
+    ['iossteps','iosnote'].forEach(function(k){var e=q(k);if(e)e.hidden=true;});return;}
+  if(deferred&&!ios()){btn.hidden=false;hint.textContent='Adds a Drug Index icon to your home screen or desktop. It opens full screen and works offline.';return;}
   btn.hidden=true;
-  if(ios())hint.innerHTML='On iPhone or iPad: tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>. The Drug Index then opens full screen, like an app.';
+  if(ios()){hint.textContent='On iPhone or iPad, add the Drug Index to your Home Screen:';var o=q('iossteps');if(o)o.hidden=false;
+    var n=q('iosnote');if(n)n.hidden=false;}
 }
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;showInstall();});
 window.addEventListener('appinstalled',function(){deferred=null;showInstall();});
@@ -1598,7 +1606,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="inde
 <link rel="canonical" href="{canonical}">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/app/drug-index-180.png">
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Renal Care Matters">
@@ -1664,6 +1672,8 @@ FLOAT = """
 # Installable app (PWA): manifest, service worker, offline page
 # ═════════════════════════════════════════════════════════════════════════════
 APP_MARK = '<link rel="manifest" href="/drugs/app.webmanifest">'
+APP_ICON_TAG = '<link rel="apple-touch-icon" sizes="180x180" href="/images/app/drug-index-180.png">'   # iPhone home-screen icon (full-bleed; iOS rounds the corners)
+LEGACY_ICON_TAG = '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">'   # what page hashes were computed with
 APP_HEAD = (APP_MARK + '\n<meta name="mobile-web-app-capable" content="yes">\n'
             '<meta name="apple-mobile-web-app-capable" content="yes">\n'
             '<meta name="apple-mobile-web-app-title" content="Drug Index">\n'
@@ -1690,6 +1700,7 @@ APP_MANIFEST = {
         {"src": "/images/app/drug-index-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
         {"src": "/images/app/drug-index-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
         {"src": "/images/app/drug-index-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+        {"src": "/images/app/drug-index-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any"},
     ],
     "shortcuts": [
         {"name": "Kidney dosing", "short_name": "Kidney dosing", "url": "/drugs/?view=kidney",
@@ -1735,6 +1746,7 @@ self.addEventListener('activate',function(e){
     .then(function(){return self.clients.claim();}));
 });
 
+function keep(e,p){try{e.waitUntil(p);}catch(x){}return p;}   // Safari: never throw if the event already settled
 function offline(){return caches.match(pageKey('/drugs/offline')).then(function(h){return h||new Response(
   '<!DOCTYPE html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Offline</title>'
   +'<p style="font-family:sans-serif;padding:24px">You are offline, and this page has not been saved on this device. <a href="/drugs/">Drug Index</a></p>',
@@ -1747,24 +1759,24 @@ function nav(e){
   var key=pageKey(e.request.url);
   var net=fetch(e.request.url,{credentials:'same-origin'}).then(function(res){
     return clean(res).then(function(cr){
-      if(res.ok&&(res.headers.get('content-type')||'').indexOf('text/html')>=0)e.waitUntil(store(key,cr.clone()));
+      if(res.ok&&(res.headers.get('content-type')||'').indexOf('text/html')>=0)keep(e,store(key,cr.clone()));
       return cr;});});
   return caches.match(key).then(function(hit){
     if(!hit)return net.catch(offline);
-    e.waitUntil(net.catch(function(){}));
+    keep(e,net.catch(function(){}));
     var slow=new Promise(function(r){setTimeout(function(){r(hit);},3500);});   // weak signal: show the saved copy
     return Promise.race([net.then(function(r){return r.ok?r:hit;},function(){return hit;}),slow]);
   });
 }
 function swr(e,name,max){var r=e.request;return caches.open(name).then(function(c){return c.match(r).then(function(hit){
   var net=fetch(r).then(function(res){if(res.ok){c.put(r,res.clone());if(max)trim(name,max);}return res;});
-  if(hit){e.waitUntil(net.catch(function(){}));return hit;}
+  if(hit){keep(e,net.catch(function(){}));return hit;}
   return net.catch(function(){return Response.error();});});});}
 function cacheFirst(r){return caches.match(r).then(function(hit){return hit||fetch(r).then(function(res){
   if(res.ok){var c=res.clone();caches.open(SHELL).then(function(s){s.put(r,c);});}return res;},
   function(){return caches.match(r,{ignoreSearch:true}).then(function(h){return h||Response.error();});});});}   // offline: any saved version
 function networkFirst(e,name){var r=e.request;return fetch(r).then(function(res){
-  if(res.ok){var c=res.clone();e.waitUntil(caches.open(name).then(function(ca){return ca.put(r,c);}));}return res;},
+  if(res.ok){var c=res.clone();keep(e,caches.open(name).then(function(ca){return ca.put(r,c);}));}return res;},
   function(){return caches.match(r).then(function(h){return h||Response.error();});});}
 
 self.addEventListener('fetch',function(e){
@@ -1796,7 +1808,7 @@ def build_sw() -> str:
     data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json",
             f"/drugs/browse.json?v={ASSET_VERSION}", f"/drugs/browse-brands.json?v={ASSET_VERSION}"]
     assets = ["/assets/share-buttons.js", "/drugs/app.webmanifest", "/images/app/drug-index-192.png", "/favicon.ico",
-              "/favicon-32x32.png", "/apple-touch-icon.png"]
+              "/favicon-32x32.png", "/images/app/drug-index-180.png"]
     js = (SW_JS.replace("__SHELL__", json.dumps(shell)).replace("__OPTIONAL__", json.dumps(optional))
           .replace("__DATA__", json.dumps(data)).replace("__ASSETS__", json.dumps(assets)))
     v = hashlib.sha1((js + offline_page()).encode("utf-8")).hexdigest()[:10]   # new offline page -> new worker
@@ -3905,6 +3917,12 @@ Search by brand, generic, class, indication, manufacturer or registration number
 <p data-app="hint">Add the Drug Index to your home screen from your browser menu (<strong>Install app</strong> or <strong>Add to Home Screen</strong>).
 It opens full screen, like an app.</p>
 <button type="button" class="dd-btn" data-app="install" hidden>Install the app</button>
+<ol class="dd-app-ios" data-app="iossteps" hidden>
+<li>Open this page in <strong>Safari</strong> (on iOS 16.4 or later, Chrome and Edge also work).</li>
+<li>Tap the <strong>Share</strong> button <span aria-hidden="true">(the square with an arrow pointing up)</span>.</li>
+<li>Scroll down and tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
+<li>Open <strong>Drug Index</strong> from your Home Screen. It runs full screen, like an app.</li>
+</ol>
 </div>
 <div class="dd-app-card" data-app="off">
 <h3>Offline use</h3>
@@ -3914,6 +3932,9 @@ To have drug pages ready before you need them, download them:</p>
 <span class="dd-app-meta">{oa["n"]:,} drugs · about {oa["dl"]} MB to download, {oa["store"]} MB on the device</span></div>
 <div class="dd-app-opt"><button type="button" class="dd-btn dd-btn-ghost" data-app="dl" data-set="kidney">Kidney-dosing drugs only</button>
 <span class="dd-app-meta">{ok_["n"]:,} drugs with approved kidney dosing · about {ok_["dl"]} MB to download</span></div>
+<p class="dd-app-warn" data-app="iosnote" hidden><strong>iPhone and iPad:</strong> add the Drug Index to your Home Screen first, then open it
+from there and download. Safari and the Home Screen app keep separate storage, so pages downloaded in a Safari tab do not carry over,
+and Safari may clear them after a week without a visit. The Home Screen app keeps them.</p>
 <p class="dd-note" data-app="status" aria-live="polite"></p>
 <progress data-app="bar" max="1" value="0" hidden></progress>
 <button type="button" class="dd-btn dd-btn-ghost" data-app="rm" hidden>Remove downloaded pages</button>
@@ -3983,7 +4004,8 @@ _ISO_RE = re.compile(r'<meta property="article:modified_time" content="(\d{4}-\d
 def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: bool) -> str:
     """Fill hash/date placeholders. Keeps the previous date when content is unchanged.
     Returns 'new' | 'changed' | 'same'."""
-    hashed = template.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
+    hashed = (template.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
+              .replace(APP_ICON_TAG, LEGACY_ICON_TAG))
     h = hashlib.sha1(hashed.encode("utf-8")).hexdigest()[:16]
     when, state = today, "new"
     if path.exists():
@@ -3992,7 +4014,7 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
         m, d = _HASH_RE.search(headtxt), _ISO_RE.search(headtxt)
         if m and m.group(1) == h and not force_date:
             # same content: rewrite only when the app tags or asset versions are missing, keeping the old date
-            if APP_MARK in headtxt and (f"?v={ASSET_VERSION}" in headtxt
+            if APP_MARK in headtxt and APP_ICON_TAG in headtxt and (f"?v={ASSET_VERSION}" in headtxt
                                         or f"?v={ASSET_VERSION}" in path.read_text(encoding="utf-8")):
                 return "same"
             if d:
