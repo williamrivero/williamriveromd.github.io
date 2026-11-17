@@ -119,7 +119,7 @@ if(idx){
     return loading;
   }
   function score(s,t){if(!s)return 0;if(s===t)return 100;if(s.indexOf(t)===0)return 80;if((' '+s).indexOf(' '+t)>=0)return 60;if(s.indexOf(t)>=0)return 35;return 0;}
-  var FIELDS=[['n','generic',1],['i','ingredient',.95],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
+  var FIELDS=[['n','generic',1],['y','also known as',.99],['i','ingredient',.95],['yi','ingredient',.9],['z','',.94],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
   function smatch(d,t){
     var best=score(d.nn,t)*.97,lab=best?'supplement':'',val=d.n;
     [['i','ingredient',.85],['r','FR no.',.9],['co','company',.5]].forEach(function(f){(d[f[0]]||[]).forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
