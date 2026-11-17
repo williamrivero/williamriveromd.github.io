@@ -127,6 +127,9 @@ python3 patch_canonical_clean_urls.py --dry-run
 python3 patch_og_images.py                # share images ≤300 KB JPEG (images/og/) so Messenger/WhatsApp show the preview card
 python3 patch_og_images.py --dry-run
 python3 patch_og_images.py --guide igan-guide.html   # single guide
+python3 patch_font_async.py               # Google Fonts load without blocking first paint (FONTS-ASYNC block; patch_font_link.py keeps it)
+python3 patch_responsive_images.py        # 800 px phone copies of guide figures (images/resp/) + srcset/sizes; run after adding figures
+python3 patch_responsive_images.py --guide igan-guide.html
 python3 patch_hero_fetchpriority.py             # make each guide's hero (LCP) image load eager + high priority
 python3 patch_hero_fetchpriority.py --dry-run   # preview changes without writing
 python3 patch_hero_fetchpriority.py --guide understanding-ckd.html  # single guide
