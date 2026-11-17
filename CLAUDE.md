@@ -959,6 +959,10 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   product picks (prefer / exclude / valency / none) are pinned in `tools/drugdb/eu_label_overrides.json`. National
   sources are link-only (`labels-intl/<slug>.json`: Health Canada DPD records, Spain CIMA search links); never
   reproduce their text. See `data/drugs/SOURCES.md`.
+- **Brand overrides** (`data/drugs/brand_overrides.json`, Nov 18 2026): brand names Dr. Rivero confirmed for PH FDA
+  registrations that list no brand (e.g. DRP-19166 = Fosbind), keyed by registration number. Applied only while the FDA
+  record's brand is blank/"None"; the product row shows "Brand per distributor; the FDA record lists no brand." Remove an
+  entry once the FDA lists the brand. Same pattern as `dispensing_overrides.json`.
 - **Variant spellings** (`data/drugs/aliases.json`, built by `tools/drugdb/build_aliases.py`; manual fixes in
   `tools/drugdb/alias_overrides.json`): registry typos, salt leftovers and INN/USAN pairs (allopurino, aciciovir,
   aciclovir) map to a main molecule page. High confidence: banner to the main page, canonical to it, `noindex`

@@ -1609,6 +1609,15 @@ def load_registry(data_dir: Path) -> list[dict]:
         o = ov.get(ws(p.get("registration_number")).upper())
         if isinstance(o, dict) and ws(o.get("dispensing")) in ("Rx", "OTC", "HR"):
             p["dispensing"] = ws(o["dispensing"])
+    # brand names confirmed by Dr. Rivero for registrations the FDA lists without a brand (FDA value wins once present)
+    bo = load_json(data_dir / "brand_overrides.json", {}) or {}
+    bo = bo.get("items", {}) if isinstance(bo, dict) else {}
+    for p in products:
+        o = bo.get(ws(p.get("registration_number")).upper())
+        cur = ws(p.get("brand_name"))
+        if isinstance(o, dict) and ws(o.get("brand_name")) and (not cur or cur.lower().strip(" .") in _NO_BRAND):
+            p["brand_name"] = ws(o["brand_name"])
+            p["brand_note"] = ws(o.get("note")) or "Brand per distributor; the FDA record lists no brand."
     return [p for p in products if not ws(p.get("registration_number")).upper().startswith("VR-")]
 
 
@@ -2076,6 +2085,7 @@ def render_products(slug, g, products, today, also: str = "") -> str:
             f'<tr data-class="{esc(c)}" data-past="{1 if past else 0}">'
             f'<td data-label="Brand"><div><span class="dd-brand">{esc(brand)}</span>'
             + (f'<span class="dd-sub">{esc(reg_name)}</span>' if reg_name else "")
+            + (f'<span class="dd-sub">{esc(ws(p["brand_note"]))}</span>' if ws(p.get("brand_note")) else "")
             + (f'<span class="dd-varnote"><a href="{esc(var_slug)}.html" title="Registered under the variant spelling {esc(reg_name or var_slug)}">Variant spelling</a></span>'
                if var_slug else "") + "</div></td>"
             f'<td data-label="Strength &amp; form"><div>{esc(ws(p.get("dosage_strength_form")))}'
