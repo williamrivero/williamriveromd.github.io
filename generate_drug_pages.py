@@ -51,15 +51,16 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "tools" / "drugdb"))
 import eu_smpc_render as eu_r  # noqa: E402  (EU SmPC text for generics with no US label)
+import synonyms as SYN  # noqa: E402  (INN / USAN / BAN name synonyms: search, "Also known as", component links)
 
 REPO = Path(__file__).resolve().parent
 SITE = "https://renalcarematters.com"
 GENERATOR_TAG = "generate_drug_pages.py"
 FDA_VERIFY_URL = "https://verification.fda.gov.ph"
-OG_IMAGE = f"{SITE}/images/og-drug-index.png"   # 1200x630 share card (Nov 17 2026)
+OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "15"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "16"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -482,6 +483,25 @@ ol.dd-refs a { color: #1a6b72; }
 .dd-alias a { color: #0e4a50; font-weight: 700; }
 .dd-alias-go { display: inline-block; text-decoration: none; border-bottom: 2px solid currentColor; }
 .dd-alias-sub { font-weight: 500; }
+.dd-aka { font-size: 14px; color: #34455f; margin: -2px 0 8px; line-height: 1.5; }
+.dd-aka > span { font-weight: 700; color: #1e2a38; margin-right: 2px; }
+.dd-aka strong { color: #0e4a50; font-weight: 700; }
+/* Component information (combination with no label of its own) */
+.dd-comp-intro { font-size: 15px; color: var(--text-mid); margin: 0 0 10px; }
+ul.dd-comp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.dd-comp { border: 1px solid var(--border); border-left: 4px solid #1a6b72; border-radius: 10px; padding: 10px 14px; background: var(--white); }
+.dd-comp-none { border-left-color: #8a96a8; color: var(--text-mid); font-size: 14.5px; }
+.dd-comp-h { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; }
+.dd-comp-h a { color: #0e4a50; }
+.dd-comp-h .dd-sub, .dd-comp-none .dd-sub { font-family: 'Manrope', sans-serif; font-weight: 500; font-size: 12.5px; color: var(--text-mid); }
+.dd-comp-n { font-weight: 700; color: var(--text); }
+.dd-comp-use { font-size: 14.5px; color: var(--text-mid); margin: 6px 0 4px; }
+.dd-comp-kid { margin-top: 8px; padding: 8px 12px; background: #f2f9f9; border: 1px solid #cfe6e6; border-radius: 10px; }
+.dd-comp-kh { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #0e4a50; }
+.dd-comp-kh .dd-kidney-ico { width: 18px; height: 18px; flex: none; }
+.dd-comp-kid .dd-note { font-size: 12.5px; margin: 4px 0 0; }
+.dd-comp-kid .dd-acc { margin: 6px 0; }
+.dd-comp-caveat { margin: 12px 0 0; padding: 10px 14px; font-size: 14px; color: #5b3a00; background: #fffbeb; border: 1px solid #e8c27a; border-radius: 10px; }
 .dd-also { font-size: 14px; color: var(--text-mid); margin: 6px 0 10px; }
 .dd-also a { color: #0e4a50; font-weight: 600; }
 .dd-varnote { display: block; font-size: 11.5px; font-weight: 700; color: #7a3d00; margin-top: 3px; }
@@ -791,6 +811,17 @@ html[data-theme="dark"] .dd-kidney-table td { border-color: #23414a; }
 html[data-theme="dark"] .dd-chip.dd-kchip { background: #0e4a50; border-color: #2ba8b0; color: #fff; }
 html[data-theme="dark"] .dd-kbadge { background: #16323a; color: #a5eef2; }
 html[data-theme="dark"] .dd-kfilter .dd-kidney-ico { color: #7fd3da; }
+html[data-theme="dark"] .dd-aka { color: rgba(238,242,251,.82); }
+html[data-theme="dark"] .dd-aka > span { color: #eef2fb; }
+html[data-theme="dark"] .dd-aka strong { color: #a5eef2; }
+html[data-theme="dark"] .dd-comp { background: #1a2535; border-color: #2c3a52; border-left-color: #2ba8b0; }
+html[data-theme="dark"] .dd-comp-none { border-left-color: #6b7a90; }
+html[data-theme="dark"] .dd-comp-h a { color: #7fd3da; }
+html[data-theme="dark"] .dd-comp-h .dd-sub, html[data-theme="dark"] .dd-comp-none .dd-sub { color: #b4bfcf; }
+html[data-theme="dark"] .dd-comp-kid { background: #10232a; border-color: #23414a; }
+html[data-theme="dark"] .dd-comp-kh { color: #a5eef2; }
+html[data-theme="dark"] .dd-comp-kh .dd-kidney-ico { color: #a5eef2; }
+html[data-theme="dark"] .dd-comp-caveat { color: #fde68a; background: #2a1d05; border-color: #6b4f12; }
 """
 
 
@@ -928,7 +959,7 @@ if(idx){
     return loading;
   }
   function score(s,t){if(!s)return 0;if(s===t)return 100;if(s.indexOf(t)===0)return 80;if((' '+s).indexOf(' '+t)>=0)return 60;if(s.indexOf(t)>=0)return 35;return 0;}
-  var FIELDS=[['n','generic',1],['i','ingredient',.95],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
+  var FIELDS=[['n','generic',1],['y','also known as',.99],['i','ingredient',.95],['yi','ingredient',.9],['z','',.94],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
   function smatch(d,t){
     var best=score(d.nn,t)*.97,lab=best?'supplement':'',val=d.n;
     [['i','ingredient',.85],['r','FR no.',.9],['co','company',.5]].forEach(function(f){(d[f[0]]||[]).forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
@@ -1283,6 +1314,29 @@ class Ctx:
 
     def label(self, slug):
         return load_json(self.labels_dir / f"{slug}.json") if self.labels_dir.is_dir() else None
+
+    def single_slug(self, ingredient: str) -> str:
+        """Single-agent page for a combination component (exact name, then synonym/salt-folded name);
+        variant spellings resolve to their main page. '' when there is no page."""
+        if not hasattr(self, "_single"):
+            exact: dict[str, list[str]] = defaultdict(list)
+            canon: dict[str, list[str]] = defaultdict(list)
+            for s, g in self.generics.items():
+                ings = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
+                if len(ings) != 1 or not self.by_slug.get(s):
+                    continue
+                a = self.aliases.get(s)
+                t = a["main"] if a and a["high"] else s
+                for n in (ings[0], ws(g.get("name"))):
+                    exact[SYN.norm(n)].append(t)
+                    canon[SYN.canonical(n)].append(t)
+
+            def best(c):   # prefer a labeled page, then reviewed kidney dosing, then the most products
+                return max(sorted(set(c)), key=lambda x: (x not in self.aliases, bool(_lab(self.label(x)) or self.eu(x)),
+                                                          renal_approved(self.renal(x)), len(self.by_slug.get(x, []))))
+            self._single = ({k: best(v) for k, v in exact.items()}, {k: best(v) for k, v in canon.items()})
+        ex, ca = self._single
+        return ex.get(SYN.norm(ingredient)) or ca.get(SYN.canonical(ingredient)) or ""
 
     def controlled(self, slug):
         it = self._controlled.get(slug)
@@ -2303,6 +2357,14 @@ def dispensing_chips(classes: set, ci, ctx: "Ctx") -> tuple[str, str]:
     return "".join(chips), note
 
 
+def syn_ingredients(slug: str, g: dict, ctx: Ctx) -> list[str]:
+    """Ingredient names used for synonym lookup; a high-confidence variant spelling uses its main page's
+    (e.g. "Hyoscine (as butylbromide)" takes hyoscine butylbromide's names, not scopolamine's)."""
+    a = ctx.aliases.get(slug)
+    src = ctx.generics.get(a["main"], g) if a and a["high"] else g
+    return [ws(i) for i in (src.get("ingredients") or []) if ws(i)]
+
+
 def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[dict, dict]:
     """(core search record, extra record with manufacturers and registration numbers)."""
     products = ctx.by_slug.get(slug, [])
@@ -2332,6 +2394,13 @@ def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[d
     ing = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
     if len(ing) > 1:
         e["i"] = ing
+    syn = SYN.search_terms(syn_ingredients(slug, g, ctx) or [name], name)
+    if syn["own"]:
+        e["y"] = syn["own"]          # other nonproprietary names of this product (acetaminophen for paracetamol)
+    if syn["ing"]:
+        e["yi"] = syn["ing"]         # other names of its components (combinations)
+    if syn["miss"]:
+        e["z"] = syn["miss"]         # search-only misspellings / misnomers; never displayed
     if brands:
         e["b"] = brands
     if ub:
@@ -2548,6 +2617,66 @@ def also_registered(slug: str, ctx: "Ctx") -> str:
             + ('. Products registered under these spellings are included in the table and marked.' if hi else '.') + '</p>')
 
 
+def aka_line(ingredients: list[str], name: str, own: list[str] | None = None) -> tuple[str, list[str]]:
+    """'Also known as: acetaminophen (US name)' under the title, plus the plain names for JSON-LD/keywords."""
+    syn = SYN.display_synonyms(ingredients or [name], name, own)
+    if not syn:
+        return "", []
+    items = [f'<strong>{esc(d["name"])}</strong> ({esc(d["label"])}{", for " + esc(d["for"]) if d["for"] else ""})' for d in syn]
+    return f'<p class="dd-aka"><span>Also known as:</span> {" · ".join(items)}</p>', [d["name"] for d in syn]
+
+
+FDC_CAVEAT = ("Fixed-dose combinations may not allow the dose changes advised for each component; check the strength and "
+              "use the single agents if a component needs adjusting.")
+
+
+def component_section(slug: str, ingredients: list[str], ctx: Ctx) -> tuple[str, int, int]:
+    """'Component information' for a combination with no US/EU label of its own: per component a link to its
+    single-agent page, its use (US label, else our approved summary) and, only when that component's kidney
+    record is approved, its compact kidney strip. Returns (html, components linked, kidney strips shown)."""
+    rows, linked, strips = [], 0, 0
+    for i, ing in enumerate(ingredients):
+        cs = ctx.single_slug(ing)
+        if not cs or cs == slug:
+            rows.append(f'<li class="dd-comp dd-comp-none"><span class="dd-comp-n">{esc(ing)}</span> '
+                        '<span class="dd-sub">no separate page</span></li>')
+            continue
+        linked += 1
+        cg = ctx.generics.get(cs, {})
+        cn = ws(cg.get("name")) or cs
+        cl = ctx.label(cs)
+        use, src = "", ""
+        inds = indication_items(cl) if _lab(cl) else []
+        if inds:
+            use, src = inds[0], LABEL_CHIP
+        else:
+            cm = ctx.summary(cs)
+            d = [x for x in ((cm.get("usual_adult_dose") or []) if summary_approved(cm) else []) if isinstance(x, dict)]
+            if d and ws(d[0].get("indication")):
+                use, src = ws(d[0]["indication"]), OURS_CHIP
+        if len(use) > 220:
+            use = use[:217].rsplit(" ", 1)[0] + "…"
+        body = [f'<div class="dd-comp-h"><a href="{esc(cs)}.html">{esc(cn)}</a>'
+                + (f' <span class="dd-sub">listed as {esc(ing)}</span>' if SYN.norm(ing) != SYN.norm(cn) else "") + "</div>"]
+        if use:
+            body.append(f'<p class="dd-comp-use"><strong>Use:</strong> {esc(use)} {src}</p>')
+        cr = ctx.renal(cs)
+        if renal_approved(cr):
+            kb = kidney_block(cr, f"kc{i}")
+            if kb:
+                strips += 1
+                body.append(f'<div class="dd-comp-kid"><div class="dd-comp-kh">{KIDNEY_ICON}Kidney dosing: {esc(cn)} (single-agent)'
+                            f'</div>{kb}<p class="dd-note">From the <a href="{esc(cs)}.html#kidney-dosing">{esc(cn)} monograph</a> '
+                            f'(renalcarematters.com, reviewed).</p></div>')
+        rows.append(f'<li class="dd-comp">{"".join(body)}</li>')
+    if not linked:
+        return "", 0, 0
+    html_ = ('<p class="dd-comp-intro">No US or EU label exists for this exact combination, so information is shown for each '
+             'component.</p>' + f'<ul class="dd-comp-list">{"".join(rows)}</ul>'
+             + f'<p class="dd-comp-caveat" role="note"><strong>Note:</strong> {FDC_CAVEAT}</p>')
+    return html_, linked, strips
+
+
 def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     products = list(ctx.by_slug.get(slug, []))
     for v in ctx.variants_of.get(slug) or []:       # main page lists products registered under variant spellings
@@ -2570,6 +2699,12 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     ingredients = [ws(i) for i in (g.get("ingredients") or []) if ws(i)]
     entry, extra = index_entry(slug, g, ctx, label, renal)
     eu = ctx.eu(slug) if not lab else None     # EU SmPC (EMA): only for generics with no US label
+    aka_html, aka_names = aka_line(syn_ingredients(slug, g, ctx), name, ingredients or [name])
+    comp_html, comp_n, comp_k = ("", 0, 0)
+    if len(ingredients) > 1 and not lab and not eu and not (alias and alias["high"]):
+        comp_html, comp_n, comp_k = component_section(slug, ingredients, ctx)
+    if comp_html:
+        ctx.__dict__.setdefault("comp_stats", {})[slug] = (comp_n, comp_k)
 
     # ── header: chips + class line + US brand note
     chips = []
@@ -2620,6 +2755,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                    '(linked in the products table where the FDA has published one).</div>')
 
     S = []
+    # 1b. Component cross-reference (combination with no label of its own)
+    if comp_html:
+        S.append(sec("component-info", "Component information", comp_html, "Components"))
     # 2. Use
     inds = indication_items(label)
     use = ""
@@ -2640,7 +2778,11 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     adult += eu_r.section(eu, "4.2")
     S.append(sec("dosing-adult", "Dosing: Adult", adult, "Adult dosing"))
     # 4. Kidney
-    S.append(("kidney-dosing", "Kidney dosing", render_kidney_section(label, renal, ctx.intl(slug), eu)))
+    ks = render_kidney_section(label, renal, ctx.intl(slug), eu)
+    if comp_html and not renal_approved(renal):
+        ks = ks.replace('<p class="dd-kidney-pending">', '<p class="dd-note">Kidney dosing for each component (single-agent) '
+                        'is shown under <a href="#component-info">Component information</a>.</p>\n<p class="dd-kidney-pending">', 1)
+    S.append(("kidney-dosing", "Kidney dosing", ks))
     # 5. Hepatic
     hep = hepatic_text(label)
     S.append(sec("dosing-hepatic", "Dosing: Hepatic impairment",
@@ -2770,8 +2912,10 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx, ctx.intl(slug)), "References"))
 
     S = [x for x in S if x]
-    toc = "".join(f'<li><a href="#{sid}">{esc(nav)}</a></li>' for sid, nav, _ in S)
-    pills = "".join(f'<a class="nav-pill" href="#{sid}">{esc(nav)}</a>' for sid, nav, _ in S)
+    # on a combination with a component cross-reference, "Kidney dosing" in the TOC opens the per-component strips
+    href = lambda sid: "component-info" if (sid == "kidney-dosing" and comp_html and not renal_approved(renal)) else sid
+    toc = "".join(f'<li><a href="#{href(sid)}">{esc(nav)}</a></li>' for sid, nav, _ in S)
+    pills = "".join(f'<a class="nav-pill" href="#{href(sid)}">{esc(nav)}</a>' for sid, nav, _ in S)
 
     canonical = f"{SITE}/drugs/{slug}.html"
     # a high-confidence variant spelling consolidates to the main page (canonical + noindex; dropped from the sitemap)
@@ -2785,8 +2929,8 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         drug["activeIngredient"] = ", ".join(ingredients)
     if rxstat:
         drug["prescriptionStatus"] = rxstat
-    if brands:
-        drug["alternateName"] = brands_ranked[:25]
+    if brands or aka_names:
+        drug["alternateName"] = list(dict.fromkeys(aka_names + brands_ranked[:25]))
     jsonld = json.dumps({"@context": "https://schema.org", "@graph": [
         {"@type": "MedicalWebPage", "@id": canonical, "url": canonical, "name": f"{name}: Philippine products and prescribing information",
          "dateModified": "__ISO__", "inLanguage": "en", "audience": {"@type": "MedicalAudience", "audienceType": "Clinician"},
@@ -2799,7 +2943,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     brand_txt = ", ".join(brands_ranked[:6]) + ("…" if len(brands) > 6 else "")
     desc = (f"{name}{' (' + cat + ')' if cat else ''}: {len(products):,} FDA Philippines-registered products"
             + (f" including {brand_txt}" if brands else "") + ". Kidney dosing, US FDA label text, PNF and price references.")
-    body = (head(title, desc[:300], head_canon, jsonld, "__HASH__", keywords=", ".join([name] + brands_ranked[:20]), robots=robots)
+    body = (head(title, desc[:300], head_canon, jsonld, "__HASH__", keywords=", ".join(dict.fromkeys([name] + aka_names + brands_ranked[:20])), robots=robots)
             + '<body class="physician-mode single-mode dd-mono">\n' + header(False) + f"""
 <section class="hero">
   <div class="container dd-hero-wide">
@@ -2808,6 +2952,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         <div class="dd-crumb"><a href="/drugs/">Drug Index</a>{f' › <a href="/drugs/category/{cat_slug(cat)}.html">{esc(cat)}</a>' if cat else ''}</div>
         <div class="hero-tag">Drug Database · Clinicians</div>
         <h1>{esc(name)}</h1>
+        {aka_html}
         {render_brand_line(brands_ranked)}
         {alias_banner(slug, ctx)}
         {f'<p class="dd-usbrand">US brand (reference label): <strong>{esc(us_brand)}</strong>; not a Philippine-registered brand.</p>' if us_brand else ''}
@@ -3238,6 +3383,10 @@ def main():
     print(f"{len(ctx.products):,} products · {len(entries):,} generic pages · "
           + " · ".join(f"{k}: {v}" for k, v in sorted(stats.items()))
           + f" · {time.time() - t0:.1f}s" + (" (dry run)" if a.dry_run else ""))
+    cs_ = getattr(ctx, "comp_stats", {})
+    if cs_:
+        print(f"  component cross-reference on {len(cs_):,} combination pages "
+              f"({sum(1 for n, k in cs_.values() if k):,} with an approved single-agent kidney strip)")
 
 
 if __name__ == "__main__":
