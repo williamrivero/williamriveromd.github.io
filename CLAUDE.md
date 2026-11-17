@@ -916,6 +916,11 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come
   from the editable keyword map in `tools/drugdb/therapeutic_areas.py` (no WHO ATC; `python3 tools/drugdb/therapeutic_areas.py`
   prints the share per area and a spot-check sample). Brand rows link to `<generic>.html?brand=<name>#products`.
+- **Company search** (Drug Index search box): `drugs/search-extra.json` carries `m` (every manufacturer, distributor
+  and importer) and `mb` (index-aligned with `m`: refs into the core record's brand list `b`; a negative ref is an
+  unbranded product, `r[-ref-1]`). A company match is labeled "company" and lists that company's brands under the
+  generic as `Brands: Renvex · (unbranded, DRP-19166)`, each linking to `<generic>.html?brand=<brand or reg. no.>#products`
+  (12 shown, then "+N more"). Built by `company_brands()` in `generate_drug_pages.py`.
 - **Build:** `python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.

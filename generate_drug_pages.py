@@ -45,7 +45,7 @@ import json
 import os
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "16"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "17"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -531,6 +531,11 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-facets .dd-check .dd-kidney-ico { width: 16px; height: 16px; color: #0e4a50; }
 ul.dd-results li[aria-selected=true] { background: #eef2f8; outline: 2px solid #1a6b72; outline-offset: -2px; }
 .dd-why { display: block; font-size: 12.5px; color: var(--text-mid); }
+.dd-mbr { display: block; font-size: 13px; line-height: 1.55; color: var(--text-mid); margin-top: 2px; overflow-wrap: anywhere; }
+.dd-mbr .dd-mbr-l { font-weight: 600; color: var(--text-mid); }
+ul.dd-list .dd-mbr a { color: #0e4a50; font-weight: 600; text-decoration: underline; text-decoration-color: rgba(14,74,80,.35); text-underline-offset: 2px; }
+ul.dd-list .dd-mbr a:hover { text-decoration-color: currentColor; }
+.dd-mbr .dd-mbr-s { color: var(--text-muted); }
 .dd-tags { display: block; margin-top: 3px; }
 .dd-tags .dd-tag { margin-right: 3px; }
 @media (max-width: 1023px) {
@@ -783,6 +788,7 @@ html[data-theme="dark"] .dd-tag.S2 { color: #fff; background: #b91c1c; }
 html[data-theme="dark"] .dd-tag.CP { color: #2a1900; background: #fbbf24; }
 html[data-theme="dark"] .dd-facets select { background: #1a2535; color: var(--text); border-color: #4a5a72; }
 html[data-theme="dark"] .dd-facets .dd-check .dd-kidney-ico { color: #7fd3da; }
+html[data-theme="dark"] ul.dd-list .dd-mbr a { color: #7fd3da; text-decoration-color: rgba(127,211,218,.45); }
 html[data-theme="dark"] ul.dd-results li[aria-selected=true] { background: #1e3040; outline-color: #7fd3da; }
 html[data-theme="dark"] .dd-brands { color: rgba(238,242,251,.82); }
 html[data-theme="dark"] .dd-brands strong, html[data-theme="dark"] .dd-brands a.dd-brand-link { color: #eef2fb; border-bottom-color: rgba(238,242,251,.5); }
@@ -972,7 +978,8 @@ if(idx){
       arr.forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
     if(extra&&extra[d.s]&&best<60){var e=extra[d.s];
       (e.r||[]).forEach(function(x){var s=score(norm(x),t)*.9;if(s>best){best=s;lab='reg. no.';val=x;}});
-      (e.m||[]).forEach(function(x){var s=score(norm(x),t)*.5;if(s>best){best=s;lab='manufacturer';val=x;}});}
+      var mi=[];(e.m||[]).forEach(function(x,j){var s=score(norm(x),t)*.5;if(s>0)mi.push(j);if(s>best){best=s;lab='company';val=x;}});
+      if(lab==='company')return {s:best,lab:lab,val:val,mi:mi};}
     return best?{s:best,lab:lab,val:val}:null;
   }
   function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked||(F.e&&F.e.checked));}
@@ -1006,6 +1013,16 @@ if(idx){
     if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
     if(d.p)o.push('<span class="dd-tag PNF">PNF</span>');if(d.h)o.push('<span class="dd-tag PNF">GAMOT</span>');
     if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');if(d.e)o.push('<span class="dd-tag US">EU SmPC</span>');return o.join(' ');}
+  /* company search: that company's brands under the generic (search-extra "mb": refs into d.b; ref<0 = unbranded reg. no.) */
+  function coBrands(d,o,slug){var e=extra&&extra[d.s];if(!o.mi||!e||!e.mb)return '';var seen={},refs=[];
+    o.mi.forEach(function(j){(e.mb[j]||[]).forEach(function(r){if(!seen[r]){seen[r]=1;refs.push(r);}});});
+    if(!refs.length)return '';refs.sort(function(a,b){return (a<0)-(b<0)||(a<0?b-a:a-b);});
+    var MAX=12,base=encodeURIComponent(slug)+'.html?brand=',lk=refs.slice(0,MAX).map(function(r){
+      if(r>=0){var b=(d.b||[])[r];return b?'<a href="'+base+encodeURIComponent(b)+'#products">'+escH(b)+'</a>':'';}
+      var rn=(e.r||[])[-r-1];return rn?'<a href="'+base+encodeURIComponent(rn)+'#products">(unbranded, '+escH(rn)+')</a>':'';}).filter(Boolean);
+    if(!lk.length)return '';
+    return '<span class="dd-mbr"><span class="dd-mbr-l">Brands:</span> '+lk.join('<span class="dd-mbr-s" aria-hidden="true"> · </span>')+
+      (refs.length>MAX?' <a class="dd-mbr-more" href="'+encodeURIComponent(slug)+'.html#products">+'+(refs.length-MAX)+' more</a>':'')+'</span>';}
   function setActive(i){var opts=res.querySelectorAll('[role=option]');if(!opts.length){active=-1;sq.removeAttribute('aria-activedescendant');return;}
     active=Math.max(0,Math.min(i,opts.length-1));Array.prototype.forEach.call(opts,function(o,j){o.setAttribute('aria-selected',j===active?'true':'false');});
     sq.setAttribute('aria-activedescendant',opts[active].id);opts[active].scrollIntoView({block:'nearest'});}
@@ -1017,7 +1034,7 @@ if(idx){
     load().then(function(){
       if(!data)return;
       var out=[];
-      (supp?data.concat(supp):data).forEach(function(d){if(!pass(d))return;if(!t){out.push({d:d,s:0});return;}var m=match(d,t,raw);if(m)out.push({d:d,s:d.sup?m.s*.95:m.s,lab:m.lab,val:m.val});});
+      (supp?data.concat(supp):data).forEach(function(d){if(!pass(d))return;if(!t){out.push({d:d,s:0});return;}var m=match(d,t,raw);if(m)out.push({d:d,s:d.sup?m.s*.95:m.s,lab:m.lab,val:m.val,mi:m.mi});});
       out.sort(function(a,b){return b.s-a.s||a.d.n.localeCompare(b.d.n);});
       var shown=out.slice(0,200), tl=raw.toLowerCase();
       res.innerHTML=shown.map(function(o,i){var d=o.d;
@@ -1026,8 +1043,8 @@ if(idx){
           return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="supplements/'+(d.p?encodeURIComponent(d.s)+'.html':'view.html?b='+encodeURIComponent(d.s))+'">'+(o.lab==='supplement'?hl(d.n,tl):escH(d.n))+'</a>'+why+
           '<span class="dd-sub">'+escH((d.i||[]).length?(d.i||[]).slice(0,4).join(' · '):(d.u||''))+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}
         if(d.m&&d.mh)return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.m)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+' <span class="dd-arrow">&rarr; '+escH(d.mn)+'</span></a>'+why+
-          '<span class="dd-sub">Registered under a variant spelling of '+escH(d.mn)+'; opens the main monograph</span></li>';
-        return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+
+          coBrands(d,o,d.m)+'<span class="dd-sub">Registered under a variant spelling of '+escH(d.mn)+'; opens the main monograph</span></li>';
+        return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+coBrands(d,o,d.s)+
           '<span class="dd-sub">'+escH(d.c||'')+(d.m?' · Did you mean <a href="'+encodeURIComponent(d.m)+'.html">'+escH(d.mn)+'</a>?':'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
       res.hidden=false; az.hidden=true; sq.setAttribute('aria-expanded',out.length?'true':'false'); active=-1;
       info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
@@ -2427,9 +2444,49 @@ def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[d
         e["l"] = 1
     elif ctx.eu(slug):
         e["e"] = 1
-    mf = sorted({ws(p.get(k)) for p in products for k in ("manufacturer", "distributor") if ws(p.get(k))}, key=str.lower)
     rg = sorted({ws(p.get("registration_number")) for p in products if ws(p.get("registration_number"))})
-    return e, {"s": slug, "m": mf, "r": rg}
+    mf, mb = company_brands(products, name, brands, rg)
+    x = {"s": slug, "m": mf, "r": rg}
+    if any(mb):
+        x["mb"] = mb
+    return e, x
+
+
+COMPANY_FIELDS = ("manufacturer", "distributor", "importer")
+
+
+def company_brands(products, generic_name: str, brands: list[str], regnos: list[str]) -> tuple[list[str], list[list[int]]]:
+    """(companies, brand refs per company) for the Drug Index search-extra file, so a search by company name
+    (manufacturer, distributor or importer) can list that company's brands under each generic.
+    companies ("m"): every manufacturer, distributor and importer (case-insensitive dedupe, A-Z).
+    refs ("mb"): index-aligned with companies. A ref i >= 0 points into the core record's brand list "b"
+    (brand_list(): case-insensitive dedupe, most common spelling); a ref < 0 is a product with no brand (blank,
+    None, Unbranded or the generic name itself), pointing at registration number r[-ref - 1] of this extra record;
+    the index page shows it as "(unbranded, DRP-19166)". Integer refs keep search-extra.json small."""
+    bidx = {_brand_key(b): i for i, b in enumerate(brands)}
+    ridx = {r: i for i, r in enumerate(regnos)}
+    names: dict[str, Counter] = {}
+    refs: dict[str, set] = {}
+    for p in products:
+        bi = bidx.get(_brand_key(ws(p.get("brand_name"))))
+        if bi is None:
+            ri = ridx.get(ws(p.get("registration_number")))
+            ref = None if ri is None else -ri - 1
+        else:
+            ref = bi
+        for k in COMPANY_FIELDS:
+            c = ws(p.get(k))
+            if not c:
+                continue
+            ck = c.lower()
+            names.setdefault(ck, Counter())[c] += 1
+            if ref is not None:
+                refs.setdefault(ck, set()).add(ref)
+    keys = sorted(names, key=lambda ck: (names[ck].most_common(1)[0][0].lower(), ck))
+    mf = [names[ck].most_common(1)[0][0] for ck in keys]
+    # brands A-Z (their order in "b"), then unbranded registration numbers
+    mb = [sorted(refs.get(ck) or (), key=lambda r: (r < 0, r if r >= 0 else -r)) for ck in keys]
+    return mf, mb
 
 
 FORM_GROUPS = [
