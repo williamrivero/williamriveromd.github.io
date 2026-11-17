@@ -516,7 +516,8 @@ def render_notes(slug: str, notes) -> str:
     if notes.get("variants"):
         parts.append(f'<h3>What each variant is for</h3><ul>{lst(notes["variants"])}</ul>')
     if notes.get("guideline"):
-        parts.append(f'<h3>How it fits the KDOQI 2020 nutrition guideline</h3><ul>{lst(notes["guideline"])}</ul>')
+        gh = ws(notes.get("guideline_heading")) or "How it fits the KDOQI 2020 nutrition guideline"
+        parts.append(f'<h3>{esc(gh)}</h3><ul>{lst(notes["guideline"])}</ul>')
     if notes.get("evidence"):
         parts.append(f'<h3>Evidence</h3><ul>{lst(notes["evidence"])}</ul>')
     if notes.get("cautions"):
