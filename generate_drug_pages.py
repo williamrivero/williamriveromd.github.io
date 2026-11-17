@@ -1659,7 +1659,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="inde
 <link rel="canonical" href="{canonical}">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/images/app/drug-index-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/app/dosis-180.png">
 <meta name="theme-color" content="#0f1e33">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Renal Care Matters">
@@ -1725,7 +1725,7 @@ FLOAT = """
 # Installable app (PWA): manifest, service worker, offline page
 # ═════════════════════════════════════════════════════════════════════════════
 APP_MARK = '<link rel="manifest" href="/drugs/app.webmanifest">'
-APP_ICON_TAG = '<link rel="apple-touch-icon" sizes="180x180" href="/images/app/drug-index-180.png">'   # iPhone home-screen icon (full-bleed; iOS rounds the corners)
+APP_ICON_TAG = '<link rel="apple-touch-icon" sizes="180x180" href="/images/app/dosis-180.png">'   # iPhone home-screen icon (full-bleed; iOS rounds the corners)
 LEGACY_ICON_TAG = '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">'   # what page hashes were computed with
 APP_HEAD = (APP_MARK + '\n<meta name="mobile-web-app-capable" content="yes">\n'
             '<meta name="apple-mobile-web-app-capable" content="yes">\n'
@@ -1749,17 +1749,17 @@ APP_MANIFEST = {
     "dir": "ltr",
     "categories": ["medical", "health", "reference"],
     "icons": [
-        {"src": "/images/app/drug-index-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-        {"src": "/images/app/drug-index-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-        {"src": "/images/app/drug-index-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
-        {"src": "/images/app/drug-index-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
-        {"src": "/images/app/drug-index-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any"},
+        {"src": "/images/app/dosis-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+        {"src": "/images/app/dosis-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+        {"src": "/images/app/dosis-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+        {"src": "/images/app/dosis-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+        {"src": "/images/app/dosis-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any"},
     ],
     "shortcuts": [
         {"name": "Kidney dosing", "short_name": "Kidney dosing", "url": "/drugs/?view=kidney",
-         "icons": [{"src": "/images/app/drug-index-192.png", "sizes": "192x192", "type": "image/png"}]},
+         "icons": [{"src": "/images/app/dosis-192.png", "sizes": "192x192", "type": "image/png"}]},
         {"name": "Food supplements & medical nutrition", "short_name": "Supplements", "url": "/drugs/supplements/",
-         "icons": [{"src": "/images/app/drug-index-192.png", "sizes": "192x192", "type": "image/png"}]},
+         "icons": [{"src": "/images/app/dosis-192.png", "sizes": "192x192", "type": "image/png"}]},
     ],
 }
 
@@ -1861,8 +1861,8 @@ def build_sw() -> str:
     optional = ["/assets/drug-hero.js?v=3"] + ([f"/drugs/supplements/supp.css?v={sv}", f"/drugs/supplements/supp.js?v={sv}"] if sv else [])
     data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json",
             f"/drugs/browse.json?v={ASSET_VERSION}", f"/drugs/browse-brands.json?v={ASSET_VERSION}"]
-    assets = ["/assets/share-buttons.js", "/drugs/app.webmanifest", "/images/app/drug-index-192.png", "/favicon.ico",
-              "/favicon-32x32.png", "/images/app/drug-index-180.png"]
+    assets = ["/assets/share-buttons.js", "/drugs/app.webmanifest", "/images/app/dosis-192.png", "/favicon.ico",
+              "/favicon-32x32.png", "/images/app/dosis-180.png"]
     js = (SW_JS.replace("__SHELL__", json.dumps(shell)).replace("__OPTIONAL__", json.dumps(optional))
           .replace("__DATA__", json.dumps(data)).replace("__ASSETS__", json.dumps(assets)))
     v = hashlib.sha1((js + offline_page()).encode("utf-8")).hexdigest()[:10]   # new offline page -> new worker

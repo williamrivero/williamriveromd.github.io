@@ -989,7 +989,7 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   manifest network-first. The index hero carries a prominent "Install Dosis, the Drug Index app" button (`#dd-app-cta`, links to the panel); in the installed app it
   reads "Set up offline use" until the download completes, then hides, and the index shows "Offline use is not set up yet" until then. **iPhone/iPad:** no install prompt exists, so the panel shows Share → Add to Home Screen steps and a
   warning to install first and download inside the Home Screen app (Safari tabs and the Home Screen app keep separate storage,
-  and Safari may clear tab storage after 7 days); the Home Screen icon is `images/app/drug-index-180.png` (full-bleed; page hashes
+  and Safari may clear tab storage after 7 days); the Home Screen icon is `images/app/dosis-180.png` (teal capsule, full-bleed; page hashes
   treat it as the legacy `/apple-touch-icon.png` tag); worker `waitUntil` calls are wrapped (`keep()`) for Safari. In the installed app (`display-mode: standalone` /
   `navigator.standalone`) `drugdb.js` adds a bottom app bar (`.dd-appbar`: Back · Drug Index · Search), since there is no browser toolbar. Content hashes ignore `APP_HEAD` and asset-version bumps
   (`HASH_ASSET_VERSION`), so chrome-only changes rewrite pages but keep their "Last updated" date. `_headers` serves `sw.js` with
