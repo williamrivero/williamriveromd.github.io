@@ -347,11 +347,11 @@ function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.
 function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
 function showInstall(){
   var hint=q('hint'),btn=q('install');if(!hint)return;
-  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Drug Index app.';
+  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Dosis app.';
     ['iossteps','iosnote'].forEach(function(k){var e=q(k);if(e)e.hidden=true;});return;}
-  if(deferred&&!ios()){btn.hidden=false;hint.textContent='Adds a Drug Index icon to your home screen or desktop. It opens full screen and works offline.';return;}
+  if(deferred&&!ios()){btn.hidden=false;hint.textContent='Adds a Dosis icon to your home screen or desktop. It opens full screen and works offline.';return;}
   btn.hidden=true;
-  if(ios()){hint.textContent='On iPhone or iPad, add the Drug Index to your Home Screen:';var o=q('iossteps');if(o)o.hidden=false;
+  if(ios()){hint.textContent='On iPhone or iPad, add Dosis to your Home Screen:';var o=q('iossteps');if(o)o.hidden=false;
     var n=q('iosnote');if(n)n.hidden=false;}
 }
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;showInstall();});
