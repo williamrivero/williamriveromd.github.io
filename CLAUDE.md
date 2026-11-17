@@ -968,7 +968,8 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   pages and the supplement data shards the brand viewer reads (~4,150 files, ~160 MB stored, ~40 MB download). The generator writes
   `drugs/offline-manifest.json` LAST in `main()` (`[path, content hash, bytes]` per file plus an overall hash `h`); each saved file
   carries its hash (`X-RCM-Hash`), so updates and resumed downloads fetch only missing or changed files, and the worker fetches the
-  manifest network-first. In the installed app the index shows "Offline use is not set up yet" until the download completes. **iPhone/iPad:** no install prompt exists, so the panel shows Share → Add to Home Screen steps and a
+  manifest network-first. The index hero carries a prominent "Install the Drug Index app" button (`#dd-app-cta`, links to the panel); in the installed app it
+  reads "Set up offline use" until the download completes, then hides, and the index shows "Offline use is not set up yet" until then. **iPhone/iPad:** no install prompt exists, so the panel shows Share → Add to Home Screen steps and a
   warning to install first and download inside the Home Screen app (Safari tabs and the Home Screen app keep separate storage,
   and Safari may clear tab storage after 7 days); the Home Screen icon is `images/app/drug-index-180.png` (full-bleed; page hashes
   treat it as the legacy `/apple-touch-icon.png` tag); worker `waitUntil` calls are wrapped (`keep()`) for Safari. In the installed app (`display-mode: standalone` /

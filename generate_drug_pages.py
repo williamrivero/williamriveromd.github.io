@@ -893,6 +893,21 @@ html.dd-standalone .print-btn, html.dd-standalone .float-controls, html.dd-stand
 html[data-theme="dark"] .dd-appbar { background: #0e4a50; }
 @media print { .dd-appbar { display: none !important; } }
 
+/* Hero call-to-action: install the app */
+.dd-app-cta { display: inline-flex; align-items: center; gap: 12px; margin: 2px 0 18px; padding: 11px 16px 11px 14px;
+  border-radius: 14px; color: #fff; text-decoration: none; background: linear-gradient(135deg, #1a6b72 0%, #0e4a50 100%);
+  box-shadow: 0 6px 18px rgba(14,74,80,.30), inset 0 1px 0 rgba(255,255,255,.14); transition: transform .15s, box-shadow .15s; }
+.dd-app-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(14,74,80,.36), inset 0 1px 0 rgba(255,255,255,.14); }
+.dd-app-cta:focus-visible { outline: 3px solid #b8860b; outline-offset: 3px; }
+.dd-app-cta > svg:first-child { flex: none; width: 34px; height: 34px; padding: 6px; border-radius: 10px; background: rgba(255,255,255,.16);
+  fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.dd-app-cta-t { display: flex; flex-direction: column; gap: 2px; line-height: 1.2; }
+.dd-app-cta-t strong { font: 700 15px/1.2 'Inter', sans-serif; letter-spacing: .005em; }
+.dd-app-cta-t small { font: 500 12.5px/1.3 'Manrope', sans-serif; color: #e6fbfc; }
+.dd-app-cta-arr { flex: none; width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: .85; }
+html[data-theme="dark"] .dd-app-cta { background: linear-gradient(135deg, #0e4a50 0%, #0a363b 100%); box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+@media print { .dd-app-cta { display: none !important; } }
+
 /* Installable app + offline panel (index) */
 .dd-app { margin: 34px 0 22px; padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); }
 .dd-app h2 { font-family: 'Inter', sans-serif; font-size: 20px; margin: 0 0 14px; color: var(--navy); }
@@ -923,7 +938,7 @@ html[data-theme="dark"] .dd-app h2 { color: #eef2fb; }
 html[data-theme="dark"] .dd-app-card { background: #141e2c; border-color: #2c3a52; }
 html[data-theme="dark"] .dd-app-card h3 { color: #eef2fb; }
 html[data-theme="dark"] .dd-app-card p { color: #c9d2e0; }
-@media print { .dd-app, .dd-app-chip { display: none !important; } html.dd-offline body::after { display: none; } }
+@media print { .dd-app { display: none !important; } html.dd-offline body::after { display: none; } }
 """
 
 
@@ -1377,6 +1392,9 @@ function run(){
   }).then(function(){try{if(lock)lock.release();}catch(e){}});
 }
 dl.addEventListener('click',run);
+var cta=document.getElementById('dd-app-cta');
+if(cta&&standalone()){var rr=rec();if(rr&&rr.done)cta.hidden=true;else{cta.querySelector('strong').textContent='Set up offline use';
+  cta.querySelector('small').textContent='Download the complete Drug Index once';}}
 /* In the installed app, prompt until offline use is set up */
 if(standalone()){var r0=rec();if(!r0||!r0.done){var main=document.getElementById('dd-index');
   if(main){var nb=document.createElement('div');nb.className='dd-app-warn dd-app-setup';
@@ -3923,7 +3941,8 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int, off: dict | None = No
         <p class="hero-sub">Every drug product registered with the Food and Drug Administration (FDA) Philippines, grouped by generic name.
 Search by brand, generic, class, indication, manufacturer or registration number.</p>
         <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span>
-<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}<a class="dd-chip dd-app-chip no-print" href="#dd-app">Install app · use offline</a></div>
+<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}</div>
+        <a class="dd-app-cta no-print" href="#dd-app" id="dd-app-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="m9 11 3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="dd-app-cta-t"><strong>Install the Drug Index app</strong><small>Works offline, even with no signal</small></span><svg class="dd-app-cta-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
     </div></div>
   </div>
