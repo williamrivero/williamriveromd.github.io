@@ -331,10 +331,12 @@ function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.
 function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
 function showInstall(){
   var hint=q('hint'),btn=q('install');if(!hint)return;
-  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Drug Index app.';return;}
-  if(deferred){btn.hidden=false;hint.textContent='Adds a Drug Index icon to your home screen or desktop. It opens full screen and works offline.';return;}
+  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Drug Index app.';
+    ['iossteps','iosnote'].forEach(function(k){var e=q(k);if(e)e.hidden=true;});return;}
+  if(deferred&&!ios()){btn.hidden=false;hint.textContent='Adds a Drug Index icon to your home screen or desktop. It opens full screen and works offline.';return;}
   btn.hidden=true;
-  if(ios())hint.innerHTML='On iPhone or iPad: tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>. The Drug Index then opens full screen, like an app.';
+  if(ios()){hint.textContent='On iPhone or iPad, add the Drug Index to your Home Screen:';var o=q('iossteps');if(o)o.hidden=false;
+    var n=q('iosnote');if(n)n.hidden=false;}
 }
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;showInstall();});
 window.addEventListener('appinstalled',function(){deferred=null;showInstall();});
