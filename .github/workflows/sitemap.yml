@@ -41,14 +41,17 @@ jobs:
       - name: Rebuild the guides search index
         run: python3 generate_search_index.py
 
+      - name: Calculo (calculators app) files
+        run: python3 build_calc_app.py
+
       - name: Commit if changed
         run: |
-          if git diff --quiet -- sitemap.xml guides/search-index.json; then
+          if git diff --quiet -- sitemap.xml guides/search-index.json && git diff --quiet -- 'guides/calc-*' guides/calculators.html; then
             echo "sitemap.xml and search-index.json already in sync — nothing to commit."
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sitemap.xml guides/search-index.json
-          git commit -m "Regenerate sitemap.xml and search index [skip ci]"
+          git add sitemap.xml guides/search-index.json 'guides/calc-*' guides/calculators.html
+          git commit -m "Regenerate sitemap.xml, search index and Calculo app files [skip ci]"
           git push

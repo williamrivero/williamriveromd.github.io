@@ -652,6 +652,24 @@ calculators inherit the feature automatically as long as their inputs follow the
 `RX-HANDOFF` blocks (removed on patch). Inserts before the **last** `</body>`.
 
 ```bash
+python3 build_calc_app.py                  # Calculo app: head block on every calculator, worker, manifest, offline list
+python3 build_calc_app.py --check          # exit 1 if anything is out of date (no writes)
+```
+
+**Calculo (Nov 17 2026): the calculators as an installable, offline web app.** `build_calc_app.py` adds a
+`<!-- CALC-APP-START/END -->` head block to every `guides/calc-*.html` and `guides/calculators.html` (manifest link,
+iOS meta, `assets/calc-app.js`) and swaps their Home Screen icon to `images/app/calculo-180.png`; writes
+`guides/calc-app.webmanifest` (name "Calculo", scope `/guides/calc`, so the app holds exactly the calculators),
+`guides/calc-sw.js` (network-first pages with a saved-copy fallback) and `guides/calc-offline-manifest.json` (every page
+plus every same-origin asset it references: `[path, hash, bytes]`); and inserts the hero button
+(`<!-- CALC-APP-CTA -->`) and the install + offline panel (`<!-- CALC-APP-PANEL -->`, `#calc-app`) on the calculators
+index. One complete download (Dr. Rivero's rule: no partial sets), ~530 files, ~45 MB stored; updates fetch only changed
+files. In the installed app `calc-app.js` replaces the page pill with a bar (Back · All calculators · Search · Print) and
+hides the desktop/mobile toggles. The sitemap workflow runs it on every push, so a new calculator joins Calculo
+automatically; run it locally too. Bump `ASSET_V` in the script when `assets/calc-app.js` changes.
+`guides/ckd-dri-calculator.html` is outside the app scope (its name does not start with `calc`).
+
+```bash
 python3 patch_calc_english_only.py         # strip translations from all calculators (English-only)
 python3 patch_calc_english_only.py --dry-run
 python3 patch_calc_english_only.py --guide calc-kfre.html  # single calculator
