@@ -28,7 +28,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent
 GUIDES_DIR = REPO_ROOT / "guides"
 
-IMG_TAG = re.compile(r"<img\b[^>]*>", re.IGNORECASE)
+IMG_TAG = re.compile(r"<img\b(?![^>]*(?:avatar|-qr\.|qr-code|display:\s*none|bpChartImg|related-card|-thumb\.))[^>]*>", re.IGNORECASE)  # never the signature-card avatar/QR or hidden chart images
 LOADING_ATTR = re.compile(r'\s+loading\s*=\s*(["\']?)(lazy|eager)\1', re.IGNORECASE)
 
 
@@ -48,7 +48,7 @@ def patch_tag(tag: str) -> str | None:
 
 def patch_file(path: Path, dry_run: bool) -> str:
     html = path.read_text(encoding="utf-8")
-    m = IMG_TAG.search(html)
+    m = IMG_TAG.search(html.split("<!-- DR CARD -->")[0])   # the hero is never in the signature card
     if not m:
         return "no <img> found"
 
