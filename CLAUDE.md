@@ -962,8 +962,12 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   change) and `drugs/offline.html` (noindex), and every drug/supplement page head carries the manifest link and worker
   registration (`APP_HEAD`). The worker precaches the shell CSS/JS, the index and the search/browse JSON; drug pages are
   network-first with a 3.5 s fallback to the saved copy, opened pages go to a rolling cache (300), and the index panel
-  "Use the Drug Index as an app" (`#dd-app`) offers Install (Android/desktop prompt; iPhone instructions) and a download of every
-  drug with APPROVED kidney dosing into the `rcm-drugs-saved` cache. Content hashes ignore `APP_HEAD` and asset-version bumps
+  "Use the Drug Index as an app" (`#dd-app`) offers Install (Android/desktop prompt; iPhone instructions) and two offline
+  downloads into the `rcm-drugs-saved` cache: **all drugs** (every generic page except high-confidence variant spellings, ~2,070
+  pages, ~125 MB stored) or **kidney-dosing drugs only** (APPROVED kidney dosing). The generator writes
+  `drugs/offline-manifest.json` (`[slug, content hash, bytes, kidney flag]` per page, plus an overall hash `h`); each saved page
+  carries its hash (`X-RCM-Hash`), so updates and resumed downloads fetch only missing or changed pages, and the worker fetches the
+  manifest network-first. Content hashes ignore `APP_HEAD` and asset-version bumps
   (`HASH_ASSET_VERSION`), so chrome-only changes rewrite pages but keep their "Last updated" date. `_headers` serves `sw.js` with
   `no-cache`. Clinical rules are unchanged: only approved content is on the pages that get saved.
 - **Build:** `python3 tools/drugdb/build_related_guides.py && python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
