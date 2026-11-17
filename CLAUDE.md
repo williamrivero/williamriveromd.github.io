@@ -994,6 +994,11 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   `navigator.standalone`) `drugdb.js` adds a bottom app bar (`.dd-appbar`: Back · Drug Index · Search), since there is no browser toolbar. Content hashes ignore `APP_HEAD` and asset-version bumps
   (`HASH_ASSET_VERSION`), so chrome-only changes rewrite pages but keep their "Last updated" date. `_headers` serves `sw.js` with
   `no-cache`. Clinical rules are unchanged: only approved content is on the pages that get saved.
+- **Fingerprinted CSS/JS (Nov 17 2026):** pages load `/drugs/drugdb.<content-hash>.css` and `.js` (templates carry
+  `__DRUGDB_CSS__` / `__DRUGDB_JS__`, filled in `finalize()`; older fingerprinted copies are pruned on each build), cached
+  immutable for a year via `_headers` (`/drugs/drugdb.*`). Never go back to `drugdb.css?v=N`: during a deploy Cloudflare
+  edge-cached the OLD file under the NEW query twice; a new file name cannot be pre-cached. `ASSET_VERSION` now only
+  versions `browse*.json`; no bump is needed when CSS/JS change.
 - **Build:** `python3 tools/drugdb/build_related_guides.py && python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.

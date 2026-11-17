@@ -1680,7 +1680,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="inde
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="{FONTS}" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="{FONTS}"></noscript>
-<link rel="stylesheet" href="/drugs/drugdb.css?v={ASSET_VERSION}">
+<link rel="stylesheet" href="__DRUGDB_CSS__">
 <script type="application/ld+json">{jsonld}</script>
 <script type="speculationrules">{{"prefetch":[{{"where":{{"and":[{{"href_matches":"/*"}},{{"not":{{"href_matches":"*.json"}}}}]}},"eagerness":"moderate"}}],"prerender":[{{"urls":["/guides/","/drugs/","/"],"eagerness":"moderate"}}]}}</script>
 </head>
@@ -1716,7 +1716,7 @@ FLOAT = """
 </div>
 <script src="/assets/drug-hero.js?v=3" defer></script>
 <script src="/assets/share-buttons.js" defer></script>
-<script src="/drugs/drugdb.js?v=""" + ASSET_VERSION + """" defer></script>
+<script src="__DRUGDB_JS__" defer></script>
 </body>
 </html>
 """
@@ -1828,7 +1828,12 @@ function swr(e,name,max){var r=e.request;return caches.open(name).then(function(
   return net.catch(function(){return Response.error();});});});}
 function cacheFirst(r){return caches.match(r).then(function(hit){return hit||fetch(r).then(function(res){
   if(res.ok){var c=res.clone();caches.open(SHELL).then(function(s){s.put(r,c);});}return res;},
-  function(){return caches.match(r,{ignoreSearch:true}).then(function(h){return h||Response.error();});});});}   // offline: any saved version
+  function(){return caches.match(r,{ignoreSearch:true}).then(function(h){return h||anyVersion(r);});});});}   // offline: any saved version
+function anyVersion(r){   // drugdb.<hash>.css/js: serve whichever version this device has saved
+  var m=new URL(r.url).pathname.match(/^\/drugs\/drugdb\.[^./]+\.(css|js)$/);if(!m)return Response.error();
+  return caches.keys().then(function(ns){return Promise.all(ns.map(function(n){return caches.open(n).then(function(c){return c.keys();});}));})
+    .then(function(all){var hit=null;all.forEach(function(ks){ks.forEach(function(k){var p=new URL(k.url).pathname;
+      if(new RegExp('^/drugs/drugdb(\\.[^./]+)?\\.'+m[1]+'$').test(p))hit=k;});});return hit?caches.match(hit):Response.error();});}
 function networkFirst(e,name){var r=e.request;return fetch(r).then(function(res){
   if(res.ok){var c=res.clone();keep(e,caches.open(name).then(function(ca){return ca.put(r,c);}));}return res;},
   function(){return caches.match(r).then(function(h){return h||Response.error();});});}
@@ -1841,7 +1846,7 @@ self.addEventListener('fetch',function(e){
     if(u.pathname==='/drugs/offline-manifest.json')return e.respondWith(networkFirst(e,DATA));   // must be current for updates
     if(u.pathname.indexOf('/drugs/')===0&&/\.json$/.test(u.pathname))return e.respondWith(swr(e,DATA,0));
     if(u.pathname.indexOf('/data/drugs/supplements/')===0&&/\.json$/.test(u.pathname))return e.respondWith(swr(e,DATA,0));
-    if(/[?&]v=/.test(u.search))return e.respondWith(cacheFirst(r));
+    if(/[?&]v=/.test(u.search)||/^\/drugs\/drugdb\.[^./]+\.(css|js)$/.test(u.pathname))return e.respondWith(cacheFirst(r));
     if(/^\/(assets|images|brand)\//.test(u.pathname)||/\.(png|ico|svg|webp|jpe?g|webmanifest)$/.test(u.pathname))
       return e.respondWith(swr(e,ASSETS,MAX_ASSETS));
     return;
@@ -1858,7 +1863,8 @@ def supp_asset_version() -> str:
 
 def build_sw() -> str:
     sv = supp_asset_version()
-    shell = [f"/drugs/drugdb.css?v={ASSET_VERSION}", f"/drugs/drugdb.js?v={ASSET_VERSION}"]
+    da = drugdb_assets()
+    shell = [da["css_url"], da["js_url"]]
     optional = ["/assets/drug-hero.js?v=3"] + ([f"/drugs/supplements/supp.css?v={sv}", f"/drugs/supplements/supp.js?v={sv}"] if sv else [])
     data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json",
             f"/drugs/browse.json?v={ASSET_VERSION}", f"/drugs/browse-brands.json?v={ASSET_VERSION}"]
@@ -4071,11 +4077,39 @@ _HASH_RE = re.compile(r'<meta name="rcm-content-hash" content="([0-9a-f]+)">')
 _ISO_RE = re.compile(r'<meta property="article:modified_time" content="(\d{4}-\d{2}-\d{2})">')
 
 
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Fingerprinted shared assets: /drugs/drugdb.<hash>.css and .js. A new name cannot be
+# edge-cached with old content while a deploy propagates (that happened twice with ?v=),
+# so the files can be cached for a year. Pages carry placeholders filled in finalize().
+# ═════════════════════════════════════════════════════════════════════════════
+_ASSETS = {}
+
+
+def drugdb_assets() -> dict:
+    if not _ASSETS:
+        css, js = build_css(), DRUG_JS
+        _ASSETS.update({
+            "css": css, "js": js,
+            "css_url": f"/drugs/drugdb.{hashlib.sha1(css.encode('utf-8')).hexdigest()[:10]}.css",
+            "js_url": f"/drugs/drugdb.{hashlib.sha1(js.encode('utf-8')).hexdigest()[:10]}.js",
+        })
+    return _ASSETS
+
+
+def fill_assets(text: str) -> str:
+    a = drugdb_assets()
+    return text.replace("__DRUGDB_CSS__", a["css_url"]).replace("__DRUGDB_JS__", a["js_url"])
+
 def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: bool) -> str:
     """Fill hash/date placeholders. Keeps the previous date when content is unchanged.
     Returns 'new' | 'changed' | 'same'."""
-    hashed = (template.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
+    legacy = (template.replace("__DRUGDB_CSS__", f"/drugs/drugdb.css?v={ASSET_VERSION}")
+              .replace("__DRUGDB_JS__", f"/drugs/drugdb.js?v={ASSET_VERSION}"))
+    hashed = (legacy.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
               .replace(APP_ICON_TAG, LEGACY_ICON_TAG))
+    template = fill_assets(template)
+    css_url = drugdb_assets()["css_url"]
     h = hashlib.sha1(hashed.encode("utf-8")).hexdigest()[:16]
     when, state = today, "new"
     if path.exists():
@@ -4084,8 +4118,8 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
         m, d = _HASH_RE.search(headtxt), _ISO_RE.search(headtxt)
         if m and m.group(1) == h and not force_date:
             # same content: rewrite only when the app tags or asset versions are missing, keeping the old date
-            if APP_HEAD in headtxt and APP_ICON_TAG in headtxt and (f"?v={ASSET_VERSION}" in headtxt
-                                        or f"?v={ASSET_VERSION}" in path.read_text(encoding="utf-8")):
+            if APP_HEAD in headtxt and APP_ICON_TAG in headtxt and (css_url in headtxt
+                                        or css_url in path.read_text(encoding="utf-8")):
                 return "same"
             if d:
                 when = dt.date.fromisoformat(d.group(1))
@@ -4134,8 +4168,15 @@ def main():
     if not ctx.generics:
         sys.exit(f"No generics found in {data_dir}/generics.json")
     out_dir.mkdir(parents=True, exist_ok=True)
-    write_if_changed(out_dir / "drugdb.css", build_css(), a.dry_run)
-    write_if_changed(out_dir / "drugdb.js", DRUG_JS, a.dry_run)
+    da = drugdb_assets()
+    write_if_changed(out_dir / "drugdb.css", da["css"], a.dry_run)
+    write_if_changed(out_dir / "drugdb.js", da["js"], a.dry_run)
+    write_if_changed(REPO / da["css_url"].lstrip("/"), da["css"], a.dry_run)
+    write_if_changed(REPO / da["js_url"].lstrip("/"), da["js"], a.dry_run)
+    if not a.dry_run:   # drop older fingerprinted copies (pages always reference the current pair)
+        for f in list(out_dir.glob("drugdb.*.css")) + list(out_dir.glob("drugdb.*.js")):
+            if "/drugs/" + f.name not in (da["css_url"], da["js_url"]):
+                f.unlink()
     write_if_changed(out_dir / "app.webmanifest", json.dumps(APP_MANIFEST, ensure_ascii=False, indent=1) + "\n", a.dry_run)
     write_if_changed(out_dir / "sw.js", build_sw(), a.dry_run)
     finalize(out_dir / "offline.html", offline_page(), today, a.dry_run, False)
