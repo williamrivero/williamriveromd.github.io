@@ -715,11 +715,19 @@ confirm a product's current status on the FDA verification portal using its FR n
 <p class="dd-note">Registered drug products that share an ingredient with this supplement. A drug registration carries approved indications
 and labeling; a food supplement does not, and its content and quality are not verified in the same way.</p>
 <ul class="ds-druglinks">{lis}</ul></section>"""))
-    rgh = gdp.related_guides_html(sctx.guides_for(slug, ps), sctx.related_guides, 3)
+    _gp = sctx.guides_for(slug, ps)
+    _rc = []
+    for k in supp_keys(ps):
+        for f in (sctx.related_guides.get("supplement_key_calculators") or {}).get(k, []):
+            if f not in _rc:
+                _rc.append(f)
+    _rc = _rc[:3]
+    rgh = gdp.related_guides_html(_gp, sctx.related_guides, 3, calcs=_rc, what="this product or its main ingredients")
     if rgh:
-        secs.append(("related-guides", "Related guides", f"""<section class="dd-sec" id="related-guides" aria-labelledby="rg-h">
-<h2 id="rg-h">Related guides</h2>
-{rgh.replace("discuss this medicine", "discuss this product or its main ingredients")}</section>"""))
+        _rt, _rn = gdp.related_title(_gp, _rc, 3)
+        secs.append(("related-guides", _rn, f"""<section class="dd-sec" id="related-guides" aria-labelledby="rg-h">
+<h2 id="rg-h">{_rt}</h2>
+{rgh}</section>"""))
     toc = "".join(f'<li><a href="#{sid}">{esc(t)}</a></li>' for sid, t, _ in secs)
     pills = "".join(f'<a class="nav-pill" href="#{sid}">{esc(t)}</a>' for sid, t, _ in secs)
     body = "\n".join(h for _, _, h in secs)

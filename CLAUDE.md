@@ -949,6 +949,11 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   category). Writes `data/drugs/related_guides.json`; manual add/remove in `tools/drugdb/related_guides_overrides.json`;
   `--show <slug> ...` prints picks with scores. `drugdb-pages` CI runs it before the generators and re-runs when
   `guides/*.html` change, so new guides get linked automatically.
+  **Calculators** join the same section ("Related guides & calculators", up to 3): curated rules in
+  `tools/drugdb/related_calculators.json` (regex on generic/ingredient names, exact slugs, supplement keys, or `scan` =
+  link every drug the calculator page itself names at least twice and at least a quarter as often as its most-named drug),
+  plus Cockcroft–Gault (label uses CrCl) or CKD-EPI eGFR for every drug with APPROVED kidney dosing. Add a rule when a
+  new drug-specific calculator ships.
 - **Build:** `python3 tools/drugdb/build_related_guides.py && python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.

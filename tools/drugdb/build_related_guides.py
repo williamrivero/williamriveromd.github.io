@@ -407,19 +407,23 @@ def main():
             else:
                 target.pop(k, None)
 
+    calcs, ccalc, cmeta, scalc = related_calculators(generics, data, skeys.keys() | set(SUPP_CAT_KEYS.values()))
     used = {f for d in (drugs, skeys, sbrands) for v in d.values() for f, _ in v}
     out = {"_doc": "Built by tools/drugdb/build_related_guides.py; do not edit (overrides: tools/drugdb/related_guides_overrides.json).",
            "guides": {f: m for f, m in sorted(gmeta.items()) if f in used},
            "drugs": dict(sorted(drugs.items())), "supplement_keys": dict(sorted(skeys.items())),
-           "supplement_brands": dict(sorted(sbrands.items()))}
+           "supplement_brands": dict(sorted(sbrands.items())),
+           "calculators": cmeta, "drug_calculators": dict(sorted(ccalc.items())),
+           "supplement_key_calculators": dict(sorted(scalc.items()))}
     Path(a.out).write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     reverse = Counter(f for v in drugs.values() for f, _ in v)
     print(f"guides scanned {len(guides)} · drugs with related guides {len(drugs):,} of {len(generics):,} · "
           f"supplement keys {len(skeys)} · supplement brands by name {len(sbrands)} · "
-          f"guides that would gain a 'Drugs mentioned' block {len(reverse)}")
+          f"guides that would gain a 'Drugs mentioned' block {len(reverse)} · drugs with calculators {len(ccalc):,}")
     for s in a.show or []:
         v = drugs.get(s) or skeys.get(s) or sbrands.get(s)
-        print(f"  {s}: " + ("; ".join(f"{f} ({sc})" for f, sc in v) if v else "none"))
+        print(f"  {s}: " + ("; ".join(f"{f} ({sc})" for f, sc in v) if v else "none")
+              + (" | calculators: " + ", ".join(ccalc.get(s) or scalc.get(s) or []) if (ccalc.get(s) or scalc.get(s)) else ""))
 
 
 def score_combo_ok(gd, comps) -> bool:
@@ -467,6 +471,85 @@ def supp_key_terms(k: str) -> set[str]:
     if k == "Iron":
         return {"iron supplement", "oral iron", "iron tablet", "ferrous sulfate", "ferrous", "iron"}
     return {t for t in out if t not in NOT_ALONE - {"iron"}}
+
+
+CALC_RULES = HERE / "related_calculators.json"
+
+
+def _calc_text(path: Path) -> tuple[str, str, str]:
+    """Title, meta description and lowercased visible text of a calculator page."""
+    raw = path.read_text(encoding="utf-8", errors="ignore")
+    t = re.search(r"<title>(.*?)</title>", raw, re.S)
+    d = re.search(r'<meta name="description" content="([^"]*)"', raw)
+    title = html.unescape(re.sub(r"\s+", " ", t.group(1))).strip() if t else path.stem
+    title = re.split(r"\s+[·|]\s+Renal Care Matters", title)[0].strip()
+    body = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", raw, flags=re.S | re.I)
+    body = html.unescape(re.sub(r"<[^>]+>", " ", body)).lower()
+    return title, html.unescape(d.group(1)).strip() if d else "", re.sub(r"\s+", " ", body)
+
+
+def related_calculators(generics: dict, data: Path, supp_key_names) -> tuple:
+    """Calculators per drug slug and per supplement key, from tools/drugdb/related_calculators.json."""
+    cfg = json.load(open(CALC_RULES, encoding="utf-8")) if CALC_RULES.exists() else {"rules": []}
+    meta, by_drug, by_key = {}, defaultdict(list), defaultdict(list)
+
+    def add(store, k, f):
+        if f not in store[k]:
+            store[k].append(f)
+
+    def m_of(f):
+        if f not in meta:
+            path = REPO / "guides" / f
+            if not path.exists():
+                return None
+            t, d, _ = _calc_text(path)
+            meta[f] = {"t": t, "d": d[:240], "url": f"{SITE}/guides/{f[:-5]}"}
+        return meta[f]
+
+    names = {s: [norm_term(g.get("name", ""))] + [norm_term(i) for i in g.get("ingredients") or []] for s, g in generics.items()}
+    for r in cfg.get("rules", []):
+        f = r["calc"]
+        if not m_of(f):
+            continue
+        rx = re.compile(r["match"], re.I) if r.get("match") else None
+        for s in r.get("slugs") or []:
+            if s in generics:
+                add(by_drug, s, f)
+        if rx:
+            for s, ns in names.items():
+                if any(n and rx.search(n) for n in ns):
+                    add(by_drug, s, f)
+        if r.get("scan"):
+            text = _calc_text(REPO / "guides" / f)[2]
+            hits = {}
+            for s, g in generics.items():
+                ings = g.get("ingredients") or []
+                n = norm_term(ings[0]) if len(ings) == 1 else ""
+                if len(n) >= 6:
+                    c = len(re.findall(r"(?<![a-z])" + re.escape(n) + r"(?![a-z])", text))
+                    if c:
+                        hits[s] = c
+            top = max(hits.values(), default=0)
+            for s, c in hits.items():           # the calculator's own drugs, not a passing mention
+                if c >= max(2, 0.25 * top):
+                    add(by_drug, s, f)
+        for k in r.get("supp") or []:
+            if k in supp_key_names:
+                add(by_key, k, f)
+    # kidney-function calculator for drugs with APPROVED kidney dosing, by the label's own measure
+    kf = cfg.get("kidney_function") or {}
+    for path in sorted((data / "renal").glob("*.json")):
+        try:
+            rj = json.load(open(path, encoding="utf-8"))
+        except Exception:
+            continue
+        if rj.get("review_status") != "approved":
+            continue
+        basis = (rj.get("kidney_function_basis") or "") + " " + " ".join(str(b.get("range", "")) for b in rj.get("bands") or [] if isinstance(b, dict))
+        f = kf.get("crcl") if re.search(r"CrCl|creatinine clearance|Cockcroft", basis, re.I) else kf.get("egfr")
+        if f and m_of(f):
+            add(by_drug, path.stem, f)
+    return None, {k: v[:3] for k, v in by_drug.items()}, meta, {k: v[:3] for k, v in by_key.items()}
 
 
 if __name__ == "__main__":

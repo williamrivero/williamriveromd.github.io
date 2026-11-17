@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "20"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "21"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -529,6 +529,10 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
   border-radius: 12px; background: var(--white); color: var(--text); text-decoration: none; }
 .dd-rg a:hover, .dd-rg a:focus-visible { border-color: #1a6b72; box-shadow: 0 2px 10px rgba(26,107,114,.15); }
 .dd-rg img { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; flex: none; background: var(--bg); }
+.dd-rg .dd-rg-k { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #5b6b80; margin-bottom: 2px; }
+.dd-rg .dd-rc-ico { width: 44px; height: 44px; padding: 10px; box-sizing: border-box; border-radius: 10px; flex: none; background: #e6f2f3; color: #0e4a50;
+  fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.dd-rg .dd-rc-ico path { stroke-width: 2.6; }
 .dd-rg .dd-rg-t { display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14.5px; color: #0e4a50; line-height: 1.35; }
 .dd-rg .dd-rg-d { display: block; font-size: 13px; line-height: 1.5; color: var(--text-mid); margin-top: 4px;
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -800,6 +804,8 @@ html[data-theme="dark"] .dd-partof a { color: #7fd3da; }
 html[data-theme="dark"] .dd-rg a { background: #1a2535; border-color: rgba(255,255,255,.14); color: #e5e9f0; }
 html[data-theme="dark"] .dd-rg a:hover, html[data-theme="dark"] .dd-rg a:focus-visible { border-color: #7fd3da; }
 html[data-theme="dark"] .dd-rg .dd-rg-t { color: #a5f3fc; }
+html[data-theme="dark"] .dd-rg .dd-rg-k { color: #aeb9c8; }
+html[data-theme="dark"] .dd-rg .dd-rc-ico { background: #0e4a50; color: #e6fbfc; }
 html[data-theme="dark"] .dd-rg .dd-rg-d { color: #cbd3df; }
 html[data-theme="dark"] .dd-tag.FSMP { color: #c9f0f1; background: rgba(43,168,176,.16); border-color: rgba(43,168,176,.45); }
 html[data-theme="dark"] .dd-tag.S2 { color: #fff; background: #b91c1c; }
@@ -2288,9 +2294,17 @@ def sec(sid: str, title: str, body: str, nav: str = "") -> tuple[str, str, str] 
                                f'<h2 id="{sid}-h">{esc(title)}</h2>{body}</section>')
 
 
-def related_guides_html(picks, rg: dict, limit: int = 4) -> str:
-    """Card list of renalcarematters.com guides that discuss this drug (data/drugs/related_guides.json)."""
+CALC_ICON = ('<svg class="dd-rc-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/>'
+             '<rect x="8" y="5.5" width="8" height="3.5" rx=".8"/><path d="M8.5 12.5h.01M12 12.5h.01M15.5 12.5h.01M8.5 15.5h.01M12 15.5h.01'
+             'M15.5 15.5h.01M8.5 18.5h.01M12 18.5h.01M15.5 18.5h.01"/></svg>')
+
+
+def related_guides_html(picks, rg: dict, limit: int = 4, calcs=None, what: str = "this medicine") -> str:
+    """Cards for renalcarematters.com guides that discuss this drug, then related calculators
+    (data/drugs/related_guides.json: "drugs"/"guides" from the guide scan; "drug_calculators"/"calculators" from
+    tools/drugdb/related_calculators.json)."""
     gm = (rg or {}).get("guides") or {}
+    cm = (rg or {}).get("calculators") or {}
     lis = []
     for f, _score in (picks or [])[:limit]:
         m = gm.get(f)
@@ -2298,11 +2312,28 @@ def related_guides_html(picks, rg: dict, limit: int = 4) -> str:
             continue
         img = (f'<img src="{esc(m["img"])}" alt="" loading="lazy" decoding="async" width="72" height="72">' if m.get("img") else "")
         desc = ('<span class="dd-rg-d">' + esc(m["d"]) + "</span>") if m.get("d") else ""
-        lis.append(f'<li><a href="{esc(m["url"])}">{img}<span><span class="dd-rg-t">{esc(m["t"])}</span>{desc}</span></a></li>')
-    if not lis:
+        lis.append(f'<li><a href="{esc(m["url"])}">{img}<span><span class="dd-rg-k">Guide</span><span class="dd-rg-t">{esc(m["t"])}</span>{desc}</span></a></li>')
+    cls = []
+    for f in (calcs or [])[:3]:
+        m = cm.get(f)
+        if not m:
+            continue
+        desc = ('<span class="dd-rg-d">' + esc(m["d"]) + "</span>") if m.get("d") else ""
+        cls.append(f'<li><a class="dd-rc" href="{esc(m["url"])}">{CALC_ICON}<span><span class="dd-rg-k">Calculator</span>'
+                   f'<span class="dd-rg-t">{esc(m["t"])}</span>{desc}</span></a></li>')
+    if not lis and not cls:
         return ""
-    return ('<p class="dd-note">Guides on renalcarematters.com that discuss this medicine, for patients and clinicians.</p>'
-            f'<ul class="dd-rg">{"".join(lis)}</ul>')
+    lead = ("Guides and calculators on renalcarematters.com" if lis and cls else
+            "Guides on renalcarematters.com" if lis else "Calculators on renalcarematters.com")
+    return (f'<p class="dd-note">{lead} for {esc(what)}, for patients and clinicians.</p>'
+            f'<ul class="dd-rg">{"".join(lis + cls)}</ul>')
+
+
+def related_title(picks, calcs, limit: int = 4) -> tuple[str, str]:
+    """Section title and TOC label: "Related guides", "Related calculators" or "Related guides & calculators"."""
+    g, c = bool((picks or [])[:limit]), bool(calcs)
+    t = "Related guides & calculators" if g and c else "Related calculators" if c else "Related guides"
+    return t, t
 
 
 def references_html(slug, label, renal, summ, ctx: Ctx, intl=None) -> str:
@@ -3011,8 +3042,10 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         fp = re.sub(r"</section>\s*$", "", fp.strip())
     S.append(sec("formulary", "Formulary and pricing (Philippines)", fp, "Formulary & pricing"))
     # 18. Related guides (site guides that discuss this drug); 19. References
-    S.append(sec("related-guides", "Related guides", related_guides_html((ctx.related_guides.get("drugs") or {}).get(slug), ctx.related_guides),
-                 "Related guides"))
+    _rp = (ctx.related_guides.get("drugs") or {}).get(slug)
+    _rc = (ctx.related_guides.get("drug_calculators") or {}).get(slug)
+    _rt, _rn = related_title(_rp, _rc)
+    S.append(sec("related-guides", _rt, related_guides_html(_rp, ctx.related_guides, calcs=_rc), _rn))
     S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx, ctx.intl(slug)), "References"))
 
     S = [x for x in S if x]
