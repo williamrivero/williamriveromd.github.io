@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "24"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "25"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 HASH_ASSET_VERSION = "22"   # version used inside page content hashes, so an asset-only bump does not change every page's "Last updated" date
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
@@ -905,6 +905,8 @@ html[data-theme="dark"] .dd-appbar { background: #0e4a50; }
 .dd-app-opt { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; margin: 0 0 8px; }
 .dd-app-opt .dd-btn { margin: 2px 0; }
 .dd-app-meta { font-size: 13px; color: var(--text-muted); }
+.dd-app-setup { margin: 0 0 14px; }
+.dd-app-setup a { color: inherit; font-weight: 700; }
 .dd-app-ios { margin: 4px 0 6px 20px; padding: 0; font-size: 14px; line-height: 1.6; color: var(--text-mid); }
 .dd-app-ios li { margin: 0 0 4px; }
 .dd-app-warn { font-size: 13.5px; line-height: 1.55; color: #6b4200; background: #fff7e6; border: 1px solid #f0c674;
@@ -1301,28 +1303,23 @@ showInstall();
 q('install').addEventListener('click',function(){if(!deferred)return;deferred.prompt();
   (deferred.userChoice||Promise.resolve()).then(function(){deferred=null;showInstall();});});
 
-var btns=Array.prototype.slice.call(box.querySelectorAll('[data-app="dl"]')),rm=q('rm'),st=q('status'),bar=q('bar');
+var dl=q('dl'),rm=q('rm'),st=q('status'),bar=q('bar');
 if(!('caches' in window)||!('serviceWorker' in navigator)){q('off').hidden=true;return;}
-var MAN='/drugs/offline-manifest.json',busy=false,cur=null;
-var LABEL={all:'Download all drugs',kidney:'Kidney-dosing drugs only'};
-function rec(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
+var MAN='/drugs/offline-manifest.json',busy=false,cur=null,LABEL='Download the complete Drug Index';
+function rec(){try{var r=JSON.parse(localStorage.getItem(KEY)||'null');return r&&r.v===3?r:null;}catch(e){return null;}}
 function setRec(r){try{localStorage.setItem(KEY,JSON.stringify(r));}catch(e){}}
 function fmtDate(ms){try{return new Date(ms).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return '';}}
 function num(n){return Number(n).toLocaleString('en-US');}
 function manifest(){return fetch(MAN,{cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();});}
 function status(){
-  var r=rec();
-  btns.forEach(function(b){b.disabled=busy;b.textContent=LABEL[b.getAttribute('data-set')];});
-  rm.disabled=busy;
-  if(!r||r.v!==2){st.textContent=r&&r.n?'Saved pages from an earlier download are kept; download again to include every drug.':'Nothing downloaded yet.';rm.hidden=!(r&&r.n);return;}
+  var r=rec();dl.disabled=busy;rm.disabled=busy;dl.textContent=LABEL;
+  if(!r){st.textContent='Not downloaded on this device yet.';rm.hidden=true;return;}
   rm.hidden=false;
-  var what=r.set==='all'?'All drugs':'Kidney-dosing drugs';
-  var msg=r.done?what+' saved on this device ('+num(r.n)+' pages, '+fmtDate(r.at)+').'
-               :what+': download interrupted at '+num(r.n)+' of '+num(r.total)+' pages. Tap the button again to resume.';
-  var b=box.querySelector('[data-app="dl"][data-set="'+r.set+'"]');
-  if(cur&&r.done){if(cur.h!==r.h){msg+=' Updates are available.';if(b)b.textContent='Update '+(r.set==='all'?'all drugs':'kidney-dosing drugs');}
-                  else if(b)b.textContent=(r.set==='all'?'All drugs':'Kidney-dosing drugs')+': up to date';}
-  else if(!r.done&&b)b.textContent='Resume download';
+  var msg=r.done?'The complete Drug Index is saved on this device ('+num(r.n)+' pages, '+fmtDate(r.at)+').'
+               :'Download interrupted at '+num(r.n)+' of '+num(r.total)+' pages. Tap the button again to resume.';
+  if(!r.done)dl.textContent='Resume download';
+  else if(cur&&cur.h!==r.h){msg+=' Updates are available.';dl.textContent='Update the Drug Index';}
+  else if(cur)dl.textContent='Up to date · check again';
   st.textContent=msg;
   if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(function(x){
     if(x&&x.usage&&!busy)st.textContent=msg+' Using about '+num(Math.max(1,Math.round(x.usage/1e6)))+' MB on this device.';}).catch(function(){});
@@ -1330,7 +1327,7 @@ function status(){
 status();
 if(navigator.onLine!==false)manifest().then(function(m){cur=m;if(!busy)status();},function(){});
 
-function run(set){
+function run(){
   if(busy)return;
   if(navigator.onLine===false){st.textContent='You are offline. Connect to the internet to download.';return;}
   busy=true;status();bar.hidden=false;bar.value=0;st.textContent='Checking what needs downloading…';
@@ -1338,14 +1335,12 @@ function run(set){
   if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});
   var m,c,want={},have={},todo=[],ok=0,failed=0,total=0;
   manifest().then(function(x){
-    m=x;cur=x;
-    m.pages.forEach(function(p){if(set==='all'||p[3])want[location.origin+'/drugs/'+p[0]]=p;});
+    m=x;cur=x;m.pages.forEach(function(p){want[location.origin+p[0]]=p;});
     return caches.open(SAVED);
-  }).then(function(cache){
-    c=cache;return c.keys();
-  }).then(function(keys){                       // what is already saved, and at which version
+  }).then(function(cache){c=cache;return c.keys();
+  }).then(function(keys){
     return Promise.all(keys.map(function(k){
-      if(!want[k.url])return c.delete(k);         // not in this set (or no longer published)
+      if(!want[k.url])return c.delete(k);         // no longer published
       return c.match(k).then(function(res){have[k.url]=res&&res.headers.get('X-RCM-Hash');});
     }));
   }).then(function(){
@@ -1354,17 +1349,18 @@ function run(set){
     var need=todo.reduce(function(a,u){return a+want[u][2];},0);
     var room=(navigator.storage&&navigator.storage.estimate)?navigator.storage.estimate():Promise.resolve(null);
     return room.then(function(e){
-      if(e&&e.quota&&e.quota-e.usage<need*1.15)throw {msg:'Not enough free storage for this download (about '+num(Math.ceil(need/1e6))+' MB needed). Free some space, or download the kidney-dosing drugs only.'};
+      if(e&&e.quota&&e.quota-e.usage<need*1.15)throw {msg:'Not enough free storage on this device (about '+num(Math.ceil(need/1e6))+' MB more is needed). Free some space and tap the button again.'};
       bar.max=total;bar.value=ok;
       if(!todo.length)return;
       var i=0;
-      function save(){setRec({v:2,set:set,n:ok,total:total,at:Date.now(),h:m.h,done:false});}
+      function save(){setRec({v:3,n:ok,total:total,at:Date.now(),h:m.h,done:false});}
       function next(){
         if(i>=todo.length)return Promise.resolve();
-        var u=todo[i++],p=want[u];
+        var u=todo[i++],p=want[u],json=/\.json$/.test(u);
         return fetch(u,{credentials:'same-origin',cache:'no-cache'}).then(function(res){
           if(!res.ok)throw new Error(res.status);
-          return res.blob().then(function(bl){return c.put(u,new Response(bl,{headers:{'Content-Type':'text/html; charset=utf-8','X-RCM-Hash':p[1]}}));});
+          return res.blob().then(function(bl){return c.put(u,new Response(bl,{headers:{
+            'Content-Type':json?'application/json':'text/html; charset=utf-8','X-RCM-Hash':p[1]}}));});
         }).then(function(){ok++;if(ok%40===0)save();},function(){failed++;})
           .then(function(){bar.value=ok;st.textContent='Saving '+num(ok)+' of '+num(total)+' pages… keep this page open.';return next();});
       }
@@ -1372,7 +1368,7 @@ function run(set){
       return Promise.all([next(),next(),next(),next(),next(),next()]);
     });
   }).then(function(){
-    setRec({v:2,set:set,n:ok,total:total,at:Date.now(),h:failed?'':m.h,done:!failed});
+    setRec({v:3,n:ok,total:total,at:Date.now(),h:failed?'':m.h,done:!failed});
     busy=false;bar.hidden=true;status();
     if(failed)st.textContent=num(failed)+' pages could not be saved. Tap the button again on a better connection to finish.';
   }).catch(function(err){
@@ -1380,7 +1376,12 @@ function run(set){
     st.textContent=(err&&err.msg)||'The download stopped. Check your connection and tap the button again; pages already saved are kept.';
   }).then(function(){try{if(lock)lock.release();}catch(e){}});
 }
-btns.forEach(function(b){b.addEventListener('click',function(){run(b.getAttribute('data-set'));});});
+dl.addEventListener('click',run);
+/* In the installed app, prompt until offline use is set up */
+if(standalone()){var r0=rec();if(!r0||!r0.done){var main=document.getElementById('dd-index');
+  if(main){var nb=document.createElement('div');nb.className='dd-app-warn dd-app-setup';
+    nb.innerHTML='<strong>Offline use is not set up yet.</strong> Download the complete Drug Index once so every page opens without signal. <a href="#dd-app">Set up offline use</a>';
+    main.insertBefore(nb,main.firstChild);}}}
 rm.addEventListener('click',function(){if(busy)return;caches.delete(SAVED).then(function(){try{localStorage.removeItem(KEY);}catch(e){}status();});});
 })();
 """
@@ -1800,7 +1801,7 @@ function nav(e){
     return Promise.race([net.then(function(r){return r.ok?r:hit;},function(){return hit;}),slow]);
   });
 }
-function swr(e,name,max){var r=e.request;return caches.open(name).then(function(c){return c.match(r).then(function(hit){
+function swr(e,name,max){var r=e.request;return caches.open(name).then(function(c){return c.match(r).then(function(h){return h||caches.match(r);}).then(function(hit){
   var net=fetch(r).then(function(res){if(res.ok){c.put(r,res.clone());if(max)trim(name,max);}return res;});
   if(hit){keep(e,net.catch(function(){}));return hit;}
   return net.catch(function(){return Response.error();});});});}
@@ -1818,6 +1819,7 @@ self.addEventListener('fetch',function(e){
   if(u.origin===self.location.origin){
     if(u.pathname==='/drugs/offline-manifest.json')return e.respondWith(networkFirst(e,DATA));   // must be current for updates
     if(u.pathname.indexOf('/drugs/')===0&&/\.json$/.test(u.pathname))return e.respondWith(swr(e,DATA,0));
+    if(u.pathname.indexOf('/data/drugs/supplements/')===0&&/\.json$/.test(u.pathname))return e.respondWith(swr(e,DATA,0));
     if(/[?&]v=/.test(u.search))return e.respondWith(cacheFirst(r));
     if(/^\/(assets|images|brand)\//.test(u.pathname)||/\.(png|ico|svg|webp|jpe?g|webmanifest)$/.test(u.pathname))
       return e.respondWith(swr(e,ASSETS,MAX_ASSETS));
@@ -1848,31 +1850,38 @@ def build_sw() -> str:
 
 
 
-def offline_manifest(entries: list[dict], out_dir: Path) -> dict:
-    """Pages the app can download for offline use: every generic page except high-confidence variant
-    spellings (their products are on the main page). Hash = the page's content hash, so updates fetch
-    only pages whose content changed."""
-    pages = []
-    for e in entries:
-        if e.get("mh"):
-            continue
-        f = out_dir / f"{e['s']}.html"
-        if not f.exists():
-            continue
-        with open(f, encoding="utf-8") as fh:
-            m = _HASH_RE.search(fh.read(4096))
-        pages.append([e["s"], m.group(1)[:10] if m else "", f.stat().st_size, 1 if (e.get("k") and not e.get("m")) else 0])
-    h = hashlib.sha1(json.dumps(pages, separators=(",", ":")).encode("utf-8")).hexdigest()[:12]
-    return {"v": 1, "h": h, "pages": pages}
+def offline_manifest(out_dir: Path) -> dict:
+    """Everything the app downloads for offline use: every drug page (variant spellings included), the drug-class
+    pages, the supplement and medical-nutrition pages, and the supplement data the brand viewer reads.
+    Rows: [path, content hash, bytes]. Updates and resumed downloads fetch only rows whose hash changed."""
+    rows = []
+
+    def add(path: str, f: Path):
+        with open(f, "rb") as fh:
+            raw = fh.read()
+        m = _HASH_RE.search(raw[:4096].decode("utf-8", "ignore")) if f.suffix == ".html" else None
+        rows.append([path, (m.group(1) if m else hashlib.sha1(raw).hexdigest())[:10], len(raw)])
+
+    for f in sorted(out_dir.glob("*.html")):
+        if f.stem not in ("index", "offline"):
+            add(f"/drugs/{f.stem}", f)
+    for sub in ("category", "supplements"):
+        for f in sorted((out_dir / sub).glob("*.html")):
+            add(f"/drugs/{sub}/" if f.stem == "index" else f"/drugs/{sub}/{f.stem}", f)
+    sdata = REPO / "data" / "drugs" / "supplements"
+    for f in sorted(sdata.glob("*.json")):
+        if not f.name.startswith("_"):
+            add(f"/data/drugs/supplements/{f.name}", f)
+    h = hashlib.sha1(json.dumps(rows, separators=(",", ":")).encode("utf-8")).hexdigest()[:12]
+    return {"v": 3, "h": h, "pages": rows}
 
 
 def offline_sizes(man: dict) -> dict:
     """Rounded sizes for the index panel (stored size, and download size at ~25% after compression)."""
-    def mb(rows):
-        b = sum(r[2] for r in rows)
-        return {"n": len(rows), "store": max(5, int(round(b / 1e6 / 5.0)) * 5), "dl": max(1, int(round(b * 0.25 / 1e6 / 5.0)) * 5)}
     rows = man.get("pages", [])
-    return {"all": mb(rows), "kidney": mb([r for r in rows if r[3]])}
+    b = sum(r[2] for r in rows)
+    return {"n": len(rows), "drugs": sum(1 for r in rows if r[0].count("/") == 2),
+            "store": max(5, int(round(b / 1e6 / 5.0)) * 5), "dl": max(5, int(round(b * 0.25 / 1e6 / 5.0)) * 5)}
 
 def offline_page() -> str:
     canonical = f"{SITE}/drugs/offline"
@@ -1909,8 +1918,8 @@ fetch('/drugs/search-index.json').then(function(r){return r.json();}).then(funct
   N.textContent=items.length?items.length+' page'+(items.length===1?'':'s')+' available offline.':'No drug pages are saved yet. Open the Drug Index while online to save pages as you browse.';
   if(!dl){var w=document.createElement('p');w.className='dd-app-warn';
     w.innerHTML='<strong>No downloads in '+(app?'this app':'this browser')+' yet.</strong> '+(ios&&app
-      ?'On iPhone and iPad, the Home Screen app keeps its own storage: pages downloaded in a Safari tab do not carry over. Connect to the internet, open the Drug Index from your Home Screen, go to <strong>Use the Drug Index as an app</strong> and tap <strong>Download all drugs</strong>.'
-      :'Connect to the internet, open the Drug Index and use <strong>Download all drugs</strong> under <strong>Use the Drug Index as an app</strong>.');
+      ?'On iPhone and iPad, the Home Screen app keeps its own storage: pages downloaded in a Safari tab do not carry over. Connect to the internet, open the Drug Index from your Home Screen, go to <strong>Use the Drug Index as an app</strong> and tap <strong>Download the complete Drug Index</strong>.'
+      :'Connect to the internet, open the Drug Index and tap <strong>Download the complete Drug Index</strong> under <strong>Use the Drug Index as an app</strong>.');
     N.parentNode.insertBefore(w,N);}
   items.forEach(function(it){var li=document.createElement('li'),a=document.createElement('a');a.href=it.p;a.textContent=it.t+(it.s?' (supplement)':'');li.appendChild(a);L.appendChild(li);});
 }).catch(function(){N.textContent='Could not read saved pages.';});})();
@@ -3896,8 +3905,7 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int, off: dict | None = No
                   + (f'<a class="dd-chip" href="/drugs/supplements/?cat=fsmp">{fsmp_only:,} medical-nutrition (FSMP) brands</a>' if fsmp_only else "")
                   + (f'<a class="dd-chip" href="/drugs/supplements/?cat=fsdu">{fsdu_n:,} special dietary food (FSDU) brands</a>' if fsdu_n else ""))
                  if supp_n else "")
-    off = off or {"all": {"n": 0, "store": 5, "dl": 5}, "kidney": {"n": 0, "store": 5, "dl": 5}}
-    oa, ok_ = off["all"], off["kidney"]
+    oa = off or {"n": 0, "drugs": 0, "store": 5, "dl": 5}
     canonical = f"{SITE}/drugs/"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
                          "name": "Drug Index · Renal Care Matters", "dateModified": "__ISO__", "inLanguage": "en",
@@ -3966,11 +3974,9 @@ It opens full screen, like an app.</p>
 <div class="dd-app-card" data-app="off">
 <h3>Offline use</h3>
 <p>Once loaded, search and the browse lists work without signal, and every drug page you open is kept on this device.
-To have drug pages ready before you need them, download them:</p>
-<div class="dd-app-opt"><button type="button" class="dd-btn" data-app="dl" data-set="all">Download all drugs</button>
-<span class="dd-app-meta">{oa["n"]:,} drugs · about {oa["dl"]} MB to download, {oa["store"]} MB on the device</span></div>
-<div class="dd-app-opt"><button type="button" class="dd-btn dd-btn-ghost" data-app="dl" data-set="kidney">Kidney-dosing drugs only</button>
-<span class="dd-app-meta">{ok_["n"]:,} drugs with approved kidney dosing · about {ok_["dl"]} MB to download</span></div>
+For reliable use where there is no signal (wards, basements, the dialysis unit), download the complete Drug Index once:</p>
+<div class="dd-app-opt"><button type="button" class="dd-btn" data-app="dl">Download the complete Drug Index</button>
+<span class="dd-app-meta">Every drug, drug class and supplement page · about {oa["dl"]} MB to download, {oa["store"]} MB on the device</span></div>
 <p class="dd-app-warn" data-app="iosnote" hidden><strong>iPhone and iPad:</strong> add the Drug Index to your Home Screen first, then open it
 from there and download. Safari and the Home Screen app keep separate storage, so pages downloaded in a Safari tab do not carry over,
 and Safari may clear them after a week without a visit. The Home Screen app keeps them.</p>
@@ -4135,9 +4141,8 @@ def main():
     bcore, bbrands = browse_data(entries, groups, ctx)
     write_if_changed(out_dir / "browse.json", json.dumps(bcore, ensure_ascii=False, separators=(",", ":")), a.dry_run)
     write_if_changed(out_dir / "browse-brands.json", json.dumps(bbrands, ensure_ascii=False, separators=(",", ":")), a.dry_run)
-    man = offline_manifest(entries, out_dir)
-    write_if_changed(out_dir / "offline-manifest.json", json.dumps(man, separators=(",", ":")), a.dry_run)
-    stats["index-" + finalize(out_dir / "index.html", index_page(entries, ctx, len(groups), offline_sizes(man)), today, a.dry_run, False)] += 1
+    stats["index-" + finalize(out_dir / "index.html", index_page(entries, ctx, len(groups), offline_sizes(offline_manifest(out_dir))),
+                              today, a.dry_run, False)] += 1
     cdir = out_dir / "category"
     cdir.mkdir(exist_ok=True)
     stats["catindex-" + finalize(cdir / "index.html", category_index_page(groups), today, a.dry_run, False)] += 1
@@ -4158,6 +4163,9 @@ def main():
                         stats["pruned"] += 1
                         if not a.dry_run:
                             f.unlink()
+
+    if only is None or (out_dir / "offline-manifest.json").exists():   # last, so every page's final hash is listed
+        write_if_changed(out_dir / "offline-manifest.json", json.dumps(offline_manifest(out_dir), separators=(",", ":")), a.dry_run)
 
     print(f"{len(ctx.products):,} products · {len(entries):,} generic pages · "
           + " · ".join(f"{k}: {v}" for k, v in sorted(stats.items()))
