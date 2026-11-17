@@ -8,50 +8,74 @@ function renderView(v){
   var MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
   function usd(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?MON[+m[2]-1]+' '+(+m[3])+', '+m[1]:'';}
   var CAT={'probiotic':'Probiotic','herbal/botanical':'Herbal / botanical','vitamin/mineral':'Vitamin / mineral','omega-3':'Omega-3',
-    'amino acid/protein':'Amino acid / protein','ketoanalogue':'Ketoanalogue','fiber/prebiotic':'Fiber / prebiotic','fsmp':'Medical nutrition (FSMP)','fsdu':'Special dietary food (FSDU)'};
+    'amino acid/protein':'Amino acid / protein','ketoanalogue':'Ketoanalogue','fiber/prebiotic':'Fiber / prebiotic','fsmp':'Medical nutrition (FSMP)','fsdu':'Special dietary food (FSDU)','food':'Other food registration'};
   var b=(new URLSearchParams(location.search).get('b')||'').toLowerCase(), lead=document.getElementById('dsv-lead');
   function fail(msg){lead.innerHTML=msg+' Search the <a href="/drugs/supplements/">food supplements index</a>.';}
   if(!/^[a-z0-9][a-z0-9-]{0,79}$/.test(b)){fail('No brand was given.');return;}
+  var RET={};try{RET=JSON.parse(v.getAttribute('data-retired')||'{}');}catch(e){}
+  if(RET[b]){location.replace((v.getAttribute('data-static')||'').split(',').indexOf(RET[b])>=0?RET[b]+'.html':'view.html?b='+encodeURIComponent(RET[b]));return;}
   var split=(v.getAttribute('data-split')||'').split(',').filter(Boolean), c=/[a-z]/.test(b[0])?b[0]:'0';
   var shard=(split.indexOf(c)>=0)?c+(/[a-z0-9]/.test(b[1]||'')?b[1]:'0'):c, today=v.getAttribute('data-today')||'';
   fetch(v.getAttribute('data-base')+shard+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(all){
     var ps=all.filter(function(p){return p.brand_slug===b&&!p.canceled&&(!p.valid_until||!today||p.valid_until>=today);});
     if(!ps.length){fail('No current registration was found for this brand.');return;}
     ps.sort(function(x,y){return (y.valid_until||'').localeCompare(x.valid_until||'')||y.id.localeCompare(x.id);});
-    var name=ps[0].brand, ings=[], cats=[], cos=[], kid=false, nf=0, nfs=0, nds=0, ren=false, uses=[];
+    var name=ps[0].brand, ings=[], cats=[], cos=[], kid=false, ren=false, TC={}, LAST={};
+    var TL={fsmp:'Food for special medical purposes (FSMP)',fsdu:'Food for special dietary use (FSDU)',supplement:'Food supplement',other:'Other food registration'};
+    function ty(p){return TL[p.type]?p.type:'supplement';}
+    function rc(p){return (p.decision_date||'')+'|'+(p.valid_until||'')+'|'+p.id;}
     function ut(p){return p.use_label||(p.fsmp_use?'For the dietary management of '+p.fsmp_use:'');}
-    ps.forEach(function(p){(p.ingredients||[]).forEach(function(i){if(ings.indexOf(i)<0)ings.push(i);});
-      (p.categories||[]).forEach(function(x){if(cats.indexOf(x)<0&&x!=='other'&&x!=='fsmp'&&x!=='fsdu')cats.push(x);});
-      if(p.type==='fsmp'||p.type==='fsdu'){nf++;if(p.type==='fsmp')nfs++;else nds++;if(p.renal_formula)ren=true;var u=ut(p);if(u&&uses.indexOf(u)<0)uses.push(u);}
-      if(p.company&&cos.indexOf(p.company)<0)cos.push(p.company); if(p.kidney_marketed)kid=true;});
-    var allF=nf===ps.length;
-    document.getElementById('dsv-bf').hidden=!nfs; document.getElementById('dsv-bd').hidden=!nds; document.getElementById('dsv-bs').hidden=allF;
-    var kl=nds&&!nfs?'special dietary food, FSDU':nfs&&!nds?'medical nutrition, FSMP':'medical nutrition, FSMP and FSDU';
-    document.title=name+(allF?' ('+kl+')':' (food supplement)')+' · Renal Care Matters';
+    function fn(p){var t=p.product_name_clean||p.product_name||'';return t===t.toUpperCase()?t.charAt(0)+t.slice(1).toLowerCase():t;}
+    ps.forEach(function(p){var t=ty(p);TC[t]=(TC[t]||0)+1;if(!LAST[t]||rc(p)>LAST[t])LAST[t]=rc(p);
+      if(t==='supplement')(p.ingredients||[]).forEach(function(i){if(ings.indexOf(i)<0)ings.push(i);});
+      (p.categories||[]).forEach(function(x){if(cats.indexOf(x)<0&&x!=='other'&&x!=='fsmp'&&x!=='fsdu'&&x!=='food')cats.push(x);});
+      if(p.renal_formula)ren=true; if(p.company&&cos.indexOf(p.company)<0)cos.push(p.company); if(p.kidney_marketed)kid=true;});
+    /* dominant registration type: most common; a tie goes to the type with the most recent registration */
+    var dom=Object.keys(TC).sort(function(x,y){return TC[y]-TC[x]||(LAST[y]>LAST[x]?1:-1);})[0];
+    var nfs=TC.fsmp||0, nds=TC.fsdu||0, med=dom==='fsmp'||dom==='fsdu', allF=(nfs+nds)===ps.length;
+    var tp=ps.filter(function(p){return ty(p)===dom;}).sort(function(x,y){return rc(y).localeCompare(rc(x));});
+    document.getElementById('dsv-bf').hidden=!nfs; document.getElementById('dsv-bd').hidden=!nds;
+    document.getElementById('dsv-bs').hidden=!TC.supplement; document.getElementById('dsv-bo').hidden=!TC.other;
+    var mf=tp.filter(function(p){return p.type===dom;}), kl=nds&&!nfs?'special dietary food, FSDU':nfs&&!nds?'medical nutrition, FSMP':'medical nutrition, FSMP and FSDU';
+    document.title=name+' ('+(med?kl:dom==='other'?'food product':'food supplement')+') · Renal Care Matters';
+    document.getElementById('dsv-tag').textContent='Drug Database · '+(med?(nds&&!nfs?'Special dietary food (FSDU)':nfs&&!nds?'Medical nutrition (FSMP)':'Medical nutrition (FSMP, FSDU)'):dom==='other'?'Food product':'Food supplement');
     document.getElementById('dsv-name').textContent=name;
-    document.getElementById('dsv-ings').textContent=allF?((ren?'Renal nutrition formula':(nds&&!nfs?'Special dietary food':'Medical nutrition'))+(uses.length?': '+uses[0].charAt(0).toLowerCase()+uses[0].slice(1):'')):
-      (ings.length?ings.slice(0,6).join(', ')+(ings.length>6?'…':''):'Ingredients not itemized in the FDA record.');
+    var sub;
+    if(med){var mu=[];mf.forEach(function(p){var u=ut(p);if(u&&mu.indexOf(u)<0)mu.push(u);});
+      sub=(ren?'Renal nutrition formula':(dom==='fsdu'?'Special dietary food':'Medical nutrition'))+(mu.length?': '+mu[0].charAt(0).toLowerCase()+mu[0].slice(1):'');}
+    else if(dom==='other')sub=ut(tp[0])||fn(tp[0]);
+    else sub=ings.length?ings.slice(0,6).join(', ')+(ings.length>6?'…':''):'Ingredients not itemized in the FDA record.';
+    document.getElementById('dsv-ings').textContent=sub;
     document.getElementById('dsv-co').textContent=cos.slice(0,3).join('; ')+(cos.length>3?'; and others':'')||'Not listed';
-    document.getElementById('dsv-chips').innerHTML=(nfs?'<span class="dd-chip ds-chip-fsmp">Medical nutrition (FSMP)</span>':'')+(nds?'<span class="dd-chip ds-chip-fsmp">Special dietary food (FSDU)</span>':'')+(allF?'':'<span class="dd-chip ds-chip-supp">Food supplement</span>')+
+    document.getElementById('dsv-chips').innerHTML=(nfs?'<span class="dd-chip ds-chip-fsmp">Medical nutrition (FSMP)</span>':'')+(nds?'<span class="dd-chip ds-chip-fsmp">Special dietary food (FSDU)</span>':'')+
+      (TC.supplement?'<span class="dd-chip ds-chip-supp">Food supplement</span>':'')+(TC.other?'<span class="dd-chip ds-chip-supp">Other food registration</span>':'')+
       (ren?'<span class="dd-chip ds-chip-kid">Renal formula</span>':'')+(kid?'<span class="dd-chip ds-chip-kid">Kidney-marketed</span>':'')+
       cats.map(function(x){return '<span class="dd-chip">'+escH(CAT[x]||x)+'</span>';}).join('')+'<span class="dd-chip">'+ps.length+' registration'+(ps.length===1?'':'s')+'</span>';
-    var n=ps.length;
-    lead.textContent=n+' current '+(allF?(nds&&!nfs?'FSDU':nfs&&!nds?'FSMP':'FSMP/FSDU'):'food-supplement')+' registration'+(n===1?'':'s')+' under the brand '+name+'. Registration status changes; confirm a product\'s current status on the FDA verification portal using its FR number.';
+    /* kidney notes: only for kidney-marketed brands, renal formulas, or brands with notes on file */
+    var hasN=(v.getAttribute('data-notes')||'').split(',').indexOf(b)>=0, showK=kid||ren||hasN;
+    ['kidney-notes','dsv-kn-pill','dsv-kn-toc'].forEach(function(id){var el=document.getElementById(id);if(el)el.hidden=!showK;});
+    var n=ps.length, ks=Object.keys(TC), SH={fsmp:'FSMP',fsdu:'FSDU',supplement:'food supplement',other:'other food registration'};
+    lead.textContent=n+' current '+(allF?(nds&&!nfs?'FSDU':nfs&&!nds?'FSMP':'FSMP/FSDU')+' registration'+(n===1?'':'s'):ks.length===1?(dom==='other'?'food-product':'food-supplement')+' registration'+(n===1?'':'s'):
+      'registrations ('+ks.sort(function(x,y){return TC[y]-TC[x]||(x<y?-1:1);}).map(function(t){return TC[t]+' '+SH[t]+(TC[t]>1&&(t==='supplement'||t==='other')?'s':'');}).join(', ')+')')+
+      ' under the brand '+name+'. Registration status changes; confirm a product\'s current status on the FDA verification portal using its FR number.';
     var vu=v.getAttribute('data-verify'), VL={LP:'LP · lower protein, for CKD not on dialysis',HP:'HP · higher protein, for dialysis'};
     document.getElementById('dsv-regs').innerHTML=ps.map(function(p){
-      var f=p.type==='fsmp'||p.type==='fsdu';
+      var t=ty(p), f=t==='fsmp'||t==='fsdu', o=t==='other';
       var il=f?'<p class="dd-note">The FDA record names the product type and its registered use, not the full composition. Check the product label for protein, energy, potassium, phosphorus, sodium and fluid per serving.</p>':
+        o?'<p class="dd-note">The FDA record names the food product, not its composition. Check the product label for protein, energy, potassium, phosphorus, sodium and sugar per serving.</p>':
         (p.ingredients||[]).length?'<ul class="ds-ings">'+p.ingredients.map(function(i){return '<li>'+escH(i)+'</li>';}).join('')+'</ul>':'<p class="dd-note">Ingredients are not itemized in the FDA record.</p>';
       var raw=p.ingredients_raw?'<span class="ds-raw">As registered: '+escH(p.ingredients_raw)+'</span>':'';
       var rows=[['FR number',escH(p.id)+' · <a href="'+escH(vu)+'" rel="noopener" target="_blank">verify on the FDA portal</a>']];
-      if(f){if(p.variant)rows.push(['Variant',escH(VL[p.variant]||p.variant)]);
-        rows.push(['Registered as',p.type==='fsdu'?'Food for special dietary use (FSDU)':'Food for special medical purposes (FSMP)']);
-        rows.push(['Registered use',ut(p)?escH(ut(p)):'Not stated in the FDA record']);
-        if(p.flavor)rows.push(['Flavor',escH(p.flavor)]);}
-      rows.push(['Form',(f&&(!p.form||p.form==='other'))?'Not stated in the FDA record':escH((p.form||'').charAt(0).toUpperCase()+(p.form||'').slice(1))],['Company',escH(p.company||'Not listed')],
+      if(p.brand_registered&&p.brand_registered.toLowerCase()!==(p.brand||'').toLowerCase())rows.push(['Registered brand',escH(p.brand_registered)]);
+      if(f&&p.variant)rows.push(['Variant',escH(VL[p.variant]||p.variant)]);
+      rows.push(['Registered as',TL[t]]);
+      if(f)rows.push(['Registered use',ut(p)?escH(ut(p)):'Not stated in the FDA record']);
+      else if(o&&ut(p))rows.push(['Stated use',escH(ut(p))]);
+      if((f||o)&&p.flavor)rows.push(['Flavor',escH(p.flavor)]);
+      rows.push(['Form',((f||o)&&(!p.form||p.form==='other'))?'Not stated in the FDA record':escH((p.form||'').charAt(0).toUpperCase()+(p.form||'').slice(1))],['Company',escH(p.company||'Not listed')],
         ['Issued',escH(usd(p.decision_date)||'Not listed')],['Valid until',escH(usd(p.valid_until)||'Not listed')],['FDA risk class',escH(p.risk_type||'Not listed')]);
       if(p.application_type)rows.push(['Application',escH(p.application_type)]);
-      return '<article class="ds-reg" id="'+escH(p.id)+'"><h3>'+escH(p.product_name_clean||p.product_name)+'</h3><div><strong>'+(f?'Composition':'Ingredients')+'</strong>'+il+raw+'</div><dl class="ds-dl">'+
+      return '<article class="ds-reg" id="'+escH(p.id)+'"><h3>'+escH(p.product_name_clean||p.product_name)+'</h3><div><strong>'+(f||o?'Composition':'Ingredients')+'</strong>'+il+raw+'</div><dl class="ds-dl">'+
         rows.map(function(r){return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>';}).join('')+'</dl></article>';}).join('');
   }).catch(function(){fail('Registration data could not be loaded right now.');});
 }
@@ -64,11 +88,12 @@ var data=null, loading=null, letter='', LIMIT=300;
 function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
 function escH(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function load(){if(!loading)loading=fetch(root.getAttribute('data-src')).then(function(r){return r.json();}).then(function(j){
-  data=j.map(function(d){d.nn=norm(d.n);d.ii=(d.i||[]).map(norm);d.cc=(d.co||[]).map(norm);d.rr=(d.r||[]).map(norm);return d;});})
+  data=j.map(function(d){d.nn=norm(d.n);d.ii=(d.i||[]).map(norm);d.cc=(d.co||[]).map(norm);d.rr=(d.r||[]).map(norm);d.aa=(d.a||[]).map(norm);return d;});})
   .catch(function(){info.textContent='Search is unavailable right now.';});return loading;}
 function sc(s,t){if(!s)return 0;if(s===t)return 100;if(s.indexOf(t)===0)return 80;if((' '+s).indexOf(' '+t)>=0)return 60;if(s.indexOf(t)>=0)return 35;return 0;}
 function best(arr,t,w){var b=0,v='';(arr||[]).forEach(function(x,i){var s=sc(x,t)*w;if(s>b){b=s;v=i;}});return [b,v];}
 function match(d,t){var m=[sc(d.nn,t),'',''];
+  var k=best(d.aa,t,.97);if(k[0]>m[0])m=[k[0],'registered as',d.a[k[1]]];
   var a=best(d.ii,t,.9);if(a[0]>m[0])m=[a[0],'ingredient',d.i[a[1]]];
   var c=best(d.cc,t,.6);if(c[0]>m[0])m=[c[0],'company',d.co[c[1]]];
   var r=best(d.rr,t,.95);if(r[0]>m[0])m=[r[0],'FR no.',d.r[r[1]]];
@@ -84,7 +109,7 @@ function run(){
     res.innerHTML=out.slice(0,LIMIT).map(function(o){var d=o[0];
       var why=o[2]?'<span class="dd-why">'+escH(o[2])+': '+escH(o[3])+'</span>':'';
       var sub=(d.i||[]).length?(d.i||[]).slice(0,4).join(' · ')+((d.i||[]).length>4?' …':''):(d.u||'');
-      return '<li><a href="'+href(d)+'">'+escH(d.n)+'</a>'+(d.t?' <span class="dd-tag ds-tag-f">'+(d.mk==='fsdu'?'FSDU':d.mk==='both'?'FSMP · FSDU':'FSMP')+'</span>':'')+(d.rf?' <span class="dd-tag ds-tag-k">Renal formula</span>':'')+(d.k?' <span class="dd-tag ds-tag-k">Kidney-marketed</span>':'')+why+
+      return '<li><a href="'+href(d)+'">'+escH(d.n)+'</a>'+(d.t?' <span class="dd-tag ds-tag-f">'+(d.mk==='fsdu'?'FSDU':d.mk==='both'?'FSMP · FSDU':'FSMP')+'</span>':'')+(d.rf?' <span class="dd-tag ds-tag-k">Renal formula</span>':'')+(d.k?' <span class="dd-tag ds-tag-k">Kidney-marketed</span>':'')+(d.of&&!d.sp&&!d.t?' <span class="dd-tag">Food product</span>':'')+why+
         '<span class="dd-sub">'+escH(sub)+'</span></li>';}).join('');
     res.hidden=false;stat.hidden=true;
     info.textContent=out.length?(out.length>LIMIT?'Showing the first '+LIMIT+' of '+out.length.toLocaleString('en-US')+' brands':out.length.toLocaleString('en-US')+(out.length===1?' brand':' brands')):'No supplement matches.';

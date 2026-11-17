@@ -114,7 +114,7 @@ if(idx){
       fetch(idx.getAttribute('data-extra')).then(function(r){return r.json();}).then(function(x){extra={};x.forEach(function(e){extra[e.s]=e;});if(sq.value)run();}).catch(function(){});
       /* food supplements: separate lazy file, merged into results with a "Supplement" badge */
       if(idx.getAttribute('data-supp'))fetch(idx.getAttribute('data-supp')).then(function(r){return r.json();}).then(function(x){
-        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,cat:d.cat,k:d.k,p:d.p,t:d.t,mk:d.mk,rf:d.rf,v:d.v,u:d.u,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&(F.t.value==='s'||F.t.value==='m')))run();}).catch(function(){});
+        supp=x.map(function(d){return {s:d.s,n:d.n,i:d.i,co:d.co,r:d.r,a:d.a,cat:d.cat,k:d.k,p:d.p,t:d.t,mk:d.mk,rf:d.rf,v:d.v,u:d.u,sp:d.sp,of:d.of,sup:1,nn:norm(d.n)};});if(sq.value||(F.t&&(F.t.value==='s'||F.t.value==='m')))run();}).catch(function(){});
     }).catch(function(){info.textContent='Search is unavailable right now. Use the A–Z list below.';});
     return loading;
   }
@@ -122,7 +122,7 @@ if(idx){
   var FIELDS=[['n','generic',1],['y','also known as',.99],['i','ingredient',.95],['yi','ingredient',.9],['z','',.94],['b','brand',.97],['u','US brand',.9],['cl','class',.7],['x','indication',.6]];
   function smatch(d,t){
     var best=score(d.nn,t)*.97,lab=best?'supplement':'',val=d.n;
-    [['i','ingredient',.85],['r','FR no.',.9],['co','company',.5]].forEach(function(f){(d[f[0]]||[]).forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
+    [['a','registered as',.95],['i','ingredient',.85],['r','FR no.',.9],['co','company',.5]].forEach(function(f){(d[f[0]]||[]).forEach(function(x){var s=score(norm(x),t)*f[2];if(s>best){best=s;lab=f[1];val=x;}});});
     return best?{s:best,lab:lab,val:val}:null;
   }
   function match(d,t,raw){
@@ -159,7 +159,10 @@ if(idx){
   }
   function filtersOn(){return drugFacets()||!!(F.t&&F.t.value);}
   function chips(d){var o=[];if(d.sup){var MK=d.mk==='fsdu'?'Special dietary food (FSDU)':d.mk==='both'?'Medical nutrition (FSMP, FSDU)':'Medical nutrition (FSMP)';
-    o.push(d.t==='m'?'<span class="dd-tag FSMP">'+MK+'</span>':'<span class="dd-tag SUP">Supplement</span>');
+    /* sp = stated food supplement, of = other food registration (older index entries carry neither: a supplement) */
+    if(d.t==='m')o.push('<span class="dd-tag FSMP">'+MK+'</span>');
+    if(d.t!=='m'&&(d.sp||!d.of))o.push('<span class="dd-tag SUP">Supplement</span>');
+    if(d.of)o.push('<span class="dd-tag SUP">Food product</span>');
     if(d.t==='b')o.push('<span class="dd-tag FSMP">'+(d.mk==='fsdu'?'FSDU':d.mk==='both'?'FSMP · FSDU':'FSMP')+'</span>');if(d.rf)o.push('<span class="dd-tag SUPK">Renal formula</span>');
     (d.v||[]).forEach(function(v){o.push('<span class="dd-tag FSMP">'+escH(v)+'</span>');});if(d.k)o.push('<span class="dd-tag SUPK">Kidney-marketed</span>');return o.join(' ');}
     var r=d.r||0;
