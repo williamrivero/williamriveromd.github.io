@@ -242,6 +242,13 @@ if(idx){
         bcore.disp.map(function(a){return grp(a[0],a[2],G,'',false);}).join('');
       if(v==='kidney')h='<p class="dd-note dd-vnote">Generics with kidney guidance reviewed by renalcarematters.com, grouped by the most restrictive level across eGFR bands and dialysis.</p>'+
         bcore.kidney.map(function(a){return grp(a[0],a[2],G,'',true);}).join('')+'<p class="dd-note">'+escH(bcore.kidneyNote)+'</p>';
+      if(v==='pn'&&bcore.pn){var PT=bcore.pn.t,PR=bcore.pn.r;
+        h='<p class="dd-note dd-vnote">'+PR.length.toLocaleString('en-US')+' intravenous nutrition products registered with FDA Philippines, sorted by product type. Each opens its generic page with the products table filtered to that brand. Product types only; no dosing guidance.</p>'+
+        PT.map(function(t){var rs=PR.filter(function(r){return r[2]===t[0];});if(!rs.length)return '';
+          return '<details class="dd-vg" open data-open="1"><summary><span class="dd-vg-t">'+escH(t[1])+'</span> <span class="dd-vg-n" data-n="'+rs.length+'">'+rs.length.toLocaleString('en-US')+'</span></summary><ul class="dd-list dd-blist">'+rs.map(function(r){
+            var s=G[r[1]],d=bySlug[s]||{n:s},tag=r[4]==='renal'?'<span class="dd-tag SUPK">Renal formula</span>':r[4]==='hepatic'?'<span class="dd-tag HEP">Hepatic formula</span>':'';
+            return '<li data-s="'+escH(s)+'" data-t="'+escH(norm(r[0]+' '+d.n+' '+(r[3]||'')+' '+t[1]+(r[4]?' '+r[4]+' formula':'')+(r[6]&&r[6]!==r[0]?' '+r[6]:'')))+'"><a href="'+encodeURIComponent(s)+'.html?brand='+encodeURIComponent(r[6]||r[0])+'#products">'+escH(r[0])+
+              ' <span class="dd-arrow">&rarr; '+escH(d.n)+'</span></a>'+(tag?'<span class="dd-tags">'+tag+'</span>':'')+'<span class="dd-sub">'+escH([r[3],r[5]].filter(Boolean).join(' · '))+'</span></li>';}).join('')+'</ul></details>';}).join('');}
     }
     var div=document.createElement('div');div.className='dd-vbody';div.setAttribute('data-v',v);div.innerHTML=h;
     div.querySelectorAll('li').forEach(function(li){if(!li.hasAttribute('data-t')){var d=bySlug[li.getAttribute('data-s')];li._d=d;}});
