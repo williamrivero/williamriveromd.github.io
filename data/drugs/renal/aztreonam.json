@@ -2,35 +2,55 @@
   "schema_version": 1,
   "slug": "aztreonam",
   "name": "Aztreonam",
-  "review_status": "pending",
-  "reviewed_by": null,
-  "reviewed_date": null,
+  "review_status": "approved",
+  "reviewed_by": "William Gregory M. Rivero, MD, FPCP, DPSN",
+  "reviewed_date": "2026-11-17",
   "drafted_by": "AI-assisted draft (Claude) for review by Dr. W. Rivero",
   "drafted_date": "2026-11-17",
   "summary": "Aztreonam is excreted in urine by both filtration and tubular secretion, and its half-life is prolonged in kidney impairment. The US label gives a usual 1 or 2 g loading dose, then half the usual dose at creatinine clearance (CrCl) 10–30 mL/min/1.73 m2 and one-quarter below 10, with an extra one-eighth of the initial dose after each hemodialysis in serious infections.",
-  "kidney_function_basis": "Label uses CrCl in mL/min/1.73 m2 (formula quoted); bands at 30 and 10.",
+  "kidney_function_basis": "Label uses CrCl in mL/min/1.73 m2 (formula quoted); bands at 30 and 10. The mL/min/1.73 m2 unit is the label's own convention and is kept verbatim.",
   "chip": "CrCl ≤30: half; <10: quarter dose",
   "bands": [
     {
       "range": "CrCl ≥60 mL/min/1.73 m2",
-      "recommendation": "No dose change (label)."
+      "recommendation": "No dose change (label).",
+      "short": "Usual dose",
+      "level": "none"
     },
     {
       "range": "CrCl 30–59 mL/min/1.73 m2",
-      "recommendation": "No dose change above CrCl 30. At CrCl 30: as the 10–30 row (initial 1 or 2 g, then half the usual dose) (label)."
+      "recommendation": "No dose change above CrCl 30. At CrCl 30: as the 10–30 row (initial 1 or 2 g, then half the usual dose) (label).",
+      "short": "Usual dose (>30)",
+      "level": "none"
     },
     {
       "range": "CrCl 15–29 mL/min/1.73 m2",
-      "recommendation": "CrCl 10–30: initial 1 or 2 g, then half the usual dose at the usual interval (label)."
+      "recommendation": "CrCl 10–30: initial 1 or 2 g, then half the usual dose at the usual interval (label).",
+      "short": "Load 1–2 g, then half dose",
+      "level": "adjust"
     },
     {
       "range": "CrCl <15 mL/min/1.73 m2 (not on dialysis)",
-      "recommendation": "CrCl 10–14: initial 1 or 2 g, then half the usual dose. Below 10: usual initial dose (500 mg, 1 g or 2 g), then one-fourth of the initial dose at the usual 6-, 8- or 12-hour interval (label)."
+      "recommendation": "CrCl 10–14: initial 1 or 2 g, then half the usual dose. Below 10: usual initial dose (500 mg, 1 g or 2 g), then one-fourth of the initial dose at the usual 6-, 8- or 12-hour interval (label).",
+      "short": "<10: load, then 1/4 dose",
+      "level": "adjust"
     }
   ],
-  "hd": "Usual initial dose (500 mg, 1 g or 2 g), then one-fourth of the initial dose at the usual 6-, 8- or 12-hour interval; for serious or life-threatening infections, also give one-eighth of the initial dose after each hemodialysis (label).",
-  "pd": "No peritoneal dialysis dosing in label (aztreonam can be cleared by peritoneal dialysis, overdose section). Specialist input.",
-  "crrt": "Not in label; the cited CRRT review (Li 2020) gives no regimen for this drug. Specialist input.",
+  "hd": {
+    "text": "Usual initial dose (500 mg, 1 g or 2 g), then one-fourth of the initial dose at the usual 6-, 8- or 12-hour interval; for serious or life-threatening infections, also give one-eighth of the initial dose after each hemodialysis (label).",
+    "short": "Load; 1/4 dose; +1/8 after HD",
+    "level": "adjust"
+  },
+  "pd": {
+    "text": "No peritoneal dialysis dosing in label (aztreonam can be cleared by peritoneal dialysis, overdose section). IV aztreonam rapidly reaches therapeutic levels in peritoneal dialysis fluid, and intraperitoneal aztreonam rapidly produces therapeutic serum levels (label PK); the label gives no dose. For PD-associated peritonitis (ISPD 2022): intraperitoneal intermittent 2 g daily; continuous loading dose 500 mg/L, then 250 mg/L in each exchange. Specialist input.",
+    "short": "Peritonitis: IP per ISPD 2022",
+    "level": "adjust"
+  },
+  "crrt": {
+    "text": "Not in label; the cited CRRT review (Li 2020) gives no regimen for this drug. Specialist input.",
+    "short": "No CRRT data in cited sources",
+    "level": "nodata"
+  },
   "dialyzable": "Yes: may be cleared by hemodialysis and peritoneal dialysis (label). Protein binding about 56%.",
   "monitoring": "CrCl for dose (serum creatinine may overestimate kidney function in older adults; label); diarrhea (CDAD).",
   "pediatric": {
@@ -40,24 +60,44 @@
     "renal": [
       {
         "range": "eGFR ≥60",
-        "recommendation": "Usual pediatric dose (label)."
+        "recommendation": "Usual pediatric dose (label).",
+        "short": "Usual pediatric dosing",
+        "level": "none"
       },
       {
         "range": "eGFR 30–59",
-        "recommendation": "Insufficient data on dosing in children with kidney impairment (label). Specialist input."
+        "recommendation": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
+        "short": "Insufficient data; specialist",
+        "level": "nodata"
       },
       {
         "range": "eGFR 15–29",
-        "recommendation": "Insufficient data on dosing in children with kidney impairment (label). Specialist input."
+        "recommendation": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
+        "short": "Insufficient data; specialist",
+        "level": "nodata"
       },
       {
         "range": "eGFR <15 (not on dialysis)",
-        "recommendation": "Insufficient data on dosing in children with kidney impairment (label). Specialist input."
+        "recommendation": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
+        "short": "Insufficient data; specialist",
+        "level": "nodata"
       }
     ],
-    "hd": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
-    "pd": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
-    "crrt": "Insufficient data on dosing in children with kidney impairment (label). Specialist input."
+    "hd": {
+      "text": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
+      "short": "Insufficient data; specialist",
+      "level": "nodata"
+    },
+    "pd": {
+      "text": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
+      "short": "Insufficient data; specialist",
+      "level": "nodata"
+    },
+    "crrt": {
+      "text": "Insufficient data on dosing in children with kidney impairment (label). Specialist input.",
+      "short": "Insufficient data; specialist",
+      "level": "nodata"
+    }
   },
   "sources": [
     {
@@ -66,15 +106,50 @@
       "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=9a105eaf-ee77-4016-beeb-d425a5565db2",
       "set_id": "9a105eaf-ee77-4016-beeb-d425a5565db2",
       "effective_time": "20251215"
+    },
+    {
+      "id": "ISPD2022",
+      "citation": "Li, P. K.-T., Chow, K. M., Cho, Y., Fan, S., Figueiredo, A. E., Harris, T., Kanjanabuch, T., Kim, Y.-L., Madero, M., Malyszko, J., Mehrotra, R., Okpechi, I. G., Perl, J., Piraino, B., Runnegar, N., Teitelbaum, I., Wong, J. K.-W., Yu, X., & Johnson, D. W. (2022). ISPD peritonitis guideline recommendations: 2022 update on prevention and treatment. Peritoneal Dialysis International, 42(2), 110–153.",
+      "doi": "10.1177/08968608221080586",
+      "pmid": "35264029"
     }
   ],
   "source_map": {
     "default": [
       "LABEL"
+    ],
+    "pd": [
+      "LABEL",
+      "ISPD2022"
     ]
   },
   "draft_notes": {
     "adult": [],
     "pediatric": []
+  },
+  "revision_log": [
+    {
+      "date": "2026-11-17",
+      "finding": "B6-04",
+      "change": "PD row: ISPD 2022 peritonitis dose added (Peritonitis: IP per ISPD 2022).",
+      "approved_by": "W. G. M. Rivero, MD"
+    },
+    {
+      "date": "2026-11-17",
+      "finding": "B6-18",
+      "change": "PD row: label PK sentence added (IV aztreonam reaches therapeutic PD-fluid levels; IP aztreonam gives therapeutic serum levels; no label dose).",
+      "approved_by": "W. G. M. Rivero, MD"
+    },
+    {
+      "date": "2026-11-17",
+      "finding": "approval",
+      "change": "Batch 6 kidney monograph approved by Dr. Rivero with the pharmacology review corrections (26 findings; judgment items J1–J10 per reviewer recommendation).",
+      "approved_by": "W. G. M. Rivero, MD"
+    }
+  ],
+  "strip_review": {
+    "source": "renal-short/aztreonam.json",
+    "reviewed_by": "William Gregory M. Rivero, MD, FPCP, DPSN",
+    "reviewed_date": "2026-11-17"
   }
 }
