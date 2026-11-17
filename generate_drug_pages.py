@@ -3986,11 +3986,13 @@ Search by brand, generic, class, indication, manufacturer or registration number
 It opens full screen, like an app.</p>
 <button type="button" class="dd-btn" data-app="install" hidden>Install the app</button>
 <ol class="dd-app-ios" data-app="iossteps" hidden>
-<li>Open this page in <strong>Safari</strong>.</li>
-<li>Open the Share menu. On iOS and iPadOS 26: tap the <strong>&#8943;</strong> button (iPhone) or the <strong>&#8801;</strong> icon at the left of
-the address bar (iPad), then tap <strong>Share</strong>. On earlier versions: tap the <strong>Share</strong> button (a square with an arrow pointing up).</li>
-<li>Tap <strong>Add to Home Screen</strong> (scroll down, or tap <strong>View More</strong>, if you don't see it). Keep <strong>Open as Web App</strong> on, then tap <strong>Add</strong>.</li>
-<li>Open <strong>Drug Index</strong> from your Home Screen and tap <strong>Set up offline use</strong>.</li>
+<li>In <strong>Safari</strong>, tap the <strong>&#8801;</strong> icon at the left end of the address bar (iPad) or the <strong>&#8943;</strong> button
+(iPhone). On versions before iOS 26, tap the <strong>Share</strong> button (a square with an arrow pointing up) and skip to step 3.</li>
+<li>Tap <strong>Share</strong>.</li>
+<li>Tap <strong>Add to Home Screen</strong>. If you don't see it, scroll down or tap <strong>View More</strong>.</li>
+<li>Keep <strong>Open as Web App</strong> switched on, then tap <strong>Add</strong>.</li>
+<li>Open <strong>Drug Index</strong> from your Home Screen, tap <strong>Set up offline use</strong>, then <strong>Download the complete Drug
+Index</strong>. Download inside the Home Screen app, not in a Safari tab: the two keep separate storage, and only the app's copy works offline.</li>
 </ol>
 </div>
 <div class="dd-app-card" data-app="off">
