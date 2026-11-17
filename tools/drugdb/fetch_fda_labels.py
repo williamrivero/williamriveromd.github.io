@@ -38,6 +38,8 @@ IV acyclovir label next to the oral one, stored under "alternate_labels"). Each 
 list of criteria tried in order; the first criterion that any candidate satisfies wins and the
 normal ranking breaks ties within it. When no criterion matches, the normal ranking applies
 and the record carries selection.override.matched = null so the miss is visible.
+An override with "none": true pins the slug to no US label (every candidate is a different
+medicine, e.g. hyoscine butylbromide vs US scopolamine labels); a stored record is removed.
 
 Incremental: a slug whose stored set_id + effective_time is unchanged is not rewritten.
 The section text is copied verbatim from the label; nothing is paraphrased.
@@ -881,8 +883,13 @@ class Collector:
                 out.append((alt, lab, (alt.get("criteria") or [])[i]))
         return out
 
+    def pinned_none(self, slug: str) -> bool:
+        return bool((self.overrides.get(slug) or {}).get("none"))
+
     def result(self, slug: str):
         ov = self.overrides.get(slug)
+        if ov and ov.get("none"):   # pinned: no US label is the right one for this slug
+            return None, None, 0
         if ov and slug in self.best:
             lab, _ = self._override_pick(slug, "primary", ov.get("primary") or [])
             if lab is not None:
@@ -1113,7 +1120,8 @@ def main() -> int:
         label, how, n_cand = col.result(slug)
         if label is None:
             m = {"slug": slug, "name": g.get("name", slug), "ingredients": g["ingredients"],
-                 "reason": "fetch error" if slug in col.errors else "no matching US FDA human label"}
+                 "reason": "fetch error" if slug in col.errors else
+                           ("pinned none in label_overrides.json" if col.pinned_none(slug) else "no matching US FDA human label")}
             if col.near.get(slug):
                 m["near_misses"] = sorted(col.near[slug])
             missing.append(m)
