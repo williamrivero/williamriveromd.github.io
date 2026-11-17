@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "26"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "27"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 HASH_ASSET_VERSION = "22"   # version used inside page content hashes, so an asset-only bump does not change every page's "Last updated" date
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
@@ -893,6 +893,8 @@ html.dd-standalone .print-btn, html.dd-standalone .float-controls, html.dd-stand
 html[data-theme="dark"] .dd-appbar { background: #0e4a50; }
 @media print { .dd-appbar { display: none !important; } }
 
+/* [hidden] must win over display rules on app controls */
+.dd-app [hidden], .dd-app-cta[hidden], .dd-appbar [hidden] { display: none !important; }
 /* Hero call-to-action: install the app */
 .dd-app-cta { display: inline-flex; align-items: center; gap: 12px; margin: 2px 0 18px; padding: 11px 16px 11px 14px;
   border-radius: 14px; color: #fff; text-decoration: none; background: linear-gradient(135deg, #1a6b72 0%, #0e4a50 100%);
@@ -3984,10 +3986,11 @@ Search by brand, generic, class, indication, manufacturer or registration number
 It opens full screen, like an app.</p>
 <button type="button" class="dd-btn" data-app="install" hidden>Install the app</button>
 <ol class="dd-app-ios" data-app="iossteps" hidden>
-<li>Open this page in <strong>Safari</strong> (on iOS 16.4 or later, Chrome and Edge also work).</li>
-<li>Tap the <strong>Share</strong> button <span aria-hidden="true">(the square with an arrow pointing up)</span>.</li>
-<li>Scroll down and tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
-<li>Open <strong>Drug Index</strong> from your Home Screen. It runs full screen, like an app.</li>
+<li>Open this page in <strong>Safari</strong>.</li>
+<li>Open the Share menu. On iOS and iPadOS 26: tap the <strong>&#8943;</strong> button (iPhone) or the <strong>&#8801;</strong> icon at the left of
+the address bar (iPad), then tap <strong>Share</strong>. On earlier versions: tap the <strong>Share</strong> button (a square with an arrow pointing up).</li>
+<li>Tap <strong>Add to Home Screen</strong> (scroll down, or tap <strong>View More</strong>, if you don't see it). Keep <strong>Open as Web App</strong> on, then tap <strong>Add</strong>.</li>
+<li>Open <strong>Drug Index</strong> from your Home Screen and tap <strong>Set up offline use</strong>.</li>
 </ol>
 </div>
 <div class="dd-app-card" data-app="off">
