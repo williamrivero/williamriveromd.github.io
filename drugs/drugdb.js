@@ -435,6 +435,9 @@ function run(){
   }).then(function(){try{if(lock)lock.release();}catch(e){}});
 }
 dl.addEventListener('click',run);
+var cta=document.getElementById('dd-app-cta');
+if(cta&&standalone()){var rr=rec();if(rr&&rr.done)cta.hidden=true;else{cta.querySelector('strong').textContent='Set up offline use';
+  cta.querySelector('small').textContent='Download the complete Drug Index once';}}
 /* In the installed app, prompt until offline use is set up */
 if(standalone()){var r0=rec();if(!r0||!r0.done){var main=document.getElementById('dd-index');
   if(main){var nb=document.createElement('div');nb.className='dd-app-warn dd-app-setup';
