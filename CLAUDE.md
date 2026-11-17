@@ -975,18 +975,18 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   link every drug the calculator page itself names at least twice and at least a quarter as often as its most-named drug),
   plus Cockcroft–Gault (label uses CrCl) or CKD-EPI eGFR for every drug with APPROVED kidney dosing. Add a rule when a
   new drug-specific calculator ships.
-- **Installable app + offline (PWA, Nov 17 2026):** the generator writes `drugs/app.webmanifest` (scope `/drugs/`, icons in
+- **Installable app + offline (PWA, Nov 17 2026), named "Dosis" (Home Screen label; manifest `short_name`):** the generator writes `drugs/app.webmanifest` (scope `/drugs/`, icons in
   `images/app/`), `drugs/sw.js` (service worker; its version changes whenever the worker, asset versions or the offline page
   change) and `drugs/offline.html` (noindex), and every drug/supplement page head carries the manifest link and worker
   registration (`APP_HEAD`). The worker precaches the shell CSS/JS, the index and the search/browse JSON; drug pages are
   network-first with a 3.5 s fallback to the saved copy, opened pages go to a rolling cache (300), and the index panel
-  "Use the Drug Index as an app" (`#dd-app`) offers Install (Android/desktop prompt; iPhone instructions) and ONE offline
+  "Dosis: use the Drug Index as an app" (`#dd-app`) offers Install (Android/desktop prompt; iPhone instructions) and ONE offline
   download, the complete Drug Index (Dr. Rivero, Nov 17 2026: no partial sets, for reliability where there is no signal), into the
   `rcm-drugs-saved` cache: every drug page (variant spellings included), the drug-class pages, the supplement/medical-nutrition
   pages and the supplement data shards the brand viewer reads (~4,150 files, ~160 MB stored, ~40 MB download). The generator writes
   `drugs/offline-manifest.json` LAST in `main()` (`[path, content hash, bytes]` per file plus an overall hash `h`); each saved file
   carries its hash (`X-RCM-Hash`), so updates and resumed downloads fetch only missing or changed files, and the worker fetches the
-  manifest network-first. The index hero carries a prominent "Install the Drug Index app" button (`#dd-app-cta`, links to the panel); in the installed app it
+  manifest network-first. The index hero carries a prominent "Install Dosis, the Drug Index app" button (`#dd-app-cta`, links to the panel); in the installed app it
   reads "Set up offline use" until the download completes, then hides, and the index shows "Offline use is not set up yet" until then. **iPhone/iPad:** no install prompt exists, so the panel shows Share → Add to Home Screen steps and a
   warning to install first and download inside the Home Screen app (Safari tabs and the Home Screen app keep separate storage,
   and Safari may clear tab storage after 7 days); the Home Screen icon is `images/app/drug-index-180.png` (full-bleed; page hashes
