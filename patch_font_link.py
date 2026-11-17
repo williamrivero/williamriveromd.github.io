@@ -53,6 +53,8 @@ CANONICAL_LINK = (
 # Matches a single <link ...> tag whose href points at the Google Fonts CSS API
 # (.../css2...). The /css2 requirement excludes bare preconnect links. Quotes may
 # be single or double; the tag may be self-closing or not.
+from patch_font_async import make_async, strip_async  # keep fonts non-blocking (Nov 17 2026)
+
 FONT_LINK_RE = re.compile(
     r'<link\b[^>]*href=["\']https://fonts\.googleapis\.com/css2[^>]*>',
     re.IGNORECASE,
@@ -71,16 +73,17 @@ def patch_file(path: Path, dry_run: bool = False) -> tuple[str, str]:
 
     status is one of: "changed", "already-ok", "no-fonts-link".
     """
-    text = path.read_text(encoding="utf-8")
+    original = path.read_text(encoding="utf-8")
+    text = strip_async(original)          # async block (patch_font_async.py) -> one plain link
     matches = FONT_LINK_RE.findall(text)
 
     if not matches:
         return "no-fonts-link", ""
 
-    # Replace every matching stylesheet link with the canonical line.
-    new_text = FONT_LINK_RE.sub(CANONICAL_LINK, text)
+    # Replace every matching stylesheet link with the canonical line, then make it non-blocking again.
+    new_text = make_async(FONT_LINK_RE.sub(CANONICAL_LINK, text))
 
-    if new_text == text:
+    if new_text == original:
         return "already-ok", ""
 
     if not dry_run:

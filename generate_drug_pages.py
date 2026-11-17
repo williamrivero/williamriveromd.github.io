@@ -1485,7 +1485,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="inde
 <meta name="twitter:image" content="{OG_IMAGE}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="{FONTS}" rel="stylesheet"/>
+<link rel="preload" as="style" href="{FONTS}" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="{FONTS}"></noscript>
 <link rel="stylesheet" href="/drugs/drugdb.css?v={ASSET_VERSION}">
 <script type="application/ld+json">{jsonld}</script>
 <script type="speculationrules">{{"prefetch":[{{"where":{{"and":[{{"href_matches":"/*"}},{{"not":{{"href_matches":"*.json"}}}}]}},"eagerness":"moderate"}}],"prerender":[{{"urls":["/guides/","/drugs/","/"],"eagerness":"moderate"}}]}}</script>
