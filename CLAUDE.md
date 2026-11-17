@@ -91,6 +91,9 @@ python3 patch_share_title.py             # strip the author suffix ("· W Rivero
 python3 patch_share_title.py --dry-run
 python3 patch_share_title.py --guide igan-guide.html  # single guide
 
+python3 patch_footer_attribution.py      # footer credit "© 2026 renalcarematters.com" on every guide/calculator (no author panel since Nov 18 2026)
+python3 patch_footer_attribution.py --dry-run
+
 python3 patch_symptom_widget.py           # install the floating Symptom-Checker widget on every content guide
 python3 patch_symptom_widget.py --report  # audit which eligible guides lack the widget (no writes)
 python3 patch_symptom_widget.py --dry-run
@@ -234,8 +237,9 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    `lang-hidden` data-lang siblings are excluded so the count is not inflated 4×) at 200 wpm. The
    badge uses inline styles so `patch_master_css.py` will not clobber it.
 
-4. **No Author byline in the hero.** The author is credited in the signature/dr-card block at the
-   end of the page, so `patch_hero_meta.py` strips any "Author: W Rivero…" row from `.hero-meta`
+4. **No Author byline in the hero.** The page credit is the footer attribution `© 2026 renalcarematters.com`
+   (the author panel `.dr-card-wrap` is hidden site-wide by MASTER_CSS since Nov 18 2026; keep its markup, which
+   `patch_references_accordion.py` and `patch_signature_position.py` anchor on), so `patch_hero_meta.py` strips any "Author: W Rivero…" row from `.hero-meta`
    and instead shows a **Published** date row and a **References** count row (the number of items
    in the accordion). Inline-styled, idempotent; never add an author line to a new guide's hero.
 
@@ -467,8 +471,8 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
 15. **No author name in share titles (Nov 11 2026).** When a guide is shared on Facebook,
     Viber, Messenger or X, the link preview shows the page title. Titles must **not** end with
     an author suffix (`· W Rivero, MD`, `– W Rivero, MD`, `| Dr. W Rivero, MD`, `— Dr. Rivero`,
-    etc.) in `<title>`, `og:title`, `twitter:title`, or the JSON-LD `headline`; the author is
-    credited in the signature/dr-card block. Hub pages (`guides/index.html`,
+    etc.) in `<title>`, `og:title`, `twitter:title`, or the JSON-LD `headline`; the page is
+    credited by the footer attribution. Hub pages (`guides/index.html`,
     `guides/calculators.html`, `404.html`) end with `· Renal Care Matters` instead. Leave the
     JSON-LD `author` object and the dr-card untouched. **`patch_share_title.py`** enforces it
     (idempotent; `/setup-guide` runs it, and the SessionStart hook runs it site-wide as a

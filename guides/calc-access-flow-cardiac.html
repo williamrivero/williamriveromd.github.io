@@ -987,6 +987,7 @@
   }
 
   /* ── DR CARD (dark panel) ────────────────────────────────────────────────── */
+  .dr-card-wrap { display: none !important; }  /* Nov 18 2026: no author panel on guides; the footer keeps the renalcarematters.com attribution */
   .dr-card-wrap { max-width: 860px; margin: 0 auto; padding: 0 32px 48px; }
   .dr-card {
     background: var(--navy); color: white;
@@ -2142,7 +2143,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </script>
 <!-- CALC-UI-START -->
 <link rel="stylesheet" href="/assets/calc-ui.29578780e4.css">
-<script src="/assets/calc-ui.6253e70373.js" defer></script>
+<script src="/assets/calc-ui.3fbbe1290e.js" defer></script>
 <!-- CALC-UI-END -->
 </head>
 <body class="calc-page">
@@ -2267,7 +2268,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <!-- RELATED-GUIDES-END -->
 <footer class="guide-footer">
 <div class="footer-inner">
-<p>Ex Bibliotheca Medica Riveriana<br>© 2026 <a href="https://renalcarematters.com">renalcarematters.com</a></p>
+<p class="rcm-attrib">© 2026 <a href="https://renalcarematters.com">renalcarematters.com</a></p>
 </div>
 </footer>
 <script>
@@ -2334,7 +2335,9 @@ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp
 
 function calcQF(){var C=window.HDAccessCalc;var qa=g('qf-qa').value,co=g('qf-co').value,b=g('qf-b').value;var f=[],v=[];
  setT('qf-ratio','—');setT('qf-chg','—');setT('qf-gap','—');
- if(qa===''){setT('qf-verdict','Enter the current access flow (Qa) to begin.');list('qf-flags',[]);return;}
+ var box=g('qf-result');
+ if(qa===''){if(box)box.classList.remove('show');setT('qf-verdict','Enter the current access flow (Qa) to begin.');list('qf-flags',[]);return;}
+ if(box)box.classList.add('show');
  if(co!==''){var r=C.qaCoRatio(Number(qa),Number(co));if(r.ok){setT('qf-ratio',fmt(r.percent,1));v.push('Access flow is '+fmt(r.percent,1)+'% of cardiac output.');}else f.push(r.error);
   var gap=C.daysBetween(g('qf-qad').value,g('qf-cod').value);if(gap===null)f.push('Add both measurement dates to judge whether Qa and CO are comparable.');else{setT('qf-gap',gap);if(gap>0)f.push('Qa and CO were not measured on the same day ('+gap+' days apart); volume status and hemodynamics may differ.');}}
  if(b!==''){var c=C.pctChange(Number(b),Number(qa));if(c.ok){setT('qf-chg',fmt(c.percent,1));v.push('Qa changed by '+fmt(c.percent,1)+'% from baseline.');}else f.push(c.error);

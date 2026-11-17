@@ -141,7 +141,7 @@
   function exampleOf(inp) {
     var p = (inp.getAttribute('placeholder') || '').trim().replace(/\u2212/g, '-').replace(/^e\.g\.\s*\+/i, 'e.g. '), m;
     if ((m = p.match(/^(?:e\.?\s?g\.?|eg|ex\.?)[:\s]*(-?[\d,]*\.?\d+)/i))) return m[1].replace(/,/g, '');
-    if (/^-?\d+(\.\d+)?$/.test(p)) return p;
+    if (/^-?\d+(\.\d+)?$/.test(p) && Number(p) !== 0) return p;   // a bare 0 is a default, not an example
     return null;
   }
   function fields(root) {
@@ -164,11 +164,13 @@
         if (g && !Array.prototype.some.call(g, function (r) { return r.checked; }) && g[0] === e) out.push({ el: e, radio: true });
       }
     });
-    // dates: one year apart, oldest first, the last one today
-    if (dates.length > 3) dates = [];   // planners with many dates: leave them to the user
-    dates.forEach(function (e, i) {
-      var dt = new Date(); dt.setFullYear(dt.getFullYear() - (dates.length - 1 - i));
-      out.push({ el: e, v: dt.toISOString().slice(0, 10) });
+    // dates: today, except a baseline / earlier / start date, which gets one year ago
+    dates.forEach(function (e) {
+      var lab = ((e.closest('.calc-field') || e.parentNode).textContent || '') + ' ' + e.id;
+      var dt = new Date();
+      if (/baseline|previous|prior|earlier|first|start|initial|creat|old/i.test(lab)) dt.setFullYear(dt.getFullYear() - 1);
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      out.push({ el: e, v: dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate()) });
     });
     // score-type calculators (no numbers to fill): move pre-set selects to a middle answer
     if (!out.some(function (f) { return f.el.tagName === 'INPUT'; })) out = out.concat(defSel);
@@ -190,6 +192,8 @@
   }
   function addSample(root) {
     if (!fields(root).length) return;
+    // planners built around many dates (catheter timelines, intervention logs) have no meaningful sample
+    if ($$('input[type=date]', root).length > 3) return;
     // the page already offers its own worked examples
     if ($$('button', root).some(function (b) { return /^\s*(example|sample|try an example|load example)/i.test(b.textContent || ''); })) return;
     var bar = d.createElement('div'); bar.className = 'cs-bar';
