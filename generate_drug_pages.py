@@ -60,7 +60,7 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "28"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "29"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
 HASH_ASSET_VERSION = "22"   # version used inside page content hashes, so an asset-only bump does not change every page's "Last updated" date
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
@@ -887,8 +887,9 @@ html.dd-standalone body { padding-bottom: calc(76px + env(safe-area-inset-bottom
   text-decoration: none; cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
 .dd-appbar a:active, .dd-appbar button:active, .dd-appbar [aria-current="page"] { background: rgba(255,255,255,.16); }
 .dd-appbar svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-html.dd-standalone .print-btn, html.dd-standalone .float-controls, html.dd-standalone .scroll-top-btn {
+html.dd-standalone .print-btn, html.dd-standalone .float-controls {
   bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+html.dd-standalone .scroll-top-btn { bottom: calc(132px + env(safe-area-inset-bottom, 0px)); }   /* stacked above the dark-mode button */
 @media (max-width: 380px) { .dd-appbar a, .dd-appbar button { padding: 0 11px; font-size: 12.5px; } }
 html[data-theme="dark"] .dd-appbar { background: #0e4a50; }
 @media print { .dd-appbar { display: none !important; } }
