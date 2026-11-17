@@ -318,3 +318,72 @@ if(idx){
   else if(sq.value)run();
 }
 })();
+
+/* Installable app + offline downloads */
+(function(){
+'use strict';
+var SAVED='rcm-drugs-saved',KEY='wgmr-drug-offline',deferred=null;
+function net(){document.documentElement.classList.toggle('dd-offline',navigator.onLine===false);}
+window.addEventListener('online',net);window.addEventListener('offline',net);net();
+var box=document.getElementById('dd-app');
+function standalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
+function showInstall(){
+  var hint=q('hint'),btn=q('install');if(!hint)return;
+  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Drug Index app.';return;}
+  if(deferred){btn.hidden=false;hint.textContent='Adds a Drug Index icon to your home screen or desktop. It opens full screen and works offline.';return;}
+  btn.hidden=true;
+  if(ios())hint.innerHTML='On iPhone or iPad: tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>. The Drug Index then opens full screen, like an app.';
+}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;showInstall();});
+window.addEventListener('appinstalled',function(){deferred=null;showInstall();});
+if(!box)return;
+showInstall();
+q('install').addEventListener('click',function(){if(!deferred)return;deferred.prompt();
+  (deferred.userChoice||Promise.resolve()).then(function(){deferred=null;showInstall();});});
+
+var dl=q('dl'),rm=q('rm'),st=q('status'),bar=q('bar');
+if(!('caches' in window)||!('serviceWorker' in navigator)){q('off').hidden=true;return;}
+var t=document.querySelector('.dd-meta-time'),dataDate=t?t.getAttribute('datetime')||'':'';
+function rec(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
+function fmtDate(ms){try{return new Date(ms).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return '';}}
+function status(){
+  var r=rec();
+  if(!r){st.textContent='Not downloaded yet.';rm.hidden=true;dl.textContent='Download kidney-dosing drugs';return;}
+  var msg=r.n+' kidney-dosing drug pages saved on '+fmtDate(r.at)+'.';
+  rm.hidden=false;
+  if(dataDate&&r.data&&r.data<dataDate){msg+=' The Drug Index was updated after that; update your saved pages.';dl.textContent='Update saved pages';}
+  else dl.textContent='Download again';
+  st.textContent=msg;
+  if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(function(x){
+    if(x&&x.usage)st.textContent=msg+' Using about '+Math.max(1,Math.round(x.usage/1e6))+' MB on this device.';}).catch(function(){});
+}
+status();
+dl.addEventListener('click',function(){
+  if(navigator.onLine===false){st.textContent='You are offline. Connect to the internet to download.';return;}
+  dl.disabled=true;rm.disabled=true;bar.hidden=false;bar.value=0;st.textContent='Preparing the download…';
+  if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});
+  fetch('/drugs/search-index.json').then(function(r){return r.json();}).then(function(idx){
+    var list=idx.filter(function(e){return e.k&&!e.m;}).map(function(e){return '/drugs/'+e.s;});
+    bar.max=list.length;
+    return caches.open(SAVED).then(function(c){
+      var i=0,done=0,ok=0;
+      function next(){
+        if(i>=list.length)return Promise.resolve();
+        var u=list[i++];
+        return fetch(u,{credentials:'same-origin',cache:'no-cache'}).then(function(res){
+          if(!res.ok)throw new Error(res.status);
+          return res.blob().then(function(b){return c.put(location.origin+u,new Response(b,{headers:{'Content-Type':'text/html; charset=utf-8'}}));});
+        }).then(function(){ok++;},function(){}).then(function(){done++;bar.value=done;st.textContent='Saving '+done+' of '+list.length+'…';return next();});
+      }
+      return Promise.all([next(),next(),next(),next()]).then(function(){return {ok:ok,n:list.length};});
+    });
+  }).then(function(r){
+    try{localStorage.setItem(KEY,JSON.stringify({n:r.ok,at:Date.now(),data:dataDate}));}catch(e){}
+    dl.disabled=false;rm.disabled=false;bar.hidden=true;status();
+    if(r.ok<r.n)st.textContent+=' '+(r.n-r.ok)+' could not be saved; try again on a better connection.';
+  }).catch(function(){dl.disabled=false;rm.disabled=false;bar.hidden=true;st.textContent='The download did not finish. Check your connection and try again.';});
+});
+rm.addEventListener('click',function(){caches.delete(SAVED).then(function(){try{localStorage.removeItem(KEY);}catch(e){}status();});});
+})();
