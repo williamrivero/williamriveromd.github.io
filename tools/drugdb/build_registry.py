@@ -77,8 +77,48 @@ def normalize_dispensing(classification):
     return None, f"unrecognized classification {classification!r}"
 
 
+# Iron products are often registered as "Iron (as Iron Sucrose)" or "Iron [as Ferric hydroxide sucrose
+# complex]". Stripping the parenthetical would file them under a bare "Iron" page, so when the base is a
+# bare iron word and the parenthetical names a specific iron compound, that compound becomes the
+# ingredient. Canonical names match the slugs already in use (iron-sucrose, ferrous-sulfate,
+# iron-hydroxide-polymaltose-complex). Sucroferric oxyhydroxide is a phosphate binder, never iron sucrose.
+IRON_COMPOUNDS = [  # (pattern on the folded, lowercased parenthetical text, canonical ingredient)
+    (r"sucroferric|oxyhydroxide", None),
+    (r"sucrose", "iron sucrose"),
+    (r"carboxymaltose", "ferric carboxymaltose"),
+    (r"derisomaltose|isomaltoside", "ferric derisomaltose"),
+    (r"polymaltose", "iron hydroxide polymaltose complex"),
+    (r"dextran", "iron dextran"),
+    (r"ferumoxytol", "ferumoxytol"),
+    (r"sodium ferric gluconate|ferric sodium gluconate", "sodium ferric gluconate"),
+    (r"gluconate", "ferrous gluconate"),
+    (r"fumarate", "ferrous fumarate"),
+    (r"sulfate|sulphate", "ferrous sulfate"),
+    (r"pyrophosphate", "ferric pyrophosphate"),
+    (r"carbonyl", "carbonyl iron"),
+    (r"bisglycinate|glycinate", "ferrous bisglycinate"),
+    (r"ferrous ascorbate", "ferrous ascorbate"),
+    (r"ferric citrate", "ferric citrate"),
+]
+IRON_PAREN = re.compile(r"\b(iron|ferric|ferrous)\s*(\((?:[^()]|\([^()]*\))*\)|\[[^\]]*\])", re.I)
+
+def iron_compound(text):
+    t = ascii_fold(text or "").lower()
+    for pat, name in IRON_COMPOUNDS:
+        if re.search(pat, t):
+            return name
+    return None
+
+def resolve_iron_parentheticals(g):
+    """'Iron (as Iron Sucrose) + Folic Acid' -> 'iron sucrose + Folic Acid'. Leaves other text alone."""
+    def sub(m):
+        name = iron_compound(m.group(2)[1:-1])
+        return name if name else m.group(0)
+    return IRON_PAREN.sub(sub, g)
+
 def ingredients_of(generic_name):
     g = ascii_fold(generic_name or "")
+    g = resolve_iron_parentheticals(g)
     m = re.search(r"\(([^()]*\+[^()]*)\)", g)       # "Co-amoxiclav (Amoxicillin + Clavulanic Acid)"
     if m: g = m.group(1)
     g = re.sub(r"\((?:as|equiv|equivalent|e\.q\.|eq\.)[^)]*\)", " ", g, flags=re.I)
