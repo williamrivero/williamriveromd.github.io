@@ -957,6 +957,15 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   link every drug the calculator page itself names at least twice and at least a quarter as often as its most-named drug),
   plus Cockcroft–Gault (label uses CrCl) or CKD-EPI eGFR for every drug with APPROVED kidney dosing. Add a rule when a
   new drug-specific calculator ships.
+- **Installable app + offline (PWA, Nov 17 2026):** the generator writes `drugs/app.webmanifest` (scope `/drugs/`, icons in
+  `images/app/`), `drugs/sw.js` (service worker; its version changes whenever the worker, asset versions or the offline page
+  change) and `drugs/offline.html` (noindex), and every drug/supplement page head carries the manifest link and worker
+  registration (`APP_HEAD`). The worker precaches the shell CSS/JS, the index and the search/browse JSON; drug pages are
+  network-first with a 3.5 s fallback to the saved copy, opened pages go to a rolling cache (300), and the index panel
+  "Use the Drug Index as an app" (`#dd-app`) offers Install (Android/desktop prompt; iPhone instructions) and a download of every
+  drug with APPROVED kidney dosing into the `rcm-drugs-saved` cache. Content hashes ignore `APP_HEAD` and asset-version bumps
+  (`HASH_ASSET_VERSION`), so chrome-only changes rewrite pages but keep their "Last updated" date. `_headers` serves `sw.js` with
+  `no-cache`. Clinical rules are unchanged: only approved content is on the pages that get saved.
 - **Build:** `python3 tools/drugdb/build_related_guides.py && python3 tools/drugdb/merge_renal_short.py && python3 generate_drug_pages.py` (workflow
   `drugdb-pages` rebuilds on data changes and Mondays). `generate_sitemap.py` includes `drugs/*.html`
   (not `drugs/category/`). Nav: `patch_nav_drugs.py` adds DRUGS after GUIDES in every guide header.

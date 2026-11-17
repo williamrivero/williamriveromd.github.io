@@ -60,7 +60,8 @@ FDA_VERIFY_URL = "https://verification.fda.gov.ph"
 OG_IMAGE = f"{SITE}/images/og/og-drug-index.jpg"   # 1200x630 share card, JPEG <300 KB for Messenger/WhatsApp (patch_og_images.py)
 FONTS = ("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;"
          "family=Inter:wght@500;600;700;800&amp;family=Nunito+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap")
-ASSET_VERSION = "22"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+ASSET_VERSION = "23"   # bump when drugdb.css / drugdb.js change shape (cache-busting query)
+HASH_ASSET_VERSION = "22"   # version used inside page content hashes, so an asset-only bump does not change every page's "Last updated" date
 
 esc = lambda s: html.escape("" if s is None else str(s), quote=True)
 
@@ -875,6 +876,26 @@ html[data-theme="dark"] .dd-comp-kid { background: #10232a; border-color: #23414
 html[data-theme="dark"] .dd-comp-kh { color: #a5eef2; }
 html[data-theme="dark"] .dd-comp-kh .dd-kidney-ico { color: #a5eef2; }
 html[data-theme="dark"] .dd-comp-caveat { color: #fde68a; background: #2a1d05; border-color: #6b4f12; }
+
+/* Installable app + offline panel (index) */
+.dd-app { margin: 34px 0 22px; padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); }
+.dd-app h2 { font-family: 'Inter', sans-serif; font-size: 20px; margin: 0 0 14px; color: var(--navy); }
+.dd-app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.dd-app-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--bg); }
+.dd-app-card h3 { font-family: 'Inter', sans-serif; font-size: 15.5px; margin: 0 0 8px; color: var(--text); }
+.dd-app-card p { font-size: 14px; line-height: 1.6; color: var(--text-mid); margin: 0 0 10px; }
+.dd-app-card progress { width: 100%; height: 8px; margin: 2px 0 10px; accent-color: #1a6b72; }
+.dd-btn[disabled] { opacity: .6; cursor: progress; }
+.dd-off-h { font-family: 'Inter', sans-serif; font-size: 18px; margin: 26px 0 6px; }
+html.dd-offline body::after { content: "Offline · showing saved pages"; position: fixed; left: 50%; top: 10px; transform: translateX(-50%);
+  z-index: 9999; font: 600 12.5px/1 'Inter', sans-serif; color: #fff; background: #7a4b00; padding: 8px 14px; border-radius: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18); pointer-events: none; }
+html[data-theme="dark"] .dd-app { background: #1a2535; border-color: #2c3a52; }
+html[data-theme="dark"] .dd-app h2 { color: #eef2fb; }
+html[data-theme="dark"] .dd-app-card { background: #141e2c; border-color: #2c3a52; }
+html[data-theme="dark"] .dd-app-card h3 { color: #eef2fb; }
+html[data-theme="dark"] .dd-app-card p { color: #c9d2e0; }
+@media print { .dd-app, .dd-app-chip { display: none !important; } html.dd-offline body::after { display: none; } }
 """
 
 
@@ -1211,6 +1232,75 @@ if(idx){
   else if(sq.value)run();
 }
 })();
+
+/* Installable app + offline downloads */
+(function(){
+'use strict';
+var SAVED='rcm-drugs-saved',KEY='wgmr-drug-offline',deferred=null;
+function net(){document.documentElement.classList.toggle('dd-offline',navigator.onLine===false);}
+window.addEventListener('online',net);window.addEventListener('offline',net);net();
+var box=document.getElementById('dd-app');
+function standalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
+function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
+function showInstall(){
+  var hint=q('hint'),btn=q('install');if(!hint)return;
+  if(standalone()){btn.hidden=true;hint.textContent='You are using the installed Drug Index app.';return;}
+  if(deferred){btn.hidden=false;hint.textContent='Adds a Drug Index icon to your home screen or desktop. It opens full screen and works offline.';return;}
+  btn.hidden=true;
+  if(ios())hint.innerHTML='On iPhone or iPad: tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>. The Drug Index then opens full screen, like an app.';
+}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;showInstall();});
+window.addEventListener('appinstalled',function(){deferred=null;showInstall();});
+if(!box)return;
+showInstall();
+q('install').addEventListener('click',function(){if(!deferred)return;deferred.prompt();
+  (deferred.userChoice||Promise.resolve()).then(function(){deferred=null;showInstall();});});
+
+var dl=q('dl'),rm=q('rm'),st=q('status'),bar=q('bar');
+if(!('caches' in window)||!('serviceWorker' in navigator)){q('off').hidden=true;return;}
+var t=document.querySelector('.dd-meta-time'),dataDate=t?t.getAttribute('datetime')||'':'';
+function rec(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
+function fmtDate(ms){try{return new Date(ms).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return '';}}
+function status(){
+  var r=rec();
+  if(!r){st.textContent='Not downloaded yet.';rm.hidden=true;dl.textContent='Download kidney-dosing drugs';return;}
+  var msg=r.n+' kidney-dosing drug pages saved on '+fmtDate(r.at)+'.';
+  rm.hidden=false;
+  if(dataDate&&r.data&&r.data<dataDate){msg+=' The Drug Index was updated after that; update your saved pages.';dl.textContent='Update saved pages';}
+  else dl.textContent='Download again';
+  st.textContent=msg;
+  if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(function(x){
+    if(x&&x.usage)st.textContent=msg+' Using about '+Math.max(1,Math.round(x.usage/1e6))+' MB on this device.';}).catch(function(){});
+}
+status();
+dl.addEventListener('click',function(){
+  if(navigator.onLine===false){st.textContent='You are offline. Connect to the internet to download.';return;}
+  dl.disabled=true;rm.disabled=true;bar.hidden=false;bar.value=0;st.textContent='Preparing the download…';
+  if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});
+  fetch('/drugs/search-index.json').then(function(r){return r.json();}).then(function(idx){
+    var list=idx.filter(function(e){return e.k&&!e.m;}).map(function(e){return '/drugs/'+e.s;});
+    bar.max=list.length;
+    return caches.open(SAVED).then(function(c){
+      var i=0,done=0,ok=0;
+      function next(){
+        if(i>=list.length)return Promise.resolve();
+        var u=list[i++];
+        return fetch(u,{credentials:'same-origin',cache:'no-cache'}).then(function(res){
+          if(!res.ok)throw new Error(res.status);
+          return res.blob().then(function(b){return c.put(location.origin+u,new Response(b,{headers:{'Content-Type':'text/html; charset=utf-8'}}));});
+        }).then(function(){ok++;},function(){}).then(function(){done++;bar.value=done;st.textContent='Saving '+done+' of '+list.length+'…';return next();});
+      }
+      return Promise.all([next(),next(),next(),next()]).then(function(){return {ok:ok,n:list.length};});
+    });
+  }).then(function(r){
+    try{localStorage.setItem(KEY,JSON.stringify({n:r.ok,at:Date.now(),data:dataDate}));}catch(e){}
+    dl.disabled=false;rm.disabled=false;bar.hidden=true;status();
+    if(r.ok<r.n)st.textContent+=' '+(r.n-r.ok)+' could not be saved; try again on a better connection.';
+  }).catch(function(){dl.disabled=false;rm.disabled=false;bar.hidden=true;st.textContent='The download did not finish. Check your connection and try again.';});
+});
+rm.addEventListener('click',function(){caches.delete(SAVED).then(function(){try{localStorage.removeItem(KEY);}catch(e){}status();});});
+})();
 """
 
 
@@ -1456,7 +1546,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="inde
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script>try{{if(localStorage.getItem('wgmr-dark')==='1')document.documentElement.setAttribute('data-theme','dark');}}catch(e){{}}</script>
+{APP_HEAD}<script>try{{if(localStorage.getItem('wgmr-dark')==='1')document.documentElement.setAttribute('data-theme','dark');}}catch(e){{}}</script>
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 {f'<meta name="keywords" content="{esc(keywords)}">' if keywords else ''}
@@ -1526,6 +1616,182 @@ FLOAT = """
 </body>
 </html>
 """
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# Installable app (PWA): manifest, service worker, offline page
+# ═════════════════════════════════════════════════════════════════════════════
+APP_MARK = '<link rel="manifest" href="/drugs/app.webmanifest">'
+APP_HEAD = (APP_MARK + '\n<meta name="mobile-web-app-capable" content="yes">\n'
+            '<meta name="apple-mobile-web-app-capable" content="yes">\n'
+            '<meta name="apple-mobile-web-app-title" content="Drug Index">\n'
+            '<meta name="apple-mobile-web-app-status-bar-style" content="default">\n'
+            "<script>if('serviceWorker'in navigator)addEventListener('load',function(){navigator.serviceWorker"
+            ".register('/drugs/sw.js',{scope:'/drugs/'}).catch(function(){});});</script>\n")
+
+APP_MANIFEST = {
+    "id": "/drugs/",
+    "name": "Drug Index · Renal Care Matters",
+    "short_name": "Drug Index",
+    "description": "Philippine-registered drugs with kidney dosing and US FDA prescribing information, for health professionals.",
+    "start_url": "/drugs/",
+    "scope": "/drugs/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#ffffff",
+    "theme_color": "#0f1e33",
+    "lang": "en",
+    "dir": "ltr",
+    "categories": ["medical", "health", "reference"],
+    "icons": [
+        {"src": "/images/app/drug-index-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+        {"src": "/images/app/drug-index-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+        {"src": "/images/app/drug-index-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+        {"src": "/images/app/drug-index-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+    ],
+    "shortcuts": [
+        {"name": "Kidney dosing", "short_name": "Kidney dosing", "url": "/drugs/?view=kidney",
+         "icons": [{"src": "/images/app/drug-index-192.png", "sizes": "192x192", "type": "image/png"}]},
+        {"name": "Food supplements & medical nutrition", "short_name": "Supplements", "url": "/drugs/supplements/",
+         "icons": [{"src": "/images/app/drug-index-192.png", "sizes": "192x192", "type": "image/png"}]},
+    ],
+}
+
+SW_JS = r"""/* Generated by generate_drug_pages.py; do not edit. Offline support for the Drug Index app (/drugs/). */
+'use strict';
+var V='__V__';
+var SHELL='rcm-drugs-shell-'+V,PAGES='rcm-drugs-pages',SAVED='rcm-drugs-saved',DATA='rcm-drugs-data',ASSETS='rcm-drugs-assets';
+var SHELL_URLS=__SHELL__;            // must all load, or the install is retried later
+var OPTIONAL_SHELL=__OPTIONAL__;     // nice to have offline
+var CORE_PAGES=['/drugs/','/drugs/offline','/drugs/supplements/'];
+var DATA_URLS=__DATA__;
+var ASSET_URLS=__ASSETS__;
+var MAX_PAGES=300,MAX_ASSETS=400;
+
+function pageKey(u){u=new URL(u,self.location.origin);var p=u.pathname;
+  if(/\/index\.html$/.test(p))p=p.slice(0,-10);else if(/\.html$/.test(p))p=p.slice(0,-5);return u.origin+p;}
+function clean(res){return res.blob().then(function(b){return new Response(b,{status:res.status,statusText:res.statusText,
+  headers:{'Content-Type':res.headers.get('content-type')||'text/html; charset=utf-8'}});});}
+function trim(name,max){return caches.open(name).then(function(c){return c.keys().then(function(k){
+  if(k.length<=max)return;return Promise.all(k.slice(0,k.length-max).map(function(r){return c.delete(r);}));});});}
+function getInto(name,urls,keyFn,html){return caches.open(name).then(function(c){return Promise.all(urls.map(function(u){
+  return fetch(u,{cache:'reload',credentials:'same-origin'}).then(function(r){if(!r.ok)return;
+    return (html?clean(r):Promise.resolve(r)).then(function(x){return c.put(keyFn?keyFn(u):u,x);});}).catch(function(){});}));});}
+
+self.addEventListener('install',function(e){
+  e.waitUntil(caches.open(SHELL).then(function(c){return c.addAll(SHELL_URLS.map(function(u){return new Request(u,{cache:'reload'});}));})
+    .then(function(){return Promise.all([getInto(SHELL,OPTIONAL_SHELL),getInto(SHELL,CORE_PAGES,pageKey,true),
+      getInto(DATA,DATA_URLS),getInto(ASSETS,ASSET_URLS)]);})
+    .then(function(){return self.skipWaiting();}));
+});
+self.addEventListener('activate',function(e){
+  var keep={};DATA_URLS.forEach(function(u){keep[new URL(u,self.location.origin).href]=1;});
+  e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k.indexOf('rcm-drugs-shell-')===0&&k!==SHELL;})
+      .map(function(k){return caches.delete(k);}));})
+    .then(function(){return caches.open(DATA).then(function(c){return c.keys().then(function(ks){   // drop data files from older versions
+      return Promise.all(ks.filter(function(r){return /[?&]v=/.test(r.url)&&!keep[r.url];}).map(function(r){return c.delete(r);}));});});})
+    .then(function(){return self.clients.claim();}));
+});
+
+function offline(){return caches.match(pageKey('/drugs/offline')).then(function(h){return h||new Response(
+  '<!DOCTYPE html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Offline</title>'
+  +'<p style="font-family:sans-serif;padding:24px">You are offline, and this page has not been saved on this device. <a href="/drugs/">Drug Index</a></p>',
+  {status:503,headers:{'Content-Type':'text/html; charset=utf-8'}});});}
+function store(key,res){                 // refresh the copy wherever it lives; new pages go to the rolling cache
+  return caches.open(SHELL).then(function(s){return s.match(key).then(function(h){if(h)return s.put(key,res);
+    return caches.open(SAVED).then(function(sv){return sv.match(key).then(function(h2){if(h2)return sv.put(key,res);
+      return caches.open(PAGES).then(function(p){return p.put(key,res).then(function(){return trim(PAGES,MAX_PAGES);});});});});});});}
+function nav(e){
+  var key=pageKey(e.request.url);
+  var net=fetch(e.request.url,{credentials:'same-origin'}).then(function(res){
+    return clean(res).then(function(cr){
+      if(res.ok&&(res.headers.get('content-type')||'').indexOf('text/html')>=0)e.waitUntil(store(key,cr.clone()));
+      return cr;});});
+  return caches.match(key).then(function(hit){
+    if(!hit)return net.catch(offline);
+    e.waitUntil(net.catch(function(){}));
+    var slow=new Promise(function(r){setTimeout(function(){r(hit);},3500);});   // weak signal: show the saved copy
+    return Promise.race([net.then(function(r){return r.ok?r:hit;},function(){return hit;}),slow]);
+  });
+}
+function swr(e,name,max){var r=e.request;return caches.open(name).then(function(c){return c.match(r).then(function(hit){
+  var net=fetch(r).then(function(res){if(res.ok){c.put(r,res.clone());if(max)trim(name,max);}return res;});
+  if(hit){e.waitUntil(net.catch(function(){}));return hit;}
+  return net.catch(function(){return Response.error();});});});}
+function cacheFirst(r){return caches.match(r).then(function(hit){return hit||fetch(r).then(function(res){
+  if(res.ok){var c=res.clone();caches.open(SHELL).then(function(s){s.put(r,c);});}return res;});});}
+
+self.addEventListener('fetch',function(e){
+  var r=e.request;if(r.method!=='GET')return;
+  var u=new URL(r.url);
+  if(r.mode==='navigate'){if(u.origin===self.location.origin&&u.pathname.indexOf('/drugs/')===0)e.respondWith(nav(e));return;}
+  if(u.origin===self.location.origin){
+    if(u.pathname.indexOf('/drugs/')===0&&/\.json$/.test(u.pathname))return e.respondWith(swr(e,DATA,0));
+    if(/[?&]v=/.test(u.search))return e.respondWith(cacheFirst(r));
+    if(/^\/(assets|images|brand)\//.test(u.pathname)||/\.(png|ico|svg|webp|jpe?g|webmanifest)$/.test(u.pathname))
+      return e.respondWith(swr(e,ASSETS,MAX_ASSETS));
+    return;
+  }
+  if(u.hostname==='fonts.googleapis.com'||u.hostname==='fonts.gstatic.com')e.respondWith(swr(e,ASSETS,MAX_ASSETS));
+});
+"""
+
+
+def supp_asset_version() -> str:
+    m = re.search(r'^SUPP_ASSET_VERSION = "([^"]+)"', (REPO / "generate_supplement_pages.py").read_text(encoding="utf-8"), re.M)
+    return m.group(1) if m else ""
+
+
+def build_sw() -> str:
+    sv = supp_asset_version()
+    shell = [f"/drugs/drugdb.css?v={ASSET_VERSION}", f"/drugs/drugdb.js?v={ASSET_VERSION}"]
+    optional = ["/assets/drug-hero.js?v=3"] + ([f"/drugs/supplements/supp.css?v={sv}", f"/drugs/supplements/supp.js?v={sv}"] if sv else [])
+    data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json",
+            f"/drugs/browse.json?v={ASSET_VERSION}", f"/drugs/browse-brands.json?v={ASSET_VERSION}"]
+    assets = ["/assets/share-buttons.js", "/drugs/app.webmanifest", "/images/app/drug-index-192.png", "/favicon.ico",
+              "/favicon-32x32.png", "/apple-touch-icon.png"]
+    js = (SW_JS.replace("__SHELL__", json.dumps(shell)).replace("__OPTIONAL__", json.dumps(optional))
+          .replace("__DATA__", json.dumps(data)).replace("__ASSETS__", json.dumps(assets)))
+    v = hashlib.sha1((js + offline_page()).encode("utf-8")).hexdigest()[:10]   # new offline page -> new worker
+    return js.replace("__V__", v)
+
+
+def offline_page() -> str:
+    canonical = f"{SITE}/drugs/offline"
+    jsonld = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "@id": canonical, "url": canonical,
+                         "name": "Offline · Drug Index", "inLanguage": "en"})
+    return (head("Offline · Drug Index · Renal Care Matters", "This page is not saved on this device yet.", canonical, jsonld,
+                 "__HASH__", robots="noindex, nofollow")
+            + '<body class="physician-mode single-mode">\n' + header(True) + """
+<section class="hero"><div class="container dd-hero-wide"><div class="hero-grid"><div class="hero-copy">
+<div class="hero-tag">Drug Index · Offline</div>
+<h1>You are offline</h1>
+<p class="hero-sub">This page has not been saved on this device yet. Pages you have opened before, and any you downloaded for offline use,
+are listed below.</p>
+</div></div></div></section>
+<main class="container dd-wide">
+<p><button type="button" class="dd-btn" onclick="location.reload()">Try again</button>
+<a class="dd-btn dd-btn-ghost" href="/drugs/">Drug Index</a></p>
+<h2 class="dd-off-h">Saved on this device</h2>
+<p class="dd-note" id="dd-off-n">Checking saved pages&hellip;</p>
+<ul class="dd-list" id="dd-off-list"></ul>
+</main>
+<script>
+(function(){var L=document.getElementById('dd-off-list'),N=document.getElementById('dd-off-n');
+if(!('caches' in window)){N.textContent='This browser does not keep pages for offline use.';return;}
+var seen={},items=[],names={};
+fetch('/drugs/search-index.json').then(function(r){return r.json();}).then(function(d){d.forEach(function(e){names[e.s]=e.n;});},function(){})
+.then(function(){return Promise.all(['rcm-drugs-saved','rcm-drugs-pages'].map(function(n){return caches.open(n).then(function(c){return c.keys();});}));}).then(function(all){
+  all.forEach(function(ks){ks.forEach(function(r){var p=new URL(r.url).pathname,m=p.match(/^\\/drugs\\/(?:supplements\\/)?([a-z0-9][a-z0-9-]*)$/);
+    if(!m||seen[p]||m[1]==='offline'||m[1]==='view'||m[1]==='index')return;seen[p]=1;
+    var t=(!/supplements/.test(p)&&names[m[1]])||m[1].replace(/-/g,' ');items.push({p:p,t:t.charAt(0).toUpperCase()+t.slice(1),s:p.indexOf('/supplements/')>0});});});
+  items.sort(function(a,b){return a.t.localeCompare(b.t);});
+  N.textContent=items.length?items.length+' page'+(items.length===1?'':'s')+' available offline.':'No drug pages are saved yet. Open the Drug Index while online to save pages as you browse.';
+  items.forEach(function(it){var li=document.createElement('li'),a=document.createElement('a');a.href=it.p;a.textContent=it.t+(it.s?' (supplement)':'');li.appendChild(a);L.appendChild(li);});
+}).catch(function(){N.textContent='Could not read saved pages.';});})();
+</script>
+""" + FOOTER + FLOAT.replace('<script src="/assets/share-buttons.js" defer></script>\n', ''))
+
 
 EXT_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
 
@@ -3505,6 +3771,9 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
                   + (f'<a class="dd-chip" href="/drugs/supplements/?cat=fsmp">{fsmp_only:,} medical-nutrition (FSMP) brands</a>' if fsmp_only else "")
                   + (f'<a class="dd-chip" href="/drugs/supplements/?cat=fsdu">{fsdu_n:,} special dietary food (FSDU) brands</a>' if fsdu_n else ""))
                  if supp_n else "")
+    kid = [e["s"] for e in entries if e.get("k") and not e.get("m")]
+    kid_bytes = sum((REPO / "drugs" / f"{x}.html").stat().st_size for x in kid if (REPO / "drugs" / f"{x}.html").exists())
+    kid_mb = max(5, int(round(kid_bytes / 1e6 / 5.0)) * 5)   # rounded, so the index does not change with every page edit
     canonical = f"{SITE}/drugs/"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
                          "name": "Drug Index · Renal Care Matters", "dateModified": "__ISO__", "inLanguage": "en",
@@ -3522,7 +3791,7 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int) -> str:
         <p class="hero-sub">Every drug product registered with the Food and Drug Administration (FDA) Philippines, grouped by generic name.
 Search by brand, generic, class, indication, manufacturer or registration number.</p>
         <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span>
-<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}</div>
+<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}<a class="dd-chip dd-app-chip no-print" href="#dd-app">Install app · use offline</a></div>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
     </div></div>
   </div>
@@ -3555,6 +3824,28 @@ Search by brand, generic, class, indication, manufacturer or registration number
 <nav class="dd-alpha" id="dd-alpha" aria-label="Filter by first letter">{btns}</nav>
 <div id="dd-az" role="tabpanel" aria-labelledby="dd-tab-generic">{secs}</div>
 <div id="dd-view" role="tabpanel" aria-labelledby="dd-tab-generic" hidden data-src="/drugs/browse.json?v={ASSET_VERSION}" data-brands="/drugs/browse-brands.json?v={ASSET_VERSION}"></div>
+<section class="dd-app no-print" id="dd-app" aria-labelledby="dd-app-h">
+<h2 id="dd-app-h">Use the Drug Index as an app</h2>
+<div class="dd-app-grid">
+<div class="dd-app-card">
+<h3>Install on your phone or computer</h3>
+<p data-app="hint">Add the Drug Index to your home screen from your browser menu (<strong>Install app</strong> or <strong>Add to Home Screen</strong>).
+It opens full screen, like an app.</p>
+<button type="button" class="dd-btn" data-app="install" hidden>Install the app</button>
+</div>
+<div class="dd-app-card" data-app="off">
+<h3>Offline use</h3>
+<p>Once loaded, search and the browse lists work without signal, and every drug page you open is kept on this device.
+To have all {len(kid):,} drugs with approved kidney dosing ready before you need them, download them now (about {kid_mb} MB of storage).</p>
+<p class="dd-note" data-app="status" aria-live="polite"></p>
+<progress data-app="bar" max="1" value="0" hidden></progress>
+<button type="button" class="dd-btn" data-app="dl" data-n="{len(kid)}">Download kidney-dosing drugs</button>
+<button type="button" class="dd-btn dd-btn-ghost" data-app="rm" hidden>Remove saved pages</button>
+<p class="dd-note">Saved pages refresh each time you open them online. Check a page's "Last updated" date before relying on it offline,
+and verify doses against the current Philippine package insert.</p>
+</div>
+</div>
+</section>
 <div class="disclaimer" role="note"><strong>For health professionals.</strong> Product data come from the FDA Philippines registration
 database and may lag behind the official record; verify on <a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">verification.fda.gov.ph</a>
 and the current Philippine package insert. Not a substitute for clinical judgment.</div>
@@ -3615,15 +3906,23 @@ _ISO_RE = re.compile(r'<meta property="article:modified_time" content="(\d{4}-\d
 def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: bool) -> str:
     """Fill hash/date placeholders. Keeps the previous date when content is unchanged.
     Returns 'new' | 'changed' | 'same'."""
-    h = hashlib.sha1(template.encode("utf-8")).hexdigest()[:16]
+    hashed = template.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
+    h = hashlib.sha1(hashed.encode("utf-8")).hexdigest()[:16]
     when, state = today, "new"
     if path.exists():
         with open(path, encoding="utf-8") as fh:
             headtxt = fh.read(4096)
         m, d = _HASH_RE.search(headtxt), _ISO_RE.search(headtxt)
         if m and m.group(1) == h and not force_date:
-            return "same"
-        state = "changed"
+            # same content: rewrite only when the app tags or asset versions are missing, keeping the old date
+            if APP_MARK in headtxt and (f"?v={ASSET_VERSION}" in headtxt
+                                        or f"?v={ASSET_VERSION}" in path.read_text(encoding="utf-8")):
+                return "same"
+            if d:
+                when = dt.date.fromisoformat(d.group(1))
+            state = "chrome"
+        else:
+            state = "changed"
     out = (template.replace("__HASH__", h).replace("__ISO__", when.isoformat()).replace("__DATE__", us_date(when)))
     if not dry:
         tmp = path.with_suffix(path.suffix + ".tmp")
@@ -3668,6 +3967,9 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     write_if_changed(out_dir / "drugdb.css", build_css(), a.dry_run)
     write_if_changed(out_dir / "drugdb.js", DRUG_JS, a.dry_run)
+    write_if_changed(out_dir / "app.webmanifest", json.dumps(APP_MANIFEST, ensure_ascii=False, indent=1) + "\n", a.dry_run)
+    write_if_changed(out_dir / "sw.js", build_sw(), a.dry_run)
+    finalize(out_dir / "offline.html", offline_page(), today, a.dry_run, False)
 
     only = set(s.strip() for s in a.only.split(",")) if a.only else None
     stats = defaultdict(int)
@@ -3706,7 +4008,7 @@ def main():
         stats["cat-" + finalize(cdir / f"{cs}.html", category_page(c, items), today, a.dry_run, False)] += 1
 
     if not a.no_prune and only is None:
-        keep = {e["s"] for e in entries} | {"index"}
+        keep = {e["s"] for e in entries} | {"index", "offline"}
         for d, kp in ((out_dir, keep), (cdir, cat_keep)):
             for f in d.glob("*.html"):
                 if f.stem in kp:
