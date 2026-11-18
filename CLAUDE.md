@@ -682,7 +682,7 @@ the `<head>` of every `guides/calc-*.html` and `guides/ckd-dri-calculator.html`,
 them immutable). Edit the unhashed sources, then run `build_calc_app.py`. The layer gives every calculator one compact
 "clinical instrument" design (white card with a teal top rule, one Units row, sentence-case labels, 16 px inputs so iOS
 does not zoom, tabular-number result readout, a folded "Formula, sources & limitations" note) without editing pages. On a
-page with 2+ calculators, each starts collapsed to its numbered title ("Expand all", #hash links and printing open them).
+page with 2+ calculators, each starts collapsed to its numbered title ("Expand all", #hash links and printing open them). A calculator unit is a `.calc-wrap` / `.calc-card`, a `.kapc-tool` / `.mgc-panel`, or any box marked `data-calc-unit` (used on `calc-dialysis-prescription.html`); a marked box that opens with its own h2/h3 is titled by it (a typed "1 —" number is dropped). **Give a new multi-calculator page `.calc-card` units or `data-calc-unit` boxes so it collapses.** Tabbed pages (PROM suite, SLEDAI, frailty, nutrition screening, CQI toolkit) keep their tabs. Calculo applies updates to saved calculators on its own when the offline manifest changes (`calc-app.js`).
 Each calculator gets a **Sample data** button that fills the fields from the page's own `e.g.` placeholders (score-type
 calculators: a middle answer; up to 3 date fields), marks them amber, and **Clear sample** restores the previous values;
 pages that already have their own Example buttons are skipped. Sample values never reach the shared patient store

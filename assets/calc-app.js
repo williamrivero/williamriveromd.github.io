@@ -156,7 +156,12 @@
       }).catch(function () {});
     }
     status();
-    if (navigator.onLine !== false) manifest().then(function (m) { cur = m; if (!busy) status(); }, function () {});
+    // Saved calculators update themselves (Nov 18 2026): when the set on this device is complete but the site has
+    // changed since, fetch just the changed files in the background, so the app never keeps showing old pages.
+    if (navigator.onLine !== false) manifest().then(function (m) {
+      cur = m; if (!busy) status();
+      var r0 = rec(); if (r0 && r0.done && r0.h && m.h !== r0.h && !busy) run();
+    }, function () {});
 
     function run() {
       if (busy) return;

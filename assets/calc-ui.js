@@ -14,14 +14,17 @@
   var d = document, KEY = 'wgmr-rx-patient';
   function $$(s, r) { return Array.prototype.slice.call((r || d).querySelectorAll(s)); }
   function vis(e) { return !!(e && e.getClientRects().length); }
+  // Calculator units: the standard cards, plus pages built with their own tool boxes (ketoanalogue plan
+  // check, magnesium replacement) and any box marked data-calc-unit (dialysis prescription).
+  var UNIT = '.calc-wrap, .calc-card, .kapc-tool, .mgc-panel, [data-calc-unit]';
   var CHEV = '<svg class="cx-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
   var ICON_SAMPLE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M7 15h10"/></svg>';
   var ICON_CLEAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>';
 
   function init() {
     var main = d.querySelector('main') || d.body;
-    var units = $$('.calc-wrap, .calc-card', main).filter(function (u) {
-      return !u.parentElement.closest('.calc-wrap, .calc-card');
+    var units = $$(UNIT, main).filter(function (u) {
+      return !u.parentElement.closest(UNIT);
     });
 
     // 1. Units row
@@ -59,11 +62,13 @@
 
   /* ── Collapsible calculators ─────────────────────────────────────────── */
   function collapse(main, units) {
-    var heads = $$('h2, h3', main).filter(function (h) { return !h.closest('.calc-wrap, .calc-card, .cx-unit'); });
+    var heads = $$('h2, h3', main).filter(function (h) { return !h.closest(UNIT + ', .cx-unit'); });
     var made = [];
     units.forEach(function (u, i) {
       var prev = units[i - 1], h = null;
-      heads.forEach(function (x) {
+      // A non-standard box that opens with its own heading (h2/h3) is titled by it, not by a heading above it.
+      var own = !u.matches('.calc-wrap, .calc-card') && u.firstElementChild && /^H[23]$/.test(u.firstElementChild.tagName) ? u.firstElementChild : null;
+      if (!own) heads.forEach(function (x) {
         var before = x.compareDocumentPosition(u) & Node.DOCUMENT_POSITION_FOLLOWING;
         var afterPrev = !prev || (prev.compareDocumentPosition(x) & Node.DOCUMENT_POSITION_FOLLOWING);
         if (before && afterPrev) h = x;
@@ -80,6 +85,15 @@
         var n = h.nextSibling;
         box.appendChild(h); box.appendChild(body);
         while (n) { var nx = n.nextSibling; body.appendChild(n); if (n === top) break; n = nx; }
+      } else if (own) {
+        head = own;
+        $$('.mgc-step', own).forEach(function (x) { x.remove(); });
+        // drop a hand-typed number ("1 — spKt/V") since the index adds its own
+        if (own.firstChild && own.firstChild.nodeType === 3) own.firstChild.nodeValue = own.firstChild.nodeValue.replace(/^\s*\d+\s*[—–·.-]\s*/, '');
+        own.style.color = ''; own.style.margin = '';
+        u.parentNode.insertBefore(box, u);
+        var b3 = d.createElement('div'); b3.className = 'cx-body';
+        box.appendChild(own); box.appendChild(b3); b3.appendChild(u);
       } else {
         head = d.createElement('h3');
         var lead = u.querySelector('h3, h4, .calc-title');
