@@ -3673,7 +3673,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     if renal_approved(renal) and isinstance(renal.get("pediatric"), dict):
         pr = renal["pediatric"]
         rows = [(lab, _kval(pr.get(k))[0]) for k, lab in (("approved_ages", "Approved ages"), ("usual_dose", "Usual dose"),
-                                                          ("max_dose", "Maximum dose")) if pr.get(k) not in (None, "", [])]
+                                                          ("max_dose", "Maximum dose"), ("neonates", "Neonates")) if pr.get(k) not in (None, "", [])]
         notes = pr.get("notes") if isinstance(pr.get("notes"), list) else ([pr["notes"]] if pr.get("notes") else [])
         if rows or notes:
             ped = ('<dl class="dd-kgrid">' + "".join(f'<div class="dd-kcell"><dt>{esc(a)}</dt><dd>{esc(b)}</dd></div>' for a, b in rows)

@@ -963,7 +963,14 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   `prices.json`, `controlled.json` (DDB S2 / precursors), `pharmacies.json` (link-outs only — no scraped prices).
 - **Clinical content** (`renal/`, `renal-short/`, `summary/<slug>.json`) renders **only** when
   `review_status == "approved"` (Dr. Rivero's sign-off). Agents draft as `"pending"`; never set "approved"
-  without his explicit approval. Sources: US labels (public domain) and PubMed-verified literature/guidelines —
+  without his explicit approval. **Delegated sign-off (Dr. Rivero, Nov 18 2026):** do not route routine drafts back to
+  him item by item. The agent sets `"approved"` itself when every statement is (a) a value he supplied, (b) US-label text
+  verified on openFDA/DailyMed (quoted or faithfully summarized), or (c) a descriptive finding from PubMed-verified
+  literature, cited and worded at the evidence level ("associated with"), adding no dose recommendation that no label or
+  guideline states. Log it in `revision_log` with `approved_by: "W. G. M. Rivero, MD (delegated to Claude, <date>)"` and
+  list what was approved in the reply. Still ask him first for: a dose recommendation stated by no label or guideline, a
+  conflict between sources that needs a clinical call, removing or softening a contraindication or warning, or anything
+  that would rest on an excluded source. Sources: US labels (public domain) and PubMed-verified literature/guidelines —
   never Lexicomp, UpToDate, Micromedex, MIMS, Renal Drug Handbook, Sanford. Kidney bands keep the label's
   measure (Cockcroft–Gault CrCl stays CrCl). Tile colors: green no change · amber dose/caution · red avoid ·
   gray not studied · `hide` = band not applicable.
