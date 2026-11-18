@@ -26,7 +26,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent
 G = REPO / "guides"
-ASSET_V = "5"   # bump when assets/calc-app.js changes
+ASSET_V = "6"   # bump when assets/calc-app.js changes
 
 HEAD_START, HEAD_END = "<!-- CALC-APP-START -->", "<!-- CALC-APP-END -->"
 CTA_START, CTA_END = "<!-- CALC-APP-CTA-START -->", "<!-- CALC-APP-CTA-END -->"

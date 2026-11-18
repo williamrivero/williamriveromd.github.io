@@ -128,6 +128,13 @@
        paragraph you were reading.
      - book posture (two side-by-side viewport segments): the list and the pane meet at the fold. */
   var EXPANDED = 840, CARRY = 'ca-carry';
+  // Two panes only where a platform would use them: a touch screen (or the installed app) at least 840 wide and
+  // 500 tall (unfolded foldables, the iPhone Duo, iPads). Desktop browsers keep ordinary page links, and phones held
+  // sideways (about 390-430 px tall) keep one pane.
+  function twoPane() {
+    var touch = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || standalone();
+    return touch && window.innerWidth >= EXPANDED && window.innerHeight >= 500;
+  }
   function segs() { var v = window.viewport || window.visualViewport || {}; var s = v.segments;
     return s && s.length === 2 && Math.abs(s[0].top - s[1].top) < 2 ? s : null; }
   function calcHref(a) {
@@ -253,7 +260,7 @@
       location.href = open;
     }
     function layout() {
-      var wide = window.innerWidth >= EXPANDED;
+      var wide = twoPane();
       if (wide) {
         root.style.setProperty('--ca-pane', paneWidth() + 'px');
         if (!root.classList.contains('ca-split')) { root.classList.add('ca-split'); if (!pane) build(); }

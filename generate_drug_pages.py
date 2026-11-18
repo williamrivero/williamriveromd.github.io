@@ -1557,7 +1557,11 @@ function show(path,push){
   mark();}
 function goFull(){try{sessionStorage.setItem(CARRY,JSON.stringify({path:open.split('?')[0],a:topId(frame.contentWindow),at:Date.now()}));}catch(e){}
   location.href=open;}
-function layout(){var wide=window.innerWidth>=EXPANDED;
+/* two panes only on a touch screen (or the installed app) at least 840 wide and 500 tall: unfolded foldables, the
+   iPhone Duo, iPads; desktop browsers keep ordinary links and phones held sideways keep one pane */
+function twoPane(){var touch=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+  return touch&&window.innerWidth>=EXPANDED&&window.innerHeight>=500;}
+function layout(){var wide=twoPane();
   if(wide){root.style.setProperty('--dd-pane',paneWidth()+'px');if(!root.classList.contains('dd-split')){root.classList.add('dd-split');if(!pane)build();}}
   else if(root.classList.contains('dd-split')){if(open){goFull();return;}root.classList.remove('dd-split');root.style.removeProperty('--dd-pane');}}
 document.addEventListener('click',function(e){
@@ -4406,6 +4410,7 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
               .replace(APP_ICON_TAG, LEGACY_ICON_TAG).replace(VIEWPORT_FIT, ""))
     template = fill_assets(template)
     css_url = drugdb_assets()["css_url"]
+    js_url = drugdb_assets()["js_url"]
     h = hashlib.sha1(hashed.encode("utf-8")).hexdigest()[:16]
     when, state = today, "new"
     if path.exists():
@@ -4414,8 +4419,17 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
         m, d = _HASH_RE.search(headtxt), _ISO_RE.search(headtxt)
         if m and m.group(1) == h and not force_date:
             # same content: rewrite only when the app tags or asset versions are missing, keeping the old date
-            if APP_HEAD in headtxt and APP_ICON_TAG in headtxt and VIEWPORT_FIT in headtxt and (css_url in headtxt
-                                        or css_url in path.read_text(encoding="utf-8")):
+            # (both fingerprinted asset URLs must be current: a JS-only change must still repoint the page,
+            #  because the previous drugdb.<hash>.js is pruned)
+            body_txt = None
+            def _has(u):
+                nonlocal body_txt
+                if u in headtxt:
+                    return True
+                if body_txt is None:
+                    body_txt = path.read_text(encoding="utf-8")
+                return u in body_txt
+            if APP_HEAD in headtxt and APP_ICON_TAG in headtxt and VIEWPORT_FIT in headtxt and _has(css_url) and _has(js_url):
                 return "same"
             if d:
                 when = dt.date.fromisoformat(d.group(1))

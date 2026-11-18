@@ -531,7 +531,11 @@ function show(path,push){
   mark();}
 function goFull(){try{sessionStorage.setItem(CARRY,JSON.stringify({path:open.split('?')[0],a:topId(frame.contentWindow),at:Date.now()}));}catch(e){}
   location.href=open;}
-function layout(){var wide=window.innerWidth>=EXPANDED;
+/* two panes only on a touch screen (or the installed app) at least 840 wide and 500 tall: unfolded foldables, the
+   iPhone Duo, iPads; desktop browsers keep ordinary links and phones held sideways keep one pane */
+function twoPane(){var touch=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+  return touch&&window.innerWidth>=EXPANDED&&window.innerHeight>=500;}
+function layout(){var wide=twoPane();
   if(wide){root.style.setProperty('--dd-pane',paneWidth()+'px');if(!root.classList.contains('dd-split')){root.classList.add('dd-split');if(!pane)build();}}
   else if(root.classList.contains('dd-split')){if(open){goFull();return;}root.classList.remove('dd-split');root.style.removeProperty('--dd-pane');}}
 document.addEventListener('click',function(e){

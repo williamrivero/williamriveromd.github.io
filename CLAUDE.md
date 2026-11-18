@@ -702,7 +702,7 @@ Fold or an iPhone Duo held sideways is expanded; Duo Split View halves, ~445 px,
   Dosis template), so `env(safe-area-inset-*)` is real on iOS; `html` is padded left/right by the insets (side notch, the
   Duo's vertical Dynamic Island). Dosis leaves `, viewport-fit=cover` out of its content hash (`VIEWPORT_FIT`), so it never
   re-dates pages.
-- **List | detail on expanded windows:** the calculators index (`calc-app.js`) and the Drug Index (`DRUG_JS`, body
+- **List | detail on expanded touch windows** (pointer: coarse or the installed app, ≥ 840 wide and ≥ 500 tall; desktop browsers and phones held sideways keep one pane): the calculators index (`calc-app.js`) and the Drug Index (`DRUG_JS`, body
   `.dd-index-page`) keep the list on the left and open the tapped calculator / drug page in a right-hand pane (an iframe of
   the real page, so offline copies, the service workers and each page's scripts keep working). URL `#calc=<path>` /
   `#d=<path>`; Back closes or steps through the pane. Inside the pane the page gets `html.ca-framed` / `html.dd-framed`
