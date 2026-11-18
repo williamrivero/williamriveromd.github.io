@@ -14,6 +14,8 @@
     });
   }
 
+  var FRAMED = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  if (FRAMED) document.documentElement.classList.add('ca-framed');
   function standalone() { return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
   function ios() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
   function onIndex() { return /^\/guides\/calculators(\.html)?$/.test(location.pathname); }
@@ -67,7 +69,40 @@
     + '.ca-appbar a:active,.ca-appbar button:active,.ca-appbar [aria-current="page"]{background:rgba(255,255,255,.16)}'
     + '.ca-appbar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}'
     + '@media (max-width:400px){.ca-appbar a,.ca-appbar button{padding:0 10px;font-size:12px}.ca-appbar .ca-lbl-print{display:none}}'
-    + '@media print{.ca-appbar,.ca-panel,.ca-cta{display:none!important}html.ca-offline body::after{display:none}}';
+    + '@media print{.ca-appbar,.ca-panel,.ca-cta{display:none!important}html.ca-offline body::after{display:none}}'
+    /* Foldables & large screens (Nov 18 2026) */
+    + '.ca-grid{grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}'
+    + '@media (max-width:380px){.ca-panel{padding:16px 14px}.ca-card{padding:14px}}'
+    // edge-to-edge (viewport-fit=cover): keep content clear of side notches / the Duo's side Dynamic Island
+    + 'html{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}'
+    // a calculator shown in the index's right-hand pane: no site chrome of its own
+    + 'html.ca-framed .site-header,html.ca-framed .guide-toggle-bar,html.ca-framed .calc-nav-pill,html.ca-framed .ca-appbar,'
+    + 'html.ca-framed .float-controls,html.ca-framed .float-controls-left,html.ca-framed .print-btn,html.ca-framed .scroll-top-btn,'
+    + 'html.ca-framed .rcm-rail,html.ca-framed .related-guides{display:none!important}'
+    + 'html.ca-framed body{padding-bottom:24px!important}html.ca-framed section.hero{padding-top:18px!important}'
+    + 'html.ca-framed .nav-strip{top:0!important}'
+    // calculators index: list | detail
+    + 'html.ca-split body{margin-right:var(--ca-pane)}'
+    + 'html.ca-split .float-controls,html.ca-split .sc-fab{right:calc(var(--ca-pane) + 20px)!important}'
+    + 'html.ca-split .scroll-top-btn{right:calc(var(--ca-pane) + 24px)!important}'
+    + 'html.ca-split .ca-appbar{left:calc((100% - var(--ca-pane)) / 2)}'
+    + '.ca-pane{position:fixed;top:0;right:0;bottom:0;width:var(--ca-pane);z-index:60;display:flex;flex-direction:column;'
+    + 'background:var(--bg,#f9fafb);border-left:1px solid var(--border,#dfe6f0);padding-right:env(safe-area-inset-right,0px);box-shadow:-8px 0 24px -18px rgba(15,30,51,.35)}'
+    + '.ca-pane-bar{flex:none;display:flex;align-items:center;gap:8px;min-height:52px;padding:6px 8px 6px 16px;padding-top:max(6px,env(safe-area-inset-top,0px));'
+    + 'background:#312e81;color:#fff}'
+    + '.ca-pane-bar b{flex:1;min-width:0;font:700 14.5px/1.3 Inter,system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}'
+    + '.ca-pane-bar a,.ca-pane-bar button{flex:none;display:inline-grid;place-items:center;width:44px;height:44px;border:0;border-radius:10px;background:transparent;color:#fff;cursor:pointer}'
+    + '.ca-pane-bar a:active,.ca-pane-bar button:active{background:rgba(255,255,255,.16)}'
+    + '.ca-pane-bar svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}'
+    + '.ca-pane iframe{flex:1;width:100%;border:0;background:var(--bg,#f9fafb)}'
+    + '.ca-pane-empty{flex:1;display:grid;place-items:center;text-align:center;padding:32px;color:var(--text-muted,#5b6b82);font:500 15px/1.6 Manrope,system-ui,sans-serif}'
+    + '.ca-pane-empty img{width:72px;height:72px;border-radius:18px;margin:0 auto 14px;display:block;opacity:.9}'
+    + '.ca-pane[data-state="empty"] iframe,.ca-pane[data-state="empty"] .ca-pane-bar a,.ca-pane[data-state="empty"] .ca-pane-bar button{display:none}'
+    + '.ca-pane[data-state="open"] .ca-pane-empty{display:none}'
+    + '.ca-picked{outline:2.5px solid #4338ca!important;outline-offset:2px;border-radius:12px}'
+    + 'html[data-theme="dark"] .ca-pane{background:#0f1724;border-color:#2c3a52}html[data-theme="dark"] .ca-pane iframe{background:#0f1724}'
+    + 'html[data-theme="dark"] .ca-pane-bar{background:#1e1b4b}'
+    + '@media print{.ca-pane{display:none!important}html.ca-split body{margin-right:0}}';
   var st = document.createElement('style'); st.id = 'calc-app-style'; st.textContent = css; document.head.appendChild(st);
 
   function net() { document.documentElement.classList.toggle('ca-offline', navigator.onLine === false); }
@@ -82,9 +117,177 @@
     return false;
   }
 
+  /* ── Foldables & large screens (Nov 18 2026) ───────────────────────────────────────────────────
+     Designed for window sizes, not devices (Android: compact < 600, medium 600–839, expanded ≥ 840 px):
+     - calculators index on an expanded window: list on the left, the tapped calculator in a pane on the
+       right (iPad Mail / Gmail pattern). The pane is the real calculator page in an iframe, so its own
+       scripts, the offline copies and the shared patient values all keep working.
+     - nothing is lost when the phone folds or unfolds: the window resizes live; if it drops below the
+       two-pane width while a calculator is open, that calculator opens full screen with the values you
+       typed and your place on the page (sessionStorage 'ca-carry'); on any page the screen stays on the
+       paragraph you were reading.
+     - book posture (two side-by-side viewport segments): the list and the pane meet at the fold. */
+  var EXPANDED = 840, CARRY = 'ca-carry';
+  function segs() { var v = window.viewport || window.visualViewport || {}; var s = v.segments;
+    return s && s.length === 2 && Math.abs(s[0].top - s[1].top) < 2 ? s : null; }
+  function calcHref(a) {
+    if (!a || !a.href || a.target === '_blank' || a.hasAttribute('download')) return null;
+    var u; try { u = new URL(a.href, location.href); } catch (e) { return null; }
+    if (u.origin !== location.origin || !/^\/guides\/calc-[\w-]+(\.html)?$/.test(u.pathname)) return null;
+    return u.pathname.replace(/\.html$/, '') + u.search;
+  }
+  function fieldsOf(doc) {
+    var out = {};
+    Array.prototype.forEach.call(doc.querySelectorAll('main input[id], main select[id], main textarea[id]'), function (el) {
+      if (el.type === 'button' || el.type === 'submit' || el.type === 'file' || el.hasAttribute('data-rcm-sample')) return;
+      out[el.id] = (el.type === 'checkbox' || el.type === 'radio') ? (el.checked ? '1' : '') : el.value;
+    });
+    return out;
+  }
+  function anchorOf(win) {
+    // the first block near the top of the screen, as a selector we can find again on the other layout
+    var doc = win.document, y = 90;
+    var el = doc.elementFromPoint(Math.min(win.innerWidth / 2, 240), y);
+    while (el && el !== doc.body && !el.id) el = el.parentElement;
+    return el && el.id ? el.id : null;
+  }
+  function restoreCarry() {
+    var c; try { c = JSON.parse(sessionStorage.getItem(CARRY) || 'null'); } catch (e) { c = null; }
+    if (!c || c.path !== location.pathname.replace(/\.html$/, '') || Date.now() - c.at > 60000) return;
+    try { sessionStorage.removeItem(CARRY); } catch (e) {}
+    var apply = function () {
+      Object.keys(c.f || {}).forEach(function (id) {
+        var el = document.getElementById(id); if (!el) return;
+        if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!c.f[id]; else el.value = c.f[id];
+        el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      if (c.a) { var t = document.getElementById(c.a); if (t) { var box = t.closest('.cx-unit'); if (box && !box.classList.contains('cx-open')) { var h = box.querySelector('.cx-head'); if (h) h.click(); } t.scrollIntoView({ block: 'start' }); } }
+    };
+    setTimeout(apply, 60);
+  }
+  function keepPlace() {
+    // Remember what is at the top of the screen; after a width change (fold/unfold, rotation, Split View),
+    // scroll so the same element is back where it was.
+    var held = null, w = window.innerWidth, tick = 0;
+    function remember() {
+      var el = document.elementFromPoint(Math.min(window.innerWidth / 2, 260), 110);
+      while (el && el !== document.body && el.getBoundingClientRect().height > window.innerHeight * 0.9) el = el.firstElementChild;
+      if (el && el !== document.body && el !== document.documentElement) held = { el: el, top: el.getBoundingClientRect().top };
+    }
+    window.addEventListener('scroll', function () { if (!tick) tick = requestAnimationFrame(function () { tick = 0; remember(); }); }, { passive: true });
+    window.addEventListener('resize', function () {
+      if (Math.abs(window.innerWidth - w) < 40) return;
+      w = window.innerWidth;
+      var f = document.activeElement;
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        if (f && /^(INPUT|SELECT|TEXTAREA)$/.test(f.tagName)) { f.scrollIntoView({ block: 'center' }); return; }
+        if (held && held.el.isConnected) window.scrollBy(0, held.el.getBoundingClientRect().top - held.top);
+      }); });
+    });
+    setTimeout(remember, 400);
+  }
+  function adaptive() {
+    if (FRAMED) {
+      // inside the index pane: pages outside the calculators open in the whole app window
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
+        var u; try { u = new URL(a.href, location.href); } catch (x) { return; }
+        if (u.origin !== location.origin || !/^\/guides\/calc-/.test(u.pathname)) a.target = '_top';
+      }, true);
+      return;
+    }
+    restoreCarry();
+    keepPlace();
+    if (!onIndex()) return;
+
+    var root = document.documentElement, pane = null, frame = null, title = null, picked = null, open = null;
+    function paneWidth() {
+      var s = segs();
+      if (s) return Math.round(window.innerWidth - s[1].left);             // book posture: pane = right half
+      return Math.round(Math.min(Math.max(window.innerWidth * 0.56, 420), 760));
+    }
+    function build() {
+      pane = document.createElement('aside'); pane.className = 'ca-pane'; pane.dataset.state = 'empty';
+      pane.setAttribute('aria-label', 'Calculator');
+      pane.innerHTML = '<div class="ca-pane-bar"><b>Calculator</b>'
+        + '<a data-p="full" aria-label="Open full screen" href="#"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></a>'
+        + '<button type="button" data-p="close" aria-label="Close calculator"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>'
+        + '<iframe title="Calculator" loading="eager"></iframe>'
+        + '<div class="ca-pane-empty"><div><img src="/images/app/calculo-192.png" alt="">Choose a calculator from the list.<br>It opens here, next to the list.</div></div>';
+      document.body.appendChild(pane);
+      frame = pane.querySelector('iframe'); title = pane.querySelector('b');
+      pane.querySelector('[data-p="close"]').addEventListener('click', function () { show(null, true); });
+      pane.querySelector('[data-p="full"]').addEventListener('click', function (e) { e.preventDefault(); if (open) goFull(); });
+      frame.addEventListener('load', function () {
+        var d2; try { d2 = frame.contentDocument; } catch (x) { return; }
+        if (!d2 || !frame.contentWindow) return;
+        var path = frame.contentWindow.location.pathname.replace(/\.html$/, '');
+        if (!/^\/guides\/calc-/.test(path)) return;
+        open = path + frame.contentWindow.location.search;
+        var h1 = d2.querySelector('h1'); title.textContent = (h1 ? h1.textContent : d2.title).replace(/\s+/g, ' ').trim();
+        if (location.hash !== '#calc=' + open) history.replaceState(history.state, '', '#calc=' + open);
+        mark();
+      });
+    }
+    function mark() {
+      if (picked) picked.classList.remove('ca-picked'); picked = null;
+      if (!open) return;
+      var links = document.querySelectorAll('main a[href]');
+      for (var i = 0; i < links.length; i++) if (calcHref(links[i]) === open) { picked = links[i]; picked.classList.add('ca-picked'); break; }
+    }
+    function show(path, push) {
+      if (!pane) build();
+      open = path;
+      pane.dataset.state = path ? 'open' : 'empty';
+      if (path) { if (frame.getAttribute('src') !== path) frame.setAttribute('src', path); }
+      else { frame.removeAttribute('src'); title.textContent = 'Calculator'; }
+      var h = path ? '#calc=' + path : location.pathname + location.search;
+      if (push) history.pushState({ calc: path || '' }, '', h);
+      mark();
+    }
+    function goFull() {
+      try {
+        var w = frame.contentWindow;
+        sessionStorage.setItem(CARRY, JSON.stringify({ path: open.split('?')[0], f: fieldsOf(w.document), a: anchorOf(w), at: Date.now() }));
+      } catch (e) {}
+      location.href = open;
+    }
+    function layout() {
+      var wide = window.innerWidth >= EXPANDED;
+      if (wide) {
+        root.style.setProperty('--ca-pane', paneWidth() + 'px');
+        if (!root.classList.contains('ca-split')) { root.classList.add('ca-split'); if (!pane) build(); }
+      } else if (root.classList.contains('ca-split')) {
+        if (open) { goFull(); return; }               // folded shut with a calculator open: keep it on screen
+        root.classList.remove('ca-split'); root.style.removeProperty('--ca-pane');
+      }
+    }
+    document.addEventListener('click', function (e) {
+      if (!root.classList.contains('ca-split') || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      var a = e.target.closest && e.target.closest('a[href]'); var path = calcHref(a);
+      if (!path || (pane && pane.contains(a))) return;
+      e.preventDefault(); show(path, true);
+    });
+    window.addEventListener('popstate', function (e) {
+      if (!root.classList.contains('ca-split')) return;
+      var m = /^#calc=(.+)$/.exec(location.hash);
+      if (m) show(decodeURIComponent(m[1]), false);
+      else if (!location.hash || (e.state && e.state.calc === '')) show(null, false);   // back past the first calculator; section jumps are left alone
+    });
+    window.addEventListener('resize', layout);
+    if (navigator.devicePosture && navigator.devicePosture.addEventListener) navigator.devicePosture.addEventListener('change', layout);
+    layout();
+    var m0 = /^#calc=(.+)$/.exec(location.hash);
+    if (m0) {
+      var p0 = decodeURIComponent(m0[1]);
+      if (root.classList.contains('ca-split')) show(p0, false); else location.replace(p0);
+    }
+  }
+
   function init() {
     /* Installed app: one bottom bar instead of the browser toolbar and the page pill */
-    if (standalone() && !document.querySelector('.ca-appbar')) {
+    adaptive();
+    if (standalone() && !FRAMED && !document.querySelector('.ca-appbar')) {
       document.documentElement.classList.add('ca-standalone');
       var bar = document.createElement('nav'); bar.className = 'ca-appbar'; bar.setAttribute('aria-label', 'Calculo navigation');
       bar.innerHTML =

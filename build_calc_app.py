@@ -26,7 +26,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent
 G = REPO / "guides"
-ASSET_V = "4"   # bump when assets/calc-app.js changes
+ASSET_V = "5"   # bump when assets/calc-app.js changes
 
 HEAD_START, HEAD_END = "<!-- CALC-APP-START -->", "<!-- CALC-APP-END -->"
 CTA_START, CTA_END = "<!-- CALC-APP-CTA-START -->", "<!-- CALC-APP-CTA-END -->"
@@ -228,8 +228,20 @@ def strip_block(t: str, a: str, b: str) -> str:
     return re.sub(re.escape(a) + r".*?" + re.escape(b) + r"\n?", "", t, flags=re.S)
 
 
+VIEWPORT = "width=device-width, initial-scale=1.0, viewport-fit=cover"
+
+
+def fit_viewport(t: str) -> str:
+    """Edge-to-edge (Nov 18 2026): viewport-fit=cover, so env(safe-area-inset-*) report the real notch,
+    Dynamic Island (vertical and on the side on the iPhone Duo) and home-indicator insets; without it iOS
+    reports 0 and the app bars' safe-area padding does nothing."""
+    return re.sub(r'(<meta\b[^>]*name="viewport"[^>]*>)',
+                  lambda m: re.sub(r'content="[^"]*"', f'content="{VIEWPORT}"', m.group(1)), t, count=1)
+
+
 def patch_page(t: str) -> str:
     t = strip_block(t, HEAD_START, HEAD_END)
+    t = fit_viewport(t)
     m = re.search(r'<meta[^>]*name="viewport"[^>]*>\n?', t)
     if not m:
         return t

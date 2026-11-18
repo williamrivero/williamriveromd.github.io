@@ -695,6 +695,30 @@ share-bar eligibility minus `calculators.html`). On calculators the rail shows *
 `calc-ui.css` hides `.dr-card-wrap` (the markup stays because `patch_references_accordion.py` anchors on it), and every
 calculator footer ends with `© 2026 renalcarematters.com`.
 
+**Foldables, large screens and the Home Screen apps (Nov 18 2026; both Calculo and Dosis).** Designed for window
+sizes, not devices (Android classes: compact < 600 px, medium 600–839, expanded ≥ 840; an unfolded Galaxy Z Fold / Pixel
+Fold or an iPhone Duo held sideways is expanded; Duo Split View halves, ~445 px, and all cover screens are compact).
+- **Edge-to-edge:** every calculator and Dosis page uses `viewport-fit=cover` (`build_calc_app.py` `fit_viewport()`; the
+  Dosis template), so `env(safe-area-inset-*)` is real on iOS; `html` is padded left/right by the insets (side notch, the
+  Duo's vertical Dynamic Island). Dosis leaves `, viewport-fit=cover` out of its content hash (`VIEWPORT_FIT`), so it never
+  re-dates pages.
+- **List | detail on expanded windows:** the calculators index (`calc-app.js`) and the Drug Index (`DRUG_JS`, body
+  `.dd-index-page`) keep the list on the left and open the tapped calculator / drug page in a right-hand pane (an iframe of
+  the real page, so offline copies, the service workers and each page's scripts keep working). URL `#calc=<path>` /
+  `#d=<path>`; Back closes or steps through the pane. Inside the pane the page gets `html.ca-framed` / `html.dd-framed`
+  (no site header, app bar or floating buttons; links that leave the app open in the whole window).
+- **Nothing is lost on fold/unfold:** dropping below 840 px with an item open opens it full screen, carrying typed values
+  (Calculo) and the section being read via sessionStorage `ca-carry` / `dd-carry`; on any page a width change keeps the
+  paragraph you were reading on screen.
+- **Calculators side by side:** on ≥ 840 px a `.calc-wrap` whose `.calc-result-box` is a direct child gets `cu-split`:
+  inputs left, result pinned right (placeholder until the result shows). New calculators get this by keeping the result
+  box a direct child of `.calc-wrap`.
+- **Book posture (Android):** with two side-by-side viewport segments (`window.viewport.segments`), the panes meet at the
+  fold and calculator columns stop 14 px before it. **Short landscape** (≤ 700 px tall): compact hero. **Drug pages:** the
+  "On this page" side column starts at 840 px (narrower up to 1099).
+Test at 320, 344, 445, 466, 626, 840, 884, 890 and 1104 px wide; headless Chrome cannot fake a fold, so inject
+`window.viewport.segments` to test the book posture.
+
 ```bash
 python3 patch_calc_english_only.py         # strip translations from all calculators (English-only)
 python3 patch_calc_english_only.py --dry-run

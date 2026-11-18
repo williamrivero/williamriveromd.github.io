@@ -555,7 +555,11 @@ ul.dd-list .dd-mbr a:hover { text-decoration-color: currentColor; }
 .dd-mbr .dd-mbr-s { color: var(--text-muted); }
 .dd-tags { display: block; margin-top: 3px; }
 .dd-tags .dd-tag { margin-right: 3px; }
-@media (max-width: 1023px) {
+@media (min-width: 840px) and (max-width: 1099px) {
+  .dd-layout { grid-template-columns: 176px minmax(0, 1fr); gap: 26px; padding: 0 24px; }
+  .dd-toc a { font-size: 13px; padding: 5px 10px; }
+}
+@media (max-width: 839px) {
   .dd-layout { grid-template-columns: 1fr; padding: 0 20px; gap: 0; }
   .dd-toc { display: none; }
   body.dd-mono .nav-strip.dd-pills { display: block; }
@@ -956,6 +960,54 @@ html[data-theme="dark"] .dd-app-card { background: #141e2c; border-color: #2c3a5
 html[data-theme="dark"] .dd-app-card h3 { color: #eef2fb; }
 html[data-theme="dark"] .dd-app-card p { color: #c9d2e0; }
 @media print { .dd-app { display: none !important; } html.dd-offline body::after { display: none; } }
+
+/* ── Foldables, large screens and the installed app (Nov 18 2026) ──────────────────────────────────
+   Window-size classes, not devices: compact < 600 px, medium 600–839, expanded ≥ 840 (an unfolded Galaxy
+   Z Fold or Pixel Fold, an iPhone Duo held sideways). Pages are edge-to-edge (viewport-fit=cover), so the
+   safe-area insets are real: content stays clear of side notches and the Duo's vertical Dynamic Island. */
+html { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+ul.dd-list a, ul.dd-results a { overflow-wrap: anywhere; }
+ul.dd-list .dd-arrow, ul.dd-results .dd-arrow { white-space: normal; }   /* long combination targets wrap on narrow screens */
+/* Wide but short (a foldable or phone held sideways): compact title area */
+@media (orientation: landscape) and (max-height: 700px) and (min-width: 600px) {
+  section.hero { padding-top: 20px !important; padding-bottom: 16px !important; }
+  section.hero h1 { font-size: clamp(24px, 3.2vw, 32px) !important; margin-bottom: 6px !important; }
+  section.hero .hero-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  section.hero .rcm-share, section.hero .hero-figure { display: none !important; }
+}
+/* A drug page shown in the Drug Index's right-hand pane: no site chrome of its own */
+html.dd-framed .site-header, html.dd-framed .dd-appbar, html.dd-framed .float-controls, html.dd-framed .float-controls-left,
+html.dd-framed .print-btn, html.dd-framed .scroll-top-btn, html.dd-framed .sc-fab { display: none !important; }
+html.dd-framed body { padding-bottom: 24px !important; }
+html.dd-framed section.hero { padding-top: 18px !important; }
+html.dd-framed .nav-strip { top: 0 !important; }
+html.dd-framed .dd-toc { top: 12px; }
+/* Drug Index on an expanded window: list | drug page */
+html.dd-split body { margin-right: var(--dd-pane); }
+html.dd-split .float-controls, html.dd-split .print-btn + .float-controls { right: calc(var(--dd-pane) + 20px) !important; }
+html.dd-split .scroll-top-btn { right: calc(var(--dd-pane) + 24px) !important; }
+html.dd-split .dd-appbar { left: calc((100% - var(--dd-pane)) / 2); }
+.dd-pane { position: fixed; top: 0; right: 0; bottom: 0; width: var(--dd-pane); z-index: 60; display: flex; flex-direction: column;
+  background: var(--bg, #f9fafb); border-left: 1px solid var(--border, #dfe6f0); padding-right: env(safe-area-inset-right, 0px);
+  box-shadow: -8px 0 24px -18px rgba(15,30,51,.35); }
+.dd-pane-bar { flex: none; display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 6px 8px 6px 16px;
+  padding-top: max(6px, env(safe-area-inset-top, 0px)); background: #0f1e33; color: #fff; }
+.dd-pane-bar b { flex: 1; min-width: 0; font: 700 14.5px/1.3 Inter, system-ui, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dd-pane-bar a, .dd-pane-bar button { flex: none; display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 10px;
+  background: transparent; color: #fff; cursor: pointer; }
+.dd-pane-bar a:active, .dd-pane-bar button:active { background: rgba(255,255,255,.16); }
+.dd-pane-bar svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.dd-pane iframe { flex: 1; width: 100%; border: 0; background: var(--bg, #f9fafb); }
+.dd-pane-empty { flex: 1; display: grid; place-items: center; text-align: center; padding: 32px; color: var(--text-muted, #5b6b82);
+  font: 500 15px/1.6 Manrope, system-ui, sans-serif; }
+.dd-pane-empty img { width: 72px; height: 72px; border-radius: 18px; margin: 0 auto 14px; display: block; }
+.dd-pane[data-state="empty"] iframe, .dd-pane[data-state="empty"] .dd-pane-bar a, .dd-pane[data-state="empty"] .dd-pane-bar button { display: none; }
+.dd-pane[data-state="open"] .dd-pane-empty { display: none; }
+.dd-picked { background: #e6f2f1 !important; border-radius: 6px; box-shadow: inset 3px 0 0 #1a6b72; }
+html[data-theme="dark"] .dd-pane { background: #0f1724; border-color: #2c3a52; }
+html[data-theme="dark"] .dd-pane iframe { background: #0f1724; }
+html[data-theme="dark"] .dd-picked { background: #1e3040 !important; box-shadow: inset 3px 0 0 #7fd3da; }
+@media print { .dd-pane { display: none !important; } html.dd-split body { margin-right: 0; } }
 """
 
 
@@ -1301,7 +1353,7 @@ function net(){document.documentElement.classList.toggle('dd-offline',navigator.
 window.addEventListener('online',net);window.addEventListener('offline',net);net();
 function standalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
 /* Installed app has no browser toolbar: add Back / Drug Index / Search */
-if(standalone()&&!document.querySelector('.dd-appbar')){
+if(standalone()&&window.self===window.top&&!document.querySelector('.dd-appbar')){
   document.documentElement.classList.add('dd-standalone');
   var onIndex=location.pathname==='/drugs/'||location.pathname==='/drugs/index.html';
   var bar=document.createElement('nav');bar.className='dd-appbar no-print';bar.setAttribute('aria-label','App navigation');
@@ -1418,6 +1470,109 @@ if(standalone()){var r0=rec();if(!r0||!r0.done){var main=document.getElementById
     nb.innerHTML='<strong>Offline use is not set up yet.</strong> Download the complete Drug Index once so every page opens without signal. <a href="#dd-app">Set up offline use</a>';
     main.insertBefore(nb,main.firstChild);}}}
 rm.addEventListener('click',function(){if(busy)return;caches.delete(SAVED).then(function(){try{localStorage.removeItem(KEY);}catch(e){}status();});});
+})();
+/* ── Foldables & large screens (Nov 18 2026) ──────────────────────────────────────────────────────
+   Designed for window sizes, not devices (compact < 600, medium 600–839, expanded ≥ 840 px):
+   - Drug Index on an expanded window: the list stays on the left and the tapped drug opens in a pane on
+     the right (iPad Mail / Gmail pattern). The pane is the real drug page in an iframe, so its product
+     filters, the offline copies and the service worker all keep working.
+   - nothing is lost on fold/unfold: the window resizes live; if it drops below the two-pane width with a
+     drug open, that drug opens full screen at the section you were reading; on any page the screen stays
+     on the paragraph you were reading.
+   - book posture (two side-by-side viewport segments): the list and the pane meet at the fold. */
+(function(){
+'use strict';
+var FRAMED=(function(){try{return window.self!==window.top;}catch(e){return true;}})(),root=document.documentElement,CARRY='dd-carry';
+function segs(){var v=window.viewport||window.visualViewport||{},s=v.segments;return s&&s.length===2&&Math.abs(s[0].top-s[1].top)<2?s:null;}
+function drugPath(a){
+  if(!a||!a.href||a.target==='_blank'||a.hasAttribute('download'))return null;
+  var u;try{u=new URL(a.href,location.href);}catch(e){return null;}
+  if(u.origin!==location.origin)return null;
+  var p=u.pathname.replace(/\.html$/,'');
+  if(!/^\/drugs\/(supplements\/)?[\w.-]+$/.test(p)||/^\/drugs\/(index|offline|supplements\/index)$/.test(p))return null;
+  return p+u.search;
+}
+function topId(win){
+  var doc=win.document,el=doc.elementFromPoint(Math.min(win.innerWidth/2,240),90);
+  while(el&&el!==doc.body&&!el.id)el=el.parentElement;
+  return el&&el.id?el.id:null;
+}
+if(FRAMED){
+  root.classList.add('dd-framed');
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
+    var u;try{u=new URL(a.href,location.href);}catch(x){return;}
+    if(u.origin!==location.origin||u.pathname.indexOf('/drugs/')!==0||/^\/drugs\/(index(\.html)?)?$/.test(u.pathname))a.target='_top';
+  },true);
+  return;
+}
+/* carried over from the pane when the phone folded */
+(function(){var c;try{c=JSON.parse(sessionStorage.getItem(CARRY)||'null');}catch(e){c=null;}
+  if(!c||c.path!==location.pathname.replace(/\.html$/,'')||Date.now()-c.at>60000)return;
+  try{sessionStorage.removeItem(CARRY);}catch(e){}
+  if(c.a)setTimeout(function(){var t=document.getElementById(c.a);if(t)t.scrollIntoView({block:'start'});},80);})();
+/* keep your place when the width changes (fold/unfold, rotation, Split View) */
+(function(){var held=null,w=window.innerWidth,tick=0;
+  function remember(){var el=document.elementFromPoint(Math.min(window.innerWidth/2,260),110);
+    while(el&&el!==document.body&&el.getBoundingClientRect().height>window.innerHeight*.9)el=el.firstElementChild;
+    if(el&&el!==document.body&&el!==root)held={el:el,top:el.getBoundingClientRect().top};}
+  window.addEventListener('scroll',function(){if(!tick)tick=requestAnimationFrame(function(){tick=0;remember();});},{passive:true});
+  window.addEventListener('resize',function(){if(Math.abs(window.innerWidth-w)<40)return;w=window.innerWidth;var f=document.activeElement;
+    requestAnimationFrame(function(){requestAnimationFrame(function(){
+      if(f&&/^(INPUT|SELECT|TEXTAREA)$/.test(f.tagName)){f.scrollIntoView({block:'center'});return;}
+      if(held&&held.el.isConnected)window.scrollBy(0,held.el.getBoundingClientRect().top-held.top);});});});
+  setTimeout(remember,400);})();
+/* Drug Index: list | detail */
+if(!document.body.classList.contains('dd-index-page'))return;
+var EXPANDED=840,pane=null,frame=null,title=null,open=null,picked=null;
+function paneWidth(){var s=segs();if(s)return Math.round(window.innerWidth-s[1].left);
+  return Math.round(Math.min(Math.max(window.innerWidth*.58,440),780));}
+function build(){
+  pane=document.createElement('aside');pane.className='dd-pane';pane.dataset.state='empty';pane.setAttribute('aria-label','Drug page');
+  pane.innerHTML='<div class="dd-pane-bar"><b>Drug</b>'
+   +'<a data-p="full" aria-label="Open full screen" href="#"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></a>'
+   +'<button type="button" data-p="close" aria-label="Close drug page"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>'
+   +'<iframe title="Drug page"></iframe>'
+   +'<div class="dd-pane-empty"><div><img src="/images/app/dosis-192.png" alt="">Choose a drug from the list.<br>It opens here, next to the list.</div></div>';
+  document.body.appendChild(pane);
+  frame=pane.querySelector('iframe');title=pane.querySelector('b');
+  pane.querySelector('[data-p="close"]').addEventListener('click',function(){show(null,true);});
+  pane.querySelector('[data-p="full"]').addEventListener('click',function(e){e.preventDefault();if(open)goFull();});
+  frame.addEventListener('load',function(){
+    var w=frame.contentWindow,d2;try{d2=frame.contentDocument;}catch(x){return;}
+    if(!d2||!w)return;var p=w.location.pathname.replace(/\.html$/,'');
+    if(!/^\/drugs\//.test(p))return;
+    open=p+w.location.search;
+    var h1=d2.querySelector('h1');title.textContent=(h1?h1.textContent:d2.title).replace(/\s+/g,' ').trim();
+    if(location.hash!=='#d='+open)history.replaceState(history.state,'','#d='+open);
+    mark();});
+}
+function mark(){if(picked)picked.classList.remove('dd-picked');picked=null;if(!open)return;
+  var links=document.querySelectorAll('main a[href]');
+  for(var i=0;i<links.length;i++)if(drugPath(links[i])===open){picked=links[i].closest('li')||links[i];picked.classList.add('dd-picked');break;}}
+function show(path,push){
+  if(!pane)build();open=path;pane.dataset.state=path?'open':'empty';
+  if(path){if(frame.getAttribute('src')!==path)frame.setAttribute('src',path);}else{frame.removeAttribute('src');title.textContent='Drug';}
+  if(push)history.pushState({dd:path||''},'',path?'#d='+path:location.pathname+location.search);
+  mark();}
+function goFull(){try{sessionStorage.setItem(CARRY,JSON.stringify({path:open.split('?')[0],a:topId(frame.contentWindow),at:Date.now()}));}catch(e){}
+  location.href=open;}
+function layout(){var wide=window.innerWidth>=EXPANDED;
+  if(wide){root.style.setProperty('--dd-pane',paneWidth()+'px');if(!root.classList.contains('dd-split')){root.classList.add('dd-split');if(!pane)build();}}
+  else if(root.classList.contains('dd-split')){if(open){goFull();return;}root.classList.remove('dd-split');root.style.removeProperty('--dd-pane');}}
+document.addEventListener('click',function(e){
+  if(!root.classList.contains('dd-split')||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey)return;
+  var a=e.target.closest&&e.target.closest('a[href]'),p=drugPath(a);
+  if(!p||(pane&&pane.contains(a)))return;
+  e.preventDefault();show(p,true);});
+window.addEventListener('popstate',function(e){if(!root.classList.contains('dd-split'))return;
+  var m=/^#d=(.+)$/.exec(location.hash);
+  if(m)show(decodeURIComponent(m[1]),false);else if(!location.hash||(e.state&&e.state.dd===''))show(null,false);});
+window.addEventListener('resize',layout);
+if(navigator.devicePosture&&navigator.devicePosture.addEventListener)navigator.devicePosture.addEventListener('change',layout);
+layout();
+var m0=/^#d=(.+)$/.exec(location.hash);
+if(m0){var p0=decodeURIComponent(m0[1]);if(root.classList.contains('dd-split'))show(p0,false);else location.replace(p0);}
 })();
 """
 
@@ -1741,7 +1896,7 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="inde
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 {APP_HEAD}<script>try{{if(localStorage.getItem('wgmr-dark')==='1')document.documentElement.setAttribute('data-theme','dark');}}catch(e){{}}</script>
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
@@ -4237,13 +4392,18 @@ def fill_assets(text: str) -> str:
 KEEP_DATES = False   # --keep-dates: presentation-only rebuild keeps each page's "Last updated" date
 
 
+# Edge-to-edge pages (Nov 18 2026): display chrome only, so it is left out of the content hash; pages that lack it
+# are rewritten once with their old date ("chrome").
+VIEWPORT_FIT = ", viewport-fit=cover"
+
+
 def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: bool) -> str:
     """Fill hash/date placeholders. Keeps the previous date when content is unchanged.
     Returns 'new' | 'changed' | 'same'."""
     legacy = (template.replace("__DRUGDB_CSS__", f"/drugs/drugdb.css?v={ASSET_VERSION}")
               .replace("__DRUGDB_JS__", f"/drugs/drugdb.js?v={ASSET_VERSION}"))
     hashed = (legacy.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
-              .replace(APP_ICON_TAG, LEGACY_ICON_TAG))
+              .replace(APP_ICON_TAG, LEGACY_ICON_TAG).replace(VIEWPORT_FIT, ""))
     template = fill_assets(template)
     css_url = drugdb_assets()["css_url"]
     h = hashlib.sha1(hashed.encode("utf-8")).hexdigest()[:16]
@@ -4254,7 +4414,7 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
         m, d = _HASH_RE.search(headtxt), _ISO_RE.search(headtxt)
         if m and m.group(1) == h and not force_date:
             # same content: rewrite only when the app tags or asset versions are missing, keeping the old date
-            if APP_HEAD in headtxt and APP_ICON_TAG in headtxt and (css_url in headtxt
+            if APP_HEAD in headtxt and APP_ICON_TAG in headtxt and VIEWPORT_FIT in headtxt and (css_url in headtxt
                                         or css_url in path.read_text(encoding="utf-8")):
                 return "same"
             if d:

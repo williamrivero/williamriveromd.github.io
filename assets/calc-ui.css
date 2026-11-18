@@ -161,3 +161,39 @@ html[data-theme="dark"] .cu-units, html[data-theme="dark"] details.cu-fine { bor
   details.cu-fine > summary { display: none; }
   details.cu-fine > :not(summary) { display: block !important; }
 }
+
+/* ── Foldables, tablets and short landscape screens (Nov 18 2026) ─────────────────────────────────
+   Window-size classes, not devices: compact < 600 px, medium 600–839 px, expanded ≥ 840 px (an
+   unfolded Galaxy Z Fold or Pixel Fold, an iPhone Duo held sideways). Split View windows on the
+   Duo (about 445 px) are compact and keep the phone layout. */
+@media (min-width: 840px) {
+  .calc-wrap.cu-split { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(270px, .88fr);
+    column-gap: 28px; row-gap: 0; align-items: start; }
+  .calc-wrap.cu-split > * { grid-column: 1; min-width: 0; }
+  .calc-wrap.cu-split > .calc-result-box,
+  .calc-wrap.cu-split > .cu-res-ph { grid-column: 2; grid-row: 1 / span 40; position: sticky; top: 132px; margin-top: 0 !important; }
+  .calc-wrap.cu-split.cu-res-on > .cu-res-ph { display: none; }
+  .calc-wrap.cu-split.cu-hinge { grid-template-columns: var(--cu-left) minmax(0, 1fr); column-gap: var(--cu-gap); }
+}
+.cu-res-ph { display: none; }
+@media (min-width: 840px) {
+  .calc-wrap.cu-split > .cu-res-ph { display: block; border: 1.5px dashed var(--border, #dfe6f0); border-radius: 14px;
+    padding: 22px 18px; color: var(--text-muted, #5b6b82); font: 500 14px/1.55 Manrope, system-ui, sans-serif; text-align: left; }
+  .cu-res-ph span { display: block; font: 700 11px/1 Inter, system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--teal, #1a6b72); margin-bottom: 8px; }
+  html[data-theme="dark"] .calc-wrap.cu-split > .cu-res-ph { border-color: #34445c; color: #b4bfcf; }
+  html[data-theme="dark"] .cu-res-ph span { color: #7fd3da; }
+}
+html.ca-framed .calc-wrap.cu-split > .calc-result-box, html.ca-framed .calc-wrap.cu-split > .cu-res-ph { top: 76px; }
+@media print { .cu-res-ph { display: none !important; } .calc-wrap.cu-split { display: block !important; } }
+
+/* Wide but short (an iPhone Duo or Fold held sideways, a phone in landscape): a compact title area so the
+   calculator starts on the first screen. */
+@media (orientation: landscape) and (max-height: 700px) and (min-width: 600px) {
+  section.hero { padding-top: 22px !important; padding-bottom: 18px !important; }
+  section.hero h1 { font-size: clamp(24px, 3.2vw, 32px) !important; line-height: 1.15 !important; margin-bottom: 8px !important; }
+  section.hero .hero-sub { font-size: 15px !important; line-height: 1.5 !important; display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden; }
+  section.hero .hero-tag { margin-bottom: 8px !important; }
+  section.hero .rcm-share, section.hero .hero-figure { display: none !important; }
+}
