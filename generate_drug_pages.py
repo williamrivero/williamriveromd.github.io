@@ -687,11 +687,48 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-ms-src blockquote { margin: 6px 0; padding: 8px 12px; background: var(--bg); border-left: 3px solid var(--border); font-size: 14px; }
 .dd-ms-src cite { display: block; font-style: normal; font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
 .dd-ms-text { width: 100%; box-sizing: border-box; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13.5px; padding: 10px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--white); color: var(--text); margin: 0 0 8px; }
+/* Med Scheduler patient sheet: hidden on screen, the only thing printed once a schedule exists */
+.mss { display: none; }
 @media print {
-  .dd-ms-page .site-header, .dd-ms-page .hero, .dd-ms-page footer, .dd-ms-page .dd-ms-warn, .dd-ms-page .float-controls, .dd-ms-page .float-controls-left { display: none !important; }
-  .dd-ms-days2 { grid-template-columns: 1fr 1fr; }
-  .dd-ms-tt li { font-size: 14pt; }
-  .dd-ms-time { font-size: 15pt; }
+  @page { margin: 12mm 12mm 14mm; }
+  body.dd-ms-page:has(#ms-sheet) :is(body, main, #ms-out) > *:not(:has(#ms-sheet)):not(#ms-sheet) { display: none !important; }
+  body.dd-ms-page:has(#ms-sheet) main { padding: 0 !important; margin: 0 !important; max-width: none !important; width: auto !important; }
+  body.dd-ms-page:has(#ms-sheet) { background: #fff !important; }
+  .dd-ms-page .site-header, .dd-ms-page .hero, .dd-ms-page footer.guide-footer, .dd-ms-page .float-controls, .dd-ms-page .float-controls-left, .dd-ms-page .print-btn { display: none !important; }
+  .mss { display: block !important; color: #1e2a38 !important; font-family: 'Manrope', 'Inter', system-ui, sans-serif; font-size: 10.5pt; line-height: 1.35;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .mss * { color: inherit; }
+  .mss-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; border-bottom: 2.5pt solid #1a6b72; padding: 0 0 6pt; margin: 0 0 8pt; }
+  .mss-kicker { font: 700 8pt 'Inter', sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #1a6b72 !important; }
+  .mss h1 { font: 800 19pt/1.1 'Inter', sans-serif; margin: 2pt 0 0; color: #13283f !important; }
+  .mss-date { font-size: 9.5pt; color: #4b5a6e !important; white-space: nowrap; }
+  .mss-fields { display: flex; gap: 18pt; margin: 4pt 0 6pt; font-size: 10pt; font-weight: 600; }
+  .mss-fields div { flex: 1; display: flex; gap: 6pt; align-items: flex-end; }
+  .mss-fields span { flex: 1; border-bottom: .75pt solid #8592a3; height: 13pt; }
+  .mss-routine { margin: 0 0 10pt; font-size: 9.5pt; color: #3c4a5e !important; background: #eef6f6; border-radius: 4pt; padding: 5pt 8pt; }
+  .mss-day { margin: 0 0 12pt; break-inside: avoid; }
+  .mss h2 { font: 800 12.5pt 'Inter', sans-serif; margin: 0 0 4pt; color: #13283f !important; break-after: avoid; }
+  .mss h2 span { font-weight: 600; font-size: 10pt; color: #1a6b72 !important; margin-left: 4pt; }
+  .mss-tt { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .mss-tt thead th { font: 700 8pt 'Inter', sans-serif; letter-spacing: .06em; text-transform: uppercase; text-align: left; color: #fff !important;
+    background: #1a6b72 !important; padding: 4pt 6pt; }
+  .mss-tt td { padding: 4pt 6pt; vertical-align: top; border-bottom: .5pt solid #d5dde6; }
+  .mss-tt tr.mss-first td { border-top: 1pt solid #aebccb; }
+  .mss-tt tbody tr { break-inside: avoid; }
+  .mss-c-time { width: 22%; }
+  .mss-c-how { width: 26%; color: #3c4a5e !important; font-size: 9.5pt; }
+  td.mss-c-time { background: #f3f7f9 !important; }
+  td.mss-c-time b { display: block; font: 800 12pt 'Inter', sans-serif; font-variant-numeric: tabular-nums; color: #13283f !important; }
+  td.mss-c-time span { display: block; font-size: 8.5pt; color: #4b5a6e !important; margin-top: 1pt; }
+  .mss-tt td b { font-weight: 700; }
+  .mss-dose { color: #3c4a5e !important; }
+  .mss-box { display: inline-block; width: 9pt; height: 9pt; border: .9pt solid #5b6b80; border-radius: 2pt; margin: 0 6pt -1pt 0; }
+  .mss-other { margin: 0 0 10pt; break-inside: avoid; }
+  .mss-other ul { margin: 0; padding-left: 14pt; }
+  .mss-other li { margin: 2pt 0; }
+  .mss-foot { border-top: .75pt solid #aebccb; padding-top: 6pt; margin-top: 6pt; font-size: 9pt; color: #3c4a5e !important; break-inside: avoid; }
+  .mss-foot p { margin: 0 0 3pt; }
+  .mss-src { color: #6b7789 !important; font-size: 8pt; }
 }
 .dd-partof { font-size: 13.5px; margin: 6px 0 8px; color: var(--text-mid); }
 .dd-rg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
@@ -1912,7 +1949,30 @@ function build(){var R=routine(),out=$('ms-out');
     (non.length||unit.length?'\nOther: '+non.concat(unit).map(function(m){return nm(m.s)+(m.dose?' '+m.dose:'')+' '+(m.freq==='posthd'?'after each dialysis':(FREQ.filter(function(f){return f[0]===m.freq;})[0]||['',''])[1].toLowerCase());}).join('; '):'');
   h+='<section class="dd-ix-card no-print"><h3>Text for the prescription remarks</h3><textarea class="dd-ms-text" rows="8" readonly>'+esc(text)+'</textarea>'+
     '<div class="dd-ix-btns"><button type="button" class="dd-btn" id="ms-copy">Copy text</button> <button type="button" class="dd-btn dd-btn-ghost" id="ms-print">Print patient sheet</button></div></section>';
-  out.innerHTML=h;
+  /* patient print sheet (print only) */
+  function how(m){var r=ruleM(m);if(!r)return '';var a=[];
+    if(r.meal)a.push({with:'with food',before:'before meals',empty:'on an empty stomach',between:'between meals',after:'after meals'}[r.meal]);
+    return a.join(', ');}
+  function sheetTable(P,title,sub){var rows={};MEDS.forEach(function(m,k){var p=P.pl[k];if(!p)return;p.t.forEach(function(t){(rows[t]=rows[t]||[]).push(k);});});
+    var ts=Object.keys(rows).map(Number).sort(function(a,b){return a-b;});
+    function lab(t){if(P.T.POST===t)return 'after dialysis';for(var k in P.T)if(P.T[k]===t&&SLOTNAME[k])return SLOTNAME[k];return '';}
+    return '<section class="mss-day"><h2>'+esc(title)+(sub?' <span>'+esc(sub)+'</span>':'')+'</h2><table class="mss-tt"><thead><tr><th class="mss-c-time">Time</th><th>Medicine and dose</th><th class="mss-c-how">How to take</th></tr></thead><tbody>'+
+      ts.map(function(t){return rows[t].map(function(k,ii){var m=MEDS[k];
+        return '<tr class="'+(ii===0?'mss-first':'')+'">'+(ii===0?'<td class="mss-c-time" rowspan="'+rows[t].length+'"><b>'+fmt(t)+'</b><span>'+esc(lab(t))+'</span></td>':'')+
+          '<td><span class="mss-box" aria-hidden="true"></span><b>'+esc(nm(m.s))+'</b>'+(m.dose?' <span class="mss-dose">'+esc(m.dose)+'</span>':'')+'</td><td class="mss-c-how">'+esc(how(m))+'</td></tr>';}).join('');}).join('')+
+      '</tbody></table></section>';}
+  var today=new Date(),dstr=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  var routineLine='Wakes '+fmt(R.wake)+' · Breakfast '+fmt(R.bf)+' · Lunch '+fmt(R.lu)+' · Dinner '+fmt(R.di)+' · Bedtime '+fmt(R.bed);
+  var sheet='<div id="ms-sheet" class="mss" aria-hidden="true"><header class="mss-head"><div><div class="mss-kicker">Renal Care Matters</div><h1>My medication schedule</h1></div>'+
+    '<div class="mss-date">Prepared '+esc(dstr)+'</div></header>'+
+    '<div class="mss-fields"><div>Name <span></span></div><div>Prepared by <span></span></div></div>'+
+    '<p class="mss-routine">'+esc(routineLine)+(hdOn?'<br><b>Hemodialysis:</b> '+esc(hdDays)+', '+fmt(R.hs)+' to '+fmt(R.he):'')+'</p>'+
+    sheetTable(P0,hdOn?'On days without dialysis':'Every day','')+(P1?sheetTable(P1,'On dialysis days',hdDays):'')+
+    (non.length||unit.length?'<section class="mss-other"><h2>Other medicines</h2><ul>'+non.concat(unit).map(function(m){var r=ruleM(m),FN={};FREQ.forEach(function(f){FN[f[0]]=f[1];});
+      return '<li><b>'+esc(nm(m.s))+'</b>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis':FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?', given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>':'')+
+    '<footer class="mss-foot"><p>Take each medicine at the time shown. Tick the box when you have taken it. Do not stop or change a medicine without asking your doctor.</p>'+
+    '<p class="mss-src">Made with Med Scheduler · renalcarematters.com</p></footer></div>';
+  out.innerHTML=h+sheet;
   $('ms-copy').addEventListener('click',function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy text';},1600);},function(){out.querySelector('.dd-ms-text').select();});});
   $('ms-print').addEventListener('click',function(){window.print();});
   out.scrollIntoView({behavior:'smooth',block:'start'});

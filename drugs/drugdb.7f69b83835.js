@@ -699,7 +699,30 @@ function build(){var R=routine(),out=$('ms-out');
     (non.length||unit.length?'\nOther: '+non.concat(unit).map(function(m){return nm(m.s)+(m.dose?' '+m.dose:'')+' '+(m.freq==='posthd'?'after each dialysis':(FREQ.filter(function(f){return f[0]===m.freq;})[0]||['',''])[1].toLowerCase());}).join('; '):'');
   h+='<section class="dd-ix-card no-print"><h3>Text for the prescription remarks</h3><textarea class="dd-ms-text" rows="8" readonly>'+esc(text)+'</textarea>'+
     '<div class="dd-ix-btns"><button type="button" class="dd-btn" id="ms-copy">Copy text</button> <button type="button" class="dd-btn dd-btn-ghost" id="ms-print">Print patient sheet</button></div></section>';
-  out.innerHTML=h;
+  /* patient print sheet (print only) */
+  function how(m){var r=ruleM(m);if(!r)return '';var a=[];
+    if(r.meal)a.push({with:'with food',before:'before meals',empty:'on an empty stomach',between:'between meals',after:'after meals'}[r.meal]);
+    return a.join(', ');}
+  function sheetTable(P,title,sub){var rows={};MEDS.forEach(function(m,k){var p=P.pl[k];if(!p)return;p.t.forEach(function(t){(rows[t]=rows[t]||[]).push(k);});});
+    var ts=Object.keys(rows).map(Number).sort(function(a,b){return a-b;});
+    function lab(t){if(P.T.POST===t)return 'after dialysis';for(var k in P.T)if(P.T[k]===t&&SLOTNAME[k])return SLOTNAME[k];return '';}
+    return '<section class="mss-day"><h2>'+esc(title)+(sub?' <span>'+esc(sub)+'</span>':'')+'</h2><table class="mss-tt"><thead><tr><th class="mss-c-time">Time</th><th>Medicine and dose</th><th class="mss-c-how">How to take</th></tr></thead><tbody>'+
+      ts.map(function(t){return rows[t].map(function(k,ii){var m=MEDS[k];
+        return '<tr class="'+(ii===0?'mss-first':'')+'">'+(ii===0?'<td class="mss-c-time" rowspan="'+rows[t].length+'"><b>'+fmt(t)+'</b><span>'+esc(lab(t))+'</span></td>':'')+
+          '<td><span class="mss-box" aria-hidden="true"></span><b>'+esc(nm(m.s))+'</b>'+(m.dose?' <span class="mss-dose">'+esc(m.dose)+'</span>':'')+'</td><td class="mss-c-how">'+esc(how(m))+'</td></tr>';}).join('');}).join('')+
+      '</tbody></table></section>';}
+  var today=new Date(),dstr=today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  var routineLine='Wakes '+fmt(R.wake)+' · Breakfast '+fmt(R.bf)+' · Lunch '+fmt(R.lu)+' · Dinner '+fmt(R.di)+' · Bedtime '+fmt(R.bed);
+  var sheet='<div id="ms-sheet" class="mss" aria-hidden="true"><header class="mss-head"><div><div class="mss-kicker">Renal Care Matters</div><h1>My medication schedule</h1></div>'+
+    '<div class="mss-date">Prepared '+esc(dstr)+'</div></header>'+
+    '<div class="mss-fields"><div>Name <span></span></div><div>Prepared by <span></span></div></div>'+
+    '<p class="mss-routine">'+esc(routineLine)+(hdOn?'<br><b>Hemodialysis:</b> '+esc(hdDays)+', '+fmt(R.hs)+' to '+fmt(R.he):'')+'</p>'+
+    sheetTable(P0,hdOn?'On days without dialysis':'Every day','')+(P1?sheetTable(P1,'On dialysis days',hdDays):'')+
+    (non.length||unit.length?'<section class="mss-other"><h2>Other medicines</h2><ul>'+non.concat(unit).map(function(m){var r=ruleM(m),FN={};FREQ.forEach(function(f){FN[f[0]]=f[1];});
+      return '<li><b>'+esc(nm(m.s))+'</b>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis':FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?', given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>':'')+
+    '<footer class="mss-foot"><p>Take each medicine at the time shown. Tick the box when you have taken it. Do not stop or change a medicine without asking your doctor.</p>'+
+    '<p class="mss-src">Made with Med Scheduler · renalcarematters.com</p></footer></div>';
+  out.innerHTML=h+sheet;
   $('ms-copy').addEventListener('click',function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy text';},1600);},function(){out.querySelector('.dd-ms-text').select();});});
   $('ms-print').addEventListener('click',function(){window.print();});
   out.scrollIntoView({behavior:'smooth',block:'start'});
