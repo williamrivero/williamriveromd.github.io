@@ -1469,7 +1469,7 @@ if(idx){
         return '<li role="option" id="dd-opt-'+i+'" aria-selected="false"><a href="'+encodeURIComponent(d.s)+'.html">'+(o.lab==='generic'?hl(d.n,tl):escH(d.n))+'</a>'+why+coBrands(d,o,d.s)+
           '<span class="dd-sub">'+escH(d.c||'')+(d.m?' · Did you mean <a href="'+encodeURIComponent(d.m)+'.html">'+escH(d.mn)+'</a>?':'')+'</span><span class="dd-tags">'+chips(d)+'</span></li>';}).join('');
       res.hidden=false; az.hidden=true; sq.setAttribute('aria-expanded',out.length?'true':'false'); active=-1;
-      info.textContent=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches.';
+      info.innerHTML=out.length?(out.length>200?'Showing the first 200 of '+out.length.toLocaleString('en-US')+' matches':out.length.toLocaleString('en-US')+(out.length===1?' match':' matches')):'No generic, brand, class, product or supplement matches. A product missing here may not be registered with the Food and Drug Administration (FDA) Philippines. '+'Check it on <a href="https://verification.fda.gov.ph" rel="noopener" target="_blank">verification.fda.gov.ph</a> using the name or the registration number on the label.';
     });
   }
   /* ── Browse by: generic (A–Z, server-rendered) / brand / class / area / dispensing / kidney (lazy browse*.json) ── */

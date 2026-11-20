@@ -968,6 +968,10 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   **Brand families** (`tools/drugdb/supplement_brand_families.json`): variant brand names merged onto one page (Ferolip +
   Ferolip CT + Ferolip Chews); merged names stay searchable (`a` in the search index), `view.html?b=<old>` forwards, and
   an old slug that had a static page needs a 301 in `_redirects`.
+- **Not-found note + distributor search (Nov 21 2026):** an empty search on the Drug Index or the supplements index says the
+  product may not be registered with the FDA Philippines and links to verification.fda.gov.ph. Supplement search already
+  matches the distributor/importer (`co`), e.g. "Healthy Options". Unregistered products are never added to the index
+  (Dr. Rivero, Nov 21 2026): the index lists only FDA Philippines registrations.
 - **EU SmPC** (`data/drugs/labels-eu/`, `tools/drugdb/fetch_eu_smpc.py`, weekly `drugdb-eu-labels`): for generics with
   no US label, EMA SmPC text reproduced verbatim with acknowledgment (Dr. Rivero's decision, Nov 17 2026). Per-slug
   product picks (prefer / exclude / valency / none) are pinned in `tools/drugdb/eu_label_overrides.json`. National

@@ -479,7 +479,7 @@ function run(){
       return '<li><a href="'+href(d)+'">'+escH(d.n)+'</a>'+(d.t?' <span class="dd-tag ds-tag-f">'+(d.mk==='fsdu'?'FSDU':d.mk==='both'?'FSMP · FSDU':'FSMP')+'</span>':'')+(d.rf?' <span class="dd-tag ds-tag-k">Renal formula</span>':'')+(d.k?' <span class="dd-tag ds-tag-k">Kidney-marketed</span>':'')+(d.of&&!d.sp&&!d.t?' <span class="dd-tag">Food product</span>':'')+why+
         '<span class="dd-sub">'+escH(sub)+'</span></li>';}).join('');
     res.hidden=false;stat.hidden=true;
-    info.textContent=out.length?(out.length>LIMIT?'Showing the first '+LIMIT+' of '+out.length.toLocaleString('en-US')+' brands':out.length.toLocaleString('en-US')+(out.length===1?' brand':' brands')):'No supplement matches.';
+    info.innerHTML=out.length?(out.length>LIMIT?'Showing the first '+LIMIT+' of '+out.length.toLocaleString('en-US')+' brands':out.length.toLocaleString('en-US')+(out.length===1?' brand':' brands')):'No supplement matches. A product missing here may not be registered with the Food and Drug Administration (FDA) Philippines. '+'Check it on <a href="https://verification.fda.gov.ph" rel="noopener" target="_blank">verification.fda.gov.ph</a> using the name or the registration number on the label.';
   });
 }
 var tm=null; sq.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(run,90);});
@@ -919,7 +919,7 @@ Food products registered under neither heading and not as food supplements (milk
 supplementary foods) are marked "Other food registration".</p>
 <div class="dd-search" role="search">
 <label class="dd-hidden" for="ds-q">Search food supplements</label>
-<input id="ds-q" type="search" placeholder="Brand, ingredient, company, or FR number (e.g., probiotic, Renadyl, Nepro)" autocomplete="off" spellcheck="false">
+<input id="ds-q" type="search" placeholder="Brand, ingredient, distributor, or FR number (e.g., Renadyl, magnesium, Healthy Options)" autocomplete="off" spellcheck="false">
 </div>
 <div class="ds-facets" role="group" aria-label="Filters">
 <label><span class="dd-hidden">Category</span><select id="ds-f-cat"><option value="">All categories</option>{cat_opts}</select></label>
