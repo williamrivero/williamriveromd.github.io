@@ -666,6 +666,42 @@ function build(){var R=routine(),out=$('ms-out');
   if(non.length||unit.length){var FN={};FREQ.forEach(function(f){FN[f[0]]=f[1];});
     h+='<section class="dd-ix-card"><h3>Not daily, or given at the dialysis unit</h3><ul>'+non.concat(unit).map(function(m){var r=ruleM(m);
       return '<li><strong>'+esc(nm(m.s))+'</strong>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis'+(hdOn?' ('+hdDays+')':''):FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?' · given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>';}
+  /* pill count: per dose (from the Dose column), per day and for N days, counted day by day on the real calendar */
+  function qty(m){var s=(m.dose||'').toLowerCase(),q=s.match(/(\d+(?:\.\d+)?|½|1\/2|one|two|three|half)\s*(tabs?|tablets?|caps?|capsules?|sachets?|softgels?|puffs?)\b/);
+    if(!q)return {n:1,u:'tab',assumed:true,known:false};
+    var N={'½':.5,'1/2':.5,half:.5,one:1,two:2,three:3}[q[1]];var n=N!=null?N:parseFloat(q[1]);
+    var u=/^cap/.test(q[2])?'cap':/^sachet/.test(q[2])?'sachet':/^softgel/.test(q[2])?'softgel':/^puff/.test(q[2])?'puff':'tab';return {n:n,u:u,known:true};}
+  function countable(m){var r=ruleM(m);if(r&&r.hd==='unit')return false;var s=(m.dose||'').toLowerCase();
+    if(/\b(iu|units?|ml)\b/.test(s)&&!/\b(tabs?|tablets?|caps?|capsules?|sachets?|softgels?)\b/.test(s))return false;return true;}
+  function dosesOn(m,k,mon0,isHD){if(m.freq==='prn')return 0;
+    if(DAILY[m.freq]){var P=isHD&&P1?P1:P0,p=P.pl[k];return p?p.t.length:0;}
+    if(m.freq==='posthd')return isHD?1:0;
+    if(m.freq==='tiw')return hdOn?(isHD?1:0):([0,2,4].indexOf(mon0)>=0?1:0);
+    if(m.freq==='weekly')return mon0===0?1:0;return 0;}
+  function pillRows(N){var start=new Date();start.setHours(12,0,0,0);
+    return MEDS.map(function(m,k){var q=qty(m),cnt=countable(m),doses=0,dNon=null,dHD=null;
+      for(var i=0;i<N;i++){var d=new Date(start.getTime()+i*864e5),mon0=(d.getDay()+6)%7,isHD=hdOn&&R.days.indexOf(mon0)>=0;doses+=dosesOn(m,k,mon0,isHD);}
+      if(m.freq==='q2w')doses=Math.ceil(N/14);else if(m.freq==='monthly')doses=Math.ceil(N/30);
+      if(DAILY[m.freq]){dNon=(P0.pl[k]?P0.pl[k].t.length:0);dHD=P1?(P1.pl[k]?P1.pl[k].t.length:0):null;}
+      return {m:m,q:q,cnt:cnt,doses:doses,dNon:dNon,dHD:dHD,total:cnt?doses*q.n:null};});}
+  function plural(u,n){return n===1?u:u+'s';}
+  function fmtN(n){return (Math.round(n*10)/10).toLocaleString('en-US');}
+  function pillTable(N,forPrint){var rows=pillRows(N),assumed=false,perNon=0,perHD=0;
+    var body=rows.map(function(o){var m=o.m,q=o.q;if(o.cnt&&!q.known)assumed=true;
+      if(o.cnt&&o.dNon!=null)perNon+=o.dNon*q.n;if(o.cnt&&o.dHD!=null)perHD+=o.dHD*q.n;
+      if(o.cnt&&m.freq==='posthd'&&hdOn)perHD+=q.n;
+      var per=o.cnt?fmtN(q.n)+' '+plural(q.u,q.n)+(q.known?'':'*'):(m.dose?esc(m.dose):'1 dose');
+      var day=m.freq==='prn'?'as needed':o.dNon!=null?(o.dHD!=null&&o.dHD!==o.dNon?o.dNon+' (dialysis days '+o.dHD+')':String(o.dNon)):(m.freq==='posthd'?'after each dialysis':(FREQ.filter(function(f){return f[0]===m.freq;})[0]||['',''])[1].toLowerCase());
+      var tot=m.freq==='prn'?'as needed':o.cnt?'<b>'+fmtN(o.total)+'</b> '+plural(q.u,o.total)+(q.known?'':'*'):'<b>'+o.doses+'</b> '+plural('dose',o.doses)+(ruleM(m)&&ruleM(m).hd==='unit'?' at the unit':'');
+      return '<tr><td><b>'+esc(nm(m.s))+'</b></td><td>'+per+'</td><td>'+day+'</td><td class="'+(forPrint?'mss-num':'dd-pc-num')+'">'+tot+'</td></tr>';}).join('');
+    var burden='Pills a day: <b>'+fmtN(perNon)+'</b>'+(hdOn?' on days without dialysis, <b>'+fmtN(perHD)+'</b> on dialysis days':'')+'.';
+    return {html:'<table class="'+(forPrint?'mss-tt mss-pc':'dd-pc-tab')+'"><thead><tr><th>Medicine</th><th>Per dose</th><th>Doses a day</th><th>For '+N+' days</th></tr></thead><tbody>'+body+'</tbody></table>',
+      burden:burden,assumed:assumed};}
+  var PCN=+(localStorage.getItem('wgmr-ms-pcdays')||30)||30;
+  function pcCard(){var p=pillTable(PCN,false);return '<p class="dd-pc-burden">'+p.burden+'</p>'+p.html+
+    '<p class="dd-sub dd-pc-note">'+(p.assumed?'* No tablet or capsule count in the Dose column, so 1 per dose is assumed; type it there (e.g., "2 tabs") and build again. ':'')+
+    'Counted on the calendar from today, using the dialysis days set above. Injections and medicines given at the dialysis unit are counted as doses, not pills.</p>';}
+  h+='<section class="dd-ix-card dd-pc no-print"><div class="dd-pc-head"><h3>Pill count</h3><label>Days to cover <input type="number" id="ms-pcdays" min="1" max="365" value="'+PCN+'" inputmode="numeric"></label></div><div id="ms-pcbody">'+pcCard()+'</div></section>';
   /* why each placement */
   var why=MEDS.map(function(m,k){var r=ruleM(m),bits=[],tags=[];
     function cap(x){return x.charAt(0).toUpperCase()+x.slice(1);}
@@ -704,6 +740,7 @@ function build(){var R=routine(),out=$('ms-out');
       return '  '+fmt(t)+(l?' ('+l+')':'')+': '+rows[t].join('; ');}).join('\n');}
   var text='OPTIMIZED MEDICATION INTAKE SCHEDULE\n'+txt(P0,hdOn?'Non-dialysis days:':'Daily:')+(P1?'\n'+txt(P1,'Dialysis days ('+hdDays+', session '+fmt(R.hs)+' to '+fmt(R.he)+'):'):'')+
     (non.length||unit.length?'\nOther: '+non.concat(unit).map(function(m){return nm(m.s)+(m.dose?' '+m.dose:'')+' '+(m.freq==='posthd'?'after each dialysis':(FREQ.filter(function(f){return f[0]===m.freq;})[0]||['',''])[1].toLowerCase());}).join('; '):'');
+  text+='\nPill count for '+PCN+' days: '+pillRows(PCN).filter(function(o){return o.m.freq!=='prn';}).map(function(o){return nm(o.m.s)+' '+(o.cnt?fmtN(o.total)+' '+plural(o.q.u,o.total):o.doses+' '+plural('dose',o.doses));}).join('; ');
   h+='<section class="dd-ix-card no-print"><h3>Text for the prescription remarks</h3><textarea class="dd-ms-text" rows="8" readonly>'+esc(text)+'</textarea>'+
     '<div class="dd-ix-btns"><button type="button" class="dd-btn" id="ms-copy">Copy text</button> <button type="button" class="dd-btn dd-btn-ghost" id="ms-print">Print patient sheet</button></div></section>';
   /* patient print sheet (print only) */
@@ -727,11 +764,13 @@ function build(){var R=routine(),out=$('ms-out');
     sheetTable(P0,hdOn?'On days without dialysis':'Every day','')+(P1?sheetTable(P1,'On dialysis days',hdDays):'')+
     (non.length||unit.length?'<section class="mss-other"><h2>Other medicines</h2><ul>'+non.concat(unit).map(function(m){var r=ruleM(m),FN={};FREQ.forEach(function(f){FN[f[0]]=f[1];});
       return '<li><b>'+esc(nm(m.s))+'</b>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis':FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?', given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>':'')+
-    '<footer class="mss-foot"><p>Take each medicine at the time shown. Tick the box when you have taken it. Do not stop or change a medicine without asking your doctor.</p>'+
-    '<p class="mss-src">Made with Med Scheduler · renalcarematters.com</p></footer></div>';
+    '<section class="mss-pcs" id="mss-pc">'+(function(){var p=pillTable(PCN,true);return '<h2>Pill count <span>for '+PCN+' days</span></h2>'+p.html+'<p class="mss-pcb">'+p.burden+'</p>';})()+'</section>'+
+    '<footer class="mss-foot"><p>Take each medicine at the time shown and tick the box when taken. Do not stop or change a medicine without asking your doctor. <span class="mss-src">Med Scheduler · renalcarematters.com</span></p></footer></div>';
   out.innerHTML=h+sheet;
   $('ms-copy').addEventListener('click',function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy text';},1600);},function(){out.querySelector('.dd-ms-text').select();});});
   $('ms-print').addEventListener('click',function(){window.print();});
+  $('ms-pcdays').addEventListener('input',function(){var v=Math.round(+this.value);if(!(v>=1&&v<=365))return;PCN=v;try{localStorage.setItem('wgmr-ms-pcdays',String(v));}catch(e){}
+    $('ms-pcbody').innerHTML=pcCard();var ta=out.querySelector('.dd-ms-text');if(ta)ta.value=ta.value.replace(/\nPill count for [^\n]*$/,'')+'\nPill count for '+PCN+' days: '+pillRows(PCN).filter(function(o){return o.m.freq!=='prn';}).map(function(o){return nm(o.m.s)+' '+(o.cnt?fmtN(o.total)+' '+plural(o.q.u,o.total):o.doses+' '+plural('dose',o.doses));}).join('; ');var p=pillTable(PCN,true),sec=$('mss-pc');if(sec)sec.innerHTML='<h2>Pill count <span>for '+PCN+' days</span></h2>'+p.html+'<p class="mss-pcb">'+p.burden+'</p>';});
   out.scrollIntoView({behavior:'smooth',block:'start'});
 }
 $('ms-build').addEventListener('click',build);
