@@ -450,6 +450,217 @@ rm.addEventListener('click',function(){if(busy)return;caches.delete(SAVED).then(
 
 (function(){
 'use strict';
+var root=document.getElementById('dd-ms');if(!root)return;
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function nrm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+function rd(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+var IDX=null,IX=null,MS=null,BY={},MEDS=[],DICT=null,act=-1;
+var FREQ=[['od','Once daily'],['bid','Twice daily'],['tid','Three times daily'],['qid','Four times daily'],['qam','Every morning'],['qpm','Every evening'],['hs','At bedtime'],
+  ['q12','Every 12 hours'],['q8','Every 8 hours'],['q6','Every 6 hours'],['posthd','After each dialysis'],['tiw','3 times a week'],['weekly','Once a week'],['q2w','Every 2 weeks'],['monthly','Once a month'],['prn','As needed']];
+var SLOTS=[['','Auto'],['W','On waking'],['PB','Before breakfast'],['B','Breakfast'],['MM','Mid-morning'],['L','Lunch'],['MA','Mid-afternoon'],['PD','Before dinner'],['D','Dinner'],['E','Evening'],['HS','Bedtime']];
+var SLOTNAME={W:'on waking',PB:'before breakfast',B:'with breakfast',MM:'mid-morning',L:'with lunch',MA:'mid-afternoon',PD:'before dinner',D:'with dinner',E:'evening',HS:'at bedtime',POST:'after dialysis'};
+var DAILY={od:1,bid:2,tid:3,qid:4,qam:1,qpm:1,hs:1,q12:2,q8:3,q6:4};
+function load(){return Promise.all([root.getAttribute('data-src'),root.getAttribute('data-ix'),root.getAttribute('data-ms')].map(function(u){return fetch(u).then(function(r){return r.json();});}))
+  .then(function(a){IDX=a[0];IX=a[1];MS=a[2];IDX.forEach(function(d){d.nn=nrm(d.n);BY[d.s]=d;});});}
+function nm(s){return (BY[s]&&BY[s].n)||s.replace(/-/g,' ');}
+/* ── routine ── */
+function mins(v){var m=/^(\d\d):(\d\d)$/.exec(v||'');return m?(+m[1])*60+(+m[2]):null;}
+function fmt(t){t=((t%1440)+1440)%1440;var h=Math.floor(t/60),m=t%60,ap=h<12?'AM':'PM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ap;}
+var RK='wgmr-ms-routine';
+function routine(){var dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value||'none';
+  return {wake:mins($('ms-wake').value),bf:mins($('ms-bf').value),lu:mins($('ms-lu').value),di:mins($('ms-di').value),bed:mins($('ms-bed').value),
+    dx:dx,days:[].map.call(root.querySelectorAll('[data-hdday]:checked'),function(x){return +x.value;}),hs:mins($('ms-hs').value),he:mins($('ms-he').value),hold:$('ms-hold').checked};}
+function saveRoutine(){var r={};['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){r[i]=$(i).value;});
+  r.dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value;r.days=routine().days;r.hold=$('ms-hold').checked;wr(RK,r);}
+function restoreRoutine(){var r=rd(RK,null);if(!r)return;['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){if(r[i])$(i).value=r[i];});
+  if(r.dx){var x=root.querySelector('input[name=ms-dx][value="'+r.dx+'"]');if(x)x.checked=true;}
+  (r.days||[]).forEach(function(d){var x=root.querySelector('[data-hdday][value="'+d+'"]');if(x)x.checked=true;});$('ms-hold').checked=!!r.hold;}
+function paintHD(){$('ms-hdbox').hidden=((root.querySelector('input[name=ms-dx]:checked')||{}).value!=='hd');}
+root.addEventListener('change',function(e){if(e.target.closest('.dd-ms-routine')){paintHD();saveRoutine();}});
+root.querySelectorAll('[data-preset]').forEach(function(b){b.addEventListener('click',function(){var p=b.getAttribute('data-preset').split(',');
+  root.querySelectorAll('[data-hdday]').forEach(function(x){x.checked=p.indexOf(x.value)>=0;});saveRoutine();});});
+/* ── medicines list ── */
+function rule(s){var g=IX.g[s]||{},ms=g.m||[s];for(var i=0;i<ms.length;i++)if(MS.r[ms[i]])return MS.r[ms[i]];return null;}
+function addMed(s,o){if(!BY[s])return false;o=o||{};MEDS.push({s:s,dose:o.dose||'',freq:o.freq||'od',slot:o.slot||'',note:o.note||''});paintList();return true;}
+function paintList(){var box=$('ms-list');
+  if(!MEDS.length){box.innerHTML='<p class="dd-note">No medicines yet. Add them above or paste a prescription.</p>';return;}
+  box.innerHTML='<table class="dd-ms-tab"><thead><tr><th>Medicine</th><th>Dose</th><th>How often</th><th>Timing</th><th><span class="dd-hidden">Remove</span></th></tr></thead><tbody>'+MEDS.map(function(m,i){
+    var r=rule(m.s),hint=r?(r.meal==='with'?'with food':r.meal==='before'?'before meals':r.meal==='empty'?'empty stomach':r.meal==='after'?'after meals':r.tod?r.tod:r.hd==='unit'?'given at the dialysis unit':r.hd==='after'?'after dialysis':''):'';
+    if(!hint&&MS.hdAfter.indexOf(m.s)>=0)hint='after dialysis on dialysis days';
+    return '<tr><th scope="row"><a href="'+encodeURIComponent(m.s)+'.html">'+esc(nm(m.s))+'</a>'+(hint?'<span class="dd-sub"> · label: '+esc(hint)+'</span>':'')+'</th>'+
+      '<td><input class="ms-in" data-i="'+i+'" data-k="dose" value="'+esc(m.dose)+'" placeholder="e.g. 50 mg, 1 tab" aria-label="Dose for '+esc(nm(m.s))+'"></td>'+
+      '<td><select class="ms-in" data-i="'+i+'" data-k="freq" aria-label="How often">'+FREQ.map(function(f){return '<option value="'+f[0]+'"'+(f[0]===m.freq?' selected':'')+'>'+f[1]+'</option>';}).join('')+'</select></td>'+
+      '<td><select class="ms-in" data-i="'+i+'" data-k="slot" aria-label="Timing">'+SLOTS.map(function(f){return '<option value="'+f[0]+'"'+(f[0]===m.slot?' selected':'')+'>'+f[1]+'</option>';}).join('')+'</select></td>'+
+      '<td><button type="button" class="dd-ix-x" data-rm="'+i+'" aria-label="Remove '+esc(nm(m.s))+'">✕</button></td></tr>';}).join('')+'</tbody></table>';}
+$('ms-list').addEventListener('input',function(e){var t=e.target;if(!t.classList.contains('ms-in'))return;MEDS[+t.getAttribute('data-i')][t.getAttribute('data-k')]=t.value;});
+$('ms-list').addEventListener('change',function(e){var t=e.target;if(!t.classList.contains('ms-in'))return;MEDS[+t.getAttribute('data-i')][t.getAttribute('data-k')]=t.value;});
+$('ms-list').addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(b){MEDS.splice(+b.getAttribute('data-rm'),1);paintList();}});
+$('ms-clear').addEventListener('click',function(){MEDS=[];paintList();$('ms-out').innerHTML='';});
+/* ── typeahead ── */
+var q=$('dd-ix-q'),sug=$('dd-ix-sug');
+function matches(v){var t=nrm(v);if(t.length<2)return [];var res=[];
+  IDX.forEach(function(d){var sc=0,via='';if(d.nn.indexOf(t)===0)sc=100;else if((' '+d.nn).indexOf(' '+t)>=0)sc=70;
+    (d.b||[]).forEach(function(b){var bn=nrm(b);var s2=bn===t?95:bn.indexOf(t)===0?85:0;if(s2>sc){sc=s2;via=b;}});
+    (d.y||[]).forEach(function(y){var s2=nrm(y).indexOf(t)===0?80:0;if(s2>sc){sc=s2;via=y;}});
+    if(sc)res.push({d:d,s:sc-(d.n.length/100),via:via});});res.sort(function(a,b){return b.s-a.s;});return res.slice(0,8);}
+function showSug(){var m=matches(q.value);act=-1;if(!m.length){sug.hidden=true;q.setAttribute('aria-expanded','false');return;}
+  sug.innerHTML=m.map(function(o,i){return '<li role="option" id="ms-o'+i+'" data-s="'+esc(o.d.s)+'" aria-selected="false">'+(o.via?'<strong>'+esc(o.via)+'</strong> <span class="dd-ix-arrow">→ '+esc(o.d.n)+'</span>':'<strong>'+esc(o.d.n)+'</strong>')+'</li>';}).join('');
+  sug.hidden=false;q.setAttribute('aria-expanded','true');}
+function pick(s){if(s){addMed(s);q.value='';sug.hidden=true;q.setAttribute('aria-expanded','false');q.focus();}}
+q.addEventListener('input',function(){if(IDX)showSug();});
+q.addEventListener('keydown',function(e){var o=sug.querySelectorAll('[role=option]');
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){if(!o.length)return;e.preventDefault();act=(act+(e.key==='ArrowDown'?1:-1)+o.length)%o.length;
+    [].forEach.call(o,function(x,i){x.setAttribute('aria-selected',i===act?'true':'false');});q.setAttribute('aria-activedescendant',o[act].id);}
+  else if(e.key==='Enter'){e.preventDefault();if(o.length)pick(o[Math.max(act,0)].getAttribute('data-s'));}
+  else if(e.key==='Escape'){sug.hidden=true;}});
+sug.addEventListener('mousedown',function(e){var li=e.target.closest('[role=option]');if(li){e.preventDefault();pick(li.getAttribute('data-s'));}});
+document.addEventListener('click',function(e){if(!e.target.closest('.dd-ix-add'))sug.hidden=true;});
+/* ── paste: medicine name + dose + frequency from the sig ── */
+function dict(){if(DICT)return DICT;DICT={};var mx=1;IDX.forEach(function(d){function put(x,w){var k=nrm(x);if(k.length<4)return;if(!DICT[k]||w>DICT[k].w)DICT[k]={s:d.s,w:w};mx=Math.max(mx,k.split(' ').length);}
+  put(d.n,3);(d.y||[]).forEach(function(y){put(y,2);});(d.b||[]).forEach(function(b){put(b,1);});});DICT.__mx=Math.min(mx,6);return DICT;}
+function sig(line){var L=line.toLowerCase(),o={freq:'od',slot:''};
+  var st=line.match(/(\d+(?:\.\d+)?\s*(?:mg|mcg|µg|g|iu|units?|u|ml|meq)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mg|mcg|ml))?)/i),qt=line.match(/((?:\d+(?:\.\d+)?|½|1\/2|one|two|half)\s*(?:tabs?|tablets?|caps?|capsules?|sachets?|puffs?|drops?|ml|units?))/i);
+  o.dose=[st&&st[1],qt&&qt[1]].filter(Boolean).join(', ');
+  if(/\bprn\b|as needed/.test(L))o.freq='prn';
+  else if(/post[- ]?(hd|dialysis)|after (each )?(hd|dialysis)/.test(L))o.freq='posthd';
+  else if(/q\s*2\s*w|every (2|two) weeks/.test(L))o.freq='q2w';
+  else if(/monthly|once a month|q\s*4\s*w/.test(L))o.freq='monthly';
+  else if(/weekly|once a week|\bq\s*wk\b/.test(L))o.freq='weekly';
+  else if(/\btiw\b|3x\s*(a|\/)?\s*w|thrice (a )?week|three times (a|per) week|\bmwf\b|\btths?\b/.test(L))o.freq='tiw';
+  else if(/\bqid\b|four times|4x a day/.test(L))o.freq='qid';
+  else if(/\btid\b|three times|3x a day|with (each|every) meal|with meals/.test(L))o.freq='tid';
+  else if(/\bbid\b|twice|2x a day|\bq\s*12\s*h/.test(L))o.freq=/q\s*12/.test(L)?'q12':'bid';
+  else if(/\bq\s*8\s*h/.test(L))o.freq='q8';else if(/\bq\s*6\s*h/.test(L))o.freq='q6';
+  else if(/\bhs\b|bedtime|at night/.test(L))o.freq='hs';
+  else if(/\bqam\b|every morning|in the morning/.test(L))o.freq='qam';
+  else if(/\bqpm\b|every evening|in the evening/.test(L))o.freq='qpm';
+  if(/before breakfast|empty stomach/.test(L))o.slot='PB';
+  return o;}
+$('dd-ix-parse').addEventListener('click',function(){var D=dict(),added=[],miss=[];
+  $('dd-ix-ta').value.split(/\n|;/).forEach(function(line){var w=nrm(line).split(' ').filter(Boolean);if(!w.length)return;var f=null;
+    for(var i=0;i<w.length&&!f;i++)for(var n=Math.min(D.__mx,w.length-i);n>=1;n--){var k=w.slice(i,i+n).join(' ');if(D[k]){f=D[k].s;break;}}
+    if(f){addMed(f,sig(line));added.push(nm(f));}else if(/[a-z]{3}/i.test(line))miss.push(line.trim().slice(0,40));});
+  $('dd-ix-pmsg').textContent=(added.length?'Read '+added.length+': '+added.join(', ')+'. Check the dose and frequency columns. ':'')+(miss.length?'Not recognized: '+miss.join('; ')+'.':'');});
+/* ── the optimizer ── */
+function slotTimes(R,hd){var T={W:R.wake,PB:Math.max(R.wake,R.bf-45),B:R.bf,MM:R.bf+150,L:R.lu,MA:Math.round((R.lu+R.di)/2),PD:R.di-45,D:R.di,
+  E:Math.min(R.di+120,Math.round((R.di+R.bed)/2)),HS:R.bed};
+  if(hd){T.POST=R.he+30;Object.keys(T).forEach(function(k){if(k!=='POST'&&T[k]>=R.hs-30&&T[k]<R.he+30)T[k]=k==='PB'?R.he+15:T.POST;});}
+  return T;}
+function options(m,r){var n=DAILY[m.freq]||0;if(!n)return [];
+  if(m.slot)return [[m.slot].concat(n>1?({2:['D'],3:['L','D'],4:['L','D','HS']})[n].filter(function(x){return x!==m.slot;}).slice(0,n-1):[])];
+  var meal=r&&r.meal,tod=r&&r.tod;
+  if(m.freq==='hs'||tod==='bedtime')return [['HS']];
+  if(m.freq==='qam')return [['B'],['W'],['MM']];
+  if(m.freq==='qpm')return [['D'],['E'],['HS']];
+  if(m.freq==='q8'||m.freq==='q6')return [['@'+m.freq]];
+  if(n===1){if(r&&r.slot)return [[r.slot]];
+    if(meal==='empty'||meal==='before')return [['PB'],['PD']];
+    if(meal==='with'||meal==='after')return [['B'],['D'],['L']];
+    if(tod==='evening')return [['D'],['E'],['HS']];if(tod==='morning')return [['B'],['W'],['MM']];
+    return [['B'],['D'],['L'],['HS'],['W'],['MM'],['MA'],['E']];}
+  if(n===2){if(meal==='empty'||meal==='before')return [['PB','PD']];
+    if(meal==='with'||meal==='after')return [['B','D']];return [['B','D'],['W','E'],['MM','HS'],['PB','HS']];}
+  if(n===3)return meal==='empty'||meal==='before'?[['PB','L','PD']]:[['B','L','D']];
+  return [['B','L','D','HS']];}
+function fixedTimes(m,R,T){var step=m.freq==='q8'?480:360,k=m.freq==='q8'?3:4,a=[];for(var i=0;i<k;i++)a.push(R.wake+i*step);return a;}
+function sepRows(A,B){/* approved rows from A's lists that name B, with any stated spacing */var ga=IX.g[A]||{},gb=IX.g[B]||{},out=[];
+  (ga.ow||[]).forEach(function(o){IX.rows.forEach(function(r,i){if(r[0]!==o||r[7])return;var hm=(r[5]||[]).some(function(x){return (gb.m||[]).indexOf(x)>=0;}),
+    hc=(r[6]||[]).some(function(x){return (gb.c||[]).indexOf(x)>=0;})||((r[6]||[]).indexOf('alloral')>=0&&gb.o);if(hm||hc)out.push(i);});});return out;}
+var ABS=/absorpt|absorb|bind|chelat|separate|apart|spacing/i;
+function build(){var R=routine(),out=$('ms-out');
+  if([R.wake,R.bf,R.lu,R.di,R.bed].some(function(x){return x==null;})){out.innerHTML='<p class="dd-note">Enter all the times of the patient\'s day.</p>';return;}
+  if(!MEDS.length){out.innerHTML='<p class="dd-note">Add at least one medicine.</p>';return;}
+  var hdOn=R.dx==='hd'&&R.days.length&&R.hs!=null&&R.he!=null&&R.he>R.hs;
+  /* interactions among the list */
+  var hard=[],soft=[],other=[],seenRow={};
+  MEDS.forEach(function(a,i){MEDS.forEach(function(b,j){if(i===j)return;sepRows(a.s,b.s).forEach(function(ri){var key=ri+'|'+[i,j].sort().join(',');if(seenRow[key])return;seenRow[key]=1;
+    var r=IX.rows[ri],sp=MS.sep[String(ri)];
+    if(sp)hard.push({i:i,j:j,before:sp[0],after:sp[1],row:r});
+    else if(ABS.test(r[3]+' '+r[4]))soft.push({i:i,j:j,row:r});
+    else other.push({i:i,j:j,row:r});});});});
+  function plan(hd){var T=slotTimes(R,hd),place=[],conf=[],notes={};
+    function times(k,opt){var m=MEDS[k];if(!opt)return [];if(opt[0]&&opt[0][0]==='@')return fixedTimes(m,R,T);return opt.map(function(s){return T[s];});}
+    function viol(k,tk,pl){var v=0,s=0;hard.forEach(function(h){var other=h.i===k?h.j:h.j===k?h.i:-1;if(other<0||!pl[other])return;
+        var ownerIsK=h.i===k,ta=ownerIsK?tk:pl[other].t,tb=ownerIsK?pl[other].t:tk;
+        ta.forEach(function(x){tb.forEach(function(y){var ok=x<=y?(h.before!=null&&y-x>=h.before*60&&(x<y||h.before===0)):(h.after!=null&&x-y>=h.after*60);if(!ok)v++;});});});
+      soft.forEach(function(h){var other=h.i===k?h.j:h.j===k?h.i:-1;if(other<0||!pl[other])return;tk.forEach(function(x){pl[other].t.forEach(function(y){if(Math.abs(x-y)<60)s++;});});});
+      return [v,s];}
+    var order=MEDS.map(function(m,k){var r=rule(m.s),opts=options(m,r);return {k:k,r:r,opts:opts};});
+    /* dialysis-day moves */
+    var antiH=function(s){return ((IX.g[s]||{}).c||[]).indexOf('antihtn')>=0;};
+    order.sort(function(a,b){return a.opts.length-b.opts.length;});
+    var pl={};
+    order.forEach(function(o){var m=MEDS[o.k];if(!o.opts.length)return;var best=null;
+      o.opts.forEach(function(opt,oi){var tk=times(o.k,opt);
+        if(hd){var after=(o.r&&o.r.hd==='after')||MS.hdAfter.indexOf(m.s)>=0,hold=R.hold&&antiH(m.s);
+          if(after||hold){var idx=-1,bestd=1e9;tk.forEach(function(x,ii){var d=Math.abs(x-R.he);if(d<bestd){bestd=d;idx=ii;}});
+            if(after&&idx>=0)tk[idx]=T.POST;
+            if(hold)tk=tk.map(function(x){return x<R.he+30?T.POST:x;});}}
+        var vs=viol(o.k,tk,pl),used={};Object.keys(pl).forEach(function(z){pl[z].t.forEach(function(x){used[x]=1;});});
+        var fresh=tk.filter(function(x){return !used[x];}).length,score=vs[0]*1000+vs[1]*50+fresh*5+oi;
+        if(!best||score<best.score)best={score:score,t:tk,opt:opt,v:vs[0],s:vs[1]};});
+      pl[o.k]=best;});
+    hard.forEach(function(h){if(!pl[h.i]||!pl[h.j])return;var bad=false;pl[h.i].t.forEach(function(x){pl[h.j].t.forEach(function(y){
+        var ok=x<=y?(h.before!=null&&y-x>=h.before*60&&(x<y||h.before===0)):(h.after!=null&&x-y>=h.after*60);if(!ok)bad=true;});});
+      if(bad)conf.push(h);});
+    return {T:T,pl:pl,conf:conf};}
+  var P0=plan(false),P1=hdOn?plan(true):null;
+  /* render */
+  function table(P,title){var rows={};MEDS.forEach(function(m,k){var p=P.pl[k];if(!p)return;p.t.forEach(function(t){(rows[t]=rows[t]||[]).push(k);});});
+    var ts=Object.keys(rows).map(Number).sort(function(a,b){return a-b;});
+    function lab(t){if(P.T.POST===t)return 'after dialysis';for(var k in P.T)if(P.T[k]===t&&SLOTNAME[k])return SLOTNAME[k];return '';}
+    return '<section class="dd-ix-card dd-ms-day"><h3>'+esc(title)+'</h3><table class="dd-ms-tt"><tbody>'+ts.map(function(t){
+      return '<tr><th scope="row"><span class="dd-ms-time">'+fmt(t)+'</span><span class="dd-sub">'+esc(lab(t))+'</span></th><td><ul>'+rows[t].map(function(k){var m=MEDS[k];
+        return '<li><strong>'+esc(nm(m.s))+'</strong>'+(m.dose?' <span class="dd-ms-dose">'+esc(m.dose)+'</span>':'')+'</li>';}).join('')+'</ul></td></tr>';}).join('')+'</tbody></table></section>';}
+  var dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],hdDays=R.days.map(function(d){return dayNames[d];}).join(', ');
+  var h='';
+  var conflicts=(P0.conf.concat(P1?P1.conf:[])),cseen={},clist=[];conflicts.forEach(function(c){var k=[c.i,c.j].sort().join('-');if(cseen[k])return;cseen[k]=1;clist.push(c);});
+  if(clist.length)h+='<div class="dd-ix-card dd-ms-warn"><h3>Spacing the routine cannot meet</h3><ul>'+clist.map(function(c){return '<li><strong>'+esc(nm(MEDS[c.i].s))+' and '+esc(nm(MEDS[c.j].s))+':</strong> '+esc(c.row[4])+' Move one of them with the timing menu, or adjust the routine. Each rule is in the source text shown under Why each medicine is where it is.</li>';}).join('')+'</ul></div>';
+  h+='<div class="dd-ms-days2">'+table(P0,hdOn?'Non-dialysis days':'Every day')+(P1?table(P1,'Dialysis days ('+hdDays+'; session '+fmt(R.hs)+' to '+fmt(R.he)+')'):'')+'</div>';
+  var non=MEDS.filter(function(m){return !DAILY[m.freq];});
+  var unit=MEDS.filter(function(m){var r=rule(m.s);return r&&r.hd==='unit'&&DAILY[m.freq];});
+  if(non.length||unit.length){var FN={};FREQ.forEach(function(f){FN[f[0]]=f[1];});
+    h+='<section class="dd-ix-card"><h3>Not daily, or given at the dialysis unit</h3><ul>'+non.concat(unit).map(function(m){var r=rule(m.s);
+      return '<li><strong>'+esc(nm(m.s))+'</strong>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis'+(hdOn?' ('+hdDays+')':''):FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?' · given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>';}
+  /* why each placement */
+  var why=MEDS.map(function(m,k){var r=rule(m.s),p=P0.pl[k],bits=[];
+    if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);if(r.tod)bits.push('take in the '+r.tod);if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');}
+    if(MS.hdAfter.indexOf(m.s)>=0&&!(r&&r.hd==='after'))bits.push('dose after dialysis on dialysis days (reviewed kidney dosing)');
+    if(m.slot)bits.push('time set by you');
+    var src=r?' <details class="dd-ms-src"><summary>Label</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
+    return '<li><strong>'+esc(nm(m.s))+':</strong> '+(bits.length?esc(bits.join('; ')):'no label timing rule; standard times')+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+src+'</li>';}).join('');
+  function apart(x){return [P0,P1].every(function(P){if(!P)return true;var a=P.pl[x.i],c=P.pl[x.j];if(!a||!c)return true;return a.t.every(function(u){return c.t.every(function(v){return Math.abs(u-v)>=60;});});});}
+  var hardList=hard.map(function(x){var bad=cseen[[x.i,x.j].sort().join('-')];return '<li>'+esc(nm(MEDS[x.i].s))+' and '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[4])+' <span class="dd-sub">'+(bad?'(not met; see the warning above)':'(met)')+'</span></li>';}).join('');
+  var softList=soft.map(function(x){return '<li>'+esc(nm(MEDS[x.i].s))+' and '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[4])+' <span class="dd-sub">'+(apart(x)?'(given at different times)':'(could not be separated in this routine)')+'</span></li>';}).join('');
+  var GR={ci:'Contraindicated',avoid:'Avoid',adjust:'Adjust or monitor',minor:'Minor'},oseen={},otherList=other.filter(function(x){var k=[x.i,x.j].sort()+x.row[2];if(oseen[k])return false;oseen[k]=1;return true;})
+    .sort(function(a,b){return ['ci','avoid','adjust','minor'].indexOf(a.row[1])-['ci','avoid','adjust','minor'].indexOf(b.row[1]);})
+    .map(function(x){return '<li><span class="dd-ix-g g-'+esc(x.row[1])+'">'+GR[x.row[1]]+'</span> '+esc(nm(MEDS[x.i].s))+' + '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[3])+' '+esc(x.row[4])+'</li>';}).join('');
+  h+='<section class="dd-ix-card no-print"><h3>Why each medicine is where it is</h3><ul class="dd-ms-why">'+why+'</ul>'+
+    (hardList?'<h4>Spacing applied</h4><ul>'+hardList+'</ul>':'')+(softList?'<h4>Absorption interactions kept apart</h4><ul>'+softList+'</ul>':'')+
+    (otherList?'<h4>Interactions timing cannot fix</h4><ul>'+otherList+'</ul><p class="dd-note"><a href="interactions.html?d='+MEDS.map(function(m){return encodeURIComponent(m.s);}).join(',')+'">Open these medicines in the Interaction checker</a></p>':'')+'</section>';
+  /* SeriousMD text */
+  function txt(P,title){var rows={};MEDS.forEach(function(m,k){var p=P.pl[k];if(p)p.t.forEach(function(t){(rows[t]=rows[t]||[]).push(nm(m.s)+(m.dose?' '+m.dose:''));});});
+    return title+'\n'+Object.keys(rows).map(Number).sort(function(a,b){return a-b;}).map(function(t){var l='';if(P.T.POST===t)l='after dialysis';else for(var kk in P.T)if(P.T[kk]===t&&SLOTNAME[kk]){l=SLOTNAME[kk];break;}
+      return '  '+fmt(t)+(l?' ('+l+')':'')+': '+rows[t].join('; ');}).join('\n');}
+  var text='OPTIMIZED MEDICATION INTAKE SCHEDULE\n'+txt(P0,hdOn?'Non-dialysis days:':'Daily:')+(P1?'\n'+txt(P1,'Dialysis days ('+hdDays+', session '+fmt(R.hs)+' to '+fmt(R.he)+'):'):'')+
+    (non.length||unit.length?'\nOther: '+non.concat(unit).map(function(m){return nm(m.s)+(m.dose?' '+m.dose:'')+' '+(m.freq==='posthd'?'after each dialysis':(FREQ.filter(function(f){return f[0]===m.freq;})[0]||['',''])[1].toLowerCase());}).join('; '):'');
+  h+='<section class="dd-ix-card no-print"><h3>Text for the prescription remarks</h3><textarea class="dd-ms-text" rows="8" readonly>'+esc(text)+'</textarea>'+
+    '<div class="dd-ix-btns"><button type="button" class="dd-btn" id="ms-copy">Copy text</button> <button type="button" class="dd-btn dd-btn-ghost" id="ms-print">Print patient sheet</button></div></section>';
+  out.innerHTML=h;
+  $('ms-copy').addEventListener('click',function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy text';},1600);},function(){out.querySelector('.dd-ms-text').select();});});
+  $('ms-print').addEventListener('click',function(){window.print();});
+  out.scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('ms-build').addEventListener('click',build);
+load().then(function(){restoreRoutine();paintHD();
+  var u=new URL(location.href);(u.searchParams.get('d')||'').split(',').filter(Boolean).forEach(function(s){addMed(s);});paintList();
+}).catch(function(){$('ms-out').innerHTML='<p class="dd-note">The scheduler could not load its data. Check the connection, or open the Drug Index app once while online.</p>';});
+})();
+
+(function(){
+'use strict';
 var FAV='wgmr-drug-favs',REC='wgmr-drug-recent',KF='wgmr-ix-kidney';
 function rd(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
 function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
@@ -623,6 +834,7 @@ function update(){if(!IX)return;sync();paintSel();
   if(local.length)notes.push('Not checked (applied to the skin, eye, ear or nose): '+local.map(nm).map(esc).join(', ')+'.');
   notes.push('No result does not mean no interaction. Check the full prescribing information.');
   h+='<p class="dd-note dd-ix-cov">'+notes.join(' ')+'</p>';
+  h+='<p class="no-print"><a class="dd-ix-q dd-ix-qgo" href="med-scheduler.html?d='+sel.map(encodeURIComponent).join(',')+'">Schedule these medicines in the Med Scheduler &rarr;</a></p>';
   out.innerHTML=h;
 }
 load().then(function(){

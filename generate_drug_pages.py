@@ -616,6 +616,49 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-ix-legend li { margin: 6px 0; display: flex; gap: 10px; align-items: baseline; }
 .dd-ix-legend .dd-ix-g { min-width: 132px; text-align: center; }
 @media print { .dd-ix-pick, .dd-ix-about, .dd-favs { display: none !important; } .dd-ix-card { break-inside: avoid; } }
+/* Med Scheduler */
+.dd-ms-grid { display: grid; grid-template-columns: 1fr; gap: 0 18px; }
+@media (min-width: 1000px) { .dd-ms-grid { grid-template-columns: minmax(300px, 2fr) 3fr; align-items: start; } }
+.dd-ms-routine h2, .dd-ms-meds h2 { font-size: 17px; margin: 0 0 10px; }
+.dd-ms-times { display: flex; flex-wrap: wrap; gap: 10px 14px; margin: 0 0 10px; }
+.dd-ms-times label { display: flex; flex-direction: column; font-size: 13px; font-weight: 600; color: var(--text-mid); gap: 4px; }
+.dd-ms-times input, .dd-ms-tab input, .dd-ms-tab select { font: inherit; font-size: 15px; padding: 7px 8px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--white); color: var(--text); }
+.dd-ms-hd { border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px 10px; margin: 6px 0 0; }
+.dd-ms-hd legend { font-weight: 700; font-size: 14px; padding: 0 4px; }
+.dd-ms-hd > label { margin-right: 14px; font-size: 15px; }
+.dd-ms-hdbox { margin: 10px 0 0; }
+.dd-ms-preset { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.dd-ms-days { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0 0 10px; }
+.dd-ms-day { font-size: 14.5px; }
+.dd-ms-list { margin: 12px 0 0; overflow-x: auto; }
+.dd-ms-tab { width: 100%; border-collapse: collapse; }
+.dd-ms-tab th, .dd-ms-tab td { text-align: left; padding: 6px 6px; border-top: 1px solid var(--border); font-size: 14.5px; vertical-align: middle; }
+.dd-ms-tab thead th { font-size: 12.5px; color: var(--text-muted); border-top: 0; }
+.dd-ms-tab tbody th a { color: var(--text); }
+.dd-ms-tab input { width: 9em; }
+.dd-ms-out { margin: 16px 0 0; }
+.dd-ms-days2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 900px) { .dd-ms-days2 { grid-template-columns: 1fr 1fr; } }
+.dd-ms-tt { width: 100%; border-collapse: collapse; }
+.dd-ms-tt th, .dd-ms-tt td { text-align: left; vertical-align: top; padding: 8px 6px; border-top: 1px solid var(--border); }
+.dd-ms-tt tr:first-child th, .dd-ms-tt tr:first-child td { border-top: 0; }
+.dd-ms-tt th { width: 34%; }
+.dd-ms-time { display: block; font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; font-variant-numeric: tabular-nums; }
+.dd-ms-tt ul { margin: 0; padding: 0; list-style: none; }
+.dd-ms-tt li { margin: 2px 0 4px; font-size: 15.5px; }
+.dd-ms-dose { color: var(--text-mid); }
+.dd-ms-warn { border-left: 4px solid #b91c1c; }
+.dd-ms-why li { margin: 6px 0; }
+.dd-ms-src summary { cursor: pointer; font-size: 13px; color: #0e4a50; display: inline; }
+.dd-ms-src blockquote { margin: 6px 0; padding: 8px 12px; background: var(--bg); border-left: 3px solid var(--border); font-size: 14px; }
+.dd-ms-src cite { display: block; font-style: normal; font-size: 12.5px; color: var(--text-muted); margin-top: 4px; }
+.dd-ms-text { width: 100%; box-sizing: border-box; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13.5px; padding: 10px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--white); color: var(--text); margin: 0 0 8px; }
+@media print {
+  .dd-ms-page .site-header, .dd-ms-page .hero, .dd-ms-page footer, .dd-ms-page .dd-ms-warn, .dd-ms-page .float-controls, .dd-ms-page .float-controls-left { display: none !important; }
+  .dd-ms-days2 { grid-template-columns: 1fr 1fr; }
+  .dd-ms-tt li { font-size: 14pt; }
+  .dd-ms-time { font-size: 15pt; }
+}
 .dd-partof { font-size: 13.5px; margin: 6px 0 8px; color: var(--text-mid); }
 .dd-rg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .dd-rg a { display: flex; gap: 12px; align-items: flex-start; height: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--border);
@@ -928,6 +971,12 @@ html[data-theme="dark"] .dd-ix-g.g-minor { color: #e3e8f2; background: #34455f; 
 html[data-theme="dark"] .dd-ix-tw { color: #fecaca; }
 html[data-theme="dark"] .dd-ix-ktab th a { color: #e6ebf3; }
 html[data-theme="dark"] .dd-ix-card a { color: #7dd3dc; }
+html[data-theme="dark"] .dd-ms-times input, html[data-theme="dark"] .dd-ms-tab input, html[data-theme="dark"] .dd-ms-tab select, html[data-theme="dark"] .dd-ms-text { background: #0f1724; color: #e6ebf3; border-color: rgba(255,255,255,.22); }
+html[data-theme="dark"] .dd-ms-hd { border-color: rgba(255,255,255,.18); }
+html[data-theme="dark"] .dd-ms-tab tbody th a { color: #e6ebf3; }
+html[data-theme="dark"] .dd-ms-src summary { color: #7dd3dc; }
+html[data-theme="dark"] .dd-ms-src blockquote { background: rgba(255,255,255,.04); border-left-color: rgba(255,255,255,.25); }
+html[data-theme="dark"] .dd-ms-warn { border-left-color: #f87171; }
 html[data-theme="dark"] .dd-ix-kt.k-none { color: #bbf7d0; background: rgba(34,197,94,.16); }
 html[data-theme="dark"] .dd-ix-kt.k-adjust { color: #fde68a; background: rgba(245,158,11,.16); }
 html[data-theme="dark"] .dd-ix-kt.k-avoid { color: #fecaca; background: rgba(239,68,68,.18); }
@@ -1543,6 +1592,220 @@ rm.addEventListener('click',function(){if(busy)return;caches.delete(SAVED).then(
 })();
 """
 
+# Med Scheduler (Nov 2026)
+DRUG_JS += r"""
+(function(){
+'use strict';
+var root=document.getElementById('dd-ms');if(!root)return;
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function nrm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+function rd(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+var IDX=null,IX=null,MS=null,BY={},MEDS=[],DICT=null,act=-1;
+var FREQ=[['od','Once daily'],['bid','Twice daily'],['tid','Three times daily'],['qid','Four times daily'],['qam','Every morning'],['qpm','Every evening'],['hs','At bedtime'],
+  ['q12','Every 12 hours'],['q8','Every 8 hours'],['q6','Every 6 hours'],['posthd','After each dialysis'],['tiw','3 times a week'],['weekly','Once a week'],['q2w','Every 2 weeks'],['monthly','Once a month'],['prn','As needed']];
+var SLOTS=[['','Auto'],['W','On waking'],['PB','Before breakfast'],['B','Breakfast'],['MM','Mid-morning'],['L','Lunch'],['MA','Mid-afternoon'],['PD','Before dinner'],['D','Dinner'],['E','Evening'],['HS','Bedtime']];
+var SLOTNAME={W:'on waking',PB:'before breakfast',B:'with breakfast',MM:'mid-morning',L:'with lunch',MA:'mid-afternoon',PD:'before dinner',D:'with dinner',E:'evening',HS:'at bedtime',POST:'after dialysis'};
+var DAILY={od:1,bid:2,tid:3,qid:4,qam:1,qpm:1,hs:1,q12:2,q8:3,q6:4};
+function load(){return Promise.all([root.getAttribute('data-src'),root.getAttribute('data-ix'),root.getAttribute('data-ms')].map(function(u){return fetch(u).then(function(r){return r.json();});}))
+  .then(function(a){IDX=a[0];IX=a[1];MS=a[2];IDX.forEach(function(d){d.nn=nrm(d.n);BY[d.s]=d;});});}
+function nm(s){return (BY[s]&&BY[s].n)||s.replace(/-/g,' ');}
+/* ── routine ── */
+function mins(v){var m=/^(\d\d):(\d\d)$/.exec(v||'');return m?(+m[1])*60+(+m[2]):null;}
+function fmt(t){t=((t%1440)+1440)%1440;var h=Math.floor(t/60),m=t%60,ap=h<12?'AM':'PM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ap;}
+var RK='wgmr-ms-routine';
+function routine(){var dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value||'none';
+  return {wake:mins($('ms-wake').value),bf:mins($('ms-bf').value),lu:mins($('ms-lu').value),di:mins($('ms-di').value),bed:mins($('ms-bed').value),
+    dx:dx,days:[].map.call(root.querySelectorAll('[data-hdday]:checked'),function(x){return +x.value;}),hs:mins($('ms-hs').value),he:mins($('ms-he').value),hold:$('ms-hold').checked};}
+function saveRoutine(){var r={};['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){r[i]=$(i).value;});
+  r.dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value;r.days=routine().days;r.hold=$('ms-hold').checked;wr(RK,r);}
+function restoreRoutine(){var r=rd(RK,null);if(!r)return;['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){if(r[i])$(i).value=r[i];});
+  if(r.dx){var x=root.querySelector('input[name=ms-dx][value="'+r.dx+'"]');if(x)x.checked=true;}
+  (r.days||[]).forEach(function(d){var x=root.querySelector('[data-hdday][value="'+d+'"]');if(x)x.checked=true;});$('ms-hold').checked=!!r.hold;}
+function paintHD(){$('ms-hdbox').hidden=((root.querySelector('input[name=ms-dx]:checked')||{}).value!=='hd');}
+root.addEventListener('change',function(e){if(e.target.closest('.dd-ms-routine')){paintHD();saveRoutine();}});
+root.querySelectorAll('[data-preset]').forEach(function(b){b.addEventListener('click',function(){var p=b.getAttribute('data-preset').split(',');
+  root.querySelectorAll('[data-hdday]').forEach(function(x){x.checked=p.indexOf(x.value)>=0;});saveRoutine();});});
+/* ── medicines list ── */
+function rule(s){var g=IX.g[s]||{},ms=g.m||[s];for(var i=0;i<ms.length;i++)if(MS.r[ms[i]])return MS.r[ms[i]];return null;}
+function addMed(s,o){if(!BY[s])return false;o=o||{};MEDS.push({s:s,dose:o.dose||'',freq:o.freq||'od',slot:o.slot||'',note:o.note||''});paintList();return true;}
+function paintList(){var box=$('ms-list');
+  if(!MEDS.length){box.innerHTML='<p class="dd-note">No medicines yet. Add them above or paste a prescription.</p>';return;}
+  box.innerHTML='<table class="dd-ms-tab"><thead><tr><th>Medicine</th><th>Dose</th><th>How often</th><th>Timing</th><th><span class="dd-hidden">Remove</span></th></tr></thead><tbody>'+MEDS.map(function(m,i){
+    var r=rule(m.s),hint=r?(r.meal==='with'?'with food':r.meal==='before'?'before meals':r.meal==='empty'?'empty stomach':r.meal==='after'?'after meals':r.tod?r.tod:r.hd==='unit'?'given at the dialysis unit':r.hd==='after'?'after dialysis':''):'';
+    if(!hint&&MS.hdAfter.indexOf(m.s)>=0)hint='after dialysis on dialysis days';
+    return '<tr><th scope="row"><a href="'+encodeURIComponent(m.s)+'.html">'+esc(nm(m.s))+'</a>'+(hint?'<span class="dd-sub"> · label: '+esc(hint)+'</span>':'')+'</th>'+
+      '<td><input class="ms-in" data-i="'+i+'" data-k="dose" value="'+esc(m.dose)+'" placeholder="e.g. 50 mg, 1 tab" aria-label="Dose for '+esc(nm(m.s))+'"></td>'+
+      '<td><select class="ms-in" data-i="'+i+'" data-k="freq" aria-label="How often">'+FREQ.map(function(f){return '<option value="'+f[0]+'"'+(f[0]===m.freq?' selected':'')+'>'+f[1]+'</option>';}).join('')+'</select></td>'+
+      '<td><select class="ms-in" data-i="'+i+'" data-k="slot" aria-label="Timing">'+SLOTS.map(function(f){return '<option value="'+f[0]+'"'+(f[0]===m.slot?' selected':'')+'>'+f[1]+'</option>';}).join('')+'</select></td>'+
+      '<td><button type="button" class="dd-ix-x" data-rm="'+i+'" aria-label="Remove '+esc(nm(m.s))+'">✕</button></td></tr>';}).join('')+'</tbody></table>';}
+$('ms-list').addEventListener('input',function(e){var t=e.target;if(!t.classList.contains('ms-in'))return;MEDS[+t.getAttribute('data-i')][t.getAttribute('data-k')]=t.value;});
+$('ms-list').addEventListener('change',function(e){var t=e.target;if(!t.classList.contains('ms-in'))return;MEDS[+t.getAttribute('data-i')][t.getAttribute('data-k')]=t.value;});
+$('ms-list').addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(b){MEDS.splice(+b.getAttribute('data-rm'),1);paintList();}});
+$('ms-clear').addEventListener('click',function(){MEDS=[];paintList();$('ms-out').innerHTML='';});
+/* ── typeahead ── */
+var q=$('dd-ix-q'),sug=$('dd-ix-sug');
+function matches(v){var t=nrm(v);if(t.length<2)return [];var res=[];
+  IDX.forEach(function(d){var sc=0,via='';if(d.nn.indexOf(t)===0)sc=100;else if((' '+d.nn).indexOf(' '+t)>=0)sc=70;
+    (d.b||[]).forEach(function(b){var bn=nrm(b);var s2=bn===t?95:bn.indexOf(t)===0?85:0;if(s2>sc){sc=s2;via=b;}});
+    (d.y||[]).forEach(function(y){var s2=nrm(y).indexOf(t)===0?80:0;if(s2>sc){sc=s2;via=y;}});
+    if(sc)res.push({d:d,s:sc-(d.n.length/100),via:via});});res.sort(function(a,b){return b.s-a.s;});return res.slice(0,8);}
+function showSug(){var m=matches(q.value);act=-1;if(!m.length){sug.hidden=true;q.setAttribute('aria-expanded','false');return;}
+  sug.innerHTML=m.map(function(o,i){return '<li role="option" id="ms-o'+i+'" data-s="'+esc(o.d.s)+'" aria-selected="false">'+(o.via?'<strong>'+esc(o.via)+'</strong> <span class="dd-ix-arrow">→ '+esc(o.d.n)+'</span>':'<strong>'+esc(o.d.n)+'</strong>')+'</li>';}).join('');
+  sug.hidden=false;q.setAttribute('aria-expanded','true');}
+function pick(s){if(s){addMed(s);q.value='';sug.hidden=true;q.setAttribute('aria-expanded','false');q.focus();}}
+q.addEventListener('input',function(){if(IDX)showSug();});
+q.addEventListener('keydown',function(e){var o=sug.querySelectorAll('[role=option]');
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){if(!o.length)return;e.preventDefault();act=(act+(e.key==='ArrowDown'?1:-1)+o.length)%o.length;
+    [].forEach.call(o,function(x,i){x.setAttribute('aria-selected',i===act?'true':'false');});q.setAttribute('aria-activedescendant',o[act].id);}
+  else if(e.key==='Enter'){e.preventDefault();if(o.length)pick(o[Math.max(act,0)].getAttribute('data-s'));}
+  else if(e.key==='Escape'){sug.hidden=true;}});
+sug.addEventListener('mousedown',function(e){var li=e.target.closest('[role=option]');if(li){e.preventDefault();pick(li.getAttribute('data-s'));}});
+document.addEventListener('click',function(e){if(!e.target.closest('.dd-ix-add'))sug.hidden=true;});
+/* ── paste: medicine name + dose + frequency from the sig ── */
+function dict(){if(DICT)return DICT;DICT={};var mx=1;IDX.forEach(function(d){function put(x,w){var k=nrm(x);if(k.length<4)return;if(!DICT[k]||w>DICT[k].w)DICT[k]={s:d.s,w:w};mx=Math.max(mx,k.split(' ').length);}
+  put(d.n,3);(d.y||[]).forEach(function(y){put(y,2);});(d.b||[]).forEach(function(b){put(b,1);});});DICT.__mx=Math.min(mx,6);return DICT;}
+function sig(line){var L=line.toLowerCase(),o={freq:'od',slot:''};
+  var st=line.match(/(\d+(?:\.\d+)?\s*(?:mg|mcg|µg|g|iu|units?|u|ml|meq)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mg|mcg|ml))?)/i),qt=line.match(/((?:\d+(?:\.\d+)?|½|1\/2|one|two|half)\s*(?:tabs?|tablets?|caps?|capsules?|sachets?|puffs?|drops?|ml|units?))/i);
+  o.dose=[st&&st[1],qt&&qt[1]].filter(Boolean).join(', ');
+  if(/\bprn\b|as needed/.test(L))o.freq='prn';
+  else if(/post[- ]?(hd|dialysis)|after (each )?(hd|dialysis)/.test(L))o.freq='posthd';
+  else if(/q\s*2\s*w|every (2|two) weeks/.test(L))o.freq='q2w';
+  else if(/monthly|once a month|q\s*4\s*w/.test(L))o.freq='monthly';
+  else if(/weekly|once a week|\bq\s*wk\b/.test(L))o.freq='weekly';
+  else if(/\btiw\b|3x\s*(a|\/)?\s*w|thrice (a )?week|three times (a|per) week|\bmwf\b|\btths?\b/.test(L))o.freq='tiw';
+  else if(/\bqid\b|four times|4x a day/.test(L))o.freq='qid';
+  else if(/\btid\b|three times|3x a day|with (each|every) meal|with meals/.test(L))o.freq='tid';
+  else if(/\bbid\b|twice|2x a day|\bq\s*12\s*h/.test(L))o.freq=/q\s*12/.test(L)?'q12':'bid';
+  else if(/\bq\s*8\s*h/.test(L))o.freq='q8';else if(/\bq\s*6\s*h/.test(L))o.freq='q6';
+  else if(/\bhs\b|bedtime|at night/.test(L))o.freq='hs';
+  else if(/\bqam\b|every morning|in the morning/.test(L))o.freq='qam';
+  else if(/\bqpm\b|every evening|in the evening/.test(L))o.freq='qpm';
+  if(/before breakfast|empty stomach/.test(L))o.slot='PB';
+  return o;}
+$('dd-ix-parse').addEventListener('click',function(){var D=dict(),added=[],miss=[];
+  $('dd-ix-ta').value.split(/\n|;/).forEach(function(line){var w=nrm(line).split(' ').filter(Boolean);if(!w.length)return;var f=null;
+    for(var i=0;i<w.length&&!f;i++)for(var n=Math.min(D.__mx,w.length-i);n>=1;n--){var k=w.slice(i,i+n).join(' ');if(D[k]){f=D[k].s;break;}}
+    if(f){addMed(f,sig(line));added.push(nm(f));}else if(/[a-z]{3}/i.test(line))miss.push(line.trim().slice(0,40));});
+  $('dd-ix-pmsg').textContent=(added.length?'Read '+added.length+': '+added.join(', ')+'. Check the dose and frequency columns. ':'')+(miss.length?'Not recognized: '+miss.join('; ')+'.':'');});
+/* ── the optimizer ── */
+function slotTimes(R,hd){var T={W:R.wake,PB:Math.max(R.wake,R.bf-45),B:R.bf,MM:R.bf+150,L:R.lu,MA:Math.round((R.lu+R.di)/2),PD:R.di-45,D:R.di,
+  E:Math.min(R.di+120,Math.round((R.di+R.bed)/2)),HS:R.bed};
+  if(hd){T.POST=R.he+30;Object.keys(T).forEach(function(k){if(k!=='POST'&&T[k]>=R.hs-30&&T[k]<R.he+30)T[k]=k==='PB'?R.he+15:T.POST;});}
+  return T;}
+function options(m,r){var n=DAILY[m.freq]||0;if(!n)return [];
+  if(m.slot)return [[m.slot].concat(n>1?({2:['D'],3:['L','D'],4:['L','D','HS']})[n].filter(function(x){return x!==m.slot;}).slice(0,n-1):[])];
+  var meal=r&&r.meal,tod=r&&r.tod;
+  if(m.freq==='hs'||tod==='bedtime')return [['HS']];
+  if(m.freq==='qam')return [['B'],['W'],['MM']];
+  if(m.freq==='qpm')return [['D'],['E'],['HS']];
+  if(m.freq==='q8'||m.freq==='q6')return [['@'+m.freq]];
+  if(n===1){if(r&&r.slot)return [[r.slot]];
+    if(meal==='empty'||meal==='before')return [['PB'],['PD']];
+    if(meal==='with'||meal==='after')return [['B'],['D'],['L']];
+    if(tod==='evening')return [['D'],['E'],['HS']];if(tod==='morning')return [['B'],['W'],['MM']];
+    return [['B'],['D'],['L'],['HS'],['W'],['MM'],['MA'],['E']];}
+  if(n===2){if(meal==='empty'||meal==='before')return [['PB','PD']];
+    if(meal==='with'||meal==='after')return [['B','D']];return [['B','D'],['W','E'],['MM','HS'],['PB','HS']];}
+  if(n===3)return meal==='empty'||meal==='before'?[['PB','L','PD']]:[['B','L','D']];
+  return [['B','L','D','HS']];}
+function fixedTimes(m,R,T){var step=m.freq==='q8'?480:360,k=m.freq==='q8'?3:4,a=[];for(var i=0;i<k;i++)a.push(R.wake+i*step);return a;}
+function sepRows(A,B){/* approved rows from A's lists that name B, with any stated spacing */var ga=IX.g[A]||{},gb=IX.g[B]||{},out=[];
+  (ga.ow||[]).forEach(function(o){IX.rows.forEach(function(r,i){if(r[0]!==o||r[7])return;var hm=(r[5]||[]).some(function(x){return (gb.m||[]).indexOf(x)>=0;}),
+    hc=(r[6]||[]).some(function(x){return (gb.c||[]).indexOf(x)>=0;})||((r[6]||[]).indexOf('alloral')>=0&&gb.o);if(hm||hc)out.push(i);});});return out;}
+var ABS=/absorpt|absorb|bind|chelat|separate|apart|spacing/i;
+function build(){var R=routine(),out=$('ms-out');
+  if([R.wake,R.bf,R.lu,R.di,R.bed].some(function(x){return x==null;})){out.innerHTML='<p class="dd-note">Enter all the times of the patient\'s day.</p>';return;}
+  if(!MEDS.length){out.innerHTML='<p class="dd-note">Add at least one medicine.</p>';return;}
+  var hdOn=R.dx==='hd'&&R.days.length&&R.hs!=null&&R.he!=null&&R.he>R.hs;
+  /* interactions among the list */
+  var hard=[],soft=[],other=[],seenRow={};
+  MEDS.forEach(function(a,i){MEDS.forEach(function(b,j){if(i===j)return;sepRows(a.s,b.s).forEach(function(ri){var key=ri+'|'+[i,j].sort().join(',');if(seenRow[key])return;seenRow[key]=1;
+    var r=IX.rows[ri],sp=MS.sep[String(ri)];
+    if(sp)hard.push({i:i,j:j,before:sp[0],after:sp[1],row:r});
+    else if(ABS.test(r[3]+' '+r[4]))soft.push({i:i,j:j,row:r});
+    else other.push({i:i,j:j,row:r});});});});
+  function plan(hd){var T=slotTimes(R,hd),place=[],conf=[],notes={};
+    function times(k,opt){var m=MEDS[k];if(!opt)return [];if(opt[0]&&opt[0][0]==='@')return fixedTimes(m,R,T);return opt.map(function(s){return T[s];});}
+    function viol(k,tk,pl){var v=0,s=0;hard.forEach(function(h){var other=h.i===k?h.j:h.j===k?h.i:-1;if(other<0||!pl[other])return;
+        var ownerIsK=h.i===k,ta=ownerIsK?tk:pl[other].t,tb=ownerIsK?pl[other].t:tk;
+        ta.forEach(function(x){tb.forEach(function(y){var ok=x<=y?(h.before!=null&&y-x>=h.before*60&&(x<y||h.before===0)):(h.after!=null&&x-y>=h.after*60);if(!ok)v++;});});});
+      soft.forEach(function(h){var other=h.i===k?h.j:h.j===k?h.i:-1;if(other<0||!pl[other])return;tk.forEach(function(x){pl[other].t.forEach(function(y){if(Math.abs(x-y)<60)s++;});});});
+      return [v,s];}
+    var order=MEDS.map(function(m,k){var r=rule(m.s),opts=options(m,r);return {k:k,r:r,opts:opts};});
+    /* dialysis-day moves */
+    var antiH=function(s){return ((IX.g[s]||{}).c||[]).indexOf('antihtn')>=0;};
+    order.sort(function(a,b){return a.opts.length-b.opts.length;});
+    var pl={};
+    order.forEach(function(o){var m=MEDS[o.k];if(!o.opts.length)return;var best=null;
+      o.opts.forEach(function(opt,oi){var tk=times(o.k,opt);
+        if(hd){var after=(o.r&&o.r.hd==='after')||MS.hdAfter.indexOf(m.s)>=0,hold=R.hold&&antiH(m.s);
+          if(after||hold){var idx=-1,bestd=1e9;tk.forEach(function(x,ii){var d=Math.abs(x-R.he);if(d<bestd){bestd=d;idx=ii;}});
+            if(after&&idx>=0)tk[idx]=T.POST;
+            if(hold)tk=tk.map(function(x){return x<R.he+30?T.POST:x;});}}
+        var vs=viol(o.k,tk,pl),used={};Object.keys(pl).forEach(function(z){pl[z].t.forEach(function(x){used[x]=1;});});
+        var fresh=tk.filter(function(x){return !used[x];}).length,score=vs[0]*1000+vs[1]*50+fresh*5+oi;
+        if(!best||score<best.score)best={score:score,t:tk,opt:opt,v:vs[0],s:vs[1]};});
+      pl[o.k]=best;});
+    hard.forEach(function(h){if(!pl[h.i]||!pl[h.j])return;var bad=false;pl[h.i].t.forEach(function(x){pl[h.j].t.forEach(function(y){
+        var ok=x<=y?(h.before!=null&&y-x>=h.before*60&&(x<y||h.before===0)):(h.after!=null&&x-y>=h.after*60);if(!ok)bad=true;});});
+      if(bad)conf.push(h);});
+    return {T:T,pl:pl,conf:conf};}
+  var P0=plan(false),P1=hdOn?plan(true):null;
+  /* render */
+  function table(P,title){var rows={};MEDS.forEach(function(m,k){var p=P.pl[k];if(!p)return;p.t.forEach(function(t){(rows[t]=rows[t]||[]).push(k);});});
+    var ts=Object.keys(rows).map(Number).sort(function(a,b){return a-b;});
+    function lab(t){if(P.T.POST===t)return 'after dialysis';for(var k in P.T)if(P.T[k]===t&&SLOTNAME[k])return SLOTNAME[k];return '';}
+    return '<section class="dd-ix-card dd-ms-day"><h3>'+esc(title)+'</h3><table class="dd-ms-tt"><tbody>'+ts.map(function(t){
+      return '<tr><th scope="row"><span class="dd-ms-time">'+fmt(t)+'</span><span class="dd-sub">'+esc(lab(t))+'</span></th><td><ul>'+rows[t].map(function(k){var m=MEDS[k];
+        return '<li><strong>'+esc(nm(m.s))+'</strong>'+(m.dose?' <span class="dd-ms-dose">'+esc(m.dose)+'</span>':'')+'</li>';}).join('')+'</ul></td></tr>';}).join('')+'</tbody></table></section>';}
+  var dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],hdDays=R.days.map(function(d){return dayNames[d];}).join(', ');
+  var h='';
+  var conflicts=(P0.conf.concat(P1?P1.conf:[])),cseen={},clist=[];conflicts.forEach(function(c){var k=[c.i,c.j].sort().join('-');if(cseen[k])return;cseen[k]=1;clist.push(c);});
+  if(clist.length)h+='<div class="dd-ix-card dd-ms-warn"><h3>Spacing the routine cannot meet</h3><ul>'+clist.map(function(c){return '<li><strong>'+esc(nm(MEDS[c.i].s))+' and '+esc(nm(MEDS[c.j].s))+':</strong> '+esc(c.row[4])+' Move one of them with the timing menu, or adjust the routine. Each rule is in the source text shown under Why each medicine is where it is.</li>';}).join('')+'</ul></div>';
+  h+='<div class="dd-ms-days2">'+table(P0,hdOn?'Non-dialysis days':'Every day')+(P1?table(P1,'Dialysis days ('+hdDays+'; session '+fmt(R.hs)+' to '+fmt(R.he)+')'):'')+'</div>';
+  var non=MEDS.filter(function(m){return !DAILY[m.freq];});
+  var unit=MEDS.filter(function(m){var r=rule(m.s);return r&&r.hd==='unit'&&DAILY[m.freq];});
+  if(non.length||unit.length){var FN={};FREQ.forEach(function(f){FN[f[0]]=f[1];});
+    h+='<section class="dd-ix-card"><h3>Not daily, or given at the dialysis unit</h3><ul>'+non.concat(unit).map(function(m){var r=rule(m.s);
+      return '<li><strong>'+esc(nm(m.s))+'</strong>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis'+(hdOn?' ('+hdDays+')':''):FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?' · given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>';}
+  /* why each placement */
+  var why=MEDS.map(function(m,k){var r=rule(m.s),p=P0.pl[k],bits=[];
+    if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);if(r.tod)bits.push('take in the '+r.tod);if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');}
+    if(MS.hdAfter.indexOf(m.s)>=0&&!(r&&r.hd==='after'))bits.push('dose after dialysis on dialysis days (reviewed kidney dosing)');
+    if(m.slot)bits.push('time set by you');
+    var src=r?' <details class="dd-ms-src"><summary>Label</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
+    return '<li><strong>'+esc(nm(m.s))+':</strong> '+(bits.length?esc(bits.join('; ')):'no label timing rule; standard times')+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+src+'</li>';}).join('');
+  function apart(x){return [P0,P1].every(function(P){if(!P)return true;var a=P.pl[x.i],c=P.pl[x.j];if(!a||!c)return true;return a.t.every(function(u){return c.t.every(function(v){return Math.abs(u-v)>=60;});});});}
+  var hardList=hard.map(function(x){var bad=cseen[[x.i,x.j].sort().join('-')];return '<li>'+esc(nm(MEDS[x.i].s))+' and '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[4])+' <span class="dd-sub">'+(bad?'(not met; see the warning above)':'(met)')+'</span></li>';}).join('');
+  var softList=soft.map(function(x){return '<li>'+esc(nm(MEDS[x.i].s))+' and '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[4])+' <span class="dd-sub">'+(apart(x)?'(given at different times)':'(could not be separated in this routine)')+'</span></li>';}).join('');
+  var GR={ci:'Contraindicated',avoid:'Avoid',adjust:'Adjust or monitor',minor:'Minor'},oseen={},otherList=other.filter(function(x){var k=[x.i,x.j].sort()+x.row[2];if(oseen[k])return false;oseen[k]=1;return true;})
+    .sort(function(a,b){return ['ci','avoid','adjust','minor'].indexOf(a.row[1])-['ci','avoid','adjust','minor'].indexOf(b.row[1]);})
+    .map(function(x){return '<li><span class="dd-ix-g g-'+esc(x.row[1])+'">'+GR[x.row[1]]+'</span> '+esc(nm(MEDS[x.i].s))+' + '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[3])+' '+esc(x.row[4])+'</li>';}).join('');
+  h+='<section class="dd-ix-card no-print"><h3>Why each medicine is where it is</h3><ul class="dd-ms-why">'+why+'</ul>'+
+    (hardList?'<h4>Spacing applied</h4><ul>'+hardList+'</ul>':'')+(softList?'<h4>Absorption interactions kept apart</h4><ul>'+softList+'</ul>':'')+
+    (otherList?'<h4>Interactions timing cannot fix</h4><ul>'+otherList+'</ul><p class="dd-note"><a href="interactions.html?d='+MEDS.map(function(m){return encodeURIComponent(m.s);}).join(',')+'">Open these medicines in the Interaction checker</a></p>':'')+'</section>';
+  /* SeriousMD text */
+  function txt(P,title){var rows={};MEDS.forEach(function(m,k){var p=P.pl[k];if(p)p.t.forEach(function(t){(rows[t]=rows[t]||[]).push(nm(m.s)+(m.dose?' '+m.dose:''));});});
+    return title+'\n'+Object.keys(rows).map(Number).sort(function(a,b){return a-b;}).map(function(t){var l='';if(P.T.POST===t)l='after dialysis';else for(var kk in P.T)if(P.T[kk]===t&&SLOTNAME[kk]){l=SLOTNAME[kk];break;}
+      return '  '+fmt(t)+(l?' ('+l+')':'')+': '+rows[t].join('; ');}).join('\n');}
+  var text='OPTIMIZED MEDICATION INTAKE SCHEDULE\n'+txt(P0,hdOn?'Non-dialysis days:':'Daily:')+(P1?'\n'+txt(P1,'Dialysis days ('+hdDays+', session '+fmt(R.hs)+' to '+fmt(R.he)+'):'):'')+
+    (non.length||unit.length?'\nOther: '+non.concat(unit).map(function(m){return nm(m.s)+(m.dose?' '+m.dose:'')+' '+(m.freq==='posthd'?'after each dialysis':(FREQ.filter(function(f){return f[0]===m.freq;})[0]||['',''])[1].toLowerCase());}).join('; '):'');
+  h+='<section class="dd-ix-card no-print"><h3>Text for the prescription remarks</h3><textarea class="dd-ms-text" rows="8" readonly>'+esc(text)+'</textarea>'+
+    '<div class="dd-ix-btns"><button type="button" class="dd-btn" id="ms-copy">Copy text</button> <button type="button" class="dd-btn dd-btn-ghost" id="ms-print">Print patient sheet</button></div></section>';
+  out.innerHTML=h;
+  $('ms-copy').addEventListener('click',function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy text';},1600);},function(){out.querySelector('.dd-ms-text').select();});});
+  $('ms-print').addEventListener('click',function(){window.print();});
+  out.scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('ms-build').addEventListener('click',build);
+load().then(function(){restoreRoutine();paintHD();
+  var u=new URL(location.href);(u.searchParams.get('d')||'').split(',').filter(Boolean).forEach(function(s){addMed(s);});paintList();
+}).catch(function(){$('ms-out').innerHTML='<p class="dd-note">The scheduler could not load its data. Check the connection, or open the Drug Index app once while online.</p>';});
+})();
+"""
+
 # Favorites (device only) + Interaction checker (Nov 2026)
 DRUG_JS += r"""
 (function(){
@@ -1720,6 +1983,7 @@ function update(){if(!IX)return;sync();paintSel();
   if(local.length)notes.push('Not checked (applied to the skin, eye, ear or nose): '+local.map(nm).map(esc).join(', ')+'.');
   notes.push('No result does not mean no interaction. Check the full prescribing information.');
   h+='<p class="dd-note dd-ix-cov">'+notes.join(' ')+'</p>';
+  h+='<p class="no-print"><a class="dd-ix-q dd-ix-qgo" href="med-scheduler.html?d='+sel.map(encodeURIComponent).join(',')+'">Schedule these medicines in the Med Scheduler &rarr;</a></p>';
   out.innerHTML=h;
 }
 load().then(function(){
@@ -2206,7 +2470,7 @@ var V='__V__';
 var SHELL='rcm-drugs-shell-'+V,PAGES='rcm-drugs-pages',SAVED='rcm-drugs-saved',DATA='rcm-drugs-data',ASSETS='rcm-drugs-assets';
 var SHELL_URLS=__SHELL__;            // must all load, or the install is retried later
 var OPTIONAL_SHELL=__OPTIONAL__;     // nice to have offline
-var CORE_PAGES=['/drugs/','/drugs/offline','/drugs/supplements/','/drugs/interactions'];
+var CORE_PAGES=['/drugs/','/drugs/offline','/drugs/supplements/','/drugs/interactions','/drugs/med-scheduler'];
 var DATA_URLS=__DATA__;
 var ASSET_URLS=__ASSETS__;
 var MAX_PAGES=300,MAX_ASSETS=400;
@@ -2302,7 +2566,7 @@ def build_sw() -> str:
     da = drugdb_assets()
     shell = [da["css_url"], da["js_url"]]
     optional = ["/assets/drug-hero.js?v=3"] + ([f"/drugs/supplements/supp.css?v={sv}", f"/drugs/supplements/supp.js?v={sv}"] if sv else [])
-    data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json", "/drugs/interactions.json",
+    data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json", "/drugs/interactions.json", "/drugs/med-scheduler.json",
             f"/drugs/browse.json?v={ASSET_VERSION}", f"/drugs/browse-brands.json?v={ASSET_VERSION}"]
     assets = ["/assets/share-buttons.js", "/drugs/app.webmanifest", "/images/app/dosis-192.png", "/favicon.ico",
               "/favicon-32x32.png", "/images/app/dosis-180.png"]
@@ -2331,8 +2595,9 @@ def offline_manifest(out_dir: Path) -> dict:
     for sub in ("category", "supplements"):
         for f in sorted((out_dir / sub).glob("*.html")):
             add(f"/drugs/{sub}/" if f.stem == "index" else f"/drugs/{sub}/{f.stem}", f)
-    if (out_dir / "interactions.json").exists():
-        add("/drugs/interactions.json", out_dir / "interactions.json")
+    for dj in ("interactions.json", "med-scheduler.json"):
+        if (out_dir / dj).exists():
+            add(f"/drugs/{dj}", out_dir / dj)
     sdata = REPO / "data" / "drugs" / "supplements"
     for f in sorted(sdata.glob("*.json")):
         if not f.name.startswith("_"):
@@ -4484,7 +4749,7 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int, off: dict | None = No
         <p class="hero-sub">Every drug product registered with the Food and Drug Administration (FDA) Philippines, grouped by generic name.
 Search by brand, generic, class, indication, manufacturer or registration number.</p>
         <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span>
-<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}<a class="dd-chip dd-ixchip" href="/drugs/interactions.html">Interaction checker</a></div>
+<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}<a class="dd-chip dd-ixchip" href="/drugs/interactions.html">Interaction checker</a><a class="dd-chip dd-ixchip" href="/drugs/med-scheduler.html">Med Scheduler</a></div>
         <a class="dd-app-cta no-print" href="#dd-app" id="dd-app-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="m9 11 3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="dd-app-cta-t"><strong>Install Dosis, the Drug Index app</strong><small>Works offline, even with no signal</small></span><svg class="dd-app-cta-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
     </div></div>
@@ -4695,6 +4960,102 @@ def interactions_page(n_owners: int, n_rows: int) -> str:
 """ + FOOTER + FLOAT)
 
 
+def scheduler_data(ctx: "Ctx", ixd: dict) -> dict:
+    """drugs/med-scheduler.json: timing rules by molecule (data/drugs/timing.json, label-sourced), generics whose APPROVED
+    hemodialysis entry says to dose after dialysis, and separation windows linked to approved interaction rows."""
+    tj = load_json(ctx.data_dir / "timing.json", {}) or {}
+    rules = {}
+    if tj.get("review_status") == "approved":
+        for k, v in (tj.get("rules") or {}).items():
+            rules[ctx.single_slug(k) or k.replace(" ", "-")] = v
+    hd_after = []
+    for s in ixd["g"]:
+        r = ctx.renal(s)
+        if renal_approved(r):
+            v = r.get("hd")
+            txt = v.get("text") if isinstance(v, dict) else v
+            lvl = (v.get("level") or "") if isinstance(v, dict) else ""
+            if lvl in ("avoid", "nodata", "hide") or (txt and re.search(r"\bno (supplement|supplemental dose)\b|not dialyzable|does not make it safe", txt, re.I)):
+                continue
+            if txt and re.search(r"after (each |every )?(HD|hemodialysis|dialysis)|post-?HD|post-?dialysis|following (each )?(HD|hemodialysis|dialysis)", txt, re.I):
+                hd_after.append(s)
+    sep = {}
+    for owner, prefix, before, after in tj.get("separations") or []:
+        for i, row in enumerate(ixd["rows"]):
+            if row[0] == owner and row[2].startswith(prefix):
+                sep[str(i)] = [before, after]
+    return {"v": 1, "r": rules, "hdAfter": sorted(hd_after), "sep": sep}
+
+
+def scheduler_page() -> str:
+    canonical = f"{SITE}/drugs/med-scheduler"
+    jsonld = json.dumps({"@context": "https://schema.org", "@type": "WebApplication", "@id": canonical, "url": canonical,
+                         "name": "Med Scheduler · Drug Index", "applicationCategory": "HealthApplication",
+                         "dateModified": "__ISO__", "inLanguage": "en",
+                         "audience": {"@type": "MedicalAudience", "audienceType": "Clinician"}}).replace("</", "<\\/")
+    days = "".join(f'<label class="dd-ms-day"><input type="checkbox" value="{i}" data-hdday> {d}</label>'
+                   for i, d in enumerate(("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")))
+    return (head("Med Scheduler · Renal Care Matters",
+                 "Build a daily medication schedule around a patient's meals, bedtime and dialysis days, with each timing "
+                 "rule taken from the US label. For clinicians; prints a simple patient sheet.", canonical, jsonld, "__HASH__")
+            + '<body class="physician-mode single-mode dd-index-page dd-ms-page">\n' + header(True) + f"""
+<section class="hero no-print"><div class="container dd-hero-wide"><div class="hero-grid"><div class="hero-copy">
+<div class="dd-crumb"><a href="/drugs/">Drug Index</a> · <a href="/drugs/interactions.html">Interaction checker</a></div>
+<div class="hero-tag">Drug Database · Clinicians</div>
+<h1>Med Scheduler</h1>
+<p class="hero-sub">Set the patient's day (meals, bedtime, dialysis), add the medicines, and get a timetable for dialysis and non-dialysis days that respects food rules and dose spacing. Print a simple sheet for the patient.</p>
+<div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
+</div></div></div></section>
+<main class="container dd-wide" id="dd-ms" data-src="/drugs/search-index.json" data-ix="/drugs/interactions.json" data-ms="/drugs/med-scheduler.json">
+<div class="dd-ms-grid no-print">
+<section class="dd-ix-pick dd-ms-routine" aria-labelledby="dd-ms-r-h">
+<h2 id="dd-ms-r-h">1. The patient's day</h2>
+<div class="dd-ms-times">
+<label>Wakes <input type="time" id="ms-wake" value="06:00"></label>
+<label>Breakfast <input type="time" id="ms-bf" value="07:00"></label>
+<label>Lunch <input type="time" id="ms-lu" value="12:00"></label>
+<label>Dinner <input type="time" id="ms-di" value="18:30"></label>
+<label>Bedtime <input type="time" id="ms-bed" value="21:30"></label>
+</div>
+<fieldset class="dd-ms-hd"><legend>Dialysis</legend>
+<label><input type="radio" name="ms-dx" value="none" checked> None</label>
+<label><input type="radio" name="ms-dx" value="hd"> Hemodialysis</label>
+<div class="dd-ms-hdbox" id="ms-hdbox" hidden>
+<div class="dd-ms-preset"><button type="button" class="dd-ix-q" data-preset="0,2,4">Mon · Wed · Fri</button><button type="button" class="dd-ix-q" data-preset="1,3,5">Tue · Thu · Sat</button></div>
+<div class="dd-ms-days">{days}</div>
+<div class="dd-ms-times"><label>Session starts <input type="time" id="ms-hs" value="06:00"></label><label>Ends <input type="time" id="ms-he" value="10:00"></label></div>
+<label class="dd-check"><input type="checkbox" id="ms-hold"> Hold blood-pressure medicines until after dialysis on dialysis days</label>
+</div>
+</fieldset>
+</section>
+<section class="dd-ix-pick dd-ms-meds" aria-labelledby="dd-ms-m-h">
+<h2 id="dd-ms-m-h">2. Medicines</h2>
+<div class="dd-ix-add" role="search">
+<label for="dd-ix-q" class="dd-ix-l">Add a medicine</label>
+<input id="dd-ix-q" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="dd-ix-sug"
+ placeholder="Brand or generic (e.g., Renvela, losartan)" autocomplete="off" spellcheck="false">
+<ul id="dd-ix-sug" class="dd-ix-sug" role="listbox" aria-label="Matching medicines" hidden></ul>
+</div>
+<details class="dd-ix-paste" open><summary>Paste a prescription</summary>
+<label class="dd-hidden" for="dd-ix-ta">Prescription</label>
+<textarea id="dd-ix-ta" rows="6" placeholder="One medicine per line, with its sig:&#10;Levothyroxine 50 mcg 1 tab OD before breakfast&#10;Sevelamer 800 mg 1 tab TID with meals&#10;Losartan 50 mg 1 tab BID&#10;Calcitriol 0.25 mcg 1 cap post-HD"></textarea>
+<button type="button" class="dd-btn" id="dd-ix-parse">Read the prescription</button> <span class="dd-note" id="dd-ix-pmsg" aria-live="polite"></span>
+</details>
+<div id="ms-list" class="dd-ms-list" aria-live="polite"></div>
+<div class="dd-ix-row"><span class="dd-ix-btns">
+<button type="button" class="dd-btn" id="ms-build">Build the schedule</button>
+<button type="button" class="dd-btn dd-btn-ghost" id="ms-clear">Clear medicines</button></span></div>
+</section>
+</div>
+<div id="ms-out" class="dd-ms-out" aria-live="polite"></div>
+<section class="dd-ix-about no-print" aria-labelledby="ms-about-h">
+<h2 id="ms-about-h">How the schedule is built</h2>
+<p>Meal and time-of-day rules come from each medicine's US label (shown with each placement). Dose spacing, such as levothyroxine 4 hours from phosphate binders, comes from the reviewed interaction lists. Medicines dosed after dialysis follow the reviewed kidney dosing. The scheduler meets every rule it can with the fewest dose times and lists any rule it cannot meet. Medicines with no label timing rule are placed at standard times and can be moved with the timing menu. Review the schedule before giving it to the patient.</p>
+</section>
+</main>
+""" + FOOTER + FLOAT)
+
+
 def category_index_page(groups: dict[str, list[dict]]) -> str:
     canonical = f"{SITE}/drugs/category/"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "CollectionPage", "@id": canonical, "url": canonical,
@@ -4878,6 +5239,9 @@ def main():
                            today, a.dry_run, False)] += 1
     print(f"  interaction checker: {len(ixd['rows'])} rows from {len(ixd['owners'])} drugs; "
           f"{ixr['matched']} matched to drugs or classes, {ixr['nondrug']} food/lab/procedure, {len(ixr['unmatched'])} other")
+    msjson = json.dumps(scheduler_data(ctx, ixd), ensure_ascii=False, separators=(",", ":"))
+    write_if_changed(out_dir / "med-scheduler.json", msjson, a.dry_run)
+    stats["ms-" + finalize(out_dir / "med-scheduler.html", scheduler_page(), today, a.dry_run, False)] += 1
     bcore, bbrands = browse_data(entries, groups, ctx)
     write_if_changed(out_dir / "browse.json", json.dumps(bcore, ensure_ascii=False, separators=(",", ":")), a.dry_run)
     write_if_changed(out_dir / "browse-brands.json", json.dumps(bbrands, ensure_ascii=False, separators=(",", ":")), a.dry_run)
@@ -4893,7 +5257,7 @@ def main():
         stats["cat-" + finalize(cdir / f"{cs}.html", category_page(c, items), today, a.dry_run, False)] += 1
 
     if not a.no_prune and only is None:
-        keep = {e["s"] for e in entries} | {"index", "offline", "interactions"}
+        keep = {e["s"] for e in entries} | {"index", "offline", "interactions", "med-scheduler"}
         for d, kp in ((out_dir, keep), (cdir, cat_keep)):
             for f in d.glob("*.html"):
                 if f.stem in kp:

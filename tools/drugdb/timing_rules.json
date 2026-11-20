@@ -1,0 +1,401 @@
+{
+ "_doc": "Med Scheduler timing rules. 'find' must match the named US label (dosage and administration, drug interactions or renal impairment section) verbatim; build_timing.py copies the matched sentence as the source quote. meal: with | before (before meals) | empty (empty stomach) | after (after meals); tod: morning | evening | bedtime; hd: unit (given at the dialysis unit) | after (after dialysis on dialysis days) | any; slot: preferred anchor (PB pre-breakfast, B, L, D, HS). 'separations' are taken from APPROVED interaction rows (owner slug + the row's drug_or_class prefix): before = minimum hours when the owner drug is taken before the partner, after = when taken after; null = that order is not allowed.",
+ "rules": [
+  {
+   "keys": [
+    "sevelamer"
+   ],
+   "label": "sevelamer",
+   "find": "three times per day with meals",
+   "meal": "with"
+  },
+  {
+   "keys": [
+    "cinacalcet"
+   ],
+   "label": "cinacalcet",
+   "find": "taken with food or shortly after a meal",
+   "meal": "with"
+  },
+  {
+   "keys": [
+    "levothyroxine"
+   ],
+   "label": "levothyroxine",
+   "find": "on an empty stomach, one-half to one hour before breakfast",
+   "meal": "empty",
+   "slot": "PB"
+  },
+  {
+   "keys": [
+    "omeprazole"
+   ],
+   "label": "omeprazole",
+   "find": "capsules before meals",
+   "meal": "before"
+  },
+  {
+   "keys": [
+    "lansoprazole"
+   ],
+   "label": "lansoprazole",
+   "find": "SoluTab before meals",
+   "meal": "before"
+  },
+  {
+   "keys": [
+    "esomeprazole"
+   ],
+   "label": "esomeprazole",
+   "find": "at least one hour before (a )?meals?",
+   "meal": "before"
+  },
+  {
+   "keys": [
+    "metformin"
+   ],
+   "label": "metformin",
+   "find": "with meals",
+   "meal": "with"
+  },
+  {
+   "keys": [
+    "glimepiride"
+   ],
+   "label": "glimepiride",
+   "find": "with breakfast or the first main meal",
+   "meal": "with",
+   "slot": "B"
+  },
+  {
+   "keys": [
+    "glipizide"
+   ],
+   "label": "glipizide",
+   "find": "with breakfast or the first main meal",
+   "meal": "with",
+   "slot": "B",
+   "note": "Extended-release label; immediate-release glipizide is usually taken 30 minutes before a meal."
+  },
+  {
+   "keys": [
+    "simvastatin"
+   ],
+   "label": "simvastatin",
+   "find": "once daily in the evening",
+   "tod": "evening"
+  },
+  {
+   "keys": [
+    "mycophenolate mofetil",
+    "mycophenolate"
+   ],
+   "label": "mycophenolate-mofetil",
+   "find": "administered on an empty stomach",
+   "meal": "empty"
+  },
+  {
+   "keys": [
+    "zolpidem"
+   ],
+   "label": "zolpidem",
+   "find": "immediately before bedtime",
+   "tod": "bedtime"
+  },
+  {
+   "keys": [
+    "allopurinol"
+   ],
+   "label": "allopurinol",
+   "find": "better tolerated if taken following meals",
+   "meal": "after"
+  },
+  {
+   "keys": [
+    "carvedilol"
+   ],
+   "label": "carvedilol",
+   "find": "should be taken with food",
+   "meal": "with"
+  },
+  {
+   "keys": [
+    "metoprolol"
+   ],
+   "label": "metoprolol",
+   "find": "with or immediately following meals",
+   "meal": "with"
+  },
+  {
+   "keys": [
+    "prednisone"
+   ],
+   "label": "prednisone",
+   "find": "should be taken daily with food",
+   "meal": "with"
+  },
+  {
+   "keys": [
+    "empagliflozin"
+   ],
+   "label": "empagliflozin",
+   "find": "once daily in the morning",
+   "tod": "morning"
+  },
+  {
+   "keys": [
+    "rivaroxaban"
+   ],
+   "label": "rivaroxaban",
+   "find": "Take with evening meal",
+   "meal": "with",
+   "slot": "D"
+  },
+  {
+   "keys": [
+    "isoniazid"
+   ],
+   "label": "isoniazid",
+   "find": "should not be administered with food",
+   "meal": "empty"
+  },
+  {
+   "keys": [
+    "tacrolimus"
+   ],
+   "label": "tacrolimus",
+   "find": "consistently with or without food",
+   "note": "Take consistently with or without food."
+  },
+  {
+   "keys": [
+    "ciclosporin",
+    "cyclosporine"
+   ],
+   "label": "ciclosporin",
+   "find": "consistent schedule with regard to time of day and relation to meals",
+   "note": "Keep a consistent time and relation to meals."
+  },
+  {
+   "keys": [
+    "spironolactone"
+   ],
+   "label": "spironolactone",
+   "find": "consistently with respect to food",
+   "note": "Take consistently with respect to food."
+  },
+  {
+   "keys": [
+    "paricalcitol"
+   ],
+   "label": "paricalcitol",
+   "find": "at any time during dialysis",
+   "hd": "unit"
+  },
+  {
+   "keys": [
+    "epoetin alfa"
+   ],
+   "label": "epoetin-alfa",
+   "find": "intravenous route is recommended for patients on hemodialysis",
+   "hd": "unit"
+  },
+  {
+   "keys": [
+    "methoxy polyethylene glycol-epoetin beta",
+    "methoxy polyethylene glycol epoetin beta"
+   ],
+   "label": "methoxy-polyethylene-glycol-epoetin-beta",
+   "find": "intravenous route is recommended for patients receiving hemodialysis",
+   "hd": "unit"
+  },
+  {
+   "keys": [
+    "iron sucrose"
+   ],
+   "label": "iron-sucrose",
+   "find": "Hemodialysis Dependent-Chronic Kidney Disease \\(HDD-CKD\\) \\( 2\\.2 \\) 100 mg",
+   "hd": "unit"
+  },
+  {
+   "keys": [
+    "pregabalin"
+   ],
+   "label": "pregabalin",
+   "find": "supplemental dose immediately following every 4-hour hemodialysis",
+   "hd": "after"
+  },
+  {
+   "keys": [
+    "gabapentin"
+   ],
+   "label": "gabapentin",
+   "find": "Post-Hemodialysis Supplemental Dose",
+   "hd": "after"
+  },
+  {
+   "keys": [
+    "ciprofloxacin"
+   ],
+   "label": "ciprofloxacin",
+   "find": "every 24 hours \\(after dialysis\\)",
+   "hd": "after"
+  },
+  {
+   "keys": [
+    "tramadol"
+   ],
+   "label": "tramadol",
+   "find": "regular dose on the day of dialysis",
+   "hd": "any"
+  },
+  {
+   "keys": [
+    "sitagliptin"
+   ],
+   "label": "sitagliptin",
+   "find": "without regard to the timing of dialysis",
+   "hd": "any"
+  }
+ ],
+ "separations": [
+  [
+   "alfacalcidol",
+   "Cholestyramine",
+   1,
+   6
+  ],
+  [
+   "calcium-polystyrene-sulfonate",
+   "All other oral medicines",
+   3,
+   3
+  ],
+  [
+   "calcium-polystyrene-sulfonate",
+   "Aluminum or magnesium hydroxide",
+   3,
+   3
+  ],
+  [
+   "cefaclor",
+   "Aluminum- or magnesium-hydroxide",
+   1,
+   1
+  ],
+  [
+   "cefuroxime",
+   "Antacids, H2 blockers",
+   1,
+   2
+  ],
+  [
+   "ciprofloxacin",
+   "Multivalent cations",
+   2,
+   6
+  ],
+  [
+   "essential-amino-acids-ketoanalogues",
+   "Tetracyclines, quinolones",
+   2,
+   2
+  ],
+  [
+   "ethambutol",
+   "Aluminum hydroxide antacids",
+   4,
+   0
+  ],
+  [
+   "gabapentin",
+   "Aluminum/magnesium hydroxide",
+   0,
+   2
+  ],
+  [
+   "glimepiride",
+   "Colesevelam",
+   4,
+   null
+  ],
+  [
+   "glipizide",
+   "Colesevelam",
+   4,
+   null
+  ],
+  [
+   "olmesartan",
+   "Colesevelam",
+   4,
+   null
+  ],
+  [
+   "hydroxychloroquine",
+   "Antacids, kaolin",
+   4,
+   4
+  ],
+  [
+   "hyoscine-n-butylbromide",
+   "Antacids, adsorbent",
+   1,
+   null
+  ],
+  [
+   "isoniazid-rifampicin",
+   "Antacids",
+   1,
+   null
+  ],
+  [
+   "levofloxacin",
+   "Multivalent cations",
+   2,
+   2
+  ],
+  [
+   "levothyroxine",
+   "Phosphate binders",
+   4,
+   4
+  ],
+  [
+   "levothyroxine",
+   "Bile acid sequestrants",
+   4,
+   null
+  ],
+  [
+   "mycophenolate-mofetil",
+   "Magnesium- or aluminum-hydroxide",
+   2,
+   null
+  ],
+  [
+   "mycophenolate-mofetil",
+   "Calcium-free phosphate binders",
+   2,
+   null
+  ],
+  [
+   "rosuvastatin",
+   "Aluminum and magnesium hydroxide",
+   2,
+   null
+  ],
+  [
+   "sevelamer",
+   "Ciprofloxacin",
+   6,
+   2
+  ],
+  [
+   "sevelamer",
+   "Mycophenolate mofetil",
+   null,
+   2
+  ]
+ ]
+}

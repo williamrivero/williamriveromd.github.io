@@ -1012,6 +1012,20 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   Contraindications sections (severity from the label's own wording: contraindicated or "avoid" -> Avoid, with an action
   starting "Contraindicated." for the Contraindicated grade; dose change or monitoring -> Adjust or monitor), approved
   under delegated sign-off with source id `LABEL_IX`. The page's references note then reads "Interaction summary".
+- **Med Scheduler** (Nov 20 2026): `drugs/med-scheduler.html` (generated; chip on the index hero, link from checker
+  results, precached for offline use) and `drugs/med-scheduler.json`. Clinician tool, English only. The patient's day
+  (wake, meals, bedtime; remembered in localStorage `wgmr-ms-routine`), hemodialysis days and session times (MWF / TTS
+  presets) and a toggle that holds blood-pressure medicines until after dialysis; medicines added by search or by pasting
+  a prescription (sig parser: OD/BID/TID/QID/HS/q8/q6/post-HD/3x a week/weekly/PRN, "before breakfast", "with meals").
+  A greedy optimizer places each dose to meet, in order: label meal/time-of-day rules, stated spacing between drugs, then
+  "absorption" rows kept 1 hour apart, then the fewest dose times. Separate timetables for non-dialysis and dialysis days;
+  dialysis-day doses during the session move to after it (session end + 30 min). Output: unmet spacing warnings, the
+  why-each-placement list with label quotes, spacing met/not met, "Interactions timing cannot fix" (checker grades), and
+  the OPTIMIZED MEDICATION INTAKE SCHEDULE text for SeriousMD remarks (Copy / Print). Sources: `tools/drugdb/timing_rules.json`
+  (meal, tod, hd = unit/after, verbatim US label quote + URL; separations [owner, partner prefix, hours before, hours
+  after] tied to approved interaction rows) -> `tools/drugdb/build_timing.py` (fails if a quote is gone) ->
+  `data/drugs/timing.json`; "dose after dialysis" also comes from APPROVED kidney tiles whose HD text says so
+  (`scheduler_data()` excludes avoid/no-data tiles and negative phrasing). Approved under delegated sign-off (label text only).
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come

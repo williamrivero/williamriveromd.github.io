@@ -16,6 +16,8 @@ on:
       - "tools/drugdb/merge_renal_short.py"
       - "tools/drugdb/build_nephrotox.py"
       - "tools/drugdb/nephrotox_rules.json"
+      - "tools/drugdb/build_timing.py"
+      - "tools/drugdb/timing_rules.json"
       - "tools/drugdb/interactions.py"
       - "tools/drugdb/interaction_classes.json"
       - "tools/drugdb/pn_products.json"
@@ -49,6 +51,8 @@ jobs:
       - name: Kidney injury risk tags (verbatim US label quotes)
         # a rule whose quote is gone after a label update is dropped (never shown unsourced) and flagged here
         run: python3 tools/drugdb/build_nephrotox.py || echo "::warning::A kidney injury tag lost its US label quote; see the log and update tools/drugdb/nephrotox_rules.json"
+      - name: Medicine timing rules (Med Scheduler)
+        run: python3 tools/drugdb/build_timing.py || echo "::warning::A Med Scheduler timing rule lost its US label quote; see the log and update tools/drugdb/timing_rules.json"
       - name: Build food-supplement pages
         run: python3 generate_supplement_pages.py
       - name: Build drug pages
