@@ -329,7 +329,7 @@ function net(){document.documentElement.classList.toggle('dd-offline',navigator.
 window.addEventListener('online',net);window.addEventListener('offline',net);net();
 function standalone(){return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;}
 /* Installed app has no browser toolbar: add Back / Drug Index / Search */
-if(standalone()&&window.self===window.top&&!document.querySelector('.dd-appbar')){
+if(standalone()&&!document.querySelector('.dd-appbar')){
   document.documentElement.classList.add('dd-standalone');
   var onIndex=location.pathname==='/drugs/'||location.pathname==='/drugs/index.html';
   var bar=document.createElement('nav');bar.className='dd-appbar no-print';bar.setAttribute('aria-label','App navigation');
@@ -446,113 +446,6 @@ if(standalone()){var r0=rec();if(!r0||!r0.done){var main=document.getElementById
     nb.innerHTML='<strong>Offline use is not set up yet.</strong> Download the complete Drug Index once so every page opens without signal. <a href="#dd-app">Set up offline use</a>';
     main.insertBefore(nb,main.firstChild);}}}
 rm.addEventListener('click',function(){if(busy)return;caches.delete(SAVED).then(function(){try{localStorage.removeItem(KEY);}catch(e){}status();});});
-})();
-/* ── Foldables & large screens (Nov 18 2026) ──────────────────────────────────────────────────────
-   Designed for window sizes, not devices (compact < 600, medium 600–839, expanded ≥ 840 px):
-   - Drug Index on an expanded window: the list stays on the left and the tapped drug opens in a pane on
-     the right (iPad Mail / Gmail pattern). The pane is the real drug page in an iframe, so its product
-     filters, the offline copies and the service worker all keep working.
-   - nothing is lost on fold/unfold: the window resizes live; if it drops below the two-pane width with a
-     drug open, that drug opens full screen at the section you were reading; on any page the screen stays
-     on the paragraph you were reading.
-   - book posture (two side-by-side viewport segments): the list and the pane meet at the fold. */
-(function(){
-'use strict';
-var FRAMED=(function(){try{return window.self!==window.top;}catch(e){return true;}})(),root=document.documentElement,CARRY='dd-carry';
-function segs(){var v=window.viewport||window.visualViewport||{},s=v.segments;return s&&s.length===2&&Math.abs(s[0].top-s[1].top)<2?s:null;}
-function drugPath(a){
-  if(!a||!a.href||a.target==='_blank'||a.hasAttribute('download'))return null;
-  var u;try{u=new URL(a.href,location.href);}catch(e){return null;}
-  if(u.origin!==location.origin)return null;
-  var p=u.pathname.replace(/\.html$/,'');
-  if(!/^\/drugs\/(supplements\/)?[\w.-]+$/.test(p)||/^\/drugs\/(index|offline|supplements\/index)$/.test(p))return null;
-  return p+u.search;
-}
-function topId(win){
-  var doc=win.document,el=doc.elementFromPoint(Math.min(win.innerWidth/2,240),90);
-  while(el&&el!==doc.body&&!el.id)el=el.parentElement;
-  return el&&el.id?el.id:null;
-}
-if(FRAMED){
-  root.classList.add('dd-framed');
-  document.addEventListener('click',function(e){
-    var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
-    var u;try{u=new URL(a.href,location.href);}catch(x){return;}
-    if(u.origin!==location.origin||u.pathname.indexOf('/drugs/')!==0||/^\/drugs\/(index(\.html)?)?$/.test(u.pathname))a.target='_top';
-  },true);
-  return;
-}
-/* carried over from the pane when the phone folded */
-(function(){var c;try{c=JSON.parse(sessionStorage.getItem(CARRY)||'null');}catch(e){c=null;}
-  if(!c||c.path!==location.pathname.replace(/\.html$/,'')||Date.now()-c.at>60000)return;
-  try{sessionStorage.removeItem(CARRY);}catch(e){}
-  if(c.a)setTimeout(function(){var t=document.getElementById(c.a);if(t)t.scrollIntoView({block:'start'});},80);})();
-/* keep your place when the width changes (fold/unfold, rotation, Split View) */
-(function(){var held=null,w=window.innerWidth,tick=0;
-  function remember(){var el=document.elementFromPoint(Math.min(window.innerWidth/2,260),110);
-    while(el&&el!==document.body&&el.getBoundingClientRect().height>window.innerHeight*.9)el=el.firstElementChild;
-    if(el&&el!==document.body&&el!==root)held={el:el,top:el.getBoundingClientRect().top};}
-  window.addEventListener('scroll',function(){if(!tick)tick=requestAnimationFrame(function(){tick=0;remember();});},{passive:true});
-  window.addEventListener('resize',function(){if(Math.abs(window.innerWidth-w)<40)return;w=window.innerWidth;var f=document.activeElement;
-    requestAnimationFrame(function(){requestAnimationFrame(function(){
-      if(f&&/^(INPUT|SELECT|TEXTAREA)$/.test(f.tagName)){f.scrollIntoView({block:'center'});return;}
-      if(held&&held.el.isConnected)window.scrollBy(0,held.el.getBoundingClientRect().top-held.top);});});});
-  setTimeout(remember,400);})();
-/* Drug Index: list | detail */
-if(!document.body.classList.contains('dd-index-page'))return;
-var EXPANDED=840,pane=null,frame=null,title=null,open=null,picked=null;
-function paneWidth(){var s=segs();if(s)return Math.round(window.innerWidth-s[1].left);
-  return Math.round(Math.min(Math.max(window.innerWidth*.58,440),780));}
-function build(){
-  pane=document.createElement('aside');pane.className='dd-pane';pane.dataset.state='empty';pane.setAttribute('aria-label','Drug page');
-  pane.innerHTML='<div class="dd-pane-bar"><b>Drug</b>'
-   +'<a data-p="full" aria-label="Open full screen" href="#"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></a>'
-   +'<button type="button" data-p="close" aria-label="Close drug page"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>'
-   +'<iframe title="Drug page"></iframe>'
-   +'<div class="dd-pane-empty"><div><img src="/images/app/dosis-192.png" alt="">Choose a drug from the list.<br>It opens here, next to the list.</div></div>';
-  document.body.appendChild(pane);
-  frame=pane.querySelector('iframe');title=pane.querySelector('b');
-  pane.querySelector('[data-p="close"]').addEventListener('click',function(){show(null,true);});
-  pane.querySelector('[data-p="full"]').addEventListener('click',function(e){e.preventDefault();if(open)goFull();});
-  frame.addEventListener('load',function(){
-    var w=frame.contentWindow,d2;try{d2=frame.contentDocument;}catch(x){return;}
-    if(!d2||!w)return;var p=w.location.pathname.replace(/\.html$/,'');
-    if(!/^\/drugs\//.test(p))return;
-    open=p+w.location.search;
-    var h1=d2.querySelector('h1');title.textContent=(h1?h1.textContent:d2.title).replace(/\s+/g,' ').trim();
-    if(location.hash!=='#d='+open)history.replaceState(history.state,'','#d='+open);
-    mark();});
-}
-function mark(){if(picked)picked.classList.remove('dd-picked');picked=null;if(!open)return;
-  var links=document.querySelectorAll('main a[href]');
-  for(var i=0;i<links.length;i++)if(drugPath(links[i])===open){picked=links[i].closest('li')||links[i];picked.classList.add('dd-picked');break;}}
-function show(path,push){
-  if(!pane)build();open=path;pane.dataset.state=path?'open':'empty';
-  if(path){if(frame.getAttribute('src')!==path)frame.setAttribute('src',path);}else{frame.removeAttribute('src');title.textContent='Drug';}
-  if(push)history.pushState({dd:path||''},'',path?'#d='+path:location.pathname+location.search);
-  mark();}
-function goFull(){try{sessionStorage.setItem(CARRY,JSON.stringify({path:open.split('?')[0],a:topId(frame.contentWindow),at:Date.now()}));}catch(e){}
-  location.href=open;}
-/* two panes only on a touch screen (or the installed app) at least 840 wide and 500 tall: unfolded foldables, the
-   iPhone Duo, iPads; desktop browsers keep ordinary links and phones held sideways keep one pane */
-function twoPane(){var touch=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
-  return touch&&window.innerWidth>=EXPANDED&&window.innerHeight>=500;}
-function layout(){var wide=twoPane();
-  if(wide){root.style.setProperty('--dd-pane',paneWidth()+'px');if(!root.classList.contains('dd-split')){root.classList.add('dd-split');if(!pane)build();}}
-  else if(root.classList.contains('dd-split')){if(open){goFull();return;}root.classList.remove('dd-split');root.style.removeProperty('--dd-pane');}}
-document.addEventListener('click',function(e){
-  if(!root.classList.contains('dd-split')||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey)return;
-  var a=e.target.closest&&e.target.closest('a[href]'),p=drugPath(a);
-  if(!p||(pane&&pane.contains(a)))return;
-  e.preventDefault();show(p,true);});
-window.addEventListener('popstate',function(e){if(!root.classList.contains('dd-split'))return;
-  var m=/^#d=(.+)$/.exec(location.hash);
-  if(m)show(decodeURIComponent(m[1]),false);else if(!location.hash||(e.state&&e.state.dd===''))show(null,false);});
-window.addEventListener('resize',layout);
-if(navigator.devicePosture&&navigator.devicePosture.addEventListener)navigator.devicePosture.addEventListener('change',layout);
-layout();
-var m0=/^#d=(.+)$/.exec(location.hash);
-if(m0){var p0=decodeURIComponent(m0[1]);if(root.classList.contains('dd-split'))show(p0,false);else location.replace(p0);}
 })();
 
 (function(){

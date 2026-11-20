@@ -58,56 +58,6 @@
 
     // 3. Collapse
     if (units.length > 1) collapse(main, units);
-
-    // 5. Wide screens (unfolded foldables, tablets): inputs and result side by side
-    split(main);
-  }
-
-  /* ── Inputs | result split (Nov 18 2026) ─────────────────────────────────
-     On windows 840 px or wider (Android "expanded"; an unfolded Galaxy Z Fold, Pixel Fold or iPhone Duo
-     held sideways) a calculator whose result box is a direct child of .calc-wrap shows the inputs on the
-     left and the result on the right, pinned while you scroll, so the answer stays in view as you type.
-     Until the result is showing, the right column holds a quiet placeholder. When a foldable is half-open
-     like a book (two side-by-side viewport segments), the columns are aligned to the fold so no field sits
-     on the hinge. All of this is CSS-driven (calc-ui.css); here we only tag the cards and track the result. */
-  function split(main) {
-    $$('.calc-wrap', main).forEach(function (w) {
-      var box = null;
-      Array.prototype.slice.call(w.children).forEach(function (c) { if (!box && c.classList.contains('calc-result-box')) box = c; });
-      if (!box) return;
-      w.classList.add('cu-split');
-      var ph = d.createElement('div'); ph.className = 'cu-res-ph'; ph.setAttribute('aria-hidden', 'true');
-      ph.innerHTML = '<span>Result</span>The result appears here as you fill in the fields.';
-      w.insertBefore(ph, box);
-      var sync = function () { w.classList.toggle('cu-res-on', vis(box) && box.offsetHeight > 8); };
-      sync();
-      if (window.ResizeObserver) new ResizeObserver(sync).observe(box);
-      if (window.MutationObserver) new MutationObserver(sync).observe(box, { attributes: true, attributeFilter: ['style', 'class', 'hidden'] });
-    });
-    hinge();
-    window.addEventListener('resize', hinge);
-    if (navigator.devicePosture && navigator.devicePosture.addEventListener) navigator.devicePosture.addEventListener('change', hinge);
-  }
-
-  // Book posture: line the split up with the fold (Viewport Segments API; ignored where unsupported).
-  function segments() {
-    var v = window.viewport || window.visualViewport || {};
-    var s = v.segments;
-    return s && s.length === 2 && Math.abs(s[0].top - s[1].top) < 2 ? s : null;
-  }
-  function hinge() {
-    var s = segments();
-    $$('.calc-wrap.cu-split').forEach(function (w) {
-      if (!s) { w.style.removeProperty('--cu-left'); w.style.removeProperty('--cu-gap'); w.classList.remove('cu-hinge'); return; }
-      var r = w.getBoundingClientRect();
-      var gap = Math.max(0, s[1].left - (s[0].left + s[0].width));
-      var pl = parseFloat(getComputedStyle(w).paddingLeft) || 0;
-      var left = s[0].left + s[0].width - (r.left + pl) - 14;            // input column ends 14 px before the fold
-      if (left < 220 || r.right - s[1].left < 220) { w.classList.remove('cu-hinge'); return; }
-      w.style.setProperty('--cu-left', Math.round(left) + 'px');
-      w.style.setProperty('--cu-gap', Math.round(gap + 32) + 'px');
-      w.classList.add('cu-hinge');
-    });
   }
 
   /* ── Collapsible calculators ─────────────────────────────────────────── */
