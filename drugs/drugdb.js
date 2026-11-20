@@ -471,7 +471,7 @@ function fmt(t){t=((t%1440)+1440)%1440;var h=Math.floor(t/60),m=t%60,ap=h<12?'AM
 var RK='wgmr-ms-routine';
 function routine(){var dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value||'none';
   return {wake:mins($('ms-wake').value),bf:mins($('ms-bf').value),lu:mins($('ms-lu').value),di:mins($('ms-di').value),bed:mins($('ms-bed').value),
-    dx:dx,days:[].map.call(root.querySelectorAll('[data-hdday]:checked'),function(x){return +x.value;}),hs:mins($('ms-hs').value),he:mins($('ms-he').value),hold:$('ms-hold').checked,aht:($('ms-aht')||{}).value||'L'};}
+    dx:dx,days:[].map.call(root.querySelectorAll('[data-hdday]:checked'),function(x){return +x.value;}),hs:mins($('ms-hs').value),he:mins($('ms-he').value),hold:$('ms-hold').checked,aht:($('ms-aht')||{}).value||'auto'};}
 function saveRoutine(){var r={};['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){r[i]=$(i).value;});
   r.dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value;r.days=routine().days;r.hold=$('ms-hold').checked;r.aht=$('ms-aht').value;wr(RK,r);}
 function restoreRoutine(){var r=rd(RK,null);if(!r)return;['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){if(r[i])$(i).value=r[i];});
@@ -580,11 +580,14 @@ function build(){var R=routine(),out=$('ms-out');
   /* practice default (W. G. M. Rivero, MD, Nov 20 2026): with an early session (ends 30+ min before lunch) and the hold on,
      blood-pressure medicines go at one fixed time every day: once daily after lunch or after dinner (chosen), twice daily
      after lunch + bedtime, alpha blockers at bedtime. A time written in the sig still wins. */
-  var early=hdOn&&R.hold&&R.he<=R.lu-30;
-  function ahtFixed(m){if(!early||m.slot||((IX.g[m.s]||{}).c||[]).indexOf('antihtn')<0)return null;
+  /* shift: early = ends 30+ min before lunch, afternoon = ends 30+ min before dinner, evening = later. Auto time: after lunch,
+     after dinner, bedtime (after the session). Twice daily (after lunch + bedtime) only for the early shift. */
+  var shift=!hdOn||!R.hold?'':R.he<=R.lu-30?'early':R.he<=R.di-30?'afternoon':'evening';
+  var ahtSlot=R.aht&&R.aht!=='auto'?R.aht:({early:'L',afternoon:'D',evening:'HS'})[shift];
+  function ahtFixed(m){if(!shift||m.slot||((IX.g[m.s]||{}).c||[]).indexOf('antihtn')<0)return null;
     var mols=(IX.g[m.s]||{}).m||[m.s];if(mols.some(function(x){return /azosin$/.test(x);})&&(DAILY[m.freq]===1))return [['HS']];
-    if(m.freq==='od'||m.freq==='qam'||m.freq==='qpm')return [[R.aht==='D'?'D':'L']];
-    if(m.freq==='bid'||m.freq==='q12')return [['L','HS']];return null;}
+    if(m.freq==='od'||m.freq==='qam'||m.freq==='qpm')return [[ahtSlot]];
+    if((m.freq==='bid'||m.freq==='q12')&&shift==='early')return [['L','HS']];return null;}
   /* interactions among the list */
   var hard=[],soft=[],other=[],seenRow={};
   MEDS.forEach(function(a,i){MEDS.forEach(function(b,j){if(i===j)return;sepRows(a.s,b.s).forEach(function(ri){var key=ri+'|'+[i,j].sort().join(',');if(seenRow[key])return;seenRow[key]=1;
@@ -609,7 +612,11 @@ function build(){var R=routine(),out=$('ms-out');
         if(hd&&!o.fx){var after=(o.r&&o.r.hd==='after')||MS.hdAfter.indexOf(m.s)>=0,hold=R.hold&&antiH(m.s);
           if(after||hold){var idx=-1,bestd=1e9;tk.forEach(function(x,ii){var d=Math.abs(x-R.he);if(d<bestd){bestd=d;idx=ii;}});
             if(after&&idx>=0)tk[idx]=T.POST;
-            if(hold)tk=tk.map(function(x){return x<R.he+30?T.POST:x;});}}
+            if(hold){/* hold only doses due in the 4 hours before the session or during it; never stack two doses of one medicine */
+              tk=tk.map(function(x){return x>=R.hs-240&&x<R.he+30?T.POST:x;}).sort(function(p,q){return p-q;});
+              var gap=tk.length>=3?180:240,lim=Math.max(T.HS,T.POST);
+              for(var z=1;z<tk.length;z++)if(tk[z]-tk[z-1]<gap)tk[z]=tk[z-1]+gap;
+              if(tk.length>1&&tk[tk.length-1]>lim){var st=(lim-tk[0])/(tk.length-1);tk=tk.map(function(x,ii){return Math.round((tk[0]+st*ii)/15)*15;});}}}}
         var vs=viol(o.k,tk,pl),used={};Object.keys(pl).forEach(function(z){pl[z].t.forEach(function(x){used[x]=1;});});
         var fresh=tk.filter(function(x){return !used[x];}).length,score=vs[0]*1000+vs[1]*50+fresh*5+oi;
         if(!best||score<best.score)best={score:score,t:tk,opt:opt,v:vs[0],s:vs[1]};});
@@ -641,7 +648,7 @@ function build(){var R=routine(),out=$('ms-out');
     if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);if(r.tod&&!r.practice)bits.push('take in the '+r.tod);if(r.practice)bits.push('at bedtime: '+r.practice.replace(/^Bedtime by /,'').replace(/\.$/,''));if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');}
     if(MS.hdAfter.indexOf(m.s)>=0&&!(r&&r.hd==='after'))bits.push('dose after dialysis on dialysis days (reviewed kidney dosing)');
     if(m.slot)bits.push('time set by you');
-    else if(ahtFixed(m))bits.push('blood-pressure medicine at the same time every day, after the early dialysis session (practice default, W. G. M. Rivero, MD)');
+    else if(ahtFixed(m))bits.push('blood-pressure medicine at the same time every day, after the dialysis session ('+shift+' shift; practice default, W. G. M. Rivero, MD)');
     var src=r&&r.practice?' <span class="dd-sub">Practice default, '+esc(r.practice_by)+'</span>':'';
     src+=r&&r.quote?' <details class="dd-ms-src"><summary>Label</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
     return '<li><strong>'+esc(nm(m.s))+':</strong> '+(bits.length?esc(bits.join('; ')):'no label timing rule; standard times')+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+src+'</li>';}).join('');
