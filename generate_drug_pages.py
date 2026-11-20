@@ -663,6 +663,7 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-msw-tag.t-practice { color: #5b2a86; background: #f3ecfc; border-color: rgba(91,42,134,.3); }
 .dd-msw-tag.t-you { color: #1f3864; background: #e8eef9; border-color: rgba(31,56,100,.3); }
 .dd-msw-tag.t-evid { color: #7a3d00; background: #fff1de; border-color: rgba(122,61,0,.3); }
+.dd-ms-samples { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; font-size: 14px; color: var(--text-mid); }
 .dd-ms-use { display: block; margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--text-mid); }
 .dd-ms-use select { margin-left: 6px; font-size: 13.5px; padding: 4px 6px; }
 .dd-msw-tag.t-std { color: #4b5563; background: #f1f3f6; border-color: rgba(75,85,99,.25); }
@@ -1738,7 +1739,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.dd-ix-add')
 function dict(){if(DICT)return DICT;DICT={};var mx=1;IDX.forEach(function(d){function put(x,w){var k=nrm(x);if(k.length<4)return;if(!DICT[k]||w>DICT[k].w)DICT[k]={s:d.s,w:w};mx=Math.max(mx,k.split(' ').length);}
   put(d.n,3);(d.y||[]).forEach(function(y){put(y,2);});(d.b||[]).forEach(function(b){put(b,1);});});DICT.__mx=Math.min(mx,6);return DICT;}
 function sig(line){var L=line.toLowerCase(),o={freq:'od',slot:''};
-  var st=line.match(/(\d+(?:\.\d+)?\s*(?:mg|mcg|µg|g|iu|units?|u|ml|meq)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mg|mcg|ml))?)/i),qt=line.match(/((?:\d+(?:\.\d+)?|½|1\/2|one|two|half)\s*(?:tabs?|tablets?|caps?|capsules?|sachets?|puffs?|drops?|ml|units?))/i);
+  var st=line.match(/(\d+(?:,\d{3})*(?:\.\d+)?\s*(?:mg|mcg|µg|g|iu|units?|u|ml|meq)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mg|mcg|ml))?)/i),qt=line.match(/((?:\d+(?:\.\d+)?|½|1\/2|one|two|half)\s*(?:tabs?|tablets?|caps?|capsules?|sachets?|puffs?|drops?|ml|units?))/i);
   o.dose=[st&&st[1],qt&&qt[1]].filter(Boolean).join(', ');
   if(/\bprn\b|as needed/.test(L))o.freq='prn';
   else if(/post[- ]?(hd|dialysis)|after (each )?(hd|dialysis)/.test(L))o.freq='posthd';
@@ -1760,6 +1761,12 @@ function sig(line){var L=line.toLowerCase(),o={freq:'od',slot:''};
   else if(/before (dinner|supper)/.test(L))o.slot='PD';
   else if(/(after|with) (dinner|supper)/.test(L))o.slot='D';
   return o;}
+var SAMPLES={hd:{dx:'hd',days:[0,2,4],hs:'06:00',he:'10:00',hold:true,rx:['Sevelamer 800 mg 1 tab TID with meals','Calcium carbonate 500 mg 1 tab BID between meals (calcium supplement)','Calcitriol 0.25 mcg 1 cap post-HD','Levothyroxine 50 mcg 1 tab OD before breakfast','Amlodipine 10 mg 1 tab OD','Losartan 50 mg 1 tab OD','Carvedilol 6.25 mg 1 tab BID','Atorvastatin 40 mg 1 tab OD','Folic acid 5 mg 1 tab OD','Epoetin alfa 4,000 IU SC 3x a week','Iron sucrose 100 mg IV weekly']},
+  ckd:{dx:'none',rx:['Losartan 100 mg 1 tab OD','Amlodipine 5 mg 1 tab OD','Furosemide 40 mg 1 tab every morning','Dapagliflozin 10 mg 1 tab OD','Atorvastatin 20 mg 1 tab OD','Sodium bicarbonate 650 mg 1 tab TID','Calcium carbonate 500 mg 1 tab TID with meals (binder)','Ferrous sulfate 325 mg 1 tab OD','Febuxostat 40 mg 1 tab OD','Levothyroxine 50 mcg 1 tab OD before breakfast']}};
+root.addEventListener('click',function(e){var b=e.target.closest('[data-ms-sample]');if(!b)return;var S=SAMPLES[b.getAttribute('data-ms-sample')];
+  var rd=root.querySelector('input[name=ms-dx][value='+S.dx+']');if(rd)rd.checked=true;
+  if(S.dx==='hd'){root.querySelectorAll('[data-hdday]').forEach(function(x){x.checked=S.days.indexOf(+x.value)>=0;});$('ms-hs').value=S.hs;$('ms-he').value=S.he;$('ms-hold').checked=S.hold;$('ms-aht').value='auto';}
+  paintHD();saveRoutine();MEDS=[];$('dd-ix-ta').value=S.rx.join('\n');$('dd-ix-parse').click();$('ms-build').click();});
 $('dd-ix-parse').addEventListener('click',function(){var D=dict(),added=[],miss=[];
   $('dd-ix-ta').value.split(/\n|;/).forEach(function(line){var w=nrm(line).split(' ').filter(Boolean);if(!w.length)return;var f=null;
     for(var i=0;i<w.length&&!f;i++)for(var n=Math.min(D.__mx,w.length-i);n>=1;n--){var k=w.slice(i,i+n).join(' ');if(D[k]){f=D[k].s;break;}}
@@ -1877,7 +1884,7 @@ function build(){var R=routine(),out=$('ms-out');
     var seen={};tags=tags.filter(function(x){if(seen[x[1]])return false;seen[x[1]]=1;return true;});
     var src=r&&r.quote?'<details class="dd-ms-src"><summary>Show label text</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
     if(r&&r.evid)src+='<details class="dd-ms-src"><summary>Show evidence</summary><blockquote>'+esc(r.evid.note)+r.evid.cites.map(function(c){return '<cite>'+esc(c.t)+' <a href="https://doi.org/'+esc(c.doi)+'" rel="noopener">doi:'+esc(c.doi)+'</a></cite>';}).join('')+'</blockquote></details>';
-    var by=r&&r.evid?'<span class="dd-msw-by">'+esc(r.evid.by)+'</span>':r&&r.practice?'<span class="dd-msw-by">'+esc(r.practice_by)+'</span>':(ahtFixed(m)&&!m.slot?'<span class="dd-msw-by">W. G. M. Rivero, MD</span>':'');
+    var by='';
     return '<li class="dd-msw"><div class="dd-msw-n">'+esc(nm(m.s))+'</div><div class="dd-msw-r"><p>'+esc(cap(bits.join('; ')))+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+'</p>'+
       '<div class="dd-msw-tags">'+tags.map(function(x){return '<span class="dd-msw-tag t-'+x[0]+'">'+x[1]+'</span>';}).join('')+by+'</div>'+src+'</div></li>';}).join('');
   function apart(x){return [P0,P1].every(function(P){if(!P)return true;var a=P.pl[x.i],c=P.pl[x.j];if(!a||!c)return true;return a.t.every(function(u){return c.t.every(function(v){return Math.abs(u-v)>=60;});});});}
@@ -5157,6 +5164,9 @@ def scheduler_page() -> str:
 <label class="dd-hidden" for="dd-ix-ta">Prescription</label>
 <textarea id="dd-ix-ta" rows="6" placeholder="One medicine per line, with its sig:&#10;Levothyroxine 50 mcg 1 tab OD before breakfast&#10;Sevelamer 800 mg 1 tab TID with meals&#10;Losartan 50 mg 1 tab BID&#10;Calcitriol 0.25 mcg 1 cap post-HD"></textarea>
 <button type="button" class="dd-btn" id="dd-ix-parse">Read the prescription</button> <span class="dd-note" id="dd-ix-pmsg" aria-live="polite"></span>
+<div class="dd-ms-samples"><span>Try a sample prescription:</span>
+<button type="button" class="dd-btn dd-btn-ghost" data-ms-sample="hd">Hemodialysis patient</button>
+<button type="button" class="dd-btn dd-btn-ghost" data-ms-sample="ckd">CKD, not on dialysis</button></div>
 </details>
 <div id="ms-list" class="dd-ms-list" aria-live="polite"></div>
 <div class="dd-ix-row"><span class="dd-ix-btns">
@@ -5167,7 +5177,7 @@ def scheduler_page() -> str:
 <div id="ms-out" class="dd-ms-out" aria-live="polite"></div>
 <section class="dd-ix-about no-print" aria-labelledby="ms-about-h">
 <h2 id="ms-about-h">How the schedule is built</h2>
-<p>Meal and time-of-day rules come from each medicine's US label (shown with each placement). Dose spacing, such as levothyroxine 4 hours from phosphate binders, comes from the reviewed interaction lists. Medicines dosed after dialysis follow the reviewed kidney dosing. The scheduler meets every rule it can with the fewest dose times and lists any rule it cannot meet. Medicines with no label timing rule are placed at standard times and can be moved with the timing menu. Review the schedule before giving it to the patient.</p>
+<p>Meal and time-of-day rules come from each medicine's US label (shown with each placement). Dose spacing, such as levothyroxine 4 hours from phosphate binders, comes from the reviewed interaction lists. Medicines dosed after dialysis follow the reviewed kidney dosing. The scheduler meets every rule it can with the fewest dose times and lists any rule it cannot meet. Medicines with no label timing rule are placed at standard times and can be moved with the timing menu. A few placements follow local practice and are tagged <strong>Practice default</strong>: statins at bedtime, and blood-pressure medicines at one fixed time every day when the hold toggle is on. Placements tagged <strong>Evidence</strong> cite the study behind them: oral iron in the morning on an empty stomach, and calcium with meals as a phosphate binder or between meals as a calcium supplement. The sample prescriptions are fictional. Review the schedule before giving it to the patient.</p>
 </section>
 </main>
 """ + FOOTER + FLOAT)

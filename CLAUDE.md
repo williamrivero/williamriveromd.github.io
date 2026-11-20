@@ -1036,7 +1036,7 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   gluconate in the morning on an empty stomach (von Siebenthal 2023). `purpose` gives calcium salts (carbonate, acetate,
   citrate, lactate) a per-medicine "Used as" menu: phosphate binder = with meals, calcium supplement = between meals
   (meal value `between`: mid-morning, mid-afternoon, bedtime) (Schiller 1989; Recker 1985 for carbonate in low stomach acid);
-  the sig sets it ("binder", "with meals", "supplement", "between meals"), else TID/QID = binder, otherwise supplement. "dose after dialysis" also comes from APPROVED kidney tiles whose HD text says so
+  the sig sets it ("binder", "with meals", "supplement", "between meals"), else TID/QID = binder, otherwise supplement. Placement notes show the tag only (Practice default / Evidence), never a person's name (Dr. Rivero, Nov 21 2026). Two "Try a sample prescription" buttons (fictional hemodialysis and non-dialysis CKD regimens, `SAMPLES` in the JS) fill the routine and the medicine list and build the schedule. "dose after dialysis" also comes from APPROVED kidney tiles whose HD text says so
   (`scheduler_data()` excludes avoid/no-data tiles and negative phrasing). Approved under delegated sign-off (label text only).
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`

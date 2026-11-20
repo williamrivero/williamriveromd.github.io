@@ -528,7 +528,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.dd-ix-add')
 function dict(){if(DICT)return DICT;DICT={};var mx=1;IDX.forEach(function(d){function put(x,w){var k=nrm(x);if(k.length<4)return;if(!DICT[k]||w>DICT[k].w)DICT[k]={s:d.s,w:w};mx=Math.max(mx,k.split(' ').length);}
   put(d.n,3);(d.y||[]).forEach(function(y){put(y,2);});(d.b||[]).forEach(function(b){put(b,1);});});DICT.__mx=Math.min(mx,6);return DICT;}
 function sig(line){var L=line.toLowerCase(),o={freq:'od',slot:''};
-  var st=line.match(/(\d+(?:\.\d+)?\s*(?:mg|mcg|µg|g|iu|units?|u|ml|meq)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mg|mcg|ml))?)/i),qt=line.match(/((?:\d+(?:\.\d+)?|½|1\/2|one|two|half)\s*(?:tabs?|tablets?|caps?|capsules?|sachets?|puffs?|drops?|ml|units?))/i);
+  var st=line.match(/(\d+(?:,\d{3})*(?:\.\d+)?\s*(?:mg|mcg|µg|g|iu|units?|u|ml|meq)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mg|mcg|ml))?)/i),qt=line.match(/((?:\d+(?:\.\d+)?|½|1\/2|one|two|half)\s*(?:tabs?|tablets?|caps?|capsules?|sachets?|puffs?|drops?|ml|units?))/i);
   o.dose=[st&&st[1],qt&&qt[1]].filter(Boolean).join(', ');
   if(/\bprn\b|as needed/.test(L))o.freq='prn';
   else if(/post[- ]?(hd|dialysis)|after (each )?(hd|dialysis)/.test(L))o.freq='posthd';
@@ -550,6 +550,12 @@ function sig(line){var L=line.toLowerCase(),o={freq:'od',slot:''};
   else if(/before (dinner|supper)/.test(L))o.slot='PD';
   else if(/(after|with) (dinner|supper)/.test(L))o.slot='D';
   return o;}
+var SAMPLES={hd:{dx:'hd',days:[0,2,4],hs:'06:00',he:'10:00',hold:true,rx:['Sevelamer 800 mg 1 tab TID with meals','Calcium carbonate 500 mg 1 tab BID between meals (calcium supplement)','Calcitriol 0.25 mcg 1 cap post-HD','Levothyroxine 50 mcg 1 tab OD before breakfast','Amlodipine 10 mg 1 tab OD','Losartan 50 mg 1 tab OD','Carvedilol 6.25 mg 1 tab BID','Atorvastatin 40 mg 1 tab OD','Folic acid 5 mg 1 tab OD','Epoetin alfa 4,000 IU SC 3x a week','Iron sucrose 100 mg IV weekly']},
+  ckd:{dx:'none',rx:['Losartan 100 mg 1 tab OD','Amlodipine 5 mg 1 tab OD','Furosemide 40 mg 1 tab every morning','Dapagliflozin 10 mg 1 tab OD','Atorvastatin 20 mg 1 tab OD','Sodium bicarbonate 650 mg 1 tab TID','Calcium carbonate 500 mg 1 tab TID with meals (binder)','Ferrous sulfate 325 mg 1 tab OD','Febuxostat 40 mg 1 tab OD','Levothyroxine 50 mcg 1 tab OD before breakfast']}};
+root.addEventListener('click',function(e){var b=e.target.closest('[data-ms-sample]');if(!b)return;var S=SAMPLES[b.getAttribute('data-ms-sample')];
+  var rd=root.querySelector('input[name=ms-dx][value='+S.dx+']');if(rd)rd.checked=true;
+  if(S.dx==='hd'){root.querySelectorAll('[data-hdday]').forEach(function(x){x.checked=S.days.indexOf(+x.value)>=0;});$('ms-hs').value=S.hs;$('ms-he').value=S.he;$('ms-hold').checked=S.hold;$('ms-aht').value='auto';}
+  paintHD();saveRoutine();MEDS=[];$('dd-ix-ta').value=S.rx.join('\n');$('dd-ix-parse').click();$('ms-build').click();});
 $('dd-ix-parse').addEventListener('click',function(){var D=dict(),added=[],miss=[];
   $('dd-ix-ta').value.split(/\n|;/).forEach(function(line){var w=nrm(line).split(' ').filter(Boolean);if(!w.length)return;var f=null;
     for(var i=0;i<w.length&&!f;i++)for(var n=Math.min(D.__mx,w.length-i);n>=1;n--){var k=w.slice(i,i+n).join(' ');if(D[k]){f=D[k].s;break;}}
@@ -667,7 +673,7 @@ function build(){var R=routine(),out=$('ms-out');
     var seen={};tags=tags.filter(function(x){if(seen[x[1]])return false;seen[x[1]]=1;return true;});
     var src=r&&r.quote?'<details class="dd-ms-src"><summary>Show label text</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
     if(r&&r.evid)src+='<details class="dd-ms-src"><summary>Show evidence</summary><blockquote>'+esc(r.evid.note)+r.evid.cites.map(function(c){return '<cite>'+esc(c.t)+' <a href="https://doi.org/'+esc(c.doi)+'" rel="noopener">doi:'+esc(c.doi)+'</a></cite>';}).join('')+'</blockquote></details>';
-    var by=r&&r.evid?'<span class="dd-msw-by">'+esc(r.evid.by)+'</span>':r&&r.practice?'<span class="dd-msw-by">'+esc(r.practice_by)+'</span>':(ahtFixed(m)&&!m.slot?'<span class="dd-msw-by">W. G. M. Rivero, MD</span>':'');
+    var by='';
     return '<li class="dd-msw"><div class="dd-msw-n">'+esc(nm(m.s))+'</div><div class="dd-msw-r"><p>'+esc(cap(bits.join('; ')))+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+'</p>'+
       '<div class="dd-msw-tags">'+tags.map(function(x){return '<span class="dd-msw-tag t-'+x[0]+'">'+x[1]+'</span>';}).join('')+by+'</div>'+src+'</div></li>';}).join('');
   function apart(x){return [P0,P1].every(function(P){if(!P)return true;var a=P.pl[x.i],c=P.pl[x.j];if(!a||!c)return true;return a.t.every(function(u){return c.t.every(function(v){return Math.abs(u-v)>=60;});});});}
