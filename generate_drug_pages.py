@@ -583,6 +583,8 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-ix-g.g-adjust { color: #4a2800; background: #fcd34d; }
 .dd-ix-g.g-minor { color: #1f3864; background: #e3e8f2; }
 .dd-ix-card { border: 1px solid var(--border); border-radius: 12px; background: var(--white); padding: 14px 16px; margin: 0 0 14px; }
+.dd-ix-card > ul:not(.dd-msw-list) { margin: 6px 0 0; padding-left: 1.35em; }
+.dd-ix-card > ul:not(.dd-msw-list) > li { margin: 4px 0; padding-left: 2px; }
 .dd-ix-card h2 { font-size: 18px; margin: 0 0 8px; }
 .dd-ix-pairs > h2 { font-size: 18px; margin: 18px 0 10px; }
 .dd-ix-pair h3 { font-size: 16.5px; margin: 0 0 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -2659,7 +2661,7 @@ self.addEventListener('fetch',function(e){
   var u=new URL(r.url);
   if(r.mode==='navigate'){if(u.origin===self.location.origin&&u.pathname.indexOf('/drugs/')===0)e.respondWith(nav(e));return;}
   if(u.origin===self.location.origin){
-    if(u.pathname==='/drugs/offline-manifest.json')return e.respondWith(networkFirst(e,DATA));   // must be current for updates
+    if(u.pathname==='/drugs/offline-manifest.json'||u.pathname==='/drugs/interactions.json'||u.pathname==='/drugs/med-scheduler.json')return e.respondWith(networkFirst(e,DATA));   // must match the current page logic
     if(u.pathname.indexOf('/drugs/')===0&&/\.json$/.test(u.pathname))return e.respondWith(swr(e,DATA,0));
     if(u.pathname.indexOf('/data/drugs/supplements/')===0&&/\.json$/.test(u.pathname))return e.respondWith(swr(e,DATA,0));
     if(/[?&]v=/.test(u.search)||/^\/drugs\/drugdb\.[^./]+\.(css|js)$/.test(u.pathname))return e.respondWith(cacheFirst(r));
