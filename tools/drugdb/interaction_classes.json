@@ -1,6 +1,6 @@
 {
  "_doc": "Interaction classes for the Dosis interaction checker. 'detect' finds the class in an approved interaction row's drug_or_class text; membership = names in 'members' + ingredient names matching 'member_rx' + the members of every class in 'includes'. Class membership is pharmacology, not a clinical claim: the severity, effect and action shown always come from the approved row.",
- "nondrug": "\\bassays?\\b|\\btests?\\b|testing|laboratory|dipstick|\\bfood\\b|\\bdairy\\b|grapefruit|juice|\\balcohol\\b|enteral nutrition|membranes?\\b|apheresis|during hemodialysis|anesthesia|radiation|sodium sources|none clinically relevant|propylene glycol",
+ "nondrug": "\\bassays?\\b|\\btests?\\b|testing|laboratory|dipstick|\\bfood\\b|\\bdairy\\b|grapefruit|juice|\\balcohol\\b|enteral nutrition|membranes?\\b|apheresis|during hemodialysis|anesthesia|radiation|sodium sources|none clinically relevant|propylene glycol|botanical|herbal|st\\.? john'?s wort",
  "stop_names": [
   "alcohol",
   "ethanol",
@@ -506,13 +506,13 @@
   {
    "key": "calcium",
    "label": "Calcium-containing products (oral)",
-   "detect": "\\bcalcium\\b(?!-containing IV)(?! channel)",
+   "detect": "(?<!intravenous )\\bcalcium\\b(?!-containing IV)(?! channel)(?! given)",
    "member_rx": "\\bcalcium (carbonate|acetate|citrate|lactate|gluconate|phosphate)\\b"
   },
   {
    "key": "ivcalcium",
    "label": "Intravenous calcium",
-   "detect": "calcium-containing IV",
+   "detect": "calcium-containing IV|intravenous calcium|IV calcium",
    "members": [
     "calcium gluconate",
     "calcium chloride"
@@ -1098,6 +1098,73 @@
     "diatrizoate",
     "amidotrizoate",
     "iobitridol"
+   ]
+  },
+  {
+   "key": "cephalosporin",
+   "label": "Cephalosporins",
+   "detect": "cephalosporins?",
+   "member_rx": "^cef|\\bcef[a-z]+|\\bceph[a-z]+|\\bloracarbef\\b"
+  },
+  {
+   "key": "carbapenem",
+   "label": "Carbapenems",
+   "detect": "carbapenems?",
+   "member_rx": "penem\\b"
+  },
+  {
+   "key": "antibiotic",
+   "label": "Antibiotics",
+   "detect": "\\bantibiotics?\\b(?! classes)",
+   "includes": [
+    "penicillin",
+    "cephalosporin",
+    "carbapenem",
+    "macrolide",
+    "fluoroquinolone",
+    "tetracycline",
+    "aminoglycoside",
+    "sulfonamide"
+   ],
+   "members": [
+    "vancomycin",
+    "teicoplanin",
+    "linezolid",
+    "clindamycin",
+    "lincomycin",
+    "metronidazole",
+    "tinidazole",
+    "trimethoprim",
+    "nitrofurantoin",
+    "rifampicin",
+    "rifampin",
+    "rifaximin",
+    "chloramphenicol",
+    "colistin",
+    "colistimethate",
+    "polymyxin b",
+    "fosfomycin",
+    "aztreonam",
+    "daptomycin",
+    "tigecycline",
+    "fusidic acid"
+   ]
+  },
+  {
+   "key": "antifungal",
+   "label": "Antifungals",
+   "detect": "antifungals?",
+   "includes": [
+    "azole"
+   ],
+   "members": [
+    "terbinafine",
+    "amphotericin b",
+    "caspofungin",
+    "micafungin",
+    "anidulafungin",
+    "griseofulvin",
+    "flucytosine"
    ]
   }
  ]

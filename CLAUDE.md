@@ -1027,7 +1027,11 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   drugs not registered in PH) to "Other listed interactions", so no row is dropped. `python3 tools/drugdb/interactions.py
   --report [--rows]` shows coverage. Kidney checks: same ingredient twice, 2+ drugs with a kidney injury tag, NSAID +
   ACE inhibitor/ARB + diuretic, and each drug's APPROVED kidney tile at the chosen kidney function. Class membership is
-  pharmacology only; never add clinical wording to the classes file. Coverage grows as more summaries are approved.
+  pharmacology only; never add clinical wording to the classes file. Coverage grows as more summaries are approved. **Label-derived lists (Nov 20 2026):** a `summary/<slug>.json` may hold only
+  `key_interactions` (+ sources, review fields); rows are faithful summaries of the US label's Drug Interactions /
+  Contraindications sections (severity from the label's own wording: contraindicated or "avoid" -> Avoid, with an action
+  starting "Contraindicated." for the Contraindicated grade; dose change or monitoring -> Adjust or monitor), approved
+  under delegated sign-off with source id `LABEL_IX`. The page's references note then reads "Interaction summary".
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come

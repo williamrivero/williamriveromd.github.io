@@ -3456,7 +3456,10 @@ def references_html(slug, label, renal, summ, ctx: Ctx, intl=None, pn_notes_=Non
     if summary_approved(summ):
         ours(summ.get("sources"))
         by, on = ws(summ.get("reviewed_by")), us_date_str(summ.get("reviewed_date"))
-        reviewed.append(f'Dosing, interaction, adverse-effect and monitoring summary{": reviewed by " + esc(by) if by else ""}'
+        parts = [w for k, w in (("usual_adult_dose", "dosing"), ("key_interactions", "interaction"),
+                                ("adverse_effects", "adverse-effect"), ("monitoring", "monitoring")) if summ.get(k)]
+        what = (", ".join(parts[:-1]) + " and " + parts[-1] if len(parts) > 1 else (parts[0] if parts else "clinical"))
+        reviewed.append(f'{what[:1].upper() + what[1:]} summary{": reviewed by " + esc(by) if by else ""}'
                         f'{" on " + esc(on) if on else ""}.')
     for n in pn_notes_ or []:
         ours(n.get("sources"))
