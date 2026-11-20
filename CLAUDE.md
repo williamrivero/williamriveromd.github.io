@@ -1038,6 +1038,9 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   (meal value `between`: mid-morning, mid-afternoon, bedtime) (Schiller 1989; Recker 1985 for carbonate in low stomach acid);
   the sig sets it ("binder", "with meals", "supplement", "between meals"), else TID/QID = binder, otherwise supplement. Placement notes show the tag only (Practice default / Evidence), never a person's name (Dr. Rivero, Nov 21 2026). Two "Try a sample prescription" buttons (fictional hemodialysis and non-dialysis CKD regimens, `SAMPLES` in the JS) fill the routine and the medicine list and build the schedule. **Print (Nov 21 2026):** building a schedule also renders a print-only patient sheet (`#ms-sheet`, classes `mss-*`): title, date, blank Name / Prepared by lines, the routine and dialysis days, one table per day type (Time | Medicine and dose with a tick box | How to take), Other medicines, and a short footer. Once it exists, print hides everything else on the page (`:has(#ms-sheet)`); each day table stays on one page. "dose after dialysis" also comes from APPROVED kidney tiles whose HD text says so
   (`scheduler_data()` excludes avoid/no-data tiles and negative phrasing). Approved under delegated sign-off (label text only).
+- **Weekly update line** (Drug Index hero, Nov 21 2026): under "Last updated", `.dd-sched` states the CI schedule (every
+  Monday 2:00 to 3:00 AM Philippine time: `drugdb-labels` 02:00, `drugdb-eu-labels` 02:30, `drugdb-pages` 03:00) and a
+  "Next update" date computed in the browser (next Sunday 19:00 UTC). If a workflow cron changes, update this text too.
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come
