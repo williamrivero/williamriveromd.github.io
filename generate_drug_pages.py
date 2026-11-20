@@ -1093,6 +1093,32 @@ html[data-theme="dark"] .dd-appbar { background: #0e4a50; }
 .dd-app-cta-arr { flex: none; width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: .85; }
 html[data-theme="dark"] .dd-app-cta { background: linear-gradient(135deg, #0e4a50 0%, #0a363b 100%); box-shadow: 0 6px 18px rgba(0,0,0,.35); }
 @media print { .dd-app-cta { display: none !important; } }
+/* Clinical tools: Interaction checker + Med Scheduler cards in the index hero */
+.dd-tools { display: grid; grid-template-columns: repeat(2, minmax(0, 340px)); gap: 14px; margin: 4px 0 20px; }
+.dd-tool { position: relative; display: flex; align-items: center; gap: 14px; padding: 16px 16px 16px 14px; border-radius: 16px;
+  color: #fff; text-decoration: none; overflow: hidden; isolation: isolate;
+  box-shadow: 0 10px 26px -8px var(--tool-sh), inset 0 1px 0 rgba(255,255,255,.18); transition: transform .16s, box-shadow .16s; }
+.dd-tool::after { content: ""; position: absolute; z-index: -1; right: -38px; top: -46px; width: 140px; height: 140px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.20), rgba(255,255,255,0) 70%); }
+.dd-tool-ix { background: linear-gradient(135deg, #b0275f 0%, #7a1240 100%); --tool-sh: rgba(122,18,64,.55); }
+.dd-tool-ms { background: linear-gradient(135deg, #3b4fb8 0%, #22307a 100%); --tool-sh: rgba(34,48,122,.55); }
+.dd-tool:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -8px var(--tool-sh), inset 0 1px 0 rgba(255,255,255,.18); }
+.dd-tool:focus-visible { outline: 3px solid #b8860b; outline-offset: 3px; }
+.dd-tool-ico { flex: none; display: grid; place-items: center; width: 50px; height: 50px; border-radius: 14px;
+  background: rgba(255,255,255,.16); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); }
+.dd-tool-ico svg { width: 32px; height: 32px; fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.dd-tool-ico .dd-tool-dot { fill: #ffd57a; stroke: none; }
+.dd-tool-t { display: flex; flex-direction: column; gap: 3px; min-width: 0; line-height: 1.2; }
+.dd-tool-t strong { font: 800 17px/1.2 'Inter', sans-serif; letter-spacing: -.005em; }
+.dd-tool-t small { font: 500 13px/1.35 'Manrope', sans-serif; color: #fff; opacity: .92; }
+.dd-tool-arr { flex: none; margin-left: auto; width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round; transition: transform .16s; }
+.dd-tool:hover .dd-tool-arr { transform: translateX(3px); }
+html[data-theme="dark"] .dd-tool-ix { background: linear-gradient(135deg, #8f1d4c 0%, #5c0d30 100%); }
+html[data-theme="dark"] .dd-tool-ms { background: linear-gradient(135deg, #2f3f94 0%, #1a245c 100%); }
+@media (max-width: 640px) { .dd-tools { grid-template-columns: 1fr; gap: 10px; } .dd-tool { padding: 14px 14px 14px 12px; } }
+@media (prefers-reduced-motion: reduce) { .dd-tool, .dd-tool-arr { transition: none; } .dd-tool:hover { transform: none; } }
+@media print { .dd-tools { display: none !important; } }
 
 /* Installable app + offline panel (index) */
 .dd-app { margin: 34px 0 22px; padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); }
@@ -4753,8 +4779,12 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int, off: dict | None = No
         <h1>Drug Index</h1>
         <p class="hero-sub">Every drug product registered with the Food and Drug Administration (FDA) Philippines, grouped by generic name.
 Search by brand, generic, class, indication, manufacturer or registration number.</p>
+        <nav class="dd-tools no-print" aria-label="Clinical tools">
+<a class="dd-tool dd-tool-ix" href="/drugs/interactions.html"><span class="dd-tool-ico"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="11" width="17" height="8" rx="4" transform="rotate(-35 11.5 15)"/><path d="M8.6 18.6 13.4 11.6"/><rect x="12" y="13" width="17" height="8" rx="4" transform="rotate(35 20.5 17)"/><circle cx="16" cy="16" r="2.3" class="dd-tool-dot"/></svg></span><span class="dd-tool-t"><strong>Interaction checker</strong><small>Graded pairs, kidney checks, paste a prescription</small></span><svg class="dd-tool-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
+<a class="dd-tool dd-tool-ms" href="/drugs/med-scheduler.html"><span class="dd-tool-ico"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="14" cy="15" r="10"/><path d="M14 9v6l4 3"/><rect x="19" y="20" width="11" height="6" rx="3" transform="rotate(-35 24.5 23)"/></svg></span><span class="dd-tool-t"><strong>Med Scheduler</strong><small>Timetable around meals, bedtime and dialysis</small></span><svg class="dd-tool-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
+        </nav>
         <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span>
-<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}<a class="dd-chip dd-ixchip" href="/drugs/interactions.html">Interaction checker</a><a class="dd-chip dd-ixchip" href="/drugs/med-scheduler.html">Med Scheduler</a></div>
+<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}</div>
         <a class="dd-app-cta no-print" href="#dd-app" id="dd-app-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="m9 11 3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="dd-app-cta-t"><strong>Install Dosis, the Drug Index app</strong><small>Works offline, even with no signal</small></span><svg class="dd-app-cta-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
     </div></div>
