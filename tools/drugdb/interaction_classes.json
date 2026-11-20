@@ -1,0 +1,1104 @@
+{
+ "_doc": "Interaction classes for the Dosis interaction checker. 'detect' finds the class in an approved interaction row's drug_or_class text; membership = names in 'members' + ingredient names matching 'member_rx' + the members of every class in 'includes'. Class membership is pharmacology, not a clinical claim: the severity, effect and action shown always come from the approved row.",
+ "nondrug": "\\bassays?\\b|\\btests?\\b|testing|laboratory|dipstick|\\bfood\\b|\\bdairy\\b|grapefruit|juice|\\balcohol\\b|enteral nutrition|membranes?\\b|apheresis|during hemodialysis|anesthesia|radiation|sodium sources|none clinically relevant|propylene glycol",
+ "stop_names": [
+  "alcohol",
+  "ethanol",
+  "water",
+  "sodium",
+  "potassium",
+  "calcium",
+  "magnesium",
+  "iron",
+  "zinc",
+  "dextrose",
+  "glucose",
+  "sorbitol",
+  "sodium chloride",
+  "vitamin d",
+  "oxygen",
+  "as"
+ ],
+ "classes": [
+  {
+   "key": "ace",
+   "label": "ACE inhibitors",
+   "detect": "\\bACE inhibitors?\\b",
+   "member_rx": "pril(at)?\\b"
+  },
+  {
+   "key": "arb",
+   "label": "Angiotensin receptor blockers",
+   "detect": "\\bARBs?\\b|angiotensin (II )?receptor blockers?",
+   "member_rx": "sartan\\b"
+  },
+  {
+   "key": "aliskiren",
+   "label": "Aliskiren",
+   "detect": "\\baliskiren\\b",
+   "members": [
+    "aliskiren"
+   ]
+  },
+  {
+   "key": "nsaid",
+   "label": "NSAIDs (including COX-2 inhibitors)",
+   "detect": "\\bNSAIDs?\\b|COX-2 inhibitors?|anti-inflammatory drugs",
+   "members": [
+    "ibuprofen",
+    "dexibuprofen",
+    "diclofenac",
+    "aceclofenac",
+    "naproxen",
+    "celecoxib",
+    "etoricoxib",
+    "parecoxib",
+    "meloxicam",
+    "piroxicam",
+    "tenoxicam",
+    "lornoxicam",
+    "indomethacin",
+    "mefenamic acid",
+    "ketorolac",
+    "ketoprofen",
+    "dexketoprofen",
+    "flurbiprofen",
+    "esflurbiprofen",
+    "nimesulide",
+    "loxoprofen",
+    "etodolac",
+    "nabumetone",
+    "sulindac",
+    "diflunisal",
+    "phenylbutazone"
+   ]
+  },
+  {
+   "key": "salicylate",
+   "label": "Aspirin and salicylates",
+   "detect": "\\bsalicylates?\\b|\\baspirin\\b",
+   "members": [
+    "aspirin",
+    "acetylsalicylic acid",
+    "choline salicylate",
+    "diflunisal",
+    "salsalate"
+   ]
+  },
+  {
+   "key": "diuretic",
+   "label": "Diuretics",
+   "detect": "(?<!potassium-sparing )\\bdiuretics?\\b",
+   "includes": [
+    "thiazide",
+    "loop",
+    "ksparing"
+   ]
+  },
+  {
+   "key": "thiazide",
+   "label": "Thiazide and thiazide-like diuretics",
+   "detect": "\\bthiazides?\\b",
+   "members": [
+    "hydrochlorothiazide",
+    "chlorthalidone",
+    "chlortalidone",
+    "indapamide",
+    "metolazone",
+    "chlorothiazide",
+    "bendroflumethiazide",
+    "xipamide"
+   ]
+  },
+  {
+   "key": "loop",
+   "label": "Loop diuretics",
+   "detect": "\\bloop diuretics?|potent (loop )?diuretics",
+   "members": [
+    "furosemide",
+    "frusemide",
+    "bumetanide",
+    "torsemide",
+    "torasemide",
+    "ethacrynic acid"
+   ]
+  },
+  {
+   "key": "ksparing",
+   "label": "Potassium-sparing diuretics",
+   "detect": "potassium-sparing",
+   "members": [
+    "spironolactone",
+    "eplerenone",
+    "amiloride",
+    "triamterene"
+   ]
+  },
+  {
+   "key": "mra",
+   "label": "Mineralocorticoid receptor antagonists",
+   "detect": "mineralocorticoid receptor antagonists?|\\bMRAs?\\b",
+   "members": [
+    "spironolactone",
+    "eplerenone",
+    "finerenone"
+   ]
+  },
+  {
+   "key": "ksupp",
+   "label": "Potassium supplements",
+   "detect": "potassium supplements?|salt substitutes?|potassium-containing",
+   "members": [
+    "potassium chloride",
+    "potassium citrate",
+    "potassium bicarbonate",
+    "potassium gluconate",
+    "potassium acetate"
+   ]
+  },
+  {
+   "key": "kraise",
+   "label": "Drugs that raise potassium",
+   "detect": "potassium-raising|raise potassium",
+   "members": [
+    "trimethoprim"
+   ],
+   "includes": [
+    "ace",
+    "arb",
+    "aliskiren",
+    "ksparing",
+    "mra",
+    "ksupp",
+    "heparins"
+   ]
+  },
+  {
+   "key": "heparins",
+   "label": "Heparin and low-molecular-weight heparins",
+   "detect": "\\bheparins?\\b|\\bLMWH\\b",
+   "members": [
+    "heparin",
+    "enoxaparin",
+    "nadroparin",
+    "dalteparin",
+    "tinzaparin"
+   ]
+  },
+  {
+   "key": "anticoag",
+   "label": "Anticoagulants",
+   "detect": "(?<!oral )\\banticoagulants?\\b|vitamin K antagonists?|coumarins?\\b",
+   "members": [
+    "fondaparinux"
+   ],
+   "includes": [
+    "oralanticoag",
+    "heparins"
+   ]
+  },
+  {
+   "key": "oralanticoag",
+   "label": "Oral anticoagulants",
+   "detect": "oral anticoagulants?",
+   "members": [
+    "warfarin",
+    "acenocoumarol",
+    "rivaroxaban",
+    "apixaban",
+    "dabigatran",
+    "edoxaban"
+   ]
+  },
+  {
+   "key": "antiplatelet",
+   "label": "Antiplatelets",
+   "detect": "\\bantiplatelets?\\b|GP IIb/IIIa",
+   "members": [
+    "aspirin",
+    "clopidogrel",
+    "ticagrelor",
+    "prasugrel",
+    "cilostazol",
+    "dipyridamole",
+    "ticlopidine",
+    "tirofiban",
+    "eptifibatide"
+   ]
+  },
+  {
+   "key": "fibrinolytic",
+   "label": "Fibrinolytics",
+   "detect": "fibrinolytics?|thrombolytics?",
+   "members": [
+    "alteplase",
+    "tenecteplase",
+    "streptokinase",
+    "reteplase",
+    "urokinase"
+   ]
+  },
+  {
+   "key": "aminoglycoside",
+   "label": "Aminoglycosides",
+   "detect": "aminoglycosides?",
+   "members": [
+    "gentamicin",
+    "amikacin",
+    "tobramycin",
+    "streptomycin",
+    "kanamycin",
+    "netilmicin",
+    "neomycin"
+   ]
+  },
+  {
+   "key": "nephrotoxic",
+   "label": "Drugs with a kidney injury warning",
+   "detect": "nephrotoxic",
+   "note": "members = every ingredient tagged in data/drugs/nephrotox.json"
+  },
+  {
+   "key": "ssri",
+   "label": "SSRIs",
+   "detect": "\\bSSRIs?\\b",
+   "members": [
+    "fluoxetine",
+    "sertraline",
+    "paroxetine",
+    "citalopram",
+    "escitalopram",
+    "fluvoxamine"
+   ]
+  },
+  {
+   "key": "snri",
+   "label": "SNRIs",
+   "detect": "\\bSNRIs?\\b",
+   "members": [
+    "duloxetine",
+    "venlafaxine",
+    "desvenlafaxine",
+    "milnacipran"
+   ]
+  },
+  {
+   "key": "tca",
+   "label": "Tricyclic antidepressants",
+   "detect": "tricyclic",
+   "members": [
+    "amitriptyline",
+    "nortriptyline",
+    "imipramine",
+    "clomipramine",
+    "doxepin",
+    "desipramine"
+   ]
+  },
+  {
+   "key": "triptan",
+   "label": "Triptans",
+   "detect": "triptans?",
+   "member_rx": "triptan\\b"
+  },
+  {
+   "key": "serotonergic",
+   "label": "Serotonergic drugs",
+   "detect": "serotonergic",
+   "members": [
+    "tramadol",
+    "pethidine",
+    "meperidine",
+    "buspirone",
+    "trazodone"
+   ],
+   "includes": [
+    "ssri",
+    "snri",
+    "tca",
+    "triptan"
+   ]
+  },
+  {
+   "key": "maoi",
+   "label": "MAO inhibitors",
+   "detect": "\\bMAO inhibitors?|monoamine oxidase inhibitors?",
+   "members": [
+    "selegiline",
+    "rasagiline",
+    "phenelzine",
+    "tranylcypromine",
+    "moclobemide",
+    "isocarboxazid"
+   ]
+  },
+  {
+   "key": "statin",
+   "label": "Statins",
+   "detect": "\\bstatins?\\b|HMG-CoA",
+   "members": [
+    "atorvastatin",
+    "simvastatin",
+    "rosuvastatin",
+    "pravastatin",
+    "lovastatin",
+    "pitavastatin",
+    "fluvastatin"
+   ]
+  },
+  {
+   "key": "fibrate",
+   "label": "Fibrates",
+   "detect": "\\bfibrates?\\b",
+   "members": [
+    "fenofibrate",
+    "fenofibric acid",
+    "gemfibrozil",
+    "bezafibrate",
+    "ciprofibrate"
+   ]
+  },
+  {
+   "key": "sulfonylurea",
+   "label": "Sulfonylureas",
+   "detect": "sulfonylureas?|insulin secretagogues?",
+   "members": [
+    "gliclazide",
+    "glimepiride",
+    "glibenclamide",
+    "glyburide",
+    "glipizide",
+    "chlorpropamide",
+    "tolbutamide"
+   ]
+  },
+  {
+   "key": "secretagogue",
+   "label": "Insulin secretagogues",
+   "detect": "insulin secretagogues?",
+   "members": [
+    "repaglinide",
+    "nateglinide"
+   ],
+   "includes": [
+    "sulfonylurea"
+   ]
+  },
+  {
+   "key": "insulin",
+   "label": "Insulin",
+   "detect": "\\binsulins?\\b",
+   "member_rx": "\\binsulin\\b"
+  },
+  {
+   "key": "antidiabetic",
+   "label": "Antidiabetic drugs",
+   "detect": "antidiabetic|hypoglycemic drugs|oral hypoglycemic",
+   "members": [
+    "metformin",
+    "pioglitazone",
+    "acarbose",
+    "exenatide",
+    "tirzepatide",
+    "dulaglutide",
+    "dapagliflozin",
+    "empagliflozin",
+    "canagliflozin",
+    "ertugliflozin",
+    "sitagliptin",
+    "vildagliptin",
+    "linagliptin",
+    "saxagliptin",
+    "teneligliptin",
+    "alogliptin",
+    "evogliptin",
+    "gemigliptin",
+    "liraglutide",
+    "semaglutide",
+    "voglibose"
+   ],
+   "includes": [
+    "sulfonylurea",
+    "secretagogue",
+    "insulin"
+   ]
+  },
+  {
+   "key": "gliptin",
+   "label": "DPP-4 inhibitors (gliptins)",
+   "detect": "gliptins?",
+   "member_rx": "gliptin\\b"
+  },
+  {
+   "key": "mtor",
+   "label": "mTOR inhibitors",
+   "detect": "mTOR inhibitors?",
+   "members": [
+    "sirolimus",
+    "everolimus",
+    "temsirolimus"
+   ]
+  },
+  {
+   "key": "ppi",
+   "label": "Proton pump inhibitors",
+   "detect": "proton pump inhibitors?|\\bPPIs?\\b",
+   "members": [
+    "omeprazole",
+    "esomeprazole",
+    "lansoprazole",
+    "dexlansoprazole",
+    "pantoprazole",
+    "rabeprazole",
+    "ilaprazole"
+   ]
+  },
+  {
+   "key": "h2",
+   "label": "H2 blockers",
+   "detect": "\\bH2 blockers?|H2-receptor",
+   "members": [
+    "cimetidine",
+    "famotidine",
+    "ranitidine",
+    "nizatidine"
+   ]
+  },
+  {
+   "key": "acidsupp",
+   "label": "Acid suppressants",
+   "detect": "acid suppressants?",
+   "members": [
+    "vonoprazan"
+   ],
+   "includes": [
+    "ppi",
+    "h2"
+   ]
+  },
+  {
+   "key": "antacid",
+   "label": "Antacids",
+   "detect": "\\bantacids?\\b",
+   "members": [
+    "aluminum hydroxide",
+    "aluminium hydroxide",
+    "magnesium hydroxide",
+    "magnesium trisilicate",
+    "magnesium carbonate",
+    "calcium carbonate",
+    "magaldrate",
+    "sodium bicarbonate"
+   ]
+  },
+  {
+   "key": "aluminum",
+   "label": "Aluminum-containing products",
+   "detect": "\\balumin(i)?um\\b|\\bAl\\b",
+   "member_rx": "\\balumin(i)?um\\b|\\bmagaldrate\\b|\\bsucralfate\\b"
+  },
+  {
+   "key": "magnesium",
+   "label": "Magnesium-containing products (oral)",
+   "detect": "\\bmagnesium\\b|\\bMg\\b",
+   "member_rx": "\\bmagnesium\\b(?! sulfate)(?! sulphate)|\\bmagaldrate\\b"
+  },
+  {
+   "key": "calcium",
+   "label": "Calcium-containing products (oral)",
+   "detect": "\\bcalcium\\b(?!-containing IV)(?! channel)",
+   "member_rx": "\\bcalcium (carbonate|acetate|citrate|lactate|gluconate|phosphate)\\b"
+  },
+  {
+   "key": "ivcalcium",
+   "label": "Intravenous calcium",
+   "detect": "calcium-containing IV",
+   "members": [
+    "calcium gluconate",
+    "calcium chloride"
+   ]
+  },
+  {
+   "key": "iron",
+   "label": "Iron preparations",
+   "detect": "\\biron\\b(?! dextran)",
+   "member_rx": "\\bferrous\\b|\\bferric\\b|\\biron\\b|\\bcarbonyl iron\\b"
+  },
+  {
+   "key": "ivIron",
+   "label": "Intravenous iron",
+   "detect": "parenteral iron|intravenous iron",
+   "members": [
+    "iron sucrose",
+    "ferric carboxymaltose",
+    "iron dextran",
+    "ferumoxytol",
+    "ferric derisomaltose",
+    "iron isomaltoside",
+    "sodium ferric gluconate"
+   ]
+  },
+  {
+   "key": "zinc",
+   "label": "Zinc",
+   "detect": "\\bzinc\\b",
+   "member_rx": "\\bzinc\\b"
+  },
+  {
+   "key": "corticosteroid",
+   "label": "Systemic corticosteroids",
+   "detect": "corticosteroids?|glucocorticoids?",
+   "members": [
+    "prednisone",
+    "prednisolone",
+    "methylprednisolone",
+    "dexamethasone",
+    "hydrocortisone",
+    "betamethasone",
+    "deflazacort",
+    "triamcinolone",
+    "cortisone",
+    "fludrocortisone"
+   ]
+  },
+  {
+   "key": "benzo",
+   "label": "Benzodiazepines",
+   "detect": "benzodiazepines?",
+   "members": [
+    "diazepam",
+    "lorazepam",
+    "alprazolam",
+    "clonazepam",
+    "midazolam",
+    "chlordiazepoxide",
+    "bromazepam",
+    "clobazam",
+    "oxazepam",
+    "temazepam",
+    "estazolam",
+    "triazolam",
+    "flurazepam"
+   ]
+  },
+  {
+   "key": "opioid",
+   "label": "Opioids",
+   "detect": "\\bopioids?\\b",
+   "members": [
+    "tramadol",
+    "morphine",
+    "oxycodone",
+    "fentanyl",
+    "codeine",
+    "hydromorphone",
+    "nalbuphine",
+    "buprenorphine",
+    "tapentadol",
+    "pethidine",
+    "meperidine",
+    "methadone",
+    "dihydrocodeine",
+    "hydrocodone",
+    "butorphanol"
+   ]
+  },
+  {
+   "key": "cnsdep",
+   "label": "CNS depressants",
+   "detect": "CNS depressants?|central nervous system depressants?|hypnotics?|tranquilizers?",
+   "members": [
+    "zolpidem",
+    "zopiclone",
+    "phenobarbital",
+    "gabapentin",
+    "pregabalin"
+   ],
+   "includes": [
+    "benzo",
+    "opioid"
+   ]
+  },
+  {
+   "key": "antiarr",
+   "label": "Class IA and III antiarrhythmics",
+   "detect": "class IA|class III",
+   "members": [
+    "amiodarone",
+    "sotalol",
+    "quinidine",
+    "procainamide",
+    "disopyramide",
+    "dronedarone",
+    "dofetilide",
+    "ibutilide"
+   ]
+  },
+  {
+   "key": "macrolide",
+   "label": "Macrolides",
+   "detect": "macrolides?",
+   "members": [
+    "azithromycin",
+    "clarithromycin",
+    "erythromycin",
+    "roxithromycin"
+   ]
+  },
+  {
+   "key": "fluoroquinolone",
+   "label": "Fluoroquinolones",
+   "detect": "fluoroquinolones?|\\bquinolones?\\b",
+   "member_rx": "floxacin\\b"
+  },
+  {
+   "key": "tetracycline",
+   "label": "Tetracyclines",
+   "detect": "tetracyclines?",
+   "members": [
+    "doxycycline",
+    "minocycline",
+    "tetracycline",
+    "oxytetracycline"
+   ]
+  },
+  {
+   "key": "azole",
+   "label": "Azole antifungals",
+   "detect": "azole antifungals?|\\bazoles\\b",
+   "members": [
+    "fluconazole",
+    "itraconazole",
+    "ketoconazole",
+    "voriconazole",
+    "posaconazole",
+    "miconazole",
+    "isavuconazole"
+   ]
+  },
+  {
+   "key": "qt",
+   "label": "QT-prolonging drugs",
+   "detect": "QT-prolonging",
+   "members": [
+    "haloperidol",
+    "ondansetron",
+    "domperidone",
+    "citalopram",
+    "escitalopram",
+    "hydroxychloroquine",
+    "chloroquine",
+    "methadone",
+    "pimozide",
+    "chlorpromazine",
+    "quetiapine",
+    "levomethadyl"
+   ],
+   "includes": [
+    "antiarr",
+    "macrolide",
+    "fluoroquinolone"
+   ],
+   "note": "Drugs whose own US labels warn of QT prolongation."
+  },
+  {
+   "key": "strong3a4inh",
+   "label": "Strong CYP3A4 inhibitors",
+   "detect": "(strong|potent)[^;)]*CYP3A4? inhibitors?|CYP3A4? inhibitors?(?=[^;]*(strong|potent))",
+   "members": [
+    "clarithromycin",
+    "itraconazole",
+    "ketoconazole",
+    "posaconazole",
+    "voriconazole",
+    "ritonavir",
+    "cobicistat",
+    "nelfinavir",
+    "saquinavir",
+    "indinavir",
+    "lopinavir",
+    "telithromycin",
+    "nefazodone",
+    "boceprevir",
+    "telaprevir"
+   ],
+   "note": "Examples from the US FDA table of CYP3A inhibitors."
+  },
+  {
+   "key": "mod3a4inh",
+   "label": "Moderate CYP3A4 inhibitors",
+   "detect": "moderate[^;)]*CYP3A4? inhibitors?|(?<!strong )(?<!potent )\\bCYP3A4? inhibitors?\\b(?![^;(]*(strong|potent))",
+   "members": [
+    "diltiazem",
+    "verapamil",
+    "erythromycin",
+    "fluconazole",
+    "aprepitant",
+    "dronedarone",
+    "crizotinib",
+    "imatinib",
+    "ciprofloxacin"
+   ],
+   "note": "Examples from the US FDA table of CYP3A inhibitors. A row that names CYP3A4 inhibitors without a strength matches strong and moderate inhibitors."
+  },
+  {
+   "key": "3a4ind",
+   "label": "CYP3A4 inducers",
+   "detect": "CYP3A4? inducers?|CYP inducers?|enzyme-inducing|CYP3A4?[^;]*\\\\binducers?\\\\b",
+   "members": [
+    "rifampicin",
+    "rifampin",
+    "rifabutin",
+    "rifapentine",
+    "carbamazepine",
+    "phenytoin",
+    "fosphenytoin",
+    "phenobarbital",
+    "primidone",
+    "enzalutamide",
+    "apalutamide",
+    "mitotane",
+    "efavirenz"
+   ]
+  },
+  {
+   "key": "enzantiepi",
+   "label": "Enzyme-inducing antiepileptics",
+   "detect": "enzyme-inducing (anticonvulsants|antiepileptics)",
+   "members": [
+    "carbamazepine",
+    "phenytoin",
+    "fosphenytoin",
+    "phenobarbital",
+    "primidone"
+   ]
+  },
+  {
+   "key": "pi",
+   "label": "Protease inhibitors (HIV and hepatitis C)",
+   "detect": "protease inhibitors?",
+   "members": [
+    "ritonavir",
+    "lopinavir",
+    "atazanavir",
+    "darunavir",
+    "saquinavir",
+    "nelfinavir",
+    "indinavir",
+    "tipranavir",
+    "fosamprenavir",
+    "glecaprevir",
+    "grazoprevir",
+    "paritaprevir",
+    "boceprevir",
+    "voxilaprevir"
+   ]
+  },
+  {
+   "key": "hcvdaa",
+   "label": "Hepatitis C direct-acting antivirals",
+   "detect": "direct-acting antivirals?",
+   "members": [
+    "sofosbuvir",
+    "ledipasvir",
+    "velpatasvir",
+    "glecaprevir",
+    "pibrentasvir",
+    "daclatasvir",
+    "elbasvir",
+    "grazoprevir",
+    "voxilaprevir"
+   ]
+  },
+  {
+   "key": "livevax",
+   "label": "Live vaccines",
+   "detect": "\\blive (oral typhoid )?vaccines?|\\blive vaccines?",
+   "member_rx": "\\blive\\b|attenuated|\\bbcg\\b|varicella|rotavirus|yellow fever|ty21a|measles|mumps|rubella|oral polio"
+  },
+  {
+   "key": "contraceptive",
+   "label": "Hormonal contraceptives and estrogens",
+   "detect": "contraceptives?|estrogen therapy",
+   "members": [
+    "ethinylestradiol",
+    "ethinyl estradiol",
+    "levonorgestrel",
+    "desogestrel",
+    "drospirenone",
+    "norethisterone",
+    "norethindrone",
+    "estradiol",
+    "conjugated estrogens",
+    "dienogest",
+    "cyproterone",
+    "gestodene",
+    "medroxyprogesterone"
+   ]
+  },
+  {
+   "key": "thyroid",
+   "label": "Thyroid hormones",
+   "detect": "thyroid hormones?|levothyroxine",
+   "members": [
+    "levothyroxine",
+    "liothyronine"
+   ]
+  },
+  {
+   "key": "digoxin",
+   "label": "Digoxin",
+   "detect": "digoxin|digitalis|cardiac glycosides?",
+   "members": [
+    "digoxin"
+   ]
+  },
+  {
+   "key": "betablocker",
+   "label": "Beta-blockers",
+   "detect": "beta-blockers?",
+   "member_rx": "olol\\b|\\bcarvedilol\\b|\\blabetalol\\b"
+  },
+  {
+   "key": "beta2",
+   "label": "Beta-2 agonists",
+   "detect": "beta-2 agonists?|beta-adrenergic agonists?",
+   "members": [
+    "salbutamol",
+    "albuterol",
+    "terbutaline",
+    "formoterol",
+    "salmeterol",
+    "procaterol",
+    "indacaterol",
+    "vilanterol",
+    "olodaterol",
+    "fenoterol"
+   ]
+  },
+  {
+   "key": "sympatho",
+   "label": "Sympathomimetics",
+   "detect": "sympathomimetics?|adrenergic drugs",
+   "members": [
+    "pseudoephedrine",
+    "phenylephrine",
+    "ephedrine",
+    "epinephrine",
+    "norepinephrine",
+    "dopamine",
+    "dobutamine",
+    "phenylpropanolamine"
+   ]
+  },
+  {
+   "key": "ccb",
+   "label": "Calcium channel blockers",
+   "detect": "calcium channel blockers?",
+   "member_rx": "dipine\\b|\\bdiltiazem\\b|\\bverapamil\\b"
+  },
+  {
+   "key": "antihtn",
+   "label": "Antihypertensives",
+   "detect": "antihypertensives?",
+   "members": [
+    "clonidine",
+    "methyldopa",
+    "hydralazine",
+    "minoxidil",
+    "doxazosin",
+    "prazosin",
+    "terazosin",
+    "moxonidine"
+   ],
+   "includes": [
+    "ace",
+    "arb",
+    "aliskiren",
+    "ccb",
+    "betablocker",
+    "thiazide",
+    "mra"
+   ]
+  },
+  {
+   "key": "anticholinergic",
+   "label": "Anticholinergics",
+   "detect": "anticholinergics?",
+   "members": [
+    "atropine",
+    "hyoscine butylbromide",
+    "butylscopolamine",
+    "scopolamine",
+    "oxybutynin",
+    "tolterodine",
+    "solifenacin",
+    "trihexyphenidyl",
+    "biperiden",
+    "glycopyrronium",
+    "dicycloverine",
+    "darifenacin",
+    "propantheline",
+    "fesoterodine"
+   ]
+  },
+  {
+   "key": "antipsychotic",
+   "label": "Antipsychotics",
+   "detect": "antipsychotics?",
+   "members": [
+    "haloperidol",
+    "chlorpromazine",
+    "quetiapine",
+    "olanzapine",
+    "risperidone",
+    "aripiprazole",
+    "clozapine",
+    "ziprasidone",
+    "paliperidone",
+    "lurasidone",
+    "brexpiprazole",
+    "cariprazine",
+    "amisulpride",
+    "sulpiride",
+    "trifluoperazine",
+    "fluphenazine",
+    "perphenazine"
+   ]
+  },
+  {
+   "key": "antihistamine",
+   "label": "Antihistamines",
+   "detect": "antihistamines?",
+   "members": [
+    "chlorphenamine",
+    "chlorpheniramine",
+    "diphenhydramine",
+    "cetirizine",
+    "levocetirizine",
+    "loratadine",
+    "desloratadine",
+    "fexofenadine",
+    "hydroxyzine",
+    "promethazine",
+    "cyproheptadine",
+    "bilastine",
+    "rupatadine",
+    "ebastine",
+    "dimenhydrinate",
+    "meclizine"
+   ]
+  },
+  {
+   "key": "dopant",
+   "label": "Dopamine antagonists",
+   "detect": "dopamine antagonists?",
+   "members": [
+    "metoclopramide",
+    "domperidone",
+    "haloperidol",
+    "prochlorperazine"
+   ]
+  },
+  {
+   "key": "nmb",
+   "label": "Non-depolarizing neuromuscular blockers",
+   "detect": "neuromuscular blockers?",
+   "members": [
+    "vecuronium",
+    "rocuronium",
+    "atracurium",
+    "cisatracurium",
+    "pancuronium"
+   ]
+  },
+  {
+   "key": "binder",
+   "label": "Phosphate binders",
+   "detect": "phosphate binders?",
+   "members": [
+    "sevelamer",
+    "lanthanum",
+    "calcium acetate",
+    "calcium carbonate",
+    "sucroferric oxyhydroxide",
+    "ferric citrate",
+    "aluminum hydroxide"
+   ]
+  },
+  {
+   "key": "vitd",
+   "label": "Vitamin D and analogues",
+   "detect": "vitamin D",
+   "members": [
+    "cholecalciferol",
+    "ergocalciferol",
+    "calcitriol",
+    "alfacalcidol",
+    "paricalcitol",
+    "doxercalciferol",
+    "calcifediol"
+   ]
+  },
+  {
+   "key": "cai",
+   "label": "Carbonic anhydrase inhibitors",
+   "detect": "carbonic anhydrase inhibitors?",
+   "members": [
+    "acetazolamide",
+    "methazolamide",
+    "topiramate",
+    "zonisamide"
+   ]
+  },
+  {
+   "key": "penicillin",
+   "label": "Penicillins",
+   "detect": "\\bpenicillins?\\b",
+   "member_rx": "cillin\\b"
+  },
+  {
+   "key": "sulfonamide",
+   "label": "Sulfonamides",
+   "detect": "sulfonamides?",
+   "members": [
+    "sulfamethoxazole",
+    "sulfadiazine",
+    "sulfasalazine",
+    "sulfadoxine"
+   ]
+  },
+  {
+   "key": "bileseq",
+   "label": "Bile acid sequestrants",
+   "detect": "bile acid sequestrants?|cholestyramine|colestipol|colesevelam",
+   "members": [
+    "cholestyramine",
+    "colestipol",
+    "colesevelam"
+   ]
+  },
+  {
+   "key": "alloral",
+   "label": "All other oral medicines",
+   "detect": "all other oral medicines?",
+   "note": "members = every selected product taken by mouth"
+  },
+  {
+   "key": "contrast",
+   "label": "Iodinated contrast",
+   "detect": "iodinated contrast",
+   "members": [
+    "iodixanol",
+    "iohexol",
+    "iopamidol",
+    "ioversol",
+    "iopromide",
+    "iomeprol",
+    "diatrizoate",
+    "amidotrizoate",
+    "iobitridol"
+   ]
+  }
+ ]
+}

@@ -536,6 +536,86 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-nx-q { margin: 0; padding: 10px 14px; border-left: 3px solid var(--border); background: var(--bg); font-size: 14.5px; color: var(--text-mid); border-radius: 0 8px 8px 0; }
 .dd-nx-q cite { display: block; margin-top: 6px; font-style: normal; font-size: 12.5px; color: var(--text-muted); }
 .dd-nx-q cite a { color: #0e4a50; font-weight: 600; }
+/* Favorites + interaction checker */
+.dd-favbtn { cursor: pointer; font: inherit; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; }
+.dd-favbtn.is-on { color: #6b4a00; background: #fff5d6; border-color: rgba(146,113,10,.45); }
+.dd-favstar { font-size: 14px; line-height: 1; }
+.dd-chip.dd-ixbtn, .dd-chip.dd-ixchip { color: #fff; background: #1a6b72; border-color: #1a6b72; }
+.dd-favs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 12px; }
+.dd-ix-pick { border: 1px solid var(--border); border-radius: 14px; background: var(--white); padding: 16px; margin: 0 0 18px; }
+.dd-ix-add { position: relative; }
+.dd-ix-l { display: block; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; margin: 0 0 6px; color: var(--text); }
+#dd-ix-q { width: 100%; box-sizing: border-box; font-size: 16px; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--white); color: var(--text); }
+#dd-ix-q:focus { outline: 3px solid rgba(26,107,114,.35); border-color: #1a6b72; }
+.dd-ix-sug { position: absolute; z-index: 30; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; background: var(--white);
+  border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 10px 28px rgba(15,23,42,.16); max-height: 340px; overflow: auto; }
+.dd-ix-sug li { padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 15px; }
+.dd-ix-sug li[aria-selected="true"], .dd-ix-sug li:hover { background: #e1f5f0; }
+.dd-ix-arrow { color: var(--text-muted); }
+.dd-ix-have { font-size: 12px; color: #0e4a50; font-weight: 700; }
+.dd-ix-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+.dd-ix-chips:empty { display: none; }
+.dd-ix-chip { display: inline-flex; align-items: center; gap: 2px; padding: 4px 4px 4px 12px; border-radius: 999px; background: #e1f5f0; border: 1px solid rgba(14,74,80,.3); font-size: 14.5px; font-weight: 600; }
+.dd-ix-chip a { color: #0e4a50; text-decoration: none; }
+.dd-ix-chip button { border: 0; background: none; cursor: pointer; min-width: 32px; min-height: 32px; border-radius: 999px; font-size: 15px; color: #0e4a50; }
+.dd-ix-chip button:hover { background: rgba(14,74,80,.12); }
+.dd-ix-star.is-on { color: #92710a; }
+.dd-ix-quick { margin: 10px 0 0; }
+.dd-ix-qrow, .dd-favs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0; }
+.dd-ix-ql { font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 700; color: var(--text-muted); margin-right: 4px; }
+.dd-ix-qchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dd-ix-q { font: inherit; font-size: 13.5px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; text-decoration: none; min-height: 32px; box-sizing: border-box; display: inline-flex; align-items: center; }
+.dd-ix-q:hover { border-color: #1a6b72; }
+.dd-ix-q.is-on { color: var(--text-muted); cursor: default; }
+.dd-ix-qgo { font-weight: 700; color: #0e4a50; }
+.dd-ix-paste { margin: 12px 0 0; }
+.dd-ix-paste summary { cursor: pointer; font-weight: 600; color: #0e4a50; }
+.dd-ix-paste textarea { width: 100%; box-sizing: border-box; margin: 8px 0; font: inherit; font-size: 15px; padding: 10px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--white); color: var(--text); }
+.dd-ix-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin: 14px 0 0; }
+.dd-ix-k { font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dd-ix-k select { font: inherit; font-size: 15px; padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--white); color: var(--text); }
+.dd-ix-btns { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.dd-ix-sum { font-size: 16px; margin: 0 0 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.dd-ix-sumg { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; font-weight: 700; }
+.dd-ix-g { display: inline-block; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .02em; padding: 3px 9px; border-radius: 6px; vertical-align: middle; white-space: nowrap; }
+.dd-ix-g.g-ci { color: #fff; background: #7f1d1d; }
+.dd-ix-g.g-avoid { color: #fff; background: #b91c1c; }
+.dd-ix-g.g-adjust { color: #4a2800; background: #fcd34d; }
+.dd-ix-g.g-minor { color: #1f3864; background: #e3e8f2; }
+.dd-ix-card { border: 1px solid var(--border); border-radius: 12px; background: var(--white); padding: 14px 16px; margin: 0 0 14px; }
+.dd-ix-card h2 { font-size: 18px; margin: 0 0 8px; }
+.dd-ix-pairs > h2 { font-size: 18px; margin: 18px 0 10px; }
+.dd-ix-pair h3 { font-size: 16.5px; margin: 0 0 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.dd-ix-row1 { border-top: 1px solid var(--border); padding: 8px 0 2px; }
+.dd-ix-row1:first-of-type { border-top: 0; padding-top: 0; }
+.dd-ix-row1 p { margin: 4px 0; font-size: 15px; }
+.dd-ix-src { color: var(--text-mid); }
+.dd-ix-kidney { border-left: 4px solid #1a6b72; }
+.dd-ix-kidney ul { margin: 0; padding-left: 18px; }
+.dd-ix-kidney li { margin: 6px 0; }
+.dd-ix-tw { color: #7f1d1d; }
+.dd-ix-ktab { border-collapse: collapse; margin: 6px 0 0; width: 100%; }
+.dd-ix-ktab th, .dd-ix-ktab td { text-align: left; padding: 6px 8px; border-top: 1px solid var(--border); font-size: 14.5px; vertical-align: top; }
+.dd-ix-ktab th { font-weight: 600; width: 40%; }
+.dd-ix-ktab th a { color: var(--text); }
+.dd-ix-kt { display: inline-block; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 13.5px; }
+.dd-ix-kt.k-none { color: #14532d; background: #dcfce7; }
+.dd-ix-kt.k-adjust { color: #4a2800; background: #fdf3dc; }
+.dd-ix-kt.k-avoid { color: #7f1d1d; background: #fde2e2; }
+.dd-ix-kt.k-nodata, .dd-ix-kt.k-hide { color: #374151; background: #eceff3; }
+.dd-ix-kn { color: var(--text-muted); font-size: 14px; }
+.dd-ix-card .dd-sub { display: inline; margin: 0; }
+.dd-ix-card a { color: #0e4a50; font-weight: 600; }
+.dd-ix-also summary { cursor: pointer; font-weight: 700; }
+.dd-ix-also h3 { font-size: 15px; margin: 12px 0 4px; }
+.dd-ix-also ul { margin: 0; padding-left: 18px; }
+.dd-ix-also li { margin: 4px 0; font-size: 14.5px; }
+.dd-ix-about { margin: 26px 0 0; }
+.dd-ix-about h2 { font-size: 18px; }
+.dd-ix-legend { list-style: none; padding: 0; margin: 0 0 12px; }
+.dd-ix-legend li { margin: 6px 0; display: flex; gap: 10px; align-items: baseline; }
+.dd-ix-legend .dd-ix-g { min-width: 132px; text-align: center; }
+@media print { .dd-ix-pick, .dd-ix-about, .dd-favs { display: none !important; } .dd-ix-card { break-inside: avoid; } }
 .dd-partof { font-size: 13.5px; margin: 6px 0 8px; color: var(--text-mid); }
 .dd-rg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .dd-rg a { display: flex; gap: 12px; align-items: flex-start; height: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--border);
@@ -838,6 +918,27 @@ html[data-theme="dark"] .dd-nx-m { color: #fed7c3; background: rgba(234,88,12,.1
 html[data-theme="dark"] .dd-nx-q { background: rgba(255,255,255,.04); border-left-color: rgba(255,255,255,.25); color: #d4dbe7; }
 html[data-theme="dark"] .dd-nx-q cite { color: #9ba6b8; }
 html[data-theme="dark"] .dd-nx-q cite a { color: #7dd3dc; }
+html[data-theme="dark"] .dd-ix-pick, html[data-theme="dark"] .dd-ix-card, html[data-theme="dark"] .dd-ix-sug { background: #1a2535; border-color: rgba(255,255,255,.14); }
+html[data-theme="dark"] #dd-ix-q, html[data-theme="dark"] .dd-ix-k select, html[data-theme="dark"] .dd-ix-paste textarea { background: #0f1724; color: #e6ebf3; border-color: rgba(255,255,255,.22); }
+html[data-theme="dark"] .dd-ix-sug li[aria-selected="true"], html[data-theme="dark"] .dd-ix-sug li:hover { background: rgba(43,168,176,.18); }
+html[data-theme="dark"] .dd-ix-chip { background: rgba(43,168,176,.16); border-color: rgba(43,168,176,.45); }
+html[data-theme="dark"] .dd-ix-chip a, html[data-theme="dark"] .dd-ix-chip button, html[data-theme="dark"] .dd-ix-qgo,
+html[data-theme="dark"] .dd-ix-paste summary, html[data-theme="dark"] .dd-ix-have { color: #a5f3fc; }
+html[data-theme="dark"] .dd-ix-star.is-on { color: #fcd34d; }
+html[data-theme="dark"] .dd-ix-q { background: rgba(255,255,255,.06); color: #e6ebf3; border-color: rgba(255,255,255,.22); }
+html[data-theme="dark"] .dd-ix-q.is-on { color: #9ba6b8; }
+html[data-theme="dark"] .dd-ix-g.g-ci { background: #991b1b; }
+html[data-theme="dark"] .dd-ix-g.g-minor { color: #e3e8f2; background: #34455f; }
+html[data-theme="dark"] .dd-ix-tw { color: #fecaca; }
+html[data-theme="dark"] .dd-ix-ktab th a { color: #e6ebf3; }
+html[data-theme="dark"] .dd-ix-card a { color: #7dd3dc; }
+html[data-theme="dark"] .dd-ix-kt.k-none { color: #bbf7d0; background: rgba(34,197,94,.16); }
+html[data-theme="dark"] .dd-ix-kt.k-adjust { color: #fde68a; background: rgba(245,158,11,.16); }
+html[data-theme="dark"] .dd-ix-kt.k-avoid { color: #fecaca; background: rgba(239,68,68,.18); }
+html[data-theme="dark"] .dd-ix-kt.k-nodata, html[data-theme="dark"] .dd-ix-kt.k-hide { color: #d4dbe7; background: rgba(255,255,255,.08); }
+html[data-theme="dark"] .dd-ix-kidney { border-left-color: #2ba8b0; }
+html[data-theme="dark"] .dd-favbtn.is-on { color: #fde68a; background: rgba(245,158,11,.16); border-color: rgba(245,158,11,.45); }
+html[data-theme="dark"] .dd-chip.dd-ixbtn, html[data-theme="dark"] .dd-chip.dd-ixchip { color: #e6fbfc; background: #0e4a50; border-color: #0e4a50; }
 html[data-theme="dark"] .dd-tag.US { color: #dbe6f5; background: #22304a; }
 html[data-theme="dark"] .dd-tag.SUP { color: #e5e9f0; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); }
 html[data-theme="dark"] .dd-tag.SUPK { color: #fde7c2; background: rgba(245,158,11,.16); }
@@ -1601,6 +1702,197 @@ if(m0){var p0=decodeURIComponent(m0[1]);if(root.classList.contains('dd-split'))s
 })();
 """
 
+# Favorites (device only) + Interaction checker (Nov 2026)
+DRUG_JS += r"""
+(function(){
+'use strict';
+var FAV='wgmr-drug-favs',REC='wgmr-drug-recent',KF='wgmr-ix-kidney';
+function rd(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function favs(){var f=rd(FAV,[]);return Array.isArray(f)?f.filter(function(x){return typeof x==='string'&&/^[a-z0-9-]+$/.test(x);}):[];}
+function isFav(s){return favs().indexOf(s)>=0;}
+function toggleFav(s){var f=favs(),i=f.indexOf(s);if(i>=0)f.splice(i,1);else f.unshift(s);wr(FAV,f.slice(0,200));document.dispatchEvent(new CustomEvent('rcm-favs'));return i<0;}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function nrm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+/* drug page: Favorite button */
+Array.prototype.forEach.call(document.querySelectorAll('.dd-favbtn[data-fav]'),function(b){
+  var s=b.getAttribute('data-fav');
+  function paint(){var on=isFav(s);b.setAttribute('aria-pressed',on?'true':'false');b.classList.toggle('is-on',on);
+    b.querySelector('.dd-favstar').textContent=on?'★':'☆';b.lastChild.textContent=on?' Favorite (saved)':' Favorite';}
+  b.hidden=false;paint();b.addEventListener('click',function(){toggleFav(s);paint();});
+  document.addEventListener('rcm-favs',paint);
+});
+/* index: favorites row (names from the search index) */
+var fr=document.getElementById('dd-favs');
+if(fr){
+  var names=null;
+  function paintIdx(){var f=favs();if(!f.length){fr.hidden=true;return;}
+    function go(){fr.hidden=false;document.getElementById('dd-favlist').innerHTML=f.map(function(s){
+      return '<a class="dd-ix-q" href="'+encodeURIComponent(s)+'.html">'+esc((names&&names[s])||s.replace(/-/g,' '))+'</a>';}).join('')+
+      '<a class="dd-ix-q dd-ix-qgo" href="interactions.html?d='+f.slice(0,20).map(encodeURIComponent).join(',')+'">Check favorites together &rarr;</a>';}
+    go();if(!names)fetch('/drugs/search-index.json').then(function(r){return r.json();}).then(function(j){names={};j.forEach(function(d){names[d.s]=d.n;});go();}).catch(function(){});}
+  paintIdx();document.addEventListener('rcm-favs',paintIdx);
+}
+var root=document.getElementById('dd-ix');
+if(!root)return;
+var $=function(id){return document.getElementById(id);};
+var q=$('dd-ix-q'),sug=$('dd-ix-sug'),selBox=$('dd-ix-sel'),out=$('dd-ix-out'),kf=$('dd-ix-kf');
+var IDX=null,IX=null,BY={},SEL=[],act=-1,DICT=null;
+var GR={ci:['Contraindicated','g-ci',4],avoid:['Avoid','g-avoid',3],adjust:['Adjust or monitor','g-adjust',2],minor:['Minor','g-minor',1]};
+function load(){
+  return Promise.all([fetch(root.getAttribute('data-src')).then(function(r){return r.json();}),
+                      fetch(root.getAttribute('data-ix')).then(function(r){return r.json();})]).then(function(a){
+    IDX=a[0];IX=a[1];IDX.forEach(function(d){d.nn=nrm(d.n);BY[d.s]=d;});});
+}
+function nm(s){return (BY[s]&&BY[s].n)||s.replace(/-/g,' ');}
+/* ── selection ── */
+function add(s,quiet){if(!BY[s]||SEL.indexOf(s)>=0)return false;SEL.push(s);
+  var r=rd(REC,[]);r=[s].concat(r.filter(function(x){return x!==s;})).slice(0,12);wr(REC,r);if(!quiet)update();return true;}
+function remove(s){SEL=SEL.filter(function(x){return x!==s;});update();}
+function paintSel(){
+  selBox.innerHTML=SEL.length?SEL.map(function(s){var f=isFav(s);
+    return '<span class="dd-ix-chip"><a href="'+encodeURIComponent(s)+'.html">'+esc(nm(s))+'</a>'+
+      '<button type="button" class="dd-ix-star'+(f?' is-on':'')+'" data-star="'+esc(s)+'" aria-pressed="'+f+'" aria-label="'+(f?'Remove ':'Add ')+esc(nm(s))+(f?' from':' to')+' favorites">'+(f?'★':'☆')+'</button>'+
+      '<button type="button" class="dd-ix-x" data-rm="'+esc(s)+'" aria-label="Remove '+esc(nm(s))+'">✕</button></span>';}).join(''):'';
+  var f=favs().filter(function(s){return BY[s];}),r=rd(REC,[]).filter(function(s){return BY[s];});
+  function chips(list){return list.map(function(s){var on=SEL.indexOf(s)>=0;return '<button type="button" class="dd-ix-q'+(on?' is-on':'')+'" data-add="'+esc(s)+'"'+(on?' disabled':'')+'>'+(on?'✓ ':'+ ')+esc(nm(s))+'</button>';}).join('');}
+  $('dd-ix-favrow').hidden=!f.length;$('dd-ix-fav').innerHTML=chips(f)+(f.length>1?'<button type="button" class="dd-ix-q dd-ix-qgo" data-addall="fav">Add all favorites</button>':'');
+  $('dd-ix-recrow').hidden=!r.length;$('dd-ix-rec').innerHTML=chips(r);
+}
+document.addEventListener('rcm-favs',function(){paintSel();});
+root.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;
+  if(t.hasAttribute('data-rm'))remove(t.getAttribute('data-rm'));
+  else if(t.hasAttribute('data-star')){toggleFav(t.getAttribute('data-star'));}
+  else if(t.hasAttribute('data-add')){add(t.getAttribute('data-add'));}
+  else if(t.getAttribute('data-addall')==='fav'){favs().forEach(function(s){add(s,true);});update();}
+});
+/* ── typeahead: generic names, Philippine brands, other names ── */
+function matches(v){var t=nrm(v);if(t.length<2)return [];var res=[];
+  IDX.forEach(function(d){var sc=0,lab='',via='';
+    if(d.nn.indexOf(t)===0)sc=100;else if((' '+d.nn).indexOf(' '+t)>=0)sc=70;
+    (d.b||[]).forEach(function(b){var bn=nrm(b);var s2=bn===t?95:bn.indexOf(t)===0?85:0;if(s2>sc){sc=s2;via=b;}});
+    (d.y||[]).forEach(function(y){var yn=nrm(y);var s2=yn.indexOf(t)===0?80:0;if(s2>sc){sc=s2;via=y;}});
+    if(sc)res.push({d:d,s:sc-(d.n.length/100)+(d.k?1:0),via:via});});
+  res.sort(function(a,b){return b.s-a.s;});return res.slice(0,8);}
+function showSug(){var m=matches(q.value);act=-1;
+  if(!m.length){sug.hidden=true;q.setAttribute('aria-expanded','false');sug.innerHTML='';return;}
+  sug.innerHTML=m.map(function(o,i){return '<li role="option" id="dd-ix-o'+i+'" data-s="'+esc(o.d.s)+'" aria-selected="false">'+
+    (o.via?'<strong>'+esc(o.via)+'</strong> <span class="dd-ix-arrow">→ '+esc(o.d.n)+'</span>':'<strong>'+esc(o.d.n)+'</strong>')+
+    (SEL.indexOf(o.d.s)>=0?' <span class="dd-ix-have">added</span>':'')+'</li>';}).join('');
+  sug.hidden=false;q.setAttribute('aria-expanded','true');}
+function pick(s){if(s){add(s);q.value='';sug.hidden=true;q.setAttribute('aria-expanded','false');q.focus();}}
+q.addEventListener('input',function(){if(IDX)showSug();});
+q.addEventListener('keydown',function(e){var o=sug.querySelectorAll('[role=option]');
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){if(!o.length)return;e.preventDefault();act=(act+(e.key==='ArrowDown'?1:-1)+o.length)%o.length;
+    Array.prototype.forEach.call(o,function(x,i){x.setAttribute('aria-selected',i===act?'true':'false');});q.setAttribute('aria-activedescendant',o[act].id);o[act].scrollIntoView({block:'nearest'});}
+  else if(e.key==='Enter'){e.preventDefault();if(o.length)pick(o[Math.max(act,0)].getAttribute('data-s'));}
+  else if(e.key==='Escape'){sug.hidden=true;q.setAttribute('aria-expanded','false');}});
+sug.addEventListener('mousedown',function(e){var li=e.target.closest('[role=option]');if(li){e.preventDefault();pick(li.getAttribute('data-s'));}});
+document.addEventListener('click',function(e){if(!e.target.closest('.dd-ix-add'))sug.hidden=true;});
+/* ── paste a list: longest generic/brand/other-name match per line ── */
+function dict(){if(DICT)return DICT;DICT={};var mx=1;
+  IDX.forEach(function(d){function put(x,w){var k=nrm(x);if(k.length<4)return;if(!DICT[k]||w>DICT[k].w)DICT[k]={s:d.s,w:w};mx=Math.max(mx,k.split(' ').length);}
+    put(d.n,3);(d.y||[]).forEach(function(y){put(y,2);});(d.b||[]).forEach(function(b){put(b,1);});});
+  DICT.__mx=Math.min(mx,6);return DICT;}
+$('dd-ix-parse').addEventListener('click',function(){var D=dict(),added=[],miss=[];
+  $('dd-ix-ta').value.split(/\n|;/).forEach(function(line){var w=nrm(line).split(' ').filter(Boolean);if(!w.length)return;var found=null;
+    for(var i=0;i<w.length&&!found;i++)for(var n=Math.min(D.__mx,w.length-i);n>=1;n--){var k=w.slice(i,i+n).join(' ');if(D[k]){found=D[k].s;break;}}
+    if(found){if(add(found,true))added.push(nm(found));}else if(/[a-z]{3}/i.test(line))miss.push(line.trim().slice(0,40));});
+  update();$('dd-ix-pmsg').textContent=(added.length?'Added '+added.length+': '+added.join(', ')+'. ':'')+(miss.length?'Not recognized: '+miss.join('; ')+'.':'');});
+/* ── state in the URL; kidney function remembered on this device ── */
+function sync(){var u=new URL(location.href);u.searchParams.delete('add');u.searchParams.delete('fav');
+  if(SEL.length)u.searchParams.set('d',SEL.join(','));else u.searchParams.delete('d');
+  if(kf.value)u.searchParams.set('k',kf.value);else u.searchParams.delete('k');
+  history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams.toString().replace(/%2C/g,','):''));}
+kf.addEventListener('change',function(){wr(KF,kf.value);update();});
+$('dd-ix-clear').addEventListener('click',function(){SEL=[];update();q.focus();});
+$('dd-ix-print').addEventListener('click',function(){window.print();});
+$('dd-ix-share').addEventListener('click',function(){var b=this;sync();
+  (navigator.clipboard?navigator.clipboard.writeText(location.href):Promise.reject()).then(function(){b.textContent='Link copied';setTimeout(function(){b.textContent='Copy link';},1800);},
+   function(){window.prompt('Copy this link',location.href);});});
+/* ── the check ── */
+function inter(a,b){return (a||[]).filter(function(x){return (b||[]).indexOf(x)>=0;});}
+function rowHits(A,B){var ga=IX.g[A],gb=IX.g[B],hits=[];if(!ga||!gb)return hits;
+  (ga.ow||[]).forEach(function(o){IX.rows.forEach(function(r,i){if(r[0]!==o||r[7])return;
+    var hitM=inter(r[5],gb.m),hitC=inter(r[6],gb.c||[]);if(r[6].indexOf('alloral')>=0&&gb.o)hitC.push('alloral');
+    if(hitM.length||hitC.length)hits.push({i:i,a:A,b:B,m:hitM,c:hitC});});});return hits;}
+function badge(g){var x=GR[g]||GR.adjust;return '<span class="dd-ix-g '+x[1]+'">'+x[0]+'</span>';}
+function kband(){var v=kf.value;return v;}
+function update(){if(!IX)return;sync();paintSel();
+  var sel=SEL.slice(),checked=sel.filter(function(s){return IX.g[s]&&!IX.g[s].loc;}),local=sel.filter(function(s){return IX.g[s]&&IX.g[s].loc;});
+  if(!sel.length){out.innerHTML='<p class="dd-note">Add two or more medicines to check them together. Add one to see its kidney dosing and listed interactions.</p>';return;}
+  var pairs={},seen={};
+  checked.forEach(function(A){checked.forEach(function(B){if(A===B)return;rowHits(A,B).forEach(function(h){var key=[A,B].sort().join('|');
+    var dk=key+'#'+IX.rows[h.i][2]+IX.rows[h.i][3];if(seen[dk])return;seen[dk]=1;(pairs[key]=pairs[key]||[]).push(h);});});});
+  var list=Object.keys(pairs).map(function(k){var hs=pairs[k],top=Math.max.apply(null,hs.map(function(h){return GR[IX.rows[h.i][1]][2];}));
+    return {k:k,hs:hs,top:top};}).sort(function(a,b){return b.top-a.top;});
+  var cnt={4:0,3:0,2:0,1:0};list.forEach(function(p){cnt[p.top]++;});
+  var h='';
+  /* summary */
+  h+='<div class="dd-ix-sum"><strong>'+sel.length+' medicine'+(sel.length>1?'s':'')+'</strong> · '+(checked.length>1?(list.length?list.length+' interacting pair'+(list.length>1?'s':''):'no interaction found in the reviewed lists'):'add another medicine to check pairs')+
+    (list.length?' <span class="dd-ix-sumg">'+[4,3,2,1].filter(function(n){return cnt[n];}).map(function(n){var g=['','minor','adjust','avoid','ci'][n];return badge(g)+' '+cnt[n];}).join(' ')+'</span>':'')+'</div>';
+  /* kidney checks */
+  var kh=[];
+  var dup={};checked.forEach(function(s){(IX.g[s].m||[]).forEach(function(m){(dup[m]=dup[m]||[]).push(s);});});
+  Object.keys(dup).forEach(function(m){if(dup[m].length>1)kh.push('<li><strong>Same ingredient in '+dup[m].length+' products:</strong> '+esc(m.replace(/-/g,' '))+' ('+dup[m].map(function(s){return esc(nm(s));}).join(', ')+'). Check the total daily dose.</li>');});
+  var nxs=checked.filter(function(s){return IX.nx[s];});
+  if(nxs.length>1)kh.push('<li><strong>'+nxs.length+' medicines with a kidney injury warning:</strong> '+nxs.map(function(s){return '<a href="'+encodeURIComponent(s)+'.html#kidney-injury">'+esc(nm(s))+'</a> <span class="dd-sub">('+IX.nx[s].map(function(m){return esc(IX.nxl[m]||m);}).join(', ')+')</span>';}).join('; ')+'. Their US labels advise care with other kidney toxins; monitor serum creatinine.</li>');
+  function inCls(s,k){return (IX.g[s].c||[]).indexOf(k)>=0;}
+  var ns=checked.filter(function(s){return inCls(s,'nsaid');}),ra=checked.filter(function(s){return inCls(s,'ace')||inCls(s,'arb');}),di=checked.filter(function(s){return inCls(s,'diuretic');});
+  if(ns.length&&ra.length&&di.length)kh.push('<li class="dd-ix-tw"><strong>"Triple whammy":</strong> an NSAID ('+ns.map(nm).map(esc).join(', ')+'), an ACE inhibitor or ARB ('+ra.map(nm).map(esc).join(', ')+') and a diuretic ('+di.map(nm).map(esc).join(', ')+') together. See the graded interactions below for what the monographs advise.</li>');
+  /* kidney dosing at the chosen status */
+  var kb=kband(),krows='';
+  if(kb){var lab={ge60:'60 or more','30_59':'30 to 59','15_29':'15 to 29',lt15:'below 15',hd:'hemodialysis',pd:'peritoneal dialysis',crrt:'CRRT'}[kb];
+    sel.forEach(function(s){var srcs=[];if(IX.k[s])srcs.push([s,IX.k[s]]);else (IX.g[s]&&IX.g[s].m||[]).forEach(function(m){if(m!==s&&IX.k[m])srcs.push([m,IX.k[m]]);});
+      if(!srcs.length){krows+='<tr><th scope="row"><a href="'+encodeURIComponent(s)+'.html#kidney-dosing">'+esc(nm(s))+'</a></th><td class="dd-ix-kn">No reviewed kidney dosing yet; see the label text on the drug page.</td></tr>';return;}
+      srcs.forEach(function(x){var kd=x[1],cell=null,rng='';
+        if(kb==='hd'||kb==='pd'||kb==='crrt'){if(kd[kb]){cell=kd[kb];rng=kb.toUpperCase();}}
+        else (kd.b||[]).forEach(function(b){if(b[0]===kb){cell=[b[2],b[3]];rng=b[1];}});
+        var who=esc(nm(s))+(x[0]!==s?' <span class="dd-sub">('+esc(nm(x[0]))+' component)</span>':'');
+        krows+='<tr><th scope="row"><a href="'+encodeURIComponent(x[0])+'.html#kidney-dosing">'+who+'</a></th>'+(cell?'<td><span class="dd-ix-kt k-'+esc(cell[1])+'">'+esc(cell[0])+'</span> <span class="dd-sub">'+esc(rng)+'</span></td>':'<td class="dd-ix-kn">No band for this level in the reviewed dosing.</td>')+'</tr>';});});
+    kh.push('<li class="dd-ix-kdose"><strong>Kidney dosing ('+esc(lab)+'):</strong><table class="dd-ix-ktab"><tbody>'+krows+'</tbody></table></li>');}
+  if(kh.length)h+='<section class="dd-ix-card dd-ix-kidney"><h2>Kidney checks</h2><ul>'+kh.join('')+'</ul>'+(kb?'':'<p class="dd-note">Choose the kidney function above to see each medicine\'s kidney dosing.</p>')+'</section>';
+  else if(!kb)h+='<p class="dd-note dd-ix-khint">Choose the kidney function above to see each medicine\'s kidney dosing.</p>';
+  /* graded pairs */
+  if(list.length){h+='<section class="dd-ix-pairs"><h2>Interactions</h2>';
+    list.forEach(function(p){var ab=p.k.split('|');
+      h+='<article class="dd-ix-card dd-ix-pair">'+'<h3>'+badge(['','minor','adjust','avoid','ci'][p.top])+' '+esc(nm(ab[0]))+' + '+esc(nm(ab[1]))+'</h3>';
+      p.hs.sort(function(x,y){return GR[IX.rows[y.i][1]][2]-GR[IX.rows[x.i][1]][2];}).forEach(function(hh){var r=IX.rows[hh.i];
+        h+='<div class="dd-ix-row1">'+(p.hs.length>1?badge(r[1])+' ':'')+'<p class="dd-ix-src">From the <a href="'+encodeURIComponent(r[0])+'.html#interactions">'+esc(nm(r[0]))+'</a> monograph: <em>'+esc(r[2])+'</em>'+
+          (hh.c.length&&!hh.m.length?' <span class="dd-sub">('+esc(nm(hh.b))+' is in this group: '+hh.c.map(function(c){return esc(IX.cls[c]||c);}).join(', ')+')</span>':'')+'</p>'+
+          '<p><strong>What happens:</strong> '+esc(r[3])+'</p><p><strong>What to do:</strong> '+esc(r[4])+'</p></div>';});
+      h+='</article>';});h+='</section>';}
+  /* also check: food, alcohol, tests; rows that matched nothing */
+  var also='',other='';
+  checked.forEach(function(s){var a=[],o=[];(IX.g[s].ow||[]).forEach(function(ow){IX.rows.forEach(function(r){if(r[0]!==ow)return;
+      if(r[7])a.push(r);else if(!r[5].length&&!r[6].length)o.push(r);});});
+    function li(r){return '<li>'+badge(r[1])+' <em>'+esc(r[2])+'</em>: '+esc(r[4])+'</li>';}
+    if(a.length)also+='<h3>'+esc(nm(s))+'</h3><ul>'+a.map(li).join('')+'</ul>';
+    if(o.length)other+='<h3>'+esc(nm(s))+'</h3><ul>'+o.map(li).join('')+'</ul>';});
+  if(also)h+='<details class="dd-ix-card dd-ix-also" open><summary>Also check: food, alcohol, lab tests and procedures</summary>'+also+'</details>';
+  if(other)h+='<details class="dd-ix-card dd-ix-also"><summary>Other listed interactions (drugs not in the Philippine registry or not matched automatically)</summary>'+other+'</details>';
+  /* coverage notes */
+  var noList=checked.filter(function(s){return !(IX.g[s].ow||[]).length;});
+  var notes=[];
+  if(noList.length&&checked.length>1)notes.push('No reviewed interaction list yet for '+noList.map(nm).map(esc).join(', ')+'; pairs with these are found only from the other drug\'s list.');
+  if(local.length)notes.push('Not checked (applied to the skin, eye, ear or nose): '+local.map(nm).map(esc).join(', ')+'.');
+  notes.push('No result does not mean no interaction. Check the full prescribing information.');
+  h+='<p class="dd-note dd-ix-cov">'+notes.join(' ')+'</p>';
+  out.innerHTML=h;
+}
+load().then(function(){
+  var u=new URL(location.href),d=(u.searchParams.get('d')||'').split(',').filter(Boolean);
+  d.forEach(function(s){add(s,true);});(u.searchParams.get('add')||'').split(',').filter(Boolean).forEach(function(s){add(s,true);});
+  var k=u.searchParams.get('k')||rd(KF,'');
+  if(!k){var p=rd('wgmr-rx-patient',{}),e=parseFloat(p&&p.egfr);if(e>0)k=e>=60?'ge60':e>=30?'30_59':e>=15?'15_29':'lt15';}
+  if(k&&kf.querySelector('option[value="'+k+'"]'))kf.value=k;
+  update();
+}).catch(function(){out.innerHTML='<p class="dd-note">The checker could not load its data. Check the connection, or open the Drug Index app once while online.</p>';});
+})();
+"""
+
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # Label sanitizer (only used when a label section is delivered as HTML)
@@ -2073,7 +2365,7 @@ var V='__V__';
 var SHELL='rcm-drugs-shell-'+V,PAGES='rcm-drugs-pages',SAVED='rcm-drugs-saved',DATA='rcm-drugs-data',ASSETS='rcm-drugs-assets';
 var SHELL_URLS=__SHELL__;            // must all load, or the install is retried later
 var OPTIONAL_SHELL=__OPTIONAL__;     // nice to have offline
-var CORE_PAGES=['/drugs/','/drugs/offline','/drugs/supplements/'];
+var CORE_PAGES=['/drugs/','/drugs/offline','/drugs/supplements/','/drugs/interactions'];
 var DATA_URLS=__DATA__;
 var ASSET_URLS=__ASSETS__;
 var MAX_PAGES=300,MAX_ASSETS=400;
@@ -2169,7 +2461,7 @@ def build_sw() -> str:
     da = drugdb_assets()
     shell = [da["css_url"], da["js_url"]]
     optional = ["/assets/drug-hero.js?v=3"] + ([f"/drugs/supplements/supp.css?v={sv}", f"/drugs/supplements/supp.js?v={sv}"] if sv else [])
-    data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json",
+    data = ["/drugs/search-index.json", "/drugs/search-extra.json", "/drugs/supplements/search-index.json", "/drugs/interactions.json",
             f"/drugs/browse.json?v={ASSET_VERSION}", f"/drugs/browse-brands.json?v={ASSET_VERSION}"]
     assets = ["/assets/share-buttons.js", "/drugs/app.webmanifest", "/images/app/dosis-192.png", "/favicon.ico",
               "/favicon-32x32.png", "/images/app/dosis-180.png"]
@@ -2198,6 +2490,8 @@ def offline_manifest(out_dir: Path) -> dict:
     for sub in ("category", "supplements"):
         for f in sorted((out_dir / sub).glob("*.html")):
             add(f"/drugs/{sub}/" if f.stem == "index" else f"/drugs/{sub}/{f.stem}", f)
+    if (out_dir / "interactions.json").exists():
+        add("/drugs/interactions.json", out_dir / "interactions.json")
     sdata = REPO / "data" / "drugs" / "supplements"
     for f in sorted(sdata.glob("*.json")):
         if not f.name.startswith("_"):
@@ -3688,6 +3982,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         chips.append(f'<a class="dd-chip dd-good" href="#kidney-dosing">{KIDNEY_ICON} Kidney dosing reviewed</a>')
     if ctx.nx(slug):
         chips.append('<a class="dd-chip dd-nxchip" href="#kidney-injury">Kidney injury risk</a>')
+    chips.append(f'<button type="button" class="dd-chip dd-favbtn no-print" data-fav="{esc(slug)}" aria-pressed="false" hidden>'
+                 '<span class="dd-favstar" aria-hidden="true">☆</span> Favorite</button>'
+                 f'<a class="dd-chip dd-ixbtn no-print" href="/drugs/interactions.html?add={esc(slug)}">Check interactions</a>')
     if pn_notes_for(slug, ctx):
         chips.append(f'<a class="dd-chip dd-good" href="#pn-kidney-notes">{KIDNEY_ICON} PN kidney notes reviewed</a>')
     cls_line = []
@@ -4343,13 +4640,14 @@ def index_page(entries: list[dict], ctx: Ctx, n_cats: int, off: dict | None = No
         <p class="hero-sub">Every drug product registered with the Food and Drug Administration (FDA) Philippines, grouped by generic name.
 Search by brand, generic, class, indication, manufacturer or registration number.</p>
         <div class="dd-chips"><span class="dd-chip">{len(entries):,} generics</span><span class="dd-chip">{n_products:,} PH products</span>
-<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}</div>
+<a class="dd-chip" href="/drugs/category/">Browse {n_cats:,} drug classes</a>{supp_chip}<a class="dd-chip dd-ixchip" href="/drugs/interactions.html">Interaction checker</a></div>
         <a class="dd-app-cta no-print" href="#dd-app" id="dd-app-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="m9 11 3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="dd-app-cta-t"><strong>Install Dosis, the Drug Index app</strong><small>Works offline, even with no signal</small></span><svg class="dd-app-cta-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
     </div></div>
   </div>
 </section>
 <main class="container dd-wide" id="dd-index" data-src="/drugs/search-index.json" data-extra="/drugs/search-extra.json"{' data-supp="/drugs/supplements/search-index.json"' if supp_n else ''}>
+<div class="dd-favs no-print" id="dd-favs" hidden><span class="dd-ix-ql">★ Favorites</span><div class="dd-ix-qchips" id="dd-favlist"></div></div>
 <div class="dd-search" role="search">
 <label class="dd-hidden" for="dd-sq">Search the drug index</label>
 <input id="dd-sq" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="dd-results"
@@ -4439,6 +4737,117 @@ pharmacologic class when a US label is available, otherwise from the FDA Philipp
 <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
 </div></div></div></section>
 <main class="container dd-wide"><ul class="dd-list dd-catlist">{lis}</ul></main>
+""" + FOOTER + FLOAT)
+
+
+IX_ORAL = {"tablet", "capsule", "oral liquid"}
+
+
+def route_flags(ctx: "Ctx", slug: str) -> tuple[bool, bool]:
+    """(taken by mouth, every product applied locally: skin, eye, ear, nose, vagina)."""
+    fg = [(form_group(ws(p.get("dosage_strength_form"))), ws(p.get("dosage_strength_form"))) for p in ctx.by_slug.get(slug, [])]
+    oral = any(f in IX_ORAL and not NX_LOCAL.search(d) for f, d in fg)
+    local = bool(fg) and all(f not in NX_SYSTEMIC or NX_LOCAL.search(d) for f, d in fg)
+    return oral, local
+
+
+def interactions_data(ctx: "Ctx", entries: list[dict]) -> tuple[dict, dict]:
+    """drugs/interactions.json for the interaction checker (tools/drugdb/interactions.py) plus approved kidney tiles
+    and kidney injury mechanisms per generic."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("ixmod", REPO / "tools" / "drugdb" / "interactions.py")
+    ix = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ix)
+    spec2 = importlib.util.spec_from_file_location("mrs", REPO / "tools" / "drugdb" / "merge_renal_short.py")
+    mrs = importlib.util.module_from_spec(spec2)
+    spec2.loader.exec_module(mrs)
+    slugs = [e["s"] for e in entries]
+    flags = {s: route_flags(ctx, s) for s in slugs}
+    data, rep = ix.build(ctx, slugs, None, lambda s: flags[s][0], lambda s: flags[s][1])
+    K, NXM = {}, {}
+    for s in slugs:
+        r = ctx.renal(s)
+        if renal_approved(r):
+            b = []
+            for band in r.get("bands") or []:
+                k = mrs.band_key(band.get("range", "")) if isinstance(band, dict) else None
+                if k and band.get("short"):
+                    b.append([k[5:], ws(band.get("range")), band["short"], band.get("level") or "nodata"])
+            kd = {"b": b}
+            for m in ("hd", "pd", "crrt"):
+                v = r.get(m)
+                if isinstance(v, dict) and v.get("short"):
+                    kd[m] = [v["short"], v.get("level") or "nodata"]
+            if b or len(kd) > 1:
+                K[s] = kd
+        nx = ctx.nx(s)
+        if nx:
+            NXM[s] = list(dict.fromkeys(m for _, _, rr in nx["items"] for m in rr.get("mech") or []))
+    data["k"], data["nx"] = K, NXM
+    data["nxl"] = {k: v["label"] for k, v in (ctx.nephrotox.get("mechanisms") or {}).items()}
+    data["owners"] = sorted({r[0] for r in data["rows"]})
+    return data, rep
+
+
+def interactions_page(n_owners: int, n_rows: int) -> str:
+    canonical = f"{SITE}/drugs/interactions"
+    jsonld = json.dumps({"@context": "https://schema.org", "@type": "WebApplication", "@id": canonical, "url": canonical,
+                         "name": "Interaction checker · Drug Index", "applicationCategory": "HealthApplication",
+                         "dateModified": "__ISO__", "inLanguage": "en",
+                         "audience": {"@type": "MedicalAudience", "audienceType": "Clinician"}}).replace("</", "<\\/")
+    kopts = "".join(f'<option value="{v}">{l}</option>' for v, l in (
+        ("", "Not specified"), ("ge60", "eGFR or CrCl 60 or more"), ("30_59", "eGFR or CrCl 30 to 59"),
+        ("15_29", "eGFR or CrCl 15 to 29"), ("lt15", "Below 15, not on dialysis"), ("hd", "Hemodialysis"),
+        ("pd", "Peritoneal dialysis"), ("crrt", "CRRT")))
+    return (head("Interaction checker · Renal Care Matters",
+                 "Check a list of medicines for drug interactions, kidney injury risks and kidney dosing, graded by severity. "
+                 "Philippine brands and generics.", canonical, jsonld, "__HASH__")
+            + '<body class="physician-mode single-mode dd-index-page dd-ix-page">\n' + header(True) + f"""
+<section class="hero"><div class="container dd-hero-wide"><div class="hero-grid"><div class="hero-copy">
+<div class="dd-crumb"><a href="/drugs/">Drug Index</a></div>
+<div class="hero-tag">Drug Database · Clinicians</div>
+<h1>Interaction checker</h1>
+<p class="hero-sub">Add the medicines a patient takes, by Philippine brand or generic name. The checker grades each interaction, flags kidney risks, and shows kidney dosing for the patient's kidney function.</p>
+<div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
+</div></div></div></section>
+<main class="container dd-wide" id="dd-ix" data-src="/drugs/search-index.json" data-ix="/drugs/interactions.json">
+<div class="dd-ix-pick">
+<div class="dd-ix-add" role="search">
+<label for="dd-ix-q" class="dd-ix-l">Add a medicine</label>
+<input id="dd-ix-q" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="dd-ix-sug"
+ placeholder="Brand or generic (e.g., Norvasc, losartan)" autocomplete="off" spellcheck="false">
+<ul id="dd-ix-sug" class="dd-ix-sug" role="listbox" aria-label="Matching medicines" hidden></ul>
+</div>
+<div id="dd-ix-sel" class="dd-ix-chips" aria-live="polite"></div>
+<div class="dd-ix-quick" id="dd-ix-quick">
+<div class="dd-ix-qrow" id="dd-ix-favrow" hidden><span class="dd-ix-ql">★ Favorites</span><div id="dd-ix-fav" class="dd-ix-qchips"></div></div>
+<div class="dd-ix-qrow" id="dd-ix-recrow" hidden><span class="dd-ix-ql">Recent</span><div id="dd-ix-rec" class="dd-ix-qchips"></div></div>
+</div>
+<details class="dd-ix-paste"><summary>Paste a medication list</summary>
+<label class="dd-hidden" for="dd-ix-ta">Medication list</label>
+<textarea id="dd-ix-ta" rows="5" placeholder="One medicine per line, as written on the prescription:&#10;Losartan 50 mg 1 tab OD&#10;Norvasc 10 mg OD&#10;Sevelamer 800 mg TID with meals"></textarea>
+<button type="button" class="dd-btn" id="dd-ix-parse">Add these medicines</button> <span class="dd-note" id="dd-ix-pmsg" aria-live="polite"></span>
+</details>
+<div class="dd-ix-row">
+<label class="dd-ix-k">Kidney function <select id="dd-ix-kf">{kopts}</select></label>
+<span class="dd-ix-btns"><button type="button" class="dd-btn dd-btn-ghost" id="dd-ix-share">Copy link</button>
+<button type="button" class="dd-btn dd-btn-ghost" id="dd-ix-print">Print</button>
+<button type="button" class="dd-btn dd-btn-ghost" id="dd-ix-clear">Clear all</button></span>
+</div>
+</div>
+<div id="dd-ix-out" class="dd-ix-out" aria-live="polite"><p class="dd-note">Add two or more medicines to check them together. Add one to see its kidney dosing and listed interactions.</p></div>
+<section class="dd-ix-about" aria-labelledby="dd-ix-about-h">
+<h2 id="dd-ix-about-h">How interactions are graded</h2>
+<ul class="dd-ix-legend">
+<li><span class="dd-ix-g g-ci">Contraindicated</span> The source says the combination must not be used.</li>
+<li><span class="dd-ix-g g-avoid">Avoid</span> Avoid the combination; use only with specialist reason and close monitoring.</li>
+<li><span class="dd-ix-g g-adjust">Adjust or monitor</span> Usually usable with a dose change, spacing, or monitoring.</li>
+<li><span class="dd-ix-g g-minor">Minor</span> Small or uncommon effect; awareness is enough for most patients.</li>
+</ul>
+<p>Each interaction is quoted from a drug monograph reviewed by renalcarematters.com, built on US FDA labels and PubMed-verified literature. Reviewed interaction lists now cover {n_owners:,} drugs ({n_rows:,} interactions). A pair is found when either drug's list names the other drug or its class, so <strong>no result does not mean no interaction</strong>; check the full prescribing information.</p>
+<p>Kidney checks use the reviewed kidney dosing and the kidney injury tags on each drug page. Favorites and recent medicines are saved only on this device.</p>
+</section>
+</main>
 """ + FOOTER + FLOAT)
 
 
@@ -4622,6 +5031,14 @@ def main():
     groups = category_groups(entries)
     write_if_changed(out_dir / "search-index.json", json.dumps(entries, ensure_ascii=False, separators=(",", ":")), a.dry_run)
     write_if_changed(out_dir / "search-extra.json", json.dumps(extras, ensure_ascii=False, separators=(",", ":")), a.dry_run)
+    ixd, ixr = interactions_data(ctx, entries)
+    ixjson = json.dumps(ixd, ensure_ascii=False, separators=(",", ":"))
+    write_if_changed(out_dir / "interactions.json", ixjson, a.dry_run)
+    ixv = hashlib.sha1(ixjson.encode("utf-8")).hexdigest()[:10]
+    stats["ix-" + finalize(out_dir / "interactions.html", interactions_page(len(ixd["owners"]), len(ixd["rows"])),
+                           today, a.dry_run, False)] += 1
+    print(f"  interaction checker: {len(ixd['rows'])} rows from {len(ixd['owners'])} drugs; "
+          f"{ixr['matched']} matched to drugs or classes, {ixr['nondrug']} food/lab/procedure, {len(ixr['unmatched'])} other")
     bcore, bbrands = browse_data(entries, groups, ctx)
     write_if_changed(out_dir / "browse.json", json.dumps(bcore, ensure_ascii=False, separators=(",", ":")), a.dry_run)
     write_if_changed(out_dir / "browse-brands.json", json.dumps(bbrands, ensure_ascii=False, separators=(",", ":")), a.dry_run)
@@ -4637,7 +5054,7 @@ def main():
         stats["cat-" + finalize(cdir / f"{cs}.html", category_page(c, items), today, a.dry_run, False)] += 1
 
     if not a.no_prune and only is None:
-        keep = {e["s"] for e in entries} | {"index", "offline"}
+        keep = {e["s"] for e in entries} | {"index", "offline", "interactions"}
         for d, kp in ((out_dir, keep), (cdir, cat_keep)):
             for f in d.glob("*.html"):
                 if f.stem in kp:

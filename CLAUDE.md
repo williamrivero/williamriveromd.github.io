@@ -1013,6 +1013,21 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   DRESS, and warnings about use IN kidney disease (metformin, gadolinium, denosumab). Every page says an untagged drug is
   not necessarily kidney-safe. Add a drug: add a rule, run the builder, then the generator. Approved under delegated
   sign-off (label text only).
+- **Interaction checker + favorites** (Nov 20 2026): `drugs/interactions.html` (generated; "Check interactions" button on
+  every drug page, chip on the index hero, precached for offline use) and `drugs/interactions.json`. Pick medicines by PH
+  brand, generic or other name (typeahead), from Favorites/Recent chips, or by pasting a prescription (longest name match
+  per line); state lives in the URL (`?d=slug,slug&k=hd`), kidney function prefills from the Calculo eGFR store
+  (`wgmr-rx-patient`). Favorites (`wgmr-drug-favs`, ☆ button on drug pages, a row on the index) and recent
+  (`wgmr-drug-recent`) are device-only localStorage. Pairs come ONLY from approved `summary/<slug>.json`
+  `key_interactions` rows, shown verbatim with their grade: Contraindicated (an Avoid row whose action starts
+  "Contraindicated."), Avoid, Adjust or monitor, Minor. `tools/drugdb/interactions.py` resolves each row's drug_or_class
+  to named molecules (ingredient names, salt-stripped names, `synonyms.py`) and classes
+  (`tools/drugdb/interaction_classes.json`: detect regex + members; "nephrotoxic" = the kidney injury tags; a CYP3A4 row
+  with no stated strength = strong + moderate); food/alcohol/lab-test rows go to "Also check", unmatched rows (mostly
+  drugs not registered in PH) to "Other listed interactions", so no row is dropped. `python3 tools/drugdb/interactions.py
+  --report [--rows]` shows coverage. Kidney checks: same ingredient twice, 2+ drugs with a kidney injury tag, NSAID +
+  ACE inhibitor/ARB + diuretic, and each drug's APPROVED kidney tile at the chosen kidney function. Class membership is
+  pharmacology only; never add clinical wording to the classes file. Coverage grows as more summaries are approved.
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come
