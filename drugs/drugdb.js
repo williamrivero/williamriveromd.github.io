@@ -644,23 +644,36 @@ function build(){var R=routine(),out=$('ms-out');
     h+='<section class="dd-ix-card"><h3>Not daily, or given at the dialysis unit</h3><ul>'+non.concat(unit).map(function(m){var r=rule(m.s);
       return '<li><strong>'+esc(nm(m.s))+'</strong>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis'+(hdOn?' ('+hdDays+')':''):FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?' · given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>';}
   /* why each placement */
-  var why=MEDS.map(function(m,k){var r=rule(m.s),p=P0.pl[k],bits=[];
-    if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);if(r.tod&&!r.practice)bits.push('take in the '+r.tod);if(r.practice)bits.push('at bedtime: '+r.practice.replace(/^Bedtime by /,'').replace(/\.$/,''));if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');}
-    if(MS.hdAfter.indexOf(m.s)>=0&&!(r&&r.hd==='after'))bits.push('dose after dialysis on dialysis days (reviewed kidney dosing)');
-    if(m.slot)bits.push('time set by you');
-    else if(ahtFixed(m))bits.push('blood-pressure medicine at the same time every day, after the dialysis session ('+shift+' shift; practice default, W. G. M. Rivero, MD)');
-    var src=r&&r.practice?' <span class="dd-sub">Practice default, '+esc(r.practice_by)+'</span>':'';
-    src+=r&&r.quote?' <details class="dd-ms-src"><summary>Label</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
-    return '<li><strong>'+esc(nm(m.s))+':</strong> '+(bits.length?esc(bits.join('; ')):'no label timing rule; standard times')+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+src+'</li>';}).join('');
+  var why=MEDS.map(function(m,k){var r=rule(m.s),bits=[],tags=[];
+    function cap(x){return x.charAt(0).toUpperCase()+x.slice(1);}
+    if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);
+      if(r.tod&&!r.practice)bits.push('take in the '+r.tod);if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');
+      if(r.quote)tags.push(['label','Label']);
+      if(r.practice){bits.push('at bedtime, '+r.practice.replace(/^Bedtime by local practice, /,'').replace(/\.$/,''));tags.push(['practice','Practice default']);}}
+    if(MS.hdAfter.indexOf(m.s)>=0&&!(r&&r.hd==='after')){bits.push('dose after dialysis on dialysis days');tags.push(['label','Kidney dosing']);}
+    if(m.slot||m.freq==='hs'||m.freq==='qam'||m.freq==='qpm'){bits.unshift(m.freq==='hs'&&!m.slot?'at bedtime, as written in the prescription':m.freq==='qam'&&!m.slot?'in the morning, as written in the prescription':m.freq==='qpm'&&!m.slot?'in the evening, as written in the prescription':'time written in the prescription');tags.unshift(['you','Set by you']);}
+    else if(ahtFixed(m)){bits.push('same time every day, after the dialysis session ('+shift+' shift)');tags.push(['practice','Practice default']);}
+    if(!bits.length){bits.push('no timing rule; placed at a standard time');tags.push(['std','Standard time']);}
+    var seen={};tags=tags.filter(function(x){if(seen[x[1]])return false;seen[x[1]]=1;return true;});
+    var src=r&&r.quote?'<details class="dd-ms-src"><summary>Show label text</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
+    var by=r&&r.practice?'<span class="dd-msw-by">'+esc(r.practice_by)+'</span>':(ahtFixed(m)&&!m.slot?'<span class="dd-msw-by">W. G. M. Rivero, MD</span>':'');
+    return '<li class="dd-msw"><div class="dd-msw-n">'+esc(nm(m.s))+'</div><div class="dd-msw-r"><p>'+esc(cap(bits.join('; ')))+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+'</p>'+
+      '<div class="dd-msw-tags">'+tags.map(function(x){return '<span class="dd-msw-tag t-'+x[0]+'">'+x[1]+'</span>';}).join('')+by+'</div>'+src+'</div></li>';}).join('');
   function apart(x){return [P0,P1].every(function(P){if(!P)return true;var a=P.pl[x.i],c=P.pl[x.j];if(!a||!c)return true;return a.t.every(function(u){return c.t.every(function(v){return Math.abs(u-v)>=60;});});});}
-  var hardList=hard.map(function(x){var bad=cseen[[x.i,x.j].sort().join('-')];return '<li>'+esc(nm(MEDS[x.i].s))+' and '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[4])+' <span class="dd-sub">'+(bad?'(not met; see the warning above)':'(met)')+'</span></li>';}).join('');
-  var softList=soft.map(function(x){return '<li>'+esc(nm(MEDS[x.i].s))+' and '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[4])+' <span class="dd-sub">'+(apart(x)?'(given at different times)':'(could not be separated in this routine)')+'</span></li>';}).join('');
+  function pair(x,j){return '<strong>'+esc(nm(MEDS[x.i].s))+'</strong> '+j+' <strong>'+esc(nm(MEDS[x.j].s))+'</strong>';}
+  function row(badge,body){return '<li class="dd-msw-pr"><div class="dd-msw-b">'+badge+'</div><div class="dd-msw-pt">'+body+'</div></li>';}
+  var pseen={};
+  var hardList=hard.filter(function(x){var k=[x.i,x.j].sort().join('-');if(pseen[k])return false;pseen[k]=1;return true;}).map(function(x){var bad=cseen[[x.i,x.j].sort().join('-')];
+    return row('<span class="dd-msw-st '+(bad?'st-no':'st-ok')+'">'+(bad?'Not met':'Met')+'</span>',pair(x,'and')+'<span class="dd-msw-d">'+esc(x.row[4])+(bad?' See the warning at the top.':'')+'</span>');}).join('');
+  var softList=soft.map(function(x){var ok=apart(x);
+    return row('<span class="dd-msw-st '+(ok?'st-ok':'st-warn')+'">'+(ok?'Separated':'Same time')+'</span>',pair(x,'and')+'<span class="dd-msw-d">'+esc(x.row[4])+(ok?'':' Could not be separated in this routine.')+'</span>');}).join('');
   var GR={ci:'Contraindicated',avoid:'Avoid',adjust:'Adjust or monitor',minor:'Minor'},oseen={},otherList=other.filter(function(x){var k=[x.i,x.j].sort()+x.row[2];if(oseen[k])return false;oseen[k]=1;return true;})
     .sort(function(a,b){return ['ci','avoid','adjust','minor'].indexOf(a.row[1])-['ci','avoid','adjust','minor'].indexOf(b.row[1]);})
-    .map(function(x){return '<li><span class="dd-ix-g g-'+esc(x.row[1])+'">'+GR[x.row[1]]+'</span> '+esc(nm(MEDS[x.i].s))+' + '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[3])+' '+esc(x.row[4])+'</li>';}).join('');
-  h+='<section class="dd-ix-card no-print"><h3>Why each medicine is where it is</h3><ul class="dd-ms-why">'+why+'</ul>'+
-    (hardList?'<h4>Spacing applied</h4><ul>'+hardList+'</ul>':'')+(softList?'<h4>Absorption interactions kept apart</h4><ul>'+softList+'</ul>':'')+
-    (otherList?'<h4>Interactions timing cannot fix</h4><ul>'+otherList+'</ul><p class="dd-note"><a href="interactions.html?d='+MEDS.map(function(m){return encodeURIComponent(m.s);}).join(',')+'">Open these medicines in the Interaction checker</a></p>':'')+'</section>';
+    .map(function(x){return row('<span class="dd-ix-g g-'+esc(x.row[1])+'">'+GR[x.row[1]]+'</span>',pair(x,'+')+'<span class="dd-msw-d">'+esc(x.row[3])+' '+esc(x.row[4])+'</span>');}).join('');
+  h+='<section class="dd-ix-card dd-msw-card no-print"><h3>Why each medicine is where it is</h3><ul class="dd-msw-list">'+why+'</ul>'+
+    (hardList?'<div class="dd-msw-blk"><h4>Spacing between medicines</h4><ul class="dd-msw-list">'+hardList+'</ul></div>':'')+
+    (softList?'<div class="dd-msw-blk"><h4>Absorption interactions</h4><ul class="dd-msw-list">'+softList+'</ul></div>':'')+
+    (otherList?'<div class="dd-msw-blk"><h4>Interactions timing cannot fix</h4><ul class="dd-msw-list">'+otherList+'</ul><p class="dd-msw-more"><a href="interactions.html?d='+MEDS.map(function(m){return encodeURIComponent(m.s);}).join(',')+'">Open these medicines in the Interaction checker &rarr;</a></p></div>':'')+'</section>';
   /* SeriousMD text */
   function txt(P,title){var rows={};MEDS.forEach(function(m,k){var p=P.pl[k];if(p)p.t.forEach(function(t){(rows[t]=rows[t]||[]).push(nm(m.s)+(m.dose?' '+m.dose:''));});});
     return title+'\n'+Object.keys(rows).map(Number).sort(function(a,b){return a-b;}).map(function(t){var l='';if(P.T.POST===t)l='after dialysis';else for(var kk in P.T)if(P.T[kk]===t&&SLOTNAME[kk]){l=SLOTNAME[kk];break;}
