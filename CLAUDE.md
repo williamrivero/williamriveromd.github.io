@@ -1026,7 +1026,9 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   after] tied to approved interaction rows) -> `tools/drugdb/build_timing.py` (fails if a quote is gone) ->
   `data/drugs/timing.json`; `practice` entries in the rules file are prescriber defaults Dr. Rivero supplied (statins at bedtime, to limit
   stomach upset; Nov 20 2026), shown as "Practice default", never as a label quote; a time written in the pasted sig
-  (before/after/with breakfast, lunch, dinner) always wins. "dose after dialysis" also comes from APPROVED kidney tiles whose HD text says so
+  (before/after/with breakfast, lunch, dinner) always wins. With the hold toggle on and a session that ends 30+ min before lunch, blood-pressure medicines
+  (class antihtn) get one fixed time EVERY day (`#ms-aht`: after lunch, default, or after dinner; twice daily = after lunch
+  + bedtime; alpha blockers at bedtime), Dr. Rivero's practice default for consistency and adherence (Nov 20 2026). "dose after dialysis" also comes from APPROVED kidney tiles whose HD text says so
   (`scheduler_data()` excludes avoid/no-data tiles and negative phrasing). Approved under delegated sign-off (label text only).
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`

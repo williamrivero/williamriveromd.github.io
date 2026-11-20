@@ -617,6 +617,9 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-ix-legend .dd-ix-g { min-width: 132px; text-align: center; }
 @media print { .dd-ix-pick, .dd-ix-about, .dd-favs { display: none !important; } .dd-ix-card { break-inside: avoid; } }
 /* Med Scheduler */
+.dd-ms-aht { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 8px 0 2px; font-size: 14px; }
+.dd-ms-aht select { font: inherit; padding: 5px 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--white); color: var(--text); }
+.dd-ms-ahtnote { margin: 2px 0 0; font-size: 12.5px; }
 .dd-ms-grid { display: grid; grid-template-columns: 1fr; gap: 0 18px; }
 @media (min-width: 1000px) { .dd-ms-grid { grid-template-columns: minmax(300px, 2fr) 3fr; align-items: start; } }
 .dd-ms-routine h2, .dd-ms-meds h2 { font-size: 17px; margin: 0 0 10px; }
@@ -1643,12 +1646,12 @@ function fmt(t){t=((t%1440)+1440)%1440;var h=Math.floor(t/60),m=t%60,ap=h<12?'AM
 var RK='wgmr-ms-routine';
 function routine(){var dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value||'none';
   return {wake:mins($('ms-wake').value),bf:mins($('ms-bf').value),lu:mins($('ms-lu').value),di:mins($('ms-di').value),bed:mins($('ms-bed').value),
-    dx:dx,days:[].map.call(root.querySelectorAll('[data-hdday]:checked'),function(x){return +x.value;}),hs:mins($('ms-hs').value),he:mins($('ms-he').value),hold:$('ms-hold').checked};}
+    dx:dx,days:[].map.call(root.querySelectorAll('[data-hdday]:checked'),function(x){return +x.value;}),hs:mins($('ms-hs').value),he:mins($('ms-he').value),hold:$('ms-hold').checked,aht:($('ms-aht')||{}).value||'L'};}
 function saveRoutine(){var r={};['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){r[i]=$(i).value;});
-  r.dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value;r.days=routine().days;r.hold=$('ms-hold').checked;wr(RK,r);}
+  r.dx=(root.querySelector('input[name=ms-dx]:checked')||{}).value;r.days=routine().days;r.hold=$('ms-hold').checked;r.aht=$('ms-aht').value;wr(RK,r);}
 function restoreRoutine(){var r=rd(RK,null);if(!r)return;['ms-wake','ms-bf','ms-lu','ms-di','ms-bed','ms-hs','ms-he'].forEach(function(i){if(r[i])$(i).value=r[i];});
   if(r.dx){var x=root.querySelector('input[name=ms-dx][value="'+r.dx+'"]');if(x)x.checked=true;}
-  (r.days||[]).forEach(function(d){var x=root.querySelector('[data-hdday][value="'+d+'"]');if(x)x.checked=true;});$('ms-hold').checked=!!r.hold;}
+  (r.days||[]).forEach(function(d){var x=root.querySelector('[data-hdday][value="'+d+'"]');if(x)x.checked=true;});$('ms-hold').checked=!!r.hold;if(r.aht)$('ms-aht').value=r.aht;}
 function paintHD(){$('ms-hdbox').hidden=((root.querySelector('input[name=ms-dx]:checked')||{}).value!=='hd');}
 root.addEventListener('change',function(e){if(e.target.closest('.dd-ms-routine')){paintHD();saveRoutine();}});
 root.querySelectorAll('[data-preset]').forEach(function(b){b.addEventListener('click',function(){var p=b.getAttribute('data-preset').split(',');
@@ -1749,6 +1752,14 @@ function build(){var R=routine(),out=$('ms-out');
   if([R.wake,R.bf,R.lu,R.di,R.bed].some(function(x){return x==null;})){out.innerHTML='<p class="dd-note">Enter all the times of the patient\'s day.</p>';return;}
   if(!MEDS.length){out.innerHTML='<p class="dd-note">Add at least one medicine.</p>';return;}
   var hdOn=R.dx==='hd'&&R.days.length&&R.hs!=null&&R.he!=null&&R.he>R.hs;
+  /* practice default (W. G. M. Rivero, MD, Nov 20 2026): with an early session (ends 30+ min before lunch) and the hold on,
+     blood-pressure medicines go at one fixed time every day: once daily after lunch or after dinner (chosen), twice daily
+     after lunch + bedtime, alpha blockers at bedtime. A time written in the sig still wins. */
+  var early=hdOn&&R.hold&&R.he<=R.lu-30;
+  function ahtFixed(m){if(!early||m.slot||((IX.g[m.s]||{}).c||[]).indexOf('antihtn')<0)return null;
+    var mols=(IX.g[m.s]||{}).m||[m.s];if(mols.some(function(x){return /azosin$/.test(x);})&&(DAILY[m.freq]===1))return [['HS']];
+    if(m.freq==='od'||m.freq==='qam'||m.freq==='qpm')return [[R.aht==='D'?'D':'L']];
+    if(m.freq==='bid'||m.freq==='q12')return [['L','HS']];return null;}
   /* interactions among the list */
   var hard=[],soft=[],other=[],seenRow={};
   MEDS.forEach(function(a,i){MEDS.forEach(function(b,j){if(i===j)return;sepRows(a.s,b.s).forEach(function(ri){var key=ri+'|'+[i,j].sort().join(',');if(seenRow[key])return;seenRow[key]=1;
@@ -1763,14 +1774,14 @@ function build(){var R=routine(),out=$('ms-out');
         ta.forEach(function(x){tb.forEach(function(y){var ok=x<=y?(h.before!=null&&y-x>=h.before*60&&(x<y||h.before===0)):(h.after!=null&&x-y>=h.after*60);if(!ok)v++;});});});
       soft.forEach(function(h){var other=h.i===k?h.j:h.j===k?h.i:-1;if(other<0||!pl[other])return;tk.forEach(function(x){pl[other].t.forEach(function(y){if(Math.abs(x-y)<60)s++;});});});
       return [v,s];}
-    var order=MEDS.map(function(m,k){var r=rule(m.s),opts=options(m,r);return {k:k,r:r,opts:opts};});
-    /* dialysis-day moves */
     var antiH=function(s){return ((IX.g[s]||{}).c||[]).indexOf('antihtn')>=0;};
+    var order=MEDS.map(function(m,k){var r=rule(m.s),opts=options(m,r),f=ahtFixed(m);if(f)opts=f;return {k:k,r:r,opts:opts,fx:!!f};});
+    /* dialysis-day moves */
     order.sort(function(a,b){return a.opts.length-b.opts.length;});
     var pl={};
     order.forEach(function(o){var m=MEDS[o.k];if(!o.opts.length)return;var best=null;
       o.opts.forEach(function(opt,oi){var tk=times(o.k,opt);
-        if(hd){var after=(o.r&&o.r.hd==='after')||MS.hdAfter.indexOf(m.s)>=0,hold=R.hold&&antiH(m.s);
+        if(hd&&!o.fx){var after=(o.r&&o.r.hd==='after')||MS.hdAfter.indexOf(m.s)>=0,hold=R.hold&&antiH(m.s);
           if(after||hold){var idx=-1,bestd=1e9;tk.forEach(function(x,ii){var d=Math.abs(x-R.he);if(d<bestd){bestd=d;idx=ii;}});
             if(after&&idx>=0)tk[idx]=T.POST;
             if(hold)tk=tk.map(function(x){return x<R.he+30?T.POST:x;});}}
@@ -1805,6 +1816,7 @@ function build(){var R=routine(),out=$('ms-out');
     if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);if(r.tod&&!r.practice)bits.push('take in the '+r.tod);if(r.practice)bits.push('at bedtime: '+r.practice.replace(/^Bedtime by /,'').replace(/\.$/,''));if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');}
     if(MS.hdAfter.indexOf(m.s)>=0&&!(r&&r.hd==='after'))bits.push('dose after dialysis on dialysis days (reviewed kidney dosing)');
     if(m.slot)bits.push('time set by you');
+    else if(ahtFixed(m))bits.push('blood-pressure medicine at the same time every day, after the early dialysis session (practice default, W. G. M. Rivero, MD)');
     var src=r&&r.practice?' <span class="dd-sub">Practice default, '+esc(r.practice_by)+'</span>':'';
     src+=r&&r.quote?' <details class="dd-ms-src"><summary>Label</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
     return '<li><strong>'+esc(nm(m.s))+':</strong> '+(bits.length?esc(bits.join('; ')):'no label timing rule; standard times')+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+src+'</li>';}).join('');
@@ -5060,6 +5072,9 @@ def scheduler_page() -> str:
 <div class="dd-ms-days">{days}</div>
 <div class="dd-ms-times"><label>Session starts <input type="time" id="ms-hs" value="06:00"></label><label>Ends <input type="time" id="ms-he" value="10:00"></label></div>
 <label class="dd-check"><input type="checkbox" id="ms-hold"> Hold blood-pressure medicines until after dialysis on dialysis days</label>
+<label class="dd-ms-aht">Early session (ends before lunch): give blood-pressure medicines at the same time every day
+<select id="ms-aht"><option value="L">After lunch</option><option value="D">After dinner</option></select></label>
+<p class="dd-sub dd-ms-ahtnote">Twice-daily agents: after lunch and at bedtime. Alpha blockers: bedtime. A time in the sig always wins.</p>
 </div>
 </fieldset>
 </section>
