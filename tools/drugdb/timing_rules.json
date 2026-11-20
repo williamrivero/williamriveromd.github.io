@@ -1,5 +1,5 @@
 {
- "_doc": "Med Scheduler timing rules. 'find' must match the named US label (dosage and administration, drug interactions or renal impairment section) verbatim; build_timing.py copies the matched sentence as the source quote. meal: with | before (before meals) | empty (empty stomach) | after (after meals); tod: morning | evening | bedtime; hd: unit (given at the dialysis unit) | after (after dialysis on dialysis days) | any; slot: preferred anchor (PB pre-breakfast, B, L, D, HS). 'separations' are taken from APPROVED interaction rows (owner slug + the row's drug_or_class prefix): before = minimum hours when the owner drug is taken before the partner, after = when taken after; null = that order is not allowed.",
+ "_doc": "Med Scheduler timing rules. 'find' must match the named US label (dosage and administration, drug interactions or renal impairment section) verbatim; build_timing.py copies the matched sentence as the source quote. meal: with | before (before meals) | empty (empty stomach) | after (after meals); tod: morning | evening | bedtime; hd: unit (given at the dialysis unit) | after (after dialysis on dialysis days) | any; slot: preferred anchor (PB pre-breakfast, B, L, D, HS). 'separations' are taken from APPROVED interaction rows (owner slug + the row's drug_or_class prefix): before = minimum hours when the owner drug is taken before the partner, after = when taken after; null = that order is not allowed. 'practice' entries are prescriber practice defaults supplied by Dr. Rivero (not label text); they set the time of day and are shown as practice, never as a label quote. A label rule for the same molecule keeps its quote.",
  "rules": [
   {
    "keys": [
@@ -397,5 +397,21 @@
    null,
    2
   ]
+ ],
+ "practice": [
+  {
+   "keys": [
+    "atorvastatin",
+    "rosuvastatin",
+    "simvastatin",
+    "pravastatin",
+    "pitavastatin",
+    "fluvastatin",
+    "lovastatin"
+   ],
+   "tod": "bedtime",
+   "by": "W. G. M. Rivero, MD (Nov 20 2026)",
+   "note": "Bedtime by local practice, to limit stomach upset."
+  }
  ]
 }

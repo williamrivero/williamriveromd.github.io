@@ -537,6 +537,10 @@ function sig(line){var L=line.toLowerCase(),o={freq:'od',slot:''};
   else if(/\bqam\b|every morning|in the morning/.test(L))o.freq='qam';
   else if(/\bqpm\b|every evening|in the evening/.test(L))o.freq='qpm';
   if(/before breakfast|empty stomach/.test(L))o.slot='PB';
+  else if(/(after|with) breakfast/.test(L))o.slot='B';
+  else if(/(after|with) lunch/.test(L))o.slot='L';
+  else if(/before (dinner|supper)/.test(L))o.slot='PD';
+  else if(/(after|with) (dinner|supper)/.test(L))o.slot='D';
   return o;}
 $('dd-ix-parse').addEventListener('click',function(){var D=dict(),added=[],miss=[];
   $('dd-ix-ta').value.split(/\n|;/).forEach(function(line){var w=nrm(line).split(' ').filter(Boolean);if(!w.length)return;var f=null;
@@ -626,10 +630,11 @@ function build(){var R=routine(),out=$('ms-out');
       return '<li><strong>'+esc(nm(m.s))+'</strong>'+(m.dose?' '+esc(m.dose):'')+': '+esc(m.freq==='posthd'?'after each dialysis'+(hdOn?' ('+hdDays+')':''):FN[m.freq].toLowerCase())+(r&&r.hd==='unit'?' · given at the dialysis unit':'')+'</li>';}).join('')+'</ul></section>';}
   /* why each placement */
   var why=MEDS.map(function(m,k){var r=rule(m.s),p=P0.pl[k],bits=[];
-    if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);if(r.tod)bits.push('take in the '+r.tod);if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');}
+    if(r){if(r.meal)bits.push({with:'take with food',before:'take before meals',empty:'take on an empty stomach',after:'take after meals'}[r.meal]);if(r.tod&&!r.practice)bits.push('take in the '+r.tod);if(r.practice)bits.push('at bedtime: '+r.practice.replace(/^Bedtime by /,'').replace(/\.$/,''));if(r.hd==='unit')bits.push('given at the dialysis unit');if(r.hd==='after')bits.push('dose after dialysis');}
     if(MS.hdAfter.indexOf(m.s)>=0&&!(r&&r.hd==='after'))bits.push('dose after dialysis on dialysis days (reviewed kidney dosing)');
     if(m.slot)bits.push('time set by you');
-    var src=r?' <details class="dd-ms-src"><summary>Label</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
+    var src=r&&r.practice?' <span class="dd-sub">Practice default, '+esc(r.practice_by)+'</span>':'';
+    src+=r&&r.quote?' <details class="dd-ms-src"><summary>Label</summary><blockquote>'+esc(r.quote)+'<cite>'+(r.url?'<a href="'+esc(r.url)+'" rel="noopener">'+esc(r.brand)+'</a>':esc(r.brand))+'</cite></blockquote></details>':'';
     return '<li><strong>'+esc(nm(m.s))+':</strong> '+(bits.length?esc(bits.join('; ')):'no label timing rule; standard times')+(r&&r.note?' <span class="dd-sub">'+esc(r.note)+'</span>':'')+src+'</li>';}).join('');
   function apart(x){return [P0,P1].every(function(P){if(!P)return true;var a=P.pl[x.i],c=P.pl[x.j];if(!a||!c)return true;return a.t.every(function(u){return c.t.every(function(v){return Math.abs(u-v)>=60;});});});}
   var hardList=hard.map(function(x){var bad=cseen[[x.i,x.j].sort().join('-')];return '<li>'+esc(nm(MEDS[x.i].s))+' and '+esc(nm(MEDS[x.j].s))+': '+esc(x.row[4])+' <span class="dd-sub">'+(bad?'(not met; see the warning above)':'(met)')+'</span></li>';}).join('');
