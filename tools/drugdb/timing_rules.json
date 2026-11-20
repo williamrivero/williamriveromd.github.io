@@ -1,5 +1,5 @@
 {
- "_doc": "Med Scheduler timing rules. 'find' must match the named US label (dosage and administration, drug interactions or renal impairment section) verbatim; build_timing.py copies the matched sentence as the source quote. meal: with | before (before meals) | empty (empty stomach) | after (after meals); tod: morning | evening | bedtime; hd: unit (given at the dialysis unit) | after (after dialysis on dialysis days) | any; slot: preferred anchor (PB pre-breakfast, B, L, D, HS). 'separations' are taken from APPROVED interaction rows (owner slug + the row's drug_or_class prefix): before = minimum hours when the owner drug is taken before the partner, after = when taken after; null = that order is not allowed. 'practice' entries are prescriber practice defaults supplied by Dr. Rivero (not label text); they set the time of day and are shown as practice, never as a label quote. A label rule for the same molecule keeps its quote.",
+ "_doc": "Med Scheduler timing rules. 'find' must match the named US label (dosage and administration, drug interactions or renal impairment section) verbatim; build_timing.py copies the matched sentence as the source quote. meal: with | before (before meals) | empty (empty stomach) | after (after meals); tod: morning | evening | bedtime; hd: unit (given at the dialysis unit) | after (after dialysis on dialysis days) | any; slot: preferred anchor (PB pre-breakfast, B, L, D, HS). 'separations' are taken from APPROVED interaction rows (owner slug + the row's drug_or_class prefix): before = minimum hours when the owner drug is taken before the partner, after = when taken after; null = that order is not allowed. 'practice' entries are prescriber practice defaults supplied by Dr. Rivero (not label text); they set the time of day and are shown as practice, never as a label quote. A label rule for the same molecule keeps its quote. 'evidence' entries: Dr. Rivero's practice timing backed by PubMed-verified studies (cites with DOI); they set meal/tod. 'purpose': calcium salts get a per-medicine purpose (binder: with meals; supplement: between meals) chosen in the scheduler.",
  "rules": [
   {
    "keys": [
@@ -413,5 +413,56 @@
    "by": "W. G. M. Rivero, MD (Nov 20 2026)",
    "note": "Bedtime by local practice, to limit stomach upset."
   }
- ]
+ ],
+ "evidence": [
+  {
+   "keys": [
+    "ferrous-sulfate",
+    "ferrous-fumarate",
+    "ferrous-gluconate"
+   ],
+   "meal": "empty",
+   "tod": "morning",
+   "by": "W. G. M. Rivero, MD (Nov 21 2026)",
+   "note": "In the morning, away from meals, coffee and tea. In iron-deficient women, iron absorption fell by about two thirds when taken with breakfast and coffee, and was lower in the afternoon. Some product labels say after meals to limit stomach upset.",
+   "cites": [
+    {
+     "t": "von Siebenthal HK, Moretti D, Zimmermann MB, Stoffel NU. Effect of dietary factors and time of day on iron absorption from oral iron supplements in iron deficient women. Am J Hematol. 2023;98(9):1356-1363.",
+     "doi": "10.1002/ajh.26987"
+    }
+   ]
+  }
+ ],
+ "purpose": {
+  "calcium": {
+   "match": "^calcium-(carbonate|acetate|citrate|lactate)$",
+   "by": "W. G. M. Rivero, MD (Nov 21 2026)",
+   "binder": {
+    "label": "Phosphate binder",
+    "meal": "with",
+    "note": "Phosphate binder: with meals. Phosphorus binding was similar when given just before, just after, or split around the meal, and much lower when given 2 hours after the meal or while fasting.",
+    "cites": [
+     {
+      "t": "Schiller LR, Santa Ana CA, Sheikh MS, Emmett M, Fordtran JS. Effect of the time of administration of calcium acetate on phosphorus binding. N Engl J Med. 1989;320(17):1110-1113.",
+      "doi": "10.1056/NEJM198904273201703"
+     }
+    ]
+   },
+   "supplement": {
+    "label": "Calcium supplement",
+    "meal": "between",
+    "note": "Calcium supplement: between meals, so the calcium is absorbed rather than spent binding food phosphate (calcium absorption from calcium acetate was about 40% fasting versus 21% with a meal). Calcium carbonate taken fasting was poorly absorbed in people with little stomach acid, and normally absorbed with breakfast.",
+    "cites": [
+     {
+      "t": "Schiller LR, Santa Ana CA, Sheikh MS, Emmett M, Fordtran JS. Effect of the time of administration of calcium acetate on phosphorus binding. N Engl J Med. 1989;320(17):1110-1113.",
+      "doi": "10.1056/NEJM198904273201703"
+     },
+     {
+      "t": "Recker RR. Calcium absorption and achlorhydria. N Engl J Med. 1985;313(2):70-73.",
+      "doi": "10.1056/NEJM198507113130202"
+     }
+    ]
+   }
+  }
+ }
 }
