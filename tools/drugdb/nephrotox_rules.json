@@ -1,0 +1,1225 @@
+{
+ "_doc": "Hand-curated kidney-injury rules (renalcarematters.com Drug Index). Each rule tags the listed ingredient names; tools/drugdb/build_nephrotox.py pulls the quote VERBATIM from the named US label (regex 'find' over warnings/boxed/contraindications/adverse reactions/drug interactions) and fails if it is not there. tier 'label' = the drug's own label; 'class' = a class statement in another drug's US label (drug has no US label). Only systemic (oral, injected, rectal) products are tagged; a page with only topical/eye/ear/nasal/inhaled products is not.",
+ "excluded": {
+  "ACE inhibitors, ARBs, sacubitril-valsartan, finerenone, SGLT2 inhibitors": "Lower glomerular pressure on purpose and protect the kidney long term; a creatinine rise or hemodynamic AKI with volume depletion is covered by their kidney dosing and monitoring, not tagged as nephrotoxic.",
+  "Loop and thiazide diuretics, spironolactone, GLP-1 receptor agonists": "Kidney injury in their labels is from volume depletion, not toxicity.",
+  "Statins, fibrates, gemfibrozil, daptomycin, antipsychotics (NMS), anesthetics (malignant hyperthermia), propofol": "Kidney injury in their labels is secondary to rhabdomyolysis or a systemic syndrome.",
+  "Tumor lysis (bendamustine, rituximab, venetoclax) and diarrhea-related AKI (afatinib, alpelisib, neratinib, panitumumab, irinotecan, trametinib)": "Indirect: kidney injury follows tumor lysis or dehydration.",
+  "Antiepileptics and others with DRESS": "Nephritis only as part of a multi-organ hypersensitivity syndrome.",
+  "Metformin and its combinations, gadolinium agents, denosumab, epoetins, colchicine, sucralfate, potassium citrate, calcitriol": "Their kidney warnings are about use IN kidney disease (lactic acidosis, NSF, hypocalcemia, accumulation), not kidney injury; covered by kidney dosing.",
+  "Abemaciclib, exemestane, salmon calcitonin": "Creatinine rise without loss of kidney function, or urine findings only.",
+  "Carboplatin, cefazolin, famciclovir, sitagliptin, carvedilol, esmolol, cyclophosphamide, mycophenolate, amiodarone IV, clarithromycin": "Label wording too weak, dose-error related, about the bladder, an infection, or a drug interaction; not a direct kidney-injury warning.",
+  "Topiramate, zonisamide": "Kidney stones from metabolic acidosis; not kidney injury.",
+  "Aspirin": "No kidney-injury warning in the US label on file."
+ },
+ "mechanisms": {
+  "tubular": {
+   "label": "Direct tubular toxicity",
+   "action": "Check serum creatinine at baseline and during therapy; avoid other kidney toxins; use drug levels where the label calls for them."
+  },
+  "hemodynamic": {
+   "label": "Reduced kidney blood flow",
+   "action": "Highest risk with volume depletion, heart failure, liver disease, older age, and use with diuretics, ACE inhibitors or ARBs."
+  },
+  "ain": {
+   "label": "Acute interstitial nephritis",
+   "action": "Can occur at any time during therapy. If kidney function falls, stop the drug and evaluate."
+  },
+  "crystal": {
+   "label": "Crystal or stone formation",
+   "action": "Keep the patient well hydrated; check creatinine and urine."
+  },
+  "glomerular": {
+   "label": "Glomerular injury or proteinuria",
+   "action": "Check urine protein and serum creatinine during therapy."
+  },
+  "tma": {
+   "label": "Thrombotic microangiopathy (TMA/HUS)",
+   "action": "Stop the drug if anemia, low platelets and rising creatinine appear together."
+  },
+  "immune": {
+   "label": "Immune-mediated nephritis",
+   "action": "Monitor serum creatinine during treatment; withhold or stop per the label if nephritis develops."
+  },
+  "osmotic": {
+   "label": "Osmotic kidney injury",
+   "action": "Monitor kidney function and urine output; stop if kidney function worsens."
+  },
+  "contrast": {
+   "label": "Contrast-associated kidney injury",
+   "action": "Check kidney function and hydration before the study; use the lowest dose needed."
+  },
+  "renal": {
+   "label": "Kidney injury (mechanism not stated)",
+   "action": "Monitor serum creatinine during therapy; avoid other kidney toxins."
+  }
+ },
+ "rules": [
+  {
+   "keys": [
+    "gentamicin"
+   ],
+   "label": "gentamicin",
+   "find": "potentially nephrotoxic",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "amikacin"
+   ],
+   "label": "amikacin",
+   "find": "ototoxicity and nephrotoxicity associated",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "streptomycin"
+   ],
+   "label": "streptomycin",
+   "find": "(?i)NEPHROTOXIC DRUGS WITH STREPTOMYCIN",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "tobramycin"
+   ],
+   "label": "tobramycin",
+   "find": "nephrotoxicity have occurred in patients receiving systemic aminoglycoside",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "kanamycin",
+    "netilmicin"
+   ],
+   "label": "amikacin",
+   "find": "ototoxicity and nephrotoxicity associated",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "class",
+   "note": "Class warning for parenteral aminoglycosides (amikacin US label)."
+  },
+  {
+   "keys": [
+    "neomycin"
+   ],
+   "label": "fluocinolone-acetonide-neomycin",
+   "find": "nephrotoxicity and ototoxicity associated with neomycin",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label",
+   "note": "Risk is with systemic absorption (oral use, or skin application over wide areas or for long periods)."
+  },
+  {
+   "keys": [
+    "polymyxin b",
+    "polymyxin"
+   ],
+   "label": "polymyxin-b",
+   "find": "NEPHROTOXICITY DUE TO POLYMYXIN",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "colistin",
+    "colistimethate"
+   ],
+   "label": "colistimethate",
+   "find": "Nephrotoxicity can occur",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "vancomycin"
+   ],
+   "label": "vancomycin",
+   "find": "mainly due to interstitial nephritis",
+   "mech": [
+    "ain",
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "amphotericin b"
+   ],
+   "label": "amphotericin-b",
+   "find": "may enhance the potential for drug-induced renal toxicity",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "sulfamethoxazole"
+   ],
+   "label": "sulfamethoxazole-trimethoprim",
+   "find": "Renal failure, interstitial nephritis",
+   "mech": [
+    "ain",
+    "crystal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "oxacillin"
+   ],
+   "label": "oxacillin",
+   "find": "Renal tubular damage and interstitial nephritis",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "piperacillin"
+   ],
+   "label": "piperacillin-tazobactam",
+   "find": "Nephrotoxicity in critically ill patients",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "clindamycin"
+   ],
+   "label": "clindamycin",
+   "find": "potentially nephrotoxic",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ciprofloxacin"
+   ],
+   "label": "ciprofloxacin",
+   "find": "Interstitial nephritis",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "levofloxacin"
+   ],
+   "label": "levofloxacin",
+   "find": "nephritis",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "rifampicin",
+    "rifampin"
+   ],
+   "label": "rifampicin",
+   "find": "thrombotic microangiopathy",
+   "mech": [
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "micafungin"
+   ],
+   "label": "micafungin",
+   "find": "acute renal failure have been reported",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "voriconazole"
+   ],
+   "label": "voriconazole",
+   "find": "Acute renal failure has been observed",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "acyclovir",
+    "aciclovir"
+   ],
+   "label": "acyclovir",
+   "find": "Renal failure, in some cases resulting in death",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "valacyclovir",
+    "valaciclovir"
+   ],
+   "label": "valacyclovir",
+   "find": "Acute renal failure: May occur",
+   "mech": [
+    "renal",
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ganciclovir"
+   ],
+   "label": "ganciclovir",
+   "find": "Increased serum creatinine levels have been observed",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "valganciclovir"
+   ],
+   "label": "valganciclovir",
+   "find": "Acute renal failure may occur",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "tenofovir disoproxil",
+    "tenofovir"
+   ],
+   "label": "tenofovir-disoproxil",
+   "find": "acute renal failure and Fanconi",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "tenofovir alafenamide",
+    "tenofovir alefenamide",
+    "tenofovir the alafenamide"
+   ],
+   "label": "tenofovir-alafenamide",
+   "find": "proximal renal tubulopathy",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label",
+   "note": "Reported less often than with tenofovir disoproxil."
+  },
+  {
+   "keys": [
+    "adefovir"
+   ],
+   "label": "adefovir-dipivoxil",
+   "find": "may result in nephrotoxicity",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "atazanavir"
+   ],
+   "label": "atazanavir",
+   "find": "interstitial nephritis associated with the deposition",
+   "mech": [
+    "crystal",
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ibuprofen"
+   ],
+   "label": "ibuprofen",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "diclofenac"
+   ],
+   "label": "diclofenac",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "naproxen"
+   ],
+   "label": "naproxen",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "celecoxib"
+   ],
+   "label": "celecoxib",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "meloxicam"
+   ],
+   "label": "meloxicam",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "piroxicam"
+   ],
+   "label": "piroxicam",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "indomethacin"
+   ],
+   "label": "indomethacin",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "mefenamic acid"
+   ],
+   "label": "mefenamic-acid",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ketorolac"
+   ],
+   "label": "ketorolac",
+   "find": "CONTRAINDICATED in patients with advanced renal impairment",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ketoprofen"
+   ],
+   "label": "ketoprofen",
+   "find": "Rare cases of interstitial nephritis or nephrotic syndrome",
+   "mech": [
+    "hemodynamic",
+    "ain",
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "flurbiprofen"
+   ],
+   "label": "flurbiprofen",
+   "find": "has resulted in renal papillary necrosis",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "etoricoxib",
+    "aceclofenac",
+    "nimesulide",
+    "dexketoprofen",
+    "lornoxicam",
+    "tenoxicam",
+    "parecoxib",
+    "loxoprofen",
+    "esflurbiprofen"
+   ],
+   "label": "naproxen",
+   "find": "Long-term administration of NSAIDs",
+   "mech": [
+    "hemodynamic"
+   ],
+   "tier": "class",
+   "note": "Class warning for NSAIDs (US NSAID labels); this drug has no US label of its own."
+  },
+  {
+   "keys": [
+    "omeprazole"
+   ],
+   "label": "omeprazole",
+   "find": "Acute tubulointerstitial nephritis \\(TIN\\) has been observed",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "esomeprazole"
+   ],
+   "label": "esomeprazole",
+   "find": "Acute tubulointerstitial nephritis \\(TIN\\) has been observed",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "lansoprazole"
+   ],
+   "label": "lansoprazole",
+   "find": "Acute tubulointerst\\w* nephritis \\(TIN\\) has been observed",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "dexlansoprazole"
+   ],
+   "label": "dexlansoprazole",
+   "find": "Acute tubulointerstitial nephritis \\(TIN\\) has been observed",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "pantoprazole"
+   ],
+   "label": "pantoprazole",
+   "find": "Acute tubulointerstitial nephritis \\(TIN\\) has been observed",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "rabeprazole"
+   ],
+   "label": "rabeprazole",
+   "find": "Acute tubulointerstitial nephritis \\(TIN\\) has been observed",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "vonoprazan"
+   ],
+   "label": "vonoprazan",
+   "find": "Acute tubulointerstitial nephritis \\(TIN\\) has been reported",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ciclosporin",
+    "cyclosporine",
+    "cyclosporin"
+   ],
+   "label": "ciclosporin",
+   "find": "can cause hepatotoxicity and nephrotoxicity",
+   "mech": [
+    "hemodynamic",
+    "tubular"
+   ],
+   "tier": "label",
+   "note": "Applies to systemic use, not cyclosporine eye drops."
+  },
+  {
+   "keys": [
+    "tacrolimus"
+   ],
+   "label": "tacrolimus",
+   "find": "like other calcineurin inhibitors, can cause",
+   "mech": [
+    "hemodynamic",
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "everolimus"
+   ],
+   "label": "everolimus",
+   "find": "Increased nephrotoxicity can occur",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label",
+   "note": "Mainly with full-dose cyclosporine (label)."
+  },
+  {
+   "keys": [
+    "sirolimus"
+   ],
+   "label": "sirolimus",
+   "find": "combination has been associated with",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label",
+   "note": "Mainly with cyclosporine co-administration (label)."
+  },
+  {
+   "keys": [
+    "mesalazine"
+   ],
+   "label": "mesalazine",
+   "find": "interstitial nephritis",
+   "mech": [
+    "ain"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "lithium carbonate",
+    "lithium"
+   ],
+   "label": "lithium-carbonate",
+   "find": "nephrogenic diabetes insipidus, and renal failure",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "methotrexate"
+   ],
+   "label": "methotrexate",
+   "find": "irreversible acute renal failure",
+   "mech": [
+    "crystal",
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "allopurinol"
+   ],
+   "label": "allopurinol",
+   "find": "acute kidney injury due to formation of xanthine calculi",
+   "mech": [
+    "crystal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "orlistat"
+   ],
+   "label": "orlistat",
+   "find": "Oxalate Nephrolithiasis and Oxalate Nephro",
+   "mech": [
+    "crystal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "chloroquine"
+   ],
+   "label": "chloroquine",
+   "find": "Proteinuria with or without a moderate reduction",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "hydroxychloroquine"
+   ],
+   "label": "hydroxychloroquine",
+   "find": "Consider phospholipidosis",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "hydralazine"
+   ],
+   "label": "hydralazine",
+   "find": "including glomerulonephritis",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "thiamazole",
+    "methimazole"
+   ],
+   "label": "thiamazole",
+   "find": "acute kidney injury and glomerulonephritis",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "propylthiouracil"
+   ],
+   "label": "propylthiouracil",
+   "find": "The cases of vasculitis include: glomerulonephritis",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "filgrastim"
+   ],
+   "label": "filgrastim",
+   "find": "Glomerulonephritis can occur",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "pegfilgrastim"
+   ],
+   "label": "pegfilgrastim",
+   "find": "Glomerulonephritis has occurred",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "quinine"
+   ],
+   "label": "quinine",
+   "find": "hemolytic uremic syndrome",
+   "mech": [
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "warfarin"
+   ],
+   "label": "warfarin",
+   "find": "acute kidney injury may occur with",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ranolazine"
+   ],
+   "label": "ranolazine",
+   "find": "If acute renal failure develops",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "deferasirox"
+   ],
+   "label": "deferasirox",
+   "find": "can cause acute renal failure and death",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "zoledronic acid"
+   ],
+   "label": "zoledronic-acid",
+   "find": "deterioration in renal function|renal toxicity",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "pamidronate",
+    "pamidronic acid"
+   ],
+   "label": "pamidronate",
+   "find": "Deterioration in Renal Function",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "mannitol"
+   ],
+   "label": "mannitol",
+   "find": "Renal Complications Including Renal Failure",
+   "mech": [
+    "osmotic"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "sevoflurane"
+   ],
+   "label": "sevoflurane",
+   "find": "Risk of Renal Injury",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "iodixanol"
+   ],
+   "label": "iodixanol",
+   "find": "Acute (?:injury|kidney injury)[^.]*(?:renal failure)|Contrast-Induced Acute Kidney Injury: Acute injury",
+   "mech": [
+    "contrast"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "iohexol"
+   ],
+   "label": "iohexol",
+   "find": "Acute (?:injury|kidney injury)[^.]*(?:renal failure)|Contrast-Induced Acute Kidney Injury: Acute injury",
+   "mech": [
+    "contrast"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "iopamidol"
+   ],
+   "label": "iopamidol",
+   "find": "Acute (?:injury|kidney injury)[^.]*(?:renal failure)|Contrast-Induced Acute Kidney Injury: Acute injury",
+   "mech": [
+    "contrast"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ioversol"
+   ],
+   "label": "ioversol",
+   "find": "Acute (?:injury|kidney injury)[^.]*(?:renal failure)|Contrast-Induced Acute Kidney Injury: Acute injury",
+   "mech": [
+    "contrast"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "cisplatin"
+   ],
+   "label": "cisplatin",
+   "find": "can cause severe renal toxicity",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ifosfamide"
+   ],
+   "label": "ifosfamide",
+   "find": "Nephrotoxicity can be severe",
+   "mech": [
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "pemetrexed"
+   ],
+   "label": "pemetrexed",
+   "find": "can cause severe, and sometimes fatal, renal toxicity",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "azacitidine"
+   ],
+   "label": "azacitidine",
+   "find": "Renal toxicity ranging from elevated serum creatinine",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "capecitabine"
+   ],
+   "label": "capecitabine",
+   "find": "Serious renal failure, sometimes fatal",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "cabazitaxel"
+   ],
+   "label": "cabazitaxel",
+   "find": "renal failure of any grade occurred",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "dactinomycin"
+   ],
+   "label": "dactinomycin",
+   "find": "Abnormalities of renal function can occur",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "imatinib"
+   ],
+   "label": "imatinib",
+   "find": "[Dd]ecline in renal function|renal function decline",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "alectinib"
+   ],
+   "label": "alectinib",
+   "find": "Grade 4 renal toxicity",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "temsirolimus"
+   ],
+   "label": "temsirolimus",
+   "find": "Renal failure, sometimes fatal, has occurred",
+   "mech": [
+    "renal"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "vemurafenib"
+   ],
+   "label": "vemurafenib",
+   "find": "including acute interstitial nephritis and acute tubular necrosis",
+   "mech": [
+    "ain",
+    "tubular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "mitomycin"
+   ],
+   "label": "mitomycin",
+   "find": "Hemolytic Uremic Syndrome",
+   "mech": [
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "gemcitabine"
+   ],
+   "label": "gemcitabine",
+   "find": "Hemolytic uremic syndrome \\(HUS\\), including fatalities",
+   "mech": [
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "bortezomib"
+   ],
+   "label": "bortezomib",
+   "find": "Cases, sometimes fatal, of thrombotic microangiopathy",
+   "mech": [
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ixazomib"
+   ],
+   "label": "ixazomib",
+   "find": "thrombotic microangiopathy",
+   "mech": [
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "interferon beta-1b",
+    "interferon beta 1b"
+   ],
+   "label": "interferon-beta-1b",
+   "find": "Cases of thrombotic microangiopathy",
+   "mech": [
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "bevacizumab"
+   ],
+   "label": "bevacizumab",
+   "find": "Discontinue for nephrotic syndrome",
+   "mech": [
+    "glomerular",
+    "tma"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ramucirumab"
+   ],
+   "label": "ramucirumab",
+   "find": "nephrotic syndrome",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "lenvatinib"
+   ],
+   "label": "lenvatinib",
+   "find": "Renal Failure or Impairment",
+   "mech": [
+    "renal",
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "sunitinib"
+   ],
+   "label": "sunitinib",
+   "find": "Thrombotic microangiopathy \\(TMA\\) : TMA",
+   "mech": [
+    "tma",
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "pazopanib"
+   ],
+   "label": "pazopanib",
+   "find": "nephrotic syndrome",
+   "mech": [
+    "tma",
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "alglucosidase alfa"
+   ],
+   "label": "alglucosidase-alfa",
+   "find": "presenting as proteinuria, nephrotic syndrome",
+   "mech": [
+    "glomerular"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "pembrolizumab"
+   ],
+   "label": "pembrolizumab",
+   "find": "can cause immune-mediated nephritis",
+   "mech": [
+    "immune"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "ipilimumab"
+   ],
+   "label": "ipilimumab",
+   "find": "immune-mediated nephritis with renal dysfunction",
+   "mech": [
+    "immune"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "tremelimumab"
+   ],
+   "label": "tremelimumab",
+   "find": "can cause immune-mediated nephritis",
+   "mech": [
+    "immune"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "atezolizumab"
+   ],
+   "label": "atezolizumab",
+   "find": "can cause immune-mediated nephritis",
+   "mech": [
+    "immune"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "durvalumab"
+   ],
+   "label": "durvalumab",
+   "find": "can cause immune-mediated nephritis",
+   "mech": [
+    "immune"
+   ],
+   "tier": "label"
+  },
+  {
+   "keys": [
+    "avelumab"
+   ],
+   "label": "avelumab",
+   "find": "can cause immune-mediated nephritis",
+   "mech": [
+    "immune"
+   ],
+   "tier": "label"
+  }
+ ]
+}

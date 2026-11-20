@@ -102,7 +102,7 @@ if(idx){
   var az=document.getElementById('dd-az'), alpha=document.getElementById('dd-alpha'), letters=Array.prototype.slice.call(document.querySelectorAll('.dd-letter'));
   var sq=document.getElementById('dd-sq'), res=document.getElementById('dd-results'), info=document.getElementById('dd-sinfo');
   var F={c:document.getElementById('dd-f-class'),r:document.getElementById('dd-f-rx'),f:document.getElementById('dd-f-form'),
-         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),e:document.getElementById('dd-f-e'),
+         k:document.getElementById('dd-f-k'),n:document.getElementById('dd-f-n'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),e:document.getElementById('dd-f-e'),
          t:document.getElementById('dd-f-type')};
   if(!F.t)delete F.t;
   var data=null, extra=null, supp=null, loading=null, active=-1, letter='all';
@@ -136,13 +136,13 @@ if(idx){
       if(lab==='company')return {s:best,lab:lab,val:val,mi:mi};}
     return best?{s:best,lab:lab,val:val}:null;
   }
-  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked||(F.e&&F.e.checked));}
+  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||(F.n&&F.n.checked)||F.p.checked||F.h.checked||F.l.checked||(F.e&&F.e.checked));}
   function facetPass(d){
     if(F.t&&(F.t.value==='s'||F.t.value==='m'))return false;
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
-    return !(F.k.checked&&!d.k)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l)&&!(F.e&&F.e.checked&&!d.e);
+    return !(F.k.checked&&!d.k)&&!(F.n&&F.n.checked&&!d.nx)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l)&&!(F.e&&F.e.checked&&!d.e);
   }
   function pass(d){
     var ty=F.t?F.t.value:'';
@@ -153,7 +153,7 @@ if(idx){
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
-    if(F.k.checked&&!d.k)return false; if(F.p.checked&&!d.p)return false; if(F.h.checked&&!d.h)return false; if(F.l.checked&&!d.l)return false; if(F.e&&F.e.checked&&!d.e)return false;
+    if(F.k.checked&&!d.k)return false; if(F.n&&F.n.checked&&!d.nx)return false; if(F.p.checked&&!d.p)return false; if(F.h.checked&&!d.h)return false; if(F.l.checked&&!d.l)return false; if(F.e&&F.e.checked&&!d.e)return false;
     if(letter!=='all'){var c=(d.n||'?')[0].toLowerCase();if((c>='a'&&c<='z'?c:'0')!==letter)return false;}
     return true;
   }
@@ -169,7 +169,7 @@ if(idx){
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
     if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
     if(d.p)o.push('<span class="dd-tag PNF">PNF</span>');if(d.h)o.push('<span class="dd-tag PNF">GAMOT</span>');
-    if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');if(d.e)o.push('<span class="dd-tag US">EU SmPC</span>');return o.join(' ');}
+    if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.nx)o.push('<span class="dd-tag NX">Kidney injury risk</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');if(d.e)o.push('<span class="dd-tag US">EU SmPC</span>');return o.join(' ');}
   /* company search: that company's brands under the generic (search-extra "mb": refs into d.b; ref<0 = unbranded reg. no.) */
   function coBrands(d,o,slug){var e=extra&&extra[d.s];if(!o.mi||!e||!e.mb)return '';var seen={},refs=[];
     o.mi.forEach(function(j){(e.mb[j]||[]).forEach(function(r){if(!seen[r]){seen[r]=1;refs.push(r);}});});
@@ -245,6 +245,8 @@ if(idx){
         bcore.disp.map(function(a){return grp(a[0],a[2],G,'',false);}).join('');
       if(v==='kidney')h='<p class="dd-note dd-vnote">Generics with kidney guidance reviewed by renalcarematters.com, grouped by the most restrictive level across eGFR bands and dialysis.</p>'+
         bcore.kidney.map(function(a){return grp(a[0],a[2],G,'',true);}).join('')+'<p class="dd-note">'+escH(bcore.kidneyNote)+'</p>';
+      if(v==='nephrotox'&&bcore.nx)h='<p class="dd-note dd-vnote">'+(bcore.nxN||0).toLocaleString('en-US')+' generics whose US label (or drug-class label) warns of kidney injury, grouped by mechanism. A generic can appear under more than one mechanism. Reviewed by renalcarematters.com.</p>'+
+        bcore.nx.map(function(a){return grp(a[0],a[2],G,'',false);}).join('')+'<p class="dd-note">Not tagged: drugs whose kidney warnings are about use in kidney disease (for example metformin, gadolinium) or about volume depletion, rhabdomyolysis or tumor lysis, and ACE inhibitors, ARBs and SGLT2 inhibitors, which protect the kidney. A drug without this tag is not necessarily safe for the kidneys.</p>';
       if(v==='pn'&&bcore.pn){var PT=bcore.pn.t,PR=bcore.pn.r;
         h='<p class="dd-note dd-vnote">'+PR.length.toLocaleString('en-US')+' intravenous nutrition products registered with FDA Philippines, sorted by product type. Each opens its generic page with the products table filtered to that brand. Product types only; no dosing guidance.</p>'+
         PT.map(function(t){var rs=PR.filter(function(r){return r[2]===t[0];});if(!rs.length)return '';

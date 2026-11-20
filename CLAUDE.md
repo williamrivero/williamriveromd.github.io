@@ -1001,6 +1001,18 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   `tools/drugdb/alias_overrides.json`): registry typos, salt leftovers and INN/USAN pairs (allopurino, aciciovir,
   aciclovir) map to a main molecule page. High confidence: banner to the main page, canonical to it, `noindex`
   (so off the sitemap), products also listed on the main page; medium: "Did you mean" only. Re-run after a registry rebuild.
+- **Kidney injury risk** (Nov 20 2026): a hero chip, a "Kidney injury risk" section after Kidney dosing, an index filter
+  (`#dd-f-n`, search field `nx`) and a Browse by > Kidney injury risk view (`?view=nephrotox`, grouped by mechanism:
+  tubular, hemodynamic, interstitial nephritis, crystal, glomerular, TMA, immune, osmotic, contrast, unstated). Tags are
+  hand-curated per INGREDIENT in `tools/drugdb/nephrotox_rules.json`; `tools/drugdb/build_nephrotox.py` copies each
+  rule's quote VERBATIM from the named US label (fails if the text is gone) into `data/drugs/nephrotox.json`, which the
+  generator reads (`Ctx.nx`). Combination pages inherit their components' tags; a page whose products are all applied to
+  skin, eye, ear or nose (or inhaled) is not tagged (`NX_LOCAL`). Unlabeled NSAIDs/aminoglycosides carry a class
+  statement from another US label (tier "class"). Deliberately NOT tagged, with reasons in the rules file's "excluded":
+  ACE inhibitors/ARBs/SGLT2 inhibitors/finerenone, diuretics, rhabdomyolysis-, tumor-lysis- or dehydration-mediated AKI,
+  DRESS, and warnings about use IN kidney disease (metformin, gadolinium, denosumab). Every page says an untagged drug is
+  not necessarily kidney-safe. Add a drug: add a rule, run the builder, then the generator. Approved under delegated
+  sign-off (label text only).
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come

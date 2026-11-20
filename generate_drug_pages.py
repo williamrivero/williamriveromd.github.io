@@ -524,6 +524,18 @@ a.dd-chip .dd-kidney-ico { width: 14px; height: 14px; }
 .dd-tag.SUP { color: #3d4656; background: #eceff3; border: 1px solid rgba(61,70,86,.35); }
 .dd-tag.SUPK { color: #4a2800; background: #fdf3dc; }
 .dd-tag.HEP { color: #3b2a66; background: #efe9fb; }
+.dd-tag.NX { color: #fff; background: #9a3412; }
+.dd-chip.dd-nxchip { color: #7c2d12; background: #fff1e8; border-color: rgba(154,52,18,.4); }
+.dd-nx-item { border: 1px solid var(--border); border-left: 4px solid #c2410c; border-radius: 12px; padding: 14px 16px; margin: 0 0 14px; background: var(--white); }
+.dd-nx-h { font-size: 15px; margin: 0 0 8px; }
+.dd-nx-ms { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.dd-nx-m { font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 700; color: #7c2d12; background: #fff1e8; border-radius: 999px; padding: 3px 10px; }
+.dd-nx-do { margin: 0 0 10px; padding-left: 20px; }
+.dd-nx-do li { margin: 2px 0; }
+.dd-nx-note { font-size: 14px; color: var(--text-mid); margin: 0 0 10px; }
+.dd-nx-q { margin: 0; padding: 10px 14px; border-left: 3px solid var(--border); background: var(--bg); font-size: 14.5px; color: var(--text-mid); border-radius: 0 8px 8px 0; }
+.dd-nx-q cite { display: block; margin-top: 6px; font-style: normal; font-size: 12.5px; color: var(--text-muted); }
+.dd-nx-q cite a { color: #0e4a50; font-weight: 600; }
 .dd-partof { font-size: 13.5px; margin: 6px 0 8px; color: var(--text-mid); }
 .dd-rg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .dd-rg a { display: flex; gap: 12px; align-items: flex-start; height: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--border);
@@ -819,6 +831,13 @@ html[data-theme="dark"] .dd-chip.dd-s2 { color: #fff; background: #b91c1c; borde
 html[data-theme="dark"] .dd-chip.dd-cp { color: #2a1900; background: #fbbf24; border-color: #fbbf24; }
 html[data-theme="dark"] .dd-tag.PNF { color: #a5f3fc; background: #10323a; }
 html[data-theme="dark"] .dd-tag.KD { color: #e6fbfc; background: #0e4a50; }
+html[data-theme="dark"] .dd-tag.NX { color: #ffe8dc; background: #7c2d12; }
+html[data-theme="dark"] .dd-chip.dd-nxchip { color: #fed7c3; background: rgba(234,88,12,.16); border-color: rgba(251,146,60,.5); }
+html[data-theme="dark"] .dd-nx-item { background: #1a2535; border-color: rgba(255,255,255,.14); border-left-color: #fb923c; }
+html[data-theme="dark"] .dd-nx-m { color: #fed7c3; background: rgba(234,88,12,.18); }
+html[data-theme="dark"] .dd-nx-q { background: rgba(255,255,255,.04); border-left-color: rgba(255,255,255,.25); color: #d4dbe7; }
+html[data-theme="dark"] .dd-nx-q cite { color: #9ba6b8; }
+html[data-theme="dark"] .dd-nx-q cite a { color: #7dd3dc; }
 html[data-theme="dark"] .dd-tag.US { color: #dbe6f5; background: #22304a; }
 html[data-theme="dark"] .dd-tag.SUP { color: #e5e9f0; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.3); }
 html[data-theme="dark"] .dd-tag.SUPK { color: #fde7c2; background: rgba(245,158,11,.16); }
@@ -1128,7 +1147,7 @@ if(idx){
   var az=document.getElementById('dd-az'), alpha=document.getElementById('dd-alpha'), letters=Array.prototype.slice.call(document.querySelectorAll('.dd-letter'));
   var sq=document.getElementById('dd-sq'), res=document.getElementById('dd-results'), info=document.getElementById('dd-sinfo');
   var F={c:document.getElementById('dd-f-class'),r:document.getElementById('dd-f-rx'),f:document.getElementById('dd-f-form'),
-         k:document.getElementById('dd-f-k'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),e:document.getElementById('dd-f-e'),
+         k:document.getElementById('dd-f-k'),n:document.getElementById('dd-f-n'),p:document.getElementById('dd-f-p'),h:document.getElementById('dd-f-h'),l:document.getElementById('dd-f-l'),e:document.getElementById('dd-f-e'),
          t:document.getElementById('dd-f-type')};
   if(!F.t)delete F.t;
   var data=null, extra=null, supp=null, loading=null, active=-1, letter='all';
@@ -1162,13 +1181,13 @@ if(idx){
       if(lab==='company')return {s:best,lab:lab,val:val,mi:mi};}
     return best?{s:best,lab:lab,val:val}:null;
   }
-  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||F.p.checked||F.h.checked||F.l.checked||(F.e&&F.e.checked));}
+  function drugFacets(){return !!(F.c.value||F.r.value||F.f.value||F.k.checked||(F.n&&F.n.checked)||F.p.checked||F.h.checked||F.l.checked||(F.e&&F.e.checked));}
   function facetPass(d){
     if(F.t&&(F.t.value==='s'||F.t.value==='m'))return false;
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
-    return !(F.k.checked&&!d.k)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l)&&!(F.e&&F.e.checked&&!d.e);
+    return !(F.k.checked&&!d.k)&&!(F.n&&F.n.checked&&!d.nx)&&!(F.p.checked&&!d.p)&&!(F.h.checked&&!d.h)&&!(F.l.checked&&!d.l)&&!(F.e&&F.e.checked&&!d.e);
   }
   function pass(d){
     var ty=F.t?F.t.value:'';
@@ -1179,7 +1198,7 @@ if(idx){
     if(F.c.value&&d.c!==F.c.value)return false;
     if(F.r.value&&!((d.r||0)&(+F.r.value)))return false;
     if(F.f.value&&(d.f||[]).indexOf(F.f.value)<0)return false;
-    if(F.k.checked&&!d.k)return false; if(F.p.checked&&!d.p)return false; if(F.h.checked&&!d.h)return false; if(F.l.checked&&!d.l)return false; if(F.e&&F.e.checked&&!d.e)return false;
+    if(F.k.checked&&!d.k)return false; if(F.n&&F.n.checked&&!d.nx)return false; if(F.p.checked&&!d.p)return false; if(F.h.checked&&!d.h)return false; if(F.l.checked&&!d.l)return false; if(F.e&&F.e.checked&&!d.e)return false;
     if(letter!=='all'){var c=(d.n||'?')[0].toLowerCase();if((c>='a'&&c<='z'?c:'0')!==letter)return false;}
     return true;
   }
@@ -1195,7 +1214,7 @@ if(idx){
     if(r&8)o.push('<span class="dd-tag S2">S2</span>');if(r&16)o.push('<span class="dd-tag CP">Precursor</span>');
     if(r&1)o.push('<span class="dd-tag Rx">Rx</span>');if(r&2)o.push('<span class="dd-tag OTC">OTC</span>');if(r&4)o.push('<span class="dd-tag HR">HR</span>');
     if(d.p)o.push('<span class="dd-tag PNF">PNF</span>');if(d.h)o.push('<span class="dd-tag PNF">GAMOT</span>');
-    if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');if(d.e)o.push('<span class="dd-tag US">EU SmPC</span>');return o.join(' ');}
+    if(d.k)o.push('<span class="dd-tag KD">Kidney dosing</span>');if(d.nx)o.push('<span class="dd-tag NX">Kidney injury risk</span>');if(d.l)o.push('<span class="dd-tag US">US label</span>');if(d.e)o.push('<span class="dd-tag US">EU SmPC</span>');return o.join(' ');}
   /* company search: that company's brands under the generic (search-extra "mb": refs into d.b; ref<0 = unbranded reg. no.) */
   function coBrands(d,o,slug){var e=extra&&extra[d.s];if(!o.mi||!e||!e.mb)return '';var seen={},refs=[];
     o.mi.forEach(function(j){(e.mb[j]||[]).forEach(function(r){if(!seen[r]){seen[r]=1;refs.push(r);}});});
@@ -1271,6 +1290,8 @@ if(idx){
         bcore.disp.map(function(a){return grp(a[0],a[2],G,'',false);}).join('');
       if(v==='kidney')h='<p class="dd-note dd-vnote">Generics with kidney guidance reviewed by renalcarematters.com, grouped by the most restrictive level across eGFR bands and dialysis.</p>'+
         bcore.kidney.map(function(a){return grp(a[0],a[2],G,'',true);}).join('')+'<p class="dd-note">'+escH(bcore.kidneyNote)+'</p>';
+      if(v==='nephrotox'&&bcore.nx)h='<p class="dd-note dd-vnote">'+(bcore.nxN||0).toLocaleString('en-US')+' generics whose US label (or drug-class label) warns of kidney injury, grouped by mechanism. A generic can appear under more than one mechanism. Reviewed by renalcarematters.com.</p>'+
+        bcore.nx.map(function(a){return grp(a[0],a[2],G,'',false);}).join('')+'<p class="dd-note">Not tagged: drugs whose kidney warnings are about use in kidney disease (for example metformin, gadolinium) or about volume depletion, rhabdomyolysis or tumor lysis, and ACE inhibitors, ARBs and SGLT2 inhibitors, which protect the kidney. A drug without this tag is not necessarily safe for the kidneys.</p>';
       if(v==='pn'&&bcore.pn){var PT=bcore.pn.t,PR=bcore.pn.r;
         h='<p class="dd-note dd-vnote">'+PR.length.toLocaleString('en-US')+' intravenous nutrition products registered with FDA Philippines, sorted by product type. Each opens its generic page with the products table filtered to that brand. Product types only; no dosing guidance.</p>'+
         PT.map(function(t){var rs=PR.filter(function(r){return r[2]===t[0];});if(!rs.length)return '';
@@ -1810,6 +1831,8 @@ class Ctx:
                 continue
             self.pharmacies.append(dict(x, link_type=lt))
         self.labels_dir, self.renal_dir = data_dir / "labels", data_dir / "renal"
+        self.nephrotox = load_json(data_dir / "nephrotox.json", {}) or {}   # tools/drugdb/build_nephrotox.py
+        self._nx = {}
         # variant / misspelled generic names -> main molecule page (tools/drugdb/build_aliases.py)
         self.aliases: dict[str, dict] = {}
         self.variants_of: dict[str, list[str]] = defaultdict(list)
@@ -1868,6 +1891,35 @@ class Ctx:
 
     def renal(self, slug):
         return load_json(self.renal_dir / f"{slug}.json") if self.renal_dir.is_dir() else None
+
+    def nx(self, slug):
+        """Kidney injury risk tags (data/drugs/nephrotox.json, approved only) for a generic:
+        {"items": [(ingredient, key, rec)], "partial": bool} or None. Ingredient names match a tag key exactly or
+        as a prefix (longest key wins). Only generics with at least one systemic (oral, injected, rectal) product are
+        tagged; "partial" = some products are applied to skin, eye, ear or nose, or inhaled."""
+        if slug in self._nx:
+            return self._nx[slug]
+        res, doc = None, self.nephrotox
+        if doc.get("review_status") == "approved":
+            keys = doc.get("ingredients") or {}
+            items = []
+            for ing in (self.generics.get(slug) or {}).get("ingredients") or []:
+                il = ws(ing).lower()
+                best = max((k for k in keys if il == k or il.startswith(k + " ")), key=len, default=None)
+                if best and best not in [b for _, b, _ in items]:
+                    items.append((ing, best, keys[best]))
+            if items:
+                fg = [(form_group(ws(p.get("dosage_strength_form"))), ws(p.get("dosage_strength_form")))
+                      for p in self.by_slug.get(slug, [])]
+                local = [d for f, d in fg if f not in NX_SYSTEMIC or NX_LOCAL.search(d)]
+                # a liquid or unclassified product with no oral wording counts as systemic only on a page with no
+                # local products (e.g. "0.3% w/v Sterile Suspension" among eye drops is an eye product)
+                sysm = [f for f, d in fg if f in NX_SYSTEMIC and not NX_LOCAL.search(d)
+                        and (f not in ("oral liquid", "other") or NX_ORAL.search(d) or not local)]
+                if sysm or not fg:
+                    res = {"items": items, "partial": len(sysm) < len(fg)}
+        self._nx[slug] = res
+        return res
 
     def intl(self, slug):
         """Non-US regulator product information metadata (labels-intl/<slug>.json) for generics without a US label."""
@@ -2992,7 +3044,7 @@ def render_kidney_section(label, renal, intl=None, eu=None) -> str:
 CLINICAL_ORDER = [
     "component-info",
     "use", "contraindications",
-    "dosing-adult", "kidney-dosing", "pn-kidney-notes", "dosing-hepatic", "dosing-pediatric", "dosing-older",
+    "dosing-adult", "kidney-dosing", "kidney-injury", "pn-kidney-notes", "dosing-hepatic", "dosing-pediatric", "dosing-older",
     "administration", "dosage-forms",
     "warnings", "interactions", "adverse-reactions", "monitoring",
     "pregnancy", "breastfeeding", "overdose",
@@ -3235,6 +3287,8 @@ def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[d
         e["h"] = 1
     if renal_approved(renal):
         e["k"] = 1
+    if ctx.nx(slug):
+        e["nx"] = 1
     if _lab(label):
         e["l"] = 1
     elif ctx.eu(slug):
@@ -3294,6 +3348,40 @@ FORM_GROUPS = [
     ("capsule", r"capsule"),
     ("tablet", r"tablet|caplet|lozenge|troche"),
 ]
+
+
+NX_ORAL = re.compile(r"oral|syrup|sachet|granule|elixir|infusion|inject|intravenous|\bi\.?v\b|for reconstitution", re.I)
+NX_SYSTEMIC = {"injection", "oral liquid", "capsule", "tablet", "suppository", "other"}
+NX_LOCAL = re.compile(r"vaginal|pessar|ovule|ophth|opth|ophtal|\beyes?\b|otic|\bear\b|nasal|topical|cream|ointment|\bgel\b|lotion|"
+                      r"astringent|wash|gargle|mouth|shampoo|(?<!oral )\bdrops\b", re.I)
+
+
+def render_nephrotox(nx: dict, ctx: "Ctx", combo: bool) -> str:
+    """'Kidney injury risk' section: per tagged ingredient, mechanism, what to do, and the verbatim US label quote."""
+    mechs = ctx.nephrotox.get("mechanisms") or {}
+    out = []
+    for ing, key, r in nx["items"]:
+        ml = [m for m in r.get("mech") or [] if m in mechs]
+        chips = "".join(f'<span class="dd-nx-m">{esc(mechs[m]["label"])}</span>' for m in ml)
+        acts = "".join(f'<li>{esc(mechs[m]["action"])}</li>' for m in ml)
+        lab = r.get("brand") or r.get("label")
+        cite = (f'US label: <a href="{esc(r["url"])}" rel="noopener">{esc(lab)}</a>' if r.get("url") else f"US label: {esc(lab)}")
+        cite += f' ({esc(r.get("manufacturer"))})' if r.get("manufacturer") else ""
+        cite += f', {esc(r.get("section") or "")}'
+        cls = ('<p class="dd-note">This drug has no US label of its own; the warning is the class statement in '
+               'the US labels of this drug class.</p>') if r.get("tier") == "class" else ""
+        out.append('<div class="dd-nx-item">'
+                   + (f'<h3 class="dd-nx-h">{esc(ing[:1].upper() + ing[1:])}</h3>' if combo else "")
+                   + f'<div class="dd-nx-ms">{chips}</div><ul class="dd-nx-do">{acts}</ul>'
+                   + (f'<p class="dd-nx-note">{esc(r["note"])}</p>' if r.get("note") else "")
+                   + f'<blockquote class="dd-nx-q">{esc(r.get("quote") or "")}<cite>{cite}</cite></blockquote>{cls}</div>')
+    part = ('<p class="dd-note">Applies to the oral and injected products, not to products applied to the skin, eye, '
+            'ear or nose.</p>') if nx.get("partial") else ""
+    return ('<div class="dd-nx">' + "".join(out) + part
+            + '<p class="dd-note">Kidney injury tags come from US label warnings and are reviewed by renalcarematters.com. '
+              'A drug without this tag is not necessarily safe for the kidneys. Avoiding kidney toxins also protects '
+              'residual kidney function in patients on dialysis. <a href="/drugs/?view=nephrotox">All drugs with a kidney '
+              'injury warning</a>.</p></div>')
 
 
 def form_group(form: str) -> str:
@@ -3598,6 +3686,8 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         chips.append(f'<span class="dd-chip dd-good">VAT-exempt{"" if vat_n == len(products) else " (some products)"}</span>')
     if renal_approved(renal):
         chips.append(f'<a class="dd-chip dd-good" href="#kidney-dosing">{KIDNEY_ICON} Kidney dosing reviewed</a>')
+    if ctx.nx(slug):
+        chips.append('<a class="dd-chip dd-nxchip" href="#kidney-injury">Kidney injury risk</a>')
     if pn_notes_for(slug, ctx):
         chips.append(f'<a class="dd-chip dd-good" href="#pn-kidney-notes">{KIDNEY_ICON} PN kidney notes reviewed</a>')
     cls_line = []
@@ -3660,6 +3750,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         ks = ks.replace('<p class="dd-kidney-pending">', '<p class="dd-note">Kidney dosing for each component (single-agent) '
                         'is shown under <a href="#component-info">Component information</a>.</p>\n<p class="dd-kidney-pending">', 1)
     S.append(("kidney-dosing", "Kidney dosing", ks))
+    nx = ctx.nx(slug)
+    if nx:
+        S.append(sec("kidney-injury", "Kidney injury risk", render_nephrotox(nx, ctx, len(ingredients) > 1)))
     # 4b. Parenteral nutrition brand kidney notes (data/drugs/pn-notes, approved only)
     pnn = pn_notes_for(slug, ctx)
     if pnn:
@@ -3926,7 +4019,7 @@ def _load_areas():
 
 
 BROWSE_VIEWS = [("generic", "Generic name"), ("brand", "Brand name"), ("class", "Drug class"), ("area", "Therapeutic area"),
-                ("disp", "Dispensing category"), ("kidney", "Kidney dosing"), ("pn", "Parenteral nutrition")]
+                ("disp", "Dispensing category"), ("kidney", "Kidney dosing"), ("nephrotox", "Kidney injury risk"), ("pn", "Parenteral nutrition")]
 KIDNEY_GROUPS = [("avoid", "Avoid or contraindicated at low kidney function"), ("adjust", "Dose adjustment or caution needed"),
                  ("none", "No dose adjustment needed"), ("nodata", "Reviewed: no kidney dosing data")]
 DISP_GROUPS = [(1, "Rx · Prescription drugs"), (2, "OTC · Over-the-counter"), (4, "HR · Household remedies"),
@@ -4192,7 +4285,15 @@ def browse_data(entries: list[dict], groups: dict, ctx: Ctx) -> tuple[dict, dict
     pn_rows = [[r["name"], gi[r["slug"]], r["type"], r["detail"], r["badge"], _strength_summary(r["prods"]), r["link"]]
                + ([f'pn-{r["note"]["slug"]}'] if r.get("note") else [])
                for r in PN["rows"] if r["slug"] in gi]
-    core = {"v": 1, "g": G, "class": cls, "area": areas, "disp": disp, "kidney": kid,
+    nmech = ctx.nephrotox.get("mechanisms") or {}
+    ng: dict[str, list[int]] = defaultdict(list)
+    for e in main:
+        nx = ctx.nx(e["s"])
+        for m in dict.fromkeys(m for _, _, r in (nx or {}).get("items", []) for m in r.get("mech") or []):
+            ng[m].append(gi[e["s"]])
+    nxv = [[nmech[m]["label"], m, ng[m]] for m in nmech if ng.get(m)]
+    core = {"v": 1, "g": G, "class": cls, "area": areas, "disp": disp, "kidney": kid, "nx": nxv,
+            "nxN": len({i for x in nxv for i in x[2]}),
             "pn": {"t": PN["types"], "r": pn_rows},
             "kidneyNote": f"The other {len(G) - n_k:,} generics show US label kidney text only, where the label has it; "
                           "reviewed kidney guidance is being added."}
@@ -4260,6 +4361,7 @@ Search by brand, generic, class, indication, manufacturer or registration number
 <label><span class="dd-hidden">Dispensing category</span><select id="dd-f-rx"><option value="">All dispensing categories</option><option value="1">Rx · Prescription drug</option><option value="2">OTC · Over-the-counter</option><option value="4">HR · Household remedy</option><option value="8">S2 · Dangerous drug</option><option value="16">Controlled precursor</option></select></label>
 <label><span class="dd-hidden">Dosage form</span><select id="dd-f-form"><option value="">All dosage forms</option>{form_opts}</select></label>
 <label class="dd-check"><input type="checkbox" id="dd-f-k"> {KIDNEY_ICON} Has kidney dosing</label>
+<label class="dd-check"><input type="checkbox" id="dd-f-n"> Kidney injury risk</label>
 <label class="dd-check"><input type="checkbox" id="dd-f-p"> PNF-listed</label>
 <label class="dd-check"><input type="checkbox" id="dd-f-h"> PhilHealth GAMOT</label>
 <label class="dd-check"><input type="checkbox" id="dd-f-l"> Has US label</label>
