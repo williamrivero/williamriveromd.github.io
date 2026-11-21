@@ -1301,6 +1301,7 @@
   .pathway-tile[data-pathway="protein"] { --pw-color: #be185d; }
   .pathway-tile[data-pathway="stones"] { --pw-color: #92400e; }
   .pathway-tile[data-pathway="caregiver"] { --pw-color: #5b4397; }
+  .pathway-tile[data-pathway="clinician"] { --pw-color: #3b4fb8; }
   .pathway-tile::before { background: var(--pw-color); }
   .pathway-tile:hover { border-color: transparent; }
   .pathway-tile:hover .pathway-icon { color: var(--pw-color); }
@@ -2217,6 +2218,28 @@ html[data-theme="dark"] .lib-tool { background: #1a2535; border-color: #2c3a4f; 
 html[data-theme="dark"] .lib-tool strong { color: color-mix(in srgb, var(--tc) 45%, #ffffff); }
 @media (prefers-reduced-motion: reduce) { .lib-tool { transition: none; } .lib-tool:hover { transform: none; } }
 @media print { .lib-tools { display: none; } }
+.lib-new { margin: 22px 0 6px; padding: 16px 18px; border-radius: 14px; background: #f3f7fd; border: 1px solid #d9e3f3; }
+.lib-new-h { display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; color: #1e2a38; margin: 0 0 4px; }
+.lib-new-dot { width: 9px; height: 9px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 4px rgba(22,163,74,.15); }
+.lib-new-sum { margin: 0 0 8px; font-size: 14.5px; color: #3c4a5e; }
+.lib-new-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px 18px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.lib-new-list li { font-size: 14.5px; line-height: 1.4; }
+.lib-new-list a { color: #1a5a8a; font-weight: 600; text-decoration: none; }
+.lib-new-list a:hover { text-decoration: underline; }
+.lib-new-list time { color: #6a7484; font-size: 13px; margin-left: 4px; white-space: nowrap; }
+.lib-made { margin: 26px 0 22px; }
+.lib-made-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 10px; }
+.lib-made-grid > div { padding: 14px 16px; border-radius: 14px; background: #fff; border: 1px solid #e1e7ef; }
+.lib-made-grid strong { display: block; font-size: 15px; color: #1a6b72; margin-bottom: 4px; }
+.lib-made-grid p { margin: 0; font-size: 13.5px; line-height: 1.5; color: #4b5a6e; }
+html[data-theme="dark"] .lib-new { background: #17233a; border-color: #2c3a55; }
+html[data-theme="dark"] .lib-new-h { color: #eef2fb; }
+html[data-theme="dark"] .lib-new-sum, html[data-theme="dark"] .lib-made-grid p { color: #c9d3e1; }
+html[data-theme="dark"] .lib-new-list a { color: #9cc8f0; }
+html[data-theme="dark"] .lib-new-list time { color: #9ba6b8; }
+html[data-theme="dark"] .lib-made-grid > div { background: #1a2535; border-color: #2c3a4f; }
+html[data-theme="dark"] .lib-made-grid strong { color: #7dd3dc; }
+@media print { .lib-new, .lib-made { display: none; } }
 </style>
 </head>
 <body>
@@ -2322,6 +2345,11 @@ html[data-theme="dark"] .lib-tool strong { color: color-mix(in srgb, var(--tc) 4
         <div class="how-to-body">Most guides include a <strong>downloadable PDF companion</strong> and built-in interactive tools — calculators, trackers, and log sheets you can print.</div>
       </div>
     </div>
+    <aside class="lib-new" id="lib-new" hidden aria-labelledby="lib-new-h">
+      <h2 id="lib-new-h" class="lib-new-h"><span class="lib-new-dot" aria-hidden="true"></span>New this month</h2>
+      <p class="lib-new-sum" id="lib-new-sum"></p>
+      <ul class="lib-new-list" id="lib-new-list"></ul>
+    </aside>
     <section class="lib-tools" aria-labelledby="lib-tools-h">
       <h2 id="lib-tools-h" class="lib-tools-h">Clinical tools</h2>
       <p class="lib-tools-sub">All free. The Drug Index tools and the calculators also work offline once installed on your phone.</p>
@@ -2331,6 +2359,15 @@ html[data-theme="dark"] .lib-tool strong { color: color-mix(in srgb, var(--tc) 4
         <a class="lib-tool" href="/drugs/med-scheduler" style="--tc:#3b4fb8"><span class="lib-tool-ico" aria-hidden="true">🕒</span><span><strong>Med Scheduler</strong><small>A medicine timetable around meals, bedtime and dialysis days, with a printable patient sheet and pill count.</small></span></a>
         <a class="lib-tool" href="calculators.html" style="--tc:#4b3280"><span class="lib-tool-ico" aria-hidden="true">🧮</span><span><strong>Calculators</strong><small>Over 200 clinical calculators: eGFR, KFRE, dialysis dose, electrolytes and more. Install them as the Calculo app.</small></span></a>
         <a class="lib-tool" href="symptom-checker.html" style="--tc:#c2410c"><span class="lib-tool-ico" aria-hidden="true">🩺</span><span><strong>Symptom checker</strong><small>For patients: what a symptom may mean and when to call your doctor or go to the hospital.</small></span></a>
+      </div>
+    </section>
+    <section class="lib-made" aria-labelledby="lib-made-h">
+      <h2 id="lib-made-h" class="lib-tools-h">How these guides are made</h2>
+      <div class="lib-made-grid">
+        <div><strong>Guideline-anchored</strong><p>Recommendations follow KDIGO and other society guidelines (ADA, ACC/AHA) and peer-reviewed studies. Each guide lists its references in APA format, checked against PubMed.</p></div>
+        <div><strong>Label-based drug information</strong><p>The Drug Index quotes US FDA labels (EU product information where no US label exists). Kidney dosing and other clinical notes appear only after the author's review.</p></div>
+        <div><strong>Dated and kept current</strong><p>Every guide shows when it was published and last reviewed, and is revised when guidelines change. The Drug Index refreshes its label text every Monday.</p></div>
+        <div><strong>Independent and free</strong><p>Written by one practicing nephrologist. No sponsors, no ads, no paywall and no account. Made to be read alongside your doctor, not instead of one.</p></div>
       </div>
     </section>
     <div class="about-note">
@@ -2446,6 +2483,14 @@ html[data-theme="dark"] .lib-tool strong { color: color-mix(in srgb, var(--tc) 4
         <div class="pathway-condition">Role</div>
         <div class="pathway-title">Caring for someone with CKD</div>
         <div class="pathway-count">7 guides · Caregiver path</div>
+        <span class="pathway-arrow">›</span>
+      </button>
+
+      <button class="pathway-tile" data-pathway="clinician">
+        <span class="pathway-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v3a5 5 0 0 0 10 0v-1"/><circle cx="20" cy="13" r="2"/></svg></span>
+        <div class="pathway-condition">Role</div>
+        <div class="pathway-title">I'm a clinician</div>
+        <div class="pathway-count">9 resources · Tools &amp; guides</div>
         <span class="pathway-arrow">›</span>
       </button>
 
@@ -5443,6 +5488,23 @@ function renderIcons() {
 
 /* ── PATHWAY DATA ── */
 const PATHWAYS = {
+  clinician: {
+    condition: 'For clinicians',
+    title: 'Tools and guides for clinicians',
+    desc: 'Prescribing tools built on US drug labels and the Philippine FDA registry, the calculator library, and guides with a dedicated Clinicians tab (evidence, guideline positions and references).',
+    color: '#3b4fb8',
+    steps: [
+      { num: 1, title: 'Drug Index', why: 'Every FDA-registered medicine in the Philippines, with US label text, kidney dosing and kidney injury risk. Installs as the Dosis app for offline use.', badges: ['tool'], url: '/drugs/', isStart: true },
+      { num: 2, title: 'Interaction checker', why: 'Paste a prescription; interactions graded Contraindicated, Avoid, Adjust or monitor and Minor, plus kidney checks at the chosen eGFR.', badges: ['tool','new'], url: '/drugs/interactions' },
+      { num: 3, title: 'Med Scheduler', why: 'A dosing timetable around meals, bedtime and hemodialysis days, with spacing for binders and iron, a pill count and a printable patient sheet.', badges: ['tool','new'], url: '/drugs/med-scheduler' },
+      { num: 4, title: 'Clinical calculators', why: 'More than 200 calculators: eGFR, KFRE, Kt/V, electrolyte deficits and more. Installs as the Calculo app.', badges: ['calc'], url: '/guides/calculators.html' },
+      { num: 5, title: 'Slowing CKD Progression', why: 'The Clinicians tab summarizes the kidney-protective therapies and guideline positions.', badges: [], url: '/guides/slowing-ckd-progression.html' },
+      { num: 6, title: 'CKD-MBD: Kidney, Bone & Heart', why: 'Phosphate, calcium, PTH and vitamin D targets and treatment.', badges: [], url: '/guides/ckd-mbd.html' },
+      { num: 7, title: 'Contrast and the Kidneys', why: 'Contrast-associated AKI without delaying needed imaging.', badges: [], url: '/guides/contrast-nephropathy.html' },
+      { num: 8, title: 'Dialysis Decisions in the ICU', why: 'AKI, prognosis and time-limited trials of dialysis.', badges: [], url: '/guides/aki-icu-dialysis-decisions.html' },
+      { num: 9, title: 'Continuous Renal Replacement Therapy (CRRT)', why: 'A clinical reference from basics to advanced prescription.', badges: [], url: '/guides/crrt-continuous-renal-replacement-therapy.html' },
+    ]
+  },
   ckd: {
     condition: 'Newly diagnosed CKD',
     title: 'Where do I start with CKD?',
@@ -6715,6 +6777,20 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
+</script>
+<script id="lib-new-js">
+/* New this month: guides first published in the last 30 days, from latest_guides.json (written by generate_latest_guides.py) */
+(function(){var box=document.getElementById('lib-new');if(!box||!window.fetch)return;
+fetch('/latest_guides.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():[];}).then(function(d){
+  var cut=Date.now()-30*864e5,items=(d||[]).filter(function(x){return x.kind==='new'&&Date.parse(x.published)>=cut;});
+  items.sort(function(a,b){return Date.parse(b.published)-Date.parse(a.published);});
+  if(!items.length)return;
+  var ta=document.createElement('textarea'),dec=function(s){ta.innerHTML=String(s);return ta.value;};
+  var esc=function(s){return dec(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  document.getElementById('lib-new-sum').textContent=items.length+(items.length===1?' new guide':' new guides')+' in the last 30 days'+(items.length>8?'. The newest:':':');
+  document.getElementById('lib-new-list').innerHTML=items.slice(0,8).map(function(x){var d=new Date(x.published);
+    return '<li><a href="'+esc(x.file)+'">'+esc(x.title)+'</a><time datetime="'+esc(x.published)+'">'+d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'</time></li>';}).join('');
+  box.hidden=false;}).catch(function(){});})();
 </script>
 </body>
 </html>
