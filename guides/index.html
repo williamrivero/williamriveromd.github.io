@@ -2201,6 +2201,45 @@ body:not(.dark-mode) .featured-calcs .fc-card .spotlight-title{color:#2d1f55;}
 <style id="text-size-adjust">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;}</style>
 <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*.json"}}]},"eagerness":"moderate"}],"prerender":[{"urls":["/guides/","/drugs/","/"],"eagerness":"moderate"}]}</script>
 <style id="lib-tools-css">
+.lib-new { margin: 26px 0 8px; padding: 22px 22px 20px; border-radius: 18px; background: linear-gradient(180deg, #f6f9fc 0%, #ffffff 70%); border: 1px solid #e1e8f1; }
+.lib-new-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px 18px; flex-wrap: wrap; margin-bottom: 16px; }
+.lib-new-eyebrow { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font: 700 11.5px/1 'Inter', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #1a6b72; }
+.lib-new-dot { width: 7px; height: 7px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,.16); }
+.lib-new-h { margin: 0; font: 800 21px/1.25 'Inter', sans-serif; letter-spacing: -.015em; color: #16294a; }
+.lib-new-h span { color: #5b6678; font-weight: 600; }
+.lib-new-all { font-size: 14px; font-weight: 700; color: #1a5a8a; text-decoration: none; white-space: nowrap; }
+.lib-new-all:hover { text-decoration: underline; }
+.lib-new-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.lib-nc { display: flex; flex-direction: column; background: #fff; border: 1px solid #e3e9f1; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; transition: box-shadow .15s, transform .15s, border-color .15s; }
+.lib-nc:hover { box-shadow: 0 12px 26px -16px rgba(19,40,63,.45); transform: translateY(-2px); border-color: #d3dce8; }
+.lib-nc:focus-visible { outline: 3px solid #b8860b; outline-offset: 2px; }
+.lib-nc-img { aspect-ratio: 1.91 / 1; background: #eef2f7 center / cover no-repeat; border-bottom: 3px solid var(--nc); }
+.lib-nc-body { display: flex; flex-direction: column; gap: 6px; padding: 11px 13px 13px; flex: 1; }
+.lib-nc-cat { font: 700 10.5px/1.2 'Inter', sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--nc); }
+.lib-nc-t { font: 700 14.5px/1.35 'Inter', sans-serif; color: #1e2a38; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.lib-nc-d { margin-top: auto; font-size: 12.5px; color: #6a7484; }
+@media (max-width: 860px) { .lib-new-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+  .lib-new { padding: 18px 14px 16px; }
+  .lib-new-h { font-size: 18.5px; }
+  .lib-new-grid { grid-template-columns: 1fr; gap: 10px; }
+  .lib-nc { flex-direction: row; align-items: stretch; }
+  .lib-nc-img { aspect-ratio: auto; width: 104px; flex: none; border-bottom: 0; border-right: 3px solid var(--nc); }
+  .lib-nc-body { padding: 10px 12px; gap: 4px; }
+  .lib-nc-t { font-size: 14px; -webkit-line-clamp: 2; }
+  .lib-nc-img { background-position: left center; }
+  .lib-nc:nth-child(n+5) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .lib-nc { transition: none; } .lib-nc:hover { transform: none; } }
+html[data-theme="dark"] .lib-new, body.dark-mode .lib-new { background: linear-gradient(180deg, #17233a 0%, #131d2e 70%); border-color: #2a3852; }
+html[data-theme="dark"] .lib-new-eyebrow, body.dark-mode .lib-new-eyebrow { color: #7dd3dc; }
+html[data-theme="dark"] .lib-new-h, body.dark-mode .lib-new-h { color: #eef2fb; }
+html[data-theme="dark"] .lib-new-h span, body.dark-mode .lib-new-h span { color: #9ba6b8; }
+html[data-theme="dark"] .lib-new-all, body.dark-mode .lib-new-all { color: #9cc8f0; }
+html[data-theme="dark"] .lib-nc, body.dark-mode .lib-nc { background: #1a2535; border-color: #2c3a4f; }
+html[data-theme="dark"] .lib-nc-cat, body.dark-mode .lib-nc-cat { color: color-mix(in srgb, var(--nc) 40%, #ffffff); }
+html[data-theme="dark"] .lib-nc-t, body.dark-mode .lib-nc-t { color: #eef2fb; }
+html[data-theme="dark"] .lib-nc-d, body.dark-mode .lib-nc-d { color: #9ba6b8; }
 .lib-tools { margin: 28px 0 22px; }
 .lib-tools-h { font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 800; color: #1e2a38; margin: 0 0 4px; letter-spacing: -.01em; }
 .lib-tools-sub { margin: 0 0 14px; font-size: 14.5px; color: #4b5a6e; }
@@ -2218,25 +2257,11 @@ html[data-theme="dark"] .lib-tool, body.dark-mode .lib-tool { background: #1a253
 html[data-theme="dark"] .lib-tool strong, body.dark-mode .lib-tool strong { color: color-mix(in srgb, var(--tc) 45%, #ffffff); }
 @media (prefers-reduced-motion: reduce) { .lib-tool { transition: none; } .lib-tool:hover { transform: none; } }
 @media print { .lib-tools { display: none; } }
-.lib-new { margin: 22px 0 6px; padding: 16px 18px; border-radius: 14px; background: #f3f7fd; border: 1px solid #d9e3f3; }
-.lib-new-h { display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 800; color: #1e2a38; margin: 0 0 4px; }
-.lib-new-dot { width: 9px; height: 9px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 4px rgba(22,163,74,.15); }
-.lib-new-sum { margin: 0 0 8px; font-size: 14.5px; color: #3c4a5e; }
-.lib-new-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px 18px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-.lib-new-list li { font-size: 14.5px; line-height: 1.4; }
-.lib-new-list a { color: #1a5a8a; font-weight: 600; text-decoration: none; }
-.lib-new-list a:hover { text-decoration: underline; }
-.lib-new-list time { color: #6a7484; font-size: 13px; margin-left: 4px; white-space: nowrap; }
 .lib-made { margin: 26px 0 22px; }
 .lib-made-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 10px; }
 .lib-made-grid > div { padding: 14px 16px; border-radius: 14px; background: #fff; border: 1px solid #e1e7ef; }
 .lib-made-grid strong { display: block; font-size: 15px; color: #1a6b72; margin-bottom: 4px; }
 .lib-made-grid p { margin: 0; font-size: 13.5px; line-height: 1.5; color: #4b5a6e; }
-html[data-theme="dark"] .lib-new, body.dark-mode .lib-new { background: #17233a; border-color: #2c3a55; }
-html[data-theme="dark"] .lib-new-h, body.dark-mode .lib-new-h { color: #eef2fb; }
-html[data-theme="dark"] .lib-new-sum, body.dark-mode .lib-new-sum, html[data-theme="dark"] .lib-made-grid p, body.dark-mode .lib-made-grid p { color: #c9d3e1; }
-html[data-theme="dark"] .lib-new-list a, body.dark-mode .lib-new-list a { color: #9cc8f0; }
-html[data-theme="dark"] .lib-new-list time, body.dark-mode .lib-new-list time { color: #9ba6b8; }
 html[data-theme="dark"] .lib-made-grid > div, body.dark-mode .lib-made-grid > div { background: #1a2535; border-color: #2c3a4f; }
 html[data-theme="dark"] .lib-made-grid strong, body.dark-mode .lib-made-grid strong { color: #7dd3dc; }
 .lib-dls { margin: 28px 0 8px; }
@@ -2363,11 +2388,16 @@ html[data-theme="dark"] .lib-dls-all, body.dark-mode .lib-dls-all { color: #9cc8
         <div class="how-to-body">Most guides include a <strong>downloadable PDF companion</strong> and built-in interactive tools — calculators, trackers, and log sheets you can print.</div>
       </div>
     </div>
-    <aside class="lib-new" id="lib-new" hidden aria-labelledby="lib-new-h">
-      <h2 id="lib-new-h" class="lib-new-h"><span class="lib-new-dot" aria-hidden="true"></span>New this month</h2>
-      <p class="lib-new-sum" id="lib-new-sum"></p>
-      <ul class="lib-new-list" id="lib-new-list"></ul>
-    </aside>
+    <section class="lib-new" id="lib-new" hidden aria-labelledby="lib-new-h">
+      <div class="lib-new-head">
+        <div>
+          <p class="lib-new-eyebrow"><span class="lib-new-dot" aria-hidden="true"></span>New this month</p>
+          <h2 id="lib-new-h" class="lib-new-h"></h2>
+        </div>
+        <a class="lib-new-all" id="lib-new-all" href="#sec-latest">See all new guides <span aria-hidden="true">›</span></a>
+      </div>
+      <div class="lib-new-grid" id="lib-new-list"></div>
+    </section>
     <section class="lib-tools" aria-labelledby="lib-tools-h">
       <h2 id="lib-tools-h" class="lib-tools-h">Clinical tools</h2>
       <p class="lib-tools-sub">All free. The Drug Index tools and the calculators also work offline once installed on your phone.</p>
@@ -6816,16 +6846,25 @@ document.addEventListener('DOMContentLoaded', function() {
 <script id="lib-new-js">
 /* New this month: guides first published in the last 30 days, from latest_guides.json (written by generate_latest_guides.py) */
 (function(){var box=document.getElementById('lib-new');if(!box||!window.fetch)return;
+var CAT={nephrology:'Nephrology',dialysis:'Dialysis',critical:'AKI & critical care',internal:'Internal medicine',infections:'Infections',medicines:'Medicines & supplements',nutrition:'Nutrition',lifestyle:'Lifestyle',advanced:'Advanced topics',perspectives:'Perspectives',philippines:'Philippine access',download:'Downloads'};
+var ta=document.createElement('textarea'),dec=function(s){ta.innerHTML=String(s);return ta.value;};
+var esc=function(s){return dec(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 fetch('/latest_guides.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():[];}).then(function(d){
   var cut=Date.now()-30*864e5,items=(d||[]).filter(function(x){return x.kind==='new'&&Date.parse(x.published)>=cut;});
   items.sort(function(a,b){return Date.parse(b.published)-Date.parse(a.published);});
   if(!items.length)return;
-  var ta=document.createElement('textarea'),dec=function(s){ta.innerHTML=String(s);return ta.value;};
-  var esc=function(s){return dec(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
-  document.getElementById('lib-new-sum').textContent=items.length+(items.length===1?' new guide':' new guides')+' in the last 30 days'+(items.length>8?'. The newest:':':');
-  document.getElementById('lib-new-list').innerHTML=items.slice(0,8).map(function(x){var d=new Date(x.published);
-    return '<li><a href="'+esc(x.file)+'">'+esc(x.title)+'</a><time datetime="'+esc(x.published)+'">'+d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'</time></li>';}).join('');
-  box.hidden=false;}).catch(function(){});})();
+  var n=items.length;
+  document.getElementById('lib-new-h').innerHTML=n+(n===1?' new guide':' new guides')+' <span>in the last 30 days</span>';
+  if(n<=6)document.getElementById('lib-new-all').hidden=true;
+  document.getElementById('lib-new-list').innerHTML=items.slice(0,6).map(function(x){
+    var dt=new Date(x.published),c=/^#[0-9a-f]{3,8}$/i.test(x.color||'')?x.color:'#1a6b72',img=x.thumb?' style="background-image:url(\''+esc(x.thumb)+'\')"':'';
+    return '<a class="lib-nc" href="'+esc(x.file)+'" style="--nc:'+c+'"><span class="lib-nc-img"'+img+' aria-hidden="true"></span><span class="lib-nc-body">'+
+      (CAT[x.section]?'<span class="lib-nc-cat">'+CAT[x.section]+'</span>':'')+'<span class="lib-nc-t">'+esc(x.title)+'</span>'+
+      '<time class="lib-nc-d" datetime="'+esc(x.published)+'">'+dt.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'</time></span></a>';}).join('');
+  box.hidden=false;
+  document.getElementById('lib-new-all').addEventListener('click',function(e){var s=document.getElementById('sec-latest');if(!s)return;e.preventDefault();
+    var h=s.querySelector('.section-header');if(h&&h.classList.contains('collapsed'))h.click();s.scrollIntoView({behavior:'smooth',block:'start'});});
+}).catch(function(){});})();
 </script>
 <script id="lib-dls-js">
 /* "See all downloads": open the Downloads section and scroll to it; label carries the live count */
