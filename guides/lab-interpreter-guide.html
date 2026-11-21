@@ -4474,8 +4474,10 @@ function _parseToISODate(str, mmdd){
     if(d2>12) return yr+'-'+_pad2(d1)+'-'+_pad2(d2);        // d2 can't be month → MM-DD
     if(d1>12) return yr+'-'+_pad2(d2)+'-'+_pad2(d1);        // d1 can't be month → DD-MM
     // Both ≤12: ambiguous — use caller-supplied hint
-    return mmdd ? yr+'-'+_pad2(d1)+'-'+_pad2(d2)            // MM-DD-YYYY (Hi-Precision/SGD)
-                : yr+'-'+_pad2(d2)+'-'+_pad2(d1);           // Philippine default: DD-MM-YYYY
+    // Philippine labs print month first (MM-DD-YYYY: Hi-Precision, SGD, Affordalabs, Rebaño);
+    // day-first is used only when the caller explicitly passes mmdd === false.
+    return mmdd !== false ? yr+'-'+_pad2(d1)+'-'+_pad2(d2)
+                          : yr+'-'+_pad2(d2)+'-'+_pad2(d1);
   }
   // DD Mon YYYY  e.g. "15 May 2025"
   m = str.match(/^(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})$/);
@@ -4563,7 +4565,7 @@ function extractPDFPatientInfo(text){
   ];
   for(var i=0;i<dateRxs.length;i++){
     var dm=dateRxs[i].exec(t);
-    if(dm){var iso=_parseToISODate(dm[1],i<3);if(iso){result.date=iso;break;}}
+    if(dm){var iso=_parseToISODate(dm[1],true);if(iso){result.date=iso;break;}}
   }
   return result;
 }
@@ -4729,7 +4731,17 @@ function parseLabText(rawText) {
      cannot read; delegate to the dedicated structural parser when detected. */
   if (_isNKTIReport(rawText)) {
     var nkti = parseNKTILabs(rawText);
-    if (nkti && Object.keys(nkti.fields).length) return nkti;
+    if (nkti && Object.keys(nkti.fields).length) {
+      /* Add clean row-read values (e.g. the CBC) the NKTI parser does not cover. */
+      if (rawText.rows && rawText.rows.length) {
+        var nr = parseLabRows(rawText.rows);
+        /* Only the cleanly laid-out CBC and urinalysis rows: NKTI chemistry pages are scrambled. */
+        Object.keys(nr).forEach(function(k){
+          if (nkti.fields[k] == null && /^(?:wbc|rbc|hgb|hct|platelets|mcv|rdw|urine_\w+)$/.test(k)) nkti.fields[k] = nr[k];
+        });
+      }
+      return nkti;
+    }
   }
   /* Normalise: unify line endings, micro signs, join split decimals, collapse multi-spaces */
   var text = rawText
@@ -4839,6 +4851,31 @@ function parseLabText(rawText) {
   var unitSys = cvVotes > 0 ? 'Conventional (US)' : (siVotes > 0 ? 'SI' : null);
 
   var ptInfo = extractPDFPatientInfo(text);
+
+  /* Row-based reading (Nov 22 2026): when the PDF's rows could be rebuilt and they yield
+     at least 3 results, those results replace the label-window guesses above, which pick
+     numbers from neighboring rows on table layouts. HD-session keys keep their own logic. */
+  if (rawText && rawText.rows && rawText.rows.length) {
+    var rowF = parseLabRows(rawText.rows);
+    if (Object.keys(rowF).length >= 3) {
+      var explicitPP = /\b(?:pre|post)[\s\-]*(?:hd|dialysis|bun|urea)\b|\b(?:bun|urea)\s*[\(\[]\s*(?:pre|post)\b/i.test(text);
+      ['bun_pre','bun_post','spktv','urr','uf_volume','weight_post','_hd_session_hours','_ktv_formula'].forEach(function(k){
+        if (/^bun_/.test(k) && !explicitPP) return;
+        if (fields[k] != null && rowF[k] == null) rowF[k] = fields[k];
+      });
+      if (rowF.bun_pre && rowF.bun_post && rowF.bun == null) rowF.bun = rowF.bun_pre;
+      fields = rowF; unitSys = 'Conventional (US)';
+    } else {
+      Object.keys(fields).forEach(function(k){
+        var lim = _ROW_RANGE[k], v = parseFloat(fields[k]);
+        if (lim && !(v >= lim[0] * 0.5 && v <= lim[1] * 10)) delete fields[k];
+      });
+    }
+    var rp = _rowPatientInfo(rawText.rows);
+    ['date','age','sex'].forEach(function(k){ if (rp[k]) ptInfo[k] = rp[k]; });
+    if (rp.name && (!ptInfo.name || /\d/.test(ptInfo.name))) ptInfo.name = rp.name;
+    else if (rp.name && !ptInfo.name) ptInfo.name = rp.name;
+  }
   return { fields: fields, unitSys: unitSys, name: ptInfo.name, date: ptInfo.date, sex: ptInfo.sex, age: ptInfo.age };
 }
 
@@ -5155,17 +5192,231 @@ function _ensurePDFJS(callback) {
 }
 
 function _readPDFText(arrayBuffer) {
+  /* Returns the legacy page text (items joined with spaces, first 6 pages) as a
+     String object, plus .rows: the report's real table rows rebuilt from each text
+     item's position on the page (all pages, up to 20). Row-based reading keeps a
+     result on the same row as its test name (Nov 22 2026). */
   return window.pdfjsLib.getDocument({ data: arrayBuffer }).promise.then(function(pdf) {
     var pp = [];
-    for (var i = 1; i <= Math.min(pdf.numPages, 6); i++) {
+    for (var i = 1; i <= Math.min(pdf.numPages, 20); i++) {
       pp.push(pdf.getPage(i).then(function(pg) {
         return pg.getTextContent().then(function(c) {
-          return c.items.map(function(it){ return it.str; }).join(' ');
+          var items = c.items.map(function(it){
+            var tr = it.transform || [1,0,0,1,0,0];
+            return { s: it.str, x: tr[4], y: tr[5], w: it.width || 0, h: it.height || Math.abs(tr[3]) || 8 };
+          });
+          return { text: c.items.map(function(it){ return it.str; }).join(' '), rows: _buildRows(items) };
         });
       }));
     }
-    return Promise.all(pp).then(function(pages){ return pages.join('\n'); });
+    return Promise.all(pp).then(function(pages){
+      var s = new String(pages.slice(0, 6).map(function(p){ return p.text; }).join('\n'));
+      s.rows = [];
+      pages.forEach(function(p, pi){ p.rows.forEach(function(r){ r.page = pi; s.rows.push(r); }); });
+      return s;
+    });
   });
+}
+
+/* Group text items into rows (same baseline) and cells (runs separated by a wide gap). */
+function _buildRows(items) {
+  items = items.filter(function(it){ return it.s && it.s.trim() !== ''; });
+  items.sort(function(a, b){ return (b.y - a.y) || (a.x - b.x); });
+  var rows = [];
+  items.forEach(function(it){
+    var r = rows.length ? rows[rows.length - 1] : null;
+    var tol = Math.max(2, Math.min(it.h || 8, 14) * 0.45);
+    if (r && Math.abs(r.y - it.y) <= tol) r.items.push(it); else rows.push({ y: it.y, items: [it] });
+  });
+  return rows.map(function(r){
+    r.items.sort(function(a, b){ return a.x - b.x; });
+    var cells = [], c = null;
+    r.items.forEach(function(it){
+      var gap = c ? it.x - c.x2 : 1e9;
+      if (!c || gap > Math.max(6, Math.min(it.h || 8, 14) * 0.9)) { c = { x: it.x, x2: it.x + it.w, s: it.s }; cells.push(c); }
+      else { c.s += (gap > 0.8 ? ' ' : '') + it.s; c.x2 = Math.max(c.x2, it.x + it.w); }
+    });
+    cells.forEach(function(cl){
+      cl.s = cl.s.replace(/\s+/g, ' ').trim();
+      /* Scanned reports split digits ("2 7 6", "3 7 . 5 7"); rejoin a cell made only of digits and dots. */
+      if (/^[\d.](?: ?[\d.])+$/.test(cl.s) && / /.test(cl.s) && /^\d+(?:\.\d+)?$/.test(cl.s.replace(/ /g, ''))) cl.s = cl.s.replace(/ /g, '');
+    });
+    cells = cells.filter(function(cl){ return cl.s; });
+    return { y: r.y, cells: cells, text: cells.map(function(cl){ return cl.s; }).join(' | ') };
+  }).filter(function(r){ return r.cells.length; });
+}
+
+/* ── Row-based lab reader (Nov 22 2026) ─────────────────────────────
+   Every value is read from the row that carries its test name, converted to the
+   tool's Conventional units, and rejected when it is not physiologically plausible. */
+var _ROW_OK_PREFIX = /^[\s|*•·\-–.)(\d]*(?:(?:serum|plasma|blood|whole|total|t\.|s\.|direct|fasting|random|calculated|estimated|ionized|ionised|automated)\s*[,.]?\s*)*$/i;
+var _ROW_EXCLUDE = /\burine\b|\burinary\b|24[\s-]*h|\bratio\b|clearance|corrected|corpuscular|non[\s-]*hdl|vldl|\/\s*hdl|globulin|\bmch\b|\bmchc\b|\bmicro\s*albumin|\bindex\b/i;
+var _ROW_ALIAS = {
+  rbc: /\b(?:red\s+(?:blood\s+)?cells?|erythrocytes?)(?:\s+count)?\b/i,
+  urine_sg: /\bsp\.?\s*gr/i,
+  phosphorus: /\bi\.?\s*po4\b|\binorganic\s+phos/i,
+  mcv: /\bmean\s+(?:corpuscular|cell)\s+volume\b/i,
+  rdw: /\b(?:rbc|red\s+cell)\s+distribution\s+width\b/i,
+  hgb: /\bh[ae]m[ae]globin\b/i
+};
+var _ROW_RANGE = {
+  creatinine:[0.1,30], egfr:[1,200], bun:[1,300], bun_pre:[1,300], bun_post:[1,300], uacr:[0.5,20000], upcr:[0.01,40], hgb:[25,250], hct:[5,75],
+  rbc:[0.5,9], mcv:[40,160], rdw:[5,40], reticulocyte:[0.01,40], ferritin:[1,20000], tsat:[1,100], wbc:[0.1,300],
+  platelets:[1,2500], sodium:[90,200], potassium:[1,12], bicarb:[3,60], chloride:[50,160], magnesium:[0.3,10],
+  albumin:[0.5,7], alt:[1,20000], ast:[1,20000], uricacid:[0.5,25], totalchol:[30,1500], ldl:[5,800], hdl:[5,250],
+  tg:[10,15000], fbs:[10,2500], hba1c:[3,20], fasting_insulin:[0.5,500], calcium:[3,20], phosphorus:[0.5,20],
+  ipth:[1,5000], vitd:[1,250], alp:[5,10000], lpa:[0.1,500], urine_sg:[1,1.06], urine_ph:[4,9.5],
+  urine_rbc_hpf:[0,500], urine_wbc_hpf:[0,500]
+};
+function _rowNorm(key, v, u) {
+  u = u || '';
+  var mol = /mol\/\s*[lL]/i.test(u), umol = /[uµ]mol/i.test(u);
+  switch (key) {
+    case 'hgb':        if (/g\/\s*d[lL]/.test(u) || v < 25) v *= 10; break;
+    case 'hct':        if (v <= 1) v *= 100; break;
+    case 'albumin':    if (/g\/\s*[lL]\b/.test(u) && !/d[lL]/.test(u) || v > 15) v /= 10; break;
+    case 'creatinine': if (umol || v > 30) v /= 88.4; break;
+    case 'bun': case 'bun_pre': case 'bun_post': if (mol) v *= 2.8; break;
+    case 'uricacid':   if (umol || v > 30) v /= 59.48; break;
+    case 'totalchol': case 'ldl': case 'hdl': if (mol) v *= 38.67; break;
+    case 'tg':         if (mol) v *= 88.57; break;
+    case 'fbs':        if (mol) v *= 18.016; break;
+    case 'calcium':    if (mol || v < 4) v *= 4.008; break;
+    case 'phosphorus': if (mol) v *= 3.097; break;
+    case 'magnesium':  if (mol) v *= 2.431; break;
+    case 'vitd':       if (/nmol/i.test(u)) v /= 2.496; break;
+    case 'hba1c':      if (/mmol\/\s*mol/i.test(u) || v > 20) v = v / 10.929 + 2.15; break;
+    case 'platelets':  if (v > 2500) v /= 1000; break;
+    case 'wbc':        if (v > 300) v /= 1000; break;
+  }
+  return v;
+}
+function _rowFmt(v) {
+  var d = Math.abs(v) >= 100 ? 0 : (Math.abs(v) >= 10 ? 1 : (Math.abs(v) >= 1 ? 2 : 3));
+  return String(parseFloat(v.toFixed(d)));
+}
+/* Numeric result tokens after the label, with the text that follows each (its unit). */
+function _rowTokens(s) {
+  s = s.replace(/(\d),(\d{3})\b/g, '$1$2').replace(/\s*\|\s*/g, '  ');
+  var out = [], rx = /(^|[\s:=|(])([<>≤≥]=?\s*)?(\d+(?:\.\d+)?)(?=$|[\s%a-zA-Zµ\/x×*^)|,])/g, m;
+  while ((m = rx.exec(s)) !== null) {
+    var end = m.index + m[0].length, after = s.substring(end, end + 16);
+    var isRange = /^\s*(?:-|–|~|to\b)\s*\d/.test(after) || /\d\s*(?:-|–|~)\s*$/.test(s.substring(Math.max(0, m.index - 4), m.index + m[1].length));
+    out.push({ v: parseFloat(m[3]), raw: m[3], unit: after, thresh: !!m[2], range: isRange, pos: m.index });
+  }
+  return out;
+}
+function _rowLabelSplit(text) {
+  var m = /(^|[\s:=|])[<>≤≥]?\d+(?:\.\d+)?(?=$|[\s%a-zA-Zµ\/x×*^)|,])/.exec(text);
+  return m ? m.index + m[1].length : text.length;
+}
+function parseLabRows(rows) {
+  var fields = {}, urineSec = false, lastPage = -1;
+  var UR_ROW = /^(?:urine\s+)?(?:rbc|red\s+(?:blood\s+)?cells?)\b/i, UW_ROW = /^(?:urine\s+)?(?:wbc|pus\s+cells?|white\s+(?:blood\s+)?cells?)\b/i;
+  rows.forEach(function(r){
+    if (r.page !== lastPage) { urineSec = false; lastPage = r.page; }
+    var text = r.text;
+    if (/urinalysis|clinical\s+microscopy|routine\s+urine|urine\s+(?:exam|analysis|microscopy)|microscopic\s+exam/i.test(text)) urineSec = true;
+    else if (/^(?:[|\s]*)(?:hematology|clinical\s+chemistry|blood\s+chemistry|chemistry|serology|immunology|lipid\s+profile|complete\s+blood\s+count)\b/i.test(text)) urineSec = false;
+    var cut = _rowLabelSplit(text);
+    var label = text.substring(0, cut).replace(/[|:]+\s*$/, '').trim();
+    var rest = text.substring(cut);
+    if (!label || label.length > 70 || !rest) return;
+    var hpf = /h\.?p\.?f|l\.?p\.?f/i.test(text);
+    /* Urinalysis rows */
+    if (urineSec || hpf) {
+      var key = null;
+      if (/^(?:urine\s+)?(?:sp(?:ecific)?\.?\s*gr(?:avity)?|s\.?\s*g\.?)\b/i.test(label)) key = 'urine_sg';
+      else if (/^(?:urine\s+)?(?:ph|reaction\s*\(?ph\)?)\b/i.test(label)) key = 'urine_ph';
+      else if (UR_ROW.test(label)) key = 'urine_rbc_hpf';
+      else if (UW_ROW.test(label)) key = 'urine_wbc_hpf';
+      if (key) {
+        if (fields[key] != null) return;
+        var rg = rest.match(/^[\s|:]*(\d+(?:\.\d+)?)\s*(?:-|–|to)\s*(\d+(?:\.\d+)?)/);
+        var tk = _rowTokens(rest)[0];
+        var val = rg ? parseFloat(rg[2]) : (tk ? tk.v : null);
+        var lim = _ROW_RANGE[key];
+        if (val != null && val >= lim[0] && val <= lim[1]) fields[key] = String(val);
+        return;
+      }
+      if (urineSec) return;   // other urine rows (protein, glucose, casts) are not serum values
+    }
+    FIELD_PATTERNS.forEach(function(rule){
+      var key = rule.key;
+      if (fields[key] != null || !_ROW_RANGE[key]) return;
+      if (/^urine_/.test(key)) return;
+      var lm = rule.rx.exec(label) || (_ROW_ALIAS[key] ? _ROW_ALIAS[key].exec(label) : null);
+      if (!lm) return;
+      if ((key === 'rbc' || key === 'wbc' || key === 'platelets') && /width|distribution|morpholog|volume|indices/i.test(label)) return;
+      if (!_ROW_OK_PREFIX.test(label.substring(0, lm.index))) return;
+      if (key !== 'uacr' && key !== 'upcr' && !((key === 'mcv' || key === 'rdw') && _ROW_ALIAS[key].test(label)) && _ROW_EXCLUDE.test(label)) return;
+      var toks = _rowTokens(rest).filter(function(tk, i){ return !tk.range && (!tk.thresh || i === 0); });
+      if (!toks.length) return;
+      var pick = null;
+      var unitStart = function(re){ return function(tk){ return re && new RegExp('^\\s*(?:' + re.source + ')', 'i').test(tk.unit); }; };
+      if (rule.cvU) pick = toks.filter(unitStart(rule.cvU))[0];
+      if (!pick && rule.siU) pick = toks.filter(unitStart(rule.siU))[0];
+      var order = pick ? [pick].concat(toks) : toks;
+      var lim = _ROW_RANGE[key];
+      for (var i = 0; i < order.length; i++) {
+        var v = _rowNorm(key, order[i].v, order[i].unit);
+        if (v >= lim[0] && v <= lim[1]) { fields[key] = v === order[i].v ? String(parseFloat(order[i].raw)) : _rowFmt(v); break; }
+      }
+    });
+  });
+  return fields;
+}
+
+/* Patient details from header rows: "Label : value" in a cell, the next cell,
+   or the cell directly below (table-style headers). Dates read month-first. */
+function _rowPatientInfo(rows) {
+  var res = { name: null, age: null, sex: null, date: null }, dateRank = 99;
+  var _D = /([A-Za-z]{3,9}\.?\s+\d{1,2},?\s+\d{4}|\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}|\d{4}[\/-]\d{2}[\/-]\d{2}|\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}|[A-Za-z]{3}[\/-]\d{1,2}[\/-]\d{4})/;
+  function below(ri, cell) {
+    for (var k = ri + 1; k <= ri + 2 && k < rows.length; k++) {
+      if (rows[k].page !== rows[ri].page) break;
+      var best = null, bo = -1;
+      rows[k].cells.forEach(function(c){
+        var ov = Math.min(c.x2, cell.x2 + 30) - Math.max(c.x, cell.x - 4);
+        if (ov > bo) { bo = ov; best = c; }
+      });
+      if (best && bo > 0) return /:\s*$|^(?:dob|age|sex|gender|date|physician|patient|name|requesting|ward|room)\b/i.test(best.s) ? '' : best.s;
+    }
+    return '';
+  }
+  var LABEL = /^(?:patient(?:'s)?\s+name|name|age\s*\/\s*sex|age|sex|gender|date[\w\s\/]*|collection\s+date|specimen\s+date)\s*[:\-]?$/i;
+  rows.forEach(function(r, ri){
+    if (r.page > 1) return;
+    r.cells.forEach(function(c, ci){
+      var m = c.s.match(/^((?:patient(?:'s)?\s+)?name|age\s*\/\s*sex|age|sex|gender|(?:date|time)(?:\s*\/\s*(?:time|date))?(?:\s+(?:of\s+)?(?:collection|collected|requested|request|released|received|reported|report|result|specimen|birth))?|(?:collection|specimen|report|release)\s+date|[a-z][a-z ]{0,30}\bdate)\b\s*[:\-]?\s*(.*)$/i);
+      if (!m) return;
+      var lab = m[1].toLowerCase().replace(/\s+/g, ' '), val = m[2].replace(/^[:\-\s]+/, '');
+      if (!val) {
+        var nx = r.cells[ci + 1] ? r.cells[ci + 1].s.replace(/^[:\-\s]+/, '') : '';
+        if (nx === '' && r.cells[ci + 2]) nx = r.cells[ci + 2].s;
+        if (nx && !LABEL.test(nx) && !/^(?:patient|name|age|sex|gender|date|dob|requesting|physician)\b/i.test(nx)) val = nx;
+        else val = below(ri, c);
+      }
+      if (!val) return;
+      if (/name/.test(lab) && !res.name && !/date|birth/.test(lab)) {
+        var nm = val.match(/^([A-Za-zÑñ][A-Za-zÑñ.,'\- ]{2,60})/);
+        if (nm && !/^(?:dr\.?|doctor|physician|requesting)/i.test(nm[1]) && /[A-Za-z]{2}/.test(nm[1])) res.name = nm[1].replace(/\s+/g, ' ').trim();
+      } else if (/^age\s*\/\s*sex/.test(lab)) {
+        var as = val.match(/^(\d{1,3})\s*(?:y(?:rs?|ears?)?\.?)?\s*[\/ ]\s*(male|female|m|f)\b/i);
+        if (as) { if (!res.age) res.age = as[1]; if (!res.sex) res.sex = as[2][0].toUpperCase(); }
+        else { var a2 = val.match(/^(\d{1,3})\b/); if (a2 && !res.age) res.age = a2[1]; }
+      } else if (lab === 'age') {
+        var a = val.match(/^(\d{1,3})\b/); if (a && !res.age && +a[1] > 0 && +a[1] < 121) res.age = a[1];
+      } else if (lab === 'sex' || lab === 'gender') {
+        var sx = val.match(/^(male|female|m|f)\b/i); if (sx && !res.sex) res.sex = sx[1][0].toUpperCase();
+      } else if (/date/.test(lab) && !/birth|dob/.test(lab)) {
+        var rank = /collect|specimen/.test(lab) ? 1 : /request/.test(lab) ? 2 : /releas|report|result/.test(lab) ? 3 : /receiv/.test(lab) ? 4 : 5;
+        var dm = val.match(_D);
+        if (dm && rank < dateRank) { var iso = _parseToISODate(dm[1].replace(/\./, ''), true); if (iso) { res.date = iso; dateRank = rank; } }
+      }
+    });
+  });
+  return res;
 }
 
 function handlePDFFiles(files) {
