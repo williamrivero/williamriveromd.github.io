@@ -528,7 +528,7 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    "Expand all" open them). **A new tile in a sub-grouped section goes inside the matching
    sub-group**, not directly under `.section-body`; add any new sidebar jump link by hand.
    **Library intro blocks (Nov 21 2026).** Above the sections: "New this month" (`#lib-new`, filled in the browser from
-`latest_guides.json`, guides first published in the current calendar month, Manila time, so it resets on the 1st; until that month's first new guide it shows last month's as "New last month"; hides when both are empty), "Clinical tools", "Printable handouts"
+`latest_guides.json`, guides first published in the last 30 days; hides when none), "Clinical tools", "Printable handouts"
 (8 hand-picked downloads with first-page thumbnails in `images/downloads/<name>.webp`, made with `pdftoppm -r 60`, 240 px
 wide; "See all N downloads" opens `#sec-downloads`) and "How these guides are made". Their CSS is in
 `<style id="lib-tools-css">`. **This page's dark mode is `body.dark-mode`, not `html[data-theme]`**; write both selectors.

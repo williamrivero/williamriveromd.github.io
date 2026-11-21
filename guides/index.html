@@ -6844,21 +6844,17 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 <script id="lib-new-js">
-/* New this month: guides first published this calendar month (Manila time), from latest_guides.json (written by generate_latest_guides.py) */
+/* New this month: guides first published in the last 30 days, from latest_guides.json (written by generate_latest_guides.py) */
 (function(){var box=document.getElementById('lib-new');if(!box||!window.fetch)return;
 var CAT={nephrology:'Nephrology',dialysis:'Dialysis',critical:'AKI & critical care',internal:'Internal medicine',infections:'Infections',medicines:'Medicines & supplements',nutrition:'Nutrition',lifestyle:'Lifestyle',advanced:'Advanced topics',perspectives:'Perspectives',philippines:'Philippine access',download:'Downloads'};
 var ta=document.createElement('textarea'),dec=function(s){ta.innerHTML=String(s);return ta.value;};
 var esc=function(s){return dec(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 fetch('/latest_guides.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():[];}).then(function(d){
-  /* Calendar month in Philippine time: resets on the 1st. Until the month's first new guide, last month's list shows. */
-  var m=new Date(Date.now()+8*36e5),cur=m.toISOString().slice(0,7);m.setUTCDate(1);m.setUTCMonth(m.getUTCMonth()-1);var prev=m.toISOString().slice(0,7);
-  var inMonth=function(k){return (d||[]).filter(function(x){return x.kind==='new'&&String(x.published).slice(0,7)===k;});};
-  var key=cur,items=inMonth(cur);if(!items.length){key=prev;items=inMonth(prev);}
+  var cut=Date.now()-30*864e5,items=(d||[]).filter(function(x){return x.kind==='new'&&Date.parse(x.published)>=cut;});
   items.sort(function(a,b){return Date.parse(b.published)-Date.parse(a.published);});
   if(!items.length)return;
-  var n=items.length,mname=new Date(key+'-15T00:00:00Z').toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'UTC'});
-  if(key!==cur)box.querySelector('.lib-new-eyebrow').lastChild.textContent='New last month';
-  document.getElementById('lib-new-h').innerHTML=n+(n===1?' new guide':' new guides')+' <span>in '+mname+'</span>';
+  var n=items.length;
+  document.getElementById('lib-new-h').innerHTML=n+(n===1?' new guide':' new guides')+' <span>in the last 30 days</span>';
   if(n<=6)document.getElementById('lib-new-all').hidden=true;
   document.getElementById('lib-new-list').innerHTML=items.slice(0,6).map(function(x){
     var dt=new Date(x.published),c=/^#[0-9a-f]{3,8}$/i.test(x.color||'')?x.color:'#1a6b72',img=x.thumb?' style="background-image:url(\''+esc(x.thumb)+'\')"':'';
