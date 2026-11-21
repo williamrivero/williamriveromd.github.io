@@ -527,7 +527,13 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    jump links and
    "Expand all" open them). **A new tile in a sub-grouped section goes inside the matching
    sub-group**, not directly under `.section-body`; add any new sidebar jump link by hand.
-   **Search.** The search bar matches each tile's title, teaser and `data-text`, plus the
+   **Library intro blocks (Nov 21 2026).** Above the sections: "New this month" (`#lib-new`, filled in the browser from
+`latest_guides.json`, guides first published in the last 30 days; hides when none), "Clinical tools", "Printable handouts"
+(8 hand-picked downloads with first-page thumbnails in `images/downloads/<name>.webp`, made with `pdftoppm -r 60`, 240 px
+wide; "See all N downloads" opens `#sec-downloads`) and "How these guides are made". Their CSS is in
+`<style id="lib-tools-css">`. **This page's dark mode is `body.dark-mode`, not `html[data-theme]`**; write both selectors.
+The "Start Here" pathways include an "I'm a clinician" tile (`PATHWAYS.clinician`).
+**Search.** The search bar matches each tile's title, teaser and `data-text`, plus the
    terms in `guides/search-index.json` (fetched once on first use of the search box). That
    file is built by `generate_search_index.py` from inside each guide: headings, nav pills,
    glossary terms, figure descriptions, table headers, bold terms, meta keywords, and the
@@ -588,7 +594,7 @@ interpreter/atlas tools, and printable log/blank sheets. Run it (or rely on
 it renders a compact icon row under the hero byline (`.hero-meta`; under the first `<h1>` if a
 guide has none) and a labeled **"Share this guide"** panel where the content ends (before the
 glossary, else the references accordion). Networks: Facebook, X, LinkedIn, Bluesky, WhatsApp,
-Viber (opens the app / Viber Desktop; on computers it also copies the link), Email, Copy link, plus the phone's native share sheet. It shares
+Viber (opens the app / Viber Desktop; on computers it also copies the link), Email, Copy link, plus the phone's native share sheet. Under the end panel and the side rail's Share drawer it adds a **"Report a correction"** line (Nov 21 2026): an email to admin@renalcarematters.com (address assembled in JS) with the page title and URL prefilled, EN/TL/CEB/KAP labels. It shares
 the page's canonical URL, carries EN/TL/CEB/KAP labels, injects its own scoped `.rcm-share`
 styles (white-on-brand buttons all ≥ 4.5:1), and hides in print. `patch_share_buttons.py`
 installs the tag idempotently using the **same eligibility rules as the Symptom-Checker

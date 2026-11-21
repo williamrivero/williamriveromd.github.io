@@ -12,6 +12,8 @@
  * the browser supports it (most phones).
  * Shares the page's canonical URL. Styles are injected here (scoped .rcm-share
  * classes) so patch_master_css.py never touches them. Hidden in print.
+ * Under both labeled grids: a "Report a correction" email link (subject and
+ * body prefilled with the page title and URL) to admin@renalcarematters.com.
  * Installed on guides by patch_share_buttons.py. Icon paths: Simple Icons (CC0).
  */
 (function () {
@@ -35,6 +37,7 @@
   var MAIL = svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>', true);
   var LINK = svg('<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>', true);
   var MORE = svg('<path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>', true);
+  var FLAG = svg('<path d="M4 22V4"/><path d="M4 4h13l-2 4 2 4H4"/>', true);
   var CHECK = svg('<path d="m5 12 5 5 9-10"/>', true);
 
   function meta(sel) { var m = document.querySelector(sel); return m ? (m.getAttribute('content') || m.getAttribute('href') || '') : ''; }
@@ -75,7 +78,14 @@
     'html[data-theme="dark"] .rcm-share-panel h2,body.dark-mode .rcm-share-panel h2{color:#e6ecf5;border-bottom-color:#2c3a52;}',
     'html[data-theme="dark"] .rcm-share-big[data-net="x"],body.dark-mode .rcm-share-big[data-net="x"]{background:#000;box-shadow:inset 0 0 0 1px #3a4458;}',
     '@media (max-width:520px){.rcm-share-grid{grid-template-columns:1fr 1fr;}.rcm-share-big{font-size:.72rem;padding:0 10px;}}',
-    '@media print{.rcm-share,.rcm-share-panel{display:none!important;}}'
+    '.rcm-report{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin:12px 0 0;font:500 .9rem/1.45 Manrope,Inter,system-ui,sans-serif;color:var(--text-mid,#3c4a5e);}',
+    '.rcm-report svg{width:16px;height:16px;flex:none;color:#b45309;}',
+    '.rcm-report a{color:#1a5a8a;font-weight:700;text-decoration:underline;text-underline-offset:2px;}',
+    '.rcm-report a:hover,.rcm-report a:focus-visible{color:#0e4a50;}',
+    'html[data-theme="dark"] .rcm-report,body.dark-mode .rcm-report{color:#c9d3e1;}',
+    'html[data-theme="dark"] .rcm-report svg,body.dark-mode .rcm-report svg{color:#f5b971;}',
+    'html[data-theme="dark"] .rcm-report a,body.dark-mode .rcm-report a{color:#9cc8f0;}',
+    '@media print{.rcm-report,.rcm-share,.rcm-share-panel{display:none!important;}}'
   ].join('\n');
 
   function langSpans(map) {
@@ -148,6 +158,20 @@
     return '<' + tag + attrs + ' class="' + (big ? 'rcm-share-big' : 'rcm-share-btn') + '" data-net="' + n.k + '" style="--rcm-c:' + n.c + '" aria-label="' + label + '"' + (big ? '' : ' title="' + label + '"') + '>' + icon + (big ? n.n : '') + '</' + tag + '>';
   }
 
+  // "Report a correction": an email to the site with the page prefilled.
+  // The address is assembled here (not written out) to keep it from scrapers.
+  function report() {
+    var to = ['admin', 'renalcarematters.com'].join('@');
+    var href = 'mailto:' + to + '?subject=' + encodeURIComponent('Correction: ' + title) +
+      '&body=' + encodeURIComponent('Page: ' + url + '\n\nWhat looks wrong:\n\n\nWhat it should say (and a source, if you have one):\n\n');
+    var p = document.createElement('p'); p.className = 'rcm-report';
+    p.innerHTML = FLAG + '<span>' + langSpans({ en: 'Spotted an error or out-of-date advice?', tl: 'May nakita kang mali o lumang payo?',
+        ceb: 'Nakakita kag sayop o daan nang tambag?', kap: 'Atin kang akit a mali o lumang advice?' }) + '</span>' +
+      '<a href="' + href.replace(/"/g, '&quot;') + '">' + langSpans({ en: 'Report a correction', tl: 'Iulat ang mali',
+        ceb: 'I-report ang sayop', kap: 'I-report ing mali' }) + '</a>';
+    return p;
+  }
+
   function init() {
     if (document.querySelector('.rcm-share, .rcm-share-panel')) return;
     var st = document.createElement('style'); st.id = 'rcm-share-css'; st.textContent = CSS;
@@ -174,7 +198,7 @@
       renderGrid: function (container) {
         var g = document.createElement('div'); g.className = 'rcm-share-grid';
         g.innerHTML = list.map(function (n) { return item(n, true); }).join('');
-        container.appendChild(g); wire(g); return g;
+        container.appendChild(g); wire(g); container.appendChild(report()); return g;
       }
     };
 
@@ -188,6 +212,7 @@
       p.innerHTML = '<h2>' + (isCalc ? 'Share this calculator'
         : langSpans({ en: 'Share this guide', tl: 'Ibahagi ang gabay na ito', ceb: 'Ipaambit kini nga giya', kap: 'Ibahagi me ing gabay a iti' })) + '</h2>' +
         '<div class="rcm-share-grid">' + list.map(function (n) { return item(n, true); }).join('') + '</div>';
+      p.appendChild(report());
       sig.parentNode.insertBefore(p, sig);
       wire(p);
     }
