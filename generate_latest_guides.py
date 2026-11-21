@@ -60,7 +60,7 @@ def image_dims(project_dir: Path, rel_thumb: str):
     number would)."""
     if Image is None or not rel_thumb:
         return None
-    path = project_dir / "images" / rel_thumb.rsplit("/", 1)[-1]
+    path = project_dir / "images" / rel_thumb.split("?", 1)[0].rsplit("/", 1)[-1]
     if not path.exists():
         return None
     try:
@@ -186,6 +186,18 @@ def local_thumb(project_dir: Path, og_image: str, stem: str) -> str:
     return f"../images/{base}"
 
 
+def versioned(project_dir: Path, rel_thumb: str) -> str:
+    """Append ?v=<content hash> so a replaced image gets a new URL. Images are
+    browser-cached for 30 days (_headers), so without this a device that saw an
+    older version of a thumbnail keeps showing it (Nov 21 2026: an iPad showed a
+    stale, differently shaped card for one guide)."""
+    import hashlib
+    f = project_dir / "images" / rel_thumb.rsplit("/", 1)[-1]
+    if not f.exists():
+        return rel_thumb
+    return rel_thumb + "?v=" + hashlib.md5(f.read_bytes()).hexdigest()[:8]
+
+
 def file_to_section(index_html: str) -> dict:
     """Walk guides/index.html and map each tiled guide file → its data-section.
 
@@ -266,7 +278,7 @@ def collect(project_dir: Path):
             except ValueError:
                 pass
         section = file_section.get(path.name, "")
-        thumb = local_thumb(project_dir, og_image, path.stem)
+        thumb = versioned(project_dir, local_thumb(project_dir, og_image, path.stem))
         dims = image_dims(project_dir, thumb)
         rows.append({
             "file": path.name,
