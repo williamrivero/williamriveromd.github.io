@@ -529,10 +529,10 @@ Invariants every guide must satisfy. The `/setup-guide` command runs the scripts
    sub-group**, not directly under `.section-body`; add any new sidebar jump link by hand.
    **Library intro blocks (Nov 21 2026).** Above the sections: "New this month" (`#lib-new`, filled in the browser from
 `latest_guides.json`, guides first published in the last 30 days; hides when none), "Clinical tools", "Printable handouts"
-(8 hand-picked downloads with first-page thumbnails in `images/downloads/<name>.webp`, made with `pdftoppm -r 60`, 240 px
+(10 hand-picked downloads with first-page thumbnails in `images/downloads/<name>.webp`, made with `pdftoppm -r 60`, 240 px
 wide; "See all N downloads" opens `#sec-downloads`) and "How these guides are made". Their CSS is in
 `<style id="lib-tools-css">`. **This page's dark mode is `body.dark-mode`, not `html[data-theme]`**; write both selectors.
-The "Start Here" pathways include an "I'm a clinician" tile (`PATHWAYS.clinician`).
+The "Start Here" pathways include an "I'm a clinician" tile (`PATHWAYS.clinician`). The "Most-used tools & guides" spotlight and "Featured calculators" blocks were removed (Nov 21 2026); "How these guides are made" sits right after the intro paragraph, 4 panels per row.
 **Search.** The search bar matches each tile's title, teaser and `data-text`, plus the
    terms in `guides/search-index.json` (fetched once on first use of the search box). That
    file is built by `generate_search_index.py` from inside each guide: headings, nav pills,
