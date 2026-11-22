@@ -1048,9 +1048,16 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   (meal value `between`: mid-morning, mid-afternoon, bedtime) (Schiller 1989; Recker 1985 for carbonate in low stomach acid);
   the sig sets it ("binder", "with meals", "supplement", "between meals"), else TID/QID = binder, otherwise supplement. Placement notes show the tag only (Practice default / Evidence), never a person's name (Dr. Rivero, Nov 21 2026). Two "Try a sample prescription" buttons (fictional hemodialysis and non-dialysis CKD regimens, `SAMPLES` in the JS) fill the routine and the medicine list and build the schedule. **Print (Nov 21 2026):** building a schedule also renders a print-only patient sheet (`#ms-sheet`, classes `mss-*`): title, date, blank Name / Prepared by lines, the routine and dialysis days, one table per day type (Time | Medicine and dose with a tick box | How to take), Other medicines, and a short footer. Once it exists, print hides everything else on the page (`:has(#ms-sheet)`); each day table stays on one page. **Pill count (Nov 21 2026):** a "Pill count" card (days to cover, default 30, localStorage `wgmr-ms-pcdays`) lists per dose (tablets/capsules/sachets read from the Dose column; 1 assumed and starred when missing), doses a day, and the total for N days counted on the real calendar from today with the chosen dialysis days (post-HD and 3x-weekly doses fall on dialysis days, weekly on Mondays); injections and unit-given medicines count as doses. Pills a day is shown for dialysis and non-dialysis days. The print sheet and the remarks text carry the same count. "dose after dialysis" also comes from APPROVED kidney tiles whose HD text says so
   (`scheduler_data()` excludes avoid/no-data tiles and negative phrasing). Approved under delegated sign-off (label text only).
-- **Weekly update line** (Drug Index hero, Nov 21 2026): under "Last updated", `.dd-sched` states the CI schedule (every
-  Monday 2:00 to 3:00 AM Philippine time: `drugdb-labels` 02:00, `drugdb-eu-labels` 02:30, `drugdb-pages` 03:00) and a
-  "Next update" date computed in the browser (next Sunday 19:00 UTC). If a workflow cron changes, update this text too.
+- **Weekly update chain** (Nov 23 2026): `drugdb-labels` runs Mondays 01:47 Manila (Sunday 17:47 UTC, off the hour:
+  GitHub delayed the 02:00 run by 5 h and dropped the :30 and :00 runs on Nov 23) and, when it finishes, starts
+  `drugdb-eu-labels` with `gh workflow run`, which starts `drugdb-pages` (a push made with the workflow token does not
+  trigger other workflows, so the labels never reached the pages before). Their own crons (EU 05:17, pages 07:41 Manila)
+  are fallbacks; all three need `actions: write`. The hero `.dd-sched` line says "every Monday morning ... starts at
+  1:47 AM" and "Next update" is computed in the browser (next Sunday 17:47 UTC). If a cron changes, update both.
+- **Saved pages stay on the current layout** (Nov 23 2026): the offline manifest hash ignores asset names, so a saved
+  page kept the drugdb.<hash>.css/js it was saved with (devices that downloaded Dosis before Nov 20 still showed the
+  rolled-back foldable layout offline or on slow networks). The worker's `fresh()` rewrites every saved copy it serves to
+  the current CSS/JS names (and drops `viewport-fit=cover`); no re-download needed.
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come

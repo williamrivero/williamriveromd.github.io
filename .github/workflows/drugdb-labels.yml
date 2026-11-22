@@ -25,10 +25,11 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: "0 18 * * 0"   # Mondays 02:00 Asia/Manila
+    - cron: "47 17 * * 0"   # Mondays 01:47 Asia/Manila (off the hour: GitHub delays or drops :00/:30 runs); chains EU labels -> pages
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: drugdb-labels
@@ -77,3 +78,9 @@ jobs:
             sleep $((i * 10))
           done
           exit 1
+      - name: Start the EU label refresh (it starts the page rebuild)
+        # A push made with the workflow token does not trigger other workflows, so chain them explicitly.
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run drugdb-eu-labels.yml -R "$GITHUB_REPOSITORY" --ref main

@@ -23,10 +23,11 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: "30 18 * * 0"   # Mondays 02:30 Asia/Manila, 30 minutes after drugdb-labels (US)
+    - cron: "17 21 * * 0"   # fallback, Mondays 05:17 Asia/Manila; normally started by drugdb-labels when it finishes
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: drugdb-eu-labels
@@ -82,3 +83,9 @@ jobs:
             sleep $((i * 10))
           done
           exit 1
+      - name: Start the page rebuild
+        # A push made with the workflow token does not trigger drugdb-pages, so start it explicitly.
+        if: success() && (github.event_name != 'workflow_dispatch' || inputs.mode == 'run')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run drugdb-pages.yml -R "$GITHUB_REPOSITORY" --ref main
