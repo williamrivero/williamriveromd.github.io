@@ -5022,7 +5022,7 @@ Search by brand, generic, class, indication, manufacturer or registration number
         <a class="dd-app-cta no-print" href="#dd-app" id="dd-app-cta"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="m9 11 3 3 3-3"/><path d="M10.5 18.5h3"/></svg><span class="dd-app-cta-t"><strong>Install Dosis, the Drug Index app</strong><small>Works offline, even with no signal</small></span><svg class="dd-app-cta-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span>
         <p class="dd-sched"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="m9.5 15 2 2 3.5-3.5"/></svg>
-<span><strong>Updated weekly:</strong> every Monday morning, Philippine time (starts at 1:47 AM). US and EU label text is refreshed and every page is rebuilt.<span class="dd-sched-next" hidden> Next update: <time id="dd-next-upd"></time>.</span></span></p></div>
+<span><strong>Updated weekly:</strong> every Monday morning, Philippine time. US and EU label text is refreshed and every page is rebuilt.<span class="dd-sched-next" hidden> Next update: <time id="dd-next-upd"></time>.</span></span></p></div>
     </div></div>
   </div>
 </section>
