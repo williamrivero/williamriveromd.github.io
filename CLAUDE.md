@@ -1052,8 +1052,8 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   GitHub delayed the 02:00 run by 5 h and dropped the :30 and :00 runs on Nov 23) and, when it finishes, starts
   `drugdb-eu-labels` with `gh workflow run`, which starts `drugdb-pages` (a push made with the workflow token does not
   trigger other workflows, so the labels never reached the pages before). Their own crons (EU 05:17, pages 07:41 Manila)
-  are fallbacks; all three need `actions: write`. The hero `.dd-sched` line says "every Monday morning ... starts at
-  1:47 AM" and "Next update" is computed in the browser (next Sunday 17:47 UTC). If a cron changes, update both.
+  are fallbacks; all three need `actions: write`. The hero `.dd-sched` line says "every Monday morning, Philippine time (starts at
+  1:47 AM)" and "Next update" is computed in the browser (next Sunday 17:47 UTC). If a cron changes, update both.
 - **Saved pages stay on the current layout** (Nov 23 2026): the offline manifest hash ignores asset names, so a saved
   page kept the drugdb.<hash>.css/js it was saved with (devices that downloaded Dosis before Nov 20 still showed the
   rolled-back foldable layout offline or on slow networks). The worker's `fresh()` rewrites every saved copy it serves to
