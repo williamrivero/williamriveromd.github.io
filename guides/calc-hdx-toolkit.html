@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <script src="/assets/calc-app.js?v=7" defer></script>
 <!-- CALC-APP-END -->
-<title>HDx &amp; Convection Toolkit — Albumin Trend, Budget Impact, β2M Reduction Ratio, HDF Convection</title>
+<title>HDx &amp; Convection Toolkit — Albumin Trend, Budget Impact, β2M Reduction Ratio, HDF Convection, Session Audit &amp; Cost</title>
 <meta name="description" content="Four dialysis implementation calculators: serum albumin trend after a dialyzer switch, expanded hemodialysis (HDx) budget impact and break-even dialyzer price in pesos, β2-microglobulin reduction ratio with extracellular-volume correction, and post-dilution hemodiafiltration convection volume audit against the CONVINCE 23 L benchmark.">
 <meta name="keywords" content="albumin trend calculator, dialyzer switch albumin, expanded hemodialysis budget impact, HDx break-even price, medium cut-off dialyzer cost, beta-2 microglobulin reduction ratio, Bergstrom correction, convection volume calculator, hemodiafiltration 23 L, CONVINCE, dialysis calculator Philippines">
 <meta name="author" content="W Rivero, MD, FPCP, DPSN">
@@ -2291,6 +2291,9 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <a class="nav-pill" href="#budget">Budget &amp; Break-even</a>
 <a class="nav-pill" href="#rr">β2M Reduction Ratio</a>
 <a class="nav-pill" href="#hdf">HDF Convection</a>
+<a class="nav-pill" href="#hdf-audit">HDF Session Audit</a>
+<a class="nav-pill" href="#hdf-cost">HDF Cost</a>
+<a class="nav-pill" href="#hdf-feasibility">HDF Feasibility</a>
 <a class="nav-pill" href="#evidence">Formulae &amp; Evidence</a>
 </div>
 </nav>
@@ -2302,6 +2305,9 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <li><strong>Budget &amp; break-even:</strong> enter annual eligible sessions, the share you expect to switch, dialyzer prices in pesos, and any other incremental costs or reimbursement. All inputs are your own local quotes.</li>
 <li><strong>β2M reduction ratio:</strong> enter paired pre- and post-session β2-microglobulin from the same assay; add pre/post weights to apply the extracellular-volume correction.</li>
 <li><strong>HDF convection:</strong> choose the dilution mode and enter substitution plus net ultrafiltration, or a machine-reported total.</li>
+<li><strong>HDF session audit:</strong> add one row per intended session in a window (mode, volume entry, optional minutes and reason); confirm what a machine total represents.</li>
+<li><strong>HDF cost:</strong> patients total a quoted premium and travel; units model incremental budget and break-even receipts with their own figures.</li>
+<li><strong>HDF feasibility:</strong> an education projection from effective minutes, mean substitution flow and net ultrafiltration.</li>
 </ol>
 <p style="font-size:.92rem;color:var(--text-muted);">All computation runs in your browser; no values are stored or transmitted. Use synthetic or de-identified values when teaching.</p>
 </div>
@@ -2312,7 +2318,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </div></details>
 
 <section class="section" id="albumin">
-<div class="section-tag">Interactive Tool · 1 of 4</div>
+<div class="section-tag">Interactive Tool · 1 of 7</div>
 <h2>Albumin Trend After a Dialyzer Switch</h2>
 <p>Follows the change in predialysis serum albumin concentration relative to a pre-switch baseline. Pooled trials show an average dip of about 0.1 g/dL in the first 24 weeks with MCO membranes, recovering thereafter; larger or persistent falls warrant a search for other causes.</p>
 <div class="calc-wrap">
@@ -2328,7 +2334,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </section>
 
 <section class="section" id="budget">
-<div class="section-tag">Interactive Tool · 2 of 4</div>
+<div class="section-tag">Interactive Tool · 2 of 7</div>
 <h2>HDx Budget Impact and Break-even Price</h2>
 <p>Clinic perspective, one currency per scenario (Philippine peso by default). Separates clinic cost from payer reimbursement and patient charges. Enter only locally sourced, dated quotes.</p>
 <div class="calc-wrap">
@@ -2349,7 +2355,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </section>
 
 <section class="section" id="rr">
-<div class="section-tag">Interactive Tool · 3 of 4</div>
+<div class="section-tag">Interactive Tool · 3 of 7</div>
 <h2>β2-Microglobulin Reduction Ratio</h2>
 <p>Session reduction ratio for paired pre- and post-dialysis β2-microglobulin (β2M) from the same assay and session, with optional correction of the post-dialysis value for extracellular-volume contraction (Bergström formula, extracellular volume ≈ 20% of post-dialysis weight).</p>
 <div class="calc-wrap">
@@ -2366,7 +2372,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </section>
 
 <section class="section" id="hdf">
-<div class="section-tag">Interactive Tool · 4 of 4</div>
+<div class="section-tag">Interactive Tool · 4 of 7</div>
 <h2>HDF Delivered Convection Audit</h2>
 <p>Total convection volume for a post-dilution online HDF session, compared with the ≥ 23 L/session eligibility threshold and 25.3 L mean delivered volume in the CONVINCE trial.</p>
 <div class="calc-wrap">
@@ -2382,6 +2388,64 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </div>
 </section>
 
+<section class="section" id="hdf-audit">
+<div class="section-tag">Interactive Tool · 5 of 7</div>
+<h2>Delivered HDF Session Audit</h2>
+<p>Longitudinal view of delivered convection over a window of intended HDF sessions: is high-volume delivery sustained, and why do sessions fall short? One row per intended session; no patient identifiers. Entries stay in this browser tab only.</p>
+<div class="calc-wrap">
+<div class="table-wrap"><table class="lab-table" id="aud-table"><thead><tr><th>#</th><th>Date</th><th>Mode</th><th>Volume entry</th><th>Total L</th><th>Subst. L</th><th>Net UF L</th><th>Min</th><th>Reason if short</th><th></th></tr></thead><tbody id="aud-rows"></tbody></table></div>
+<div class="calc-field" style="margin-top:10px;"><label for="aud-complete"><input type="checkbox" id="aud-complete" onchange="calcAud()"> This window is complete (every intended session is entered)</label><div class="field-hint">Needed before the documentation metric (benchmark reached ÷ all intended sessions) is shown.</div></div>
+<p style="margin:10px 0 0;"><button type="button" class="alb-btn" onclick="audAddRow()">+ Add session</button> <button type="button" class="alb-btn alb-btn-alt" onclick="audFixture()">Load example</button> <button type="button" class="alb-btn alb-btn-alt" onclick="audClear()">Reset</button></p>
+<div class="calc-result-box" id="aud-result" style="display:none;" aria-live="polite"></div>
+<p class="calc-disclaimer">⚕ 23 L/session is the post-dilution benchmark used in CONVINCE. Continue to assess fluid removal, adequacy and tolerance. "Machine total" must already include net ultrafiltration: tick the confirmation, and never add net UF to it. Classification uses the unrounded total; pre-, mixed-dilution and fallback HD sessions receive no benchmark classification. Median with range (no interquartile convention is applied).</p>
+</div>
+</section>
+
+<section class="section" id="hdf-cost">
+<div class="section-tag">Interactive Tool · 6 of 7</div>
+<h2>HDF Cost: Patient Premium and Unit Budget</h2>
+<p>Two views in Philippine pesos. The patient view totals a quoted HDF premium. The unit view models incremental budget impact for a facility. Neither view assumes a surcharge, a PhilHealth entitlement or any hospital savings; enter only dated local figures.</p>
+<div class="calc-wrap">
+<h3 class="mdc-sub" style="margin-top:0;">Patient view</h3>
+<div class="calc-grid">
+<div class="calc-field"><label for="hpc-prem">Quoted extra out-of-pocket premium per HDF session (₱)</label><input type="number" id="hpc-prem" min="0" step="1" placeholder="e.g. 500" oninput="calcHpc()"><div class="field-hint">After any offsets; the amount you would pay above standard HD.</div></div>
+<div class="calc-field"><label for="hpc-trav">Extra travel cost per session (₱), optional</label><input type="number" id="hpc-trav" min="0" step="1" placeholder="e.g. 100" oninput="calcHpc()"><div class="field-hint">Leave blank to omit; enter 0 if there is none.</div></div>
+<div class="calc-field"><label for="hpc-n">Expected HDF sessions in the period</label><input type="number" id="hpc-n" min="0" step="1" placeholder="e.g. 12" oninput="calcHpc()"><div class="field-hint">3 sessions a week is about 13 a month.</div></div>
+</div>
+<p style="margin:10px 0 0;"><button type="button" class="alb-btn alb-btn-alt" onclick="hpcFixture()">Load example</button></p>
+<div class="calc-result-box" id="hpc-result" style="display:none;" aria-live="polite"></div>
+<h3 class="mdc-sub">Unit view</h3>
+<div class="calc-grid">
+<div class="calc-field"><label for="huc-n">Annual eligible sessions</label><input type="number" id="huc-n" min="0" step="1" placeholder="e.g. 1000" oninput="calcHuc()"></div>
+<div class="calc-field"><label for="huc-up">Expected uptake (%)</label><input type="number" id="huc-up" min="0" max="100" step="1" placeholder="e.g. 25" oninput="calcHuc()"></div>
+<div class="calc-field"><label for="huc-fix">Annual incremental fixed cost (₱)</label><input type="number" id="huc-fix" min="0" step="1" placeholder="e.g. 100000" oninput="calcHuc()"><div class="field-hint">Equipment, water-system validation, training.</div></div>
+<div class="calc-field"><label for="huc-var">Incremental variable cost per switched session (₱)</label><input type="number" id="huc-var" min="0" step="1" placeholder="e.g. 300" oninput="calcHuc()"><div class="field-hint">Disposables, water, monitoring, staff time.</div></div>
+<div class="calc-field"><label for="huc-rec">Net incremental receipts per switched session (₱)</label><input type="number" id="huc-rec" min="0" step="1" placeholder="e.g. 200" oninput="calcHuc()"><div class="field-hint">Only extra receipts actually expected above the base HD payment; do not re-count the PhilHealth HD benefit.</div></div>
+<div class="calc-field"><label for="huc-uplo">Low / high uptake (%) for sensitivity</label><div style="display:flex;gap:8px;"><input type="number" id="huc-uplo" min="0" max="100" step="1" placeholder="low" oninput="calcHuc()" aria-label="Low uptake"><input type="number" id="huc-uphi" min="0" max="100" step="1" placeholder="high" oninput="calcHuc()" aria-label="High uptake"></div><div class="field-hint">Optional.</div></div>
+<div class="calc-field"><label for="huc-varlo">Low / high variable cost (₱) for sensitivity</label><div style="display:flex;gap:8px;"><input type="number" id="huc-varlo" min="0" step="1" placeholder="low" oninput="calcHuc()" aria-label="Low variable cost"><input type="number" id="huc-varhi" min="0" step="1" placeholder="high" oninput="calcHuc()" aria-label="High variable cost"></div><div class="field-hint">Optional.</div></div>
+</div>
+<p style="margin:10px 0 0;"><button type="button" class="alb-btn alb-btn-alt" onclick="hucFixture()">Load example (hypothetical)</button></p>
+<div class="calc-result-box" id="huc-result" style="display:none;" aria-live="polite"></div>
+<p class="calc-disclaimer">⚕ Patient: premium subtotal = premium × sessions; travel subtotal = travel × sessions. Unit: switched sessions S = eligible × uptake; gross incremental budget = fixed + S × variable; after receipts = gross − S × receipts; break-even receipts per session = variable + fixed ÷ S (S &gt; 0). Switched sessions are a modeled expectation. The CONVINCE euro cost-effectiveness ratios are not converted into peso values here.</p>
+</div>
+</section>
+
+<section class="section" id="hdf-feasibility">
+<div class="section-tag">Interactive Tool · 7 of 7</div>
+<h2>HDF Delivery Feasibility (education)</h2>
+<p>For dialysis staff teaching: projects a post-dilution convection volume from clinician-entered effective minutes, mean substitution flow and assumed net ultrafiltration. It recommends no machine settings and never fills the audit above.</p>
+<div class="calc-wrap">
+<div class="calc-grid">
+<div class="calc-field"><label for="fea-min">Effective HDF minutes</label><input type="number" id="fea-min" min="0" step="1" placeholder="e.g. 240" oninput="calcFea()"></div>
+<div class="calc-field"><label for="fea-qs">Mean substitution flow (mL/min)</label><input type="number" id="fea-qs" min="0" step="1" placeholder="e.g. 90" oninput="calcFea()"></div>
+<div class="calc-field"><label for="fea-uf">Assumed net ultrafiltration (L)</label><input type="number" id="fea-uf" min="0" step="0.1" placeholder="e.g. 2" oninput="calcFea()"></div>
+<div class="calc-field"><label for="fea-conv">Time convention</label><select id="fea-conv" onchange="calcFea()"><option value="active">Active substitution minutes only</option><option value="weighted">Whole session, time-weighted flow including downtime</option></select><div class="field-hint">State which convention the minutes and flow follow.</div></div>
+</div>
+<div class="calc-result-box" id="fea-result" style="display:none;" aria-live="polite"></div>
+<p class="calc-disclaimer">⚕ Projected total (L) = minutes × mean substitution flow ÷ 1,000 + net UF. Post-dilution scenarios only. No recommended blood flow, pump, ultrafiltration or anticoagulation settings are displayed; see the <a href="calc-dialysis-kinetics.html">TMP &amp; filtration fraction calculator</a> for filtration context.</p>
+</div>
+</section>
+
 <details class="mdc-acc" id="evidence"><summary>Formulae &amp; Evidence</summary><div class="mdc-acc-body">
 <h3 class="mdc-sub">Formulae</h3>
 <table class="lab-table"><thead><tr><th>Quantity</th><th>Equation</th></tr></thead><tbody>
@@ -2392,6 +2456,10 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <tr><td>β2M reduction ratio</td><td>100 × (1 − C<sub>post</sub> ÷ C<sub>pre</sub>)</td></tr>
 <tr><td>Volume-corrected C<sub>post</sub></td><td>C<sub>post</sub> ÷ [1 + ΔW ÷ (0.2 × W<sub>post</sub>)]</td></tr>
 <tr><td>HDF convection</td><td>Substitution volume + net UF (post-dilution)</td></tr>
+<tr><td>Audit share at benchmark</td><td>Sessions ≥ 23 L ÷ post-dilution sessions with valid volume (unrounded)</td></tr>
+<tr><td>Patient HDF cost</td><td>(premium + travel) × sessions</td></tr>
+<tr><td>Unit break-even receipts</td><td>C<sub>var</sub> + C<sub>fixed</sub> ÷ S, S = eligible × uptake</td></tr>
+<tr><td>Projected convection</td><td>minutes × Q<sub>s</sub> ÷ 1,000 + net UF</td></tr>
 </tbody></table>
 <h3 class="mdc-sub">Key numbers</h3>
 <ul style="margin:8px 0 0 1.1em;line-height:1.8;">
@@ -2653,6 +2721,127 @@ function calcHDF(){
  if(mode!=='post')html+='<div class="alb-warn">Pre- and mixed-dilution convection volumes are not comparable to the post-dilution benchmark: substitution fluid dilutes blood before the filter, so the same volume removes less solute. Use a mode-specific local target.</div>';
  el.innerHTML=html;el.style.display='block';}
 
+
+/* ── 5. Delivered HDF session audit (P0) ── */
+var AUD_REASONS=[['','—'],['early','Early stop'],['access','Access'],['alarms','Alarms / TMP'],['clot','Circuit clotting'],['intol','Intolerance'],['logistics','Logistics'],['other','Other']];
+var AUD_MODES=[['post','Post-dilution HDF'],['pre','Pre-dilution HDF'],['mixed','Mixed / mid-dilution'],['fallback','HD fallback'],['missed','Missed session']];
+function audOpt(list,v){return list.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===v?' selected':'')+'>'+o[1]+'</option>';}).join('');}
+function audRowHTML(d){d=d||{};var r=d.route||'parts';
+ return '<tr><td class="aud-n"></td><td><input type="date" class="aud-d" value="'+(d.date||'')+'" oninput="calcAud()" aria-label="Session date (optional)"></td>'+
+ '<td><select class="aud-m" onchange="calcAud()" aria-label="Mode">'+audOpt(AUD_MODES,d.mode||'post')+'</select></td>'+
+ '<td><select class="aud-r" onchange="calcAud()" aria-label="Volume entry route"><option value="parts"'+(r==='parts'?' selected':'')+'>Substitution + net UF</option><option value="total"'+(r==='total'?' selected':'')+'>Machine total incl. net UF</option></select>'+
+ '<label class="aud-conf"><input type="checkbox" class="aud-c"'+(d.conf?' checked':'')+' onchange="calcAud()"> total includes net UF</label></td>'+
+ '<td><input type="number" class="aud-t" step="0.01" value="'+(d.tot!==undefined?d.tot:'')+'" oninput="calcAud()" aria-label="Machine total liters"></td>'+
+ '<td><input type="number" class="aud-s" step="0.01" value="'+(d.sub!==undefined?d.sub:'')+'" oninput="calcAud()" aria-label="Substitution liters"></td>'+
+ '<td><input type="number" class="aud-u" step="0.01" value="'+(d.uf!==undefined?d.uf:'')+'" oninput="calcAud()" aria-label="Net ultrafiltration liters"></td>'+
+ '<td><input type="number" class="aud-min" step="1" value="'+(d.min!==undefined?d.min:'')+'" oninput="calcAud()" aria-label="Delivered minutes (optional)"></td>'+
+ '<td><select class="aud-why" onchange="calcAud()" aria-label="Reason if short">'+audOpt(AUD_REASONS,d.why||'')+'</select></td>'+
+ '<td><button type="button" class="alb-del" onclick="this.closest(\'tr\').remove();calcAud();" aria-label="Remove session">×</button></td></tr>';}
+function audAddRow(d){document.getElementById('aud-rows').insertAdjacentHTML('beforeend',audRowHTML(d));calcAud();}
+function audClear(){document.getElementById('aud-rows').innerHTML='';document.getElementById('aud-complete').checked=false;calcAud();}
+function audFixture(){document.getElementById('aud-rows').innerHTML='';
+ [{mode:'post',route:'parts',sub:19,uf:2,min:240},{mode:'post',route:'total',tot:23,conf:true,min:240},{mode:'post',route:'total',tot:25,conf:true,min:240},
+  {mode:'post',route:'parts',why:'alarms'},{mode:'fallback',why:'logistics'},{mode:'missed',why:'other'}].forEach(function(r){document.getElementById('aud-rows').insertAdjacentHTML('beforeend',audRowHTML(r));});
+ document.getElementById('aud-complete').checked=true;calcAud();}
+function audFmt(v){var one=fx(v,1);if(v<23&&parseFloat(one.replace(/,/g,''))>=23)return fx(v,2);return one;}
+/* Pure classifier, exposed for testing: rows = [{mode,route,tot,sub,uf,conf}] with numbers or NaN */
+function audClassify(rows,complete){
+ var vals=[],undoc=0,rej=0,other=0,fb=0,miss=0,msgs=[];
+ rows.forEach(function(r,i){var n=i+1;
+  if(r.mode==='missed'){miss++;return;} if(r.mode==='fallback'){fb++;return;}
+  if(r.mode==='pre'||r.mode==='mixed'){other++;return;}
+  var bad=function(x){return !isNaN(x)&&(!isFinite(x)||x<0);};
+  if(r.route==='total'){
+   if(isNaN(r.tot)){undoc++;return;}
+   if(bad(r.tot)){rej++;msgs.push('Session '+n+': negative or invalid total rejected.');return;}
+   if(!r.conf){rej++;msgs.push('Session '+n+': confirm that the machine total includes net UF, or enter substitution + net UF instead. Entry not counted.');return;}
+   vals.push({n:n,v:r.tot});return;}
+  if(isNaN(r.sub)&&isNaN(r.uf)){undoc++;return;}
+  if(bad(r.sub)||bad(r.uf)){rej++;msgs.push('Session '+n+': negative or invalid volume rejected.');return;}
+  if(isNaN(r.sub)||isNaN(r.uf)){undoc++;msgs.push('Session '+n+': both substitution and net UF are needed (enter 0 for no net UF). Counted as without volume.');return;}
+  vals.push({n:n,v:r.sub+r.uf});});
+ var hit=vals.filter(function(x){return x.v>=23;}).length,total=rows.length;
+ return {vals:vals,hit:hit,valid:vals.length,undoc:undoc,rej:rej,other:other,fb:fb,miss:miss,total:total,
+  median:vals.length?median(vals.map(function(x){return x.v;})):NaN,
+  min:vals.length?Math.min.apply(null,vals.map(function(x){return x.v;})):NaN,
+  max:vals.length?Math.max.apply(null,vals.map(function(x){return x.v;})):NaN,msgs:msgs,complete:!!complete};}
+function calcAud(){
+ var trs=[].slice.call(document.querySelectorAll('#aud-rows tr')),el=document.getElementById('aud-result');
+ var num=function(tr,c){var v=tr.querySelector(c).value;return v===''?NaN:parseFloat(v);};
+ var rows=trs.map(function(tr,i){tr.querySelector('.aud-n').textContent=i+1;var route=tr.querySelector('.aud-r').value,mode=tr.querySelector('.aud-m').value;
+  tr.querySelector('.aud-conf').style.display=route==='total'?'':'none';
+  var hdf=(mode==='post'||mode==='pre'||mode==='mixed');
+  tr.querySelector('.aud-t').disabled=!(hdf&&route==='total');tr.querySelector('.aud-s').disabled=!(hdf&&route==='parts');tr.querySelector('.aud-u').disabled=!(hdf&&route==='parts');
+  return {mode:mode,route:route,tot:num(tr,'.aud-t'),sub:num(tr,'.aud-s'),uf:num(tr,'.aud-u'),conf:tr.querySelector('.aud-c').checked,why:tr.querySelector('.aud-why').value,min:num(tr,'.aud-min')};});
+ if(!rows.length){el.style.display='none';return;}
+ rows.forEach(function(r){if(!isNaN(r.min)&&r.min<0){r.minBad=true;}});
+ var a=audClassify(rows,document.getElementById('aud-complete').checked),html='<div class="calc-metrics-row">';
+ if(!a.valid){html+='</div><div class="alb-warn">No documented post-dilution volumes.</div>';}
+ else{
+  html+=mcCard(audFmt(a.median)+' L','Median convection volume','range '+audFmt(a.min)+'–'+audFmt(a.max)+' L; '+a.valid+' documented post-dilution session'+(a.valid>1?'s':''));
+  var pct=100*a.hit/a.valid;
+  html+=mcCard(a.hit+' / '+a.valid,'At or above 23 L',fx(pct,0)+'% of post-dilution sessions with valid volumes',pct>=90?'var(--green)':'var(--amber)');
+  html+='</div>';}
+ html+='<div class="table-wrap"><table class="lab-table"><thead><tr><th>Intended sessions</th><th>Post-dilution, valid volume</th><th>Post-dilution, no volume</th><th>Rejected entries</th><th>Pre / mixed dilution</th><th>HD fallback</th><th>Missed</th></tr></thead><tbody><tr><td>'+a.total+'</td><td>'+a.valid+'</td><td>'+a.undoc+'</td><td>'+a.rej+'</td><td>'+a.other+'</td><td>'+a.fb+'</td><td>'+a.miss+'</td></tr></tbody></table></div>';
+ if(a.complete){html+='<p style="margin:8px 0 0;"><strong>Documentation metric:</strong> '+a.hit+' of '+a.total+' intended sessions documented at ≥ 23 L ('+fx(a.total?100*a.hit/a.total:0,0)+'%). Missing, rejected, fallback and missed sessions count against this metric by design.</p>';}
+ else html+='<p style="font-size:.85rem;color:var(--text-muted);margin:8px 0 0;">Tick "window is complete" to show benchmark reached ÷ all intended sessions.</p>';
+ var why={};rows.forEach(function(r){if(r.why)why[r.why]=(why[r.why]||0)+1;});
+ var wk=Object.keys(why);if(wk.length)html+='<p style="margin:6px 0 0;"><strong>Reasons recorded:</strong> '+wk.map(function(k){return AUD_REASONS.filter(function(o){return o[0]===k;})[0][1]+' ('+why[k]+')';}).join(', ')+'.</p>';
+ if(rows.some(function(r){return r.minBad;}))a.msgs.push('Negative minutes ignored.');
+ if(a.msgs.length)html+='<ul class="alb-msgs">'+a.msgs.map(function(m){return '<li>'+esc(m)+'</li>';}).join('')+'</ul>';
+ html+='<p style="font-size:.85rem;color:var(--text-muted);margin:8px 0 0;">23 L/session is the post-dilution benchmark used in CONVINCE. Continue to assess fluid removal, adequacy and tolerance; do not raise net ultrafiltration to reach it.</p>';
+ el.innerHTML=html;el.style.display='block';}
+
+/* ── 6. HDF cost: patient premium (P1a) and unit budget (P1b) ── */
+function hpcFixture(){document.getElementById('hpc-prem').value=500;document.getElementById('hpc-trav').value=100;document.getElementById('hpc-n').value=12;calcHpc();}
+function hpcCompute(prem,trav,n){var p=prem*n,t=isNaN(trav)?NaN:trav*n;return {prem:p,trav:t,total:p+(isNaN(t)?0:t)};}
+function calcHpc(){
+ var g=function(id){var v=document.getElementById(id).value;return v===''?NaN:parseFloat(v);};
+ var pr=g('hpc-prem'),tr=g('hpc-trav'),n=g('hpc-n'),el=document.getElementById('hpc-result');
+ if(isNaN(pr)||isNaN(n)){el.style.display='none';return;}
+ if(pr<0||n<0||(!isNaN(tr)&&tr<0)||!isFinite(pr)||!isFinite(n)){el.innerHTML='<div class="alb-warn">Amounts and sessions must be zero or more.</div>';el.style.display='block';return;}
+ if(Math.round(n)!==n){el.innerHTML='<div class="alb-warn">Enter a whole number of sessions.</div>';el.style.display='block';return;}
+ var r=hpcCompute(pr,tr,n);
+ var html='<div class="calc-metrics-row">'+mcCard(peso(r.prem),'Premium subtotal',n+' × '+peso(pr))+
+  mcCard(isNaN(r.trav)?'omitted':peso(r.trav),'Travel subtotal',isNaN(r.trav)?'travel left blank, not included':n+' × '+peso(tr))+
+  mcCard(peso(r.total),'Combined total',isNaN(r.trav)?'premium only':'premium + travel','var(--teal)')+'</div>';
+ html+='<p style="font-size:.85rem;color:var(--text-muted);margin:8px 0 0;">Ask the unit for a written per-session breakdown; PhilHealth lists HDF as a premium service, and co-payments must be disclosed on the agreement form.</p>';
+ el.innerHTML=html;el.style.display='block';}
+function hucFixture(){var s={'huc-n':1000,'huc-up':25,'huc-fix':100000,'huc-var':300,'huc-rec':200,'huc-uplo':'','huc-uphi':'','huc-varlo':'','huc-varhi':''};Object.keys(s).forEach(function(k){document.getElementById(k).value=s[k];});calcHuc();}
+function hucCompute(n,up,fix,vc,rec){var S=n*up/100,gross=fix+S*vc,after=gross-S*rec;return {S:S,gross:gross,after:after,be:S>0?vc+fix/S:NaN};}
+function calcHuc(){
+ var g=function(id){var v=document.getElementById(id).value;return v===''?NaN:parseFloat(v);};
+ var n=g('huc-n'),up=g('huc-up'),fix=g('huc-fix'),vc=g('huc-var'),rec=g('huc-rec'),el=document.getElementById('huc-result');
+ if(isNaN(n)||isNaN(up)||isNaN(vc)){el.style.display='none';return;}
+ fix=isNaN(fix)?0:fix;rec=isNaN(rec)?0:rec;
+ if([n,up,fix,vc,rec].some(function(x){return x<0||!isFinite(x);})||up>100){el.innerHTML='<div class="alb-warn">Inputs must be zero or more, and uptake between 0 and 100%.</div>';el.style.display='block';return;}
+ var r=hucCompute(n,up,fix,vc,rec);
+ var html='<div class="calc-metrics-row">'+mcCard(fx(r.S,0),'Switched sessions / year','modeled expectation')+
+  mcCard(peso(r.gross),'Incremental gross budget','fixed + switched × variable','var(--amber)')+
+  mcCard(peso(r.after),'Incremental cost after receipts',rec?'after ₱'+fx(rec,0)+'/session':'no incremental receipts entered',r.after>0?'var(--amber)':'var(--green)')+
+  mcCard(isNaN(r.be)?'unavailable':peso(r.be),'Break-even receipts per session',isNaN(r.be)?'no switched sessions; fixed cost still applies':'receipts needed for zero net cost')+'</div>';
+ var ul=g('huc-uplo'),uh=g('huc-uphi'),vl=g('huc-varlo'),vh=g('huc-varhi');
+ if(!isNaN(ul)||!isNaN(uh)||!isNaN(vl)||!isNaN(vh)){
+  var ups=[['Low',isNaN(ul)?up:ul],['Base',up],['High',isNaN(uh)?up:uh]],vcs=[['Low',isNaN(vl)?vc:vl],['Base',vc],['High',isNaN(vh)?vc:vh]];
+  html+='<div class="table-wrap"><table class="lab-table"><caption style="text-align:left;font-size:.85rem;padding:6px 0;">Incremental cost after receipts (₱/year)</caption><thead><tr><th>Uptake ↓ · variable cost →</th>'+vcs.map(function(v){return '<th>'+v[0]+' ('+peso(v[1])+')</th>';}).join('')+'</tr></thead><tbody>'+
+   ups.map(function(u){return '<tr><td>'+u[0]+' ('+fx(u[1],0)+'%)</td>'+vcs.map(function(v){return '<td>'+((u[1]<0||u[1]>100||v[1]<0)?'—':peso(hucCompute(n,u[1],fix,v[1],rec).after))+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';}
+ html+='<p style="font-size:.85rem;color:var(--text-muted);margin:8px 0 0;">No hospital savings are imputed. Record quote dates and assumptions with the result.</p>';
+ el.innerHTML=html;el.style.display='block';}
+
+/* ── 7. HDF delivery feasibility (P2, education) ── */
+function feaCompute(min,qs,uf){return min*qs/1000+uf;}
+function calcFea(){
+ var g=function(id){var v=document.getElementById(id).value;return v===''?NaN:parseFloat(v);};
+ var m=g('fea-min'),q=g('fea-qs'),u=g('fea-uf'),c=document.getElementById('fea-conv').value,el=document.getElementById('fea-result');
+ if(isNaN(m)||isNaN(q)||isNaN(u)){el.style.display='none';return;}
+ if(m<0||q<0||u<0||!isFinite(m)||!isFinite(q)||!isFinite(u)){el.innerHTML='<div class="alb-warn">Inputs must be zero or more.</div>';el.style.display='block';return;}
+ if(m>720||q>400){el.innerHTML='<div class="alb-warn">Check units: minutes per session and substitution flow in mL/min.</div>';el.style.display='block';return;}
+ var t=feaCompute(m,q,u),ok=t>=23;
+ var html='<div class="calc-metrics-row">'+mcCard(audFmt(t)+' L','Projected convection volume',fx(m*q/1000,1)+' L substitution + '+fx(u,1)+' L net UF')+
+  mcCard(ok?'≥ 23 L':'&lt; 23 L','Against the post-dilution benchmark','projection only',ok?'var(--green)':'var(--amber)')+'</div>';
+ html+='<p style="font-size:.85rem;color:var(--text-muted);margin:8px 0 0;">Convention: '+(c==='active'?'active substitution minutes with the mean flow during those minutes':'whole-session minutes with a time-weighted mean flow that includes downtime')+'. A projection is not a delivered value and is never copied into the audit.</p>';
+ el.innerHTML=html;el.style.display='block';}
+
 document.addEventListener('DOMContentLoaded',function(){albAddRow();albAddRow();calcHDF();});
 </script>
 <style>
@@ -2670,6 +2859,13 @@ html[data-theme="dark"] .alb-btn{background:#0e4a50;}html[data-theme="dark"] .al
 html[data-theme="dark"] #alb-table input,html[data-theme="dark"] #alb-table select{background:#141c2a;color:#e8eaf0;border-color:#3a4a62;}
 html[data-theme="dark"] .alb-warn{background:#3d2c0c;color:#f6d79a;}
 html[data-theme="dark"] .alb-chart svg{background:#141c2a;border-color:#2a3548;}
+#aud-table input,#aud-table select{font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--border);border-radius:6px;background:var(--white);color:var(--text);max-width:150px;}
+#aud-table input[type=number]{width:72px;}#aud-table select{min-width:150px;}#aud-table .aud-why{min-width:130px;}
+#aud-table input:disabled{opacity:.45;}
+.aud-conf{display:block;font-size:11.5px;color:var(--text-muted);margin-top:4px;white-space:nowrap;}
+.aud-n{font-weight:700;color:var(--text-mid);}
+html[data-theme="dark"] #aud-table input,html[data-theme="dark"] #aud-table select{background:#141c2a;color:#e8eaf0;border-color:#3a4a62;}
+
 html[data-theme="dark"] .ac-line{stroke:#4fb3bb;}html[data-theme="dark"] .ac-pre{fill:#141c2a;stroke:#4fb3bb;}html[data-theme="dark"] .ac-post{fill:#4fb3bb;}html[data-theme="dark"] .ac-txt{fill:#c0cad8;}html[data-theme="dark"] .ac-base{stroke:#b9a6ef;}
 </style>
 
