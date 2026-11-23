@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+"""Real situations and field notes for Physician on Duty, Module 05. All scenarios are fictional."""
+
+SITUATIONS = {"05": {"scenarios": [
+    ("The blood flow that kept getting lower",
+     "A patient&rsquo;s arterial pressure alarm has sounded five times in an hour. Each time the blood flow was lowered a little and the alarm cleared. The session is on schedule and nobody has mentioned it to you.",
+     "The access is not supplying the prescribed blood flow. The cause may be needle position, a narrowed fistula, a failing catheter, or a low blood pressure.",
+     "Check the patient&rsquo;s blood pressure and examine the access. Ask the nurse what flow was prescribed and what is running now. Report the gap and the access findings to the attending nephrologist, and record them.",
+     "A lower blood flow delivers less dialysis than prescribed, and a repeating arterial alarm is often the first sign of an access that is failing."),
+    ("Three machines at once",
+     "Conductivity alarms sound on three machines in the same row within a minute. All three have gone into bypass. The patients feel well.",
+     "A shared supply is at fault: the treated water or a central concentrate line. A single machine fault would not affect three stations.",
+     "Do not allow any override. Check each connected patient for chest or back pain, breathlessness, and confusion. Ask the technician to check the water and concentrate supply. Call the head nurse, the medical director, and the attending nephrologists, and follow the unit&rsquo;s protocol.",
+     "Bypass has protected the patients so far. An override would send fluid of unknown composition to several patients at once."),
+    ("The saline bag that ran dry",
+     "During a saline flush, the bag empties while the nurse is called to another chair. The air detector alarms, the pump stops, and the venous clamp closes. Foam is visible in the venous chamber.",
+     "Air was drawn in through the open saline line, which joins the circuit ahead of the pump where the pressure is below zero.",
+     "Keep the clamp closed. Check the patient for cough, chest tightness, breathlessness, and a change in alertness, and measure oxygen saturation. The staff remove the air by the unit&rsquo;s procedure before any blood is returned. If the patient has any symptom, or if air passed the clamp, treat it as an emergency: follow the unit&rsquo;s protocol for suspected air in the bloodstream and call the attending nephrologist at once. Otherwise, report the event to the attending nephrologist and record it.",
+     "The detector worked because the line was seated in it. Air that reaches the patient&rsquo;s vein can be fatal."),
+    ("A quiet machine and a pale patient",
+     "An elderly man is asleep in the last hour of his session. His machine shows no alarm. The cuff reading on the screen is normal, and it was taken 50 minutes ago. He looks gray.",
+     "The machine monitors the circuit, not the patient. His blood pressure may have fallen since the last reading, or he may be bleeding where it cannot be seen.",
+     "Wake him, uncover the access, and look for blood. Take a blood pressure now. If it is low, follow the unit&rsquo;s protocol for low blood pressure during dialysis and call the attending nephrologist.",
+     "No sensor detects a patient who is becoming unwell. The time stamp on a blood pressure matters as much as the number."),
+    ("The pressure that crept up",
+     "A patient&rsquo;s transmembrane pressure has risen steadily since the second hour. The nurse notes that he is on a heparin-free prescription because of a recent tooth extraction. The dialyzer looks darker than at the start.",
+     "The fibers are clotting. With less open membrane, the machine needs more pressure to remove the same volume of water.",
+     "Check the patient and his blood pressure. Ask the nurse what the unit&rsquo;s protocol provides for a clotting circuit. Call the attending nephrologist before the circuit clots completely, because the choices about anticoagulation and about ending the session early belong to the prescription.",
+     "A circuit that clots fully cannot be returned, and the patient loses the blood inside it. An early call keeps more options open."),
+], "tips": [
+    "When an alarm sounds, look at the patient&rsquo;s face and the access before you look at the screen.",
+    "Ask the nurse two questions about any repeating alarm: what was found, and what was changed.",
+    "Read the time printed beside the blood pressure on the screen. An old normal reading is not reassurance.",
+    "Learn where the venous chamber, the air detector, and the venous clamp are on your unit&rsquo;s machines before your first shift.",
+    "If you see an access under a blanket, uncover it and explain why to the patient. Most patients agree at once.",
+]}}

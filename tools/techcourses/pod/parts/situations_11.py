@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+"""Real situations and field notes for Physician on Duty Module 11. All scenarios are fictional."""
+
+SITUATIONS = {"11": {"scenarios": [
+    ("The headache she almost did not mention",
+     "A 67-year-old woman arrives with her usual weight gain and usual vital signs. When asked about falls, she says she slipped in the bathroom three days ago and hit her head. She has had a dull headache since.",
+     "She may have a slow bleed inside the skull. Symptoms can be mild at first, and dialysis usually involves heparin.",
+     "Do not connect her. Examine her nervous system, follow your unit&rsquo;s protocol, and call the attending nephrologist. Expect a transfer for imaging, with dialysis arranged afterward.",
+     "The question about falls takes five seconds. Heparin given to a patient with a head injury can turn a small bleed into a large one."),
+    ("Cold and tired, with a catheter",
+     "A man with a tunneled catheter says he has felt cold and tired since last night. His temperature is normal. His blood pressure is lower than at any of his last six sessions.",
+     "A catheter-related bloodstream infection can present without fever. A pressure below his own pattern supports the concern.",
+     "Delay connection. Examine him and the exit site, follow your unit&rsquo;s protocol for blood cultures, and call the attending nephrologist, who decides on dialysis, antibiotics, and the catheter.",
+     "In one prospective study, fever was a presenting symptom in fewer than half of catheter-related bloodstream infections."),
+    ("Back from the province",
+     "A regular patient returns after three weeks away. He dialyzed six times at a center in another region. He has no treatment record with him, and his last serology in your chart is several months old.",
+     "His status is probably unchanged, but your unit cannot know that. He has been exposed to a different unit&rsquo;s environment.",
+     "Tell the charge nurse and the attending nephrologist. Follow your unit&rsquo;s policy for returning patients on the station assigned and on retesting. Ask the family to request the record from the other center.",
+     "Unknown is not the same as negative. One unrecognized infection at a general station can put other patients at risk."),
+    ("Fine in the chair, faint at the door",
+     "After an uneventful session, a diabetic woman has her usual seated blood pressure. The physician signs her out. She stands, takes four steps, turns pale, and is caught by a nurse.",
+     "Her pressure fell on standing. Blood volume is low at the end of a session, and nerve damage from diabetes blunts the normal response.",
+     "Lay her down, follow the unit&rsquo;s hypotension protocol, and call the attending nephrologist. Do not discharge her until she can stand and walk without symptoms. Report the event so that her dry weight and medicines can be reviewed.",
+     "A seated reading alone would have sent her to the stairs. The standing reading is the one that predicts the walk home."),
+    ("The needle site that kept bleeding",
+     "A man with a forearm fistula needs much longer than usual for his needle sites to stop bleeding. The nurse says it is the third session in a row.",
+     "A repeated pattern suggests high pressure inside the fistula from a narrowing downstream. Heparin or pressing technique are other possible causes.",
+     "Keep him until the sites are dry and a thrill is present. Examine the arm for swelling. Tell the attending nephrologist the same day, with the number of sessions affected.",
+     "A narrowing found early can often be treated before the fistula clots. The nurse&rsquo;s count of three sessions is the key fact."),
+], "tips": [
+    "Stand where you can see the scale at arrival. How a patient walks to it tells you more than the first set of vital signs.",
+    "Open the last three treatment records before you examine. Today&rsquo;s numbers mean little without them.",
+    "When you decide to delay, say aloud what you are waiting for and for how long, and write it down.",
+    "Ask about missed sessions without blame. The reason is usually transport, money, or family, and the team can often help.",
+    "Stay beside the patient for the standing blood pressure. If the patient is going to faint, that is the moment.",
+]}}

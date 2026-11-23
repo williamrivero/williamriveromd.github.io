@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+"""Real situations and field notes for Physician on Duty, Module 10: The Lifeline II: Catheters. All scenarios are fictional."""
+
+SITUATIONS = {"10": {"scenarios": [
+    ("The wet dressing",
+     "A patient with a tunneled chest catheter arrives with a damp, half-peeled dressing. He says he bathed that morning and the plastic cover slipped. He feels well.",
+     "The exit site has been wet and uncovered for hours. Moist skin under a loose dressing lets bacteria multiply next to the catheter.",
+     "Have the nurse remove the dressing with clean technique, both wearing masks. Inspect the exit site and feel the tunnel before connection. If both are normal, the nurse cleans and redresses the site per protocol. Report any redness, pus, or tenderness to the attending nephrologist before the catheter is used. Review with the patient how he keeps the dressing dry.",
+     "KDOQI considers it reasonable to protect catheter dressings from wet and dirty conditions. A problem found before connection is still local."),
+    ("The borrowed line",
+     "An admitted dialysis patient is wheeled in with intravenous fluid running through the blue limb of her dialysis catheter. The ward could not find a peripheral vein.",
+     "The catheter has been opened by staff who are not trained in hub technique. The lock has been flushed into the patient, and the hub may be contaminated.",
+     "Have the dialysis nurse stop the infusion, clamp the limb, and handle the hub per unit protocol. Check the patient for fever and for signs of fluid overload. Tell the attending nephrologist, and ask the ward team to arrange other venous access through the nephrologist.",
+     "Every opening of a hub is a chance for bacteria and air to enter. Module 2 explained why unplanned intravenous fluid is a hazard in a patient who makes no urine."),
+    ("Alarms after turning to sleep",
+     "Two hours into a session, the arterial pressure alarm sounds repeatedly on a patient with a neck catheter. She has turned on her side and fallen asleep. The catheter worked well until now.",
+     "The tip is probably resting against the vein wall, or a limb is kinked under her shoulder. Flow that changes with position is usually mechanical.",
+     "Look at the patient first, then at the limbs and blood lines for a kink. Wake her gently and help her change position. If flow returns, record it. If the alarms continue in every position, follow your unit&rsquo;s poor-flow protocol and call the attending nephrologist.",
+     "Most positional problems resolve without any intervention on the catheter. Silencing the alarm without finding the cause delivers less dialysis."),
+    ("The catheter in the patient&rsquo;s hand",
+     "A confused elderly man with a non-tunneled femoral catheter stands up from his chair before connection. The catheter catches on the armrest and comes out completely. Blood runs down his thigh.",
+     "The stitch has torn through, and the femoral vein is open to the skin.",
+     "Lay him flat. Press firmly and continuously over the groin where the catheter entered the vein. Call for help, check his blood pressure, and have a colleague call the attending nephrologist. Keep the catheter so that its tip can be checked for completeness. Do not attempt to reinsert anything.",
+     "Direct pressure controls most venous bleeding. A patient without access also needs an urgent plan for the next dialysis session."),
+    ("The cap on the floor",
+     "During disconnection a new nurse drops a sterile cap. To pick it up she lets go of the catheter limb. The hub is open, and you see that the clamp is not closed. The patient is sitting upright and talking.",
+     "For those seconds the central vein was open to room air and to the nurse&rsquo;s gloves.",
+     "Close the clamp at once. Check the patient for cough, breathlessness, chest pain, or a change in alertness, and measure blood pressure and oxygen saturation. If there is any symptom, treat it as air entry: do not return blood, give oxygen, follow the unit protocol, and call for help. If she is well, the nurse scrubs the hub and applies a new sterile cap. Report the event to the attending nephrologist and the charge nurse as a near miss.",
+     "The clamp protects against air, and the scrub protects against bacteria. Reporting a near miss, without blame, is how a unit corrects technique before a patient is harmed."),
+], "tips": [
+    "Read the insertion date before you look at the catheter. A non-tunneled catheter that has stayed for weeks is a finding even when it looks clean.",
+    "Count clamps and caps with your eyes every time you pass a catheter: two clamps closed, two caps on.",
+    "When a nurse says the catheter is &ldquo;positional,&rdquo; ask for how many sessions. A catheter that needs a special position every time is failing and should be reported.",
+    "Ask every patient with a catheter how they bathe and how they keep the dressing dry. The answer tells you how much they have been taught.",
+    "Write the access plan in every note. If you cannot find one, that sentence is the most useful line you will write that day.",
+]}}

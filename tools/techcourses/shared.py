@@ -129,7 +129,7 @@ HOW_HTML = """
 ACADEMY = {
     "desc": ("Renal Care Academy is the staff-training section of Renal Care Matters: free, structured study series for nephrology and dialysis nurses, "
              "hemodialysis technicians, water treatment technicians, and biomedical technicians, each with cases, skills checklists, and self-assessments."),
-    "keywords": "renal care academy, dialysis staff training Philippines, nephrology nursing course, hemodialysis technician course, dialysis water treatment training, dialysis biomedical technician training",
+    "keywords": "renal care academy, physician on duty course, dialysis staff training Philippines, nephrology nursing course, hemodialysis technician course, dialysis water treatment training, dialysis biomedical technician training",
     "sub": "Structured study series for the nurses, technicians, and other professionals who run kidney care. Separate from the guide library, and built for learning a role step by step.",
     "audience": "Dialysis and nephrology staff in training &middot; head nurses, chief technicians, educators, and medical directors",
     # href, card image, role line, title, blurb, meta line
@@ -138,8 +138,6 @@ ACADEMY = {
                 "Kidney assessment, chronic kidney disease, acute kidney injury, hemodialysis, peritoneal dialysis, transplantation, quality improvement, and an advanced module on continuous therapy and hemodiafiltration.",
                 "12 modules + 1 advanced &middot; two learner paths &middot; educator page"),
     "planned": [
-        ("Physicians", "Physician on Duty in the Dialysis Unit",
-         "For physicians covering a hemodialysis shift: pre-dialysis assessment, intradialytic emergencies, orders, and escalation to the nephrologist."),
         ("Dietitians", "Renal Dietitian",
          "For nutritionist-dietitians entering kidney care: assessment, diet prescription across kidney disease stages and dialysis, and counseling."),
     ],

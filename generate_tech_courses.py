@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 
@@ -47,6 +47,11 @@ def load(path, name):
 
 FIGS = load(TC / "figs.py", "tc_figs").FIGS
 SHARED = load(TC / "shared.py", "tc_shared")
+for _p in PACKAGES:      # optional per-course references (refs.py) and figures (figs.py)
+    if (TC / _p / "refs.py").exists():
+        SHARED.REFS.update(load(TC / _p / "refs.py", f"tc_{_p}_refs").REFS)
+    if (TC / _p / "figs.py").exists():
+        FIGS.update(load(TC / _p / "figs.py", f"tc_{_p}_figs").FIGS)
 N.ABBR.update(SHARED.ABBR)          # same dict object the nursing helpers read
 
 # ───────────────────────── styles ─────────────────────────
@@ -107,6 +112,9 @@ html[data-theme="dark"] .tc-sit dt.tc-sit-do{color:#7fd6dd;}
 div.tc-branch.tc-soon{border-style:dashed;}
 @media (max-width:720px){.tc-branches{grid-template-columns:1fr;}}
 @media print{.tc-fig,.tc-viz,.tc-card,.tc-flow li{break-inside:avoid;}}
+.tc-part{margin:26px 0 4px;font:700 1.02rem Inter,system-ui,sans-serif;color:var(--text);}
+.nc-chip-tier{border-color:var(--teal);color:var(--teal);}
+html[data-theme="dark"] .nc-chip-tier{border-color:#7fd6dd;color:#7fd6dd;}
 """
 
 
@@ -211,6 +219,8 @@ class Page:
                 return f'<div class="tc-keyp"><span class="tc-lab">Remember</span>{body}</div>'
             if kind == "stop":
                 return f'<div class="tc-stop"><span class="tc-lab">Stop and report</span>{body}</div>'
+            if kind == "call":
+                return f'<div class="tc-stop"><span class="tc-lab">Stop and call</span>{body}</div>'
             if kind == "formula":
                 return f'<div class="tc-formula">{body}</div>'
             err(f"{self.label}: unknown macro {kind}")
@@ -666,6 +676,34 @@ def card_img(d):
     return ""
 
 
+def live_mods(course):
+    """Modules that are published (rows without status "planned")."""
+    return [d for d in course.mods if d.get("status") != "planned"]
+
+
+def tier_chip(d):
+    """Optional tier label on a module (course rows may set "tier")."""
+    return f'<span class="nc-chip nc-chip-tier">{d["tier"]}</span>' if d.get("tier") else ""
+
+
+def grid_html(course, cards):
+    """Module cards for a hub. Courses whose rows set "part" get one grid per part, under a heading."""
+    if not any(d.get("part") for d in course.mods):
+        return '  <div class="nc-modgrid" id="nc-modules">\n' + "\n".join(cards) + "\n  </div>"
+    out, cur, first = [], None, True
+    for d, card in zip(course.mods, cards):
+        if d.get("part") != cur:
+            if cur is not None:
+                out.append("  </div>")
+            cur = d.get("part")
+            out.append(f'  <h3 class="tc-part">{cur}</h3>')
+            out.append('  <div class="nc-modgrid"' + (' id="nc-modules"' if first else "") + ">")
+            first = False
+        out.append(card)
+    out.append("  </div>")
+    return "\n".join(out)
+
+
 # ───────────────────────── module page ─────────────────────────
 def build_module(course, d, built):
     m, page = built
@@ -837,10 +875,10 @@ def build_module(course, d, built):
   <div class="nc-bar">
     {ACADEMY_CRUMB}<a href="{hub}">{C['title']}</a><span class="nc-sep">›</span><span>Module {n} of {total}</span>
     <span class="nc-spacer"></span>
-    <span class="nc-chip nc-chip-core">{C['label']}</span>
+    <span class="nc-chip nc-chip-core">{C['label']}</span>{tier_chip(d)}
   </div>
   <div class="alert alert-teal">
-    <div class="alert-icon">🛠️</div>
+    <div class="alert-icon">{C.get('icon', '🛠️')}</div>
     <div class="alert-body">
       <h4>{C['label']}</h4>
       <p>{C['scope_note']}</p>
@@ -909,6 +947,8 @@ def branches_html(current):
     out = []
     for pkg, c in get_courses().items():
         M = c.meta
+        if M.get("no_branch") and c is not current:
+            continue
         img = ""
         f = M.get("branch_img", "")
         if f and (IMAGES / f).exists():
@@ -918,6 +958,21 @@ def branches_html(current):
       <span class="tc-branch-body"><small>{M['branch_role']}</small><b>{M['title']}</b><span>{M['branch_blurb']}</span></span>
     </a>""")
     return '<div class="tc-branches">\n' + "\n".join(out) + "\n  </div>"
+
+
+def pathways_section(course, page):
+    """Hub section after "Start here": the technician career pathways, or a course's own section."""
+    C = course.meta
+    if C.get("pathways_html"):
+        return (f'<section class="section" id="pathways">\n  <div class="section-tag">{C.get("pathways_tag", "Pathways")}</div>\n'
+                f'  <h2>{C.get("pathways_h2", "How the series is organized")}</h2>\n{page.render(C["pathways_html"])}\n</section>')
+    return f"""<section class="section" id="pathways">
+  <div class="section-tag">Career pathways</div>
+  <h2>One foundation, three technical roles</h2>
+  <p>A dialysis unit depends on three kinds of technical staff. Most people start at the chairside as a hemodialysis technician. From there, two specialist branches open up: the water room and the workshop. The three study series share the same format, so you can move between them.</p>
+  {branches_html(course)}
+{page.render(C.get('pathway_note', ''))}
+</section>"""
 
 
 def build_hub(course, built):
@@ -931,14 +986,14 @@ def build_hub(course, built):
         n = int(d["id"])
         if m is None:
             cards.append(f"""    <div class="nc-mod tc-mod tc-soon">{card_img(d)}
-      <span class="tc-mod-body"><span class="nc-mod-top"><span>Module {n}</span><span class="nc-chip">In preparation</span></span>
+      <span class="tc-mod-body"><span class="nc-mod-top"><span>Module {n}</span>{tier_chip(d)}<span class="nc-chip">In preparation</span></span>
       <span class="nc-mod-title">{d['title']}</span>
       <span class="nc-mod-desc">{d['sub']}</span></span>
     </div>""")
             syl.append(f"<tr><td>{n}</td><td>{d['title']}</td><td></td><td>{d.get('case_title', '—')}</td><td>In preparation</td><td></td></tr>")
             continue
         cards.append(f"""    <a class="nc-mod tc-mod" href="{d['slug']}.html" data-module="{d['id']}">{card_img(d)}
-      <span class="tc-mod-body"><span class="nc-mod-top"><span>Module {n}</span></span>
+      <span class="tc-mod-body"><span class="nc-mod-top"><span>Module {n}</span>{tier_chip(d)}</span>
       <span class="nc-mod-title">{d['title']}</span>
       <span class="nc-mod-desc">{d['sub']}</span>
       <span class="nc-mod-status" aria-live="off"></span></span>
@@ -969,22 +1024,14 @@ def build_hub(course, built):
   </div>
 </section>
 
-<section class="section" id="pathways">
-  <div class="section-tag">Career pathways</div>
-  <h2>One foundation, three technical roles</h2>
-  <p>A dialysis unit depends on three kinds of technical staff. Most people start at the chairside as a hemodialysis technician. From there, two specialist branches open up: the water room and the workshop. The three study series share the same format, so you can move between them.</p>
-  {branches_html(course)}
-{page.render(C.get('pathway_note', ''))}
-</section>
+{pathways_section(course, page)}
 
 <section class="section" id="modules">
   <div class="section-tag">Modules</div>
   <h2>{C['modules_h2']}</h2>
   <p>{C['modules_intro']}</p>
   <div class="nc-progress" id="nc-progress" hidden><span class="nc-progress-text"></span><button type="button" class="nc-btn nc-btn-ghost">Clear saved progress</button></div>
-  <div class="nc-modgrid" id="nc-modules">
-{chr(10).join(cards)}
-  </div>
+{grid_html(course, cards)}
 </section>
 
 <section class="section" id="how">
@@ -1008,7 +1055,7 @@ def build_hub(course, built):
   <div class="section-tag">Assessment</div>
   <h2>Self-assessment is not sign-off</h2>
 {page.render(C['assessment_html'])}
-  <p><strong>End-of-course examination.</strong> When you have finished every module, take the <a href="{course.hub}-final-exam.html">end-of-course examination</a>. It draws questions at random from all {len(course.mods)} modules, so no two sittings are the same.</p>
+  <p><strong>End-of-course examination.</strong> When you have finished every module, take the <a href="{course.hub}-final-exam.html">end-of-course examination</a>. It draws questions at random from all {len(live_mods(course))} modules, so no two sittings are the same.</p>
 </section>
 
 <section class="section" id="sources">
@@ -1020,10 +1067,10 @@ def build_hub(course, built):
 <section class="section" id="trainers">
   <div class="section-tag">For trainers and preceptors</div>
   <h2>Using the series in a training program</h2>
-  <p>A head nurse, chief technician, or training provider can use these modules as the guided-study part of a supervised program. The <a href="{course.trainer}.html">trainer and preceptor page</a> gathers the proposed hours, completion criteria, and every skills checklist in one printable place. These are proposals for a provider to adapt and validate on its own equipment; they are not requirements of any regulator.</p>
+  <p>{C.get('trainers_intro', 'A head nurse, chief technician, or training provider can use these modules as the guided-study part of a supervised program. ')}The <a href="{course.trainer}.html">trainer and preceptor page</a> gathers the proposed hours, completion criteria, and every skills checklist in one printable place. These are proposals for a provider to adapt and validate on its own equipment; they are not requirements of any regulator.</p>
 </section>"""
     main = N.auto_expand(main, fname)
-    nav = [("start", "Start here"), ("pathways", "Career pathways"), ("modules", "Modules"), ("how", "How it works"),
+    nav = [("start", "Start here"), ("pathways", C.get("pathways_nav", "Career pathways")), ("modules", "Modules"), ("how", "How it works"),
            ("syllabus", "Syllabus"), ("assessment", "Assessment"), ("sources", "Sources"), ("trainers", "For trainers")]
     live = [d for d in course.mods if built[d["id"]][0] is not None]
     rel = [(live[0]["slug"] + ".html", "Module 1", live[0]["title"], "Begin here.")] if live else []
@@ -1187,7 +1234,7 @@ def build_trainer(course, built):
     desc = f"Proposed program hours, completion criteria, and printable skills checklists for the {C['title']} study series on Renal Care Matters."
     pg = shell(course, fname, title, desc, C["keywords"], f"{C['tag']} &middot; For trainers", "Trainer and Preceptor <em>Resource</em>",
                f"Program structure, completion criteria, and printable skills checklists for the {C['title']} series.",
-               "Head nurses, chief technicians, educators, and preceptors", nav, pre, main, glossary(main, []), N.related_block(rel),
+               C.get("trainer_audience", "Head nurses, chief technicians, educators, and preceptors"), nav, pre, main, glossary(main, []), N.related_block(rel),
                body_class="nc-educator")
     (GUIDES / fname).write_text(N.merge_cites(pg), encoding="utf-8")
     return fname, page.refs
@@ -1360,7 +1407,7 @@ def build_academy():
     for pkg, c in get_courses().items():
         M = c.meta
         cards.append(track(c.hub + ".html", M.get("branch_img", ""), M["branch_role"], M["title"], M["branch_blurb"],
-                           f"{len(c.mods)} modules &middot; skills checklists &middot; trainer page"))
+                           M.get("academy_meta") or f"{len(c.mods)} modules &middot; skills checklists &middot; trainer page"))
     soon = [track("", "", role, title, blurb, "In preparation", live=False) for role, title, blurb in A["planned"]]
     main = f"""<section class="section" id="about">
   <div class="section-tag">Renal Care Academy</div>
@@ -1408,7 +1455,7 @@ def build_academy():
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
     short = {"hemodialysis-technician": "Hemodialysis Technician", "water-treatment-technician": "Water Treatment Technician",
              "dialysis-biomedical-technician": "Biomedical Technician"}
-    hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(c.mods)) for c in get_courses().values()]
+    hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]
     pg = shell(_Academy, fname, "Renal Care Academy: Training for Dialysis and Nephrology Staff", desc, A["keywords"],
                "Renal Care Academy", "Renal Care <em>Academy</em>", A["sub"], A["audience"], nav, pre, main,
