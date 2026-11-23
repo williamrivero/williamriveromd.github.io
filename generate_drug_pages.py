@@ -498,6 +498,10 @@ ol.dd-refs a { color: #1a6b72; }
 /* Component information (combination with no label of its own) */
 .dd-comp-intro { font-size: 15px; color: var(--text-mid); margin: 0 0 10px; }
 ul.dd-comp-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.dd-peer-h { margin: 14px 0 6px; }
+ul.dd-peer-list { list-style: none; margin: 0 0 6px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px 16px; }
+ul.dd-peer-list li { padding: 0; }
+ul.dd-peer-list a { font-weight: 600; }
 .dd-comp { border: 1px solid var(--border); border-left: 4px solid #1a6b72; border-radius: 10px; padding: 10px 14px; background: var(--white); }
 .dd-comp-none { border-left-color: #8a96a8; color: var(--text-mid); font-size: 14.5px; }
 .dd-comp-h { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; }
@@ -2507,6 +2511,21 @@ class Ctx:
     def label(self, slug):
         return load_json(self.labels_dir / f"{slug}.json") if self.labels_dir.is_dir() else None
 
+    def class_peers(self) -> dict:
+        """class slug -> [(slug, name, has US/EU label)] for every main generic page with products (Nov 23 2026)."""
+        if not hasattr(self, "_peers"):
+            rows = []
+            for s, g in self.generics.items():
+                prods = self.by_slug.get(s)
+                if s in self.aliases or not prods:      # variant spellings never listed as peers
+                    continue
+                lab = self.label(s)
+                c = class_group(us_classes(lab), ph_categories(prods, g))
+                if c:
+                    rows.append((s, ws(g.get("name")) or s, bool(_lab(lab) or self.eu(s)), set(class_key(c).split())))
+            self._peers = rows
+        return self._peers
+
     def single_slug(self, ingredient: str) -> str:
         """Single-agent page for a combination component (exact name, then synonym/salt-folded name);
         variant spellings resolve to their main page. '' when there is no page."""
@@ -3708,7 +3727,7 @@ def render_kidney_section(label, renal, intl=None, eu=None) -> str:
 
 CLINICAL_ORDER = [
     "component-info",
-    "use", "contraindications",
+    "use", "drug-class", "contraindications",
     "dosing-adult", "kidney-dosing", "kidney-injury", "pn-kidney-notes", "dosing-hepatic", "dosing-pediatric", "dosing-older",
     "administration", "dosage-forms",
     "warnings", "interactions", "adverse-reactions", "monitoring",
@@ -4261,6 +4280,49 @@ FDC_CAVEAT = ("Fixed-dose combinations may not allow the dose changes advised fo
               "use the single agents if a component needs adjusting.")
 
 
+_ORD = {"first": "1st", "second": "2nd", "third": "3rd", "fourth": "4th", "fifth": "5th"}
+_CLASS_STOP = {"class", "drug", "agent", "and", "other", "the", "of", "generation", "gen", "a", "for", "with"}
+
+
+def class_key(cat: str) -> str:
+    """Spelling-insensitive class key: word set, plurals and ordinals folded ("Antibacterial (cephalosporin-third
+    generation)" == "Antibacterial third generation cephalosporins")."""
+    words = set()
+    for w in re.findall(r"[a-z0-9]+", cat.lower()):
+        w = _ORD.get(w, w)
+        if len(w) > 4 and w.endswith("s") and not w.endswith("ss"):
+            w = w[:-1]
+        if w not in _CLASS_STOP:
+            words.add(w)
+    return " ".join(sorted(words))
+
+
+def drug_class_html(slug: str, name: str, cat: str, ctx: "Ctx") -> str:
+    """Registry class, link to the class list, and same-class medicines that have full US/EU prescribing
+    information. Structure only: no clinical statement is made about this medicine."""
+    cs = cat_slug(cat)
+    mine = set(class_key(cat).split())
+
+    def same(w):   # identical word set, or one contained in the other with at least two shared words
+        return w == mine or ((w <= mine or mine <= w) and len(w & mine) >= 2)
+    peers = [p for p in ctx.class_peers() if p[0] != slug and same(p[3])]
+    labeled = sorted((p for p in peers if p[2]),   # closest class wording first
+                     key=lambda p: (-len(p[3] & mine) / len(p[3] | mine), p[1].lower()))
+    out = [f'<p>The FDA Philippines registry lists <strong>{esc(name)}</strong> under '
+           f'<a href="category/{esc(cs)}.html">{esc(cat)}</a>. Neither a US label nor EU product information is '
+           'published for it, so this page shows its Philippine registration. For prescribing details, use the '
+           'Philippine package insert (linked in the products table where the FDA has published one).</p>']
+    if labeled:
+        show = labeled[:12]
+        out.append('<p class="dd-peer-h"><strong>Same or related class, with full prescribing information:</strong></p>'
+                   '<ul class="dd-peer-list">' + "".join(f'<li><a href="{esc(p[0])}.html">{esc(p[1])}</a></li>' for p in show)
+                   + "</ul>")
+        out.append('<p class="dd-note">Listed for reference: medicines in the same class are not necessarily '
+                   'interchangeable.</p>')
+    out.append(f'<p><a href="category/{esc(cs)}.html">Browse the {esc(cat)} class list</a></p>')
+    return "".join(out)
+
+
 def component_section(slug: str, ingredients: list[str], ctx: Ctx) -> tuple[str, int, int]:
     """'Component information' for a combination with no US/EU label of its own: per component a link to its
     single-agent page, its use (US label, else our approved summary) and, only when that component's kidney
@@ -4396,6 +4458,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     # 1b. Component cross-reference (combination with no label of its own)
     if comp_html:
         S.append(sec("component-info", "Component information", comp_html, "Components"))
+    # 1c. Drug class and labeled same-class medicines, for pages with no US or EU text (Nov 23 2026)
+    if not lab and not eu and not comp_html and cat:
+        S.append(sec("drug-class", "Drug class and related medicines", drug_class_html(slug, name, cat, ctx), "Drug class"))
     # 2. Use
     inds = indication_items(label)
     use = ""

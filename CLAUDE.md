@@ -1057,6 +1057,17 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   page kept the drugdb.<hash>.css/js it was saved with (devices that downloaded Dosis before Nov 20 still showed the
   rolled-back foldable layout offline or on slow networks). The worker's `fresh()` rewrites every saved copy it serves to
   the current CSS/JS names (and drops `viewport-fit=cover`); no re-download needed.
+- **Drug class section on unlabeled pages** (Nov 23 2026): a page with no US label, no EU SmPC and no component
+  cross-reference gets "Drug class and related medicines" (`drug_class_html`, id `drug-class`, after Use): the PH
+  registry class with a link to its class page, and up to 12 same-or-related-class generics that DO have US/EU text
+  (`Ctx.class_peers`; classes compared by `class_key()` word sets, plurals and ordinals folded; a match is an
+  identical set or one contained in the other with 2+ shared words; closest first; variant spellings never listed),
+  with the note that same-class medicines are not necessarily interchangeable. Structure only, no clinical claims.
+- **INN/BAN to US names for label matching** (Nov 23 2026): `INN_TO_USAN` in `tools/drugdb/fetch_fda_labels.py` also maps
+  same-molecule names (ursodeoxycholic acid -> ursodiol, calcipotriol -> calcipotriene, desferrioxamine -> deferoxamine,
+  valproate semisodium -> divalproex sodium, recombinant human erythropoietin alfa -> epoetin alfa, ...), brand-as-generic
+  registry entries (Benlysta, Lantus SoloStar, Glucophage) and registry typos. Never map vaccines, blood factors,
+  botulinum toxins or fluid mixtures: their US labels describe one maker's product.
 - **Browse by** (Drug Index): Generic name (server-rendered A–Z, default) plus Brand, Drug class, Therapeutic area,
   Dispensing category and Kidney dosing, rendered in the browser from `drugs/browse.json` and `drugs/browse-brands.json`
   (written by the generator). View remembered in `?view=` and localStorage `wgmr-drug-view`. Therapeutic areas come
