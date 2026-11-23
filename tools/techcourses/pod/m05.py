@@ -144,7 +144,7 @@ MODULE = {
 <tr><td>Conductivity or temperature</td><td>Empty or wrong concentrate; water supply problem; mixing or heater fault</td><td>Chest or back pain, breathlessness, confusion. The color of the blood in the venous line</td></tr>
 </tbody></table></div>
 <h3>When hemolysis is suspected</h3>
-<p>Hemolysis during dialysis is rare. In an outbreak traced to narrowed blood tubing, 20 of 30 affected patients had high blood pressure and 18 had abdominal pain. Ten needed intensive care, and two died.[[duffy2000]] Chest or back pain, breathlessness, and dark, translucent blood in the venous line are other described signs.[[daugirdas2015]]</p>
+<p>Hemolysis during dialysis is rare. In an outbreak traced to narrowed blood tubing, 20 of 30 affected patients had high blood pressure and 18 had abdominal pain. Ten needed intensive care, and two died.[[duffy2000]] Chest or back pain, breathlessness, and translucent blood in the venous line, described as port-wine or cherry red, are other described signs.[[daugirdas2015]]</p>
 <p>Burst red cells release potassium. When hemolysis is suspected, dialysis is stopped, the lines are clamped, and the blood in the circuit is not returned to the patient.[[daugirdas2015]] Follow your unit&rsquo;s protocol and call the attending nephrologist at once.</p>
 {{key:An alarm is a question about the patient. Answer it at the chair, with your eyes and hands, before anyone touches the screen.}}
 """),
@@ -221,7 +221,7 @@ MODULE = {
         ("The transmembrane pressure has climbed for an hour, and dark streaks are visible in the dialyzer. What is the most likely cause?",
          ["Air in the venous line", "A blood leak", "Dialysis fluid that is too dilute", "Clotting of the fibers"], 3,
          "Clotted fibers reduce the working membrane, so more pressure is needed to remove the same water."),
-        ("Twenty minutes after a temperature alarm was overridden, Mr. Salonga reports back pain and breathlessness. The blood in his venous line looks dark and translucent. What applies to the blood in the circuit?",
+        ("Twenty minutes after a temperature alarm was overridden, Mr. Salonga reports back pain and breathlessness. The blood in his venous line looks translucent, like red wine. What applies to the blood in the circuit?",
          ["It is returned quickly to support his blood pressure", "It is returned slowly with saline",
           "It is not returned, because burst red cells release potassium", "It is returned after the dialyzer is changed"], 2,
          "These signs suggest hemolysis. Dialysis is stopped, the blood is not returned, and the attending nephrologist is called at once."),

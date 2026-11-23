@@ -23,7 +23,7 @@ FIGS = {
     "pod13_redflags": ("physician-on-duty-13-simple-or-sinister.webp",
                        "Two columns at a dialysis chair. The left column shows the usual pattern: late in the session, large fluid goal, "
                        "cramps, quick recovery. The right column shows warning signs: chest pain, confusion, fever, bleeding at the "
-                       "needle site, dark blood in the line, wheeze, and a drop in the first minutes.",
+                       "needle site, translucent or very dark blood in the line, wheeze, and a drop in the first minutes.",
                        "A simple drop comes late, follows a large fluid goal, and recovers quickly. A drop that comes early, comes with "
                        "another symptom, or does not recover has a different cause until proven otherwise."),
 }

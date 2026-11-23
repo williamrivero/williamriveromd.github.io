@@ -89,7 +89,7 @@ MODULE = {
 <tr><td>Sepsis</td><td>Fever or chills, often with a catheter. Warm skin. Confusion</td><td>Temperature. Follow the unit&rsquo;s fever protocol</td></tr>
 <tr><td>Cardiac tamponade</td><td>Low pressure early in several sessions with little fluid removed. Distended neck veins. Faint heart sounds</td><td>Stop fluid removal. Urgent transfer for echocardiography</td></tr>
 <tr><td>Air in the circuit</td><td>Sudden cough, chest tightness, or collapse. Air or foam in the venous line. An air detector alarm</td><td>Stop the blood pump and clamp the venous line. Do not return the blood</td></tr>
-<tr><td>Hemolysis</td><td>Chest, back, or abdominal pain. Dark or translucent red blood in the venous line. More than one patient affected</td><td>Stop the blood pump and clamp the lines. Do not return the blood</td></tr>
+<tr><td>Hemolysis</td><td>Chest, back, or abdominal pain. Translucent blood in the venous line, described as port-wine or cherry red. More than one patient affected</td><td>Stop the blood pump and clamp the lines. Do not return the blood</td></tr>
 <tr><td>Dialyzer reaction</td><td>Onset in the first minutes. Itching, flushing, wheeze, swelling of the face, back pain</td><td>Stop the blood pump and clamp the lines. Do not return the blood. Follow the unit&rsquo;s reaction protocol</td></tr>
 </tbody></table></div>
 <p>The clues and first moves in this table follow a standard dialysis text.[[daugirdas2015]] Other modules cover each of these causes in full.</p>
@@ -237,7 +237,7 @@ MODULE = {
           "Report the pattern to the attending nephrologist and suggest moving the meal",
           "Advise him to skip his morning medicines"], 2,
          "Moving the meal addresses the trigger and protects nutrition. The plan belongs to the nephrologist."),
-        ("During an episode, the blood in the venous line looks dark and translucent and the patient has back pain. A second patient nearby is also unwell. What do you do?",
+        ("During an episode, the blood in the venous line looks translucent, like red wine, and the patient has back pain. A second patient nearby is also unwell. What do you do?",
          ["Return the blood to both patients",
           "Stop the blood pump, clamp the lines, do not return the blood, and call for help",
           "Give fluid and continue dialysis",
