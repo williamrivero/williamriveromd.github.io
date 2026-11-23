@@ -818,7 +818,7 @@ def build_module(course, d, built):
                              "learningResourceType": "Study module with case, skills checklist and self-assessment",
                              "lastReviewed": C["review_date"]},
                hero_file=d.get("hero_file") or d["slug"] + "-vignette-hero", hero_alt=m.get("image_alt") or d["title"])
-    (GUIDES / fname).write_text(pg, encoding="utf-8")
+    (GUIDES / fname).write_text(N.merge_cites(pg), encoding="utf-8")
     return fname, page.refs
 
 
@@ -993,7 +993,7 @@ def build_hub(course, built):
                              "educationalLevel": C["level"], "numberOfCredits": 0,
                              "hasPart": [{"@type": "LearningResource", "name": d["title"], "url": f"{SITE}/guides/{d['slug']}"} for d in live]},
                hero_file=C.get("hero_file") or course.hub + "-vignette-hero", hero_alt=C.get("hero_alt", C["title"]))
-    (GUIDES / fname).write_text(pg, encoding="utf-8")
+    (GUIDES / fname).write_text(N.merge_cites(pg), encoding="utf-8")
     return fname, page.refs
 
 
@@ -1050,7 +1050,7 @@ def build_trainer(course, built):
                f"Program structure, completion criteria, and printable skills checklists for the {C['title']} series.",
                "Head nurses, chief technicians, educators, and preceptors", nav, pre, main, glossary(main, []), N.related_block(rel),
                body_class="nc-educator")
-    (GUIDES / fname).write_text(pg, encoding="utf-8")
+    (GUIDES / fname).write_text(N.merge_cites(pg), encoding="utf-8")
     return fname, page.refs
 
 
@@ -1276,7 +1276,7 @@ def build_academy():
                glossary(main, []), N.related_block(rel),
                jsonld_extra={"@type": ["MedicalWebPage", "CollectionPage"], "description": desc},
                hero_html=academy_hero(A, hero_tracks))
-    (GUIDES / fname).write_text(pg, encoding="utf-8")
+    (GUIDES / fname).write_text(N.merge_cites(pg), encoding="utf-8")
     return fname, page.refs
 
 

@@ -14,7 +14,7 @@ references accordion, share bar, side rail, reading time and the rest.
 Never hand-edit guides/nephrology-nursing*.html: edit the content files and re-run.
 An existing page's article:published_time is carried over, so re-running never re-dates a page.
 """
-import argparse, html, importlib.util, json, re, subprocess, sys
+import argparse, html, importlib.util, json, os, re, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -65,13 +65,13 @@ for _id, _slug, _title, _short, _neph, _hd in MODULES:
     m.update(id=_id, slug=f"{COURSE['hub_slug']}-{_id}-{_slug}", title=_title, short=_short, neph=_neph, hd=_hd)
     # optional expansion file mNN_x.py: extra objectives, sections (inserted after a named
     # section), quiz items, glossary terms, review flags, and PubMed references
-    if (CONTENT / f"m{_id}_x.py").exists():
-        _x = load(f"m{_id}_x")
+    for _xf in sorted(CONTENT.glob(f"m{_id}_x*.py")):   # mNN_x.py, mNN_x2.py, ...
+        _x = load(_xf.stem)
         m["objectives"] = m["objectives"] + list(getattr(_x, "OBJECTIVES", []))
         for _sec in getattr(_x, "EXTRA", []):
             _ids = [s["id"] for s in m["sections"]]
             if _sec["id"] in _ids:
-                raise SystemExit(f"m{_id}_x.py: duplicate section id {_sec['id']}")
+                raise SystemExit(f"{_xf.name}: duplicate section id {_sec['id']}")
             _at = _ids.index(_sec["after"]) + 1 if _sec.get("after") in _ids else len(_ids)
             m["sections"].insert(_at, _sec)
         m["quiz"] = m["quiz"] + list(getattr(_x, "QUIZ", []))
@@ -83,14 +83,19 @@ for _id, _slug, _title, _short, _neph, _hd in MODULES:
         _q = load(f"m{_id}_q")
         m["quiz"] = m["quiz"] + list(getattr(_q, "QUIZ", []))
         C.PUBMED_REFS.update(getattr(_q, "NEW_REFS", {}))
+    # optional competency file mNN_c.py: COMPETENCIES (thread, statement, level, evidence) and MILESTONE
+    m["competencies"], m["milestone"] = [], ""
+    if (CONTENT / f"m{_id}_c.py").exists():
+        _c = load(f"m{_id}_c")
+        m["competencies"], m["milestone"] = list(_c.COMPETENCIES), getattr(_c, "MILESTONE", "")
     MODS[_id] = m
 ORDER = [x[0] for x in MODULES]
 BANK_SIZE = 15   # questions per module bank
 DRAW = 5         # questions shown per page load, drawn at random from the bank
-_PLAIN = {"CKD": "Chronic Kidney Disease", "AKI": "Acute Kidney Injury", "HD": "Hemodialysis", "PD": "Peritoneal Dialysis"}
+_PLAIN = {"CKD": "Chronic Kidney Disease", "AKI": "Acute Kidney Injury", "HD": "Hemodialysis", "PD": "Peritoneal Dialysis", "CRRT": "Continuous Renal Replacement Therapy"}
 for _m in MODS.values():
     # spelled-out title for navigation cards and tables (the page <h1> keeps the short form)
-    _m["plain"] = re.sub(r"\b(CKD|AKI|HD|PD)\b", lambda x: _PLAIN[x.group(1)], _m["title"])
+    _m["plain"] = re.sub(r"\b(CKD|AKI|HD|PD|CRRT)\b", lambda x: _PLAIN[x.group(1)], _m["title"])
 ERRORS = []
 
 
@@ -188,7 +193,13 @@ def cite(text, order):
             return ""
         n = order.index(k) + 1
         return f'<sup class="nc-cite"><a href="#ref-{n}" data-ref="{n}" aria-label="Reference {n}">{n}</a></sup>'
-    return re.sub(r"\[\[([a-z0-9_]+)\]\]", sub, text)
+    return merge_cites(re.sub(r"\[\[([a-z0-9_]+)\]\]", sub, text))
+
+
+def merge_cites(h):
+    """Join back-to-back citations into one superscript, "12,13". (A CSS sibling rule cannot do this:
+    it also fires when words separate two citations.)"""
+    return re.sub(r'</a></sup>\s*<sup class="nc-cite"><a', '</a>,<a', h)
 
 
 # ───────────────────────── helpers ─────────────────────────
@@ -356,7 +367,6 @@ html[data-theme="dark"] .nc-result-warn,html[data-theme="dark"] .nc-result-done{
 .nc-np-next{text-align:right;}
 .section .table-wrap a,.nc-task a{color:var(--teal);font-weight:600;}
 .nc-cite a{text-decoration:none;font-weight:700;color:var(--teal);padding:0 1px;}
-.nc-cite + .nc-cite::before{content:",";}
 /* hub */
 .nc-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0;}
 .nc-path{text-align:left;border:2px solid var(--border);border-radius:14px;background:var(--white);padding:14px 18px;cursor:pointer;font:inherit;color:var(--text);min-height:44px;}
@@ -383,6 +393,28 @@ html[data-theme="dark"] .nc-path[aria-pressed="true"]{box-shadow:0 0 0 3px #0a28
   .nc-acte,.nc-nextprev,.nc-paths,.nc-modgrid{grid-template-columns:1fr;}
   .nc-np-next{text-align:left;}
 }
+/* competencies */
+.nc-lv{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.02em;border-radius:999px;padding:2px 9px;white-space:nowrap;border:1px solid transparent;}
+.nc-lv-K{background:#eef1f5;color:#43536a;border-color:#d5dbe4;}
+.nc-lv-S{background:#fdf3dd;color:#8a5a00;border-color:#f1d899;}
+.nc-lv-D{background:#e3f2f1;color:#13636a;border-color:#b6dcd9;}
+.nc-lv-I{background:#1f3864;color:#fff;border-color:#1f3864;}
+html[data-theme="dark"] .nc-lv-K{background:#243042;color:#c9d3e1;border-color:#34445c;}
+html[data-theme="dark"] .nc-lv-S{background:#3a2e12;color:#f3cf7a;border-color:#5a4718;}
+html[data-theme="dark"] .nc-lv-D{background:#12393b;color:#7fd6dd;border-color:#1d5a5d;}
+html[data-theme="dark"] .nc-lv-I{background:#cfe0ff;color:#0f1e2e;border-color:#cfe0ff;}
+.nc-lv-legend{list-style:none;margin:10px 0 14px;padding:0;display:grid;gap:6px;font-size:14px;color:var(--text-mid);line-height:1.5;}
+.nc-lv-legend li .nc-lv{margin-right:6px;}
+.nc-milestone{border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:12px;background:var(--white);padding:12px 16px;margin:12px 0;line-height:1.6;}
+.nc-comp td{vertical-align:top;}
+.nc-pm th,.nc-pm td{text-align:center;padding:6px 4px;}
+.nc-pm th[scope="row"],.nc-pm thead th:first-child{text-align:left;min-width:190px;font-weight:600;}
+.nc-pm-mod a{color:var(--teal);font-weight:700;text-decoration:none;}
+.nc-pm-cell .nc-lv{padding:2px 7px;}
+.nc-pm-none{color:var(--text-faint);}
+.nc-h3{font-family:Inter,system-ui,sans-serif;font-size:1.02rem;margin:22px 0 6px;color:var(--text);}
+.nc-milestones{margin:8px 0 0;padding-left:1.2em;line-height:1.65;}
+.nc-milestones li{margin-bottom:6px;}
 @media print{
   .nc-bar,.nc-actions,.nc-remember,.nc-nextprev,.nc-paths,.nc-progress,.nav-strip{display:none !important;}
   .nc-q,.nc-case,.nc-acte-card,.nc-mod{break-inside:avoid;box-shadow:none !important;}
@@ -647,9 +679,92 @@ def role_chip(m, long=False):
     out = []
     for key, label in (("neph", "Nephrology Nursing path"), ("hd", "Hemodialysis Nursing path")):
         core = m[key] == "core"
-        txt = f"{label}: {'emphasized' if core else 'foundation'}"
+        txt = f"{label}: {'emphasized' if core else ('advanced, after the capstone' if m[key] == 'advanced' else 'foundation')}"
         out.append(f'<span class="nc-chip{" nc-chip-core" if core else ""}">{txt}</span>')
     return " ".join(out)
+
+
+# ───────────────────────── competencies ─────────────────────────
+LEVELS = "KSDI"
+
+
+def level_chip(code, short=False):
+    name, note = C.COMPETENCY_LEVELS[code]
+    return f'<span class="nc-lv nc-lv-{code}" title="{html.escape(html.unescape(name))}: {html.escape(html.unescape(note))}">{code if short else name}</span>'
+
+
+def check_competencies(m):
+    for i, c in enumerate(m["competencies"], 1):
+        if c.get("thread") not in C.COMPETENCY_THREADS:
+            err(f"module {m['id']} competency {i}: unknown thread {c.get('thread')}")
+        if c.get("level") not in C.COMPETENCY_LEVELS:
+            err(f"module {m['id']} competency {i}: unknown level {c.get('level')}")
+        for e in c.get("evidence", []):
+            if e not in C.COMPETENCY_EVIDENCE:
+                err(f"module {m['id']} competency {i}: unknown evidence label {e}")
+
+
+def level_legend():
+    items = "".join(f"<li>{level_chip(k)} {v[1]}</li>" for k, v in C.COMPETENCY_LEVELS.items())
+    return f'<ul class="nc-lv-legend">{items}</ul>'
+
+
+def competency_section(m):
+    if not m["competencies"]:
+        return ""
+    check_competencies(m)
+    rows = "\n".join(
+        f'<tr><td>{c["statement"]}</td><td>{C.COMPETENCY_THREADS[c["thread"]]}</td><td>{level_chip(c["level"])}</td>'
+        f'<td>{", ".join(c.get("evidence", []))}</td></tr>' for c in m["competencies"])
+    ms = f'<div class="nc-milestone"><strong>Milestone.</strong> {m["milestone"]}</div>' if m["milestone"] else ""
+    return f"""<section class="section" id="competencies">
+  <div class="section-tag">Competencies</div>
+  <h2>What this module builds</h2>
+  {ms}
+  <p>Each competency names an observable ability, the level this module aims for, and how that level is confirmed. Levels follow Miller&rsquo;s pyramid. Self-study reaches <em>knows</em>; the higher levels are reached only when an educator or preceptor verifies them, and they are recorded on the <a href="{COURSE['educator_slug']}.html#checklist">competency checklist</a>.</p>
+  {level_legend()}
+  <div class="table-wrap"><table class="nc-comp">
+  <thead><tr><th style="width:50%;">Competency</th><th>Thread</th><th>Target level</th><th>Verified by</th></tr></thead>
+  <tbody>
+{rows}
+  </tbody></table></div>
+</section>"""
+
+
+def progression_section():
+    mods = [MODS[i] for i in ORDER if MODS[i]["competencies"]]
+    if not mods:
+        return ""
+    head = "".join(f'<th class="nc-pm-mod"><a href="{m["slug"]}.html" title="{html.escape(html.unescape(m["plain"]))}">{int(m["id"])}</a></th>' for m in mods)
+    body = []
+    for key, label in C.COMPETENCY_THREADS.items():
+        cells, best = [], -1
+        for m in mods:
+            lv = [LEVELS.index(c["level"]) for c in m["competencies"] if c["thread"] == key]
+            if lv:
+                best = max(best, max(lv))
+                cells.append(f'<td class="nc-pm-cell">{level_chip(LEVELS[max(lv)], short=True)}</td>')
+            else:
+                cells.append('<td class="nc-pm-cell nc-pm-none"><span aria-hidden="true">&middot;</span></td>')
+        top = level_chip(LEVELS[best]) if best >= 0 else ""
+        body.append(f"<tr><th scope=\"row\">{label}</th>{''.join(cells)}<td>{top}</td></tr>")
+    ms = "\n".join(f'<li><a href="{m["slug"]}.html">Module {int(m["id"])}</a> &middot; {m["milestone"]}</li>' for m in mods if m["milestone"])
+    return f"""<section class="section" id="progression">
+  <div class="section-tag">Competency progression</div>
+  <h2>How competence builds from module to module</h2>
+  <p>Twelve competency threads run through the course. Each cell shows the highest level a module aims for in that thread; the last column is the level reached by the end of the course. Read across a row to see a skill grow, for example from explaining fluid assessment in Module 1 to completing full treatment assessments on your own, after sign-off, in Module 9. Each module page lists its competencies in full, and the <a href="{COURSE['educator_slug']}.html#checklist">educator checklist</a> records them.</p>
+  {level_legend()}
+  <div class="table-wrap"><table class="nc-pm">
+  <thead><tr><th>Thread</th>{head}<th>By the end</th></tr></thead>
+  <tbody>
+{chr(10).join(body)}
+  </tbody></table></div>
+  <h3 class="nc-h3">Milestones</h3>
+  <ol class="nc-milestones">
+{ms}
+  </ol>
+</section>
+"""
 
 
 # ───────────────────────── module page ─────────────────────────
@@ -694,7 +809,7 @@ def build_module(mid):
   <div class="nc-task"><strong>Documentation task.</strong> {c['task']}</div>
 </section>""")
     # quiz: the whole bank is in the page; assets/nursing-course.js shows DRAW at random
-    if len(m["quiz"]) != BANK_SIZE:
+    if len(m["quiz"]) != BANK_SIZE and not os.environ.get("NC_DRAFT"):  # NC_DRAFT=1 while a bank is being written
         err(f"module {mid}: question bank has {len(m['quiz'])} items (must be {BANK_SIZE})")
     qs = []
     for qi, q in enumerate(m["quiz"], 1):
@@ -730,6 +845,7 @@ def build_module(mid):
   </form>
   <div class="nc-task"><strong>Reflect.</strong> {m['reflect']}</div>
 </section>""")
+    parts.append(competency_section(m))
     # practice
     items = "\n".join(f"    <li>{x}</li>" for x in m["practice"]["items"])
     parts.append(f"""<section class="section" id="practice">
@@ -797,7 +913,7 @@ def build_module(mid):
     main = auto_expand("\n\n".join(parts), fname)
     pre = f"""<div class="container">
   <div class="nc-bar">
-    <a href="{hub}">{COURSE['title']}</a><span class="nc-sep">›</span><span>Module {n} of 12</span>
+    <a href="{hub}">{COURSE['title']}</a><span class="nc-sep">›</span><span>{"Advanced module " + str(n) if n > 12 else f"Module {n} of 12"}</span>
     <span class="nc-spacer"></span>
     {role_chip(m)}
   </div>
@@ -810,8 +926,8 @@ def build_module(mid):
   </div>
 </div>"""
     nav = [("objectives", "Objectives")] + [(s["id"], s["nav"]) for s in m["sections"]] + \
-          [("case", "Nursing case"), ("quiz", "Self-assessment"), ("practice", "Supervised practice"), ("reading", "Reading")]
-    cards = [(hub, "Course home", COURSE["title"], "Syllabus, both learner paths, and all 12 modules.")]
+          [("case", "Nursing case"), ("quiz", "Self-assessment")] + ([("competencies", "Competencies")] if m["competencies"] else []) + [("practice", "Supervised practice"), ("reading", "Reading")]
+    cards = [(hub, "Course home", COURSE["title"], "Syllabus, both learner paths, and all modules.")]
     if next_m:
         cards.append((next_m["slug"] + ".html", "Next module", next_m["title"], html.unescape(next_m["sub"]).split(".")[0] + "."))
     if prev_m:
@@ -823,7 +939,7 @@ def build_module(mid):
     title = f"{m['title']}: Nephrology Nursing Module {n}"
     page = shell(
         fname, title, m["desc"], m["keywords"],
-        f"Nursing Education &middot; Module {n} of 12", m["title"], m["sub"],
+        (f"Nursing Education &middot; Advanced module {n}" if n > 12 else f"Nursing Education &middot; Module {n} of 12"), m["title"], m["sub"],
         "Registered nurses entering nephrology or hemodialysis practice &middot; nurse educators and preceptors",
         nav, pre, main, glossary_block(main, m.get("terms", [])), related_block(cards),
         jsonld_extra={"isPartOf": {"@type": "Course", "name": COURSE["title"], "url": f"{SITE}/guides/{COURSE['hub_slug']}"},
@@ -855,11 +971,15 @@ def build_hub():
         m = MODS[mid]
         first = html.unescape(m["sub"])
         emph = []
-        if m["neph"] == "core":
+        if m["neph"] == "advanced":
+            emph.append('<span class="nc-chip nc-emph-neph">Advanced</span>')
+        elif m["neph"] == "core":
             emph.append('<span class="nc-chip nc-chip-core nc-emph-neph">Emphasized on this path</span>')
         else:
             emph.append('<span class="nc-chip nc-emph-neph">Foundation</span>')
-        if m["hd"] == "core":
+        if m["hd"] == "advanced":
+            emph.append('<span class="nc-chip nc-emph-hd">Advanced</span>')
+        elif m["hd"] == "core":
             emph.append('<span class="nc-chip nc-chip-core nc-emph-hd">Emphasized on this path</span>')
         else:
             emph.append('<span class="nc-chip nc-emph-hd">Foundation</span>')
@@ -884,7 +1004,7 @@ def build_hub():
     main = f"""<section class="section" id="start">
   <div class="section-tag">Start here</div>
   <h2>A study series for nurses entering kidney care</h2>
-  <p>This series is written for Philippine-licensed registered nurses who are starting work in a nephrology ward, a chronic kidney disease (CKD) clinic, or a hemodialysis (HD) unit, and for the educators and preceptors who train them. It has twelve modules, which run from kidney assessment through acute kidney injury (AKI), hemodialysis, peritoneal dialysis (PD), and transplantation to quality improvement. Each one explains the reasoning first and the task second: what the kidney or the machine is doing, what the evidence supports, and what that means for the nurse at the bedside or chairside.</p>
+  <p>This series is written for Philippine-licensed registered nurses who are starting work in a nephrology ward, a chronic kidney disease (CKD) clinic, or a hemodialysis (HD) unit, and for the educators and preceptors who train them. It has twelve core modules, which run from kidney assessment through acute kidney injury (AKI), hemodialysis, peritoneal dialysis (PD), and transplantation to quality improvement, and an advanced Module 13 on continuous kidney replacement in the intensive care unit and hemodiafiltration, studied after the capstone. Each one explains the reasoning first and the task second: what the kidney or the machine is doing, what the evidence supports, and what that means for the nurse at the bedside or chairside.</p>
   <p>Every module has the same parts: learning objectives; an original lesson that moves from a plain mental model to physiology, evidence, and practice; a fictional nursing case organized around what to assess, communicate, teach, and escalate; a self-assessment that draws questions at random from a fifteen-question bank, with a rationale for every option; a supervised-practice prompt for use with a preceptor; and assigned reading from this site&rsquo;s guides and calculators. The series is free, needs no account, and sends nothing you answer to any server.</p>
   <div class="alert alert-amber">
     <div class="alert-icon">⚠️</div>
@@ -898,7 +1018,7 @@ def build_hub():
 <section class="section" id="paths">
   <div class="section-tag">Two learner paths</div>
   <h2>Choose the path that matches your work</h2>
-  <p>Both paths use the same twelve modules. They differ in order and in which modules deserve the most time. Select a path to reorder the module list below.</p>
+  <p>Both paths use the same twelve core modules and end with the same advanced module. They differ in order and in which modules deserve the most time. Select a path to reorder the module list below.</p>
   <div class="nc-paths" role="group" aria-label="Learner path">
     <button type="button" class="nc-path" data-nc-path="neph" aria-pressed="true" data-note="Nephrology Nursing path: modules in numerical order, with most time on assessment, CKD, acute kidney injury, treatment choices, peritoneal dialysis, and transplantation.">
       <b>Nephrology Nursing</b>
@@ -918,7 +1038,7 @@ def build_hub():
 
 <section class="section" id="syllabus">
   <div class="section-tag">Syllabus</div>
-  <h2>The twelve modules at a glance</h2>
+  <h2>The modules at a glance</h2>
   <p>Study time is an estimate for reading the lesson, working the case, and completing the self-assessment. It does not include supervised practice.</p>
   <div class="table-wrap"><table>
   <thead><tr><th>No.</th><th>Module</th><th>Nursing case</th><th>Self-study time</th><th>Nephrology path</th><th>Hemodialysis path</th></tr></thead>
@@ -955,8 +1075,9 @@ def build_hub():
     <li><a href="dialysis-qapi-vs-cqi.html">Dialysis center quality management</a><span>How staff training and competency fit into the unit&rsquo;s quality program.</span></li>
   </ul>
 </section>"""
+    main = main.replace('<section class="section" id="syllabus">', progression_section() + '<section class="section" id="syllabus">', 1)
     main = auto_expand(main, fname)
-    nav = [("start", "Start here"), ("paths", "Learner paths"), ("syllabus", "Syllabus"), ("assessment", "Assessment"),
+    nav = [("start", "Start here"), ("paths", "Learner paths"), ("progression", "Competency map"), ("syllabus", "Syllabus"), ("assessment", "Assessment"),
            ("sources", "Curriculum sources"), ("educators", "For educators")]
     cards_rel = [(MODS["01"]["slug"] + ".html", "Module 1", MODS["01"]["title"], "Begin with kidney function and focused renal assessment."),
                  (MODS["06"]["slug"] + ".html", "Module 6", MODS["06"]["title"], "The first module of the hemodialysis sequence."),
@@ -965,12 +1086,12 @@ def build_hub():
                  ("code-blue-acls-dialysis-unit.html", "Related guide", "Cardiac Arrest Response in a Dialysis Unit", "Assigned reading for Module 9."),
                  ("dialysis-qapi-vs-cqi.html", "Related guide", "Dialysis Center Quality Management", "Assigned reading for Module 12.")]
     pre = f"""<div class="container">
-  <div class="nc-bar"><span class="nc-chip nc-chip-core">{COURSE['label']}</span><span class="nc-chip">12 modules</span><span class="nc-chip">Free &middot; no account</span><span class="nc-chip">English</span></div>
+  <div class="nc-bar"><span class="nc-chip nc-chip-core">{COURSE['label']}</span><span class="nc-chip">12 modules + 1 advanced</span><span class="nc-chip">Free &middot; no account</span><span class="nc-chip">English</span></div>
 </div>"""
     title = "Nephrology Nursing & Hemodialysis: A Self-Study Series for Registered Nurses"
-    desc = ("A free 12-module self-study series for registered nurses entering nephrology or hemodialysis practice in the Philippines: "
+    desc = ("A free 12-module self-study series, with an advanced thirteenth module, for registered nurses entering nephrology or hemodialysis practice in the Philippines: "
             "kidney assessment, CKD, AKI, treatment choices, hemodialysis prescription, vascular access, water safety, emergencies, "
-            "peritoneal dialysis, transplantation, and quality improvement, each with a nursing case and self-assessment.")
+            "peritoneal dialysis, transplantation, quality improvement, and continuous therapy and hemodiafiltration, each with a nursing case and self-assessment.")
     page = shell(
         fname, title, desc,
         "nephrology nursing course Philippines, hemodialysis nurse training, dialysis nursing self-study, renal nurse education, dialysis nurse competency, nephrology nursing syllabus",
@@ -1003,10 +1124,11 @@ def build_educator():
     chk = []
     for mid in ORDER:
         m = MODS[mid]
-        rows = "\n".join(f'<tr class="nc-sign"><td>{x}</td><td></td><td></td><td></td></tr>' for x in m["practice"]["items"])
+        items = [f'{c["statement"]} {level_chip(c["level"])}' for c in m["competencies"] if c["level"] in "SDI"] or m["practice"]["items"]
+        rows = "\n".join(f'<tr class="nc-sign"><td>{x}</td><td></td><td></td><td></td></tr>' for x in items)
         chk.append(f"""  <h3 style="font-family:Inter,system-ui,sans-serif;font-size:1rem;margin:22px 0 6px;color:var(--text);">Module {int(mid)}: {m['plain']}</h3>
   <div class="table-wrap"><table>
-  <thead><tr><th style="width:52%;">Observed behavior</th><th>Simulation (date, initials)</th><th>Patient care (date, initials)</th><th>Preceptor comments</th></tr></thead>
+  <thead><tr><th style="width:52%;">Competency and target level</th><th>Simulation or teach-back (date, initials)</th><th>Patient care (date, initials)</th><th>Preceptor comments</th></tr></thead>
   <tbody>
 {rows}
   </tbody></table></div>""")
@@ -1077,7 +1199,7 @@ def build_educator():
 <section class="section nc-print-break" id="checklist">
   <div class="section-tag">Printable</div>
   <h2>Preceptor competency checklist</h2>
-  <p>Print this section (use the print button). The behaviors are the supervised-practice prompts from each module. They describe what to observe; the steps themselves come from the unit&rsquo;s approved procedures and the manufacturer&rsquo;s instructions. Record simulation and patient care separately. Transfer the result to the facility&rsquo;s own competency form if one exists.</p>
+  <p>Print this section (use the print button). The rows are each module&rsquo;s competencies at the <em>shows how</em> level and above, with the target level beside each. A <em>does, independent</em> item is signed only after the supervised level has been observed and the unit&rsquo;s policy allows it. The statements describe what to observe; the steps themselves come from the unit&rsquo;s approved procedures and the manufacturer&rsquo;s instructions. Record simulation and patient care separately. Transfer the result to the facility&rsquo;s own competency form if one exists.</p>
   <div class="table-wrap"><table>
   <tbody>
   <tr class="nc-sign"><td style="width:25%;"><strong>Learner</strong></td><td></td><td style="width:20%;"><strong>PRC license no.</strong></td><td></td></tr>
@@ -1101,7 +1223,7 @@ def build_educator():
   <h2>Clinical review and open dependencies</h2>
   <p>High-risk content should be read by the appropriate reviewer before a provider relies on it: emergency sequences and vascular access by a senior HD nurse and nephrologist; water limits and machine checks by the unit&rsquo;s technician or biomedical engineer; isolation policy by infection control; medicines by a pharmacist; and pediatric, pregnancy, and transplant content by the relevant specialist nurse or physician. International curricula, including the American Nephrology Nurses Association (ANNA) core curriculum, were used to check coverage only.{cite('[[anna7]]', order)} Regulatory statements should be rechecked against the latest DOH issuances before each intake.</p>
   <ul class="nc-read">
-    <li><a href="{hub}">Course home</a><span>Syllabus, learner paths, and all twelve modules.</span></li>
+    <li><a href="{hub}">Course home</a><span>Syllabus, learner paths, and all modules.</span></li>
   </ul>
 </section>"""
     main = auto_expand(main, fname)
@@ -1121,7 +1243,7 @@ def build_educator():
         "Head nurses &middot; nurse educators &middot; clinical preceptors &middot; training providers &middot; medical directors",
         nav, pre, main, glossary_block(main, [("Preceptor", "An experienced nurse who supervises and assesses a learner in clinical practice."),
                                               ("Competency", "An observable ability to perform a task safely to a defined standard.")]),
-        related_block([(hub, "Course home", COURSE["title"], "Syllabus, both learner paths, and all 12 modules."),
+        related_block([(hub, "Course home", COURSE["title"], "Syllabus, both learner paths, and all modules."),
                        ("dialysis-qapi-vs-cqi.html", "Related guide", "Dialysis Center Quality Management", "Staff training and competency within the quality program."),
                        ("nephrology-workforce-crisis-or-opportunity.html", "Related guide", "Workforce Issues in Nephrology", "Context on the kidney-care workforce.")]),
         body_class="nc-educator",

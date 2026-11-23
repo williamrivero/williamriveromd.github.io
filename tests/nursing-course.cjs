@@ -18,7 +18,7 @@ catch (e) { ({ chromium } = require(process.env.PLAYWRIGHT_CORE)); }
 
 const shots = process.argv[2];
 const guides = path.join(ROOT, 'academy');
-const pages = fs.readdirSync(guides).filter(f => /^nephrology-nursing.*\.html$/.test(f)).sort();
+const pages = fs.readdirSync(guides).filter(f => /^nephrology-nursing.*\.html$/.test(f) && !f.includes(' ')).sort();
 const modules = pages.filter(f => /^nephrology-nursing-\d\d-/.test(f));
 const url = f => 'file://' + path.join(guides, f);
 let failures = 0, checks = 0;
@@ -141,6 +141,9 @@ function ok(cond, msg) { checks++; if (!cond) { failures++; console.log('  FAIL:
     ok(await page.evaluate(() => localStorage.getItem('rcm-nursing-progress') === null), `${f}: unticking did not erase progress`);
     ok(requests.length === 0, `${f}: quiz made network requests: ${requests.slice(0, 3).join(', ')}`);
 
+    // competencies: section present, at least 8 rows, every row has a level chip
+    const comp = await page.$$eval('#competencies table.nc-comp tbody tr', r => r.map(x => !!x.querySelector('.nc-lv')));
+    ok(comp.length >= 8 && comp.every(Boolean), `${f}: competency table missing or incomplete (${comp.length} rows)`);
     // previous / next
     const np = await page.$$eval('.nc-nextprev a', a => a.map(x => x.getAttribute('href')));
     ok(np.length === 2 && np.every(h => fs_exists(h)), `${f}: previous/next links broken`);
@@ -154,16 +157,18 @@ function ok(cond, msg) { checks++; if (!cond) { failures++; console.log('  FAIL:
     const page = await ctx.newPage();
     await page.goto(url('nephrology-nursing.html'), { waitUntil: 'load' });
     const order = () => page.$$eval('#nc-modules [data-module]', c => c.map(x => x.getAttribute('data-module')).join(','));
-    ok(await order() === '01,02,03,04,05,06,07,08,09,10,11,12', 'hub: default order wrong');
+    ok(await order() === '01,02,03,04,05,06,07,08,09,10,11,12,13', 'hub: default order wrong');
     await page.focus('[data-nc-path="hd"]');
     await page.keyboard.press('Enter');
-    ok(await order() === '01,06,07,08,09,02,03,04,05,10,11,12', 'hub: hemodialysis path order wrong: ' + await order());
+    ok(await order() === '01,06,07,08,09,02,03,04,05,10,11,12,13', 'hub: hemodialysis path order wrong: ' + await order());
     ok(await page.getAttribute('[data-nc-path="hd"]', 'aria-pressed') === 'true', 'hub: aria-pressed not updated');
-    ok(await page.$$eval('#nc-modules a', a => a.length) === 12, 'hub: expected 12 module cards');
+    ok(await page.$$eval('#nc-modules a', a => a.length) === 13, 'hub: expected 13 module cards');
     ok(await page.isHidden('#nc-progress'), 'hub: progress bar shown without opt-in');
+    ok(await page.$$eval('#progression table.nc-pm tbody tr', r => r.length) === 12, 'hub: competency map should have 12 threads');
+    ok(await page.$$eval('#progression table.nc-pm thead th.nc-pm-mod', r => r.length) === 13, 'hub: competency map should have 13 module columns');
     await page.evaluate(() => localStorage.setItem('rcm-nursing-progress', JSON.stringify({ optin: true, modules: { '06': { score: 3, total: 3, date: '2026-11-23' } } })));
     await page.reload({ waitUntil: 'load' });
-    ok(/1 of 12/.test(await page.textContent('#nc-progress')), 'hub: saved progress not shown');
+    ok(/1 of 13/.test(await page.textContent('#nc-progress')), 'hub: saved progress not shown');
     await page.click('#nc-progress button');
     ok(await page.evaluate(() => localStorage.getItem('rcm-nursing-progress') === null), 'hub: clear progress failed');
     await ctx.close();

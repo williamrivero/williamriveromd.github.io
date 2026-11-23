@@ -17,7 +17,7 @@ def load(path):
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 want = dict(load(CONTENT / "common.py").PUBMED_REFS)
-for f in sorted(CONTENT.glob("m??_x.py")):
+for f in sorted(list(CONTENT.glob("m??_x*.py")) + list(CONTENT.glob("m??_q.py"))):
     want.update(getattr(load(f), "NEW_REFS", {}))
 raw = json.loads(RAW.read_text(encoding="utf-8"))
 missing = sorted({p for p in want.values() if p not in raw})

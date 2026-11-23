@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+MILESTONE = "After this module, the nurse can recognize acute kidney injury against the Kidney Disease: Improving Global Outcomes (KDIGO) criteria, rule out a blocked catheter first, and escalate hyperkalemia with ECG changes through an immediate SBAR call."
+COMPETENCIES = [
+    {"thread": "results", "statement": "Applies the KDIGO creatinine and urine-output criteria to define and stage AKI, and identifies at-risk patients from their susceptibilities and exposures.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "assessment", "statement": "Sorts likely causes of AKI into reduced perfusion, intrinsic kidney damage, and obstruction using bedside findings.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "emergency", "statement": "Lists the indications for urgent kidney support: refractory hyperkalemia, diuretic-resistant pulmonary edema, severe acidosis, uremic complications, and dialyzable poisonings.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "therapy", "statement": "Compares intermittent hemodialysis, prolonged intermittent therapy, and continuous therapy by duration, removal rate, suitable patient, and nursing demands.", "level": "K", "evidence": ["Self-assessment"]},
+    {"thread": "therapy", "statement": "Describes nursing care during acute kidney support: catheter care, hourly fluid balance, circuit pressures, anticoagulation and calcium monitoring, temperature, electrolytes, and recorded downtime.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "teaching", "statement": "Prepares an AKI discharge plan with the diagnosis explained, a repeat creatinine and urine albumin test date, and a reconciled medication list with restart instructions.", "level": "K", "evidence": ["Nursing case"]},
+    {"thread": "emergency", "statement": "Recognizes hyperkalemia with ECG changes, starts continuous cardiac monitoring, calls immediately, prepares prescribed treatments, and monitors glucose after insulin per protocol.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "assessment", "statement": "Calculates urine output in mL/kg per hour from the patient&rsquo;s weight and compares it with the AKI criteria.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "assessment", "statement": "Checks catheter patency and bladder status by palpation or bladder scan when output falls, before assuming other causes.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "medicines", "statement": "Reviews the medication chart for kidney-harmful or accumulating agents and raises queries with the prescriber appropriately.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "communication", "statement": "Delivers an SBAR handoff for a time-critical problem such as hyperkalemia within one minute, stating the problem and the request first.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "assessment", "statement": "Records hourly urine output, daily weight, and strict intake and output for patients at risk of AKI per unit protocol.", "level": "I", "evidence": ["Observed practice", "Record review"]},
+]

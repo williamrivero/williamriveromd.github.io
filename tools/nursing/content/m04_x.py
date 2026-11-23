@@ -58,6 +58,7 @@ EXTRA = [
 """},
     {"after": "bedside", "id": "acute-krt", "nav": "Caring during kidney support", "tag": "Clinical application", "h2": "Nursing care during acute hemodialysis and continuous therapy",
      "html": """
+<p>Advanced Module 13 covers continuous therapy in depth: modes, dose, citrate and heparin anticoagulation, hourly fluid accounting, circuit troubleshooting, and complications. This section is the overview.</p>
 <p><strong>Access.</strong> Acute treatment uses a temporary, non-tunneled dialysis catheter. The guideline's order of preference for the site is the right internal jugular vein, then a femoral vein, then the left internal jugular; the subclavian vein is avoided because narrowing there can ruin future fistula options in that arm.[[aki2012]] The catheter is used for dialysis only, handled with full aseptic technique (Module 7), and checked each shift for redness, discharge, bleeding, and position. Femoral catheters limit hip flexion; kinking shows as pressure alarms when the patient sits up.</p>
 <p><strong>Continuous renal replacement therapy (CRRT) at the bedside.</strong></p>
 <div class="table-wrap"><table>

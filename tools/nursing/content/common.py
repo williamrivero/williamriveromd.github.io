@@ -34,12 +34,14 @@ MODULES = [
     ("10", "pd-home-dialysis-nursing", "PD and Home Dialysis Nursing", "PD and home dialysis", "core", "foundation"),
     ("11", "transplantation-special-populations", "Transplantation and Special Populations", "Transplant", "core", "foundation"),
     ("12", "philippine-practice-quality-capstone", "Philippine Practice, Quality Improvement, and Capstone", "Practice and quality", "core", "core"),
+    # advanced module, studied after the capstone on both paths
+    ("13", "convective-therapies-crrt-hdf", "Convective Therapies: CRRT and Hemodiafiltration", "Continuous therapy and hemodiafiltration", "advanced", "advanced"),
 ]
 
 # Suggested study order on each path (module ids)
 PATH_ORDER = {
-    "neph": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-    "hd": ["01", "06", "07", "08", "09", "02", "03", "04", "05", "10", "11", "12"],
+    "neph": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13"],
+    "hd": ["01", "06", "07", "08", "09", "02", "03", "04", "05", "10", "11", "12", "13"],
 }
 
 # ── Abbreviations: used to build each page's glossary automatically ──────────
@@ -70,6 +72,12 @@ ABBR = {
     "CPR": ("cardiopulmonary resuscitation", ""),
     "CQI": ("continuous quality improvement", ""),
     "CRRT": ("continuous renal replacement therapy", ""),
+    "CVVH": ("continuous venovenous hemofiltration", "Continuous therapy that clears solutes by convection, with replacement fluid."),
+    "CVVHD": ("continuous venovenous hemodialysis", "Continuous therapy that clears solutes by diffusion into dialysate."),
+    "CVVHDF": ("continuous venovenous hemodiafiltration", "Continuous therapy that combines diffusion and convection."),
+    "SCUF": ("slow continuous ultrafiltration", "Continuous fluid removal without replacement fluid or dialysate."),
+    "SLED": ("sustained low-efficiency dialysis", "A prolonged intermittent therapy run over many hours with a standard machine."),
+    "HDF": ("hemodiafiltration", "Hemodialysis combined with large-volume convection and online replacement fluid."),
     "CVC": ("central venous catheter", ""),
     "DGF": ("delayed graft function", "Need for dialysis within the first week after a kidney transplant."),
     "DOH": ("Department of Health", "Philippines."),
@@ -137,6 +145,11 @@ MANUAL_REFS = {
     "ra10173": (
         'National Privacy Commission (NPC). (2012). <em>Republic Act No. 10173: Data Privacy Act of 2012</em>. '
         '<a href="https://privacy.gov.ph/data-privacy-act/">https://privacy.gov.ph/data-privacy-act/</a>'
+    ),
+    "iso23500_5": (
+        'International Organization for Standardization (ISO). (2024). <em>Preparation and quality management of fluids for '
+        'haemodialysis and related therapies — Part 5: Quality of dialysis fluid for haemodialysis and related therapies</em> (ISO 23500-5:2024). '
+        '<a href="https://www.iso.org/standard/84372.html">https://www.iso.org/standard/84372.html</a>'
     ),
     "iso23500_3": (
         'International Organization for Standardization (ISO). (2024). <em>Preparation and quality management of fluids for '
@@ -209,6 +222,7 @@ JOURNALS = {
 
 # Sentence-case titles for sources PubMed stores in title case (APA 7)
 TITLE_OVERRIDES = {
+    "33095849": "Effect of regional citrate anticoagulation vs systemic heparin anticoagulation during continuous kidney replacement therapy on dialysis filter life span and mortality among critically ill patients with acute kidney injury: A randomized clinical trial",
     "38490803": "KDIGO 2024 clinical practice guideline for the evaluation and management of chronic kidney disease",
     "32829751": "KDOQI clinical practice guideline for nutrition in CKD: 2020 update",
     "26498416": "KDOQI clinical practice guideline for hemodialysis adequacy: 2015 update",
@@ -230,6 +244,7 @@ TITLE_OVERRIDES = {
 }
 # Group authors that PubMed lists by collective name only
 GROUP_AUTHORS = {
+    "19846848": "RENAL Replacement Therapy Study Investigators",
     "36343653": "MyTEMP Writing Committee",
     "26498416": "National Kidney Foundation (NKF)",
 }
@@ -240,3 +255,29 @@ SCOPE_NOTE = (
     "for the equipment you use. Every case is fictional. A quiz score records self-assessment only; practice "
     "competencies are observed and signed off by a clinical preceptor or training provider."
 )
+
+
+# ── Competency framework (rendered on each module, the hub progression map, and the educator checklist) ──
+# Each module's competencies live in content/mNN_c.py as COMPETENCIES = [{"thread", "statement", "level", "evidence"}]
+# and MILESTONE = "one sentence". Levels follow Miller's pyramid; self-study alone never exceeds "knows".
+COMPETENCY_LEVELS = {
+    "K": ("Knows", "Explains the reasoning and applies it to cases. Verified by the self-assessment and the nursing case."),
+    "S": ("Shows how", "Demonstrates the skill in simulation, a skills station, or teach-back. Verified by an educator."),
+    "D": ("Does, supervised", "Performs the task with real patients under direct supervision. Verified by preceptor observation."),
+    "I": ("Does, independent", "Performs the task without direct supervision after preceptor sign-off under the unit&rsquo;s policy."),
+}
+COMPETENCY_THREADS = {
+    "assessment":    "Clinical assessment and fluid status",
+    "results":       "Interpreting results and trends",
+    "medicines":     "Medicines and their safety",
+    "teaching":      "Patient and family teaching, nutrition, and shared decisions",
+    "therapy":       "Delivering kidney replacement therapy",
+    "access":        "Vascular and peritoneal access",
+    "infection":     "Infection prevention and control",
+    "water":         "Water, dialysate, and equipment safety",
+    "emergency":     "Recognizing deterioration and emergency response",
+    "communication": "Communication, handoff, and documentation",
+    "professional":  "Professional, ethical, and legal practice",
+    "quality":       "Quality, safety culture, and improvement",
+}
+COMPETENCY_EVIDENCE = ["Self-assessment", "Nursing case", "Skills station", "Simulation", "Teach-back", "Observed practice", "Record review"]

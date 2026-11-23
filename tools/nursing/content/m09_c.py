@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+MILESTONE = "After this module, the nurse can monitor a full hemodialysis session from pre-treatment assessment to handoff, and take the correct first actions in an intradialytic emergency while help is coming."
+
+COMPETENCIES = [
+    {"thread": "assessment", "statement": "Completes and documents pre-, intra-, and post-treatment assessments for three full sessions, calling the physician before connecting when a finding requires it.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "assessment", "statement": "Completes and documents pre-, intra-, and post-treatment assessments for stable patients on routine sessions.", "level": "I", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "therapy", "statement": "Ends a routine session at the prescribed time, returns blood with saline while watching the venous line, and achieves hemostasis per unit procedure.", "level": "I", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "assessment", "statement": "Explains dialysis disequilibrium syndrome and its prevention, and links common intradialytic symptoms to their likely causes and first nursing responses.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "therapy", "statement": "Explains the physiological reason for each strategy that prevents IDH, and recognizes a recurring pattern that needs prescription review by the physician.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "emergency", "statement": "Rehearses hypotension, needle dislodgement, hemolysis, dialyzer reaction, air entry, and cardiac arrest drills on the unit machine using the unit protocol.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "emergency", "statement": "Performs first actions for symptomatic IDH in the correct order: stops or minimizes UF, reclines the patient, checks blood pressure and access, and notifies the physician.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "emergency", "statement": "Stops the blood pump, clamps the lines, applies direct pressure, calls for help, assesses the patient, and estimates blood loss after needle dislodgement or line disconnection.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "emergency", "statement": "For suspected hemolysis, dialyzer reaction, or air entry, stops and clamps without overriding the air clamp, does not return blood, calls for help, and positions per protocol.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "emergency", "statement": "Starts chest compressions within seconds for a patient in cardiac arrest on dialysis, while a second rescuer stops the blood pump and manages the circuit.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "communication", "statement": "Writes a post-event record stating delivered time and fluid removed against the prescription, patient status, actions, and who was informed, and gives an SBAR handoff.", "level": "S", "evidence": ["Simulation", "Record review"]},
+    {"thread": "medicines", "statement": "Explains which medicines dialysis removes and why timing around a session matters, and confirms each dose timing against the order without changing it.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "emergency", "statement": "Describes the unit response to power failure, water failure, and evacuation, including manual blood return and disconnection according to the unit disaster plan.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+]

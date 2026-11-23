@@ -208,7 +208,7 @@
       if (st && st.optin) {
         bar.hidden = false;
         bar.querySelector('.nc-progress-text').textContent =
-          done + ' of 12 self-assessments recorded on this device.';
+          done + ' of ' + hub.querySelectorAll('[data-module]').length + ' self-assessments recorded on this device.';
         var btn = bar.querySelector('button');
         btn.addEventListener('click', function () {
           clearStore();

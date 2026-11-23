@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+MILESTONE = "After this module, the nurse can guide a patient and family through all four kidney failure pathways without steering, confirm understanding with teach-back, and document what the patient values."
+
+COMPETENCIES = [
+    {"thread": "teaching", "statement": "Describes hemodialysis, peritoneal dialysis, transplantation, and conservative kidney management by what each replaces, daily life, who does the work, diet, main risks, and suitability.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "teaching", "statement": "Explains that starting dialysis is a clinical decision based on symptoms and complications, not on a single laboratory value, and outlines the preparation lead time for each pathway.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "professional", "statement": "Explains shared decision-making in three steps and the nurse as guide, not decision-maker, including asking the patient privately how much to know and whom to involve.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "teaching", "statement": "Presents all medically suitable pathways to the patient and chosen family using the same plain-language structure for each, so that no option sounds like the default.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "teaching", "statement": "Elicits the priorities, fears, and picture of a good day of the patient with open questions, and reflects them back without steering toward a pathway.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "teaching", "statement": "Demonstrates a teach-back prompt that places the burden on the teacher, and re-explains in a different way when the answer shows a gap.", "level": "S", "evidence": ["Teach-back", "Simulation"]},
+    {"thread": "teaching", "statement": "Uses teach-back after modality education with a real patient and family, and re-teaches until the patient can describe the chosen pathway in their own words.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "communication", "statement": "Identifies at least two practical barriers such as transport, cost, housing, or caregiver availability, and refers to the social worker or benefits staff instead of quoting entitlements.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "professional", "statement": "Opens an advance care planning conversation as a routine part of kidney care, asking about goals, worries, and who should speak for the patient.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "assessment", "statement": "Describes contributors and nursing measures for itch, nausea, breathlessness, pain, and fatigue in conservative kidney management and at the end of life, reporting symptoms for prescribed treatment.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "communication", "statement": "Documents the decision conversation, including what the patient said in their own words, stated goals, who was present, and that the physician was informed.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+]

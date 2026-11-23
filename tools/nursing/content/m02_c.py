@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+MILESTONE = "After this module, the nurse can confirm chronicity, stage chronic kidney disease by cause, GFR category, and albuminuria category, and complete a kidney-focused medication reconciliation that catches hidden NSAID use."
+COMPETENCIES = [
+    {"thread": "results", "statement": "States the KDIGO definition of CKD and explains why a single abnormal result cannot establish chronicity.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "results", "statement": "Identifies features of faster progression and the KDIGO triggers for nephrology referral, including a kidney failure risk estimate and sustained eGFR decline.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "results", "statement": "Uses the KDIGO risk grid to state how often a patient needs kidney function and albuminuria checks and identifies overdue follow-up.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "medicines", "statement": "Describes each element of the plan that slows progression and its nursing checks, such as creatinine and potassium after a renin–angiotensin system inhibitor is started.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "medicines", "statement": "Recognizes kidney hazards, including contrast studies, phosphate bowel preparations, magnesium or aluminum antacids, herbal products, and dose-dependent medicines, and flags them for prescriber review.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "access", "statement": "Explains why arm veins of the non-dominant side are protected from needles and cannulas once eGFR falls below 30.", "level": "K", "evidence": ["Self-assessment"]},
+    {"thread": "teaching", "statement": "Teaches temporary-illness (sick-day) advice from the prescriber&rsquo;s written plan, including which medicines to pause and when to restart, and confirms understanding with teach-back.", "level": "S", "evidence": ["Teach-back"]},
+    {"thread": "teaching", "statement": "Explains what eGFR and urine ACR results mean and why the patient should ask before taking any pain reliever, confirming understanding with teach-back.", "level": "S", "evidence": ["Teach-back"]},
+    {"thread": "results", "statement": "Lists dated creatinine and eGFR values from the chart and states whether chronicity is established against the KDIGO definition.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "results", "statement": "States the cause, GFR category, and albuminuria category, or identifies that a urine ACR is missing and prompts for one.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "medicines", "statement": "Completes a kidney-focused medication reconciliation that names each prescription medicine, pain reliever, and herbal product by agent, dose, and frequency.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "communication", "statement": "Flags NSAID exposure, missing tests, and kidney-dependent doses to the prescriber using a structured handoff, without advising the patient to stop prescribed medicines.", "level": "D", "evidence": ["Observed practice"]},
+]

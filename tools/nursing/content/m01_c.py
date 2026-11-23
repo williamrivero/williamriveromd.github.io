@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+MILESTONE = "After this module, the nurse can perform a focused renal assessment in priority order, starting with breathing, and turn weight, blood pressure, and the two core kidney tests into a stated judgment and action."
+COMPETENCIES = [
+    {"thread": "assessment", "statement": "Explains how filtration, tubular reabsorption, and secretion keep fluid, electrolytes, and acid–base status stable, and relates failure of each nephron segment to its bedside and laboratory findings.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "results", "statement": "Describes the kidney&rsquo;s hormonal work with erythropoietin, vitamin D activation, and renin, and links their loss to anemia, mineral and bone disease, and hypertension.", "level": "K", "evidence": ["Self-assessment"]},
+    {"thread": "results", "statement": "Interprets eGFR and urine ACR as the two core kidney tests, explaining why both are needed and when creatinine misleads.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "results", "statement": "Interprets a urinalysis and urine ACR, naming common causes of false results and collecting a clean midstream sample with relevant conditions recorded.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "emergency", "statement": "Recognizes deep, rapid breathing with clear lungs in a patient with kidney disease as possible metabolic acidosis and reports it so bicarbonate is checked.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "assessment", "statement": "Demonstrates standardized seated and standing blood pressure measurement: validated device, correct cuff size, rested patient, supported arm at heart level, no talking.", "level": "S", "evidence": ["Skills station"]},
+    {"thread": "emergency", "statement": "Recognizes possible fluid overload with orthopnea, positions the patient upright, and delivers a structured situation-background-assessment-recommendation call including weight trend and intake and output.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "teaching", "statement": "Explains to a patient why daily weights, upright positioning, and a fluid review are needed, and confirms understanding with teach-back.", "level": "S", "evidence": ["Teach-back"]},
+    {"thread": "assessment", "statement": "Measures blood pressure on real patients with standardized technique and the correct cuff size.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "assessment", "statement": "Obtains a comparable weight (same scale, time, and clothing) and states the trend against prior values.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "assessment", "statement": "Performs a focused renal assessment in priority order, assessing breathing first, then weight, blood pressure, volume signs, intake and output, symptoms, medicines, and access.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "communication", "statement": "States and documents a judgment (stable, review today, or urgent) with the action taken, and presents each patient in under two minutes.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+]

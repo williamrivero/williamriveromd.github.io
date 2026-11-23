@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+MILESTONE = "After this module, the nurse can track anemia, mineral, potassium, and nutrition results together, correct product-specific medicine timing with teach-back, and refer unintentional weight loss to the dietitian."
+COMPETENCIES = [
+    {"thread": "results", "statement": "Explains why anemia develops in CKD, including erythropoietin loss and hepcidin-blocked iron, and names ferritin and TSAT as the tests of iron status.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "results", "statement": "Describes how phosphate retention, low calcitriol, and PTH interact in mineral and bone disorder, and why phosphate binders work only with food.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "results", "statement": "Recognizes medicines and habits that raise potassium, and reports rising potassium, falling bicarbonate, or fluid gain trends to the physician.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "medicines", "statement": "Compares calcium-based and non-calcium binders, nutritional and active vitamin D, and calcimimetics, stating the teaching and laboratory monitoring each requires.", "level": "K", "evidence": ["Self-assessment"]},
+    {"thread": "medicines", "statement": "Explains ESA monitoring: checks blood pressure before each dose, reports a rapid hemoglobin rise or poor response, and names common causes of poor response.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "medicines", "statement": "Identifies medicines hazardous or needing dose changes in advanced kidney disease, such as opioids, gabapentinoids, phosphate enemas, and magnesium antacids, and flags them for review.", "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "medicines", "statement": "Demonstrates intravenous iron administration as ordered: confirms no active infection, follows product dilution and rate, observes for reaction, and stops and escalates if one occurs.", "level": "S", "evidence": ["Simulation"]},
+    {"thread": "teaching", "statement": "Teaches product-specific phosphate binder timing (with meals, swallowed or chewed as labeled) and confirms understanding with teach-back.", "level": "S", "evidence": ["Teach-back"]},
+    {"thread": "results", "statement": "Presents hemoglobin with ferritin and TSAT, states the trend, and reports anemia with low iron indices to the physician.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "medicines", "statement": "Verifies how the patient actually takes each binder and corrects timing errors using teach-back.", "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "assessment", "statement": "Performs a brief nutritional screen (weight trend, appetite, intake) and arranges dietitian review for unintentional weight loss instead of further restriction.", "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "teaching", "statement": "Identifies one potassium- or phosphate-raising habit and gives individualized, food-based advice built on familiar Filipino dishes, not blanket bans.", "level": "D", "evidence": ["Observed practice"]},
+]

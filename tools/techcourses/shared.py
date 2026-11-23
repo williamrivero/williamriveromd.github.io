@@ -135,8 +135,8 @@ ACADEMY = {
     # href, card image, role line, title, blurb, meta line
     "nursing": ("nephrology-nursing.html", "nephrology-nursing-01-kidney-function-renal-assessment-vignette-hero.webp", "Registered nurses",
                 "Nephrology Nursing &amp; Hemodialysis",
-                "Kidney assessment, chronic kidney disease, acute kidney injury, hemodialysis, peritoneal dialysis, transplantation, and quality improvement.",
-                "12 modules &middot; two learner paths &middot; educator page"),
+                "Kidney assessment, chronic kidney disease, acute kidney injury, hemodialysis, peritoneal dialysis, transplantation, quality improvement, and an advanced module on continuous therapy and hemodiafiltration.",
+                "12 modules + 1 advanced &middot; two learner paths &middot; educator page"),
     "planned": [
         ("Physicians", "Physician on Duty in the Dialysis Unit",
          "For physicians covering a hemodialysis shift: pre-dialysis assessment, intradialytic emergencies, orders, and escalation to the nephrologist."),
