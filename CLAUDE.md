@@ -1063,6 +1063,13 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   (`Ctx.class_peers`; classes compared by `class_key()` word sets, plurals and ordinals folded; a match is an
   identical set or one contained in the other with 2+ shared words; closest first; variant spellings never listed),
   with the note that same-class medicines are not necessarily interchangeable. Structure only, no clinical claims.
+- **Overview summaries for unlabeled drugs** (Nov 23 2026, Dr. Rivero chose "class, how it works and main uses, no
+  doses"): an approved `summary/<slug>.json` may carry `overview: {class, mechanism, uses[]}`. When a page has no US
+  label and no EU SmPC, `uses` fills the Use section (titled "Use", with a "summarized from published literature" note)
+  and `mechanism` + `class` fill Mechanism of action, both with the reviewed chip; the summary's `sources` join
+  References. Only PubMed-verified reviews/trials, worded at the evidence level, never a dose, never contradicting a
+  regulatory restriction already cited on the page (e.g. trimetazidine: EMA 2012 add-on only). Approved under
+  delegated sign-off and logged in `revision_log`. First batch: trimetazidine, doxofylline, fusidic acid.
 - **INN/BAN to US names for label matching** (Nov 23 2026): `INN_TO_USAN` in `tools/drugdb/fetch_fda_labels.py` also maps
   same-molecule names (ursodeoxycholic acid -> ursodiol, calcipotriol -> calcipotriene, desferrioxamine -> deferoxamine,
   valproate semisodium -> divalproex sodium, recombinant human erythropoietin alfa -> epoetin alfa, ...), brand-as-generic

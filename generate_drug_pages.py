@@ -4468,7 +4468,14 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         use = ('<ul class="dd-uselist">' + "".join(f"<li>{esc(i)}</li>" for i in inds) + f"</ul>{LABEL_CHIP}"
                + acc("Full indications and usage", label_html(label, "indications_and_usage"), aid="label-indications-and-usage"))
     use = use or eu_r.section(eu, "4.1", open_=True)
-    S.append(sec("use", "Use: Labeled indications", use, "Use"))
+    ov = (summ.get("overview") if summ_ok else None) or {}     # reviewed overview for unlabeled drugs (Nov 23 2026)
+    use_title = "Use: Labeled indications"
+    if not use and ov.get("uses"):
+        use = ('<ul class="dd-uselist">' + "".join(f"<li>{esc(u)}</li>" for u in ov["uses"] if ws(u)) + f"</ul>{OURS_CHIP}"
+               + '<p class="dd-note">Summarized from published literature (see References); no US or EU label is available. '
+               'Philippine-approved indications are in the package insert.</p>')
+        use_title = "Use"
+    S.append(sec("use", use_title, use, "Use"))
     # 3. Dosing: Adult
     adult = ""
     dose = [d for d in (summ.get("usual_adult_dose") if summ_ok else []) or [] if isinstance(d, dict)]
@@ -4600,7 +4607,11 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     # 16. Mechanism; Pharmacokinetics
     moa = label_html(label, "mechanism_of_action")
     S.append(sec("overdose", "Overdose", eu_r.section(eu, "4.9"), "Overdose"))
-    S.append(sec("mechanism", "Mechanism of action", (f"{moa}{LABEL_CHIP}" if moa else eu_r.section(eu, "5.1")), "Mechanism"))
+    mech = f"{moa}{LABEL_CHIP}" if moa else eu_r.section(eu, "5.1")
+    if not mech and ws(ov.get("mechanism")):
+        mech = (f'<p>{esc(ov["mechanism"])}</p>' + (f'<p><strong>Class:</strong> {esc(ov["class"])}</p>' if ws(ov.get("class")) else "")
+                + OURS_CHIP)
+    S.append(sec("mechanism", "Mechanism of action", mech, "Mechanism"))
     S.append(sec("pharmacodynamics", "Pharmacodynamics",
                  acc("Pharmacodynamics (US label)", label_html(label, "pharmacodynamics")), "Pharmacodynamics"))
     pk_full = label_html(label, "pharmacokinetics")
