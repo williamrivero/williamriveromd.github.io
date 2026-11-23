@@ -429,7 +429,7 @@ def parse_md_module(src, mid, meta, page):
             for after, xid, xnav, xh2, xhtml in enrich.get("extra", []):
                 if after == k:
                     m["sections"].append({"id": xid, "nav": xnav, "tag": "Lesson &middot; in practice",
-                                          "h2": xh2, "html": page.render(xhtml)})
+                                          "h2": xh2, "html": page.render(place_after_first_para(xhtml, placed(meta["slug"], xid)))})
     for text, crit in enrich.get("skills_extra", []):
         m["skills"]["items"].append((text, crit))
     # quiz
