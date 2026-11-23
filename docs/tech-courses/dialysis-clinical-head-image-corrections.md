@@ -2,6 +2,8 @@
 
 Audit of the November 24, 2026 image batch for the Dialysis Clinical Head track (48 figures, 15 heroes, 15 cards). 44 of 48 figures, all 15 heroes, and all 15 cards passed and are placed on renalcarematters.com. Four figures failed and are held back; their pages show nothing in their place until a replacement passes audit. One placed figure carries a style advisory.
 
+**Status, November 24, 2026:** all five replacements passed audit and are placed on the site. This file is kept as the record of what failed and how the prompts were corrected.
+
 **How to use:** paste one fenced block per generation into the Image Generator GPT. Generate at 1672 × 941. Save the PNG master and the WebP under the exact filename shown, drop both in `Documents/Dialysis Clinical Head/images`, and ask for an audit-and-place pass. The page slot is already wired; the figure appears as soon as the file is placed.
 
 | # | File | Status | Defect in one line |
