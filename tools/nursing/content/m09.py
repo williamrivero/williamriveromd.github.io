@@ -14,7 +14,10 @@ MODULE = {
     "sections": [
         {"id": "model", "nav": "Mental model", "tag": "Intuition", "h2": "A circuit outside the body",
          "html": """
-<p>During hemodialysis (HD), roughly a cup of the patient&rsquo;s blood is outside the body at any moment, moving at about 300 mL per minute. That single fact explains why dialysis emergencies unfold faster than most ward emergencies. A needle that slips out can empty a liter of blood onto the floor in under five minutes. Water is being withdrawn from a circulation that may not refill fast enough. The fluid on the other side of the membrane can injure blood cells if it is wrong. The machine has alarms for many of these, but alarms detect pressures and bubbles, not patients. The nurse who looks at the patient and the access at regular intervals is the monitoring system that the machine cannot replace.</p>
+<p>Picture a garden hose looped out of a house and back in again, with water running through it fast. While the loop is whole, nothing happens. If one end slips off, the floor floods within minutes. During hemodialysis (HD), the patient&rsquo;s blood is in that loop. Roughly a cup of it is outside the body at any moment, moving at about 300 mL per minute. A needle that slips out can empty a liter of blood onto the floor in under five minutes.</p>
+<p>The picture has a limit. A hose only carries water. The circuit also changes the blood. The machine withdraws water from a circulation that may not refill fast enough. The fluid on the other side of the membrane can injure blood cells if it is wrong. Air can enter. The membrane itself can trigger a reaction. And the body at the other end of the loop is often an older heart, stiff vessels, and nerves damaged by diabetes. That is why dialysis emergencies unfold faster than most ward emergencies.</p>
+<p>The machine has alarms for many of these events. Alarms detect pressures and bubbles. They do not detect patients. You, looking at the patient and the access at regular intervals, are the monitoring system the machine cannot replace.</p>
+<p>Most sessions pass without harm, and most problems that do occur are drops in blood pressure that recover within minutes. A few events kill within minutes. Your work is to assess before, during, and after, to recognize the dangerous events early, and to take the first actions while help is on the way.</p>
 """},
         {"id": "physiology", "nav": "The session", "tag": "Physiology", "h2": "Before, during, after",
          "html": """
@@ -25,17 +28,28 @@ MODULE = {
 <tr><td>During</td><td>Blood pressure and pulse at the interval ordered, and whenever symptoms occur; the patient&rsquo;s appearance and responsiveness; access and connections in view; arterial and venous pressures; ultrafiltration progress; blood color in the lines</td><td>Detects hypotension, bleeding, clotting, hemolysis, and reactions early</td></tr>
 <tr><td>After</td><td>Blood pressure sitting and standing; weight against target; hemostasis at needle sites or catheter care; symptoms; ability to walk safely</td><td>Confirms the patient is safe to leave; informs the next prescription</td></tr>
 </tbody></table></div>
-<p><strong>Why blood pressure falls.</strong> Ultrafiltration removes water from plasma. Blood volume is maintained only if fluid moves in from the tissues as fast as it is removed and if the heart and blood vessels compensate by raising heart rate and tightening vessels. Large fluid goals, short sessions, heart disease, autonomic neuropathy from diabetes, a meal during treatment, warm dialysate, and antihypertensive medicines taken beforehand all weaken that compensation. The result is intradialytic hypotension (IDH), the most common complication of HD.</p>
+<p><strong>Why blood pressure falls.</strong> Follow the chain. Ultrafiltration removes water from the plasma only. Blood volume holds up only if fluid moves in from the tissues as fast as the machine takes it out. When refilling lags, less blood returns to the heart. The body then defends the pressure in two ways: the heart beats faster, and the vessels tighten. When those defenses also fail, the pressure falls.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Defense</th><th>What weakens it</th><th>What you may notice</th></tr></thead>
+<tbody>
+<tr><td>Refilling from the tissues</td><td>A large fluid goal; a short session</td><td>A drop late in the session, often with cramps</td></tr>
+<tr><td>Vessel tightening</td><td>Autonomic neuropathy from diabetes; blood pressure medicines taken beforehand; a meal during treatment; warm dialysate</td><td>A drop soon after eating; a warm, flushed patient</td></tr>
+<tr><td>Heart response</td><td>Heart disease</td><td>A pulse that does not rise as the pressure falls</td></tr>
+</tbody></table></div>
+<p>The result is intradialytic hypotension (IDH), the most common complication of HD.</p>
+<p><strong>At every drop in pressure, ask which defense failed: refilling, the vessels, or the heart. The answer points to the cause and to the prevention.</strong></p>
 """},
         {"id": "evidence", "nav": "Evidence", "tag": "Evidence", "h2": "What is known about the main complications",
          "html": """
-<p>Frequent IDH is associated with higher mortality, cardiovascular events, and access clotting in observational studies, and repeated episodes are thought to stun the heart and reduce blood flow to the brain and gut; whether preventing episodes improves survival has not been tested in adequately powered trials.[[kanbay2020]][[flythe2020]] Prevention therefore rests on physiology and expert consensus: reassess target weight, limit weight gain between sessions, lengthen treatment to lower the hourly removal rate, consider cooler dialysate, avoid heavy meals during treatment, and review the timing of blood-pressure medicines.[[flythe2020]]</p>
-<p>Venous needle dislodgement (VND) is uncommon but can be fatal. The European Dialysis and Transplant Nurses Association/European Renal Care Association (EDTNA/ERCA) issued practice recommendations that include consistent taping technique, keeping the access and connections visible at all times, and setting the lower venous pressure alarm limit as close as possible to the working pressure; they also warn that the venous pressure alarm may not trigger when a needle comes out, because the needle itself provides most of the resistance.[[vnd2008]] These recommendations are consensus-based.</p>
-<p>For cardiac arrest, the American Heart Association (AHA) 2025 guidelines apply in the dialysis unit as elsewhere: early recognition, high-quality chest compressions, and early defibrillation determine survival.[[aha2025als]] Hyperkalemia and fluid shifts are prominent reversible causes in this population, and the guidelines address life-threatening hyperkalemia among special circumstances.[[aha2025special]] Philippine licensing rules require every hemodialysis nurse to hold current Basic Life Support (BLS) training and at least one nurse per shift to hold Advanced Cardiovascular Life Support (ACLS) training.[[doh2012]]</p>
+<p>Frequent IDH is associated with higher mortality, cardiovascular events, and access clotting. These associations come from observational studies. Sicker patients drop their pressure more easily, so part of the link may reflect the patients and not the episodes. Repeated episodes are thought to stun the heart and reduce blood flow to the brain and gut. That is a mechanism, not a proven outcome. Whether preventing episodes improves survival has not been tested in adequately powered trials.[[kanbay2020]][[flythe2020]] A 2020 review concluded that the evidence base for many preventive measures is thin.[[kanbay2020]]</p>
+<p>Prevention therefore rests on physiology and expert consensus. A Kidney Disease: Improving Global Outcomes (KDIGO) Controversies Conference listed the usual measures: reassess target weight, limit weight gain between sessions, lengthen treatment to lower the hourly removal rate, consider cooler dialysate, avoid heavy meals during treatment, and review the timing of blood pressure medicines.[[flythe2020]] This is a conference report, not a graded guideline.</p>
+<p>Venous needle dislodgement (VND) is uncommon, but if the blood pump is not stopped the patient can bleed to death within minutes. The European Dialysis and Transplant Nurses Association/European Renal Care Association (EDTNA/ERCA) issued 12 practice recommendations. They include consistent taping technique, keeping the access and connections visible at all times, and setting the lower venous pressure alarm limit as close as possible to the working pressure. They also warn that the venous pressure alarm may not trigger when a needle comes out, because the needle itself provides most of the resistance.[[vnd2008]] These recommendations are consensus-based. No trial has tested them.</p>
+<p>For cardiac arrest, the American Heart Association (AHA) 2025 guidelines apply in the dialysis unit as elsewhere. Early recognition, high-quality chest compressions, and early defibrillation determine survival.[[aha2025als]] Hyperkalemia and fluid shifts are prominent reversible causes in this population, and the guidelines address life-threatening hyperkalemia among special circumstances.[[aha2025special]] Philippine licensing rules require every hemodialysis nurse to hold current Basic Life Support (BLS) training and at least one nurse per shift to hold Advanced Cardiovascular Life Support (ACLS) training.[[doh2012]]</p>
+<p><strong>Most of what you do in a dialysis emergency rests on physiology and consensus, not trials. Do it promptly anyway, and do not claim it has been proven to save lives.</strong></p>
 """},
         {"id": "bedside", "nav": "First response", "tag": "Clinical application", "h2": "First actions while help is coming",
          "html": """
-<p>The steps below describe the reasoning behind first actions. The exact sequence, the volumes, and the medicines are set by your unit&rsquo;s protocol and the physician&rsquo;s orders, and each should be rehearsed in simulation on your own equipment. In every case: <strong>call for help early, stay with the patient, and note the time.</strong></p>
+<p>The table gives the reasoning behind your first actions. Your unit&rsquo;s protocol and the physician&rsquo;s orders set the exact sequence, the volumes, and the medicines. Rehearse each in simulation on your own equipment. In every case, <strong>call for help early, stay with the patient, and note the time.</strong></p>
 <div class="table-wrap"><table>
 <thead><tr><th>Event</th><th>Recognize</th><th>First actions and the reason for each</th></tr></thead>
 <tbody>
@@ -46,13 +60,16 @@ MODULE = {
 <tr><td>Dialyzer or severe allergic reaction</td><td>Within the first minutes: itching, hives, flushing, wheeze, throat tightness, chest or back pain, hypotension</td><td>Stop dialysis, clamp the lines, and <strong>do not return the blood</strong>. Call for emergency help and manage as anaphylaxis under protocol. Keep the dialyzer and record its type and batch.</td></tr>
 <tr><td>Cardiac arrest</td><td>Unresponsive, not breathing normally, no pulse</td><td>Call the code and start chest compressions at once; send for the defibrillator. A second person stops the blood pump. If a trained nurse can return the blood quickly without delaying compressions, do so; otherwise clamp and disconnect, leaving the needles or catheter in place for access. Recline the chair flat or move the patient to a firm surface. Tell the team the patient is a dialysis patient: hyperkalemia is a leading reversible cause.</td></tr>
 </tbody></table></div>
-<p><strong>After any interruption,</strong> the record and the handoff state what was delivered and how the patient is, not only that an event occurred: time on treatment against the time prescribed, fluid removed against the goal, the patient&rsquo;s vital signs and symptoms now, what was done, who was informed, and where the patient is going. The nephrologist needs these to decide whether an additional session is required.</p>
+<p>Three of these events share one rule. With hemolysis, air in the line, or a dialyzer reaction, the blood in the circuit may be the cause. Stop the pump, clamp, and do not return it.</p>
+<p><strong>After any interruption,</strong> the record and the handoff state what was delivered and how the patient is, not only that an event occurred. Give the time on treatment against the time prescribed, the fluid removed against the goal, the patient&rsquo;s vital signs and symptoms now, what was done, who was informed, and where the patient is going. The nephrologist needs these to decide whether an additional session is required.</p>
+<p><strong>Call early, stop the loss, and never return blood that may be the cause of the problem.</strong></p>
 """},
     ],
     "case": {
         "title": "Ninety minutes in",
         "html": """
-<p>Mrs. Leonora, 68, has diabetes and dialyzes through a right upper-arm fistula. Her fluid goal today is 3.2 liters over 4 hours. Ninety minutes in, she says she feels dizzy and is yawning; her blood pressure is 82/48 mmHg, down from 138/76. You respond, and she recovers. An hour later, while you are at another station, a colleague notices a dark stain spreading on the blanket that Mrs. Leonora had pulled over her arm. The machine has not alarmed. Treatment is stopped at 2 hours 40 minutes with 1.9 liters removed.</p>
+<p>Mrs. Leonora Aquino, 68, has diabetes and dialyzes through a right upper-arm fistula. It is Tuesday. Her fluid goal today is 3.2 liters over 4 hours. At 90 minutes she tells you she feels dizzy, and she is yawning. Her blood pressure is 82/48 mmHg, down from 138/76 at the start. You respond, and she recovers.</p>
+<p>An hour later you are at another station. Your colleague, Ms. Grace Manalo, notices a dark stain spreading on the blanket that Mrs. Aquino had pulled over her arm. The machine has not alarmed. Treatment is stopped at 2 hours 40 minutes, with 1.9 liters removed.</p>
 """,
         "acte": {
             "Assess": "First event: responsiveness, blood pressure, pulse, access. Second event: source of bleeding, estimated blood loss, consciousness, breathing, circulation.",
@@ -63,7 +80,7 @@ MODULE = {
         "task": "Write the post-event treatment record entry, including delivered time and volume, estimated blood loss, patient status, and who was informed. Then write the incident report in four sentences.",
     },
     "quiz": [
-        {"stem": "Ninety minutes into treatment a patient becomes dizzy and pale, with a blood pressure of 82/48 mmHg. She is responsive and not breathless. What are the nurse&rsquo;s immediate priorities?",
+        {"stem": "Ninety minutes into treatment a patient becomes dizzy and pale, with a blood pressure of 82/48 mmHg. She is responsive and not breathless. What are your immediate priorities?",
          "options": [
              ("Increase the ultrafiltration rate to finish sooner, then recheck the blood pressure", False, "Removing more fluid will worsen the hypotension."),
              ("Stop or minimize ultrafiltration, recline her with legs raised, assess her and the access, and respond under the unit protocol while notifying the physician", True, "Stopping fluid removal and improving venous return address the usual mechanism. Assessment looks for bleeding and other causes, and further treatment follows protocol or orders."),
@@ -71,7 +88,7 @@ MODULE = {
              ("Give her a salty snack and continue at the same settings", False, "Eating during hypotension risks aspiration and does not correct the cause."),
          ],
          "objective": "State the immediate priorities in symptomatic intradialytic hypotension.", "sources": ["kanbay2020", "flythe2020"], "flag": "Fluid bolus volume and oxygen use are by unit protocol or physician order."},
-        {"stem": "A nurse sees a spreading blood stain on the blanket covering a patient&rsquo;s fistula arm. No machine alarm has sounded. What should the nurse suspect and do?",
+        {"stem": "You see a spreading blood stain on the blanket covering a patient&rsquo;s fistula arm. No machine alarm has sounded. What do you suspect, and what do you do?",
          "options": [
              ("A small leak around the needle; reinforce the tape and continue", False, "A spreading stain with the access covered must be assumed to be significant blood loss until proven otherwise."),
              ("A sensor fault; wait for a machine alarm to confirm before acting", False, "Venous pressure alarms may not trigger when a needle dislodges."),
@@ -79,7 +96,7 @@ MODULE = {
              ("Clotting in the dialyzer; rinse back the blood immediately", False, "The findings indicate external bleeding, not clotting."),
          ],
          "objective": "Recognize blood loss from needle dislodgement or line disconnection and act under protocol.", "sources": ["vnd2008"], "flag": "Fluid resuscitation and transfer decisions follow protocol and physician direction."},
-        {"stem": "A session prescribed for 4 hours with a 3.2-liter fluid goal is stopped at 2 hours 40 minutes after an emergency. What must the nurse&rsquo;s report include?",
+        {"stem": "A session prescribed for 4 hours with a 3.2-liter fluid goal is stopped at 2 hours 40 minutes after an emergency. What must your report include?",
          "options": [
              ("Only that the session was terminated early for clinical reasons", False, "This omits the information needed to plan further treatment."),
              ("The machine alarm history", False, "Alarm history may be relevant but does not describe delivered treatment or the patient."),

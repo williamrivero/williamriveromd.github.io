@@ -9,7 +9,7 @@ QUIZ = [
      ],
      "objective": "Explain why anemia develops in chronic kidney disease and name the tests that assess iron status.",
      "sources": ["anemia2026"], "flag": ""},
-    {"stem": "A nurse explains to a patient with stage 4 CKD why his parathyroid hormone (PTH) level is rising. Which explanation is accurate?",
+    {"stem": "You explain to a patient with stage 4 CKD why his parathyroid hormone (PTH) level is rising. Which explanation is accurate?",
      "options": [
          ("Retained phosphate and low calcitriol lower calcium, so the glands release more PTH", True, "As filtration falls, phosphate is retained and calcitriol falls. Blood calcium tends to drop, and the parathyroid glands release more PTH, which pulls calcium and phosphate out of bone."),
          ("Too much calcitriol made by the failing kidney is overstimulating the parathyroid glands", False, "The failing kidney makes less calcitriol, not more; low calcitriol contributes to the rise in PTH."),
@@ -30,7 +30,7 @@ QUIZ = [
     {"stem": "A patient with stage 4 CKD who has been losing muscle has a serum bicarbonate of 16 mmol/L on routine tests. What is the most appropriate nursing response?",
      "options": [
          ("Take no action, because a low bicarbonate matters only for patients on dialysis", False, "Chronic acidosis matters before dialysis as well, because it promotes muscle and bone breakdown."),
-         ("Report the result, because chronic acidosis promotes muscle and bone breakdown", True, "KDIGO 2024 suggests considering treatment when bicarbonate falls below 18 mmol/L. Reporting it lets the prescriber decide."),
+         ("Report the result, because chronic acidosis promotes muscle and bone breakdown", True, "An ungraded KDIGO 2024 practice point advises considering treatment when bicarbonate falls below 18 mmol/L. Reporting it lets the prescriber decide."),
          ("Advise baking soda dissolved in water at home to correct the acid", False, "Any alkali treatment is prescribed and dosed by the physician, not started on nursing advice."),
          ("Encourage a high-protein diet to rebuild the muscle he has lost", False, "Protein targets are individualized by stage, and dietary protein adds to the daily acid load."),
      ],
@@ -45,7 +45,7 @@ QUIZ = [
      ],
      "objective": "Screen for nutritional risk and arrange dietitian review for unintentional weight loss.",
      "sources": ["nutr2020"], "flag": ""},
-    {"stem": "Ten minutes into an intravenous iron infusion, a patient reports flushing and tightness in the chest and back, and her blood pressure has fallen. What should the nurse do first?",
+    {"stem": "Ten minutes into an intravenous iron infusion, a patient reports flushing and tightness in the chest and back, and her blood pressure has fallen. What should you do first?",
      "options": [
          ("Slow the infusion rate and continue to observe her closely", False, "These are signs of a reaction; continuing the infusion, even slowly, risks a more severe reaction."),
          ("Complete the dose, then report the symptoms to the physician", False, "Finishing the dose exposes the patient to more of the agent causing the reaction."),
@@ -54,7 +54,7 @@ QUIZ = [
      ],
      "objective": "Describe the safe administration and monitoring of iron and erythropoiesis-stimulating agents.",
      "sources": ["anemia2026"], "flag": "Management of an infusion reaction follows the unit protocol and physician orders."},
-    {"stem": "Before giving a scheduled ESA dose, the nurse finds the patient&rsquo;s blood pressure much higher than usual, and the patient reports a new headache. What is the best action?",
+    {"stem": "Before giving a scheduled ESA dose, you find the patient&rsquo;s blood pressure much higher than usual, and the patient reports a new headache. What is the best action?",
      "options": [
          ("Give the dose as scheduled and recheck the blood pressure at the patient&rsquo;s next visit", False, "These agents can raise blood pressure, so a rising pressure with headache is reported before the dose is given."),
          ("Give the dose, because these agents usually lower blood pressure", False, "ESAs can raise blood pressure; they do not lower it."),

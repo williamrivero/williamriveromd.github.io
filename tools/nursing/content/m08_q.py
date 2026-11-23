@@ -8,7 +8,7 @@ QUIZ = [
          ("The same test also confirms that bacterial counts are within limits", False, "A total chlorine test detects chlorine only; bacteria need separate culture."),
      ],
      "objective": "Explain why chlorine and chloramine are dangerous in dialysis water and how carbon treatment is verified.", "sources": ["iso23500_3", "doh2013"], "flag": ""},
-    {"stem": "The opening nurse finds today&rsquo;s total chlorine line in the water log blank. The technician says he tested it an hour ago, it passed, and asks the nurse to sign the entry for him so they can start. What should the nurse do?",
+    {"stem": "As the opening nurse, you find today&rsquo;s total chlorine line in the water log blank. The technician says he tested it an hour ago, it passed, and asks you to sign the entry for him so they can start. What do you do?",
      "options": [
          ("Sign the entry, since the technician has confirmed that the result passed", False, "A signature records that the signer verified the result; signing for a result not seen removes the barrier while appearing to keep it."),
          ("Ask the person who did and read the test to record it before anyone starts", True, "The log entry is the release. It is made by the person who verified the result, and no patient is connected until it is recorded."),
@@ -16,7 +16,7 @@ QUIZ = [
          ("Start treatments now and sign the entry later in the shift when it is quiet", False, "An entry made from memory later in the shift does not verify that the water was safe before patients were connected."),
      ],
      "objective": "Apply release criteria: hold treatment when a required test fails or is missing, and escalate.", "sources": ["doh2013", "psn2024"], "flag": "Who performs the test and who signs the log follow the facility&rsquo;s water policy."},
-    {"stem": "During pre-treatment checks, a nurse finds a machine that was powered off partway through its chemical disinfection cycle during a brownout. There is no recorded residual disinfectant test. What should the nurse do?",
+    {"stem": "During pre-treatment checks, you find a machine that was powered off partway through its chemical disinfection cycle during a brownout. There is no recorded residual disinfectant test. What do you do?",
      "options": [
          ("Treat the machine as still containing disinfectant; rinse and test again before use", True, "An interrupted cycle or a missing test means disinfectant may remain in the fluid path; only a recorded negative test after rinsing proves it is gone."),
          ("Prime the dialyzer, because the machine passed its self-test when it was restarted", False, "The self-test checks the machine&rsquo;s functions; it does not detect residual disinfectant."),
@@ -24,7 +24,7 @@ QUIZ = [
          ("Use the machine, since a rinse always runs automatically once the power is restored", False, "A rinse can be interrupted by a brownout or low water supply; the only proof is a test of the rinse water."),
      ],
      "objective": "Describe the safety checks that surround machine disinfection and dialyzer reprocessing, and the roles of technician, nurse, and medical director in water quality.", "sources": ["anna7"], "flag": "Residual disinfectant test product and read time are product-specific."},
-    {"stem": "Before connecting a patient, a nurse notices that the acid concentrate label states it is formulated for a different proportioning system than the unit&rsquo;s machines. The conductivity display reads within range. What should the nurse do?",
+    {"stem": "Before connecting a patient, you notice that the acid concentrate label states it is formulated for a different proportioning system than the unit&rsquo;s machines. The conductivity display reads within range. What do you do?",
      "options": [
          ("Use it, because normal conductivity confirms the dialysate composition", False, "Conductivity measures total ions and cannot show which ions are present, so a wrong formulation may not be obvious."),
          ("Use it only for patients whose most recent potassium result was normal", False, "A concentrate made for a different ratio produces dialysate of the wrong composition for any patient."),
@@ -32,7 +32,7 @@ QUIZ = [
          ("Do not use it; obtain the prescribed concentrate made for this machine", True, "The label is checked for the prescribed formulation, the correct proportioning system, and expiry and integrity before connection."),
      ],
      "objective": "Perform and document pre-treatment machine and circuit safety checks.", "sources": ["anna7"], "flag": "An independent conductivity or pH check is required where unit policy states."},
-    {"stem": "During treatment, a machine alarms for low conductivity and goes into bypass. The patient is comfortable. What is the nurse&rsquo;s first response?",
+    {"stem": "During treatment, a machine alarms for low conductivity and goes into bypass. The patient is comfortable. What is your first response?",
      "options": [
          ("Widen the conductivity alarm limits so that dialysis can resume at once", False, "Alarms are cleared by correcting the cause, never by widening limits; dilute dialysate reaching the blood can cause hemolysis."),
          ("Confirm bypass, then check both concentrate containers and connections", True, "Low conductivity is most often an empty or disconnected container or a kinked pickup tube; if the cause is not found and corrected promptly, the machine is taken out of use and the technician called."),
@@ -40,7 +40,7 @@ QUIZ = [
          ("Increase the dialysate flow rate to bring the conductivity back up", False, "Dialysate flow does not change the proportion of concentrate to water."),
      ],
      "objective": "Interpret dialysate-side machine alarms and state the first response to each.", "sources": ["anna7"], "flag": "Troubleshooting steps follow the manufacturer&rsquo;s manual and unit procedure."},
-    {"stem": "A blood-leak alarm sounds midway through treatment. What should the nurse do first?",
+    {"stem": "A blood-leak alarm sounds midway through treatment. What do you do first?",
      "options": [
          ("Disable the detector, since most blood-leak alarms are caused by air", False, "False alarms do occur, but the detector is never disabled; a real leak means blood is crossing a broken fiber."),
          ("Return the blood immediately and replace the dialyzer without testing", False, "The leak is confirmed first, and whether blood is returned depends on the size of the leak and the unit protocol."),
@@ -56,7 +56,7 @@ QUIZ = [
          ("Chemical contaminants cause only immediate symptoms, never harm that builds slowly", False, "Chemical toxicity may be acute or may build over months, as with aluminum."),
      ],
      "objective": "Distinguish chemical from microbial hazards and state how each is monitored.", "sources": ["iso23500_3"], "flag": ""},
-    {"stem": "Two days after a typhoon, the city supply is interrupted and the administrator arranges tanker water for the dialysis unit. A nurse also notices that the tap water at home smells strongly of chlorine this week. What is the appropriate response?",
+    {"stem": "Two days after a typhoon, the city supply is interrupted and the administrator arranges tanker water for the dialysis unit. You also notice that the tap water at home smells strongly of chlorine this week. What is the appropriate response?",
      "options": [
          ("Proceed as usual, since the system passed its last six-monthly analysis", False, "A past analysis describes the water as it was then; a typhoon and a change of source can exhaust stages that worked before."),
          ("Tell the technician and medical director; the tanker decision is medical", True, "Water of unknown origin is a clinical risk, and a typhoon or strong chlorine smell is a reason to test more often; using tanker water is the medical director&rsquo;s decision."),

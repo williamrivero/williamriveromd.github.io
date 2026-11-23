@@ -14,10 +14,13 @@ MODULE = {
     "sections": [
         {"id": "model", "nav": "Mental model", "tag": "Intuition", "h2": "Water as a medicine given by the liter",
          "html": """
-<p>A healthy person drinks about two liters of water a day, and the gut wall and kidneys stand between that water and the blood. A person on hemodialysis (HD) is exposed to well over 100 liters of water per session, as dialysis fluid, with only a thin synthetic membrane in between and no kidney to clear what crosses. Contaminants that are harmless in drinking water can therefore cause injury in dialysis. The useful way to think about dialysis water is as a medicine prepared on site in very large doses: it has ingredients, specifications, quality tests, and a release step before it is given.</p>
+<p>Picture a pharmacy that compounds one medicine in very large doses, on site, every morning. The medicine has ingredients, specifications, quality tests, and a release step before anyone receives it. Dialysis water is that medicine. A healthy person drinks about two liters of water a day, and the gut wall and kidneys stand between that water and the blood. A person on hemodialysis (HD) meets well over 100 liters of water per session, as dialysis fluid, with only a thin synthetic membrane in between and no kidney to clear what crosses.</p>
+<p>The picture has a limit. A compounded medicine is tested batch by batch before it leaves the pharmacy. Dialysis water is made continuously, and some of its hazards change by the hour: carbon runs out without warning, and bacteria grow inside the pipes between monthly samples. The machine at the chair cannot see most of these hazards. So release is not a single test. It is a set of checks, each at its own interval, and someone must confirm they were done before the first patient is connected.</p>
+<p>Most mornings every check passes. Rarely, one fails or is missing, and contaminants that are harmless in drinking water can then injure every patient on the floor at once. Your work is to know which checks stand between the supply and your patient, to confirm they were done, and to hold treatment when one is missing.</p>
 """},
         {"id": "physiology", "nav": "Treatment stages", "tag": "Physiology", "h2": "From supply to dialyzer",
          "html": """
+<p>Follow the water from the tap to the dialyzer. Each stage removes something, and each has its own way of failing.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Stage</th><th>Purpose</th><th>What goes wrong if it fails</th></tr></thead>
 <tbody>
@@ -28,13 +31,14 @@ MODULE = {
 <tr><td>Distribution loop</td><td>Delivers treated water to each station</td><td>Stagnant sections grow biofilm</td></tr>
 <tr><td>Dialysis machine</td><td>Mixes water with acid and bicarbonate concentrates; warms, degasses, and monitors the dialysate</td><td>Wrong composition or temperature reaches the blood</td></tr>
 </tbody></table></div>
-<p><strong>Why chlorine matters.</strong> Water utilities add chlorine or chloramine to keep drinking water free of bacteria. Chloramine crosses the dialyzer membrane and oxidizes hemoglobin inside red cells, which then break apart. Hemolysis releases potassium and can be fatal. Reverse osmosis (RO) does not remove chloramine reliably and is itself damaged by chlorine, so the carbon tanks are the only barrier. Carbon has a finite capacity and gives no warning when it is exhausted, which is why the test after the carbon tanks is repeated every treatment day and not assumed from yesterday.</p>
-<p><strong>Chemical and microbial hazards are different problems.</strong> Chemical contaminants such as aluminum, fluoride, copper, and nitrate come from the source water or the plumbing and cause toxicity that may be acute or build over months. Bacteria grow inside the system itself, on tank and pipe surfaces; even when the organisms are held back by the dialyzer membrane, fragments of their cell walls called endotoxin can cross or stimulate inflammation, producing fever and chills during treatment.</p>
-<p><strong>What the machine watches.</strong> Dialysate conductivity reflects the total concentration of dissolved ions, which is dominated by sodium, and tells the machine whether water and concentrates were mixed in the right proportion. Temperature is monitored because overheated dialysate causes hemolysis and cold dialysate causes shivering. If either goes out of range, the machine diverts dialysate away from the dialyzer. Neither sensor can detect chloramine, bacteria, endotoxin, or trace chemicals: a machine in full &ldquo;green&rdquo; status can be running on unsafe water.</p>
+<p><strong>Why chlorine matters.</strong> Water utilities add chlorine or chloramine to keep drinking water free of bacteria. In dialysis the chain runs like this. Chloramine crosses the dialyzer membrane. It oxidizes hemoglobin inside red cells. The damaged cells break apart. Hemolysis releases potassium, and it can be fatal. Reverse osmosis (RO) does not remove chloramine reliably, and chlorine damages the RO membrane itself. So the carbon tanks are the only barrier. Carbon has a finite capacity and gives no warning when it is used up. That is why the test after the carbon tanks is repeated every treatment day, and not assumed from yesterday.</p>
+<p><strong>Chemical and microbial hazards are different problems.</strong> Chemical contaminants such as aluminum, fluoride, copper, and nitrate come from the source water or the plumbing. Their toxicity may be sudden or may build over months. Bacteria grow inside the system itself, on tank and pipe surfaces. Even when the dialyzer membrane holds the organisms back, fragments of their cell walls, called endotoxin, can cross or stimulate inflammation. The patient then has fever and chills during treatment.</p>
+<p><strong>What the machine watches.</strong> Dialysate conductivity reflects the total concentration of dissolved ions, mostly sodium. It tells the machine whether water and concentrates were mixed in the right proportion. Temperature is watched because overheated dialysate causes hemolysis and cold dialysate causes shivering. If either goes out of range, the machine diverts dialysate away from the dialyzer. Neither sensor can detect chloramine, bacteria, endotoxin, or trace chemicals.</p>
+<p><strong>A machine in full &ldquo;green&rdquo; status can be running on unsafe water. The machine checks the mix and the warmth. Only the water tests check the water.</strong></p>
 """},
         {"id": "evidence", "nav": "Standards", "tag": "Evidence", "h2": "Which standard applies, and what it says",
          "html": """
-<p>The international reference is the International Organization for Standardization (ISO) 23500 series, whose second edition was published in 2024; Part 3 sets the requirements for dialysis water.[[iso23500_3]] In the Philippines, the Department of Health (DOH) licensing order and its 2013 implementing guidelines on dialysis water refer to the standards of the Association for the Advancement of Medical Instrumentation, which have since been harmonized with the ISO series, and the Philippine Society of Nephrology (PSN) 2024 guidance repeats the local testing schedule.[[doh2012]][[doh2013]][[psn2024]] Each facility should state in its water policy which standard and edition it follows; the figures below are the commonly cited values and are shown for orientation, not as a substitute for that policy.</p>
+<p>The international reference is the International Organization for Standardization (ISO) 23500 series, whose second edition was published in 2024. Part 3 sets the requirements for dialysis water.[[iso23500_3]] In the Philippines, the Department of Health (DOH) licensing order and its 2013 implementing guidelines on dialysis water refer to the standards of the Association for the Advancement of Medical Instrumentation. Those standards have since been harmonized with the ISO series. The Philippine Society of Nephrology (PSN) 2024 guidance repeats the local testing schedule.[[doh2012]][[doh2013]][[psn2024]] Each facility should state in its water policy which standard and edition it follows. The figures below are the commonly cited values. They are for orientation and do not replace that policy.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Parameter</th><th>Commonly cited limit for dialysis water</th><th>Local schedule in DOH and PSN guidance</th></tr></thead>
 <tbody>
@@ -43,26 +47,28 @@ MODULE = {
 <tr><td>Endotoxin</td><td>Below 0.25 endotoxin units (EU) per mL; act at half that level</td><td>As the facility&rsquo;s adopted standard requires</td></tr>
 <tr><td>Chemical contaminants</td><td>Individual limits for each contaminant</td><td>At least every six months</td></tr>
 </tbody></table></div>
-<p>These limits are not derived from randomized trials. They come from outbreak investigations, toxicology, and engineering consensus, and they include an &ldquo;action level&rdquo; set below the maximum so that a unit intervenes while the water is still within specification. The strength of the evidence that failure causes harm is high, because the harm has been observed directly in outbreaks of hemolysis, aluminum poisoning, and pyrogenic reactions.</p>
+<p>These limits do not come from randomized trials, and none could ethically be run. They come from outbreak investigations, toxicology, and engineering consensus. Each includes an &ldquo;action level&rdquo; set below the maximum, so that a unit intervenes while the water is still within specification. The evidence that failure causes harm is nonetheless strong, because the harm has been seen directly in outbreaks of hemolysis, aluminum poisoning, and fever reactions. What that evidence does not tell you is the exact safe threshold. The numbers are consensus values with a safety margin built in.</p>
+<p><strong>The limits are consensus values, but the harm they guard against has been seen directly. Treat a failed or missing test as a real hazard, not a paperwork gap.</strong></p>
 """},
         {"id": "bedside", "nav": "Checks and release", "tag": "Clinical application", "h2": "Release criteria, machine checks, documentation",
          "html": """
-<p><strong>Release before first use.</strong> At the start of each treatment day, someone confirms that the water system is running within its normal pressures and readings and that the total chlorine test after the carbon tanks has been done, read at the correct time with in-date reagent, and recorded. In many Philippine units a technician performs the test; the nurse in charge remains responsible for knowing it was done before any patient is connected. If the result is above the unit&rsquo;s action threshold, if the test was not done, or if the log is blank, <strong>treatment does not start on that supply</strong>. Inform the charge nurse, technician, and nephrologist, follow the unit&rsquo;s procedure for retesting and locating the failure, and document the hold. If patients are already dialyzing when a failure is found, stop their treatments as the procedure directs and assess them for hemolysis.</p>
-<p><strong>Machine and circuit checks before each patient.</strong> The specific sequence belongs to the manufacturer&rsquo;s manual and the unit procedure, but the checks answer a fixed set of questions:</p>
+<p><strong>Release before first use.</strong> At the start of each treatment day, someone confirms two things. The water system is running within its normal pressures and readings. The total chlorine test after the carbon tanks has been done, read at the correct time with in-date reagent, and recorded. In many Philippine units a technician performs the test. As the nurse in charge, you remain responsible for knowing it was done before any patient is connected. If the result is above the unit&rsquo;s action threshold, if the test was not done, or if the log is blank, <strong>treatment does not start on that supply</strong>. Inform the charge nurse, technician, and nephrologist. Follow the unit&rsquo;s procedure for retesting and finding the failure, and document the hold. If patients are already dialyzing when a failure is found, stop their treatments as the procedure directs and assess them for hemolysis.</p>
+<p><strong>Machine and circuit checks before each patient.</strong> The exact sequence belongs to the manufacturer&rsquo;s manual and the unit procedure. The checks answer a fixed set of questions:</p>
 <ul>
 <li>Has the machine passed its self-test, and is it free of residual disinfectant?</li>
-<li>Are the correct acid and bicarbonate concentrates connected, and do conductivity and temperature read within range? Does an independent check agree where the unit requires one?</li>
-<li>Is the dialyzer the one prescribed, and if reprocessed, does it carry this patient&rsquo;s name, has it passed its checks, and has residual germicide been tested as absent?</li>
+<li>Are the correct acid and bicarbonate concentrates connected, and do conductivity and temperature read within range? Does an independent check agree, where the unit requires one?</li>
+<li>Is the dialyzer the one prescribed? If reprocessed, does it carry this patient&rsquo;s name, has it passed its checks, and has residual germicide been tested as absent?</li>
 <li>Is the circuit primed without air, are all connections tight, and are clamps and caps in place?</li>
 <li>Are the air detector, blood-leak detector, and pressure alarms armed, with limits set close to the working pressures and never bypassed?</li>
 </ul>
-<p><strong>Documentation is the release.</strong> A log entry is the record that a safety barrier was verified by a named person at a stated time. An entry made from memory at the end of the shift, or copied from the day before, removes the barrier while appearing to preserve it. If you did not see the result, do not sign for it.</p>
+<p><strong>Documentation is the release.</strong> A log entry records that a named person verified a safety barrier at a stated time. An entry made from memory at the end of the shift, or copied from the day before, removes the barrier while appearing to keep it.</p>
+<p><strong>If you did not see the result, do not sign for it. If there is no result, no patient is connected.</strong></p>
 """},
     ],
     "case": {
         "title": "A blank line in the log",
         "html": """
-<p>You are the opening nurse on a Monday. Six patients are waiting, some after a three-day gap. The water-room log shows Saturday&rsquo;s total chlorine result but nothing for today. The technician says, &ldquo;It is always fine, the carbon was changed last month. I will test it after we start.&rdquo; All machines show normal conductivity and temperature.</p>
+<p>It is Monday, 6:15 a.m. You are the opening nurse. Six patients are waiting, some after a three-day gap. Among them is Mr. Danilo Cruz, 58, who arrived breathless and 4 kilograms above his dry weight. The water-room log shows Saturday&rsquo;s total chlorine result but nothing for today. The technician, Mr. Jun Villanueva, tells you, &ldquo;It is always fine, the carbon was changed last month. I will test it after we start.&rdquo; Every machine shows normal conductivity and temperature.</p>
 """,
         "acte": {
             "Assess": "Whether today&rsquo;s test has been done at the correct sampling point; reagent expiry; water-system readings; which patients are most at risk from delay (breathlessness, high potassium risk).",
@@ -81,7 +87,7 @@ MODULE = {
              ("The sediment filter", False, "The sediment filter removes particles only."),
          ],
          "objective": "Trace water from the municipal or deep-well supply to the dialyzer and state what each treatment stage removes.", "sources": ["iso23500_3", "doh2013"], "flag": ""},
-        {"stem": "At the start of the day, the total chlorine test after the carbon tanks reads above the unit&rsquo;s action threshold. Six patients are waiting. What should the nurse do?",
+        {"stem": "At the start of the day, the total chlorine test after the carbon tanks reads above the unit&rsquo;s action threshold. Six patients are waiting. What do you do?",
          "options": [
              ("Begin treatments and repeat the test in one hour", False, "Patients would be exposed to chloramine, which can cause hemolysis."),
              ("Begin treatments on the patients who waited longest and hold the rest", False, "No patient should be exposed to a supply that has failed the test."),
@@ -89,7 +95,7 @@ MODULE = {
              ("Increase the dialysate flow rate to dilute the chlorine", False, "Dialysate flow does not change the chlorine concentration of the water."),
          ],
          "objective": "Apply release criteria: hold treatment when a required test fails or is missing, and escalate.", "sources": ["iso23500_3", "doh2013", "psn2024"], "flag": "The action threshold and corrective steps are those of the facility&rsquo;s adopted standard and water policy."},
-        {"stem": "All machines display normal dialysate conductivity and temperature. What can the nurse conclude about the safety of the water?",
+        {"stem": "All machines display normal dialysate conductivity and temperature. What can you conclude about the safety of the water?",
          "options": [
              ("The water is free of chloramine", False, "Conductivity does not detect chloramine."),
              ("The water meets bacterial and endotoxin limits", False, "Neither sensor detects microbes or endotoxin."),

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 QUIZ = [
-    {"stem": "A nurse is explaining access types to a new patient. Which statement correctly describes a tunneled central venous catheter compared with a fistula or graft?",
+    {"stem": "You are explaining access types to a new patient. Which statement correctly describes a tunneled central venous catheter compared with a fistula or graft?",
      "options": [
          ("It can be used immediately but carries the highest risk of bloodstream infection", True, "A catheter works as soon as it is placed, but of the three access types it has the highest rate of bloodstream infection and can scar the central veins."),
          ("It needs weeks to months of maturation before it can be used for treatment", False, "Maturation describes a fistula vein enlarging and thickening; a catheter needs no maturation."),
@@ -16,7 +16,7 @@ QUIZ = [
          ("Use whichever arm is easiest, since no access has been created yet", False, "Vein protection applies before an access exists, because these veins are tomorrow&rsquo;s access."),
      ],
      "objective": "Protect veins for future access in every patient with kidney disease.", "sources": ["va2019"], "flag": ""},
-    {"stem": "A patient whose fistula was created some weeks ago asks the nurse to start using it today so that his catheter can be removed sooner. The vein is visible and a thrill is present. What is the best response?",
+    {"stem": "A patient whose fistula was created some weeks ago asks you to start using it today so that his catheter can be removed sooner. The vein is visible and a thrill is present. What is the best response?",
      "options": [
          ("Cannulate today, because a palpable thrill confirms that the fistula is fully mature", False, "A thrill shows flow but not readiness; maturity also depends on width, depth, usable length, and wall strength."),
          ("Wait until the catheter stops working before considering the fistula at all", False, "Leaving a patient on a catheter longer than needed prolongs exposure to the highest-risk access."),
@@ -24,7 +24,7 @@ QUIZ = [
          ("Refer him for a readiness review by the nephrologist or surgeon and access nurse", True, "The decision to begin cannulating a new fistula is made by the nephrologist or surgeon together with an experienced access nurse and is written in the record."),
      ],
      "objective": "Judge whether a new fistula is ready for use and describe safe first cannulations and the response to infiltration.", "sources": ["va2019"], "flag": "Readiness criteria and first-cannulation practices follow the unit procedure."},
-    {"stem": "Early in treatment, a patient reports sudden pain at the venous needle site. The nurse sees a swelling, hardening lump around the needle, and the venous pressure has risen. What should the nurse do first?",
+    {"stem": "Early in treatment, a patient reports sudden pain at the venous needle site. You see a swelling, hardening lump around the needle, and the venous pressure has risen. What do you do first?",
      "options": [
          ("Stop the blood pump, tell the senior nurse, and manage the needle per protocol", True, "This is infiltration. The priority is to stop adding blood to the tissue; needle management then follows the unit protocol, taking into account whether heparin has been given."),
          ("Increase the blood flow so that the needle tip is pushed back into the vessel lumen", False, "Raising the flow forces more blood into the tissue and enlarges the bleed."),
@@ -48,7 +48,7 @@ QUIZ = [
          ("An access infection that needs blood cultures before the next session", False, "Infection shows redness, warmth, tenderness, pus, or fever, not a pressure trend."),
      ],
      "objective": "Relate physical findings and treatment trends to inflow, outflow, central vein, steal, infection, and aneurysm problems.", "sources": ["va2019"], "flag": ""},
-    {"stem": "At the start of treatment, blood cannot be withdrawn easily from one limb of a patient&rsquo;s tunneled catheter. What should the nurse check first?",
+    {"stem": "At the start of treatment, blood cannot be withdrawn easily from one limb of a patient&rsquo;s tunneled catheter. What do you check first?",
      "options": [
          ("Whether a forceful saline flush will clear the limb", False, "Forceful flushing of a limb that will not withdraw can dislodge clot into the circulation."),
          ("Whether the limbs can be reversed without reporting", False, "Reversing limbs raises recirculation; it is done only if policy allows, and it is documented and reported."),
@@ -72,7 +72,7 @@ QUIZ = [
          ("Most catheter infections arise from the dialysate crossing the dialyzer membrane", False, "Catheter-related bloodstream infection arises mainly from organisms entering through the catheter, not from dialysate."),
      ],
      "objective": "Apply aseptic technique for cannulation and for catheter connection, including correction of contamination.", "sources": ["va2019", "patel2013"], "flag": "Antiseptic agent and scrub time follow the unit procedure and product instructions."},
-    {"stem": "Two patients at different stations are ordered the same medicine, which is supplied only in a multi-dose vial. How should the nurse prepare the doses?",
+    {"stem": "Two patients at different stations are ordered the same medicine, which is supplied only in a multi-dose vial. How do you prepare the doses?",
      "options": [
          ("Carry the vial in a pocket and draw up each dose at the bedside", False, "Medicines are never carried in pockets, and a multi-dose vial is never taken to a station."),
          ("Take the vial on the medicine cart and move from station to station", False, "Common carts are not moved between stations to deliver medicines, because they spread contamination."),

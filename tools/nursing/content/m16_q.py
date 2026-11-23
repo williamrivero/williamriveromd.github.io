@@ -22,7 +22,7 @@ QUIZ = [
     {"stem": "An 80-year-old woman with stage 5 CKD, severe heart failure, and previous heart attacks asks whether dialysis will help her live longer. Which statement best reflects the evidence, in calibrated language?",
      "options": [
          ("Randomized trials prove that dialysis doubles survival at every age", False, "There are no randomized trials comparing dialysis with conservative care."),
-         ("Observational studies suggest that in older patients with several serious illnesses, especially heart disease, the survival advantage of dialysis may be small or absent; the physician will discuss what matters most to her", True, "In a retrospective study of patients over 75, the survival advantage of dialysis was lost in those with high comorbidity, especially ischemic heart disease; the evidence is observational."),
+         ("Observational studies suggest that in older patients with several serious illnesses, especially heart disease, the survival advantage of dialysis may be small or absent; the physician will discuss what matters most to her", True, "In a retrospective study of patients over 75, the survival advantage of dialysis was lost in those with high comorbidity, especially ischemic heart disease. The evidence is observational, so the people who chose each path may have differed in other ways."),
          ("Conservative care has been proven to give longer survival than dialysis", False, "The evidence does not show this; data on conservative care are limited and open to bias."),
          ("Nobody knows anything about this, so the question cannot be discussed", False, "There is useful observational evidence, and it supports an honest conversation about goals."),
      ],

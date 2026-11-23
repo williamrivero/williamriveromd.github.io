@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 QUIZ = [
-    {"stem": "During treatment, the air detector alarms and the nurse sees foam in the venous line. The patient begins to cough and says his chest feels tight. What should the nurse do?",
+    {"stem": "During treatment, the air detector alarms and you see foam in the venous line. The patient begins to cough and says his chest feels tight. What do you do?",
      "options": [
          ("Leave the clamp closed, call for help, and position and give oxygen per protocol", True, "Air may have entered the patient. The machine&rsquo;s clamp is not overridden, blood is never returned through a line containing air, and positioning and oxygen follow the unit protocol."),
          ("Clear the air from the venous line, reset the alarm, and resume the treatment as before", False, "Resuming ignores signs that air may already have reached the patient, who needs emergency assessment."),
@@ -16,7 +16,7 @@ QUIZ = [
          ("The team waits for the defibrillator to arrive before beginning chest compressions", False, "Compressions begin immediately while someone fetches the defibrillator."),
      ],
      "objective": "Describe how a cardiac arrest response differs when the patient is connected to a dialysis circuit.", "sources": ["aha2025als", "aha2025special"], "flag": "Whether blood is returned during an arrest is protocol-dependent."},
-    {"stem": "During the pre-treatment assessment, a patient mentions that he had a tooth extracted yesterday and the socket oozed overnight. He feels otherwise well. What should the nurse do?",
+    {"stem": "During the pre-treatment assessment, a patient mentions that he had a tooth extracted yesterday and the socket oozed overnight. He feels otherwise well. What do you do?",
      "options": [
          ("Reduce the heparin dose by half and proceed with treatment", False, "Nurses do not change the anticoagulant dose; the physician decides."),
          ("Proceed with the usual heparin and watch the extraction site closely", False, "Giving the usual anticoagulant without review risks further bleeding."),
@@ -24,7 +24,7 @@ QUIZ = [
          ("Omit the heparin without telling anyone, as a sensible safety precaution", False, "Omitting an ordered medicine without a decision by the prescriber is not safe practice and risks a clotted circuit."),
      ],
      "objective": "Identify pre-treatment findings that require a call to the physician before connecting, and explain dialysis disequilibrium syndrome and its prevention.", "sources": ["anna7"], "flag": "Any change to anticoagulation is by physician order."},
-    {"stem": "A patient with diabetes who took his usual insulin this morning but skipped breakfast becomes sweaty, tremulous, and drowsy midway through treatment. His blood pressure is unchanged from the start. What should the nurse do first?",
+    {"stem": "A patient with diabetes who took his usual insulin this morning but skipped breakfast becomes sweaty, tremulous, and drowsy midway through treatment. His blood pressure is unchanged from the start. What do you do first?",
      "options": [
          ("Check his capillary glucose at once and treat per protocol", True, "Sweating, tremor, and drowsiness after insulin without a meal suggest low blood sugar; glucose is checked immediately rather than assuming hypotension."),
          ("Assume hypotension and give a fluid bolus from the stock", False, "His blood pressure is unchanged, and fluid is given only under protocol or order; low blood sugar must be excluded."),
@@ -64,7 +64,7 @@ QUIZ = [
          ("Give a double dose after dialysis to make up for the drug that was removed", False, "Nurses do not change doses; any adjustment is by order."),
      ],
      "objective": "Describe safe termination of treatment, the timing of medicines around dialysis, and the unit&rsquo;s response to power, water, and evacuation emergencies.", "sources": ["anna7"], "flag": "Timing of specific antibiotics relative to dialysis is by order and pharmacist advice."},
-    {"stem": "At the end of treatment, a patient&rsquo;s needle sites are dry and the thrill is present. When she stands, her blood pressure falls markedly and she says she feels dizzy. What should the nurse do?",
+    {"stem": "At the end of treatment, a patient&rsquo;s needle sites are dry and the thrill is present. When she stands, her blood pressure falls markedly and she says she feels dizzy. What do you do?",
      "options": [
          ("Discharge her, since her needle sites are dry and the access is working", False, "Hemostasis is only one discharge criterion; a significant fall in blood pressure with dizziness on standing is not safe for leaving."),
          ("Discharge her with advice to drink extra fluids once she gets home", False, "Extra fluid undermines the fluid plan, and she is not yet safe to leave."),
@@ -72,7 +72,7 @@ QUIZ = [
          ("Keep her for observation, reassess, and inform the physician", True, "A patient who does not meet discharge criteria stays for observation and the physician is told."),
      ],
      "objective": "Carry out pre-treatment, intradialytic, and post-treatment assessments and document them.", "sources": ["anna7"], "flag": "Post-treatment blood pressure criteria follow unit procedure."},
-    {"stem": "A brownout cuts power to the unit while eight patients are on treatment. Machines are alarming, and it is not yet known whether the generator has started. What should the nurse do first?",
+    {"stem": "A brownout cuts power to the unit while eight patients are on treatment. Machines are alarming, and it is not yet known whether the generator has started. What do you do first?",
      "options": [
          ("Go to the switchboard to restart the generator before anything else", False, "The first priority is the patients, not the equipment."),
          ("Begin returning blood by hand crank on every machine at the same time", False, "Whether to wait or end treatments is decided by the charge nurse and physician under the unit plan, and manual return needs one nurse watching each venous line."),

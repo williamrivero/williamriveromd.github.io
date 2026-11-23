@@ -8,7 +8,7 @@ EXTRA = [
     {"after": "diet", "id": "hd-nutrition", "nav": "Eating on HD", "tag": "Clinical application",
      "h2": "How eating changes once hemodialysis starts",
      "html": """
-<p>Many patients reach hemodialysis (HD) after months or years of being told to eat less: less protein, less salt, fewer fruits. Once dialysis starts, some of that advice reverses and some becomes stricter. Patients who are not told clearly which is which often keep eating the low-protein diet they were taught before dialysis, and lose weight and muscle as a result. The table earlier in this module set out the targets by stage; this section explains what changes on HD and why.</p>
+<p>Many patients reach hemodialysis (HD) after months or years of being told to eat less: less protein, less salt, fewer fruits. Once dialysis starts, some of that advice reverses and some becomes stricter. Nobody tells them which is which unless you do. Patients who are not told clearly often keep eating the low-protein diet they learned before dialysis, and they lose weight and muscle. The table earlier in this module set out the targets by stage; this section explains what changes on HD and why.</p>
 <p><strong>Protein goes up.</strong> Each session removes amino acids into the dialysate, and the treatment itself and the chronic inflammation of kidney failure increase protein breakdown. For a patient on HD who is metabolically stable, the KDOQI 2020 nutrition guideline recommends a protein intake of 1.0 to 1.2 g/kg of body weight per day, with energy of 25 to 35 kcal/kg per day adjusted for age, sex, activity, body composition, and inflammation.[[nutr2020]] In practice this usually means a protein food at every meal. The patient&rsquo;s individual target is set by the physician and dietitian; the nurse&rsquo;s job is to make sure the patient knows that the pre-dialysis limit no longer applies.</p>
 <p><strong>Sodium and fluid stay tight.</strong> KDOQI recommends limiting sodium to less than 100 mmol (2.3 g) a day in people on dialysis, as in earlier stages, to help control blood pressure and fluid.[[nutr2020]] On HD the reason becomes visible: almost all the weight a patient gains between sessions is salt and the water drunk to satisfy the thirst it causes. A large gain means a high hourly removal rate at the next session, with cramps, low blood pressure, and the longer-term harm described in Module 6. Fluid allowances are individual and depend on remaining urine output. When the gain is large, the first question is about salty food, not about how much water the patient drank.</p>
 <p><strong>Potassium depends on the day.</strong> Potassium accumulates between sessions and is removed during them, so the risk is highest just before treatment, and highest of all before the first session after the long gap between sessions (for most patients, the weekend). KDOQI suggests adjusting dietary potassium to keep the blood level in the normal range rather than applying a fixed limit.[[nutr2020]] The practical teaching is to keep high-potassium foods small on the days without dialysis, particularly the day before the long-gap session, and to report a high pre-dialysis potassium together with a diet recall so that the dietitian and physician can see the cause. Constipation and some medicines also raise potassium, as described earlier in this module, and are checked before diet is blamed.</p>
@@ -24,6 +24,7 @@ EXTRA = [
 <tr><td>&ldquo;If I drink less water, I can eat salty food.&rdquo;</td><td>Salt causes thirst; the gain comes back as fluid. Cutting salt is what makes the fluid limit bearable</td></tr>
 <tr><td>&ldquo;Vitamins are always good for you.&rdquo;</td><td>Only the vitamins prescribed; some over-the-counter products are unsafe in kidney failure</td></tr>
 </tbody></table></div>
+<p><strong>On HD, protein goes up and salt stays down. Say both, in those words, at the first session and again whenever the weight falls.</strong></p>
 """},
     {"after": "hd-nutrition", "id": "hd-meals", "nav": "Filipino meals on HD", "tag": "Clinical application",
      "h2": "Filipino meals on dialysis days",
@@ -54,7 +55,7 @@ EXTRA = [
 </ul>
 <p>Families often bring food to show care. Inviting the person who cooks to a counseling session, or giving them the swap list, often changes more than talking to the patient alone.</p>
 <p><strong>Protein on a tight budget.</strong> Higher protein needs come at a time when dialysis has strained the household&rsquo;s finances. Eggs are among the least expensive sources of good-quality protein; egg whites provide protein with less phosphate than the yolk, and the dietitian advises how many whole eggs suit the patient. Small, inexpensive fresh fish, chicken parts, and tofu in moderate portions are other options. Processed meats and canned goods are cheap and convenient, but their sodium and phosphate additives make them poor value for a patient on HD. If cost is the reason a patient eats too little protein, refer to the social worker as well as the dietitian; that is a financial problem, not a knowledge problem.</p>
-<p><strong>Teach-back.</strong> Teach-back means asking the patient to explain or show, in their own words, what they will do, then correcting and repeating until the explanation is right; it improves understanding and retention in many settings.[[talevski2020]] Questions that work in food counseling:</p>
+<p><strong>Teach-back.</strong> Teach-back means asking the patient to explain or show, in their own words, what they will do, then correcting and repeating until the explanation is right; a systematic review linked it to better understanding and recall across many settings, although the included studies varied in design and quality.[[talevski2020]] Questions that work in food counseling:</p>
 <ul>
 <li>&ldquo;Tell me what you will have for lunch tomorrow, which is a non-dialysis day.&rdquo;</li>
 <li>&ldquo;Show me how much sabaw you will take with your sinigang.&rdquo;</li>
@@ -62,10 +63,11 @@ EXTRA = [
 <li>&ldquo;What will you use instead of fish sauce?&rdquo;</li>
 </ul>
 <p>Record what was taught, who was present, and how understanding was checked. Then use the next session&rsquo;s weight gain, potassium, and phosphate as feedback, and celebrate improvements as clearly as you report problems.</p>
+<p><strong>Start from yesterday&rsquo;s plate, change one thing at a time, and check it with teach-back.</strong></p>
 """},
 ]
 QUIZ = [
-    {"stem": "A patient started HD three months ago. She proudly tells the nurse she is still following the low-protein diet she learned before dialysis, eating mostly rice and boiled vegetables. Her post-dialysis weight has fallen by 2 kg over that time. What should the nurse do?",
+    {"stem": "A patient started HD three months ago. She proudly tells you she is still following the low-protein diet she learned before dialysis, eating mostly rice and boiled vegetables. Her post-dialysis weight has fallen by 2 kg over that time. What should you do?",
      "options": [
          ("Praise her adherence and encourage her to continue the same diet", False, "Protein needs rise on HD, and unintended weight loss on a low-protein diet suggests a risk of protein-energy wasting."),
          ("Explain that protein needs rise on HD, report the weight loss, and arrange a dietitian review", True, "KDOQI recommends 1.0 to 1.2 g/kg per day of protein for stable patients on HD. Weight loss with low intake is a trigger for dietitian assessment, and the individual target is set by the dietitian and physician."),

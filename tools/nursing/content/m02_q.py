@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 QUIZ = [
-    {"stem": "A nurse is updating the problem list of a man with type 2 diabetes whose eGFR has been 38 mL/min/1.73 m&sup2; and urine ACR about 150 mg/g on tests more than 3 months apart. Which entry is the most complete diagnosis in the KDIGO format?",
+    {"stem": "You are updating the problem list of a man with type 2 diabetes whose eGFR has been 38 mL/min/1.73 m&sup2; and urine ACR about 150 mg/g on tests more than 3 months apart. Which entry is the most complete diagnosis in the KDIGO format?",
      "options": [
          ("CKD due to type 2 diabetes, G3b/A2", True, "KDIGO classifies CKD by cause, GFR category, and albuminuria category. This entry states all three."),
          ("CKD stage 3b", False, "This gives only the GFR category and omits both the cause and the albuminuria category."),
@@ -18,7 +18,7 @@ QUIZ = [
      ],
      "objective": "Stage a patient by cause, glomerular filtration rate category, and albuminuria category.",
      "sources": ["ckd2024"], "flag": ""},
-    {"stem": "During a CKD clinic review, which finding should the nurse highlight to the physician as a recognized reason for nephrology referral?",
+    {"stem": "During a CKD clinic review, which finding should you highlight to the physician as a recognized reason for nephrology referral?",
      "options": [
          ("Persistent blood in the urine with no explanation found", True, "Persistent unexplained blood in the urine is among the listed indications for referral, along with a sustained fall in eGFR, heavy or rising albuminuria, resistant hypertension, and persistent potassium abnormalities."),
          ("An eGFR that has stayed stable over the past two years", False, "Stability is reassuring; a sustained fall in eGFR, not a steady value, prompts referral."),
@@ -27,7 +27,7 @@ QUIZ = [
      ],
      "objective": "Identify features that suggest faster progression or the need for nephrology referral.",
      "sources": ["ckd2024"], "flag": ""},
-    {"stem": "A nurse explains the Kidney Failure Risk Equation (KFRE) to a new colleague. Which information does it combine to estimate a patient&rsquo;s absolute risk of kidney failure?",
+    {"stem": "You explain the Kidney Failure Risk Equation (KFRE) to a new colleague. Which information does it combine to estimate a patient&rsquo;s absolute risk of kidney failure?",
      "options": [
          ("Blood pressure, blood glucose, and cholesterol", False, "These are cardiovascular risk factors that are managed in CKD, but they are not the inputs of this equation."),
          ("Serum creatinine, blood urea nitrogen, and urine volume", False, "Urine volume and blood urea nitrogen are not inputs; the equation uses eGFR and urine albumin."),
@@ -54,7 +54,7 @@ QUIZ = [
      ],
      "objective": "Carry out a kidney-focused medication reconciliation, including nonprescription pain relievers and herbal products.",
      "sources": ["ckd2024"], "flag": "Who reviews flagged products (physician or pharmacist) follows local policy."},
-    {"stem": "A nurse running a CKD clinic list compares two patients with stable results. One has an eGFR of 70 mL/min/1.73 m&sup2; and a urine ACR of 400 mg/g; the other has an eGFR of 55 and a urine ACR of 10 mg/g. Using the KDIGO risk grid, which patient needs the more frequent monitoring?",
+    {"stem": "You are running a CKD clinic list and compare two patients with stable results. One has an eGFR of 70 mL/min/1.73 m&sup2; and a urine ACR of 400 mg/g; the other has an eGFR of 55 and a urine ACR of 10 mg/g. Using the KDIGO risk grid, which patient needs the more frequent monitoring?",
      "options": [
          ("The patient with an eGFR of 55, because a lower eGFR always means a higher overall level of risk", False, "Risk depends on both axes; a modest eGFR reduction with normal albumin carries less risk than heavy albuminuria."),
          ("The two equally, because every patient with CKD is monitored on the same schedule", False, "The grid assigns different risk levels and monitoring frequencies according to the combination of categories."),
@@ -63,7 +63,7 @@ QUIZ = [
      ],
      "objective": "Use the risk grid to explain how often a patient needs monitoring.",
      "sources": ["ckd2024"], "flag": "Grid monitoring frequencies are guides; local follow-up schedules may differ."},
-    {"stem": "A patient with an eGFR of 24 mL/min/1.73 m&sup2; is admitted for pneumonia. A colleague prepares to insert an intravenous cannula in the forearm of her non-dominant arm. What should the nurse do?",
+    {"stem": "A patient with an eGFR of 24 mL/min/1.73 m&sup2; is admitted for pneumonia. A colleague prepares to insert an intravenous cannula in the forearm of her non-dominant arm. What should you do?",
      "options": [
          ("Let the colleague proceed, because vein protection starts only once dialysis is scheduled", False, "Vein protection begins once eGFR falls below 30, well before dialysis is planned."),
          ("Let the colleague proceed, because the dominant arm is needed for daily tasks", False, "The non-dominant arm is the side whose veins are protected for future access."),
@@ -81,7 +81,7 @@ QUIZ = [
      ],
      "objective": "Describe each element of the plan that slows progression and the nursing checks that go with it.",
      "sources": ["ckd2024"], "flag": "Pausing and restarting the medicine follows the prescriber&rsquo;s written plan."},
-    {"stem": "A nurse is counseling a Filipino family on lowering the sodium in home cooking for a relative with CKD. Which advice is most appropriate?",
+    {"stem": "You are counseling a Filipino family on lowering the sodium in home cooking for a relative with CKD. Which advice is most appropriate?",
      "options": [
          ("Flavor dishes with calamansi, vinegar, garlic, and ginger instead of fish sauce and soy sauce", True, "These seasonings add flavor without sodium, while fish sauce and soy sauce are among the main sodium sources in Filipino cooking."),
          ("Replace table salt with a potassium-based salt substitute to keep the same salty taste in food", False, "Potassium-based salt substitutes are specifically warned against in CKD because they can raise potassium."),

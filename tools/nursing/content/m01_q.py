@@ -18,7 +18,7 @@ QUIZ = [
      ],
      "objective": "Explain filtration, tubular reabsorption and secretion, and how they keep fluid, electrolytes, and acid–base status stable.",
      "sources": ["anna7"], "flag": ""},
-    {"stem": "A ward patient with CKD is comfortable, breathing normally, and has no new edema. Today&rsquo;s weight is 1.5 kg higher than yesterday, but it was taken on a different scale after breakfast and in heavier clothing. What should the nurse do?",
+    {"stem": "A ward patient with CKD is comfortable, breathing normally, and has no new edema. Today&rsquo;s weight is 1.5 kg higher than yesterday, but it was taken on a different scale after breakfast and in heavier clothing. What should you do?",
      "options": [
          ("Document the gain as fluid retention and ask for a diuretic to be ordered", False, "The weight was not taken under comparable conditions, so the gain cannot yet be interpreted as fluid."),
          ("Disregard weight for this patient and rely on edema checks alone", False, "Weight is the most useful single number for fluid; edema alone can mislead, for example when albumin is low."),
@@ -36,7 +36,7 @@ QUIZ = [
      ],
      "objective": "Perform and document a focused renal assessment: weight trend, blood pressure, volume status, breathing, urine, and access or catheter sites.",
      "sources": ["bp2021"], "flag": ""},
-    {"stem": "A patient with CKD has just had a renin–angiotensin system inhibitor started, and an aldosterone-blocking diuretic was added last week. Which laboratory result should the nurse expect to be checked because of where these medicines act?",
+    {"stem": "A patient with CKD has just had a renin–angiotensin system inhibitor started, and an aldosterone-blocking diuretic was added last week. Which laboratory result should you expect to be checked because of where these medicines act?",
      "options": [
          ("Serum potassium, because blocking aldosterone reduces potassium excretion in the collecting duct", True, "Medicines that block aldosterone or the renin–angiotensin system reduce potassium excretion in the collecting duct, so potassium is checked after they are started or increased."),
          ("Blood glucose, because these medicines block glucose reabsorption in the proximal tubule of the nephron", False, "Glucose reabsorption in the proximal tubule is the site of SGLT2 inhibitors, not of these medicines."),
@@ -54,7 +54,7 @@ QUIZ = [
      ],
      "objective": "Describe the kidney&rsquo;s hormonal work: erythropoietin, activation of vitamin D, and the renin–angiotensin system.",
      "sources": ["mbd2017"], "flag": ""},
-    {"stem": "A man admitted after a fall and a long time on the floor has a urine dipstick strongly positive for blood, but microscopy shows no red cells. How should the nurse interpret this result?",
+    {"stem": "A man admitted after a fall and a long time on the floor has a urine dipstick strongly positive for blood, but microscopy shows no red cells. How should you interpret this result?",
      "options": [
          ("Bleeding from the glomerulus, because blood on the dipstick always comes from the kidney", False, "Bleeding from the kidney or urinary tract shows red cells on microscopy; their absence points elsewhere."),
          ("Contamination from menstruation or a catheter, so the result can be ignored", False, "Contamination would show red cells on microscopy, and an abnormal result is reported, not ignored."),
@@ -81,7 +81,7 @@ QUIZ = [
      ],
      "objective": "Interpret estimated glomerular filtration rate and urine albumin-to-creatinine ratio as the two core kidney tests.",
      "sources": ["ckd2024"], "flag": ""},
-    {"stem": "A patient with CKD has gained 2 kg in 3 days and now needs two pillows to breathe at night. Her lung bases are clear on auscultation. How should the nurse interpret these findings?",
+    {"stem": "A patient with CKD has gained 2 kg in 3 days and now needs two pillows to breathe at night. Her lung bases are clear on auscultation. How should you interpret these findings?",
      "options": [
          ("Clear lungs rule out pulmonary congestion, so the weight can simply be rechecked tomorrow morning", False, "Crackles may be absent early in fluid overload, so clear lungs do not exclude it."),
          ("Clear lungs do not exclude overload; the weight trend with orthopnea is reported promptly", True, "A rapid gain is fluid until proven otherwise, and orthopnea suggests pulmonary congestion. No single sign is reliable alone, so the combined picture is escalated."),
