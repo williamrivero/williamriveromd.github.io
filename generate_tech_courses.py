@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 
@@ -72,6 +72,9 @@ for _p in PACKAGES:      # optional per-course references (refs.py) and figures 
         SHARED.REFS.update(load(TC / _p / "refs.py", f"tc_{_p}_refs").REFS)
     if (TC / _p / "figs.py").exists():
         FIGS.update(load(TC / _p / "figs.py", f"tc_{_p}_figs").FIGS)
+for _p in PACKAGES:      # optional per-course abbreviations (abbr.py)
+    if (TC / _p / "abbr.py").exists():
+        SHARED.ABBR.update(load(TC / _p / "abbr.py", f"tc_{_p}_abbr").ABBR)
 N.ABBR.update(SHARED.ABBR)          # same dict object the nursing helpers read
 
 # ───────────────────────── styles ─────────────────────────
@@ -1386,6 +1389,7 @@ TRACK_ICONS = {
     "nephrology-nursing": '<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/><path d="M12 9v5"/><path d="M9.5 11.5h5"/>',
     "hemodialysis-technician": '<path d="M12 3s5 5.6 5 9.5a5 5 0 0 1-10 0C7 8.6 12 3 12 3z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/>',
     "water-treatment-technician": '<path d="M3 7h18"/><path d="M5 7v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7"/><path d="M8 11h8M8 15h5"/><path d="M12 3v4"/>',
+    "renal-dietitian": '<path d="M7 3v8a3 3 0 0 0 6 0V3"/><path d="M10 3v18"/><path d="M17 3c-1.7 1.2-2.5 3.2-2.5 6 0 2 1 3 2.5 3v9"/>',
     "dialysis-biomedical-technician": '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
 }
 
@@ -1430,6 +1434,7 @@ def build_academy():
         cards.append(track(c.hub + ".html", M.get("branch_img", ""), M["branch_role"], M["title"], M["branch_blurb"],
                            M.get("academy_meta") or f"{len(c.mods)} modules &middot; skills checklists &middot; trainer page"))
     soon = [track("", "", role, title, blurb, "In preparation", live=False) for role, title, blurb in A["planned"]]
+    soon_block = (f'  <h3>In preparation</h3>\n  <div class="tc-branches tc-tracks">\n{chr(10).join(soon)}\n  </div>\n') if soon else ""
     main = f"""<section class="section" id="about">
   <div class="section-tag">Renal Care Academy</div>
   <h2>Training for the people who deliver kidney care</h2>
@@ -1443,11 +1448,7 @@ def build_academy():
   <div class="tc-branches tc-tracks">
 {chr(10).join(cards)}
   </div>
-  <h3>In preparation</h3>
-  <div class="tc-branches tc-tracks">
-{chr(10).join(soon)}
-  </div>
-</section>
+{soon_block}</section>
 
 <section class="section" id="how">
   <div class="section-tag">How the Academy works</div>
@@ -1475,7 +1476,7 @@ def build_academy():
     n_nurse = int(re.match(r"(\d+)", A["nursing"][5]).group(1))
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
     short = {"hemodialysis-technician": "Hemodialysis Technician", "water-treatment-technician": "Water Treatment Technician",
-             "dialysis-biomedical-technician": "Biomedical Technician"}
+             "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian"}
     hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]
     pg = shell(_Academy, fname, "Renal Care Academy: Training for Dialysis and Nephrology Staff", desc, A["keywords"],

@@ -128,8 +128,8 @@ HOW_HTML = """
 # ── Renal Care Academy landing page (academy/index.html) ─────────────────────
 ACADEMY = {
     "desc": ("Renal Care Academy is the staff-training section of Renal Care Matters: free, structured study series for nephrology and dialysis nurses, "
-             "hemodialysis technicians, water treatment technicians, and biomedical technicians, each with cases, skills checklists, and self-assessments."),
-    "keywords": "renal care academy, physician on duty course, dialysis staff training Philippines, nephrology nursing course, hemodialysis technician course, dialysis water treatment training, dialysis biomedical technician training",
+             "hemodialysis technicians, water treatment technicians, biomedical technicians, physicians on duty, and renal dietitians, each with cases, skills checklists, and self-assessments."),
+    "keywords": "renal care academy, physician on duty course, dialysis staff training Philippines, nephrology nursing course, hemodialysis technician course, dialysis water treatment training, dialysis biomedical technician training, renal dietitian course",
     "sub": "Structured study series for the nurses, technicians, and other professionals who run kidney care. Separate from the guide library, and built for learning a role step by step.",
     "audience": "Dialysis and nephrology staff in training &middot; head nurses, chief technicians, educators, and medical directors",
     # href, card image, role line, title, blurb, meta line
@@ -137,10 +137,7 @@ ACADEMY = {
                 "Nephrology Nursing &amp; Hemodialysis",
                 "Kidney assessment, chronic kidney disease, acute kidney injury, hemodialysis, peritoneal dialysis, transplantation, quality improvement, and an advanced module on continuous therapy and hemodiafiltration.",
                 "16 core modules + 1 advanced &middot; two learner paths &middot; educator page"),
-    "planned": [
-        ("Dietitians", "Renal Dietitian",
-         "For nutritionist-dietitians entering kidney care: assessment, diet prescription across kidney disease stages and dialysis, and counseling."),
-    ],
+    "planned": [],
     "about_html": """
 <p>The guides on this site answer questions. The Academy teaches roles. Each track is a complete, ordered course of study for one job in kidney care, written so that a new staff member can work through it module by module alongside supervised practice on the unit.</p>
 {{cards:How the Academy differs from the guide library|Built around a role::Each track follows what one kind of staff member needs to know and do, in the order they need it.|Ordered and complete::Modules are numbered and build on each other, with a syllabus and a course home.|Practice, not just reading::Every module has a fictional case, a skills checklist for a preceptor, and a self-assessment.|Made for trainers too::Each track has a page for educators and preceptors with printable checklists.}}
