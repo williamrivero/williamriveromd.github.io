@@ -27,9 +27,7 @@ FIGS = {
                    "Low-flux and high-flux membranes. Larger pores pass more water and larger waste molecules. Albumin and cells stay in "
                    "the blood with both."),
     "pod05_pressures": ("physician-on-duty-05-arterial-venous-pressure-points.webp",
-                        "The blood circuit with two pressure sensors marked. The arterial pressure sensor sits between the patient and the "
-                        "blood pump and reads below zero. The venous pressure sensor sits at the venous chamber after the dialyzer and reads "
-                        "above zero. Small labels list what raises or lowers each reading.",
+                        "A simplified blood circuit drawn as boxes and arrows: arterial needle, arterial line, blood pump, dialyzer, venous chamber, air detector and clamp, and venous needle. The arterial line is red and the venous line is blue. Arterial pressure is marked on the line before the blood pump, and venous pressure at the venous chamber. A note warns that a dislodged venous needle may not trigger the alarm.",
                         "Where the two pressures are measured. Arterial pressure is suction ahead of the pump. Venous pressure is the push "
                         "needed to return blood to the patient."),
     "pod05_screen": ("physician-on-duty-05-machine-front-screen.webp",
