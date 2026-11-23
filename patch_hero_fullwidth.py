@@ -70,7 +70,7 @@ def patch(html: str, filename: str):
 
     img_m = re.search(r'<img\b[^>]*fetchpriority\s*=\s*["\']high["\'][^>]*>', html[main_pos:], re.I)
     if not img_m:
-        img_m = re.search(r'<img\b(?![^>]*(?:avatar|-qr\.|qr-code|display:\s*none|bpChartImg|related-card|-thumb\.))[^>]*>', html[main_pos:].split('<!-- DR CARD -->')[0], re.I)  # skip avatar/QR/hidden images; never past the signature card
+        img_m = re.search(r'<img\b(?![^>]*(?:avatar|-qr\.|qr-code|display:\s*none|bpChartImg|related-card|-thumb\.|nc-fig-img))[^>]*>', html[main_pos:].split('<!-- DR CARD -->')[0], re.I)  # skip avatar/QR/hidden images; never past the signature card
     if not img_m:
         return html, False
 

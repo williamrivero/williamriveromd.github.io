@@ -113,6 +113,8 @@ def _classify(rel_path: str) -> tuple[str, str] | None:
         return "/guides/", "guides_index"
     if rel_path.startswith("guides/"):
         return "/" + rel_path, "guide"
+    if rel_path.startswith("academy/"):          # Renal Care Academy (staff training); index.html -> /academy/
+        return "/" + rel_path, "guide"
     if rel_path == "drugs/index.html":
         return "/drugs/", "drugs_index"
     if rel_path == "drugs/supplements/index.html":
@@ -131,7 +133,7 @@ def _classify(rel_path: str) -> tuple[str, str] | None:
 def discover_pages() -> list[tuple[str, str]]:
     """Walk the repo and return sorted (url_path, kind) for indexable pages."""
     found: list[tuple[str, str]] = []
-    scan_dirs = [REPO_ROOT, REPO_ROOT / "guides", REPO_ROOT / "downloads", REPO_ROOT / "drugs", REPO_ROOT / "drugs" / "supplements"]
+    scan_dirs = [REPO_ROOT, REPO_ROOT / "guides", REPO_ROOT / "academy", REPO_ROOT / "downloads", REPO_ROOT / "drugs", REPO_ROOT / "drugs" / "supplements"]
     seen: set[str] = set()
     for base in scan_dirs:
         if not base.is_dir():

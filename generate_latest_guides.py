@@ -99,7 +99,7 @@ SKIP_EXACT = {
     "symptom-checker.html", "lab-interpreter-guide.html", "lab-interpreter.html",
     "nephrology-atlas.html",
 }
-SKIP_PREFIX = ("calc-",)
+SKIP_PREFIX = ("calc-", "nephrology-nursing-", "hemodialysis-technician-", "water-treatment-technician-", "dialysis-biomedical-technician-")  # nursing course: modules + educator page are reached from the hub (nephrology-nursing.html), which still appears in the strip
 SKIP_SUFFIX = ("-log.html", "-log-blank.html", "-blank.html")
 
 # Editing artifacts that must never reach the live strip. A hand-saved backup

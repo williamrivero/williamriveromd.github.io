@@ -28,7 +28,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent
 GUIDES_DIR = REPO_ROOT / "guides"
 
-IMG_TAG = re.compile(r"<img\b(?![^>]*(?:avatar|-qr\.|qr-code|display:\s*none|bpChartImg|related-card|-thumb\.))[^>]*>", re.IGNORECASE)  # never the signature-card avatar/QR or hidden chart images
+IMG_TAG = re.compile(r"<img\b(?![^>]*(?:avatar|-qr\.|qr-code|display:\s*none|bpChartImg|related-card|-thumb\.|nc-fig-img))[^>]*>", re.IGNORECASE)  # never the signature-card avatar/QR or hidden chart images
 LOADING_ATTR = re.compile(r'\s+loading\s*=\s*(["\']?)(lazy|eager)\1', re.IGNORECASE)
 
 
