@@ -7,6 +7,7 @@ one-line description. Keys are file names in guides/.
 """
 
 READING_TITLES = {
+    "diabetes-kidney-disease-not-always-diabetic.html": "Diabetes and Kidney Disease: When It May Not Be Diabetic Kidney Disease",
     "kidney-physiology.html": "How Your Kidneys Work",
     "understanding-ckd.html": "Understanding Your Kidney Disease",
     "dry-weight-determination.html": "Finding Your True Dry Weight",
@@ -54,6 +55,19 @@ READING_TITLES = {
 }
 
 CALCS = {
+    "calc-proteinuria-uacr.html": ('Proteinuria and Albuminuria Staging', 'Turns a spot urine ratio into a KDIGO albuminuria category.'),
+    "calc-urine-protein-excretion.html": ('Daily Urine Protein Estimate', 'Estimates 24-hour protein loss from a spot protein-to-creatinine ratio.'),
+    "calc-igan-prediction.html": ('Immunoglobulin A Nephropathy Risk', 'Estimates the risk of kidney function decline after a biopsy diagnosis.'),
+    "calc-anca-renal-risk.html": ('Vasculitis Kidney Risk', 'Estimates the risk of kidney failure in antineutrophil cytoplasmic antibody vasculitis.'),
+    "calc-nephritic-toolkit.html": ('Nephritic Syndrome Toolkit', 'Tracks laboratory trends and response in inflammatory glomerular disease.'),
+    "calc-corticosteroid-conversion.html": ('Steroid Equivalence', 'Compares doses across glucocorticoids so exposure can be checked.'),
+    "calc-plasma-volume.html": ('Plasma Volume and Exchange Volume', 'Estimates plasma volume and the volume processed in a plasma exchange.'),
+    "calc-pediatric-bp.html": ('Pediatric Blood Pressure Percentiles', "Places a child's blood pressure on age, sex, and height percentiles."),
+    "calc-pediatric-egfr.html": ('Pediatric Kidney Function Estimate', 'Estimates filtration rate in children and young adults.'),
+    "calc-cognitive-screen-ckd.html": ('Cognitive Screen in Kidney Disease', 'Scores a brief cognitive screen and explains when around the dialysis session to test.'),
+    "calc-cognitive-score-trend.html": ('Cognitive Score Trend', 'Compares two cognitive scores only when the test, language, and timing match.'),
+    "calc-frailty-assessment.html": ('Frailty Assessment', 'Screens for frailty with standard questions and simple physical measures.'),
+    "calc-exercise-hr-zones.html": ('Exercise Heart-Rate Zones', 'Estimates heart-rate ranges for light and moderate exercise.'),
     "calc-egfr-ckd-epi.html": ("Kidney Function Estimate", "Estimates filtration rate from serum creatinine with the 2021 race-free equation."),
     "calc-urine-output-fluid-balance.html": ("Urine Output and Fluid Balance", "Converts measured urine to mL/kg per hour and totals intake against output."),
     "calc-fluid-overload.html": ("Cumulative Fluid Balance", "Tracks fluid balance over several days as a percentage of body weight."),

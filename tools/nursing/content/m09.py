@@ -107,6 +107,8 @@ MODULE = {
         ("dialysis-cramps-stasis-pigmentation.html", "Cramps and other intradialytic symptoms."),
         ("dry-weight-determination.html", "Reassessing target weight after hypotensive episodes."),
         ("potassium-hyperkalemia-ckd.html", "Hyperkalemia as a reversible cause of arrest."),
+        ("sugar-control-kidney-disease.html", "Blood sugar control when the kidneys and dialysis change how insulin and glucose behave."),
+        ("filipino-diabetic-diet.html", "Filipino meals for diabetes, to coordinate with the renal diet."),
     ],
     "calcs": ["calc-ufr-ceiling.html", "calc-idwg-fluid.html", "calc-dry-weight-estimator.html"],
     "external": [

@@ -29,7 +29,7 @@ MODULE = {
 <tr><td>Ultrafiltration</td><td>A pressure difference across the membrane</td><td>Water (with whatever is dissolved in it)</td><td>Every treatment that removes fluid</td></tr>
 <tr><td>Convection</td><td>Ultrafiltration large enough that solutes are dragged along with the water</td><td>Small and middle molecules alike, up to the pore size</td><td>Hemofiltration, CRRT with replacement fluid, HDF</td></tr>
 </tbody></table></div>
-<p><strong>Why size matters.</strong> Diffusion slows sharply as molecules get larger, so a molecule such as beta-2 microglobulin (about 12,000 daltons), which accumulates in long-term dialysis patients, is cleared poorly by diffusion alone. In convection, a solute crosses in proportion to the volume of water moved and to its sieving coefficient: close to 1 for urea and potassium (they cross as freely as water), lower for larger molecules, and close to 0 for albumin and blood cells, which a healthy membrane keeps in the blood.</p>
+<p><strong>Why size matters.</strong> Diffusion slows sharply as molecules get larger, so a molecule such as beta-2 microglobulin (about 11,800 daltons), which accumulates in long-term dialysis patients, is cleared poorly by diffusion alone. In convection, a solute crosses in proportion to the volume of water moved and to its sieving coefficient: close to 1 for urea and potassium (they cross as freely as water), lower for larger molecules, and close to 0 for albumin and blood cells, which a healthy membrane keeps in the blood.</p>
 <p><strong>Replacement fluid.</strong> To remove many liters of plasma water without draining the circulation, an almost equal volume of sterile, buffered electrolyte solution is infused back into the blood path. In CRRT it comes from prescribed bags; in online HDF the machine makes it from ultrapure dialysate. Either way it enters the bloodstream directly, so its composition (sodium, potassium, calcium, bicarbonate, glucose) becomes the patient&rsquo;s plasma composition over the hours of treatment. Net fluid removal is simply everything removed minus everything given back.</p>
 <p><strong>Where the replacement fluid enters.</strong></p>
 <div class="table-wrap"><table><thead><tr><th></th><th>Pre-dilution (before the filter)</th><th>Post-dilution (after the filter)</th></tr></thead><tbody>
@@ -148,7 +148,7 @@ MODULE = {
         ["hemodiafiltration-deep-dive.html", "Hemodiafiltration in depth: convection volume, machines, and evidence."],
         ["dialysis-water-treatment-systems.html", "Water quality, which online hemodiafiltration depends on."],
     ],
-    "calcs": ["calc-crrt-dose.html", "calc-crrt-uf-rate.html", "calc-crrt-flowsheet.html", "calc-hdx-toolkit.html"],
+    "calcs": ["calc-crrt-dose.html", "calc-crrt-uf-rate.html", "calc-crrt-flowsheet.html", "calc-hdx-toolkit.html", "calc-plasma-volume.html"],
     "external": [["KDIGO acute kidney injury guideline page (2012 guideline and the status of its update)", "https://kdigo.org/guidelines/acute-kidney-injury/"]],
     "terms": [
         ("Convection", "Removal of solutes carried along with water pushed through a membrane by pressure."),
@@ -160,7 +160,7 @@ MODULE = {
         ("Middle molecules", "Solutes larger than urea, such as beta-2 microglobulin, that diffusion removes poorly."),
     ],
     "image": {"file": "renal-nursing-13-convective-therapies",
-              "alt": "An ICU nurse checks a continuous therapy machine beside a patient while a dialysis nurse reviews a hemodiafiltration session.",
+              "alt": "An ICU nurse checks the hanging fluid bags on a continuous kidney replacement machine at a critically ill patient's bedside.",
               "purpose": "Show the two settings of convective therapy, ICU and dialysis unit, as careful bedside work.",
               "scene": "", "focal": "", "setting": "", "details": "", "exclusions": "", "archetype": "", "reviewer": ""},
     "flags": [

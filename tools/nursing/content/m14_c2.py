@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+# Module 14 competencies, part 2: behavior in the unit, exercise, frailty and falls, adherence, symptoms, and goals.
+# Added to m14_c.py's list; MILESTONE comes from m14_c.py. Hands-on items stop at S or D.
+COMPETENCIES = [
+    {"thread": "emergency",
+     "statement": "Checks for a medical cause, including glucose, blood pressure, oxygen saturation, pain, delirium, and disequilibrium, before attributing agitation to personality, in a simulated scenario.",
+     "level": "S", "evidence": ["Simulation"]},
+    {"thread": "communication",
+     "statement": "Demonstrates stepwise de-escalation in a role-play: safe positioning, one speaker, calm voice, validation, real choices, clear limits, and calling for help per policy.",
+     "level": "S", "evidence": ["Simulation"]},
+    {"thread": "professional",
+     "statement": "Explains factual incident documentation, team review, behavior agreements, and debriefing, and states why no patient is discharged from a unit by an individual nurse or without help to obtain dialysis elsewhere.",
+     "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+    {"thread": "therapy",
+     "statement": "Applies the unit exercise program&rsquo;s safety screen before intradialytic exercise for a physician-cleared patient, keeps the access visible, stops for warning signs, and records tolerance.",
+     "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "teaching",
+     "statement": "Teaches rising slowly after dialysis, home safety, and footwear to a patient or caregiver and confirms understanding using teach-back.",
+     "level": "S", "evidence": ["Teach-back", "Skills station"]},
+    {"thread": "assessment",
+     "statement": "Recognizes frailty, repeated post-dialysis dizziness, and falls, checks standing blood pressure when indicated, and reports for review and possible referral for therapy.",
+     "level": "D", "evidence": ["Observed practice"]},
+    {"thread": "communication",
+     "statement": "Explores the reasons for skipped or shortened sessions without judgment, documents delivered versus prescribed time with reasons, and reports patterns to the physician.",
+     "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "assessment",
+     "statement": "Conducts a routine symptom review, including recovery time, itching, pain, cramps, restless legs, sleep, and, with permission, sexual concerns, and reports findings for treatment.",
+     "level": "D", "evidence": ["Observed practice", "Record review"]},
+    {"thread": "teaching",
+     "statement": "Explains the outcomes patients and clinicians prioritize on HD, the role of kidney supportive care alongside dialysis, and how to help a patient plan work, school, or travel dialysis around their goals.",
+     "level": "K", "evidence": ["Self-assessment", "Nursing case"]},
+]

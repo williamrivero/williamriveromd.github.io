@@ -34,14 +34,20 @@ MODULES = [
     ("10", "pd-home-dialysis-nursing", "PD and Home Dialysis Nursing", "PD and home dialysis", "core", "foundation"),
     ("11", "transplantation-special-populations", "Transplantation and Special Populations", "Transplant", "core", "foundation"),
     ("12", "philippine-practice-quality-capstone", "Philippine Practice, Quality Improvement, and Capstone", "Practice and quality", "core", "core"),
+    # core module added after the PSN Basic Course review; studied before the capstone on both paths
+    ("14", "living-well-hemodialysis", "Living Well on Hemodialysis: Mind, Behavior, and Longevity", "Living well on HD", "core", "core"),
+    # core modules added to complete the curriculum
+    ("15", "glomerular-systemic-kidney-disease", "Glomerular and Systemic Kidney Diseases", "Glomerular and systemic disease", "core", "core"),
+    ("16", "supportive-palliative-kidney-care", "Supportive, Palliative, and End-of-Life Kidney Care", "Palliative and end-of-life care", "core", "core"),
+    ("17", "teaching-evidence-based-practice", "Patient Teaching, Health Literacy, and Evidence-Based Practice", "Teaching and evidence", "core", "core"),
     # advanced module, studied after the capstone on both paths
     ("13", "convective-therapies-crrt-hdf", "Convective Therapies: CRRT and Hemodiafiltration", "Continuous therapy and hemodiafiltration", "advanced", "advanced"),
 ]
 
 # Suggested study order on each path (module ids)
 PATH_ORDER = {
-    "neph": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13"],
-    "hd": ["01", "06", "07", "08", "09", "02", "03", "04", "05", "10", "11", "12", "13"],
+    "neph": ["01", "02", "15", "03", "04", "05", "06", "07", "08", "09", "10", "11", "14", "16", "17", "12", "13"],
+    "hd": ["01", "06", "07", "08", "09", "14", "02", "03", "04", "05", "16", "10", "11", "15", "17", "12", "13"],
 }
 
 # ── Abbreviations: used to build each page's glossary automatically ──────────
@@ -75,6 +81,7 @@ ABBR = {
     "CVVH": ("continuous venovenous hemofiltration", "Continuous therapy that clears solutes by convection, with replacement fluid."),
     "CVVHD": ("continuous venovenous hemodialysis", "Continuous therapy that clears solutes by diffusion into dialysate."),
     "CVVHDF": ("continuous venovenous hemodiafiltration", "Continuous therapy that combines diffusion and convection."),
+    "IV": ("intravenous", ""),
     "SCUF": ("slow continuous ultrafiltration", "Continuous fluid removal without replacement fluid or dialysate."),
     "SLED": ("sustained low-efficiency dialysis", "A prolonged intermittent therapy run over many hours with a standard machine."),
     "HDF": ("hemodiafiltration", "Hemodialysis combined with large-volume convection and online replacement fluid."),
@@ -200,6 +207,31 @@ PUBMED_REFS = {
 
 # Full journal names (APA wants the full title, not the PubMed abbreviation)
 JOURNALS = {
+    'Journal of clinical apheresis': 'Journal of Clinical Apheresis',
+    'Psychological bulletin': 'Psychological Bulletin',
+    'Family medicine': 'Family Medicine',
+    'Archives of internal medicine': 'Archives of Internal Medicine',
+    'The Behavioral and brain sciences': 'Behavioral and Brain Sciences',
+    'Nature reviews. Neuroscience': 'Nature Reviews Neuroscience',
+    'Emotion (Washington, D.C.)': 'Emotion',
+    'Nephrology (Carlton, Vic.)': 'Nephrology',
+    'Journal of the Royal Society of Medicine': 'Journal of the Royal Society of Medicine',
+    'Advances in chronic kidney disease': 'Advances in Chronic Kidney Disease',
+    'Journal of pain and symptom management': 'Journal of Pain and Symptom Management',
+    'ACP journal club': 'ACP Journal Club',
+    'Psychological science': 'Psychological Science',
+    'The British journal of general practice : the journal of the Royal College of General Practitioners': 'British Journal of General Practice',
+    'BMJ (Clinical research ed.)': 'BMJ',
+    'Palliative medicine': 'Palliative Medicine',
+    'Contemporary clinical trials': 'Contemporary Clinical Trials',
+    'BMC public health': 'BMC Public Health',
+    'Quality of life research : an international journal of quality of life aspects of treatment, care and rehabilitation': 'Quality of Life Research',
+    'Clinical journal of the American Society of Nephrology : CJASN': 'Clinical Journal of the American Society of Nephrology',
+    'Annals of internal medicine': 'Annals of Internal Medicine',
+    'Neurology': 'Neurology',
+    'The Cochrane database of systematic reviews': 'Cochrane Database of Systematic Reviews',
+    'NEJM evidence': 'NEJM Evidence',
+    'Renal failure': 'Renal Failure',
     "Lancet (London, England)": "The Lancet",
     "Kidney international": "Kidney International",
     "American journal of kidney diseases : the official journal of the National Kidney Foundation": "American Journal of Kidney Diseases",
@@ -222,6 +254,28 @@ JOURNALS = {
 
 # Sentence-case titles for sources PubMed stores in title case (APA 7)
 TITLE_OVERRIDES = {
+    "7802519": "Dialysis discontinuation: A \u201cgood\u201d death?",
+    "25863828": 'Long-term effects of frequent nocturnal hemodialysis on mortality: The Frequent Hemodialysis Network (FHN) Nocturnal Trial',
+    "27125246": 'Patient education and peritoneal dialysis modality selection: A systematic review and meta-analysis',
+    "28487346": 'A systematic review of the prevalence and associations of limited health literacy in CKD',
+    "28923831": 'International comparisons of prevalence, awareness, and treatment of pruritus in people on hemodialysis',
+    "29729346": 'Validation of the IPOS-Renal symptom survey in advanced kidney disease: A cross-sectional study',
+    "30833302": 'Clinical pharmacology considerations in pain management in patients with advanced kidney failure',
+    "34556256": 'KDIGO 2021 clinical practice guideline for the management of glomerular diseases',
+    "36272764": 'KDIGO 2022 clinical practice guideline for diabetes management in chronic kidney disease',
+    "37017433": 'Guidelines on the use of therapeutic apheresis in clinical practice: Evidence-based approach from the Writing Committee of the American Society for Apheresis: The ninth special issue',
+    "38182286": 'KDIGO 2024 clinical practice guideline for the management of lupus nephritis',
+    "38388102": 'KDIGO 2024 clinical practice guideline for the management of antineutrophil cytoplasmic antibody (ANCA)-associated vasculitis',
+    "40975525": 'Executive summary of the KDIGO 2025 clinical practice guideline for the management of immunoglobulin A nephropathy (IgAN) and immunoglobulin A vasculitis (IgAV)',
+    "27909047": 'Exercise in patients on dialysis: A multicenter, randomized clinical trial',
+    "28126706": 'Sertraline versus placebo in patients with major depressive disorder undergoing hemodialysis: A randomized, controlled feasibility trial',
+    "28238554": 'Developing a set of core outcomes for trials in hemodialysis: An international Delphi survey',
+    "29101402": 'Effect of sertraline on depressive symptoms in patients with chronic kidney disease without dialysis dependence: The CAST randomized clinical trial',
+    "29551585": 'Establishing a core outcome measure for fatigue in patients on hemodialysis: A Standardized Outcomes in Nephrology-Hemodialysis (SONG-HD) consensus workshop report',
+    "30146421": 'Missed hemodialysis treatments: International variation, predictors, and outcomes in the Dialysis Outcomes and Practice Patterns Study (DOPPS)',
+    "30802897": 'Comparative efficacy of therapies for treatment of depression for patients undergoing maintenance hemodialysis: A randomized clinical trial',
+    "31585683": 'Practical guide to vaccination in all stages of CKD, including patients treated by dialysis or kidney transplantation',
+    "38320198": 'Exercise during hemodialysis in patients with chronic kidney failure',
     "33095849": "Effect of regional citrate anticoagulation vs systemic heparin anticoagulation during continuous kidney replacement therapy on dialysis filter life span and mortality among critically ill patients with acute kidney injury: A randomized clinical trial",
     "38490803": "KDIGO 2024 clinical practice guideline for the evaluation and management of chronic kidney disease",
     "32829751": "KDOQI clinical practice guideline for nutrition in CKD: 2020 update",
@@ -244,6 +298,10 @@ TITLE_OVERRIDES = {
 }
 # Group authors that PubMed lists by collective name only
 GROUP_AUTHORS = {
+    "34556256": 'Kidney Disease: Improving Global Outcomes (KDIGO) Glomerular Diseases Work Group',
+    "38182286": 'Kidney Disease: Improving Global Outcomes (KDIGO) Lupus Nephritis Work Group',
+    "38388102": 'Kidney Disease: Improving Global Outcomes (KDIGO) ANCA Vasculitis Work Group',
+    "36272764": 'Kidney Disease: Improving Global Outcomes (KDIGO) Diabetes Work Group',
     "19846848": "RENAL Replacement Therapy Study Investigators",
     "36343653": "MyTEMP Writing Committee",
     "26498416": "National Kidney Foundation (NKF)",

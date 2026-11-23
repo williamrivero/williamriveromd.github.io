@@ -14,7 +14,11 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / "Documents/Nephrology Nursing/Module images"
-MAN = json.loads((ROOT / "docs/nursing-course/image-prompts-manifest.json").read_text(encoding="utf-8"))
+MAN = []
+for _m in ("image-prompts-manifest.json", "image-prompts-addendum-manifest.json", "image-prompts-addendum2-manifest.json"):
+    _p = ROOT / "docs/nursing-course" / _m
+    if _p.exists():
+        MAN += json.loads(_p.read_text(encoding="utf-8"))
 OUT = ROOT / "tools/nursing/content/figures.py"
 
 figs, missing = [], []
@@ -27,8 +31,8 @@ for f in MAN:
     for p in (png, webp):
         if p.exists():
             shutil.copy2(p, ROOT / "images" / p.name)
-    if f["id"] == "H-0":
-        continue
+    if f["id"] == "H-0" or f["id"].endswith("-H0") or "hero" in f["placement"].lower():
+        continue  # heroes: the generator shows images/<slug>-vignette-hero.png automatically
     w, h = Image.open(png).size
     pl = f["placement"]
     if pl.startswith("Hub"):
@@ -49,6 +53,6 @@ for x in figs:
     lines.append("    " + json.dumps(x, ensure_ascii=False) + ",")
 lines.append("]")
 OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
-print(f"installed {len(figs) + 1} figures (incl. hub hero); listed {len(figs)} in {OUT.relative_to(ROOT)}")
+print(f"installed {len(figs)} figures plus heroes; listed {len(figs)} in {OUT.relative_to(ROOT)}")
 if missing:
     print("MISSING in source folder:", missing)

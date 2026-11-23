@@ -98,7 +98,7 @@ MODULE = {
         ("ckd-and-pregnancy.html", "Kidney disease and pregnancy."),
         ("viral-infections-vaccinations-ckd.html", "Vaccination in kidney disease and after transplant."),
     ],
-    "calcs": ["calc-transplant-prom.html", "calc-pediatric-ckd-krt-risk.html"],
+    "calcs": ["calc-transplant-prom.html", "calc-pediatric-ckd-krt-risk.html", "calc-pediatric-bp.html", "calc-pediatric-egfr.html"],
     "external": [
         ("KDIGO transplant candidate guideline", "https://kdigo.org/guidelines/transplant-candidate/"),
     ],

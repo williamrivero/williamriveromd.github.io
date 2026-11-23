@@ -1,5 +1,8 @@
 # GPT image prompts — Nephrology Nursing & Hemodialysis course
 
+> **Modules 13–17 and the later sections are not in this file.** Module 13 figures are in `GPT-IMAGE-PROMPTS-ADDENDUM-M13.md`; Modules 14–17 and the new sections of Modules 3, 7 and 9–13 are in `GPT-IMAGE-PROMPTS-ADDENDUM-2.md`. Module heroes 1–17 are all in `GPT-IMAGE-BRIEF.md`.
+
+
 **Site:** renalcarematters.com · **Prepared:** November 23, 2026 · **Figures:** 45 (40 core, 5 optional ○)
 
 This file is self-contained. Each prompt in a gray block is complete on its own: paste one block into a fresh ChatGPT image chat, generate, then run the QA list under it before saving. The module heroes already exist and are not repeated here; this file adds the hub hero and the teaching figures inside the lessons.

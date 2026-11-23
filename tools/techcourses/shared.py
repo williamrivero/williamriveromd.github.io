@@ -136,7 +136,7 @@ ACADEMY = {
     "nursing": ("nephrology-nursing.html", "nephrology-nursing-01-kidney-function-renal-assessment-vignette-hero.webp", "Registered nurses",
                 "Nephrology Nursing &amp; Hemodialysis",
                 "Kidney assessment, chronic kidney disease, acute kidney injury, hemodialysis, peritoneal dialysis, transplantation, quality improvement, and an advanced module on continuous therapy and hemodiafiltration.",
-                "12 modules + 1 advanced &middot; two learner paths &middot; educator page"),
+                "16 core modules + 1 advanced &middot; two learner paths &middot; educator page"),
     "planned": [
         ("Dietitians", "Renal Dietitian",
          "For nutritionist-dietitians entering kidney care: assessment, diet prescription across kidney disease stages and dialysis, and counseling."),

@@ -85,12 +85,13 @@ for _id, _slug, _title, _short, _neph, _hd in MODULES:
         C.PUBMED_REFS.update(getattr(_q, "NEW_REFS", {}))
     # optional competency file mNN_c.py: COMPETENCIES (thread, statement, level, evidence) and MILESTONE
     m["competencies"], m["milestone"] = [], ""
-    if (CONTENT / f"m{_id}_c.py").exists():
-        _c = load(f"m{_id}_c")
-        m["competencies"], m["milestone"] = list(_c.COMPETENCIES), getattr(_c, "MILESTONE", "")
+    for _cf in sorted(CONTENT.glob(f"m{_id}_c*.py")):   # mNN_c.py, mNN_c2.py, ... (later files add competencies)
+        _c = load(_cf.stem)
+        m["competencies"] += list(getattr(_c, "COMPETENCIES", []))
+        m["milestone"] = m["milestone"] or getattr(_c, "MILESTONE", "")
     MODS[_id] = m
-ORDER = [x[0] for x in MODULES]
-BANK_SIZE = 15   # questions per module bank
+ORDER = list(C.PATH_ORDER["neph"])   # default order and previous/next follow the Nephrology Nursing path
+BANK_SIZE = 15   # minimum questions per module bank (banks may grow)
 DRAW = 5         # questions shown per page load, drawn at random from the bank
 _PLAIN = {"CKD": "Chronic Kidney Disease", "AKI": "Acute Kidney Injury", "HD": "Hemodialysis", "PD": "Peritoneal Dialysis", "CRRT": "Continuous Renal Replacement Therapy"}
 for _m in MODS.values():
@@ -160,9 +161,10 @@ def build_refs():
         iss = f"({_issue(r['issue'])})" if r["issue"] else ""
         pages = _pages(r["pages"])
         doi = r.get("doi", "")
-        link = f' <a href="https://doi.org/{doi}">https://doi.org/{doi}</a>' if doi else ""
+        link = (f' <a href="https://doi.org/{doi}">https://doi.org/{doi}</a>' if doi
+                else f' <a href="https://pubmed.ncbi.nlm.nih.gov/{pmid}/">https://pubmed.ncbi.nlm.nih.gov/{pmid}/</a>')
         tail = ", ".join(x for x in [f"{vol}{iss}", pages] if x)
-        refs[key] = f"{authors} ({r['year']}). {html.escape(title, quote=False)}. <em>{journal}</em>, {tail}.{link}"
+        refs[key] = f"{authors} ({r['year']}). {html.escape(title, quote=False)}{"" if title[-1:] in "?!" else "."} <em>{journal}</em>, {tail}.{link}"
     return refs
 
 
@@ -393,6 +395,13 @@ html[data-theme="dark"] .nc-path[aria-pressed="true"]{box-shadow:0 0 0 3px #0a28
   .nc-acte,.nc-nextprev,.nc-paths,.nc-modgrid{grid-template-columns:1fr;}
   .nc-np-next{text-align:left;}
 }
+.nc-psn td{vertical-align:top;font-size:14.5px;}
+.nc-plain{list-style:disc;padding-left:1.2em;}
+.nc-osce{border:1px solid var(--border);border-radius:12px;padding:6px 16px 10px;margin:16px 0;background:var(--white);break-inside:avoid;}
+.nc-osce-min{font-size:.75rem;font-weight:600;color:var(--text-muted);margin-left:8px;}
+.nc-osce-crit{margin:6px 0 0;}
+ul.nc-osce-crit{padding-left:1.2em;color:var(--text-mid);}
+.nc-osce-note{font-size:14px;color:var(--text-muted);}
 /* competencies */
 .nc-lv{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.02em;border-radius:999px;padding:2px 9px;white-space:nowrap;border:1px solid transparent;}
 .nc-lv-K{background:#eef1f5;color:#43536a;border-color:#d5dbe4;}
@@ -767,6 +776,85 @@ def progression_section():
 """
 
 
+# ───────────────────────── PSN alignment and OSCE bank (educator page) ─────────────────────────
+def _mlink(ref):
+    """'09:hd-drugs' or '09' -> link to the module (and section)."""
+    mid, _, sec = ref.partition(":")
+    if mid not in MODS:
+        err(f"educator_psn: unknown module {mid}")
+        return html.escape(ref)
+    m = MODS[mid]
+    nav = next((x['nav'] for x in m['sections'] if x['id'] == sec), sec) if sec else ""
+    for _a, _x in (("HDF", "hemodiafiltration"), ("CRRT", "continuous kidney replacement therapy"), ("HD", "hemodialysis"),
+                   ("PD", "peritoneal dialysis"), ("CKD", "kidney disease"), ("AKI", "acute kidney injury")):
+        nav = re.sub(rf"\b{_a}\b", _x, nav)
+    label = f"Module {int(mid)}" + (f" &middot; {nav}" if sec else "")
+    if sec and sec not in [x["id"] for x in m["sections"]]:
+        err(f"educator_psn: module {mid} has no section {sec}")
+    return f'<a href="{m["slug"]}.html{"#" + sec if sec else ""}">{label}</a>'
+
+
+def psn_sections():
+    if not (CONTENT / "educator_psn.py").exists():
+        return ""
+    E = load("educator_psn")
+    cov = {"full": ("Covered", "D"), "extends": ("Covered and extended", "I"), "partial": ("Partly covered", "S")}
+    rows = []
+    for r in E.ALIGNMENT:
+        where = ", ".join(_mlink(x) for x in (r.get("sections") or r.get("modules") or []))
+        lab, code = cov.get(r.get("coverage", ""), (r.get("coverage", ""), "K"))
+        rows.append(f'<tr><td>{r["area"]}</td><td>{where or "&mdash;"}</td><td><span class="nc-lv nc-lv-{code}">{lab}</span></td><td>{r.get("note", "")}</td></tr>')
+    sch = E.BLENDED_SCHEDULE
+    days = []
+    for d in sch["days"]:
+        blocks = "".join(
+            f'<li><strong>{b.get("time_hint", "").capitalize()}.</strong> {b["activity"]}'
+            + (f' Modules: {", ".join(_mlink(x) for x in b.get("modules", []))}.' if b.get("modules") else "")
+            + (f' Stations: {", ".join(b.get("stations", []))}.' if b.get("stations") else "") + "</li>" for b in d["blocks"])
+        days.append(f'<h3 class="nc-h3">Day {d["day"]}: {d["focus"]}</h3><ul class="nc-read nc-plain">{blocks}</ul>')
+    st = []
+    for x in E.OSCE_STATIONS:
+        chk = "".join(f'<tr class="nc-sign"><td>{c}</td><td></td><td></td></tr>' for c in x["checklist"])
+        crit = "".join(f"<li>{c}</li>" for c in x.get("critical", []))
+        mods = ", ".join(_mlink(m) for m in x.get("modules", []))
+        st.append(f"""  <div class="nc-osce">
+  <h3 class="nc-h3">Station {x["id"]}: {x["title"]} <span class="nc-osce-min">{x["minutes"]} minutes</span></h3>
+  <p><strong>Task.</strong> {x["task"]} <strong>Setup.</strong> {x["setup"]} <strong>Study:</strong> {mods}.</p>
+  <div class="table-wrap"><table>
+  <thead><tr><th style="width:62%;">Observable step</th><th>Done</th><th>Not done</th></tr></thead>
+  <tbody>
+{chk}
+  </tbody></table></div>
+  <p class="nc-osce-crit"><strong>Critical errors (any one fails the station):</strong></p><ul class="nc-osce-crit">{crit}</ul>
+  <p class="nc-osce-note">{x.get("examiner_note", "")}</p>
+  </div>""")
+    return f"""<section class="section" id="psn">
+  <div class="section-tag">Philippine Society of Nephrology</div>
+  <h2>How the modules align with the PSN Basic Course for Renal Nurses</h2>
+  <p>The PSN offers face-to-face basic training for renal nurses. The table below groups the content such training usually covers into broad areas, in our own words, and points to the modules and sections that teach each one, so a nurse can prepare before a course and review after it. The grouping is ours; it does not reproduce any PSN program, it does not mean the PSN has reviewed or endorsed these modules, and completing them does not replace PSN training or certification.</p>
+  <div class="table-wrap"><table class="nc-psn">
+  <thead><tr><th>Content area</th><th>Where to study it here</th><th>Coverage</th><th>Notes</th></tr></thead>
+  <tbody>
+{chr(10).join(rows)}
+  </tbody></table></div>
+  <h3 class="nc-h3">A suggested three-day blended schedule</h3>
+  <p>One way a provider could pair the self-study modules with a three-day face-to-face course. It is a suggestion, not a PSN schedule.</p>
+  <p><strong>Before the course.</strong> {sch["pre"]}</p>
+  {"".join(days)}
+  <p><strong>After the course.</strong> {sch["after"]}</p>
+  <p><strong>Pretests and post-tests.</strong> {E.PRE_POST}</p>
+</section>
+
+<section class="section nc-print-break" id="osce">
+  <div class="section-tag">Printable</div>
+  <h2>Objective structured clinical examination (OSCE) station bank</h2>
+  <p>Each station lists the task, the setup, the observable steps, and the critical errors. Steps follow the modules and the unit&rsquo;s approved procedures; the examiner replaces any step that differs from local protocol before use. Run stations on a simulation arm, mannequin, or unconnected machine, never on a patient.</p>
+{chr(10).join(st)}
+</section>
+
+"""
+
+
 # ───────────────────────── module page ─────────────────────────
 def build_module(mid):
     m = MODS[mid]
@@ -809,8 +897,8 @@ def build_module(mid):
   <div class="nc-task"><strong>Documentation task.</strong> {c['task']}</div>
 </section>""")
     # quiz: the whole bank is in the page; assets/nursing-course.js shows DRAW at random
-    if len(m["quiz"]) != BANK_SIZE and not os.environ.get("NC_DRAFT"):  # NC_DRAFT=1 while a bank is being written
-        err(f"module {mid}: question bank has {len(m['quiz'])} items (must be {BANK_SIZE})")
+    if len(m["quiz"]) < BANK_SIZE and not os.environ.get("NC_DRAFT"):  # NC_DRAFT=1 while a bank is being written
+        err(f"module {mid}: question bank has {len(m['quiz'])} items (must be at least {BANK_SIZE})")
     qs = []
     for qi, q in enumerate(m["quiz"], 1):
         n_correct = sum(1 for o in q["options"] if o[1])
@@ -913,7 +1001,7 @@ def build_module(mid):
     main = auto_expand("\n\n".join(parts), fname)
     pre = f"""<div class="container">
   <div class="nc-bar">
-    <a href="{hub}">{COURSE['title']}</a><span class="nc-sep">›</span><span>{"Advanced module " + str(n) if n > 12 else f"Module {n} of 12"}</span>
+    <a href="{hub}">{COURSE['title']}</a><span class="nc-sep">›</span><span>{"Advanced module " + str(n) if m["neph"] == "advanced" else f"Module {n}"}</span>
     <span class="nc-spacer"></span>
     {role_chip(m)}
   </div>
@@ -939,7 +1027,7 @@ def build_module(mid):
     title = f"{m['title']}: Nephrology Nursing Module {n}"
     page = shell(
         fname, title, m["desc"], m["keywords"],
-        (f"Nursing Education &middot; Advanced module {n}" if n > 12 else f"Nursing Education &middot; Module {n} of 12"), m["title"], m["sub"],
+        (f"Nursing Education &middot; Advanced module {n}" if m["neph"] == "advanced" else f"Nursing Education &middot; Module {n}"), m["title"], m["sub"],
         "Registered nurses entering nephrology or hemodialysis practice &middot; nurse educators and preceptors",
         nav, pre, main, glossary_block(main, m.get("terms", [])), related_block(cards),
         jsonld_extra={"isPartOf": {"@type": "Course", "name": COURSE["title"], "url": f"{SITE}/guides/{COURSE['hub_slug']}"},
@@ -1004,7 +1092,7 @@ def build_hub():
     main = f"""<section class="section" id="start">
   <div class="section-tag">Start here</div>
   <h2>A study series for nurses entering kidney care</h2>
-  <p>This series is written for Philippine-licensed registered nurses who are starting work in a nephrology ward, a chronic kidney disease (CKD) clinic, or a hemodialysis (HD) unit, and for the educators and preceptors who train them. It has twelve core modules, which run from kidney assessment through acute kidney injury (AKI), hemodialysis, peritoneal dialysis (PD), and transplantation to quality improvement, and an advanced Module 13 on continuous kidney replacement in the intensive care unit and hemodiafiltration, studied after the capstone. Each one explains the reasoning first and the task second: what the kidney or the machine is doing, what the evidence supports, and what that means for the nurse at the bedside or chairside.</p>
+  <p>This series is written for Philippine-licensed registered nurses who are starting work in a nephrology ward, a chronic kidney disease (CKD) clinic, or a hemodialysis (HD) unit, and for the educators and preceptors who train them. It has sixteen core modules, which run from kidney assessment and glomerular disease through acute kidney injury (AKI), hemodialysis, living well on dialysis, peritoneal dialysis (PD), transplantation, palliative care, and patient teaching to quality improvement, and an advanced Module 13 on continuous kidney replacement in the intensive care unit and hemodiafiltration, studied after the capstone. Each one explains the reasoning first and the task second: what the kidney or the machine is doing, what the evidence supports, and what that means for the nurse at the bedside or chairside.</p>
   <p>Every module has the same parts: learning objectives; an original lesson that moves from a plain mental model to physiology, evidence, and practice; a fictional nursing case organized around what to assess, communicate, teach, and escalate; a self-assessment that draws questions at random from a fifteen-question bank, with a rationale for every option; a supervised-practice prompt for use with a preceptor; and assigned reading from this site&rsquo;s guides and calculators. The series is free, needs no account, and sends nothing you answer to any server.</p>
   <div class="alert alert-amber">
     <div class="alert-icon">⚠️</div>
@@ -1018,7 +1106,7 @@ def build_hub():
 <section class="section" id="paths">
   <div class="section-tag">Two learner paths</div>
   <h2>Choose the path that matches your work</h2>
-  <p>Both paths use the same twelve core modules and end with the same advanced module. They differ in order and in which modules deserve the most time. Select a path to reorder the module list below.</p>
+  <p>Both paths use the same sixteen core modules and end with the same advanced module. They differ in order and in which modules deserve the most time. Select a path to reorder the module list below.</p>
   <div class="nc-paths" role="group" aria-label="Learner path">
     <button type="button" class="nc-path" data-nc-path="neph" aria-pressed="true" data-note="Nephrology Nursing path: modules in numerical order, with most time on assessment, CKD, acute kidney injury, treatment choices, peritoneal dialysis, and transplantation.">
       <b>Nephrology Nursing</b>
@@ -1086,10 +1174,10 @@ def build_hub():
                  ("code-blue-acls-dialysis-unit.html", "Related guide", "Cardiac Arrest Response in a Dialysis Unit", "Assigned reading for Module 9."),
                  ("dialysis-qapi-vs-cqi.html", "Related guide", "Dialysis Center Quality Management", "Assigned reading for Module 12.")]
     pre = f"""<div class="container">
-  <div class="nc-bar"><span class="nc-chip nc-chip-core">{COURSE['label']}</span><span class="nc-chip">12 modules + 1 advanced</span><span class="nc-chip">Free &middot; no account</span><span class="nc-chip">English</span></div>
+  <div class="nc-bar"><span class="nc-chip nc-chip-core">{COURSE['label']}</span><span class="nc-chip">16 core modules + 1 advanced</span><span class="nc-chip">Free &middot; no account</span><span class="nc-chip">English</span></div>
 </div>"""
     title = "Nephrology Nursing & Hemodialysis: A Self-Study Series for Registered Nurses"
-    desc = ("A free 12-module self-study series, with an advanced thirteenth module, for registered nurses entering nephrology or hemodialysis practice in the Philippines: "
+    desc = ("A free 16-module self-study series, with an advanced module, for registered nurses entering nephrology or hemodialysis practice in the Philippines: "
             "kidney assessment, CKD, AKI, treatment choices, hemodialysis prescription, vascular access, water safety, emergencies, "
             "peritoneal dialysis, transplantation, quality improvement, and continuous therapy and hemodiafiltration, each with a nursing case and self-assessment.")
     page = shell(
@@ -1135,7 +1223,7 @@ def build_educator():
     main = f"""<section class="section" id="purpose">
   <div class="section-tag">Purpose</div>
   <h2>Two different things: a public series and a provider-led program</h2>
-  <p>The twelve public modules are self-study. Any nurse can read them, and they can go live independently once their content has been clinically reviewed. A provider-led training program is a separate undertaking. It needs a named training provider, prerequisites, supervised clinical placement, preceptors, practical assessment, and whatever recognition the provider seeks from regulators. This page offers a starting design for such a program. Everything on it is a proposal for a provider to adapt; nothing here has been accepted by the Department of Health (DOH), the Professional Regulation Commission (PRC), or the Philippine Society of Nephrology (PSN), and no Continuing Professional Development (CPD) units are attached.</p>
+  <p>The public modules are self-study. Any nurse can read them, and they can go live independently once their content has been clinically reviewed. A provider-led training program is a separate undertaking. It needs a named training provider, prerequisites, supervised clinical placement, preceptors, practical assessment, and whatever recognition the provider seeks from regulators. This page offers a starting design for such a program. Everything on it is a proposal for a provider to adapt; nothing here has been accepted by the Department of Health (DOH), the Professional Regulation Commission (PRC), or the Philippine Society of Nephrology (PSN), and no Continuing Professional Development (CPD) units are attached.</p>
   <p>What the Philippine sources do require is narrower. The DOH licensing order requires each hemodialysis (HD) nurse to hold a certificate of training in the nursing care of renal dialysis patients from a competent training provider, together with Basic Life Support (BLS) training, and each shift to have at least one nurse with Advanced Cardiovascular Life Support (ACLS) training.{cite('[[doh2012]]', order)} The PSN 2024 guidelines describe a structured training program of three months or more and list its topics, without fixing a number of hours.{cite('[[psn2024]]', order)} The scope of nursing practice itself is set by the Philippine Nursing Act.{cite('[[ra9173]]', order)}</p>
 </section>
 
@@ -1146,7 +1234,7 @@ def build_educator():
   <div class="table-wrap"><table>
   <thead><tr><th>Component</th><th>Proposed hours</th><th>What it contains</th></tr></thead>
   <tbody>
-  <tr><td>Guided study</td><td>96</td><td>The twelve modules with facilitated discussion of each case and self-assessment; assigned reading</td></tr>
+  <tr><td>Guided study</td><td>96</td><td>The core modules with facilitated discussion of each case and self-assessment; assigned reading</td></tr>
   <tr><td>Skills laboratory and simulation</td><td>48</td><td>Machine setup on unconnected equipment, access examination and cannulation on models, catheter connection, water testing, emergency scenarios</td></tr>
   <tr><td>Supervised clinical learning</td><td>336</td><td>Direct patient care with a preceptor; observed care and simulation are documented separately</td></tr>
   <tr><td><strong>Total</strong></td><td><strong>480</strong></td><td></td></tr>
@@ -1196,7 +1284,7 @@ def build_educator():
   <p><strong>Capstone.</strong> A fictional or fully de-identified renal case, or a small quality audit with a measurable follow-up outcome, presented to the preceptor and unit team. Audits of observed practice with feedback were part of the prevention bundle associated with fewer access-related bloodstream infections in a multicenter collaborative, and structured training with reassessment is recommended for PD teaching.{cite('[[patel2013]][[figueiredo2016]]', order)}</p>
 </section>
 
-<section class="section nc-print-break" id="checklist">
+{psn_sections()}<section class="section nc-print-break" id="checklist">
   <div class="section-tag">Printable</div>
   <h2>Preceptor competency checklist</h2>
   <p>Print this section (use the print button). The rows are each module&rsquo;s competencies at the <em>shows how</em> level and above, with the target level beside each. A <em>does, independent</em> item is signed only after the supervised level has been observed and the unit&rsquo;s policy allows it. The statements describe what to observe; the steps themselves come from the unit&rsquo;s approved procedures and the manufacturer&rsquo;s instructions. Record simulation and patient care separately. Transfer the result to the facility&rsquo;s own competency form if one exists.</p>
@@ -1228,7 +1316,7 @@ def build_educator():
 </section>"""
     main = auto_expand(main, fname)
     nav = [("purpose", "Purpose"), ("structure", "Structure"), ("completion", "Completion"), ("blueprint", "Exam blueprint"),
-           ("stations", "Stations"), ("checklist", "Checklist"), ("review", "Review")]
+           ("stations", "Stations")] + ([("psn", "PSN alignment"), ("osce", "OSCE bank")] if (CONTENT / "educator_psn.py").exists() else []) + [("checklist", "Checklist"), ("review", "Review")]
     pre = f"""<div class="container">
   <div class="nc-bar"><a href="{hub}">{COURSE['title']}</a><span class="nc-sep">›</span><span>Educator and preceptor resource</span></div>
 </div>"""
@@ -1239,7 +1327,7 @@ def build_educator():
         fname, title, desc,
         "dialysis nurse training program Philippines, hemodialysis nurse competency checklist, nephrology nursing preceptor, renal nurse training syllabus, 480 hours dialysis training",
         "Nursing Education &middot; For educators", "Educator and <em>Preceptor</em> Resource",
-        "A proposed structure for a provider-led program built on the twelve public modules, with practical stations and a printable competency checklist. Proposals to adapt, not regulatory requirements.",
+        "A proposed structure for a provider-led program built on the public modules, with practical stations and a printable competency checklist. Proposals to adapt, not regulatory requirements.",
         "Head nurses &middot; nurse educators &middot; clinical preceptors &middot; training providers &middot; medical directors",
         nav, pre, main, glossary_block(main, [("Preceptor", "An experienced nurse who supervises and assesses a learner in clinical practice."),
                                               ("Competency", "An observable ability to perform a task safely to a defined standard.")]),
