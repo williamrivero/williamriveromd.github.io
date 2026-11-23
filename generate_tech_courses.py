@@ -82,6 +82,7 @@ html[data-theme="dark"] .tc-keyp{background:#1a2535;}
 .tc-branch[aria-current="page"]{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-light);}
 html[data-theme="dark"] .tc-branch[aria-current="page"]{box-shadow:0 0 0 3px #0a2830;}
 .tc-branch img,.tc-mod-img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:var(--bg);}
+.tc-syl-lessons{margin:0;padding-left:1.15em;font-size:.92em;line-height:1.45;min-width:15em;}.tc-syl-lessons li{margin:0 0 .15em;}
 .tc-branch-body{padding:12px 16px 14px;display:flex;flex-direction:column;gap:4px;}
 .tc-branch small{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);font-weight:700;}
 .tc-branch b{font-family:Inter,system-ui,sans-serif;font-size:1.02rem;}
@@ -89,6 +90,17 @@ html[data-theme="dark"] .tc-branch[aria-current="page"]{box-shadow:0 0 0 3px #0a
 .nc-mod.tc-mod{padding:0;overflow:hidden;}
 .tc-mod-body{display:flex;flex-direction:column;gap:6px;padding:12px 16px 14px;}
 .tc-soon{opacity:.75;}
+.tc-sits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0;}
+.tc-sit{border:1px solid var(--border);border-top:4px solid var(--amber);border-radius:12px;background:var(--white);padding:12px 16px 10px;}
+.tc-sit h3{margin:0 0 6px;font-family:Inter,system-ui,sans-serif;font-size:1rem;line-height:1.35;color:var(--text);}
+.tc-sit dl{margin:0;}
+.tc-sit dt{font:700 .7rem Inter,system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);margin-top:8px;}
+.tc-sit dt.tc-sit-do{color:var(--teal);}
+html[data-theme="dark"] .tc-sit dt.tc-sit-do{color:#7fd6dd;}
+.tc-sit dd{margin:2px 0 0;font-size:14.5px;line-height:1.6;color:var(--text-mid);}
+.tc-tips{margin:4px 0 0;padding-left:20px;line-height:1.65;}
+@media (max-width:720px){.tc-sits{grid-template-columns:1fr;}}
+@media print{.tc-sit{break-inside:avoid;}}
 .tc-q-list{margin:8px 0 0;padding-left:22px;line-height:1.65;}
 .tc-formula{border:1px dashed var(--border);border-radius:12px;background:var(--bg);padding:12px 16px;margin:12px 0;font-size:15px;line-height:1.6;}
 .tc-tracks{grid-template-columns:repeat(2,minmax(0,1fr));}
@@ -380,6 +392,13 @@ def parse_md_module(src, mid, meta, page):
             m["sections"].append({"id": f"part{k}", "nav": navs[k - 1] if k - 1 < len(navs) else title[:22],
                                   "tag": f"Lesson &middot; part {k}", "h2": md_inline(title, page),
                                   "html": pre_html + "\n" + "\n".join(body) + "\n" + post_html})
+            # added lessons (enrich["extra"]): whole sections placed after this numbered section
+            for after, xid, xnav, xh2, xhtml in enrich.get("extra", []):
+                if after == k:
+                    m["sections"].append({"id": xid, "nav": xnav, "tag": "Lesson &middot; in practice",
+                                          "h2": xh2, "html": page.render(xhtml)})
+    for text, crit in enrich.get("skills_extra", []):
+        m["skills"]["items"].append((text, crit))
     # quiz
     qa = (src / "Self-Assessment.md").read_text(encoding="utf-8")
     key = {}
@@ -397,6 +416,8 @@ def parse_md_module(src, mid, meta, page):
         ans, rat, obj = key[n]
         quiz.append({"stem": md_inline(qm.group(2), page), "options": [md_inline(o[1], page) for o in opts],
                      "answer": "ABCD".index(ans), "why": md_inline(rat, page), "objective": obj})
+    for stem, opts, ans, why in enrich.get("quiz_extra", []):
+        quiz.append({"stem": stem, "options": list(opts), "answer": ans, "why": why, "objective": ""})
     m["quiz"] = quiz
     for f in ("terms", "readings", "calcs"):
         m[f] = enrich.get(f, [])
@@ -412,6 +433,8 @@ class Course:
         self.meta = c.COURSE
         self.hub = self.meta["hub_slug"]
         self.trainer = self.hub + "-trainer"
+        sit = self.dir / "situations.py"
+        self.situations = load(sit, f"tc_{pkg}_sit").SITUATIONS if sit.exists() else {}
         self.mods = []
         for row in c.MODULES:
             d = dict(row)
@@ -440,6 +463,8 @@ class Course:
             m["objectives"] = [page.render(o) for o in raw["objectives"]]
             m["image_alt"] = raw.get("image_alt", "")
         m.update({k: v for k, v in d.items() if k not in ("enrich",)})
+        extra = self.situations.get(d["id"], {})          # tools/techcourses/<pkg>/situations.py
+        m["scenarios"], m["tips"] = extra.get("scenarios", []), extra.get("tips", [])
         return m, page
 
 
@@ -661,6 +686,7 @@ def build_module(course, d, built):
 {obj}
   </ul>
   <div class="tc-hours">{hours_chips(d)}</div>
+  <div class="tc-keyp"><span class="tc-lab">Pre-test</span>Before you read, <a href="#quiz">answer the {min(C.get("draw", 5), len(m["quiz"]))} self-assessment questions</a> and note your score. After the module, select <strong>New set of questions</strong> and compare. The difference is what you learned; the questions you still miss are what to reread.</div>
 </section>""")
     if m.get("big"):
         parts.append(f"""<section class="section" id="bigpicture">
@@ -687,6 +713,30 @@ def build_module(course, d, built):
   <div class="section-tag">{s['tag']}</div>
   <h2>{s['h2']}</h2>
 {s['html'].strip()}
+</section>""")
+    if m.get("scenarios"):
+        sc = []
+        for title, see, think, do, why in m["scenarios"]:
+            sc.append(f"""  <article class="tc-sit">
+    <h3>{title}</h3>
+    <dl>
+      <dt>What you see</dt><dd>{see}</dd>
+      <dt>What is likely going on</dt><dd>{think}</dd>
+      <dt class="tc-sit-do">What to do</dt><dd>{do}</dd>
+      <dt>Why it matters</dt><dd>{why}</dd>
+    </dl>
+  </article>""")
+        tips = ""
+        if m.get("tips"):
+            tips = ('\n  <div class="tc-keyp"><span class="tc-lab">Field notes</span><ul class="tc-tips">'
+                    + "".join(f"<li>{t}</li>" for t in m["tips"]) + "</ul></div>")
+        parts.append(f"""<section class="section" id="situations">
+  <div class="section-tag">On the floor</div>
+  <h2>Real situations: problems and solutions</h2>
+  <p>These are fictional but typical. For each one, cover the answer, decide what you would do, then compare. Where a step depends on local rules, your unit&rsquo;s procedure and your supervisor&rsquo;s direction come first.</p>
+  <div class="tc-sits">
+{chr(10).join(sc)}
+  </div>{tips}
 </section>""")
     if m.get("debrief"):
         parts.append(f"""<section class="section" id="debrief">
@@ -798,7 +848,8 @@ def build_module(course, d, built):
   </div>
 </div>"""
     nav = [("objectives", "Objectives")] + ([("bigpicture", "Big picture")] if m.get("big") else []) + [("case", "Case")] + \
-          [(s["id"], s["nav"]) for s in m["sections"]] + ([("debrief", "Case review")] if m.get("debrief") else []) + \
+          [(s["id"], s["nav"]) for s in m["sections"]] + ([("situations", "Real situations")] if m.get("scenarios") else []) + \
+          ([("debrief", "Case review")] if m.get("debrief") else []) + \
           ([("skills", "Skills checklist")] if m["skills"]["items"] else []) + [("quiz", "Self-assessment"), ("reading", "Go deeper")]
     cards = [(hub, "Course home", C["title"], f"Syllabus and all {total} modules.")]
     if next_m:
@@ -884,7 +935,7 @@ def build_hub(course, built):
       <span class="nc-mod-title">{d['title']}</span>
       <span class="nc-mod-desc">{d['sub']}</span></span>
     </div>""")
-            syl.append(f"<tr><td>{n}</td><td>{d['title']}</td><td>{d.get('case_title', '—')}</td><td>In preparation</td></tr>")
+            syl.append(f"<tr><td>{n}</td><td>{d['title']}</td><td></td><td>{d.get('case_title', '—')}</td><td>In preparation</td><td></td></tr>")
             continue
         cards.append(f"""    <a class="nc-mod tc-mod" href="{d['slug']}.html" data-module="{d['id']}">{card_img(d)}
       <span class="tc-mod-body"><span class="nc-mod-top"><span>Module {n}</span></span>
@@ -894,11 +945,15 @@ def build_hub(course, built):
     </a>""")
         h = d.get("hours")
         hrs = f"<td>{h[0]}</td><td>{h[1]}</td><td>{h[2]}</td>" if has_hours and h else ("<td>—</td><td>—</td><td>—</td>" if has_hours else "")
-        syl.append(f"<tr><td>{n}</td><td><a href=\"{d['slug']}.html\">{d['title']}</a></td><td>{m['case']['title']}</td>"
-                   f"<td>{m['skills']['title'] or 'Five practical stations'}</td>{hrs}</tr>")
+        lessons = "".join(f"<li>{x['h2']}</li>" for x in m["sections"])
+        nsit = len(m.get("scenarios") or [])
+        extras = f"{len(m['quiz'])} questions" + (f" &middot; {nsit} real situations" if nsit else "")
+        syl.append(f"<tr><td>{n}</td><td><a href=\"{d['slug']}.html\">{d['title']}</a></td>"
+                   f"<td><ol class=\"tc-syl-lessons\">{lessons}</ol></td><td>{m['case']['title']}</td>"
+                   f"<td>{m['skills']['title'] or 'Five practical stations'}</td><td>{extras}</td>{hrs}</tr>")
     if has_hours:
         tot = [sum(d["hours"][k] for d in course.mods if d.get("hours")) for k in range(3)]
-        syl.append(f"<tr><td></td><td><strong>Total</strong></td><td></td><td></td><td><strong>{tot[0]}</strong></td><td><strong>{tot[1]}</strong></td><td><strong>{tot[2]}</strong></td></tr>")
+        syl.append(f"<tr><td></td><td><strong>Total</strong></td><td></td><td></td><td></td><td></td><td><strong>{tot[0]}</strong></td><td><strong>{tot[1]}</strong></td><td><strong>{tot[2]}</strong></td></tr>")
     hrs_head = "<th>Classroom (h)</th><th>Skills lab (h)</th><th>Placement (h)</th>" if has_hours else ""
     live_n = sum(1 for d in course.mods if built[d["id"]][0] is not None)
     main = f"""<section class="section" id="start">
@@ -943,7 +998,7 @@ def build_hub(course, built):
   <h2>The series at a glance</h2>
   <p>{C['syllabus_note']}</p>
   <div class="table-wrap"><table>
-  <thead><tr><th>No.</th><th>Module</th><th>Opening case</th><th>Skills checklist</th>{hrs_head}</tr></thead>
+  <thead><tr><th>No.</th><th>Module</th><th>Lessons</th><th>Opening case</th><th>Skills checklist</th><th>Practice</th>{hrs_head}</tr></thead>
   <tbody>
 {chr(10).join(syl)}
   </tbody></table></div>
@@ -953,6 +1008,7 @@ def build_hub(course, built):
   <div class="section-tag">Assessment</div>
   <h2>Self-assessment is not sign-off</h2>
 {page.render(C['assessment_html'])}
+  <p><strong>End-of-course examination.</strong> When you have finished every module, take the <a href="{course.hub}-final-exam.html">end-of-course examination</a>. It draws questions at random from all {len(course.mods)} modules, so no two sittings are the same.</p>
 </section>
 
 <section class="section" id="sources">
@@ -972,6 +1028,7 @@ def build_hub(course, built):
     live = [d for d in course.mods if built[d["id"]][0] is not None]
     rel = [(live[0]["slug"] + ".html", "Module 1", live[0]["title"], "Begin here.")] if live else []
     rel.append((course.trainer + ".html", "Trainers", "Trainer and Preceptor Resource", "Hours, completion criteria, and printable checklists."))
+    rel.append((course.hub + "-final-exam.html", "Examination", "End-of-Course Examination", "Questions drawn at random from every module."))
     for pkg, c in get_courses().items():
         if c is not course:
             rel.append((c.hub + ".html", "Related series", c.meta["title"], c.meta["branch_blurb"]))
@@ -994,6 +1051,87 @@ def build_hub(course, built):
                              "hasPart": [{"@type": "LearningResource", "name": d["title"], "url": f"{SITE}/guides/{d['slug']}"} for d in live]},
                hero_file=C.get("hero_file") or course.hub + "-vignette-hero", hero_alt=C.get("hero_alt", C["title"]))
     (GUIDES / fname).write_text(N.merge_cites(pg), encoding="utf-8")
+    return fname, page.refs
+
+
+# ───────────────────────── end-of-course examination ─────────────────────────
+def build_exam(course, built):
+    C = course.meta
+    fname = course.hub + "-final-exam.html"
+    page = Page(fname)
+    bank, rows = [], []
+    for d in course.mods:
+        m = built[d["id"]][0]
+        if m is None:
+            continue
+        rows.append(f'<tr><td>{int(d["id"])}</td><td><a href="{d["slug"]}.html">{d["title"]}</a></td><td>{len(m["quiz"])}</td></tr>')
+        for q in m["quiz"]:
+            bank.append((d, q))
+    draw = min(C.get("exam_draw", 30), len(bank))
+    passmark = -(-draw * 8 // 10)
+    qh = []
+    for qi, (d, q) in enumerate(bank, 1):
+        opts = []
+        for oi, text in enumerate(q["options"]):
+            oid = f"q{qi}{'abcd'[oi]}"
+            correct = oi == q["answer"]
+            rat = (f'<div class="nc-rat" hidden>{q["why"]} <a href="{d["slug"]}.html">Module {int(d["id"])}</a>.</div>'
+                   if correct else "")
+            opts.append(f"""    <div class="nc-opt">
+      <div class="nc-opt-row"><input type="radio" name="q{qi}" id="{oid}" value="{'abcd'[oi]}" data-correct="{1 if correct else 0}" aria-describedby="{oid}-fb"><label for="{oid}">{text}</label></div>
+      <div id="{oid}-fb"><span class="nc-verdict"></span>{rat}</div>
+    </div>""")
+        qh.append(f"""  <fieldset class="nc-q" data-q="{qi}">
+    <legend><span class="nc-qn">Question {qi}</span>{q['stem']}</legend>
+{chr(10).join(opts)}
+  </fieldset>""")
+    main = f"""<section class="section" id="about">
+  <div class="section-tag">Before you begin</div>
+  <h2>How this examination works</h2>
+  <p>This examination covers the whole {C['title']} series. Each sitting draws <strong>{draw} questions at random</strong> from a bank of {len(bank)}, in random order, with the answer choices shuffled. Choose the single best answer for each question, then select <strong>Check answers</strong>.</p>
+  <div class="tc-cards">
+    <div class="tc-card"><b>When to take it</b>After you have finished every module and reviewed the questions you missed.</div>
+    <div class="tc-card"><b>How to take it</b>In one sitting, without notes. Allow about one minute per question.</div>
+    <div class="tc-card"><b>Proposed pass mark</b>{passmark} of {draw} best answers (80 percent). Your trainer may set a different mark.</div>
+    <div class="tc-card"><b>If you fall short</b>Each explanation names its module. Reread those modules, then select <strong>New set of questions</strong>.</div>
+  </div>
+  <div class="tc-stop"><span class="tc-lab">What a pass means</span>A pass shows that you know the material. It does not show that you can do the work. Competence is demonstrated on your unit&rsquo;s own equipment and signed off by a preceptor.</div>
+  <div class="table-wrap"><table>
+  <thead><tr><th>No.</th><th>Module</th><th>Questions in the bank</th></tr></thead>
+  <tbody>
+{chr(10).join(rows)}
+<tr><td></td><td><strong>Total</strong></td><td><strong>{len(bank)}</strong></td></tr>
+  </tbody></table></div>
+</section>
+
+<section class="section" id="quiz">
+  <div class="section-tag">Examination</div>
+  <h2>End-of-course examination</h2>
+  <form class="nc-quiz" id="nc-quiz" data-module="exam" data-draw="{draw}" novalidate>
+{chr(10).join(qh)}
+    <label class="nc-remember"><input type="checkbox" id="nc-remember"><span>Remember my result on this device (optional). Stored only in this browser; untick to erase it.</span></label>
+    <div class="nc-actions">
+      <button type="submit" class="nc-btn">Check answers</button>
+      <button type="button" class="nc-btn nc-btn-ghost" data-nc-retry hidden>Try these again</button>
+      <button type="button" class="nc-btn nc-btn-ghost" data-nc-newset>New set of questions</button>
+    </div>
+    <div class="nc-result" id="nc-result" role="status" aria-live="polite" tabindex="-1"></div>
+  </form>
+</section>"""
+    main = N.auto_expand(main, fname)
+    nav = [("about", "Before you begin"), ("quiz", "Examination")]
+    rel = [(course.hub + ".html", "Course home", C["title"], "Syllabus and all modules."),
+           (course.trainer + ".html", "Trainers", "Trainer and Preceptor Resource", "Completion criteria and printable checklists.")]
+    pre = f"""<div class="container">
+  <div class="nc-bar">{ACADEMY_CRUMB}<a href="{course.hub}.html">{C['title']}</a><span class="nc-sep">›</span><span>End-of-course examination</span></div>
+</div>"""
+    title = f"{C['title']}: End-of-Course Examination"
+    desc = (f"A randomized end-of-course examination for the {C['title']} study series on Renal Care Matters: "
+            f"{draw} questions drawn from a bank of {len(bank)}, with an explanation for every best answer.")
+    pg = shell(course, fname, title, desc, C["keywords"], f"{C['tag']} &middot; Examination", "End-of-Course <em>Examination</em>",
+               f"{draw} questions drawn at random from all {len(rows)} modules of the {C['title']} series.",
+               C["audience"], nav, pre, main, glossary(main, []), N.related_block(rel))
+    (GUIDES / fname).write_text(pg, encoding="utf-8")
     return fname, page.refs
 
 
@@ -1029,6 +1167,7 @@ def build_trainer(course, built):
   <div class="section-tag">Completion</div>
   <h2>Proposed completion criteria</h2>
 {page.render(C['completion_html'])}
+  <p><strong>Written examination.</strong> The <a href="{course.hub}-final-exam.html">end-of-course examination</a> draws {C.get("exam_draw", 30)} questions at random from the question banks of all modules. A proposed pass mark is 80 percent, with missed questions reviewed against their modules before a second sitting. For a supervised sitting, the learner takes it on a unit device with the preceptor present and the preceptor records the score.</p>
 </section>
 
 <section class="section" id="checklists">
@@ -1352,6 +1491,7 @@ def main():
             f, refs = build_module(course, d, built[d["id"]]); all_refs[f] = refs; written.append(f)
         f, refs = build_hub(course, built); all_refs[f] = refs; written.append(f)
         f, refs = build_trainer(course, built); all_refs[f] = refs; written.append(f)
+        f, refs = build_exam(course, built); all_refs[f] = refs; written.append(f)
     if not args.check:
         f, refs = build_academy(); all_refs[f] = refs; written.append(f)
         write_docs(all_refs, built_all)

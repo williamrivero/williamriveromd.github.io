@@ -17,6 +17,7 @@ COURSE = {
     "level": "Entry-level allied health, college reading level",
     "review_date": "2026-11-23",
     "draw": 5,
+    "exam_draw": 40,
     "mastery": "4 of 5",
     "keywords": "hemodialysis technician training Philippines, dialysis technician course, dialysis technician study guide, hemodialysis machine setup, dialysis water treatment basics, dialyzer reprocessing, dialysis technician competency checklist",
     "page_title": "Hemodialysis Technician: A 12-Module Study Series",
@@ -354,20 +355,41 @@ _ROWS = [
     ("05", "infection-prevention-waste-management", "Dialysis Infection Prevention and Waste Management", (6, 6, 14),
      "Hand hygiene, protective equipment, clean and used areas, station turnover and contact time, waste sorting, and what to do after a blood exposure."),
     ("06", "machines-dialyzers-extracorporeal-circuit", "Machines, Dialyzers, and the Extracorporeal Circuit", (6, 8, 16),
-     "The blood path and the dialysate path, what each alarm watches and misses, readiness checks, and what to do when a machine fails a check."),
+     "The blood path and the dialysate path, operating the machine from switch-on to shutdown, priming step by step, machine disinfection, and what to do when a machine fails a check."),
     ("07", "water-treatment-concentrates-dialysate", "Water Treatment, Concentrates, and Dialysate", (6, 6, 16),
      "How tap water becomes dialysis water, which test checks what, how concentrates become dialysate, and how to respond to an out-of-range result."),
     ("08", "vascular-access-recognition-protection", "Vascular Access Recognition and Protection", (6, 6, 14),
      "Fistulas, grafts, and catheters; how to protect the access in everyday care; and the changes that must be reported at once."),
     ("09", "the-hemodialysis-session", "The Hemodialysis Session", (6, 8, 18),
-     "One treatment from arrival to station turnover: what to verify before, what to watch during, and how to finish and hand over."),
+     "One treatment from arrival to station turnover: what to verify before, what to watch during, a chairside guide to every machine alarm, and how to finish and hand over."),
     ("10", "complications-emergency-response", "Complications and Emergency Response", (6, 6, 16),
      "Recognizing trouble during dialysis, calling for help, working in an emergency team, and responding to water, power, and facility failures."),
     ("11", "dialyzer-reprocessing-equipment-quality", "Dialyzer Reprocessing and Equipment Quality", (4, 4, 12),
-     "Single use and same-patient reuse, the records that make a dialyzer traceable, when to hold or reject, and how equipment returns to service."),
+     "The life of a reprocessed dialyzer; manual, semi-automated, and automated reprocessing step by step; total cell volume and leak tests; germicide checks before use; and the records that make a dialyzer traceable."),
     ("12", "integrated-practice-competency-assessment", "Integrated Practice and Competency Assessment", (2, 4, 22),
      "Everything together: readiness checks, urgent reports, records and improvement, five practical stations, the logbook, and the examination blueprint."),
 ]
 
 MODULES = [{"id": i, "slug": s, "title": t, "hours": h, "sub": sub, "src": True, "enrich": _E[i],
             "case_title": "A name that almost matched" if i == "01" else ""} for i, s, t, h, sub in _ROWS]
+
+# Added practice lessons (practice_additions.py) and per-module deepening (deep_NN.py).
+import importlib.util as _ilu
+from pathlib import Path as _P
+_sp = _ilu.spec_from_file_location("hd_practice_additions", _P(__file__).resolve().parent / "practice_additions.py")
+_pm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_pm)
+for _k, _v in _pm.ADD.items():
+    _E[_k].update(_v)
+for _f in sorted(_P(__file__).resolve().parent.glob("deep_*.py")):
+    _k = _f.stem[-2:]
+    _ds = _ilu.spec_from_file_location("hd_" + _f.stem, _f)
+    _dm = _ilu.module_from_spec(_ds)
+    try:
+        _ds.loader.exec_module(_dm)
+    except Exception:
+        import os as _os
+        if _os.environ.get("TC_LENIENT"):
+            continue
+        raise
+    for _name, _val in _dm.ADD.items():
+        _E[_k][_name] = list(_E[_k].get(_name, [])) + list(_val)

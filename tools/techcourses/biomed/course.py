@@ -16,11 +16,11 @@ COURSE = {
     "mastery": "4 of 5",
     "keywords": "dialysis biomedical technician, hemodialysis machine maintenance, dialysis machine preventive maintenance, dialysis machine calibration, electrical safety testing IEC 62353, dialysis equipment technician training Philippines",
     "page_title": "Hemodialysis Center Biomedical Technician: A Study Series",
-    "desc": ("A free six-module study series for biomedical technicians who maintain hemodialysis machines: the role and safe working, the dialysate side, "
-             "the blood side and protective systems, preventive maintenance and calibration, disinfection and electrical safety testing, and troubleshooting and "
-             "return to service. Plain language, many figures, a case, a skills checklist, and a self-assessment in every module."),
+    "desc": ("A free twelve-module study series for biomedical technicians who maintain hemodialysis machines: the role and safe working, electrical fundamentals, the dialysate side, "
+             "fluid balance, the blood side, protective systems, preventive maintenance, calibration, disinfection, electrical safety and utilities, and troubleshooting "
+             "and return to service. Plain language, many figures, a case, a skills checklist, and a self-assessment in every module."),
     "h1": "Hemodialysis Center <em>Biomedical Technician</em>",
-    "sub": "A six-module study series for the people who keep dialysis machines accurate and safe. A machine that is slightly wrong is wrong for every patient who uses it.",
+    "sub": "A twelve-module study series for the people who keep dialysis machines accurate and safe. A machine that is slightly wrong is wrong for every patient who uses it.",
     "disclaimer": ("Educational study material for biomedical technicians. Does not replace the manufacturer&rsquo;s service manual and training, approved facility procedures, "
                    "applicable electrical and medical device regulations, or supervised practice."),
     "scope_note": ("This module is study material for biomedical technicians in dialysis. It explains how machines work and why maintenance steps exist; it is not a service manual. "
@@ -34,7 +34,7 @@ COURSE = {
     "start_html": """
 <p>A hemodialysis (HD) machine mixes a fluid to a precise recipe, warms it to body temperature, pumps blood outside the body, removes an exact volume of water, and watches for air, blood leaks, and wrong pressures, for four hours at a time, several times a day. Each of those functions depends on sensors and pumps that drift, wear, and scale. The biomedical technician finds the drift before it reaches a patient.</p>
 {{fig:blood_circuit|A dialysis machine in use. Everything the patient depends on here, from the blood pump to the air trap sensor, is maintained and tested by the biomedical technician.}}
-<p>This series has six modules. It explains how the machine works on the fluid side and the blood side, how preventive maintenance and calibration are planned and recorded, how machines are disinfected and tested for electrical safety, and how to troubleshoot a fault and return a machine to service properly. It assumes you have studied the <a href="hemodialysis-technician.html">Hemodialysis Technician</a> series, especially the modules on principles, machines, and water.</p>
+<p>This series has twelve modules, written to the level of a technician who maintains the center&rsquo;s machines independently. It explains the electrical basics, how the machine works on the fluid side and the blood side, how each protective system is tested, how preventive maintenance and calibration are planned and recorded, how machines are disinfected and tested for electrical safety, and how to troubleshoot a fault and return a machine to service properly. It assumes you have studied the <a href="hemodialysis-technician.html">Hemodialysis Technician</a> series, especially the modules on principles, machines, and water.</p>
 {{cards:What a dialysis biomedical technician does|Maintains::Carries out scheduled preventive maintenance by the manufacturer&rsquo;s plan.|Calibrates::Checks and adjusts sensors against reference instruments.|Tests safety::Verifies alarms, protective systems, and electrical safety.|Repairs::Finds and fixes faults with approved parts.|Documents and releases::Keeps the service history and formally returns equipment to use.}}
 """,
     "is_not": ("It is study material. It is not manufacturer training, a license, or authorization to service any machine. Dialysis machines are medical devices built to "
@@ -43,11 +43,11 @@ COURSE = {
     "pathway_note": """
 <p>This branch suits technicians with a background or strong interest in electronics, mechanics, or engineering who like fault-finding and precise measurement.</p>
 """,
-    "modules_h2": "Six modules, in order",
-    "modules_intro": "Study the modules in order. The first three explain the machine; the last three explain how to keep it accurate, clean, safe, and documented.",
-    "syllabus_note": "Each module takes about 45 to 60 minutes to read and work through. Workshop practice under supervision, and the manufacturer&rsquo;s own training, take far longer.",
+    "modules_h2": "Twelve modules, in order",
+    "modules_intro": "Study the modules in order. Modules 1 to 7 explain the machine; Modules 8 to 12 explain how to keep it accurate, clean, safe, and documented.",
+    "syllabus_note": "Each module takes about 60 to 90 minutes to read and work through. Workshop practice under supervision, and the manufacturer&rsquo;s own training, take far longer.",
     "assessment_html": """
-<p>The questions at the end of each module are for practice. Each visit draws five from a bank of eight, and every question explains its best answer.</p>
+<p>The questions at the end of each module are for practice. Each visit draws five from a larger bank, and every question explains its best answer.</p>
 <p>Competence is shown at the bench: completing a preventive maintenance visit by the manual, calibrating against a reference meter, proving that each alarm works, and writing a service record another technician can follow. Each module has a skills checklist for a preceptor or senior technician to complete while watching you work.</p>
 """,
     "sources_html": """
@@ -56,15 +56,16 @@ COURSE = {
 """,
     "trainer_h2": "Using the series to train biomedical staff",
     "trainer_html": """
-<p>Use the six modules as guided study alongside the manufacturer&rsquo;s training for each machine model and supervised bench work. A practical sequence is one module a week, each followed by its checklist on a machine that is out of clinical service.</p>
+<p>Use the twelve modules as guided study alongside the manufacturer&rsquo;s training for each machine model and supervised bench work. A practical sequence is one module a week, each followed by its checklist on a machine that is out of clinical service.</p>
 {{flow:Suggested sequence|Open the manual::Find the flow diagram and the maintenance schedule for the model.|Study the module::Read, work the case, and take the self-assessment.|Demonstrate::A senior technician performs the task and explains each step.|Practice::The learner performs it under observation on an out-of-service machine.|Sign off::Record competence per model on the facility&rsquo;s form.}}
 """,
     "completion_html": """
 <ul>
-<li>All six self-assessments attempted, with missed questions reviewed.</li>
+<li>All twelve self-assessments attempted, with missed questions reviewed.</li>
 <li>Every <span class="tc-crit">Critical</span> step on every checklist demonstrated satisfactorily.</li>
 <li>Manufacturer training completed for each machine model the technician will service.</li>
 <li>One complete preventive maintenance visit and one fault repair documented and reviewed by a senior technician.</li>
+<li>The four capstone stations in Module 12, with all critical steps satisfactory.</li>
 </ul>
 <p>These are proposals for the facility to adapt.</p>
 """,
@@ -75,39 +76,54 @@ COURSE = {
 CARD_CROPS = [
     ("dialysis-biomedical-technician-card.webp", "access-hd-blood-circuit.png", 0.4),
     ("dialysis-biomedical-technician-01-card.webp", "dialysis-machine-categories.png", 0.5),
-    ("dialysis-biomedical-technician-02-card.webp", "hd-diffusion-convection.png", 0.5),
-    ("dialysis-biomedical-technician-03-card.webp", "access-hd-blood-circuit.png", 0.4),
-    ("dialysis-biomedical-technician-04-card.webp", "dialysis-hd-prescription-parameters.png", 0.5),
-    ("dialysis-biomedical-technician-05-card.webp", "dialyzer-germicide-history-matrix.png", 0.5),
-    ("dialysis-biomedical-technician-06-card.webp", "dialysis-qapi-vs-cqi-kpi-dashboard-mock.png", 0.5),
+    ("dialysis-biomedical-technician-02-card.webp", "code-blue-defib-safety-figure.png", 0.5),
+    ("dialysis-biomedical-technician-03-card.webp", "kidney-vs-dialyzer-comparison.webp", 0.5),
+    ("dialysis-biomedical-technician-04-card.webp", "hd-diffusion-convection.png", 0.5),
+    ("dialysis-biomedical-technician-05-card.webp", "dry-weight-determination-01-two-compartment.png", 0.5),
+    ("dialysis-biomedical-technician-06-card.webp", "access-hd-blood-circuit.png", 0.5),
+    ("dialysis-biomedical-technician-07-card.webp", "dialyzer-anatomy-cross-section.png", 0.5),
+    ("dialysis-biomedical-technician-08-card.webp", "dialysis-qapi-vs-cqi-kpi-dashboard-mock.png", 0.5),
+    ("dialysis-biomedical-technician-09-card.webp", "dialysis-hd-prescription-parameters.png", 0.5),
+    ("dialysis-biomedical-technician-10-card.webp", "dialyzer-germicide-history-matrix.png", 0.5),
+    ("dialysis-biomedical-technician-11-card.webp", "typhoon-signals-prepare.png", 0.5),
+    ("dialysis-biomedical-technician-12-card.webp", "dialysis-qapi-vs-cqi-fishbone-fmea-example.png", 0.5),
 ]
 
-_HB = "Circular vignette, realistic clinical editorial illustration, Philippine dialysis center. "
 MODULES = [
-    {"id": "01", "slug": "role-and-safe-working", "title": "The Biomedical Technician&rsquo;s Role and Safe Working",
-     "sub": "What the role covers, how to work safely with blood-contaminated equipment, electricity, water, and chemicals, and how a machine is taken out of and returned to use.",
-     "card_img": "dialysis-biomedical-technician-01-card.webp",
-     "hero_brief": _HB + "A biomedical technician in gloves and eye protection placing an 'out of service' tag on a hemodialysis machine in a workshop."},
-    {"id": "02", "slug": "dialysate-side-hydraulics", "title": "Inside the Machine: The Dialysate Side",
-     "sub": "How the machine heats, degasses, mixes, checks, and balances dialysate, and how it measures the water it removes from the patient.",
-     "card_img": "dialysis-biomedical-technician-02-card.webp",
-     "hero_brief": _HB + "Close view of the opened rear hydraulic compartment of a generic hemodialysis machine, with a technician tracing tubing against a flow diagram."},
-    {"id": "03", "slug": "blood-side-protective-systems", "title": "The Blood Side and Protective Systems",
-     "sub": "The blood pump, pressure monitoring, the air detector and clamp, and the blood leak detector: how each works and how each is proven to work.",
-     "card_img": "dialysis-biomedical-technician-03-card.webp",
-     "hero_brief": _HB + "A technician testing the air detector and venous clamp on the front panel of a generic hemodialysis machine using a training tubing set, no patient present."},
-    {"id": "04", "slug": "preventive-maintenance-calibration", "title": "Preventive Maintenance and Calibration",
-     "sub": "How a maintenance program is planned, what calibration means, why reference instruments must themselves be checked, and what a good service record contains.",
-     "card_img": "dialysis-biomedical-technician-04-card.webp",
-     "hero_brief": _HB + "A technician comparing a handheld reference conductivity and temperature meter with a dialysis machine display, with a maintenance checklist on a clipboard."},
-    {"id": "05", "slug": "disinfection-descaling-electrical-safety", "title": "Disinfection, Descaling, and Electrical Safety Testing",
-     "sub": "Why machines scale and grow bacteria inside, how they are cleaned, and how periodic electrical safety tests protect patients and staff.",
-     "card_img": "dialysis-biomedical-technician-05-card.webp",
-     "hero_brief": _HB + "A technician connecting an electrical safety analyzer to a hemodialysis machine power cord on a workshop bench."},
-    {"id": "06", "slug": "troubleshooting-records-return-to-service", "title": "Troubleshooting, Records, and Return to Service",
-     "sub": "A method for finding faults, the records every machine should have, how to release a machine after repair, and how equipment data feed quality review.",
-     "card_img": "dialysis-biomedical-technician-06-card.webp",
-     "hero_brief": _HB + "A technician and a charge nurse signing a return-to-service form beside a hemodialysis machine."},
+    {"id": "01", "slug": "role-and-safe-working", "title": "The Biomedical Technician’s Role and Safe Working",
+     "sub": "What the role covers, working safely with contaminated equipment, electricity, and chemicals, decontamination before service, and using the service manual.",
+     "card_img": "dialysis-biomedical-technician-01-card.webp"},
+    {"id": "02", "slug": "electrical-electronic-fundamentals", "title": "Electrical and Electronic Fundamentals",
+     "sub": "Voltage, current, and resistance in plain terms; power, fuses, and earth; the sensors and actuators in a machine; and safe use of a multimeter.",
+     "card_img": "dialysis-biomedical-technician-02-card.webp"},
+    {"id": "03", "slug": "dialysate-water-heating-degassing", "title": "Dialysate Side I: Water Inlet, Heating, and Degassing",
+     "sub": "How the machine regulates, warms, and degasses incoming water, how temperature is verified, and how to troubleshoot these stages.",
+     "card_img": "dialysis-biomedical-technician-03-card.webp"},
+    {"id": "04", "slug": "proportioning-conductivity-bypass", "title": "Dialysate Side II: Proportioning, Conductivity, and Bypass",
+     "sub": "How dialysate is mixed and checked, how conductivity is measured and verified, what bypass does, and how to troubleshoot conductivity alarms.",
+     "card_img": "dialysis-biomedical-technician-04-card.webp"},
+    {"id": "05", "slug": "fluid-balance-ultrafiltration", "title": "Fluid Balance and Ultrafiltration Control",
+     "sub": "How balancing systems and the ultrafiltration pump measure fluid removal, what transmembrane pressure tells you, and how accuracy is tested.",
+     "card_img": "dialysis-biomedical-technician-05-card.webp"},
+    {"id": "06", "slug": "blood-pump-pressures-heparin-pump", "title": "The Blood Side: Pump, Pressures, and Heparin Pump",
+     "sub": "The roller pump and why displayed flow can be untrue, the pressure sensors, the heparin syringe pump, and their checks.",
+     "card_img": "dialysis-biomedical-technician-06-card.webp"},
+    {"id": "07", "slug": "protective-systems-alarm-testing", "title": "Protective Systems and Alarm Testing",
+     "sub": "Single-fault safety, the air detector and clamp, the blood leak detector, how each is tested, and why none is ever bypassed.",
+     "card_img": "dialysis-biomedical-technician-07-card.webp"},
+    {"id": "08", "slug": "preventive-maintenance-program", "title": "The Preventive Maintenance Program",
+     "sub": "The inventory, the maintenance calendar, a visit step by step, safety notices and software, and spare parts.",
+     "card_img": "dialysis-biomedical-technician-08-card.webp"},
+    {"id": "09", "slug": "calibration-test-equipment", "title": "Calibration and Test Equipment",
+     "sub": "Calibration and tolerance, as-found and as-left values, reference instruments and their care, and the instrument register.",
+     "card_img": "dialysis-biomedical-technician-09-card.webp"},
+    {"id": "10", "slug": "disinfection-descaling-fluid-hygiene", "title": "Disinfection, Descaling, and Machine Fluid Hygiene",
+     "sub": "Scale, film, and biofilm; the right program for each; residual testing; hoses and the drain air gap; and dialysis fluid filters.",
+     "card_img": "dialysis-biomedical-technician-10-card.webp"},
+    {"id": "11", "slug": "electrical-safety-facility-utilities", "title": "Electrical Safety Testing and Facility Utilities",
+     "sub": "Why patients are vulnerable, inspection and testing, the utilities at each station, and what happens when power fails.",
+     "card_img": "dialysis-biomedical-technician-11-card.webp"},
+    {"id": "12", "slug": "troubleshooting-life-cycle-capstone", "title": "Troubleshooting, Life Cycle, and Capstone",
+     "sub": "A method for any fault with a worked example, verification after repair, the machine file from acceptance to retirement, and four practical stations.",
+     "card_img": "dialysis-biomedical-technician-12-card.webp"},
 ]
-for _m in MODULES:
-    _m["title"] = _m["title"].replace("&rsquo;", "’")
