@@ -940,6 +940,16 @@ text extraction. This applies to reference PDFs, lab reports, journal articles,
 etc. provided for a guide. Pure image PDFs (scans with no text layer) may still
 need a different approach.
 
+## Renal Care Academy (`/academy/`, Nov 2026)
+
+Staff-training tracks (Nephrology Nursing, Hemodialysis Technician, Water Treatment Technician, Biomedical Technician), all
+generated: `generate_nursing_course.py` and `generate_tech_courses.py --patch` write the pages in guides/ and run the patch
+pipeline, then `tools/academy/publish_academy.py` moves them to academy/. Never hand-edit academy/*.html. **Landing hero
+(Nov 23 2026):** the same family as the Calculators and Drug Index heroes (animated color wash, chip tag, title, stat
+chips, one button per track, training words and study icons drifting behind), built by `academy_hero()` in
+`generate_tech_courses.py` (`ACADEMY_HERO_CSS` / `ACADEMY_HERO_JS`, passed to `shell(hero_html=...)`). Track counts come
+from the course data; a new track needs an icon in `TRACK_ICONS` and a short name in `build_academy()`.
+
 ## Drug database (`/drugs/`, Nov 2026)
 
 A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `drugs/`.

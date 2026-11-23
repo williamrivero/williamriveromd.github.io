@@ -471,7 +471,7 @@ def published(fname):
 
 
 def shell(course, fname, title, desc, keywords, hero_tag, h1, sub, audience, nav, pre_main, main, glossary, related,
-          body_class="", jsonld_extra=None, hero_file=None, hero_alt=""):
+          body_class="", jsonld_extra=None, hero_file=None, hero_alt="", hero_html=None):
     slug = fname[:-5]
     url = f"{SITE}/guides/{slug}"
     pub = published(fname)
@@ -556,7 +556,7 @@ def shell(course, fname, title, desc, keywords, hero_tag, h1, sub, audience, nav
 {N.HEADER}
 
 <!-- ═══ HERO ════════════════════════════════════ -->
-<div class="hero">
+{hero_html or f'''<div class="hero">
   <div class="container">
     <div class="hero-grid">
       <div class="hero-copy">
@@ -569,7 +569,7 @@ def shell(course, fname, title, desc, keywords, hero_tag, h1, sub, audience, nav
       </div><!-- /.hero-copy -->{figure}
     </div><!-- /.hero-grid -->
   </div>
-</div>
+</div>'''}
 
 <!-- ═══ SECTION NAVIGATION ═════════════════════════ -->
 <nav class="nav-strip">
@@ -1062,6 +1062,150 @@ class _Academy:
                            "manufacturer instructions, regulatory requirements, or supervised training.")}
 
 
+# ───────────────────────── Academy landing hero ─────────────────────────
+# Same family as the Calculators and Drug Index heroes: an animated color wash, a chip tag, the title, a short
+# subtitle and stat chips, with training words and study icons drifting behind the copy. Styles and script live
+# inside the hero block, so patch_master_css.py (first <style> only) never touches them.
+ACADEMY_HERO_CSS = r"""
+body .hero.acad-hero{position:relative;overflow:hidden;padding:56px 0 48px;
+  background:linear-gradient(135deg,#dcefe8 0%,#eef7f2 46%,#f5efdc 100%) !important;background-size:240% 240% !important;
+  color:#24504a !important;animation:acad-shift 26s ease-in-out infinite alternate;}
+html[data-theme="dark"] body .hero.acad-hero{background:linear-gradient(135deg,#0c2624 0%,#15403b 48%,#2a2a14 100%) !important;color:rgba(232,246,241,.88) !important;}
+@keyframes acad-shift{0%{background-position:0% 0%;}50%{background-position:85% 40%;}100%{background-position:100% 100%;}}
+.acad-hero::before,.acad-hero::after{display:none !important;}
+.acad-hero > .container{position:relative;z-index:2;}
+.acad-hero .hero-tag{display:inline-block;color:#1d5a52 !important;border:1px solid rgba(26,107,114,.38) !important;background:rgba(255,255,255,.55);}
+.acad-hero h1{color:#123a36 !important;margin:14px 0 10px;}
+.acad-hero h1 em{color:#8a5f00 !important;font-style:italic;}
+.acad-hero .hero-sub{color:#2f5752 !important;max-width:640px;}
+.acad-stats{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;}
+.acad-stat{display:inline-flex;align-items:baseline;gap:6px;padding:6px 12px;border-radius:999px;font-size:.84rem;
+  background:rgba(255,255,255,.62);border:1px solid rgba(26,107,114,.22);color:#24504a;}
+.acad-stat b{font-family:'Inter',sans-serif;font-size:1rem;color:#123a36;}
+.acad-tracks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 0;}
+@media (max-width:900px){.acad-tracks{grid-template-columns:1fr 1fr;}}
+.acad-track{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;text-decoration:none !important;
+  background:rgba(255,255,255,.72);border:1px solid rgba(26,107,114,.2);color:#123a36 !important;
+  box-shadow:0 2px 10px rgba(18,58,54,.06);transition:transform .2s,box-shadow .2s,background .2s;}
+.acad-track:hover{transform:translateY(-2px);background:#fff;box-shadow:0 8px 22px rgba(18,58,54,.14);}
+.acad-track-ico{flex:0 0 34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#1a6b72;color:#fff;}
+.acad-track-ico svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.acad-track-t{display:flex;flex-direction:column;line-height:1.3;min-width:0;}
+.acad-track-t strong{font-size:.9rem;}
+.acad-track-t small{font-size:.76rem;color:#3d635e;}
+html[data-theme="dark"] .acad-hero .hero-tag{color:rgba(232,246,241,.92) !important;border-color:rgba(127,214,196,.42) !important;background:rgba(255,255,255,.06);}
+html[data-theme="dark"] .acad-hero h1{color:#fff !important;}
+html[data-theme="dark"] .acad-hero h1 em{color:#e6bf62 !important;}
+html[data-theme="dark"] .acad-hero .hero-sub{color:rgba(232,246,241,.84) !important;}
+html[data-theme="dark"] .acad-stat{background:rgba(255,255,255,.07);border-color:rgba(127,214,196,.25);color:rgba(232,246,241,.86);}
+html[data-theme="dark"] .acad-stat b{color:#fff;}
+html[data-theme="dark"] .acad-track{background:rgba(255,255,255,.07);border-color:rgba(127,214,196,.22);color:#fff !important;box-shadow:none;}
+html[data-theme="dark"] .acad-track:hover{background:rgba(255,255,255,.13);}
+html[data-theme="dark"] .acad-track-ico{background:#0e4a50;}
+html[data-theme="dark"] .acad-track-t small{color:rgba(232,246,241,.74);}
+/* floating layer: training words drift across, study icons rise */
+.acad-float{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;}
+.acad-w,.acad-i{position:absolute;top:0;left:0;opacity:0;will-change:transform,opacity;}
+.acad-w{font-family:'Inter',sans-serif;font-weight:600;white-space:nowrap;letter-spacing:.01em;}
+.acad-i svg{display:block;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.acad-c0{color:#1a6b72;} .acad-c1{color:#3d635e;} .acad-c2{color:#a8791a;} .acad-c3{color:#2e7d6a;}
+html[data-theme="dark"] .acad-c0{color:#7fd6c4;} html[data-theme="dark"] .acad-c1{color:#e8f6f1;}
+html[data-theme="dark"] .acad-c2{color:#e6bf62;} html[data-theme="dark"] .acad-c3{color:#9fe0b8;}
+@keyframes acad-drift{0%{transform:translate(var(--x0),var(--y0)) rotate(var(--r));opacity:0;}12%,88%{opacity:var(--op);}
+  100%{transform:translate(var(--x1),var(--y1)) rotate(var(--r));opacity:0;}}
+@keyframes acad-rise{0%{transform:translate(var(--x0),0) rotate(var(--r));opacity:0;}15%,80%{opacity:var(--op);}
+  100%{transform:translate(var(--x1),var(--rise)) rotate(var(--r2));opacity:0;}}
+@media (max-width:640px){body .hero.acad-hero{padding:38px 0 34px;}.acad-tracks{grid-template-columns:1fr 1fr;}.acad-track-ico{display:none;}}
+@media (prefers-reduced-motion:reduce){body .hero.acad-hero{animation:none;}.acad-w,.acad-i{animation:none !important;opacity:.14;}}
+@media print{.acad-float{display:none;}body .hero.acad-hero{background:#fff !important;color:#000 !important;}}
+"""
+
+ACADEMY_HERO_JS = r"""
+(function(){
+  var wrap=document.querySelector('.acad-float');
+  if(!wrap)return;
+  var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var WORDS=['Module 1','Learning objectives','Pre-test','Post-test','Quiz 5/5 ✓','Skills checklist',
+    'Return demonstration','Competency sign-off','Case study','Syllabus','Trainer notes','A · B · C · D',
+    'Hand hygiene','Aseptic technique','Water log','Kt/V','Pre-dialysis check','Logbook','Review','Practice',
+    'Step 1 → 2 → 3','Supervised practice'];
+  var I='<svg viewBox="0 0 24 24" width="SZ" height="SZ">';
+  var ICONS=[
+    '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.6 2.7 3 6 3s6-1.4 6-3v-5"/><path d="M22 9v6"/>',
+    '<path d="M2 5c3-1.3 6.5-1.3 10 1 3.5-2.3 7-2.3 10-1v14c-3-1.3-6.5-1.3-10 1-3.5-2.3-7-2.3-10-1z"/><path d="M12 6v14"/>',
+    '<path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 6l3 3"/>',
+    '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="m8.5 12 2 2 4-4"/><path d="M8.5 17h7"/>',
+    '<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
+    '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+    '<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="m7 12 3-3 3 2 4-4"/>'
+  ];
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  var small=window.innerWidth<640, frag=document.createDocumentFragment(), i, el;
+  var NW=small?9:16, NI=small?6:11;
+  for(i=0;i<NW;i++){
+    el=document.createElement('span');
+    el.className='acad-w acad-c'+(i%4);
+    el.textContent=WORDS[i%WORDS.length];
+    el.style.fontSize=rnd(11,22).toFixed(1)+'px';
+    el.style.top=rnd(-2,96)+'%';
+    var y0=rnd(-10,10);
+    el.style.setProperty('--x0',rnd(-14,6)+'vw'); el.style.setProperty('--x1',rnd(88,118)+'vw');
+    el.style.setProperty('--y0',y0+'px'); el.style.setProperty('--y1',(y0+rnd(-30,30))+'px');
+    el.style.setProperty('--r',rnd(-6,6).toFixed(1)+'deg'); el.style.setProperty('--op',rnd(.12,.28).toFixed(2));
+    var d=rnd(18,36); if(!still) el.style.animation='acad-drift '+d.toFixed(1)+'s '+(-rnd(0,d)).toFixed(1)+'s linear infinite';
+    else { el.style.transform='translate('+rnd(0,85)+'vw,0)'; }
+    frag.appendChild(el);
+  }
+  for(i=0;i<NI;i++){
+    el=document.createElement('span');
+    el.className='acad-i acad-c'+((i+1)%4);
+    var sz=Math.round(rnd(18,40));
+    el.innerHTML=I.replace(/SZ/g,sz)+ICONS[i%ICONS.length]+'</svg>';
+    el.style.top='100%';
+    var x=rnd(2,96);
+    el.style.setProperty('--x0',x+'vw'); el.style.setProperty('--x1',(x+rnd(-6,6))+'vw');
+    el.style.setProperty('--rise',-(rnd(320,520))+'px');
+    el.style.setProperty('--r',rnd(-14,14).toFixed(0)+'deg'); el.style.setProperty('--r2',rnd(-14,14).toFixed(0)+'deg');
+    el.style.setProperty('--op',rnd(.14,.3).toFixed(2));
+    var dd=rnd(14,26); if(!still) el.style.animation='acad-rise '+dd.toFixed(1)+'s '+(-rnd(0,dd)).toFixed(1)+'s ease-in-out infinite';
+    else { el.style.top=rnd(10,80)+'%'; el.style.transform='translate('+x+'vw,0)'; }
+    frag.appendChild(el);
+  }
+  wrap.appendChild(frag);
+})();
+"""
+
+TRACK_ICONS = {
+    "nephrology-nursing": '<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/><path d="M12 9v5"/><path d="M9.5 11.5h5"/>',
+    "hemodialysis-technician": '<path d="M12 3s5 5.6 5 9.5a5 5 0 0 1-10 0C7 8.6 12 3 12 3z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/>',
+    "water-treatment-technician": '<path d="M3 7h18"/><path d="M5 7v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7"/><path d="M8 11h8M8 15h5"/><path d="M12 3v4"/>',
+    "dialysis-biomedical-technician": '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+}
+
+
+def academy_hero(A, tracks):
+    """tracks: [(href, short title, module count)]"""
+    total = sum(n for _, _, n in tracks)
+    links = "\n".join(
+        f'    <a class="acad-track" href="{h}"><span class="acad-track-ico"><svg viewBox="0 0 24 24" aria-hidden="true">'
+        f'{TRACK_ICONS.get(h[:-5], TRACK_ICONS["nephrology-nursing"])}</svg></span>'
+        f'<span class="acad-track-t"><strong>{t}</strong><small>{n} modules</small></span></a>' for h, t, n in tracks)
+    return f"""<style id="acad-hero-style">{ACADEMY_HERO_CSS}</style>
+<section class="hero acad-hero">
+  <div class="acad-float" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-tag">Staff Training &middot; Dialysis &amp; Nephrology</div>
+    <h1>Renal Care <em>Academy</em></h1>
+    <p class="hero-sub">{A['sub']}</p>
+    <div class="acad-stats"><span class="acad-stat"><b>{len(tracks)}</b> tracks</span><span class="acad-stat"><b>{total}</b> modules</span><span class="acad-stat">Quizzes &amp; skills checklists</span><span class="acad-stat">Free &middot; no account</span><span class="acad-stat">English</span></div>
+    <nav class="acad-tracks" aria-label="Academy tracks">
+{links}
+    </nav>
+  </div>
+</section>
+<script>{ACADEMY_HERO_JS}</script>"""
+
+
 def build_academy():
     fname = ACADEMY_PAGE
     page = Page(fname)
@@ -1120,15 +1264,18 @@ def build_academy():
     nav = [("about", "About"), ("tracks", "Tracks"), ("how", "How it works"), ("limits", "What it is not")]
     rel = [(c.hub + ".html", "Track", c.meta["title"], c.meta["branch_blurb"]) for c in get_courses().values()]
     rel.insert(0, (A["nursing"][0], "Track", A["nursing"][3], A["nursing"][4]))
-    pre = """<div class="container">
-  <div class="nc-bar"><span class="nc-chip nc-chip-core">Staff training</span><span class="nc-chip">Free &middot; no account</span><span class="nc-chip">English</span></div>
-</div>"""
+    pre = ""
+    n_nurse = int(re.match(r"(\d+)", A["nursing"][5]).group(1))
+    hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
+    short = {"hemodialysis-technician": "Hemodialysis Technician", "water-treatment-technician": "Water Treatment Technician",
+             "dialysis-biomedical-technician": "Biomedical Technician"}
+    hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(c.mods)) for c in get_courses().values()]
     desc = A["desc"]
     pg = shell(_Academy, fname, "Renal Care Academy: Training for Dialysis and Nephrology Staff", desc, A["keywords"],
                "Renal Care Academy", "Renal Care <em>Academy</em>", A["sub"], A["audience"], nav, pre, main,
                glossary(main, []), N.related_block(rel),
                jsonld_extra={"@type": ["MedicalWebPage", "CollectionPage"], "description": desc},
-               hero_file="hemodialysis-technician-vignette-hero", hero_alt="A trainee technician and a nurse talk with a patient beside a dialysis machine.")
+               hero_html=academy_hero(A, hero_tracks))
     (GUIDES / fname).write_text(pg, encoding="utf-8")
     return fname, page.refs
 
