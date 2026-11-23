@@ -126,6 +126,23 @@ INN_TO_USAN = {
     "cetrizine": "cetirizine", "desloratidine": "desloratadine", "doxycyline": "doxycycline",
     "potasium": "potassium", "potassiumn": "potassium", "co-amoxoclav": "amoxicillin and clavulanate",
     "guiafenesin": "guaifenesin",
+    # Nov 23 2026: INN/BAN names and registry spellings that are the same molecule as a US label
+    # (no vaccines, blood factors, toxins or fluid mixtures: those US labels describe one maker's product).
+    "alendronic acid": "alendronate", "risedronic acid": "risedronate", "ibandronic acid": "ibandronate",
+    "zolendronic acid": "zoledronic acid", "calcipotriol": "calcipotriene", "desferrioxamine": "deferoxamine",
+    "ursodeoxycholic acid": "ursodiol", "valproate semisodium": "divalproex sodium",
+    "norethisterone": "norethindrone", "suxamethonium": "succinylcholine",
+    "testosterone enantate": "testosterone enanthate", "human chorionic gonadotrophin": "chorionic gonadotropin",
+    "chorionic gonadotrophin": "chorionic gonadotropin", "highly purified menotrophin": "menotropins",
+    "menotrophin": "menotropins", "gadoteric acid": "gadoterate meglumine", "l-carnitine": "levocarnitine",
+    "glucose": "dextrose", "dextrose in water": "dextrose", "glycerol": "glycerin", "s-amlodipine": "levamlodipine",
+    "recombinant human erythropoietin alfa": "epoetin alfa", "erythropoietin alfa": "epoetin alfa",
+    "albumin": "albumin human", "water for injection": "water", "sterile water for irrigation": "water",
+    "medical grade oxygen": "oxygen", "isopropyl alcohol solution unscented": "isopropyl alcohol",
+    "peginterferon alfa-2 a": "peginterferon alfa-2a", "biphasic insulin aspart 30": "insulin aspart protamine and insulin aspart",
+    "lantus solostar": "insulin glargine", "benlysta": "belimumab", "glucophage": "metformin",
+    "meformin": "metformin", "rosuvastation": "rosuvastatin", "citirizine": "cetirizine",
+    "chrlorhexidine": "chlorhexidine", "fleicanide": "flecainide", "brimonidine tratrate": "brimonidine tartrate",
 }
 # Words in a PH ingredient string that are not part of the drug name.
 NOISE_WORDS = {"as", "in", "rdna", "dna", "recombinant", "regular", "usp", "bp", "equivalent", "to"}
