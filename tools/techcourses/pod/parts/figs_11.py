@@ -7,7 +7,7 @@ FIGS = {
                            "A four-light signal for the pre-dialysis decision: green for start as ordered, yellow for start after a call for changes, orange for delay, and red for transfer to the emergency room.",
                            "Four answers at the first gate. Only green proceeds without a call to the attending nephrologist."),
     "pod11_sequence": ("physician-on-duty-11-three-minute-sequence.webp",
-                       "A patient figure with three numbered steps: look and ask from across the room, read weight and vital signs, then examine neck veins, lung bases, ankles, and the access.",
+                       "Three numbered boxes: 1, look and ask about breathing, color, alertness, and symptoms since the last session; 2, read weight and vital signs against the patient's usual pattern; 3, use the symptoms and findings to focus the bedside examination.",
                        "The three-minute sequence: look and ask, read the numbers, then examine."),
     "pod11_isolation": ("physician-on-duty-11-isolation-station.webp",
                         "A separate dialysis room with one dedicated machine, its own supplies and blood pressure cuff, and a nurse assigned only to that room.",

@@ -9,8 +9,7 @@ FIGS = {
                     "A non-tunneled catheter enters the vein directly through the skin. A tunneled catheter travels under the skin first, "
                     "and its cuff sits inside that tunnel. Both end in a large central vein, with the tunneled tip in or near the right atrium."),
     "pod10_exit": ("physician-on-duty-10-exit-site-tunnel-cuff.webp",
-                   "Cutaway drawing of a tunneled catheter showing the exit site on the chest wall, the tunnel under the skin, the cuff inside "
-                   "the tunnel, the point where the catheter enters the neck vein, and the two external limbs with clamps and caps.",
+                   "Two panels. Top: a tunneled catheter leaving the upper chest through a dressed skin exit site, with its two external limbs and red and blue caps. Bottom: a cutaway of the skin and fat showing the catheter running in a tunnel under the skin with the cuff inside the tunnel.",
                    "The parts you examine before every connection: the exit site, the tunnel, the cuff inside the tunnel (normally hidden), "
                    "and the external limbs with their clamps and caps."),
     "pod10_exitcompare": ("physician-on-duty-10-healthy-vs-infected-exit-site.webp",

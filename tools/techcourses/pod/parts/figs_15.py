@@ -4,8 +4,7 @@ The image files do not exist yet; the page leaves the slot empty until the art i
 
 FIGS = {
     "pod15_pain_map": ("physician-on-duty-15-chest-pain-causes.webp",
-                       "A dialysis patient in a treatment chair with labels around the chest for eight causes of chest pain: coronary artery, "
-                       "pericardium, aorta, lung artery, air in the venous line, damaged red cells, dialyzer reaction, and chest wall.",
+                       "Eight labeled boxes naming causes of chest pain during hemodialysis: coronary artery disease, pericarditis, aortic dissection, pulmonary embolism, air embolism, hemolysis, dialyzer reaction, and chest wall or stomach.",
                        "Eight causes of chest pain in the dialysis chair. Three of them come from the circuit and not from the patient."),
     "pod15_ecg_strips": ("physician-on-duty-15-ecg-strip-set.webp",
                          "Six labeled electrocardiogram strips: normal rhythm, tall peaked T waves, wide QRS complexes, atrial fibrillation with "

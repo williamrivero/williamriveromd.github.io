@@ -4,9 +4,7 @@ The image files do not exist yet; the page leaves the slot empty until the art i
 
 FIGS = {
     "pod13_defenses": ("physician-on-duty-13-three-defenses.webp",
-                       "Three panels showing the body's defenses during fluid removal: fluid moving from the tissues into a blood vessel, "
-                       "veins and small arteries tightening, and the heart beating faster and harder. Under each panel is the condition "
-                       "that weakens it in a dialysis patient.",
+                       "Three labeled boxes: plasma refilling, as fluid moves from the tissues into the blood vessels; vessels tighten, as tighter veins return blood to the heart; and the heart compensates by beating faster and more forcefully.",
                        "Three defenses hold the pressure while the machine removes fluid: refilling from the tissues, tightening of the "
                        "vessels, and the response of the heart. Kidney failure and its companions weaken each one."),
     "pod13_position": ("physician-on-duty-13-recline-and-stop-uf.webp",
