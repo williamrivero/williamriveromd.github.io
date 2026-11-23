@@ -2,20 +2,22 @@
 MODULE = {
     "image_alt": "Filter housings, a softener, and carbon tanks in a dialysis water room.",
     "objectives": [
-        "Describe the job of each pretreatment stage and the order in which water passes through them.",
+        "Describe what each pretreatment stage does and the order in which water passes through them.",
         "Use the pressure drop across a filter to decide when it needs attention.",
-        "Explain how a softener works and why regeneration must not happen during treatment hours.",
-        "Explain how carbon tanks remove chlorine, what empty-bed contact time means, and why two tanks are used in series.",
+        "Explain how a softener works, and why it must never regenerate during treatment hours.",
+        "Explain how carbon tanks remove chlorine, what empty-bed contact time means, and why two tanks are placed in series.",
     ],
     "big": """
-{{plain:Pretreatment is everything before the reverse osmosis unit. Think of it as a set of bodyguards for the membrane. The sediment filter stops dirt, the softener stops scale, and the carbon tanks stop chlorine. The carbon tanks have a second job that matters even more: they are the only reliable barrier between chloramine and the patient.}}
-{{flow:Water through pretreatment (a common order; yours may differ)|Feed water::From the city, a well, or a tanker. A booster pump keeps pressure steady.|Sediment filter::Traps sand, rust, and silt.|Softener::Swaps calcium and magnesium for sodium.|Carbon tanks::Two in series remove chlorine and chloramine.|Fine filter::Catches carbon dust before the membrane.|To reverse osmosis::Clean, soft, chlorine-free water.}}
-{{cards:Key terms for this module|Pressure drop::The difference between the pressure before and after a filter. Also called delta P. It rises as the filter clogs.|Backwash::Running water backward through a tank to lift and rinse the bed.|Regeneration::Recharging a softener with salt water (brine).|Empty-bed contact time::How many minutes water spends in the carbon tank. More time removes more chlorine.|Worker and polisher::The first and second carbon tanks. The worker does most of the removal; the polisher is the backup.}}
+{{plain:Think of a security detail walking a VIP through a crowded mall. One guard clears the path of obstacles, one keeps the crowd from pressing in, and one checks every hand that reaches out. Pretreatment is that detail for the reverse osmosis membrane. The sediment filter stops dirt, the softener stops scale, and the carbon tanks stop chlorine.}}
+<p>The picture has a limit. A bodyguard protects only the VIP. The carbon tanks protect the membrane, but they also do a second job that matters even more: they are the only reliable barrier between chloramine and the patient. Nothing downstream will catch what the carbon lets through.</p>
+{{flow:Water through pretreatment (a common order; yours may differ)|Feed water::Comes from the city, a well, or a tanker. A booster pump keeps the pressure steady.|Sediment filter::Traps sand, rust, and silt.|Softener::Exchanges calcium and magnesium for sodium.|Carbon tanks::Two in series remove chlorine and chloramine.|Fine filter::Catches carbon dust before it reaches the membrane.|To reverse osmosis::Clean, soft water with no chlorine.}}
+{{cards:Key terms for this module|Pressure drop::The pressure before a filter minus the pressure after it. Also called delta P. It rises as the filter clogs.|Backwash::Running water backward, upward through a tank, to lift and rinse the bed.|Regeneration::Recharging a softener with strong salt water (brine).|Empty-bed contact time::The number of minutes water spends in the carbon tank. More time removes more chlorine.|Worker and polisher::The first and second carbon tanks. The worker does most of the removal; the polisher is the backup.}}
 """,
     "case": {
         "title": "The softener that regenerated at noon",
         "html": """
-<p>After a power interruption overnight, the softener&rsquo;s timer is several hours wrong. At 12:10, in the middle of the second shift, the softener starts to regenerate. A few minutes later two machines alarm for high conductivity, and the reverse osmosis unit shows a rising product conductivity.</p>
+<p>A brownout cut the power to the clinic for about two hours on Monday night. Nobody reset the softener&rsquo;s timer, and it is now several hours wrong. On Tuesday at 12:10, in the middle of the second shift, the softener starts to regenerate.</p>
+<p>A few minutes later the machines at stations 4 and 7 alarm for high conductivity. The charge nurse, Mr. Paolo Aquino, calls the water room. The technician, Ms. Rhea Domingo, 27, finds the reverse osmosis display showing product conductivity rising with each reading, and she can hear the softener valve cycling.</p>
 """,
         "questions": ["What is the softener sending downstream during regeneration?",
                       "What do you do at the softener, and whom do you tell?",
@@ -23,33 +25,35 @@ MODULE = {
     },
     "sections": [
         ("filters", "Filters", "Sediment filters and the pressure drop", """
-{{fig:wts_train|Find the pretreatment stages on the left of the treatment train. The order of softener and carbon tanks differs between installations; follow your own system drawing.}}
-<p>A sediment filter is a tank of layered sand and gravel, or a cartridge, that traps particles. As it fills with dirt, water has a harder time getting through, and the pressure after the filter falls. Every filter therefore has a gauge before it and a gauge after it.</p>
+{{fig:wts_train|Find the pretreatment stages on the left of the treatment train. The order of the softener and the carbon tanks differs between installations; follow your own system drawing.}}
+<p>A sediment filter is a tank of layered sand and gravel, or a cartridge in a housing, that traps particles. As it fills with dirt, water has a harder time getting through, so the pressure after the filter falls below the pressure before it. That is why every filter has two gauges, one before and one after.</p>
 {{formula:<strong>Pressure drop</strong> = pressure before the filter &minus; pressure after the filter.<br>Example: 60 psi before and 52 psi after gives a drop of 8 psi. If the drop was 3 psi when the filter was new, it is clogging.}}
-<p>Your unit&rsquo;s procedure states the pressure drop at which a tank is backwashed or a cartridge is changed. Record both gauges every day: one reading tells you little, but a row of readings shows the filter loading up.</p>
+<p>Your unit&rsquo;s procedure states the pressure drop at which a tank is backwashed or a cartridge is changed. Record both gauges every day. One reading tells you little. A row of readings shows you the filter loading up, day by day, before it starves the system of water.</p>
 """),
         ("softener", "Softener", "The softener and its brine tank", """
-<p>Hard water contains calcium and magnesium. On a reverse osmosis membrane these form scale, like the crust inside a kettle, and block it. A softener is a tank of resin beads that hold sodium. As hard water passes, the beads grab calcium and magnesium and release sodium in exchange.</p>
-{{flow:The softener cycle|Service::Hard water in, soft water out. The resin slowly fills with calcium and magnesium.|Backwash::Water runs upward to loosen and rinse the bed.|Brine draw::Strong salt water from the brine tank pushes calcium and magnesium off the resin.|Rinse::Excess salt is flushed to drain.|Back in service::The resin is recharged with sodium.}}
-<p>During regeneration the softener is off line and salty water is flowing to drain. If the valve fails or the timer is wrong, that brine can go downstream. For this reason softeners are set to regenerate when no patient is on dialysis, and the timer is checked every day.</p>
-<p>Softener performance is checked with a hardness test on water leaving the softener, usually at the end of the treatment day when the resin is most used up. Many units use a limit of about 1 grain per gallon (17 mg/L as calcium carbonate); work to the limit in your procedure. Check also that the brine tank holds enough salt and that the salt has not formed a hard bridge above the water.</p>
+<p>Hard water carries calcium and magnesium. On a reverse osmosis membrane they form scale, like the white crust inside an old kettle, and the scale blocks the membrane. A softener is a tank of resin beads loaded with sodium. As hard water flows past, the beads take up calcium and magnesium and release sodium in their place.</p>
+{{flow:The softener cycle|Service::Hard water in, soft water out. The resin slowly fills with calcium and magnesium.|Backwash::Water runs upward to loosen and rinse the bed.|Brine draw::Strong salt water from the brine tank pushes calcium and magnesium off the resin.|Rinse::The extra salt is flushed to drain.|Back in service::The resin is recharged with sodium.}}
+<p>During regeneration the softener is off line and salty water is flowing to drain. If the valve fails or the timer is wrong, that brine can travel downstream instead. For this reason a softener is set to regenerate only when no patient is on dialysis, and its timer is checked every day.</p>
+<p>You check the softener&rsquo;s work with a hardness test on the water leaving it, usually at the end of the treatment day, when the resin is most used up. Many units use a limit of about 1 grain per gallon (17 mg/L as calcium carbonate); work to the limit in your own procedure. Check also that the brine tank holds enough salt, and that the salt has not formed a hard crust, a bridge, above the water.</p>
 {{key:Check the softener clock every morning, and after every power interruption.}}
 """),
         ("carbon", "Carbon tanks", "Carbon tanks: the chlorine barrier", """
-<p>Activated carbon is charcoal processed to have an enormous internal surface. Chlorine and chloramine are removed as water passes over that surface. Removal takes time, so the water must stay in contact with the carbon long enough.</p>
+<p>Activated carbon is charcoal processed so that each grain has an enormous internal surface. Chlorine and chloramine are taken out of the water as it passes over that surface. The removal takes time, so the water must stay in contact with the carbon long enough for it to finish.</p>
 {{formula:<strong>Empty-bed contact time (minutes)</strong> = volume of the carbon bed &divide; water flow rate.<br>Example: a tank holding 300 liters of carbon with water flowing at 30 liters per minute gives 300 &divide; 30 = 10 minutes.}}
-<p>Guidance commonly calls for two carbon tanks in series with a total contact time of at least 10 minutes at the highest flow, about 5 minutes in each.[[iso23500_1]][[coulliette2013]] Chloramine is harder to remove than free chlorine and needs the full contact time.</p>
-{{cards:Why two tanks in series|The worker::The first tank removes nearly all the chlorine and is used up first.|The sample port between them::Testing here shows when the worker is becoming exhausted.|The polisher::The second tank protects patients while the worker is replaced.|Breakthrough::Chlorine passing through a tank. After the worker it is a warning; after the polisher it is a stop.}}
-<p>Carbon tanks are backwashed to keep water from cutting channels through the bed, but backwashing does not restore exhausted carbon. Exhausted carbon is replaced. Carbon is also a good home for bacteria, which is one reason stages after it must control microbes.</p>
+<p>Guidance commonly calls for two carbon tanks in series with a total contact time of at least 10 minutes at the highest flow, about 5 minutes in each.[[iso23500_1]][[coulliette2013]] Chloramine is harder to remove than free chlorine and needs the full contact time. The practical point is that contact time is set by the busiest moment of the day, not the average one.</p>
+{{cards:Why two tanks in series|The worker::The first tank removes nearly all the chlorine, and it is used up first.|The sample port between them::Testing here tells you when the worker is becoming exhausted.|The polisher::The second tank protects patients while the worker is replaced.|Breakthrough::Chlorine passing through a tank. After the worker it is a warning; after the polisher it is a stop.}}
+<p>Carbon tanks are backwashed so that water does not cut channels through the bed. Backwashing does not restore exhausted carbon; exhausted carbon is replaced. Carbon is also a comfortable home for bacteria, because it has removed the chlorine that would have kept them down. That is one reason the stages after it must control microbes.</p>
 {{stop:Total chlorine above the limit after the second carbon tank means dialysis on that water stops until it is corrected and an authorized person releases the system.}}
 """),
         ("fine", "After carbon", "The fine filter and the handover to reverse osmosis", """
-<p>A cartridge filter of about 5 micrometers usually sits after the carbon tanks. It catches carbon dust and resin fragments that would otherwise plug the membrane. Record its pressure drop and change it on schedule or when the drop reaches the stated value. A new cartridge that clogs within days is a message: something upstream is shedding.</p>
+<p>A cartridge filter of about 5 micrometers usually sits after the carbon tanks. It catches carbon dust and resin fragments that would otherwise plug the membrane. Record its pressure drop, and change it on schedule or when the drop reaches the stated value. A new cartridge that clogs within days is telling you something: a stage upstream is shedding, and that stage needs to be found.</p>
 {{fig:wts_source}}
 """),
     ],
     "debrief": ["""
-<p><strong>Case review.</strong> A softener that regenerates during treatment can send brine downstream, which raises the salt load on the reverse osmosis membrane and the conductivity of the product water. Follow the unit&rsquo;s procedure to stop the regeneration or bypass the softener, tell the charge nurse immediately which machines alarmed and why, and do not return the softener to service until it has completed a full rinse and the hardness and conductivity results are acceptable. The nurse decides what happens with connected patients. The check that prevents this is simple: compare the softener clock with the real time every morning and after every power interruption, and record it.</p>
+<p><strong>What the softener is sending downstream.</strong> Brine. During regeneration the softener flushes strong salt water to drain, and with the timer wrong it is doing so while the system is supplying patients. Salt that slips downstream raises the load on the reverse osmosis membrane and the conductivity of the product water, which is what the machines at stations 4 and 7 detected.</p>
+<p><strong>What to do at the softener, and whom to tell.</strong> Follow the unit&rsquo;s procedure to stop the regeneration or bypass the softener. Tell Mr. Aquino at once which machines alarmed and why. He decides what happens with the connected patients; that decision is not yours. Do not return the softener to service until it has finished a full rinse and the hardness and conductivity results are acceptable. Record the times, the readings, and whom you told.</p>
+<p><strong>The check that prevents it.</strong> Compare the softener clock with the real time every morning and after every power interruption, and write it in the log. A two-minute check would have kept this regeneration in the night where it belongs.</p>
 """],
     "skills": {
         "title": "Pretreatment daily round",

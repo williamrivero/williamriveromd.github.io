@@ -5,7 +5,8 @@ replies to common patient questions, missed and shortened treatments, distress a
 ADD = {
 "extra": [
 (1, "sidebyside", "Options side by side", "Five options side by side: place, schedule, and daily work", """
-{{plain:Patients ask practical questions: where, how often, how long, and who does the work. This table answers those in general terms. It does not say which option is best, because there is no single best option. The nephrologist and the patient decide which ones are possible and which one fits.}}
+{{plain:Think of the ways a worker in Bulacan can get to a job in Manila: the bus, the jeepney and the train, a motorcycle of his own, or a room near the office during the week. Each one costs something different in money, time, effort, and freedom. Nobody can name the best one without knowing the person. Patients ask the same practical questions about treatment: where, how often, for how long, and who does the work.}}
+<p>The picture has a limit. A commuter chooses alone and can change his mind tomorrow. A patient chooses with the nephrologist, and some options are open only if the body, the home, and a program allow them. This table answers the practical questions in general terms. It does not say which option is best, because there is no single best option. The nephrologist and the patient decide which ones are possible and which one fits.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Option</th><th>Where, and who does the work</th><th>Usual schedule</th><th>What the patient must do</th><th>Access or surgery</th><th>Often discussed when</th></tr></thead>
 <tbody>
@@ -15,11 +16,12 @@ ADD = {
 <tr><td>Kidney transplant</td><td>Surgery in a transplant hospital, then clinic follow-up</td><td>No dialysis sessions while the kidney works. Frequent clinic visits at first, then regular visits for life</td><td>Take anti-rejection medicines every day, on time, for as long as the kidney works. Attend visits and blood tests. Report fever or illness early</td><td>Major surgery and a kidney from a living or deceased donor</td><td>The transplant team finds the patient fit for surgery and a donor kidney is available</td></tr>
 <tr><td>Conservative care</td><td>Clinic and home. The care team, patient, and family</td><td>Regular visits. No dialysis</td><td>Take medicines, follow the diet, report symptoms, and plan ahead with the family</td><td>None</td><td>The patient chooses not to have dialysis, or dialysis is unlikely to help the person live longer or better</td></tr>
 </tbody></table></div>
-<p>Choices are not permanent. A patient may move from peritoneal dialysis to hemodialysis, from dialysis to a transplant, or back to dialysis if a transplant stops working.</p>
+<p>A choice is not permanent. A patient may move from peritoneal dialysis to hemodialysis, from dialysis to a transplant, or back to dialysis if a transplant stops working. You will meet patients at every one of these turns.</p>
 {{key:A safe sentence for any question about which option to choose: &ldquo;Each one has trade-offs. The doctor can go through which are possible for you. I will tell the nurse you want to talk about it.&rdquo;}}
 """),
 (3, "dietfluid", "Diet and fluid basics", "Diet and fluid: what the dietitian and nurse teach, and how you support it", """
-<p>The nephrologist and dietitian set each patient&rsquo;s diet and fluid plan, and the nurse reinforces it. You will hear about it at the chair every day. Your part is to understand the reasons, notice problems, and pass them on. You do not set or change the plan.</p>
+<p>The nephrologist and the dietitian set each patient&rsquo;s diet and fluid plan, and the nurse reinforces it. You will hear about it at the chair every day, because patients talk about food more than about anything else. Your part is to understand the reasons, notice problems, and pass them on. You do not set or change the plan.</p>
+<p>Each limit in the table follows from one fact: the kidneys no longer clear what the patient takes in, so what goes in between sessions stays in until the machine removes it. Read the &ldquo;Why&rdquo; column first. The food list makes sense once you know it.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>What is limited</th><th>Why</th><th>Foods and drinks the dietitian commonly discusses</th><th>How the technician supports</th></tr></thead>
 <tbody>
@@ -28,9 +30,9 @@ ADD = {
 <tr><td>Phosphate</td><td>A high level over time weakens bones, hardens blood vessels, and causes itching</td><td>Dark cola drinks, processed foods with phosphate additives, milk and cheese, organ meats, nuts, beans. Phosphate binder tablets are taken with meals</td><td>Tell the nurse if a patient says the binders are skipped or taken apart from meals</td></tr>
 <tr><td>Fluid</td><td>With little or no urine, what is drunk stays in the body until the next treatment</td><td>Anything liquid at room temperature: water, coffee, soft drinks, soup broth, rice porridge, ice, gelatin, ice cream</td><td>Weigh accurately. Help the patient keep a fluid record if the nurse asks</td></tr>
 </tbody></table></div>
-<p>Protein is different. Patients on dialysis usually need enough protein, and the dietitian sets the amount. Never advise a patient to avoid protein foods.</p>
+<p>Protein is different. Patients on dialysis usually need enough protein, and the dietitian sets the amount. Never advise a patient to avoid protein foods, even when it seems the careful thing to say.</p>
 {{stop:Star fruit (balimbing) is harmful to people with kidney failure and can cause hiccups, confusion, and seizures. If a patient says he or she has eaten it or drunk its juice, tell the nurse immediately, even if the patient feels well.}}
-<p><strong>Tracking fluid.</strong> The fluid allowance is the total volume the nephrologist permits in a day. Volumes below are approximate; containers differ, so the patient should measure his or her own cup and bowl once with a measuring cup.</p>
+<p><strong>Tracking fluid.</strong> The fluid allowance is the total volume the nephrologist permits in a day. The volumes below are approximate. Containers differ from home to home, so the patient should measure his or her own cup and bowl once with a measuring cup.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Common serving</th><th>Approximate volume</th></tr></thead>
 <tbody>
@@ -43,17 +45,19 @@ ADD = {
 <tr><td>Water to swallow medicines</td><td>30 to 60 mL each time</td></tr>
 <tr><td>One tablespoon</td><td>15 mL</td></tr>
 </tbody></table></div>
+<p>Notice how quickly small amounts add up in the example below. No single item looks like much, and the day is nearly used up by evening.</p>
 {{formula:<strong>Fluid left for the day</strong> = allowance &minus; total taken so far.<br>Example, with a fictional allowance of 1,000 mL: coffee 180 + water with medicines 60 + soup 200 + glass of water 240 + four ice cubes at 25 each, 100 + evening tea 180 = 960 mL. 1,000 &minus; 960 = 40 mL left.}}
-{{cards:Thirst tips the nurse and dietitian commonly teach|Less salt::The most effective step, because salt drives thirst.|A small cup::The same number of drinks, less volume.|Ice::Lasts longer than water, but it is counted.|Rinse, do not swallow::Mouth rinses and tooth brushing ease a dry mouth.|Spread it out::Divide the allowance across the day.|Blood sugar::For patients with diabetes, high sugar causes thirst; they should discuss it with the doctor.}}
+{{cards:Thirst tips the nurse and dietitian commonly teach|Less salt::The most effective step, because salt drives thirst.|A small cup::The same number of drinks, with less volume.|Ice::It lasts longer than water, but it is counted.|Rinse, do not swallow::Mouth rinses and tooth brushing ease a dry mouth.|Spread it out::Divide the allowance across the day.|Blood sugar::In patients with diabetes, high sugar causes thirst; they should discuss it with the doctor.}}
 """),
 (3, "replies", "What to say", "Common patient questions: a helpful reply and where to refer", """
+<p>Patients will ask you things that belong to the nurse or the doctor, because you are the one standing at the chair. A good reply does two things at once. It is honest about what you can decide, and it shows the patient that the question will reach the right person.</p>
 {{cards:Four habits for every question|Listen to the end::Do not answer the first half of a question.|Say what you can do::Even when the answer belongs to someone else.|Never guess::A confident wrong answer travels fast in a waiting room.|Close the loop::Tell the patient whom you told.}}
 <div class="table-wrap"><table>
 <thead><tr><th>The patient says</th><th>A helpful reply within your scope</th><th>Refer to</th></tr></thead>
 <tbody>
 <tr><td>&ldquo;Can I skip Saturday? We have a family event.&rdquo;</td><td>&ldquo;I cannot decide that, but please do not simply stay away. Let me call the nurse now to look at another slot.&rdquo;</td><td>Nurse or scheduler</td></tr>
-<tr><td>&ldquo;Take off an extra kilo today. I drank a lot.&rdquo;</td><td>&ldquo;The nurse and doctor set how much comes off. I will tell the nurse what you told me.&rdquo;</td><td>Nurse</td></tr>
-<tr><td>&ldquo;Is my potassium all right?&rdquo;</td><td>&ldquo;The nurse or doctor will explain your results. I will let them know you asked.&rdquo;</td><td>Nurse or nephrologist</td></tr>
+<tr><td>&ldquo;Take off an extra kilo today. I drank a lot.&rdquo;</td><td>&ldquo;The nurse and the doctor set how much comes off. I will tell the nurse what you told me.&rdquo;</td><td>Nurse</td></tr>
+<tr><td>&ldquo;Is my potassium all right?&rdquo;</td><td>&ldquo;The nurse or the doctor will explain your results. I will let them know you asked.&rdquo;</td><td>Nurse or nephrologist</td></tr>
 <tr><td>&ldquo;My neighbor says this herbal tea cleans the kidneys.&rdquo;</td><td>&ldquo;Some herbs and supplements can harm people on dialysis. Please do not start it until the doctor has checked. Could you bring the label?&rdquo;</td><td>Nurse or nephrologist</td></tr>
 <tr><td>&ldquo;Will my kidneys recover? Is this forever?&rdquo;</td><td>&ldquo;That is an important question, and the doctor knows your case. I will make sure the nurse knows you want to talk about it.&rdquo;</td><td>Nephrologist</td></tr>
 <tr><td>&ldquo;I cannot afford the medicines and the fare.&rdquo;</td><td>&ldquo;Thank you for telling me. May I tell the nurse, so the right person can go through what help is available?&rdquo;</td><td>Nurse, social worker, or the unit&rsquo;s billing staff</td></tr>
@@ -62,10 +66,13 @@ ADD = {
 </tbody></table></div>
 """),
 (3, "missedtime", "Missed, short sessions", "Missed and shortened treatments: why they matter and how to report them", """
+<p>Think of a water tank on the roof that fills all week and is drained only on set days. Skip a draining, or cut one short, and the next one starts from a higher level. A patient&rsquo;s body behaves the same way between sessions, with one difference that matters: some of what rises, such as potassium, gives no warning before it becomes dangerous.</p>
 {{fig:hd_week|Dialysis fills only a small part of the week. Every hour lost is a share of the only cleaning time the patient has.}}
-{{cards:What a missed or shortened session leaves behind|Fluid::More weight to remove next time, or breathlessness before then.|Potassium::Rises silently between treatments.|Wastes::Nausea, poor appetite, itching, tiredness.|A pattern::Patients who often miss or shorten sessions are admitted to hospital more often and die sooner than those who do not.}}
+{{cards:What a missed or shortened session leaves behind|Fluid::More weight to remove next time, or breathlessness before then.|Potassium::It rises silently between treatments.|Wastes::Nausea, poor appetite, itching, tiredness.|A pattern::Patients who often miss or shorten sessions are admitted to hospital more often and die sooner than those who do not.}}
+<p>Minutes look small at the chair. The two calculations below show what they become.</p>
 {{formula:<strong>Share of a session delivered</strong> = minutes delivered &divide; minutes prescribed &times; 100.<br>Example: 240 minutes prescribed, treatment ended 30 minutes early, so 210 delivered. 210 &divide; 240 &times; 100 = 87.5 percent.}}
 {{formula:<strong>Time lost over a year</strong> = minutes lost per session &times; sessions per week &times; 52.<br>Example: 30 minutes &times; 3 sessions &times; 52 weeks = 4,680 minutes = 78 hours. 78 &divide; 4 hours = about 19 and a half full sessions lost in a year.}}
+<p>You do not decide when a treatment ends. Your part is to make sure the nurse knows, at the moment it matters, and that the record shows the real time delivered.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Situation</th><th>What the technician does</th></tr></thead>
 <tbody>
@@ -75,23 +82,23 @@ ADD = {
 <tr><td>Treatment is interrupted by alarms, clotting, or a toilet break</td><td>Record when the blood pump stopped and restarted. Minutes with the pump stopped are not treatment</td></tr>
 <tr><td>A patient returns after a missed session</td><td>Say so to the nurse before setup. Watch for breathlessness, weakness, and a large weight gain</td></tr>
 </tbody></table></div>
-{{flow:Recording a shortened treatment|Times::Prescribed duration, actual start, actual end.|Delivered::The treatment time shown on the machine.|Reason::In the patient&rsquo;s own words, in quotation marks.|Notified::The nurse&rsquo;s name and the time.|Pattern::Mention at handoff if this is the second time or more.}}
+{{flow:Recording a shortened treatment|Times::The prescribed duration, the actual start, and the actual end.|Delivered::The treatment time shown on the machine.|Reason::In the patient&rsquo;s own words, in quotation marks.|Notified::The nurse&rsquo;s name and the time.|Pattern::Mention it at handoff if this is the second time or more.}}
 {{stop:A patient who missed a session and now has breathlessness, chest pain, marked weakness, or an irregular pulse is an emergency. Call the nurse immediately.}}
 """),
 (4, "distress", "Distress and respect", "Recognizing distress and speaking respectfully with patients and families", """
-<p>Kidney failure brings loss: of work, income, food, travel, and time. You see patients more often than almost anyone else on the team, so you are often the first to notice a change.</p>
+<p>Kidney failure brings loss: of work, of income, of favorite food, of travel, and of time. You see patients more often than almost anyone else on the team, three times a week, in the same chair. That is why you are often the first to notice a change, and why the change is worth reporting even when you cannot name it.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>What you may notice</th><th>What to do</th></tr></thead>
 <tbody>
 <tr><td>A talkative patient becomes silent, or a calm one becomes irritable</td><td>Ask one open question: &ldquo;You seem quieter today. How are things?&rdquo; Tell the nurse what you saw</td></tr>
 <tr><td>Missed sessions, large weight gains, or poor grooming that are new for this patient</td><td>Report the change and when it began</td></tr>
 <tr><td>Tearfulness, or talk of being a burden to the family</td><td>Listen. Do not hurry to cheer the patient up. Tell the nurse the same session</td></tr>
-<tr><td>&ldquo;I want to stop dialysis.&rdquo;</td><td>Do not argue or agree. &ldquo;I hear you. This matters, and I would like the nurse and doctor to talk with you about it.&rdquo; Tell the nurse now</td></tr>
+<tr><td>&ldquo;I want to stop dialysis.&rdquo;</td><td>Do not argue or agree. &ldquo;I hear you. This matters, and I would like the nurse and the doctor to talk with you about it.&rdquo; Tell the nurse now</td></tr>
 <tr><td>Talk of wanting to die or of self-harm</td><td>Stay with the patient. Call the nurse to the chair immediately. Never promise to keep it secret</td></tr>
 <tr><td>Fear or silence when a particular companion is present, or unexplained injuries</td><td>Tell the nurse privately</td></tr>
 </tbody></table></div>
 {{cards:Speaking with respect|Name::Use the name and form of address the patient prefers.|Level::Sit or bend to eye level. Do not talk over a patient to a coworker.|Plain words::No jargon, no scolding, no blame about weight or diet.|Privacy::Lower your voice. Ask before discussing anything in front of a companion.|Honesty::&ldquo;I do not know, but I will find out who does&rdquo; is a good answer.|Language::Use the language the patient is comfortable in, or ask the nurse for an interpreter.}}
-<p><strong>Families and companions.</strong> The patient decides who hears what. Ask the patient first, each time. Thank companions for their help, show them where to wait, and send their questions about care to the nurse. An angry relative is usually a frightened one: listen, do not argue, and bring the nurse.</p>
+<p><strong>Families and companions.</strong> The patient decides who hears what, so ask the patient first, each time. Thank companions for their help, show them where to wait, and send their questions about care to the nurse. An angry relative is usually a frightened one. Listen, do not argue, and bring the nurse.</p>
 {{key:You are not expected to solve a patient&rsquo;s distress. You are expected to notice it, respond kindly, and make sure the nurse knows the same day.}}
 """),
 ],

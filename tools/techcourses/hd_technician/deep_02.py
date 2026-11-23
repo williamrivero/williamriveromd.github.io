@@ -5,11 +5,12 @@ values, fluid and weight arithmetic, accurate weight and vital signs)."""
 ADD = {
 "extra": [
 (2, "atthechair", "Signs at the chair", "What each lost kidney function looks like at the chair", """
-{{plain:You will not see a failed kidney. You will see what its missing work leaves behind: extra water, extra potassium, extra acid, extra phosphate, too few red blood cells, and high blood pressure. This table links each one to what you may notice and what to say.}}
+{{plain:Think of a house after the garbage collector stops coming. You never see the missing truck. You see what piles up at the gate, and you smell it before long. Kidney failure is like that. You will not see a failed kidney. You will see what its missing work leaves behind: extra water, extra potassium, extra acid, extra phosphate, too few red blood cells, and high blood pressure.}}
+<p>The picture has a limit. Garbage at the gate is easy to see. Some of what builds up in a dialysis patient gives no sign at all until it is dangerous, and potassium is the clearest example. So you watch for what you can see, and you never take silence as safety. The table links each lost function to what you may notice and what to say.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Function lost</th><th>What builds up or runs short</th><th>What you may see or hear</th><th>What to tell the nurse</th></tr></thead>
 <tbody>
-<tr><td>Removing water and salt</td><td>Fluid in the blood vessels and tissues</td><td>A large weight gain. Swollen ankles, hands, or face. Tight shoes or rings. Breathlessness, worse lying flat. Higher blood pressure</td><td>Both weights and the gain. Breathlessness at rest is reported at once</td></tr>
+<tr><td>Removing water and salt</td><td>Fluid in the blood vessels and tissues</td><td>A large weight gain. Swollen ankles, hands, or face. Tight shoes or rings. Breathlessness, worse lying flat. Higher blood pressure</td><td>Both weights and the gain. Report breathlessness at rest at once</td></tr>
 <tr><td>Removing potassium</td><td>Potassium, a mineral that controls how muscle and heart cells fire</td><td>Often nothing at all. Sometimes weak or heavy legs, tingling, or a slow or irregular pulse. A missed session or a diet lapse makes it more likely</td><td>Weakness or an irregular pulse at once. Any missed session. Any flagged result</td></tr>
 <tr><td>Removing acid</td><td>Acid; the blood&rsquo;s buffer, bicarbonate, runs low</td><td>Usually nothing. When severe, deep or fast breathing</td><td>Breathing that is faster or deeper than usual for this patient</td></tr>
 <tr><td>Removing phosphate</td><td>Phosphate; over months it disturbs calcium and the bones</td><td>Itching and scratch marks. Bone or joint pain. A patient who says the phosphate binder tablets are skipped</td><td>The symptom, and what the patient said about the tablets</td></tr>
@@ -18,10 +19,11 @@ ADD = {
 <tr><td>Controlling blood pressure</td><td>Fluid, plus hormones that tighten the blood vessels</td><td>High readings before treatment. Headache</td><td>Any reading outside the limits your unit sets. Severe headache, chest pain, or a change in vision at once</td></tr>
 </tbody></table></div>
 {{key:Report the observation and the number, not the diagnosis. Say &ldquo;his pulse is irregular and he missed Saturday&rsquo;s session,&rdquo; not &ldquo;he has high potassium.&rdquo;}}
-{{stop:Tell the nurse at once, before finishing any other task: breathlessness at rest, chest pain, new confusion or drowsiness, sudden weakness, an irregular or very slow pulse, or a patient who simply looks much worse than usual.}}
+{{stop:Tell the nurse at once, before you finish any other task, if you see breathlessness at rest, chest pain, new confusion or drowsiness, sudden weakness, an irregular or very slow pulse, or a patient who simply looks much worse than usual.}}
 """),
 (4, "labvalues", "Lab values", "Laboratory values on the chart: typical ranges and urgent results", """
-<p>A reference range is the span of results a laboratory expects in healthy adults. The ranges below are typical values for teaching. Every laboratory prints its own range beside each result, and that printed range is the one to use. Many Philippine laboratories report in international units such as millimoles per liter; some use milligrams per deciliter. Always read the unit.</p>
+<p>A reference range is the span of results a laboratory expects in healthy adults. The ranges below are typical values for teaching. Every laboratory prints its own range beside each result, and that printed range is the one you use. Many Philippine laboratories report in international units such as millimoles per liter; some use milligrams per deciliter. The same blood gives very different numbers in the two systems, so read the unit before you read the number.</p>
+<p>The last column matters most at the chair. A dialysis patient is not a healthy adult, and several results sit outside the range every month by design or by the nature of the disease. Your work is not to interpret them. It is to notice the ones that are flagged, new, or different from last time, and to bring them to the nurse.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Test</th><th>What it tells the team</th><th>Typical adult reference range (laboratory-dependent)</th><th>What is usual in a hemodialysis patient</th></tr></thead>
 <tbody>
@@ -36,47 +38,50 @@ ADD = {
 <tr><td>Hemoglobin</td><td>Oxygen-carrying protein in red cells</td><td>About 13.5 to 17.5 g/dL in men and 12.0 to 15.5 g/dL in women</td><td>Usually below the range. The nephrologist sets a lower target on purpose</td></tr>
 <tr><td>Hepatitis B surface antigen, hepatitis C antibody</td><td>Infection status</td><td>Nonreactive</td><td>Decides machine and station assignment (Module 5)</td></tr>
 </tbody></table></div>
-{{cards:Reading any result safely|Right patient::Two identifiers on the report match the record.|Date and time::Is this today&rsquo;s result or last month&rsquo;s?|Before or after dialysis::A post-treatment potassium or BUN is expected to be lower.|Unit::The same result looks very different in mg/dL and mmol/L.|Flag::High, low, or critical, as the laboratory marked it.|Trend::Compare with the previous result, not only with the range.}}
+{{cards:Reading any result safely|Right patient::Two identifiers on the report match the record.|Date and time::Is this today&rsquo;s result or last month&rsquo;s?|Before or after dialysis::A post-treatment potassium or BUN is expected to be lower.|Unit::The same result looks very different in mg/dL and in mmol/L.|Flag::High, low, or critical, as the laboratory marked it.|Trend::Compare it with the previous result, not only with the range.}}
+<p>Some results cannot wait for the end of the shift. The reason is the same in each row: harm can arrive before the patient feels anything.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Tell the nurse at the same moment you see it</th><th>Why it cannot wait</th></tr></thead>
 <tbody>
 <tr><td>Any result the laboratory marks critical</td><td>The laboratory is saying that someone must act now</td></tr>
 <tr><td>A potassium flagged high or low, even when the patient feels well</td><td>A dangerous potassium often gives no warning. Many laboratories treat about 6.0 mmol/L and above as critical; your laboratory&rsquo;s own limit applies</td></tr>
-<tr><td>A hemoglobin flagged critically low, or much lower than the last result</td><td>May mean bleeding</td></tr>
+<tr><td>A hemoglobin flagged critically low, or much lower than the last result</td><td>It may mean bleeding</td></tr>
 <tr><td>A hepatitis result newly reported as reactive</td><td>Station and machine assignment must be settled before the next setup[[cdc_dialysis]]</td></tr>
 <tr><td>A result that seems to belong to another patient</td><td>Someone else may be missing a result</td></tr>
 </tbody></table></div>
-{{stop:If the laboratory telephones a result, hand the call to the nurse. Take it yourself only where your unit authorizes this; then write it down, read it back to the caller, and tell the nurse immediately. Never tell a patient what a result means; the nurse or nephrologist does that.}}
+{{stop:If the laboratory telephones a result, hand the call to the nurse. Take it yourself only where your unit authorizes this; then write it down, read it back to the caller, and tell the nurse immediately. Never tell a patient what a result means. The nurse or the nephrologist does that.}}
 """),
 (4, "weightmath", "Weight arithmetic", "Fluid and weight arithmetic, with worked examples", """
-{{plain:One liter of water weighs about one kilogram, so 500 milliliters weighs about half a kilogram. A patient who makes little or no urine keeps almost everything he or she drinks. That is why weight change between treatments is read as fluid.}}
+{{plain:Think of a rice sack on a market scale. Pour in one liter of water and the scale rises by about one kilogram; pour in 500 milliliters and it rises by about half a kilogram. A patient who makes little or no urine is like a sack with no hole in it. Almost everything he or she drinks stays in. That is why the weight change between treatments is read as fluid.}}
+<p>The picture has a limit. A sack only gains. A person also eats, loses a little water through breath and sweat, and changes body tissue slowly over weeks. Over the two or three days between sessions, though, fluid is by far the largest part of the change, and that is the part the scale is used to measure.</p>
 <p>Three weights matter. The <strong>pre-weight</strong> is measured on arrival. The <strong>post-weight</strong> is measured after treatment. The <strong>dry weight</strong> is the target post-treatment weight the nephrologist sets: the weight at which the patient carries no excess fluid and still feels well. Only the nephrologist changes it.</p>
 {{formula:<strong>Interdialytic weight gain</strong> = today&rsquo;s pre-weight &minus; last post-weight.<br>Example: pre-weight 62.8 kg, last post-weight 60.5 kg. 62.8 &minus; 60.5 = 2.3 kg, or about 2.3 liters of fluid.}}
 {{formula:<strong>Gain as a percent of dry weight</strong> = gain &divide; dry weight &times; 100.<br>Example: gain 2.3 kg, dry weight 60.0 kg. 2.3 &divide; 60.0 &times; 100 = 3.8 percent.}}
 {{formula:<strong>Weight above dry weight</strong> = today&rsquo;s pre-weight &minus; dry weight.<br>Example: 62.8 &minus; 60.0 = 2.8 kg. This is larger than the gain of 2.3 kg because the patient left the last session 0.5 kg above dry weight.}}
-<p><strong>Why the percent matters.</strong> The same gain is a heavier load for a smaller person.</p>
+<p><strong>Why the percent matters.</strong> The same gain is a heavier load for a smaller person. The table shows how far apart two patients with exactly the same gain can be.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Patient (fictional)</th><th>Dry weight</th><th>Gain</th><th>Calculation</th><th>Percent of dry weight</th></tr></thead>
 <tbody>
 <tr><td>Mrs. Lim</td><td>48.0 kg</td><td>2.9 kg</td><td>2.9 &divide; 48.0 &times; 100</td><td>6.0</td></tr>
 <tr><td>Mr. Torres</td><td>80.0 kg</td><td>2.9 kg</td><td>2.9 &divide; 80.0 &times; 100</td><td>3.6</td></tr>
 </tbody></table></div>
-<p>Units commonly ask to be told when the gain passes a set percent of dry weight, often around 4 to 5 percent. Use the figure your unit sets. The nurse and nephrologist decide how much fluid to remove; you supply accurate numbers.</p>
-{{formula:<strong>Patient weight on a wheelchair scale</strong> = total reading &minus; weight of the empty chair.<br>Example: total 86.4 kg, chair 18.2 kg. 86.4 &minus; 18.2 = 68.2 kg. Record that the patient was weighed in a chair, and weigh the chair itself, not a similar one.}}
+<p>Units commonly ask to be told when the gain passes a set percent of dry weight, often around 4 to 5 percent. Use the figure your unit sets. The nurse and the nephrologist decide how much fluid to remove. Your part is to supply numbers they can trust.</p>
+{{formula:<strong>Patient weight on a wheelchair scale</strong> = total reading &minus; weight of the empty chair.<br>Example: total 86.4 kg, chair 18.2 kg. 86.4 &minus; 18.2 = 68.2 kg. Record that the patient was weighed in a chair, and weigh that chair itself, not a similar one.}}
 {{formula:<strong>Weight lost in treatment</strong> = pre-weight &minus; post-weight.<br>Example: 62.8 &minus; 60.4 = 2.4 kg. Small differences from the fluid removal shown on the machine are expected, because of food, drink, and saline given during treatment. Report a difference larger than your unit accepts.}}
+<p>Most weighing errors are small habits repeated. Each one below produces a number that looks real.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Weighing error</th><th>Effect</th><th>Prevention</th></tr></thead>
 <tbody>
 <tr><td>Scale not at zero, or standing on an uneven floor</td><td>Every weight on that shift is wrong</td><td>Check zero before the first patient and whenever the scale is moved</td></tr>
 <tr><td>Shoes, jacket, bag, or phone on at one weighing and off at the other</td><td>A false gain or loss of up to a kilogram or more</td><td>Same clothing, shoes off, pockets empty, before and after</td></tr>
 <tr><td>Patient holding a rail or a companion</td><td>A falsely low weight</td><td>Hands free once steady; use a chair scale for anyone unsteady</td></tr>
-<tr><td>Digits swapped, such as 68.2 written as 62.8</td><td>A large false change</td><td>Say the number aloud, write it at the scale, compare with the last weight</td></tr>
+<tr><td>Digits swapped, such as 68.2 written as 62.8</td><td>A large false change</td><td>Say the number aloud, write it at the scale, and compare it with the last weight</td></tr>
 <tr><td>Pre-weight entered in the post-weight space</td><td>The next gain is calculated from the wrong number</td><td>Read the column heading before you write</td></tr>
 </tbody></table></div>
-{{key:When a weight is surprising, weigh again before the patient sits down. Record what you found and tell the nurse both readings.}}
+{{key:When a weight surprises you, weigh again before the patient sits down. Record what you found and tell the nurse both readings.}}
 """),
 (4, "vitalsigns", "Accurate vital signs", "Measuring blood pressure, pulse, and temperature accurately", """
-<p>The nurse acts on the numbers you record. A technique error produces a confident, wrong number.</p>
+<p>The nurse acts on the numbers you record. A technique error does not produce a vague number. It produces a confident, wrong one, and nothing on the chart shows that it is wrong. That is why technique matters more than speed.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Measurement</th><th>Typical resting adult value</th><th>Note for dialysis</th></tr></thead>
 <tbody>
@@ -85,7 +90,8 @@ ADD = {
 <tr><td>Temperature</td><td>About 36.1 to 37.2&deg;C; fever is commonly defined as 38.0&deg;C or higher</td><td>Many dialysis patients run cooler than this. Report a rise above the patient&rsquo;s usual, and any chills, even below 38.0&deg;C</td></tr>
 <tr><td>Blood pressure</td><td>Varies by person</td><td>Use the reporting limits your unit and the nephrologist set</td></tr>
 </tbody></table></div>
-{{flow:Blood pressure, step by step|Choose the arm::Never the arm with a fistula or graft. If neither arm can be used, ask the nurse.|Seat and rest::Back supported, feet flat, legs uncrossed, commonly five minutes of quiet rest.|Choose the cuff::The size marked for the patient&rsquo;s arm.|Place it::On bare skin, the artery mark over the inner arm, the arm supported at heart level.|Measure::No talking, by patient or staff.|Record::Reading, arm, position, and time.}}
+{{flow:Blood pressure, step by step|Choose the arm::Never the arm with a fistula or graft. If neither arm can be used, ask the nurse.|Seat and rest::Back supported, feet flat, legs uncrossed, commonly five minutes of quiet rest.|Choose the cuff::The size marked for the patient&rsquo;s arm.|Place it::On bare skin, with the artery mark over the inner arm and the arm supported at heart level.|Measure::No talking, by the patient or by staff.|Record::The reading, the arm, the position, and the time.}}
+<p>Each error in the next table pushes the reading in a predictable direction. Learn the direction, and you will know what a suspicious reading may be telling you about how it was taken.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Technique error</th><th>Effect on the reading</th></tr></thead>
 <tbody>
@@ -101,7 +107,7 @@ ADD = {
 <tr><td>Oral temperature soon after a hot or cold drink</td><td>Falsely high or low. Wait the time your unit sets, commonly about 15 minutes</td></tr>
 <tr><td>Infrared thermometer held at the wrong distance or on sweaty skin</td><td>Unreliable. Follow the device instructions</td></tr>
 </tbody></table></div>
-{{stop:Do not repeat a measurement until it looks acceptable and then record only the last one. If a reading is unexpected, check the patient, repeat once with correct technique, record both readings, and tell the nurse.}}
+{{stop:Do not repeat a measurement until it looks acceptable and then record only the last one. If a reading is unexpected, check the patient, repeat it once with correct technique, record both readings, and tell the nurse.}}
 """),
 ],
 "quiz_extra": [

@@ -8,23 +8,25 @@ MODULE = {
         "Use equipment data to support the unit&rsquo;s quality program and replacement planning.",
     ],
     "big": """
-{{plain:Fault-finding is detective work. You collect the facts, form an idea of the cause, test that idea, fix what you proved, and then prove the machine is safe again. The last step is the one most often skipped, and it is the one that protects the patient.}}
+{{plain:When a jeepney will not start, a good mechanic does not begin by taking the engine apart. He asks the driver what happened, checks that there is diesel in the tank and that the battery terminals are tight, and only then reaches for his tools. When he finds the cause, he fixes that one thing, and he drives the jeepney around the block before he hands back the keys. Fault-finding on a dialysis machine follows the same path. You collect the facts, form an idea of the cause, test that idea, fix what you proved, and then prove the machine is safe again.}}
+<p>The picture has a limit. A jeepney that fails on the road strands its passengers. A dialysis machine that fails during treatment can harm the patient connected to it, and a repair can disturb parts that were working before you opened the cabinet. That is why the last step, proving the machine safe again, is not optional. It is the step most often skipped, and it is the one that protects the patient.</p>
 {{flow:A method for any fault|Gather::Exact alarm text or code, what the machine was doing, what the operator saw.|Reproduce::Can you make it happen again safely, with no patient?|Simple things first::Supplies, connections, water, power, concentrate, settings.|Divide::Use the flow diagram and the manual&rsquo;s fault tables to narrow the area.|Test one idea at a time::Change one thing and observe.|Repair::With approved parts, by the manual.|Verify and release::Run the tests the repair calls for, record, and hand over.}}
 {{cards:Key terms for this module|Fault code::The number or message the machine gives when it detects a problem.|Intermittent fault::A fault that comes and goes.|Root cause::The underlying reason, not just the part that failed.|Verification::Tests that prove the repair worked and nothing else was disturbed.|Asset register::The list of all equipment with its identity and history.|Downtime::Time a machine is unavailable for treatment.}}
 """,
     "case": {
         "title": "Three machines, one alarm",
         "html": """
-<p>On a Tuesday morning three machines on the same side of the unit give low conductivity alarms within ten minutes of each other. Machines on the other side are running normally. A colleague is already opening the first machine to change its conductivity sensor. All three machines draw acid concentrate from the same central supply line.</p>
+<p>It is Tuesday, 7:20 in the morning, and the first shift has been running for about an hour. Within ten minutes of each other, three machines on the window side of the unit give low conductivity alarms. The machines on the corridor side are running normally. The charge nurse, Ms. Grace Dizon, calls the workshop.</p>
+<p>By the time you arrive, your colleague, Mr. Arnel Garcia, 38, has a screwdriver in hand and is opening the first machine to change its conductivity sensor. You know from the station layout that all three alarming machines draw acid concentrate from the same central supply line.</p>
 """,
-        "questions": ["What do the three machines have in common?",
+        "questions": ["What do the three machines have in common, and what does that tell you?",
                       "Is replacing a sensor a sound first step?",
-                      "What would you check first, and whom would you tell?"],
+                      "What do you check first, and whom do you tell?"],
     },
     "sections": [
         ("method", "Method", "Think before you open the cabinet", """
-<p>Most alarms in daily use are not machine faults. An empty or wrong concentrate container, a kinked inlet hose, low water pressure, or a poorly seated connector accounts for many of them. Starting with the simple, shared causes saves time and avoids creating new faults by disturbing a healthy machine.</p>
-{{cards:Questions that narrow a fault quickly|One machine or several?::Several at once points to something shared: water, concentrate, power.|Always or sometimes?::Intermittent faults suggest loose connections, air, or temperature.|Since when?::What changed just before? A service visit, new supplies, a different operator.|Which phase?::Start-up, priming, treatment, or disinfection.}}
+<p>A machine raises an alarm when something it measures is out of range. That does not tell you the machine is broken; it tells you the conditions around it have changed. Most alarms in daily use are not machine faults. An empty or wrong concentrate container, a kinked inlet hose, low water pressure, or a poorly seated connector accounts for many of them. Starting with the simple, shared causes saves time, and it avoids creating new faults by disturbing a healthy machine.</p>
+{{cards:Questions that narrow a fault quickly|One machine or several?::Several at once points to something shared: water, concentrate, power.|Always or sometimes?::Intermittent faults suggest loose connections, air, or temperature.|Since when?::What changed just before? Look for a service visit, new supplies, or a different operator.|Which phase?::Start-up, priming, treatment, or disinfection.}}
 <div class="table-wrap"><table>
 <thead><tr><th>Symptom</th><th>Check first</th><th>Then consider</th></tr></thead>
 <tbody>
@@ -34,29 +36,31 @@ MODULE = {
 <tr><td>Repeated blood leak alarms with no blood seen</td><td>Air bubbles, dirty sensor window</td><td>Detector calibration</td></tr>
 <tr><td>Machine fails disinfection</td><td>Disinfectant container and pick-up</td><td>Intake valve, heater</td></tr>
 </tbody></table></div>
-{{key:Replacing parts until the alarm stops is not diagnosis. If you cannot explain why the part failed, you have not finished.}}
+{{key:Replacing parts until the alarm stops is not diagnosis. If you cannot explain why the part failed, your work is not finished.}}
 """),
         ("verify", "After repair", "What to test after a repair", """
-<p>Any repair disturbs the machine. The service manual states which tests must follow which work; the more of the fluid path or the electrical system you opened, the more you verify.</p>
+<p>Any repair disturbs the machine. To reach one part you loosen connectors, move tubing, and open seals around it, and any of those can now leak or sit slightly out of place. The service manual states which tests must follow which work. The rule of thumb is simple: the more of the fluid path or the electrical system you opened, the more you verify.</p>
 {{cards:Verification after repair|Function::The fault is gone under the conditions that produced it.|Affected parameters::Recalibrate anything the repair could have changed.|Protective systems::Re-prove alarms and automatic actions in the area you worked on.|Leaks::Run the machine and inspect every connection you touched.|Electrical safety::Retest if the repair involved mains wiring or the earth path.|Disinfection::If the fluid path was opened, disinfect and pass a residual test.}}
 {{fig:code_readiness|Readiness is built in advance. The same holds for equipment: a machine is ready because its checks were done, not because it switched on.}}
 {{flow:Release|Complete the record::Findings, work, parts, tests, instruments.|Remove your tag::Only when every required test has passed.|Hand over in person::Tell the charge nurse what was wrong, what was done, and anything to watch.|Acceptance::The nurse accepts the machine for clinical use; operators run normal pre-use checks.}}
-{{stop:If a required test cannot be completed, the machine stays out of service, however busy the unit is. Say so plainly and offer the date it will be ready.}}
+{{stop:If a required test cannot be completed, the machine stays out of service, however busy the unit is. Say so plainly, and give the date it will be ready.}}
 """),
         ("records", "Lifetime records", "The records behind every machine", """
 {{cards:The machine file|Identity::Model, serial number, asset number, purchase and installation dates, software version.|Acceptance::Tests at installation.|Preventive maintenance::Every scheduled visit, with readings.|Repairs::Every fault, cause, and action.|Safety tests::Electrical safety and protective system tests.|Disinfection and filters::Programs run and filter changes, where kept per machine.|Retirement::The decision and date the machine left service.}}
-<p>Keep the manufacturer&rsquo;s safety notices and software updates in the same system, with a note of which machines were affected and when the action was completed. Report serious equipment incidents through the facility&rsquo;s process and to the supplier.</p>
+<p>A machine file is the machine&rsquo;s memory. Without it, every fault looks like the first one. Keep the manufacturer&rsquo;s safety notices and software updates in the same system, with a note of which machines were affected and when the action was completed. Report serious equipment incidents through the facility&rsquo;s process and to the supplier.</p>
 """),
         ("quality", "Quality", "Equipment data in the quality program", """
 {{fig:dashboard|An illustrative dashboard. A few equipment indicators, tracked monthly, show whether maintenance is keeping up.}}
 {{cards:Indicators worth tracking|Maintenance on time::The share of scheduled visits completed by their due date.|Repeat faults::The same fault on the same machine within a set period.|Downtime::Days each machine was unavailable.|Treatment interruptions::Sessions stopped or moved because of equipment.|Overdue test instruments::Should always be zero.}}
 {{fig:fishbone}}
-<p>When a machine has frequent faults, parts that can no longer be obtained, or repair costs approaching the price of replacement, the technician&rsquo;s records are the evidence that supports retiring it. A good service history is also what makes a medical director confident in the machines on the floor.</p>
+<p>Equipment data turns your daily work into something the quality meeting can act on. When a machine has frequent faults, parts that can no longer be obtained, or repair costs approaching the price of replacement, your records are the evidence that supports retiring it. A good service history is also what makes a medical director confident in the machines on the floor.</p>
 {{fig:pdsa}}
 """),
     ],
     "debrief": ["""
-<p><strong>Case review.</strong> The three machines share a side of the unit and a central acid concentrate line. Three sensors do not fail in the same ten minutes; a shared supply does. Replacing a sensor is not a sound first step and risks disturbing a healthy machine. Check the central concentrate supply first: tank level, the correct concentrate connected, the valve to that side of the unit, and air in the line. Tell the charge nurse immediately that the alarms point to the concentrate supply on that side and that the machines are in bypass, so the clinical team can decide about connected patients. The colleague stops, closes the first machine, and it is checked before reuse because it was opened. Afterward, record the event and review why the supply ran low or was interrupted.</p>
+<p><strong>What the three machines have in common.</strong> They share a side of the unit and a central acid concentrate line. That tells you where to look. Three sensors do not fail in the same ten minutes; a shared supply can.</p>
+<p><strong>Is replacing a sensor a sound first step?</strong> No. It treats one machine for a problem that belongs to three, and it risks disturbing a healthy machine. Ask Mr. Garcia to stop. He closes the first machine, and it is checked before reuse because it was opened.</p>
+<p><strong>What to check first, and whom to tell.</strong> Check the central concentrate supply first: the tank level, the correct concentrate connected, the valve to that side of the unit, and air in the line. Tell Ms. Dizon at once that the alarms point to the concentrate supply on that side and that the machines are in bypass, so the clinical team can decide about the connected patients. That decision is theirs. Afterward, record the event and review why the supply ran low or was interrupted.</p>
 """],
     "skills": {
         "title": "Fault-finding and return to service",

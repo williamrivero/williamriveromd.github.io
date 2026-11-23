@@ -8,14 +8,16 @@ MODULE = {
         "Explain why every protective system is tested on a schedule, and what a protective system cannot see.",
     ],
     "big": """
-{{plain:On the blood side the machine does three things: it moves blood with a roller pump, it watches pressures to judge how the circuit is behaving, and it stands guard for two dangers, air going into the patient and blood escaping through the membrane. The guards are sensors linked to a clamp and to the pump. A guard that has never been tested is only a hope.}}
+{{plain:Think of the blood side of the machine as a jeepney route with a barker and two guards. The roller pump is the engine that keeps the blood moving. The pressure readings are the barker, calling out when the road ahead is blocked or the passengers are not boarding. The guards stand at the end of the route and watch for two dangers: air going into the patient and blood escaping through the membrane. Each guard is a sensor linked to a clamp and to the pump. A guard who has never been tested is only a hope.}}
+<p>The picture has a limit. A human guard who falls asleep may still wake at a shout. A sensor that has drifted, or a tube that is not seated in it, does nothing at all, and it gives no sign that it has stopped watching. The only way to know that a guard is awake is to test it.</p>
 {{fig:blood_circuit|The blood circuit with its monitoring points. Follow the path from the patient through the pump and dialyzer to the air trap and back.}}
 {{cards:Key terms for this module|Roller pump::A pump whose rollers squeeze the tubing to push blood forward. Also called a peristaltic pump.|Occlusion::How firmly the rollers squeeze the tubing.|Arterial pressure::Pressure before the pump. Normally negative, because the pump is pulling.|Venous pressure::Pressure after the dialyzer, on the return line. Normally positive.|Transmembrane pressure::The pressure difference across the dialyzer membrane.|Protective system::A sensor and an automatic action that together stop a hazard without waiting for a person.}}
 """,
     "case": {
         "title": "The alarm that did not sound",
         "html": """
-<p>During a drill, a nurse notices that a training tubing set on machine 3 has several small bubbles moving past the air detector, and no alarm sounds. The venous chamber on this machine has been seated by a new operator. The machine&rsquo;s last preventive maintenance visit was eight months ago; the manual specifies six.</p>
+<p>It is a Wednesday morning, and the unit is running its monthly air-alarm drill before the first patients arrive. The nurse, Ms. Rowena Villanueva, watches a training tubing set on machine 3. Several small bubbles move past the air detector. No alarm sounds.</p>
+<p>The venous chamber on this machine was seated by a new operator. The biomedical technician, Mr. Arnel Bautista, checks the service log. The machine&rsquo;s last preventive maintenance visit was eight months ago. The manual specifies six.</p>
 """,
         "questions": ["Give two possible reasons the alarm did not sound.",
                       "What is done with machine 3 now?",
@@ -23,39 +25,45 @@ MODULE = {
     },
     "sections": [
         ("pump", "Blood pump", "The blood pump", """
-<p>The blood pump never touches blood. Its rollers squeeze a thick section of tubing, the pump segment, against a curved track and push the blood ahead of them. The flow shown on the screen is calculated from pump speed and the tubing size, not measured directly.</p>
-{{cards:What makes displayed blood flow untrue|Wrong tubing size selected::The machine calculates flow for a different diameter.|Occlusion too loose::Blood slips back past the rollers; real flow is lower than shown.|Occlusion too tight::Red cells are crushed and the tubing wears.|Very negative arterial pressure::The pump segment partly collapses and delivers less than calculated.}}
+<p>The blood pump never touches blood. Its rollers press a thick section of tubing, the pump segment, against a curved track and push the blood ahead of them, the way you push toothpaste along a tube with your thumb. The flow shown on the screen is calculated from the pump speed and the tubing size. It is not measured directly.</p>
+<p>That calculation is only as true as its inputs. Anything that changes how much blood each turn of the rollers really moves makes the display wrong, and the screen will not show the difference.</p>
+{{cards:What makes displayed blood flow untrue|Wrong tubing size selected::The machine calculates flow for a different diameter.|Occlusion too loose::Blood slips back past the rollers, so the real flow is lower than shown.|Occlusion too tight::Red cells are crushed and the tubing wears.|Very negative arterial pressure::The pump segment partly collapses and delivers less than calculated.}}
 <p>Checking pump speed and occlusion by the service manual is a standard maintenance task. So is checking the pump cover switch, which must stop the pump if the cover is opened.</p>
 """),
         ("pressure", "Pressures", "Reading the pressures", """
+<p>Each pressure reading tells you about one stretch of the circuit. Read it by asking where it is measured and which way it has moved.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Pressure</th><th>Where it is measured</th><th>Usual sign</th><th>What a change can mean</th></tr></thead>
 <tbody>
-<tr><td>Arterial (pre-pump)</td><td>Between the patient and the blood pump</td><td>Negative</td><td>More negative: poor flow from the access, a kink, a clotting needle</td></tr>
-<tr><td>Venous</td><td>At the venous chamber, after the dialyzer</td><td>Positive</td><td>Higher: obstruction on the return side. Lower: disconnection, or the needle is out</td></tr>
-<tr><td>Transmembrane</td><td>Calculated from blood-side and dialysate-side pressures</td><td>Varies</td><td>Rising: membrane clotting or high fluid removal</td></tr>
+<tr><td>Arterial (pre-pump)</td><td>Between the patient and the blood pump</td><td>Negative</td><td>More negative: poor flow from the access, a kink, or a clotting needle</td></tr>
+<tr><td>Venous</td><td>At the venous chamber, after the dialyzer</td><td>Positive</td><td>Higher: an obstruction on the return side. Lower: a disconnection, or the needle is out</td></tr>
+<tr><td>Transmembrane</td><td>Calculated from the blood-side and dialysate-side pressures</td><td>Varies</td><td>Rising: membrane clotting or high fluid removal</td></tr>
 </tbody></table></div>
-<p>Pressure sensors sit inside the machine and are connected to the blood tubing through small filters called transducer protectors, which keep blood out. A wet or blocked protector gives a false reading, and blood that passes one contaminates the machine internally, which then needs decontamination by the manual&rsquo;s method.</p>
+<p>The pressure sensors sit inside the machine. They connect to the blood tubing through small filters called transducer protectors, which keep blood out. A wet or blocked protector gives a false reading. Blood that gets past one contaminates the inside of the machine, and the machine then needs decontamination by the manual&rsquo;s method.</p>
 {{stop:A venous pressure alarm does not reliably detect a needle that has slipped out, because the needle itself provides most of the resistance. Machines cannot replace a visible access. Never suggest that alarm limits make watching unnecessary.}}
 """),
         ("air", "Air and clamp", "The air detector and the venous clamp", """
-<p>Air entering a vein can be fatal. Just below the venous chamber, the return line passes through an ultrasonic sensor: sound travels well through blood and poorly through air, so a bubble changes the signal. When the sensor detects air above its limit, two things must happen at once: the blood pump stops, and a clamp closes on the return line.[[iec60601_2_16]]</p>
-{{flow:The air protection chain|Sense::The ultrasonic detector sees air or foam.|Stop::The blood pump halts.|Clamp::The venous clamp closes the return line.|Alarm::The operator is called.|Resolve::Air is removed by the clinical procedure before restart.}}
+<p>Air entering a vein can be fatal. Just below the venous chamber, the return line passes through an ultrasonic sensor. Sound travels well through blood and poorly through air, so a bubble changes the signal. When the sensor detects air above its limit, two things must happen at once: the blood pump stops, and a clamp closes on the return line.[[iec60601_2_16]]</p>
+{{flow:The air protection chain|Sense::The ultrasonic detector sees air or foam.|Stop::The blood pump halts.|Clamp::The venous clamp closes the return line.|Alarm::The operator is called.|Resolve::The clinical team removes the air by its procedure before restarting.}}
+<p>Every link in this chain can fail on its own, and a failure in any one of them breaks the whole protection.</p>
 {{cards:Why the chain can fail|Tubing not seated::The line or chamber is not properly in the sensor.|Wrong tubing set::The sensor is set up for a different tube.|Sensor dirty or drifted::Gel, dried saline, or age.|Clamp weak::It closes but does not fully stop flow.}}
-<p>You prove the chain by the service manual&rsquo;s test, typically by introducing a defined amount of air into a fluid-filled test line and confirming detection, pump stop, and a clamp that holds against a stated pressure.</p>
+<p>You prove the chain with the service manual&rsquo;s test. Typically, you introduce a defined amount of air into a fluid-filled test line, then confirm three things: the detector sees it, the pump stops, and the clamp holds against a stated pressure.</p>
 """),
         ("leak", "Blood leak", "The blood leak detector", """
-<p>If a fiber in the dialyzer breaks, blood enters the dialysate. A light beam passes through the used dialysate on its way to the drain; blood absorbs or scatters the light, and the detector alarms and stops the treatment functions the manual describes. Air bubbles, scale, and dirt on the sensor window can cause false alarms or, worse, reduce sensitivity. The detector is cleaned and its sensitivity checked at maintenance.</p>
+<p>If a fiber in the dialyzer breaks, blood enters the dialysate. On its way to the drain, the used dialysate passes through a beam of light. Blood absorbs or scatters that light, and the detector alarms and stops the treatment functions the manual describes.</p>
+<p>The same principle explains how the detector goes wrong. Air bubbles, scale, and dirt on the sensor window also block light. They can cause false alarms, or, worse, they can reduce the detector&rsquo;s sensitivity so that real blood is missed. At maintenance, you clean the detector and check its sensitivity.</p>
 {{fig:dialyzer_anatomy|A broken fiber lets blood into the dialysate that surrounds it. The blood leak detector looks for that blood in the used fluid.}}
 """),
         ("testing", "Testing", "Protective systems are only as good as their last test", """
-{{cards:Three questions for every protective system|Does it sense?::Introduce the condition by the approved test method.|Does it act?::Pump stops, clamp closes, bypass switches.|Does it tell?::Audible and visible alarm.}}
-<p>Machines test many of these functions themselves at start-up, and operators check them before each treatment. Your periodic tests go further, using defined test conditions and measuring instruments. The safety standard is built on the idea that no single fault should be able to harm the patient; an untested protective system is a hidden single fault waiting for a second one.[[iec60601]][[iec60601_2_16]]</p>
+{{cards:Three questions for every protective system|Does it sense?::Introduce the condition by the approved test method.|Does it act?::The pump stops, the clamp closes, or bypass switches.|Does it tell?::An audible and visible alarm.}}
+<p>Machines test many of these functions themselves at start-up, and operators check them before each treatment. Your periodic tests go further, with defined test conditions and measuring instruments. The safety standard is built on one idea: no single fault should be able to harm the patient. An untested protective system is a hidden single fault, waiting for a second one.[[iec60601]][[iec60601_2_16]]</p>
 {{key:Never bypass, bridge, or disable a protective system to &ldquo;get through the shift.&rdquo; A machine with a protective system that cannot be made to work is out of service.}}
 """),
     ],
     "debrief": ["""
-<p><strong>Case review.</strong> Two likely reasons: the venous line or chamber was not seated correctly in the detector, or the detector itself has lost sensitivity. Small bubbles may also be below the alarm limit by design, but that is for testing to show, not for assumption. Machine 3 is tagged out of service now. The technician reseats a correct training set and runs the air detector and clamp test from the service manual; if it fails, the sensor is cleaned, adjusted, or replaced and retested. The overdue maintenance visit matters because the periodic test is what would have found a drifting sensor. The visit is brought up to date, the gap is reported to the chief technician and charge nurse, and operators are shown again how to seat the chamber.</p>
+<p><strong>Two possible reasons the alarm did not sound.</strong> Either the venous line or chamber was not seated correctly in the detector, or the detector itself has lost sensitivity. It is also possible that bubbles this small fall below the alarm limit by design, but testing must show that. It cannot be assumed.</p>
+<p><strong>What is done with machine 3 now?</strong> Tag it out of service now. Mr. Bautista reseats a correct training set and runs the air detector and clamp test from the service manual. If the machine fails, he cleans, adjusts, or replaces the sensor and tests it again.</p>
+<p><strong>What does the overdue visit have to do with it?</strong> The periodic test is the one that would have found a drifting sensor. Bring the visit up to date, and report the gap to the chief technician and the charge nurse. Then show the operators again how to seat the chamber, so that the first possible cause cannot repeat.</p>
 """],
     "skills": {
         "title": "Verifying blood-side protective systems",

@@ -14,38 +14,48 @@
 
 ## Opening case
 
-At 06:55, a patient states her full name and date of birth. Her surname and first initial match the open treatment record, but her birth date differs. Two patients with similar names are on the roster. A coworker suggests proceeding because she usually sits there. Patient-specific setup has yet to begin.
+Monday, 06:55. Mrs. Teresita Reyes, 58, a fictional patient, sits down at Station 3 and states her full name and date of birth. Her surname and first initial match the open treatment record, but her birth date differs. Two patients with similar names are on today’s roster. The senior technician, Mr. Dante Villanueva, says, “That’s her. She always sits there. Go ahead.” Patient-specific setup has yet to begin.
 
 Before reading on, decide what you would pause, whom you would contact, and where you would document the event.
 
 ## The unit during a shift
 
-A dialysis station combines a chair or bed, a dialysis machine, an extracorporeal circuit and the patient’s treatment record. Locate clean supplies, the treatment area, the designated route for used items and waste, the emergency call point and the exit. Ask who tracks water and equipment status. Cleanliness, equipment readiness and patient verification are distinct checks.
+A dialysis station has four parts that must belong together: a chair or bed, a dialysis machine, the extracorporeal circuit (the tubing and filter that carry blood outside the body), and the patient’s treatment record. A clean chair says nothing about the machine, and a ready machine says nothing about who is sitting in it. Cleanliness, equipment readiness, and patient verification are three separate checks.
+
+Learn the room before you need it. Find the clean supplies, the treatment area, the route for used items and waste, the emergency call point, and the exit. Ask who tracks water and equipment status.
 
 | Shift stage | Technician focus |
 |---|---|
-| Opening | Receive handoff, confirm your assignment and supervision, and identify any stations or equipment on hold. |
-| Arrival | Introduce yourself, verify identity at the required point and report discrepancies. |
-| Treatment | Complete authorized support tasks and promptly report symptoms, technical exceptions or hazards. |
-| Completion | Hand off assigned observations, finish records and follow turnover procedures. |
-| End of shift | State what is ready, what is on hold and who owns follow-up. |
+| Opening | Receive the handoff, confirm your assignment and who supervises you, and find out which stations or equipment are on hold. |
+| Arrival | Introduce yourself, verify identity at the required point, and report any discrepancy. |
+| Treatment | Complete the support tasks you are authorized for, and report symptoms, technical exceptions, or hazards promptly. |
+| Completion | Hand off your assigned observations, finish the records, and follow the turnover procedure. |
+| End of shift | State what is ready, what is on hold, and who owns each follow-up. |
 
 ## Scope and escalation
 
-The technician handles assigned technical preparation, checks, turnover and records, and assists the nurse within delegated scope. The nurse handles nursing assessment and coordinates patient care and delegated duties. The nephrologist or other authorized prescriber manages prescription decisions. The designated biomedical or water-system team investigates relevant faults. Report patient-care implications to the nurse or shift lead. Confirm assignment, competency sign-off and supervision for unfamiliar tasks. Philippine and international roles differ, especially for access handling, medication workflows and treatment initiation or termination. [Philippine DOH standards](https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/10/50687) · [U.S. CMS training standard](https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-G/part-494/subpart-D/section-494.140)
+Each member of the team owns a different kind of decision. You handle assigned technical preparation, checks, turnover, and records, and you assist the nurse within delegated scope. The nurse performs the nursing assessment and coordinates patient care and delegated duties. The nephrologist or another authorized prescriber makes prescription decisions. The designated biomedical or water-system team investigates relevant faults. Anything that affects patient care goes to the nurse or shift lead, even when the cause looks technical. For an unfamiliar task, confirm your assignment, competency sign-off, and supervision first. Philippine and international roles differ, especially for access handling, medication workflows, and starting or ending treatment. [Philippine DOH standards](https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/10/50687) · [U.S. CMS training standard](https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-G/part-494/subpart-D/section-494.140)
 
-Ask the patient to state two approved identifiers such as full name and birth date, and compare both against the approved source. Follow the alternate verification process if the patient cannot state them. If either differs, hold patient-specific setup and alert the supervising nurse. Use the emergency procedure promptly if the patient reports urgent symptoms. [WHO patient identification](https://www.who.int/docs/default-source/patient-safety/patient-safety-solutions/ps-solution2-patient-identification.pdf)
+Identification works only when the patient supplies the answer. Ask the patient to state two approved identifiers, such as full name and birth date, and compare both against the approved source. If the patient cannot state them, follow the alternate verification process. If either differs, hold patient-specific setup and alert the supervising nurse. A familiar face and a usual seat are not identifiers. If the patient reports urgent symptoms, use the emergency procedure at once. [WHO patient identification](https://www.who.int/docs/default-source/patient-safety/patient-safety-solutions/ps-solution2-patient-identification.pdf)
 
 ## Worked handoff and documentation
 
-- **Situation.** I paused setup after a patient identification mismatch.
-- **Background.** Two similar names are scheduled. Patient-specific setup has yet to begin.
-- **Assessment.** The stated birth date differs from the displayed record. Verification is incomplete.
+SBAR (Situation, Background, Assessment, Recommendation) puts the problem first and your request last. Here is the report for the opening case.
+
+- **Situation.** I have paused setup because of a patient identification mismatch.
+- **Background.** Two patients with similar names are scheduled. I have not started any patient-specific setup.
+- **Assessment.** The date of birth she stated differs from the record on the screen. Verification is not complete.
 - **Recommendation.** Please verify the correct record and tell me when setup can resume.
 
-If the nurse instructs you to hold setup, repeat the instruction and ask for confirmation. After escalation, document the observation, time, action, person notified and follow-up in the appropriate approved system. Keep the unverified chart free of entries. Use approved channels and simulated or approved de-identified information for coursework. [AHRQ SBAR](https://www.ahrq.gov/teamstepps-program/curriculum/communication/tools/sbar.html) · [Philippine Data Privacy Act](https://privacy.gov.ph/data-privacy-act/)
+Notice that the report makes no guess about which patient she really is. If the nurse tells you to hold setup, repeat the instruction and wait for a yes. Then document the observation, time, action, person notified, and follow-up in the appropriate approved system. Make no entry in the unverified chart. For coursework, use approved channels and simulated or approved de-identified information. [AHRQ SBAR](https://www.ahrq.gov/teamstepps-program/curriculum/communication/tools/sbar.html) · [Philippine Data Privacy Act](https://privacy.gov.ph/data-privacy-act/)
 
-**Case debrief.** Pause, discreetly explain the verification delay, and alert the nurse. Repeat both approved checks after the correct record is identified. Confirm who releases the hold, then report the near miss using the facility process. Example entry in the approved reporting system: “06:55 — Stated date of birth differed from displayed treatment record. Held setup. Notified charge nurse at 06:56. Patient-specific setup had yet to begin.”
+**Case debrief.**
+
+**What do you pause?** All patient-specific setup. Mr. Villanueva may be right, but a usual seat at Station 3 is not an identifier. Explain the delay to Mrs. Reyes quietly, so she does not feel accused.
+
+**Whom do you contact?** The supervising nurse, with the SBAR report above. Repeat both approved checks once the correct record is found, and confirm who releases the hold.
+
+**Where do you document it?** In the approved reporting system, as a near miss under the facility process, never in the unverified chart. Example entry in the approved reporting system: “06:55 — Stated date of birth differed from displayed treatment record. Held setup. Notified charge nurse at 06:56. Patient-specific setup had yet to begin.”
 
 ## Skills checklist
 
