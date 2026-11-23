@@ -29,7 +29,7 @@ COURSE = {
     "branch_img": "dialysis-biomedical-technician-card.webp",
     "branch_role": "Specialist branch &middot; workshop",
     "branch_blurb": "How dialysis machines work inside, preventive maintenance, calibration, safety testing, troubleshooting, and return to service.",
-    "hero_alt": "A biomedical technician servicing a hemodialysis machine in a workshop.",
+    "hero_alt": "A biomedical technician at a workbench with a service manual, test meters, and an open hemodialysis machine.",
     "start_h2": "The people who keep the machines honest",
     "start_html": """
 <p>A hemodialysis (HD) machine mixes a fluid to a precise recipe, warms it to body temperature, pumps blood outside the body, removes an exact volume of water, and watches for air, blood leaks, and wrong pressures, for four hours at a time, several times a day. Each of those functions depends on sensors and pumps that drift, wear, and scale. The biomedical technician finds the drift before it reaches a patient.</p>
@@ -73,20 +73,21 @@ COURSE = {
                 ("dialysis-machine-assignment.html", "Why machine identity and location matter clinically.")],
 }
 
+# Card thumbnails cut from the circular hero of each page (prep_assets.hero_card).
 CARD_CROPS = [
-    ("dialysis-biomedical-technician-card.webp", "access-hd-blood-circuit.png", 0.4),
-    ("dialysis-biomedical-technician-01-card.webp", "dialysis-machine-categories.png", 0.5),
-    ("dialysis-biomedical-technician-02-card.webp", "code-blue-defib-safety-figure.png", 0.5),
-    ("dialysis-biomedical-technician-03-card.webp", "kidney-vs-dialyzer-comparison.webp", 0.5),
-    ("dialysis-biomedical-technician-04-card.webp", "hd-diffusion-convection.png", 0.5),
-    ("dialysis-biomedical-technician-05-card.webp", "dry-weight-determination-01-two-compartment.png", 0.5),
-    ("dialysis-biomedical-technician-06-card.webp", "access-hd-blood-circuit.png", 0.5),
-    ("dialysis-biomedical-technician-07-card.webp", "dialyzer-anatomy-cross-section.png", 0.5),
-    ("dialysis-biomedical-technician-08-card.webp", "dialysis-qapi-vs-cqi-kpi-dashboard-mock.png", 0.5),
-    ("dialysis-biomedical-technician-09-card.webp", "dialysis-hd-prescription-parameters.png", 0.5),
-    ("dialysis-biomedical-technician-10-card.webp", "dialyzer-germicide-history-matrix.png", 0.5),
-    ("dialysis-biomedical-technician-11-card.webp", "typhoon-signals-prepare.png", 0.5),
-    ("dialysis-biomedical-technician-12-card.webp", "dialysis-qapi-vs-cqi-fishbone-fmea-example.png", 0.5),
+    ("dialysis-biomedical-technician-card.webp", "dialysis-biomedical-technician-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-01-card.webp", "dialysis-biomedical-technician-01-role-and-safe-working-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-02-card.webp", "dialysis-biomedical-technician-02-electrical-electronic-fundamentals-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-03-card.webp", "dialysis-biomedical-technician-03-dialysate-water-heating-degassing-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-04-card.webp", "dialysis-biomedical-technician-04-proportioning-conductivity-bypass-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-05-card.webp", "dialysis-biomedical-technician-05-fluid-balance-ultrafiltration-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-06-card.webp", "dialysis-biomedical-technician-06-blood-pump-pressures-heparin-pump-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-07-card.webp", "dialysis-biomedical-technician-07-protective-systems-alarm-testing-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-08-card.webp", "dialysis-biomedical-technician-08-preventive-maintenance-program-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-09-card.webp", "dialysis-biomedical-technician-09-calibration-test-equipment-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-10-card.webp", "dialysis-biomedical-technician-10-disinfection-descaling-fluid-hygiene-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-11-card.webp", "dialysis-biomedical-technician-11-electrical-safety-facility-utilities-vignette-hero.png", 0.5),
+    ("dialysis-biomedical-technician-12-card.webp", "dialysis-biomedical-technician-12-troubleshooting-life-cycle-capstone-vignette-hero.png", 0.5),
 ]
 
 MODULES = [

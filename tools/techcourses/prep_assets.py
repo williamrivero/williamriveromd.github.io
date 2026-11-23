@@ -40,6 +40,8 @@ def vignette(src, dst, focus=0.5, size=2048, circle=0.88):
 
 
 def card(src, dst, focus=0.5):
+    if str(src).endswith("-vignette-hero.png"):
+        return hero_card(src, dst)
     im = Image.open(src).convert("RGB")
     w, h = im.size
     tw = int(h * 16 / 9)
@@ -51,6 +53,16 @@ def card(src, dst, focus=0.5):
         top = (h - th) // 2
         im = im.crop((0, top, w, top + th))
     im.resize((640, 360), Image.LANCZOS).save(dst, quality=80, method=6)
+
+
+def hero_card(src, dst):
+    """640x360 card cut from inside the round picture of a circular vignette hero (no white corners)."""
+    im = Image.open(src).convert("RGB")
+    w, h = im.size
+    r = 0.88 * min(w, h) / 2 * 0.97          # radius of the picture, less a small margin for the soft edge
+    cw, ch = int(2 * r * 16 / (16 ** 2 + 9 ** 2) ** 0.5), int(2 * r * 9 / (16 ** 2 + 9 ** 2) ** 0.5)
+    cx, cy = w // 2, h // 2
+    im.crop((cx - cw // 2, cy - ch // 2, cx + cw // 2, cy + ch // 2)).resize((640, 360), Image.LANCZOS).save(dst, quality=80, method=6)
 
 
 def main():

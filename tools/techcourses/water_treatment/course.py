@@ -29,8 +29,7 @@ COURSE = {
     "branch_img": "water-treatment-technician-card.webp",
     "branch_role": "Specialist branch &middot; water room",
     "branch_blurb": "Pretreatment, carbon tanks, reverse osmosis, the distribution loop, daily testing, sampling, and disinfection.",
-    "hero_file": "dialysis-water-treatment-systems-vignette-hero",
-    "hero_alt": "A water treatment technician checking the pressure gauges on a reverse osmosis unit.",
+    "hero_alt": "A water treatment technician recording readings beside the reverse osmosis unit in a dialysis water room.",
     "start_h2": "The one system every patient shares",
     "start_html": """
 <p>A dialysis patient&rsquo;s blood meets more than 300 liters of water every week, separated from it only by a thin membrane. If that water carries chlorine, metals, or bacterial fragments, every patient on the shift is exposed at the same moment. The water treatment technician is the person who prevents that.</p>
@@ -75,20 +74,21 @@ COURSE = {
                 ("hemodiafiltration-deep-dive.html", "Why ultrapure fluid matters for newer therapies.")],
 }
 
+# Card thumbnails cut from the circular hero of each page (prep_assets.hero_card).
 CARD_CROPS = [
-    ("water-treatment-technician-card.webp", "wts-treatment-train-flow.png", 0.5),
-    ("water-treatment-technician-01-card.webp", "wts-water-quality-tiers.png", 0.5),
-    ("water-treatment-technician-02-card.webp", "wts-source-water-comparison.png", 0.5),
-    ("water-treatment-technician-03-card.webp", "wts-treatment-train-flow.png", 0.5),
-    ("water-treatment-technician-04-card.webp", "wts-golden-rule-decision-flow.png", 0.5),
-    ("water-treatment-technician-05-card.webp", "wts-dual-pass-ro-detail.png", 0.5),
-    ("water-treatment-technician-06-card.webp", "wts-facility-layout-isolation-hdf-dualpass.png", 0.5),
-    ("water-treatment-technician-07-card.webp", "dialysis-hd-prescription-parameters.png", 0.5),
-    ("water-treatment-technician-08-card.webp", "dialysis-qapi-vs-cqi-kpi-dashboard-mock.png", 0.5),
-    ("water-treatment-technician-09-card.webp", "wts-hdf-pou-uf-detail.png", 0.5),
-    ("water-treatment-technician-10-card.webp", "wts-isolation-bay-loop-detail.png", 0.5),
-    ("water-treatment-technician-11-card.webp", "wts-capacity-sizing-sequence.png", 0.5),
-    ("water-treatment-technician-12-card.webp", "typhoon-signals-prepare.png", 0.5),
+    ("water-treatment-technician-card.webp", "water-treatment-technician-vignette-hero.png", 0.5),
+    ("water-treatment-technician-01-card.webp", "water-treatment-technician-01-why-dialysis-water-is-different-vignette-hero.png", 0.5),
+    ("water-treatment-technician-02-card.webp", "water-treatment-technician-02-source-water-system-design-vignette-hero.png", 0.5),
+    ("water-treatment-technician-03-card.webp", "water-treatment-technician-03-sediment-filtration-softening-vignette-hero.png", 0.5),
+    ("water-treatment-technician-04-card.webp", "water-treatment-technician-04-carbon-tanks-chlorine-control-vignette-hero.png", 0.5),
+    ("water-treatment-technician-05-card.webp", "water-treatment-technician-05-reverse-osmosis-vignette-hero.png", 0.5),
+    ("water-treatment-technician-06-card.webp", "water-treatment-technician-06-distribution-loop-storage-filters-vignette-hero.png", 0.5),
+    ("water-treatment-technician-07-card.webp", "water-treatment-technician-07-concentrates-central-delivery-vignette-hero.png", 0.5),
+    ("water-treatment-technician-08-card.webp", "water-treatment-technician-08-daily-monitoring-logs-trends-vignette-hero.png", 0.5),
+    ("water-treatment-technician-09-card.webp", "water-treatment-technician-09-chemical-microbiological-sampling-vignette-hero.png", 0.5),
+    ("water-treatment-technician-10-card.webp", "water-treatment-technician-10-disinfection-biofilm-control-vignette-hero.png", 0.5),
+    ("water-treatment-technician-11-card.webp", "water-treatment-technician-11-maintenance-replacement-validation-vignette-hero.png", 0.5),
+    ("water-treatment-technician-12-card.webp", "water-treatment-technician-12-failures-emergencies-capstone-vignette-hero.png", 0.5),
 ]
 
 MODULES = [

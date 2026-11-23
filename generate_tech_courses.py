@@ -46,6 +46,26 @@ def load(path, name):
 
 
 FIGS = load(TC / "figs.py", "tc_figs").FIGS
+_AC = load(TC / "academy_figs.py", "tc_academy_figs") if (TC / "academy_figs.py").exists() else None
+if _AC:
+    FIGS.update(_AC.FIGS)
+PLACE = _AC.PLACE if _AC else {}
+HERO_ALT = getattr(_AC, "HERO_ALT", {}) if _AC else {}
+
+
+def placed(slug, section):
+    """Figure macros for the produced Academy figures placed in this section (tools/techcourses/academy_figs.py)."""
+    return "".join(f"\n{{{{fig:{k}}}}}\n" for sec, k in PLACE.get(slug, []) if sec == section)
+
+
+def place_after_first_para(html_text, figs):
+    """Insert figure macros after the first paragraph of a section, or at its start when it has none early on."""
+    if not figs:
+        return html_text
+    i = html_text.find("</p>")
+    if 0 <= i < 1600:
+        return html_text[:i + 4] + figs + html_text[i + 4:]
+    return figs + html_text
 SHARED = load(TC / "shared.py", "tc_shared")
 for _p in PACKAGES:      # optional per-course references (refs.py) and figures (figs.py)
     if (TC / _p / "refs.py").exists():
@@ -146,7 +166,7 @@ def img_tag(file, alt, eager=False):
     if p.suffix != ".webp" and webp.exists():
         src = f'<source srcset="../images/{webp.name}" type="image/webp">'
     load_attr = 'loading="eager"' if eager else 'loading="lazy" decoding="async"'
-    return f'<picture>{src}<img src="../images/{file}" alt="{html.escape(html.unescape(alt))}"{wh} {load_attr}></picture>'
+    return f'<picture>{src}<img class="nc-fig-img" src="../images/{file}" alt="{html.escape(html.unescape(alt))}"{wh} {load_attr}></picture>'
 
 
 class Page:
@@ -349,7 +369,7 @@ def parse_md_module(src, mid, meta, page):
     fig_file = f"{meta['slug']}-teaching-diagram.png"
     enrich = meta.get("enrich", {})
     navs = enrich.get("navs", [])
-    m["big"] = page.render(enrich.get("big", ""))
+    m["big"] = page.render(enrich.get("big", "") + placed(meta["slug"], "bigpicture"))
     k = 0
     for head, lines in sections:
         if head.lower().startswith("learning objectives"):
@@ -398,7 +418,7 @@ def parse_md_module(src, mid, meta, page):
                     continue
                 else:
                     body.append(h)
-            post_html = page.render(enrich.get("post", {}).get(k, ""))
+            post_html = page.render(enrich.get("post", {}).get(k, "") + placed(meta["slug"], f"part{k}"))
             m["sections"].append({"id": f"part{k}", "nav": navs[k - 1] if k - 1 < len(navs) else title[:22],
                                   "tag": f"Lesson &middot; part {k}", "h2": md_inline(title, page),
                                   "html": pre_html + "\n" + "\n".join(body) + "\n" + post_html})
@@ -461,11 +481,12 @@ class Course:
         else:                   # natively authored module (tools/techcourses/<pkg>/mNN.py)
             raw = load(self.dir / f"m{d['id']}.py", f"tc_{self.pkg}_m{d['id']}").MODULE
             m = dict(raw)
-            m["big"] = page.render(raw.get("big", ""))
+            m["big"] = page.render(raw.get("big", "") + placed(d["slug"], "bigpicture"))
             m["case"] = dict(raw["case"])
             m["case"]["html"] = page.render(raw["case"]["html"])
             secs = [dict(zip(("id", "nav", "h2", "html"), x)) if isinstance(x, tuple) else x for x in raw["sections"]]
-            m["sections"] = [dict(x, html=page.render(x["html"]), tag=x.get("tag", f"Lesson &middot; part {i}"))
+            m["sections"] = [dict(x, html=page.render(place_after_first_para(x["html"], placed(d["slug"], x["id"]))),
+                                  tag=x.get("tag", f"Lesson &middot; part {i}"))
                              for i, x in enumerate(secs, 1)]
             m["debrief"] = [page.render(x) for x in raw.get("debrief", [])]
             m["skills"] = dict(raw["skills"])
@@ -672,7 +693,7 @@ def card_img(d):
     """Thumbnail for a module card: <slug>-card.webp, else a named site image."""
     for f in (f"{d['slug']}-card.webp", d.get("card_img", "")):
         if f and (IMAGES / f).exists():
-            return f'<img class="tc-mod-img" src="../images/{f}" alt="" loading="lazy" decoding="async" width="640" height="360">'
+            return f'<img class="tc-mod-img nc-fig-img" src="../images/{f}" alt="" loading="lazy" decoding="async" width="640" height="360">'
     return ""
 
 
@@ -906,7 +927,7 @@ def build_module(course, d, built):
                jsonld_extra={"isPartOf": {"@type": "Course", "name": C["title"], "url": f"{SITE}/guides/{course.hub}"},
                              "learningResourceType": "Study module with case, skills checklist and self-assessment",
                              "lastReviewed": C["review_date"]},
-               hero_file=d.get("hero_file") or d["slug"] + "-vignette-hero", hero_alt=m.get("image_alt") or d["title"])
+               hero_file=d.get("hero_file") or d["slug"] + "-vignette-hero", hero_alt=HERO_ALT.get(d["slug"]) or m.get("image_alt") or d["title"])
     (GUIDES / fname).write_text(N.merge_cites(pg), encoding="utf-8")
     return fname, page.refs
 
@@ -952,7 +973,7 @@ def branches_html(current):
         img = ""
         f = M.get("branch_img", "")
         if f and (IMAGES / f).exists():
-            img = f'<img src="../images/{f}" alt="" loading="lazy" decoding="async" width="640" height="360">'
+            img = f'<img class="nc-fig-img" src="../images/{f}" alt="" loading="lazy" decoding="async" width="640" height="360">'
         cur = ' aria-current="page"' if c is current else ""
         out.append(f"""    <a class="tc-branch" href="{c.hub}.html"{cur}>{img}
       <span class="tc-branch-body"><small>{M['branch_role']}</small><b>{M['title']}</b><span>{M['branch_blurb']}</span></span>
@@ -1398,7 +1419,7 @@ def build_academy():
     A = SHARED.ACADEMY
 
     def track(href, img, role, title, blurb, meta_line, live=True):
-        pic = f'<img src="../images/{img}" alt="" loading="lazy" decoding="async" width="640" height="360">' if img and (IMAGES / img).exists() else ""
+        pic = f'<img class="nc-fig-img" src="../images/{img}" alt="" loading="lazy" decoding="async" width="640" height="360">' if img and (IMAGES / img).exists() else ""
         body = f'<span class="tc-branch-body"><small>{role}</small><b>{title}</b><span>{blurb}</span><span><strong>{meta_line}</strong></span></span>'
         if live:
             return f'    <a class="tc-branch" href="{href}">{pic}\n      {body}\n    </a>'
