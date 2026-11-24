@@ -33,6 +33,8 @@ MODULE = {
 <tr><td>Facility contracting</td><td>PhilHealth provider directory</td><td>Facilities contracted per package</td><td><a href="https://www.philhealth.gov.ph/partners/providers/facilities/contracted/">Contracted facilities</a></td></tr>
 </tbody></table></div>
 <p>Package amounts and co-payment rules are deliberately not reproduced here, because they are set in the circulars and annexes and can change. Always quote them from the current official document, with its date.</p>
+<div class="tc-scene"><span class="tc-lab">At the benefits office &middot; fictional</span><p>A new clinic staff member hands you a laminated PhilHealth checklist from 2023 and asks you to use it for a recipient's post-transplant preauthorization. It does not mention the adult post-transplant package at all, because that package did not exist yet.</p><p>You open the official PhilHealth site together, download the current circular and annexes for the adult package, and write the date on the first page. The laminated checklist goes into the shredding bin, not back on the wall.</p><p class="tc-scene-take"><b>What this shows.</b> Benefit rules change. The current official document, with the date you checked it, is the only safe checklist.</p></div>
+
 """},
         {"id": "workflow", "nav": "The workflow", "tag": "Practice", "h2": "A benefits workflow that does not lose cases",
          "html": """
@@ -46,6 +48,8 @@ MODULE = {
 </ol>
 <p><strong>Separate clinical candidacy from benefit eligibility.</strong> A patient may be an excellent transplant candidate and not yet eligible for a package, or eligible for a package at a facility that is not contracted for it. Refer affordability concerns to benefits and social work early, during evaluation, so that the family can plan for medicines after discharge.</p>
 <p><strong>Transfers of follow-up.</strong> When an adult recipient moves follow-up to another facility, verify that the new facility is contracted for the adult post-transplant package, pull its current annexes, and check whether any earlier procedure claim or registry task remains open at the original facility.</p>
+<div class="tc-scene"><span class="tc-lab">In the transplant clinic &middot; fictional</span><p>Mr. Soriano, 14 months after transplant, is moving back to Iloilo and wants his follow-up there. His relative says, "The hospital there is accredited by PhilHealth, so his medicines will be covered."</p><p>You check the official list of contracted facilities with the benefits officer. The Iloilo hospital is PhilHealth-accredited, but it is not contracted for the adult post-transplant package. You document the finding and the date you checked, and you route the transfer to the transplant team and benefits staff. They agree on a plan for where his medicines and drug levels will be handled before he moves.</p><p class="tc-scene-take"><b>What this shows.</b> "Accredited" and "contracted for this package" are different checks. Verify the specific package, at the specific facility, on a specific date.</p></div>
+
 """},
         {"id": "privacy", "nav": "Privacy", "tag": "Law", "h2": "Health data and the Data Privacy Act",
          "html": """
@@ -58,6 +62,8 @@ MODULE = {
 <li>Report a suspected breach (a misdirected message, a lost document) immediately through your facility's data protection officer process.</li>
 </ul>
 <div class="tc-stop"><span class="tc-lab">Stop and report</span>Using real patient identifiers in a training exercise, or uploading records to an unapproved location, is a reportable privacy incident and a critical error in this course.</div>
+<div class="tc-scene"><span class="tc-lab">At the nurses' station &middot; fictional</span><p>A colleague is rushing to complete a preauthorization. She takes a photo of the recipient's laboratory results with her own phone and is about to send it to the benefits officer through a personal messaging app. "It's faster, and it's only Ma'am Liza."</p><p>You stop her kindly and show her the facility's approved upload route. It takes four more minutes. She deletes the photo from her phone and her cloud backup, and you both note the near miss in the facility's privacy log, as your policy requires.</p><p class="tc-scene-take"><b>What this shows.</b> Speed does not change what counts as an approved channel. Small shortcuts with health data are where privacy breaches start.</p></div>
+
 """},
         {"id": "ph", "nav": "Verification", "tag": "Currency", "h2": "Keeping this module current",
          "html": """

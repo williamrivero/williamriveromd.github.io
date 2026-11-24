@@ -19,7 +19,7 @@ MODULE = {
 """},
         {"id": "workup", "nav": "Evaluation", "tag": "Physiology", "h2": "What the medical evaluation is looking for",
          "html": """
-<p>The KDIGO candidate guideline organizes evaluation around risks that surgery or lifelong immunosuppression would make dangerous.[[txcand2020]] Knowing the reason behind each item helps you explain it to patients and spot what is overdue.</p>
+<p>The KDIGO candidate guideline organizes evaluation around risks that surgery or lifelong immunosuppression would make dangerous.[[txcand2020]] Learn the reason behind each item. It lets you explain the test to the patient, and it lets you spot what is overdue.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Domain</th><th>The physiologic worry</th><th>Nursing focus</th></tr></thead>
 <tbody>
@@ -31,7 +31,11 @@ MODULE = {
 <tr><td>Psychosocial and means</td><td>Lifelong medicines, labs and visits require support, understanding and money.</td><td>Social work review; coverage; who will help after discharge.</td></tr>
 </tbody></table></div>
 <p><strong>Tuberculosis deserves particular attention in the Philippines.</strong> The burden of latent infection is high, and reactivation under immunosuppression can be severe and atypical. Guidance from the American Society of Transplantation recommends screening every candidate for latent tuberculosis and treating latent infection, ideally starting before transplant.[[subramanian2019]] Track the result, the decision and the start date.</p>
+<div class="tc-scene"><span class="tc-lab">In the transplant clinic &middot; fictional</span><p>Mr. Garcia, 49, is almost through his evaluation. His interferon-gamma release assay came back positive two months ago. The tracker says "for ID referral." Nobody has booked it.</p><p>You call infectious disease, book the visit, and write the owner and date into the tracker. Six weeks later he starts treatment for latent tuberculosis. The committee lists him the following month instead of deferring him.</p><p class="tc-scene-take"><b>What this shows.</b> A positive screen is not the end of the task. The result needs a decision, a start date and an owner.</p></div>
+
 <p><strong>Frailty predicts outcomes independently of age.</strong> In a prospective cohort of 537 recipients, five-year survival was 91.5 percent in nonfrail, 86.0 percent in intermediately frail and 77.5 percent in frail recipients, and frailty was independently associated with about twice the risk of death.[[mcadams2015]] This is observational evidence, so it identifies risk rather than proving that improving frailty improves survival. It is still a reason to measure frailty and to refer for prehabilitation while the candidate waits.</p>
+<div class="tc-scene"><span class="tc-lab">In the transplant clinic &middot; fictional</span><p>Lola Pacing, 68, needs a hand to rise from the chair and walks slowly to the scale. Her daughter says, "She just needs the kidney, then she'll be strong again."</p><p>You record her chair-rise and walking speed, tell the nephrologist, and send a prehabilitation referral while she waits. You explain to the daughter that getting stronger now is part of getting ready, not a reason for delay.</p><p class="tc-scene-take"><b>What this shows.</b> Frailty is measured, reported and worked on during the wait. It is not a judgment made at the bedside.</p></div>
+
 <p><strong>Vaccinate before, not after.</strong> Vaccines work better before immunosuppression, and live vaccines are generally avoided after transplant. Guidance recommends completing inactivated vaccines at least two weeks and live vaccines at least four weeks before transplant whenever possible.[[danziger2019]] A candidate on the active list should have an up-to-date vaccine record.</p>
 """},
         {"id": "immunology", "nav": "Compatibility", "tag": "Physiology", "h2": "Blood groups, HLA, antibodies and the crossmatch",
@@ -42,6 +46,7 @@ MODULE = {
 <p><strong>Donor-specific antibody (DSA).</strong> cPRA describes breadth of sensitization against a population. A DSA is an antibody directed against an HLA carried by <em>a particular donor</em>. A candidate with a cPRA of 20 percent can still have a strong DSA against her husband's kidney; a candidate with 90 percent may have none against a specific offer.</p>
 <p><strong>Crossmatch.</strong> The crossmatch tests the recipient's serum against the donor's cells (or, virtually, the antibody list against the donor's typing). A strongly positive crossmatch from preformed DSA can cause hyperacute or early antibody-mediated rejection, which is why the test must use the candidate's <em>current</em> serum.</p>
 <div class="tc-keyp"><span class="tc-lab">Remember</span>cPRA tells you how hard it will be to find a kidney. DSA and crossmatch tell you whether <em>this</em> kidney is safe. The laboratory and transplant team interpret both; the nurse makes sure the sample is the right patient, the right date, and that new sensitizing events are reported.</div>
+<div class="tc-scene"><span class="tc-lab">By phone &middot; fictional</span><p>Joy hangs up and turns to you. "Mrs. Cruz's cPRA is 98 percent. She asked if that means she'll never get a kidney."</p><p>Carla answers for both of you: "It means very few donors are safe for her, so her wait is longer. It does not mean none are. The lab checks every offer against her antibody list. What she can do is keep her samples current and tell us right away about any transfusion."</p><p class="tc-scene-take"><b>What this shows.</b> Patients hear numbers as verdicts. Translate them into what they mean for the wait, and what the patient can do.</p></div>
 """},
         {"id": "sensitizing", "nav": "Sensitizing events", "tag": "Practice", "h2": "One transfusion can change everything",
          "html": """
@@ -53,6 +58,7 @@ MODULE = {
 <li>Avoid unnecessary transfusion in candidates where you have influence: flag the patient's status to the treating team, who weigh anemia treatment options.</li>
 </ul>
 <div class="tc-stop"><span class="tc-lab">Stop and report</span>Any discrepancy in a sample label, a result that seems to belong to another patient, or a crossmatch request with a mismatched identifier must stop the workflow until it is verified through the laboratory's procedure.</div>
+<div class="tc-scene"><span class="tc-lab">On the ward &middot; fictional</span><p>A listed candidate is admitted to the medical ward with a hemoglobin of 7.2 g/dL after a gastrointestinal bleed. The resident writes an order for two units of packed red cells.</p><p>You notice the "transplant candidate" flag and tell the resident before the blood is hung. The resident still transfuses, because the patient is dizzy and bleeding. You record the date and number of units, and you email the coordinator and the laboratory that evening so a fresh serum sample is drawn.</p><p class="tc-scene-take"><b>What this shows.</b> Sometimes a transfusion is necessary. What makes it safe for the future is that the program knows about it.</p></div>
 """},
         {"id": "tracker", "nav": "Readiness tracker", "tag": "Workflow", "h2": "Keeping a candidate truly ready",
          "html": """
@@ -66,6 +72,8 @@ MODULE = {
 <tr><td>Cervical cancer screen</td><td>pending</td><td>Overdue</td><td>Book this month</td><td>Clinic RN</td></tr>
 </tbody></table></div>
 <p><strong>Missed tests are a signal.</strong> A candidate who misses two appointments may have run out of money for transport, lost a job, become ill, or misunderstood. Contact them through the approved route, ask what happened, document the barrier, and offer a path back: bundled visits, local testing, social work, or a benefits review. Labeling a candidate "nonadherent" without exploring the reason closes the door on people who most need help.</p>
+<div class="tc-scene"><span class="tc-lab">By phone &middot; fictional</span><p>Mang Berto has missed two cardiology appointments. The tracker shows him in red. On the phone, he admits he lost his job as a security guard and cannot pay the tricycle and bus fare to the center.</p><p>You document the barrier and refer him to the social worker, who finds a hospital charity fund to help with his fares. You also ask the coordinator whether his echocardiogram can be done at the provincial hospital and sent. He is back on track within a month.</p><p class="tc-scene-take"><b>What this shows.</b> "Missed appointment" is a finding to investigate, not a verdict on the patient.</p></div>
+
 <p><strong>Report changes that affect safety.</strong> New infection, hospitalization, a new cancer concern, major weight change, or loss of contact for weeks may require the team to place a candidate on hold. You report; the program decides the status and communicates it.</p>
 """},
         {"id": "evidence", "nav": "Evidence", "tag": "Certainty", "h2": "What is established, and what is not",
