@@ -38,9 +38,11 @@ COURSE = {
                    "the written order. Nurses assess, verify, teach, document and escalate; prescription and medication decisions belong to the "
                    "nephrologist. Every case is fictional. Pending clinical review by a PD nephrologist and a PD nurse educator."),
     "branch_img": f"{HUB}-card.webp",
-    "branch_role": "Nursing specialty",
+    "branch_role": "Specialty subtrack &middot; registered nurses",
     "branch_blurb": ("For registered nurses in peritoneal dialysis: physiology, readiness, the catheter, CAPD and APD, monitoring, peritonitis, "
-                     "urgent problems, teaching, transitions, and quality. Continues Nephrology Nursing Module 10."),
+                     "urgent problems, teaching, transitions, and quality. Part of Nephrology Nursing; continues Module 10."),
+    "parent": ("nephrology-nursing.html", "Nephrology Nursing",
+               "The parent course. Module 10 introduces peritoneal dialysis and home dialysis nursing."),
     "academy_meta": "12 modules &middot; six weeks &middot; five skills stations",
     "hero_alt": "A peritoneal dialysis nurse kneeling beside a seated patient at a clean home exchange corner while the patient's grandson watches from the doorway.",
     "start_h2": "The nurse in the home program",

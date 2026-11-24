@@ -680,6 +680,18 @@ def build_exam():
 ENTRY_MARK = ("<!-- TN-SUBTRACK-START -->", "<!-- TN-SUBTRACK-END -->")
 
 
+def _other_specialty_cards():
+    """Cards for the other Nephrology Nursing subtracks (tools/academy/nursing_specialties.py)."""
+    import importlib.util
+    p = ROOT / "tools" / "academy" / "nursing_specialties.py"
+    if not p.exists():
+        return ""
+    spec = importlib.util.spec_from_file_location("_nursing_specialties", p)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m.cards_html()
+
+
 def entry_blocks():
     m11 = f"""{ENTRY_MARK[0]}
 <section class="section" id="transplant-nurse">
@@ -694,7 +706,7 @@ def entry_blocks():
   <div class="section-tag">Specialty subtracks</div>
   <h2>Go deeper after the core</h2>
   <div class="nc-modgrid">
-    <a class="nc-mod" href="{HUB}">
+{_other_specialty_cards()}    <a class="nc-mod" href="{HUB}">
       <span class="nc-mod-top"><span class="nc-mod-step">Specialty</span><span>12 modules &middot; about {COURSE['core_hours']} hours</span></span>
       <span class="nc-mod-title">Transplant Nurse</span>
       <span class="nc-mod-desc">Kidney transplant ward and clinic nursing, from referral and compatibility to immunosuppression, rejection and infection surveillance, PhilHealth benefits and a simulation capstone. Entry lesson: Module 11.</span>

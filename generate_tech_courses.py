@@ -519,6 +519,17 @@ ACADEMY_PAGE = "renal-care-academy.html"      # becomes academy/index.html (tool
 ACADEMY_CRUMB = f'<a href="{ACADEMY_PAGE}">Renal Care Academy</a><span class="nc-sep">›</span>'
 
 
+def course_crumb(C):
+    """Academy crumb, plus the parent course when the track is a subtrack (course.py "parent": (href, title, blurb))."""
+    p = C.get("parent")
+    return ACADEMY_CRUMB + (f'<a href="{p[0]}">{p[1]}</a><span class="nc-sep">›</span>' if p else "")
+
+
+def hub_crumb(C):
+    """Course-home crumb: a subtrack names itself after its parent, like the Transplant Nurse pages."""
+    return course_crumb(C) + (f'<span>{C["title"]}</span><span class="nc-spacer"></span>' if C.get("parent") else "")
+
+
 def published(fname):
     """Carry over a page's publish stamp; finished pages live in academy/, drafts in guides/."""
     p = ACADEMY_DIR / ("index.html" if fname == ACADEMY_PAGE else fname)
@@ -897,7 +908,7 @@ def build_module(course, d, built):
     total = len(course.mods)
     pre = f"""<div class="container">
   <div class="nc-bar">
-    {ACADEMY_CRUMB}<a href="{hub}">{C['title']}</a><span class="nc-sep">›</span><span>Module {n} of {total}</span>
+    {course_crumb(C)}<a href="{hub}">{C['title']}</a><span class="nc-sep">›</span><span>Module {n} of {total}</span>
     <span class="nc-spacer"></span>
     <span class="nc-chip nc-chip-core">{C['label']}</span>{tier_chip(d)}
   </div>
@@ -1109,6 +1120,8 @@ def build_hub(course, built):
     main = N.auto_expand(main, fname)
     live = [d for d in course.mods if built[d["id"]][0] is not None]
     rel = [(live[0]["slug"] + ".html", "Module 1", live[0]["title"], "Begin here.")] if live else []
+    if C.get("parent"):
+        rel.insert(0, (C["parent"][0], "Parent course", C["parent"][1], C["parent"][2]))
     rel.append((course.trainer + ".html", "Trainers", "Trainer and Preceptor Resource", "Hours, completion criteria, and printable checklists."))
     rel.append((course.hub + "-final-exam.html", "Examination", "End-of-Course Examination", "Questions drawn at random from every module."))
     for pkg, c in get_courses().items():
@@ -1119,7 +1132,7 @@ def build_hub(course, built):
         if meta:
             rel.append((f, "Related guide", SHARED.READING_TITLES.get(f) or html.escape(meta[0], quote=False), why))
     pre = f"""<div class="container">
-  <div class="nc-bar">{ACADEMY_CRUMB}<span class="nc-chip nc-chip-core">{C['label']}</span><span class="nc-chip">{len(course.mods)} modules</span><span class="nc-chip">Free &middot; no account</span><span class="nc-chip">English</span></div>
+  <div class="nc-bar">{hub_crumb(C)}<span class="nc-chip nc-chip-core">{C['label']}</span><span class="nc-chip">{len(course.mods)} modules</span><span class="nc-chip">Free &middot; no account</span><span class="nc-chip">English</span></div>
 </div>"""
     pg = shell(course, fname, C["page_title"], C["desc"], C["keywords"], f"{C['tag']} &middot; Course home", C["h1"], C["sub"],
                C["audience"], nav, pre, main,
@@ -1205,7 +1218,7 @@ def build_exam(course, built):
     rel = [(course.hub + ".html", "Course home", C["title"], "Syllabus and all modules."),
            (course.trainer + ".html", "Trainers", "Trainer and Preceptor Resource", "Completion criteria and printable checklists.")]
     pre = f"""<div class="container">
-  <div class="nc-bar">{ACADEMY_CRUMB}<a href="{course.hub}.html">{C['title']}</a><span class="nc-sep">›</span><span>End-of-course examination</span></div>
+  <div class="nc-bar">{course_crumb(C)}<a href="{course.hub}.html">{C['title']}</a><span class="nc-sep">›</span><span>End-of-course examination</span></div>
 </div>"""
     title = f"{C['title']}: End-of-Course Examination"
     desc = (f"A randomized end-of-course examination for the {C['title']} study series on Renal Care Matters: "
@@ -1263,7 +1276,7 @@ def build_trainer(course, built):
     rel = [(course.hub + ".html", "Course home", C["title"], "Syllabus and all modules."),
            ("dialysis-qapi-vs-cqi.html", "Related guide", "Dialysis Center Quality Management", "Where staff training fits in the unit quality program.")]
     pre = f"""<div class="container">
-  <div class="nc-bar">{ACADEMY_CRUMB}<a href="{course.hub}.html">{C['title']}</a><span class="nc-sep">›</span><span>Trainer and preceptor resource</span></div>
+  <div class="nc-bar">{course_crumb(C)}<a href="{course.hub}.html">{C['title']}</a><span class="nc-sep">›</span><span>Trainer and preceptor resource</span></div>
 </div>"""
     title = f"{C['title']}: Trainer and Preceptor Resource"
     desc = f"Proposed program hours, completion criteria, and printable skills checklists for the {C['title']} study series on Renal Care Matters."
