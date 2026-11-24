@@ -12,10 +12,17 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
         '&lt;0.5 mL/kg/h for 6 h|acute kidney disease (AKD) window::Kidney dysfunction lasting 7–90 days|fractional excretion of sodium '
         '(FENa) suggesting avid sodium retention::&lt;1% (off diuretics); fractional excretion of urea &lt;35% if on '
         'diuretics|Nephrotic-range proteinuria::&gt;3.5 g/day (UPCR &gt;3,000 mg/g)}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A 59-year-old has creatinine rising from 1.1 to 2.5 mg/dL over 10 days, new edema, hematuria and recent ibuprofen '
-                  'use for back pain. Urine microscopy shows dysmorphic erythrocytes and one red-cell cast.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The referral that arrived by text',
+          'html': '<p>On Tuesday afternoon the head nurse at your unit, Nurse Cabral, forwards a text from a general practitioner: '
+                  '&ldquo;Pls accept for HD, creatinine 2.5, edematous.&rdquo; The patient, Mr. Reyes, 59, is already in the waiting area '
+                  'with his wife.</p>\n'
+                  '<p>His creatinine was 1.1 mg/dL ten days ago. He has new ankle swelling, cola-colored urine, and back pain for which he '
+                  'has been taking ibuprofen. His blood pressure is 158/96 mm Hg. A urine sample taken in the clinic shows red cells, and '
+                  'when you look under the microscope yourself you find dysmorphic red cells and one red-cell cast. Nurse Cabral asks, '
+                  '&ldquo;Doctor, do we cannulate him today? We have a free chair on the 4 p.m. shift.&rdquo;</p>\n',
+          'questions': ['Does he need dialysis today?',
+                        'What does the urine tell you that the creatinine does not?',
+                        'What will you write in your consult note, and who owns each pending result?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -54,12 +61,19 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
                '{{call:<ul><li>Red-cell casts or dysmorphic red cells with rising creatinine</li><li>Hemoptysis, rash or purpura with '
                'AKI</li><li>Anuria (consider obstruction or a vascular event)</li><li>Bilateral small echogenic kidneys reframing '
                '&rsquo;AKI&rsquo; as advanced CKD</li></ul>}}\n')],
- 'debrief': ['<p>NSAIDs (nonsteroidal anti-inflammatory drugs) can cause hemodynamic AKI or interstitial nephritis, but they do not '
-             'produce red-cell casts. This is a glomerulonephritis until proven otherwise, and the tempo makes it rapidly progressive. '
-             'Send ANCA (antineutrophil cytoplasmic antibodies), anti-GBM (glomerular basement membrane) antibodies, complements C3 and '
-             'C4, and hepatitis B, hepatitis C and human immunodeficiency virus (HIV) serologies. Quantify protein, obtain an ultrasound '
-             'and arrange biopsy within days. Stop the NSAID. Document the working diagnosis, the differential, the biopsy plan and who '
-             'will chase each serology.</p>'],
+ 'debrief': ['<p><strong>Does he need dialysis today?</strong> Not on what you have so far. A creatinine of 2.5 mg/dL is not an '
+             'indication. Look for the things that would make it one: potassium, bicarbonate, breathlessness, and urine output. If none is '
+             'present, the free chair is not the right next step. The right next step is a diagnosis.</p>\n'
+             '<p><strong>What does the urine say?</strong> Ibuprofen can cause injury through blood flow or through interstitial '
+             'nephritis, but it does not make red-cell casts. Dysmorphic red cells and a cast mean blood crossed an inflamed glomerulus, '
+             'and a creatinine that more than doubled in ten days makes this a rapidly progressive glomerulonephritis until proven '
+             'otherwise. Stop the ibuprofen. Send antineutrophil cytoplasmic antibodies, anti-glomerular basement membrane antibodies, C3 '
+             'and C4, and hepatitis B, hepatitis C, and HIV serologies. Quantify protein with a protein-to-creatinine ratio and order a '
+             'kidney ultrasound.</p>\n'
+             '<p><strong>The note.</strong> Answer the five questions: baseline and its date, AKI rather than CKD, a glomerular lesion, '
+             'the urgency (biopsy within days, and admission if he becomes breathless or the creatinine keeps climbing), and who follows '
+             'each result by when. Tell Nurse Cabral why you are not booking the chair, and that you are not turning him away. A text '
+             'message that says &ldquo;for HD&rdquo; is a request, not a diagnosis.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Reconstructs the baseline with dates', False),
@@ -68,8 +82,8 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
                       ('Writes urgency, plan and result ownership', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which finding most strengthens a glomerular explanation?',
-           ['Dysmorphic erythrocytes and red-cell casts', 'NSAID exposure alone', 'An isolated creatinine result', 'A FENa of 2%'],
-           0,
+           ['NSAID exposure alone', 'Dysmorphic erythrocytes and red-cell casts', 'An isolated creatinine result', 'A FENa of 2%'],
+           1,
            'Sediment morphology localizes injury to the glomerular capillary wall in a way creatinine cannot.'),
           ('Which data clarify whether a creatinine change is acute?',
            ['A dated baseline and a serial trajectory',
@@ -79,23 +93,23 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
            0,
            'Change over time classifies acuity and gauges progression.'),
           ('Why does a single creatinine underestimate injury early in AKI?',
-           ['Creatinine takes 24–72 hours to reach a new steady state after GFR falls',
+           ['Muscle mass increases during illness',
             'Creatinine is secreted only during sleep',
             'The laboratory assay saturates',
-            'Muscle mass increases during illness'],
-           0,
+            'Creatinine takes 24–72 hours to reach a new steady state after GFR falls'],
+           3,
            'Production continues while filtration falls; the serum level rises gradually toward the new equilibrium.'),
           ('In which patient is cystatin C most useful for estimating GFR?',
-           ['A bilateral above-knee amputee with low muscle mass',
+           ['A patient with normal creatinine and no symptoms',
             'A well-nourished adult of average build with stable creatinine',
-            'A patient with normal creatinine and no symptoms',
+            'A bilateral above-knee amputee with low muscle mass',
             'Any patient on dialysis'],
-           0,
+           2,
            'Cystatin C is less dependent on muscle mass, so it corrects the overestimation of GFR from creatinine in sarcopenia or '
            'amputation.'),
           ('Muddy-brown granular casts most strongly suggest:',
-           ['Acute tubular injury', 'Minimal change disease', 'Prerenal azotemia with intact tubules', 'Postrenal obstruction'],
-           0,
+           ['Minimal change disease', 'Acute tubular injury', 'Prerenal azotemia with intact tubules', 'Postrenal obstruction'],
+           1,
            'Sloughed tubular epithelial cells form granular casts; prerenal states typically show a bland sediment.')],
  'terms': [('FENa', 'Fractional excretion of sodium'),
            ('AKI', 'Acute kidney injury'),

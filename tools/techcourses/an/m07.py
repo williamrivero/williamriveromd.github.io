@@ -12,11 +12,17 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
         '90-day mortality::43.9% accelerated vs 43.7% standard|Standard-arm patients never dialyzed::About 38%|Dialysis dependence at 90 '
         'days among survivors::10.4% accelerated vs 6.0% standard (RR 1.74)|Spontaneous urine output suggesting recovery::&gt;400–500 '
         'mL/day without diuretics (common practice threshold; not trial-defined)}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A patient on norepinephrine has worsening fluid overload (cumulative +9 L) and rising oxygen requirements despite '
-                  'high-dose furosemide. continuous kidney replacement therapy (CRRT) is available only at a referral center 90 minutes '
-                  'away.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The ICU wants your machine',
+          'html': '<p>A hospital 20 minutes from your unit asks for help. Mrs. Bautista, 66, has septic shock from a gallbladder '
+                  'infection. She is on norepinephrine and high-flow oxygen. Her fluid balance is now 9 liters positive, and her oxygen '
+                  'requirement keeps rising despite high-dose furosemide. The hospital has no continuous kidney replacement therapy; the '
+                  'nearest center that does is 90 minutes away by ambulance.</p>\n'
+                  '<p>The intensivist asks whether your unit&rsquo;s nurses can bring a hemodialysis machine to the ICU and &ldquo;pull '
+                  'off the fluid.&rdquo; Your biomedical technician says one portable machine and a reverse-osmosis unit are free tonight. '
+                  'Your head nurse warns that her two nurses have never done a session in an ICU.</p>\n',
+          'questions': ['Is there an indication, or is this a number?',
+                        'Should she be moved for continuous therapy, or treated where she is?',
+                        'What must be agreed before your nurses connect her?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -57,11 +63,18 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
                '{{call:<ul><li>Potassium rising despite shifting therapy</li><li>Fluid overload with escalating ventilator or oxygen '
                'requirements</li><li>Uremic pericarditis or encephalopathy</li><li>Dialyzable toxin meeting EXTRIP '
                'criteria</li></ul>}}\n')],
- 'debrief': ['<p>Refractory, organ-threatening fluid overload is a true indication. The choice is between slow, prolonged intermittent '
-             'therapy here (sustained low-efficiency dialysis or isolated ultrafiltration at a low rate, if the unit can do it) and '
-             'transfer for CRRT. Weigh how unstable the patient is to move against the local capability to dialyze gently. Document the '
-             'indication, the chosen modality and why, net fluid-removal goals per hour, and the trigger for transfer (for example, rising '
-             'vasopressor dose or failed ultrafiltration).</p>'],
+ 'debrief': ['<p><strong>The indication.</strong> Fluid overload that threatens her lungs and does not respond to diuretics is a true '
+             'indication. This is not a creatinine decision.</p>\n'
+             '<p><strong>Move her or treat her there?</strong> Weigh how unstable she is to move against how gently your team can dialyze '
+             'where she is. A 90-minute ambulance ride on norepinephrine is a real risk. If your unit can run slow, prolonged therapy '
+             '(sustained low-efficiency dialysis, or isolated ultrafiltration at a low rate), she may be safer staying. If her vasopressor '
+             'dose climbs or ultrafiltration fails, transfer becomes the better choice. Write that trigger down in advance.</p>\n'
+             '<p><strong>Before connecting.</strong> Agree in writing on who is responsible for what: the intensivist runs the '
+             'resuscitation, you write the dialysis prescription, and your nurses run the machine with an ICU nurse at the bedside. Set a '
+             'net fluid-removal goal per hour, a blood pressure floor at which ultrafiltration stops, and the water and machine checks '
+             'your technician has signed. If your nurses are not trained for this, say so. A safe plan may be one experienced nurse with '
+             'your senior technician, or no session tonight and a transfer instead. Document the indication, the modality and why you '
+             'chose it, and the goals of care discussed with her family.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Justifies the indication by physiology', False),
@@ -70,11 +83,11 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
                       ('Sets daily recovery and reassessment criteria', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What most strengthens the acute KRT indication?',
-           ['Worsening refractory organ-threatening fluid overload',
-            'A creatinine threshold in isolation',
+           ['A creatinine threshold in isolation',
+            'Worsening refractory organ-threatening fluid overload',
             'The referral hospital owning CRRT machines',
             'A urea above an arbitrary cutoff with no symptoms'],
-           0,
+           1,
            'Indications depend on the clinical complication and its response to treatment.'),
           ('What belongs in the acute KRT order review?',
            ['An indication, a feasible modality, reassessment and stopping criteria',
@@ -84,25 +97,25 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
            0,
            'The prescription must address the indication and evolve with illness and recovery.'),
           ('What did STARRT-AKI show?',
-           ['No 90-day mortality benefit from accelerated initiation, with more dialysis dependence among survivors',
+           ['That CRRT is superior to intermittent HD',
             'A 25% mortality reduction with early dialysis',
             'Harm only in surgical patients',
-            'That CRRT is superior to intermittent HD'],
-           0,
+            'No 90-day mortality benefit from accelerated initiation, with more dialysis dependence among survivors'],
+           3,
            'Accelerated starts exposed patients who would have recovered to KRT without survival benefit.'),
           ('Which patient most clearly favors CRRT over intermittent HD?',
-           ['Traumatic brain injury with raised intracranial pressure',
+           ['A patient who will be discharged tomorrow',
             'A stable ward patient with isolated hyperkalemia',
-            'A patient who will be discharged tomorrow',
+            'Traumatic brain injury with raised intracranial pressure',
             'A patient with a mature fistula and normal blood pressure'],
-           0,
+           2,
            'Gradual solute removal avoids rapid osmotic shifts that can worsen cerebral edema.'),
           ('Which sign during KRT most suggests renal recovery?',
-           ['Rising spontaneous urine output with falling interdialytic creatinine',
-            'A stable predialysis urea',
+           ['A stable predialysis urea',
+            'Rising spontaneous urine output with falling interdialytic creatinine',
             'Improving hemoglobin',
             'Fewer circuit alarms'],
-           0,
+           1,
            'Native filtration returning shows up as urine and as creatinine that no longer climbs between sessions.')],
  'terms': [('KRT', 'Kidney replacement therapy'),
            ('STARRT-AKI', 'Standard versus Accelerated Initiation of Renal Replacement Therapy in Acute Kidney Injury trial'),

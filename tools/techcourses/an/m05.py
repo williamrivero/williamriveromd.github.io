@@ -11,11 +11,17 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
         '2.0–2.9x; UO &lt;0.5 mL/kg/h for ≥12 h|Stage 3::Creatinine ≥3x or ≥4.0 mg/dL or kidney replacement therapy (KRT); UO &lt;0.3 '
         'mL/kg/h for ≥24 h or anuria ≥12 h|BICARICU-2 90-day mortality::62.1% bicarbonate vs 61.7% control (no difference)|Post-AKI '
         'review::Creatinine and urine albumin-to-creatinine ratio (UACR) at about 3 months}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>Five days after wading through floodwater, a 34-year-old has fever, calf pain, jaundice, platelets 48,000/µL, '
-                  'creatinine 4.6 mg/dL and urine output 0.3 mL/kg/h after resuscitation to a mean arterial pressure of 70. Potassium is '
-                  '3.2 mmol/L.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The flood patient sent for dialysis',
+          'html': '<p>It is the third day after a typhoon. A provincial hospital calls your unit at 7 a.m. to transfer Mr. Gatdula, 34, a '
+                  'construction worker who waded through floodwater five days ago. He has fever, calf pain, and yellow eyes. His platelets '
+                  'are 48,000/&micro;L, creatinine 4.6 mg/dL, and potassium 3.2 mmol/L. After fluids his mean arterial pressure is 70, but '
+                  'his urine output is only 0.3 mL/kg an hour. The referring doctor says, &ldquo;His potassium is low, so he does not need '
+                  'dialysis yet. Can you just see him in your clinic?&rdquo;</p>\n'
+                  '<p>Your head nurse tells you the unit is already full because patients from a flooded satellite unit have been added to '
+                  'every shift.</p>\n',
+          'questions': ['What is your working diagnosis, and what should start now?',
+                        'Does a low potassium mean dialysis can wait?',
+                        'Where should he be treated, given that your unit is full?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -56,11 +62,19 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
                '{{call:<ul><li>Oliguria persisting after perfusion is restored</li><li>Leptospirosis with hemoptysis or falling oxygen '
                'saturation (pulmonary hemorrhage)</li><li>Potassium ≥6.5 mmol/L or electrocardiogram (ECG) changes</li><li>Fluid overload '
                'with rising oxygen requirement</li></ul>}}\n')],
- 'debrief': ['<p>This is severe leptospirosis (Weil syndrome) with stage 3 AKI. Start IV penicillin G or ceftriaxone now, without waiting '
-             'for serology. Watch for pulmonary hemorrhage with serial oxygen saturation and a chest film. Avoid fluid loading beyond '
-             'euvolemia. Oliguric severe leptospirosis is an accepted indication for early dialysis in Philippine practice; arrange it '
-             'urgently rather than waiting for classic metabolic triggers. Hypokalemia reflects tubular wasting, so replace cautiously. '
-             'Document stage, plan and the follow-up owner.</p>'],
+ 'debrief': ['<p><strong>The diagnosis.</strong> This is severe leptospirosis, Weil syndrome, with stage 3 AKI. Ask the referring doctor '
+             'to start intravenous penicillin G or ceftriaxone now, without waiting for serology.</p>\n'
+             '<p><strong>Can dialysis wait?</strong> No. Leptospiral kidney injury wastes potassium, so a low value is expected and does '
+             'not mean the kidney is coping. Oliguria that persists after resuscitation in severe leptospirosis is an accepted indication '
+             'for early dialysis in Philippine practice. That recommendation rests mainly on observational data, but waiting for the '
+             'classic metabolic triggers in a patient this sick risks losing the window. Replace potassium cautiously, avoid giving fluid '
+             'beyond what he needs, and watch his oxygen saturation closely. Pulmonary hemorrhage is the complication that kills, and a '
+             'drop in oxygen saturation or hemoptysis means intensive care.</p>\n'
+             '<p><strong>Where?</strong> He needs a hospital bed with monitoring and a temporary dialysis catheter, not a clinic chair. '
+             'With jaundice, low platelets, and a risk of lung bleeding, he is not a patient for a freestanding unit at full capacity. '
+             'Arrange admission to a hospital that can dialyze him today, confirm acceptance with a named doctor, and document the stage, '
+             'the plan, and who follows him after discharge. Ask for kidney function and urine albumin to be checked at about three '
+             'months.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Stages AKI from trends', False),
@@ -69,11 +83,11 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
                       ('Drafts a post-AKI plan with named labs and owner', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What should determine the next step after initial stabilization?',
-           ['Serial perfusion, urine output, chemistry and complications',
-            'Creatinine alone',
+           ['Creatinine alone',
+            'Serial perfusion, urine output, chemistry and complications',
             'Flood exposure alone',
             'The admitting diagnosis code'],
-           0,
+           1,
            'Evolving physiology and complications determine urgency while etiologic work-up proceeds.'),
           ('What belongs in the post-AKI discharge plan?',
            ['Residual dysfunction, medication changes and named lab follow-up',
@@ -83,25 +97,25 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
            0,
            'The next clinician needs a defined action and time frame.'),
           ('Which electrolyte pattern is characteristic of early leptospirosis-associated AKI?',
-           ['Non-oliguric AKI with hypokalemia from tubular potassium wasting',
+           ['Isolated hyperphosphatemia',
             'Hyperkalemia with hypercalcemia',
             'Hypernatremia with polyuria from diabetes insipidus only',
-            'Isolated hyperphosphatemia'],
-           0,
+            'Non-oliguric AKI with hypokalemia from tubular potassium wasting'],
+           3,
            'Leptospiral injury to the proximal tubule and thick ascending limb produces sodium and potassium wasting.'),
           ('What did BICARICU-2 show in severe metabolic acidemia with stage 2–3 AKI?',
-           ['No reduction in 90-day mortality, with later and less frequent KRT in the bicarbonate group',
+           ['Higher mortality with bicarbonate',
             'A 30% mortality reduction',
-            'Higher mortality with bicarbonate',
+            'No reduction in 90-day mortality, with later and less frequent KRT in the bicarbonate group',
             'Faster kidney recovery in all patients'],
-           0,
+           2,
            'The primary outcome was neutral; the KRT finding is secondary and hypothesis-generating.'),
           ('Why does venous congestion worsen AKI?',
-           ['It lowers the transrenal perfusion gradient and raises pressure inside the encapsulated kidney',
-            'It increases glomerular filtration',
+           ['It increases glomerular filtration',
+            'It lowers the transrenal perfusion gradient and raises pressure inside the encapsulated kidney',
             'It dilates the afferent arteriole',
             'It lowers renal interstitial pressure'],
-           0,
+           1,
            'Perfusion depends on arterial minus venous pressure; a tense, encapsulated kidney compounds the drop.')],
  'terms': [('AKI', 'Acute kidney injury'),
            ('TAL', 'Thick ascending limb'),

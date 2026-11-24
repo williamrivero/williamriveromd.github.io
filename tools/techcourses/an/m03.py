@@ -9,10 +9,16 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
         'to do if it fails, the risk was never transferred. It was only described.}}\n'
         '{{cards:Key numbers|Closed-loop elements::Action, owner, deadline, fallback, read-back|Structured handoff effect (I-PASS, '
         'before-and-after)::Medical errors down 23%; preventable adverse events down 30%}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>The physician on duty (POD) calls about recurrent presyncope after a difficult hemodialysis (HD) run with 3.8 L of '
-                  'ultrafiltration. The patient wants to leave before review, and you are off-site.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The call from the 8 p.m. shift',
+          'html': '<p>You are at home when the physician on duty at your unit, Dr. Ilagan, calls. &ldquo;Doctor, Mrs. Dizon is dizzy. Can '
+                  'I let her go home?&rdquo;</p>\n'
+                  '<p>You ask for more. Mrs. Dizon, 67, finished her hemodialysis (HD) session twenty minutes ago. She gained 3.8 kilograms over the '
+                  'weekend, and the nurse removed all of it in four hours. She nearly fainted twice when she stood up. Her blood pressure '
+                  'is 88/54 mm Hg sitting. She has not eaten since breakfast. Her son is waiting outside with a tricycle, and she is '
+                  'insisting on leaving because it is getting late. Dr. Ilagan has been a physician on duty for two weeks.</p>\n',
+          'questions': ['What do you need to know before you give an instruction?',
+                        'What exactly will you ask Dr. Ilagan to do, by when, and what happens if it does not work?',
+                        'What should change before her next session?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -44,13 +50,18 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
                '{{call:<ul><li>&rsquo;Team aware&rsquo; as the only documentation</li><li>Orders given by text with no chart '
                'entry</li><li>Patient leaving against advice with no capacity assessment</li><li>Instructions with no reassessment '
                'time</li></ul>}}\n')],
- 'debrief': ['<p>Ask for orthostatic vitals, glucose, an ECG (electrocardiogram) if there is chest discomfort, the post-dialysis weight '
-             'compared with target, and access bleeding. Instruct supine positioning and a small saline bolus within protocol if '
-             'hypotensive, with a recheck at 15 minutes. If the patient is still symptomatic, or if capacity is in doubt, the patient goes '
-             'to the emergency department. Have the POD read back the plan, assess and document decision-making capacity if the patient '
-             'still insists on leaving, and record the receiving clinician. Flag the 3.8 L ultrafiltration for target-weight review at the '
-             'next session.</p>\n'
-             '{{fig:an03_b}}\n'],
+ 'debrief': ['<p><strong>What you need first.</strong> Ask for the full picture: her post-dialysis weight compared with her target, blood '
+             'pressure lying and standing, pulse, blood glucose, any chest discomfort (and an electrocardiogram if there is), and whether '
+             'the access is still bleeding. &ldquo;Dizzy&rdquo; can be volume, sugar, rhythm, or blood loss, and each has a different '
+             'answer.</p>\n'
+             '<p><strong>The instruction, closed-loop.</strong> Lay her flat, give a small saline bolus within the unit protocol if she is '
+             'still hypotensive, and recheck her blood pressure and symptoms in 15 minutes. If she is still symptomatic, or if Dr. Ilagan '
+             'is not sure she understands the risk of leaving, she goes to the emergency department, and he calls you with the name of the '
+             'receiving doctor. Ask him to read the plan back to you. If she still wants to leave, he assesses and documents her '
+             'decision-making capacity. Then he writes the plan in the chart, not only in your message thread.</p>\n'
+             '<p><strong>Before Thursday.</strong> Removing 3.8 kilograms in four hours was the trigger. Review her target weight, cap the '
+             'ultrafiltration rate, and talk with her about fluid between sessions. Then tell Dr. Ilagan what he did well: he called. New '
+             'physicians on duty learn from the attending&rsquo;s tone whether calling is welcome.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Uses SBAR or ISBAR and read-back', False),
@@ -59,11 +70,11 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
                       ('Uses an approved, privacy-compliant channel', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which detail closes the communication loop?',
-           ['Read-back by the person assigned to act',
-            'A message marked sent',
+           ['A message marked sent',
+            'Read-back by the person assigned to act',
             'A note stating &rsquo;team aware&rsquo;',
             'A copy forwarded to the billing office'],
-           0,
+           1,
            'Acknowledgement and read-back establish who will act and on what instruction.'),
           ('What should a POD communicate during an HD emergency?',
            ['Vital trends, timing, circuit and access findings, interventions and response',
@@ -73,25 +84,25 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
            0,
            'The consultant needs trend and action data to advise disposition.'),
           ('A remote consultant says &rsquo;monitor closely.&rsquo; What is missing?',
-           ['A specific action, owner, reassessment time and fallback',
+           ['The dialyzer lot number',
             'Nothing; this is adequate',
             'The patient&rsquo;s Philippine Health Insurance Corporation (PhilHealth) number',
-            'The dialyzer lot number'],
-           0,
+            'A specific action, owner, reassessment time and fallback'],
+           3,
            'Vague instructions transfer worry, not responsibility.'),
           ('What does the Data Privacy Act&rsquo;s proportionality principle require during transfer?',
-           ['Sending only the clinical data the receiver needs, via an approved channel',
+           ['Avoiding any electronic transfer',
             'Sending the entire chart to every team',
-            'Avoiding any electronic transfer',
+            'Sending only the clinical data the receiver needs, via an approved channel',
             'Obtaining a notarized consent for each phone call'],
-           0,
+           2,
            'Minimum necessary disclosure through approved channels balances continuity with privacy.'),
           ('A patient with presyncope insists on leaving. What must happen before discharge against advice?',
-           ['A documented assessment of decision-making capacity for that decision',
-            'Security restraint',
+           ['Security restraint',
+            'A documented assessment of decision-making capacity for that decision',
             'Automatic transfer without discussion',
             'Cancelling the next session'],
-           0,
+           1,
            'Capacity is decision-specific; if present, an informed refusal is documented with a safety plan.')],
  'terms': [('SBAR', 'Situation, background, assessment, recommendation'),
            ('POD', 'Physician on duty'),

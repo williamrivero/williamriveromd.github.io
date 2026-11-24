@@ -10,11 +10,17 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
         'home.}}\n'
         '{{cards:Key numbers|Time-limited trial elements::Agreed outcomes, a review date (often 1–3 months) and a named '
         'reviewer|Prognostic prompt::Surprise question: &rsquo;Would I be surprised if this patient died within 12 months?&rsquo;}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>An 84-year-old frail patient with chronic kidney disease (CKD) G5 wishes to remain at home. The family asks for '
-                  'indefinite hemodialysis (HD), while the patient is unsure whether hospital trips are worth the burden. The family asks '
-                  'you to decide privately before speaking to him.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': '&ldquo;Please decide before you talk to him&rdquo;',
+          'html': '<p>Mr. Pineda, 84, has CKD G5 and comes to your pre-dialysis clinic in a wheelchair. He has heart failure and had a '
+                  'stroke two years ago, and he spends most of the day in bed. He lives with his daughter in a second-floor '
+                  'apartment.</p>\n'
+                  '<p>Before he is wheeled in, his three children stop you in the corridor. &ldquo;Doctor, we want him on dialysis, three '
+                  'times a week, for as long as it takes. Please decide with us first, before you talk to him. He gets confused and he '
+                  'worries.&rdquo; In the room, Mr. Pineda tells you he would like to stay home and is not sure the trips to your unit '
+                  'would be worth it.</p>\n',
+          'questions': ['Can you make this decision with the family, without him?',
+                        'What can you honestly tell them about dialysis at his age and frailty?',
+                        'What are the options, and what will you document?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -48,10 +54,19 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
                '{{fig:an20_a}}\n'
                '{{call:<ul><li>Family requesting decisions be made without the patient</li><li>Capacity uncertain for the decision at '
                'hand</li><li>Uncontrolled symptoms on either pathway</li><li>No documented emergency plan</li></ul>}}\n')],
- 'debrief': ['<p>Decline to decide without him, kindly. Assess his capacity for this decision, then ask what matters most (staying at '
-             'home, family time, avoiding hospital). Explain the likely course with and without dialysis honestly. Offer either active '
-             'conservative management with a symptom plan and palliative support, or a time-limited HD trial with agreed measures and a '
-             'review date. Document his informed preference, capacity, emergency contacts and goals, and name the follow-up contact.</p>'],
+ 'debrief': ['<p><strong>Without him?</strong> No, and you can say so kindly. The decision is his unless he lacks the capacity to make it. '
+             'Assess his capacity for this specific decision, not for everything. Being confused at times does not remove it. Offer to '
+             'meet with him and the family together.</p>\n'
+             '<p><strong>What you can honestly say.</strong> Ask the surprise question privately: would you be surprised if he died within '
+             'the next year? Then explain the likely course on each path. In observational studies of older adults with many illnesses, '
+             'mostly over 75 to 80, dialysis added little or no survival compared with conservative care, and patients spent more time in '
+             'hospital. These are not randomized comparisons, and the patients who chose dialysis differed from those who did not, so '
+             'present this as what is known about people like him, not as a prediction for him.</p>\n'
+             '<p><strong>The options.</strong> Conservative kidney management is active treatment: diuretics for breathlessness, '
+             'bicarbonate, anemia treatment, medicines for itch and nausea, and palliative care at home. The other option is a '
+             'time-limited trial of hemodialysis with agreed measures, such as symptoms, time at home, and how he tolerates the travel, '
+             'and a review date one to three months away. Document his capacity, his preference in his own words, his emergency wishes, '
+             'and who will follow up, and give the family a number to call.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Uses a values question', False),
@@ -59,11 +74,11 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
                       ('Assigns a follow-up contact and review date', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which element makes a dialysis trial time limited?',
-           ['Agreed outcomes and a review date',
-            'An open-ended treatment order',
+           ['An open-ended treatment order',
+            'Agreed outcomes and a review date',
             'A promise to avoid future discussion',
             'A fixed number of sessions with no review'],
-           0,
+           1,
            'Explicit measures and timing support informed reassessment of benefit and burden.'),
           ('What is part of comprehensive conservative care?',
            ['Active symptom treatment and planned follow-up',
@@ -73,25 +88,25 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
            0,
            'Conservative management remains an active clinical pathway.'),
           ('The family asks the physician to decide privately before speaking to the patient. Best response?',
-           ['Assess the patient&rsquo;s capacity and involve him in the decision',
+           ['Start dialysis to avoid conflict',
             'Agree and inform the patient afterward',
             'Defer to the eldest family member',
-            'Start dialysis to avoid conflict'],
-           0,
+            'Assess the patient&rsquo;s capacity and involve him in the decision'],
+           3,
            'A capacitated patient holds the decision; family support is welcome but not a substitute.'),
           ('What does observational evidence suggest for very elderly patients with high comorbidity?',
-           ['Dialysis may confer little survival advantage over conservative care, with more hospital time',
+           ['Conservative care is always shorter-lived by years',
             'Dialysis always doubles survival',
-            'Conservative care is always shorter-lived by years',
+            'Dialysis may confer little survival advantage over conservative care, with more hospital time',
             'Randomized trials prove equivalence'],
-           0,
+           2,
            'These are non-randomized data with selection bias; they inform, not decide.'),
           ('Capacity assessment is best described as:',
-           ['Decision-specific: understanding, retaining, weighing and communicating a choice',
-            'A global judgment based on age',
+           ['A global judgment based on age',
+            'Decision-specific: understanding, retaining, weighing and communicating a choice',
             'A score on any cognitive test',
             'Automatically absent in dialysis patients'],
-           0,
+           1,
            'Capacity is assessed for the particular decision at the particular time.')],
  'terms': [],
  'readings': [('hemodialysis-elderly.html', 'Hurt Without Harm: A Guide to Safe Pain Relief in Kidney Disease'),

@@ -12,10 +12,16 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
         '{{cards:Key numbers|Anemia definition (KDIGO 2026)::hemoglobin (Hb) &lt;13 g/dL men; &lt;12 g/dL women|Severe iron '
         'deficiency::Ferritin &lt;45 ng/mL|ESA consideration::Non-dialysis: Hb ≤8.5–10 g/dL by symptoms; hemodialysis (HD): Hb ≤9–10 '
         'g/dL|Alkali therapy consideration (KDIGO 2024)::Serum bicarbonate &lt;18 mmol/L}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A patient with CKD G4 reports fatigue and poor intake. Hemoglobin is 8.9 g/dL, ferritin 780 ng/mL, transferrin '
-                  'saturation (TSAT) 14% and C-reactive protein (CRP) elevated during a recent pneumonia.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'Hemoglobin 8.9 after pneumonia',
+          'html': '<p>At the monthly review on your unit, the head nurse flags Mr. Fajardo, 71, who has been on hemodialysis for two '
+                  'years. He spent last week in hospital with pneumonia. His hemoglobin is 8.9 g/dL, down from 10.5. Ferritin is 780 '
+                  'ng/mL, transferrin saturation 14%, and his C-reactive protein is high.</p>\n'
+                  '<p>The standing order calls for 100 mg of intravenous iron every session when transferrin saturation is below 20%, and '
+                  'the nurse has an ampoule ready. The physician on duty suggests doubling his erythropoietin dose. Mr. Fajardo tells you '
+                  'he is tired and has barely eaten since he was discharged.</p>\n',
+          'questions': ['Is he iron deficient?',
+                        'Should the nurse give the iron today, and should the erythropoietin be doubled?',
+                        'What else needs checking before you call this the anemia of kidney disease?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -55,10 +61,18 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                '{{call:<ul><li>Falling hemoglobin with positive stool occult blood</li><li>Ferritin very high with low TSAT during '
                'infection (hold IV iron)</li><li>Hypercalcemia on calcitriol or calcium-based binders</li><li>Calciphylaxis (painful '
                'violaceous skin lesions)</li></ul>}}\n')],
- 'debrief': ['<p>High ferritin with low TSAT during infection means hepcidin is locking iron away, not that iron stores are replete. Hold '
-             'IV iron until the infection settles, check for occult blood loss, B12 and folate, and recheck iron indices in 4–6 weeks. If '
-             'hemoglobin stays at or below 9–10 g/dL with symptoms after infection and iron are addressed, discuss starting an ESA at a '
-             'low dose. Involve the dietitian for intake and schedule reassessment.</p>'],
+ 'debrief': ['<p><strong>Is he iron deficient?</strong> Not in the way the order assumes. A high ferritin with a low transferrin '
+             'saturation during an infection means hepcidin is locking iron inside his cells. His stores are not full, but iron given now '
+             'cannot reach his bone marrow.</p>\n'
+             '<p><strong>Today&rsquo;s iron, and the erythropoietin.</strong> Hold the intravenous iron while the infection is active, and '
+             'write the reason in the order so the next shift does not give it. Do not double the erythropoietin on one value taken during '
+             'an illness. Inflammation blunts the response, and chasing hemoglobin with high doses is how patients end up on large doses '
+             'while their iron is unavailable. Recheck hemoglobin and iron indices in four to six weeks, after the infection has '
+             'settled.</p>\n'
+             '<p><strong>What else.</strong> Look for blood loss: ask about black stools, check stool occult blood, and look for bleeding '
+             'from the access. Check B12 and folate. Ask the renal dietitian to see him this week, because poor intake after an admission '
+             'makes everything worse. Then review the standing order itself. A rule that runs on transferrin saturation alone, with no '
+             'ferritin, no CRP, and no stop for infection, will do this again to the next patient.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Interprets anemia data with inflammation in context', False),
@@ -66,11 +80,11 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                       ('Documents symptom and nutrition goals', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Why review transferrin saturation with ferritin?',
-           ['Inflammation can raise ferritin despite restricted iron availability',
-            'Ferritin directly measures red cell production',
+           ['Ferritin directly measures red cell production',
+            'Inflammation can raise ferritin despite restricted iron availability',
             'TSAT determines phosphate control',
             'TSAT is unaffected by iron status'],
-           0,
+           1,
            'The two measures describe different aspects of iron availability and must be read alongside illness.'),
           ('How should CKD-MBD labs guide reassessment?',
            ['Interpret calcium, phosphate and PTH trends together',
@@ -80,22 +94,22 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
            0,
            'Trends and related measures support a coordinated plan.'),
           ('Per KDIGO 2026, what is first-line therapy for renal anemia once correctable causes are addressed?',
-           ['An ESA, with HIF-PHIs as alternatives in selected situations', 'A HIF-PHI for all patients', 'Blood transfusion', 'Androgens'],
-           0,
+           ['Androgens', 'A HIF-PHI for all patients', 'Blood transfusion', 'An ESA, with HIF-PHIs as alternatives in selected situations'],
+           3,
            'Long-term cardiovascular and thrombotic uncertainty keeps HIF-PHIs second line.'),
           ('In which patient should a HIF-PHI be avoided?',
-           ['A patient with active malignancy or a recent thrombotic event',
+           ['A patient without refrigeration at home',
             'A patient who prefers oral medication',
-            'A patient without refrigeration at home',
+            'A patient with active malignancy or a recent thrombotic event',
             'A patient with ESA hyporesponsiveness'],
-           0,
+           2,
            'HIF stabilization may promote angiogenesis and thrombosis; KDIGO advises against use in these settings.'),
           ('Why did trials targeting normal hemoglobin with ESA change practice?',
-           ['They showed more cardiovascular events or stroke without clear benefit',
-            'They showed lower mortality',
+           ['They showed lower mortality',
+            'They showed more cardiovascular events or stroke without clear benefit',
             'They showed ESAs cause iron overload',
             'They showed no change in blood pressure'],
-           0,
+           1,
            'CHOIR and TREAT reported harm with higher targets, so treatment aims to avoid symptoms and transfusion rather than normalize '
            'hemoglobin.')],
  'terms': [('CKD', 'Chronic kidney disease'),

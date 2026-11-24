@@ -9,10 +9,16 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
         'before typhoon season decides who is safe when the roads close.}}\n'
         '{{cards:Key numbers|Emergency card contents::Prescription, access, dry weight, serologies, medicines, contacts|Pre-storm '
         'action::Extra or early sessions before forecast landfall}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A typhoon closes a satellite unit. Three patients have missed sessions, including one with dyspnea, and an alternate '
-                  'unit has two slots tomorrow.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The satellite unit that went under water',
+          'html': '<p>A typhoon passed overnight. At 6 a.m., your head nurse calls: the satellite unit in the next town is flooded and '
+                  'closed, probably for a week. Its 30 patients normally dialyze across three shifts. Three of them have already missed a '
+                  'session. One of them, Mr. Bernardo, has no urine output and told the nurse on the phone that he is breathless and '
+                  'cannot lie flat.</p>\n'
+                  '<p>Your main unit can add two extra slots tomorrow morning. The roads to the hospital are partly flooded, and two '
+                  'patients cannot be reached by phone.</p>\n',
+          'questions': ['Who is seen first, and is that a slot decision?',
+                        'How do you decide who gets the two slots?',
+                        'How will you know when every patient is safe?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -46,10 +52,20 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
                '{{fig:an22_a}}\n'
                '{{call:<ul><li>Dyspnea or chest pain after missed sessions</li><li>Anuric patient missing ≥2 sessions</li><li>Patient '
                'unreachable after the event</li><li>Evacuation-center fever or diarrhea cluster among dialysis patients</li></ul>}}\n')],
- 'debrief': ['<p>Send the dyspneic patient for emergency assessment now; that is not a slot decision. Triage the other two by days since '
-             'last session, residual urine output and potassium history, confirm acceptance and transport with the alternate unit, and '
-             'give interim advice (emergency diet, binder, warning signs). Keep the deferred list updated until every patient has been '
-             'dialyzed or formally transferred.</p>'],
+ 'debrief': ['<p><strong>First.</strong> Mr. Bernardo goes to emergency assessment now. Breathlessness and orthopnea in an anuric patient '
+             'who has missed dialysis can mean pulmonary edema or dangerous potassium. That is not a decision about a slot tomorrow. '
+             'Arrange transport and confirm that the hospital will accept him.</p>\n'
+             '<p><strong>The two slots.</strong> Triage the others by days since their last session, whether they still make urine, and '
+             'their potassium history. Potassium is the most immediate danger, and anuric patients after the long gap are at highest risk. '
+             'Confirm acceptance and transport for each patient you place. Give everyone waiting interim advice: the emergency '
+             'low-potassium, low-salt, low-fluid diet, their potassium binder if they have one, and the warning signs (breathlessness, '
+             'chest pain, weakness) that mean going to an emergency department instead of waiting.</p>\n'
+             '<p><strong>Every patient safe.</strong> Keep a deferred-treatment list with every one of the 30 names. Remove a name only '
+             'when that patient has been dialyzed or formally transferred. Keep calling the two who cannot be reached, and ask the '
+             'barangay health office or the family to check on them. The evidence here comes from disaster experience rather than trials, '
+             'but it is consistent: missed treatments after storms were associated with more emergency visits and admissions. After the '
+             'water recedes, review why three patients missed sessions before you knew, and schedule extra sessions before the next '
+             'forecast landfall.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Prioritizes by clinical risk', False),
@@ -57,11 +73,11 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
                       ('Closes the follow-up list', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What determines disposition during an outage?',
-           ['Clinical urgency and confirmed receiving capability',
-            'Routine appointment order alone',
+           ['Routine appointment order alone',
+            'Clinical urgency and confirmed receiving capability',
             'Who returns the first phone call',
             'Alphabetical order'],
-           0,
+           1,
            'Safe continuity depends on risk-based triage and verified handoff.'),
           ('When can the unit close an outage tracker entry?',
            ['When treatment has resumed or disposition and acceptance are confirmed',
@@ -71,25 +87,25 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
            0,
            'Confirmed disposition closes the continuity gap.'),
           ('Which patient is at highest risk after missed sessions?',
-           ['An anuric patient with prior hyperkalemia who missed two sessions',
+           ['A peritoneal dialysis (PD) patient with normal drainage',
             'A patient with 1 L/day urine output who missed one session',
             'A newly started incremental hemodialysis (HD) patient with good urine output',
-            'A peritoneal dialysis (PD) patient with normal drainage'],
-           0,
+            'An anuric patient with prior hyperkalemia who missed two sessions'],
+           3,
            'No urine output and potassium history predict rapid, dangerous accumulation.'),
           ('What is the most useful pre-storm intervention?',
-           ['Scheduling extra or early dialysis before landfall',
+           ['Increasing fluid intake',
             'Stopping all medications',
-            'Increasing fluid intake',
+            'Scheduling extra or early dialysis before landfall',
             'Postponing sessions until after the storm'],
-           0,
+           2,
            'A buffer session lowers potassium and fluid before access to care is cut.'),
           ('Why include serologies on the emergency card?',
-           ['Receiving units need hepatitis B status to place patients safely',
-            'To speed Philippine Health Insurance Corporation (PhilHealth) claims',
+           ['To speed Philippine Health Insurance Corporation (PhilHealth) claims',
+            'Receiving units need hepatitis B status to place patients safely',
             'To avoid the need for a prescription',
             'To replace the dry weight'],
-           0,
+           1,
            'Hepatitis B segregation is an infection-prevention requirement in every unit.')],
  'terms': [],
  'readings': [('typhoon-disaster-preparedness-dialysis.html', 'Typhoon & Disaster Preparedness for Dialysis Patients'),

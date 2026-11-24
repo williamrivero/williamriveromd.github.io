@@ -12,10 +12,16 @@ MODULE = {'image_alt': 'A cardiac monitor, an ampule and syringe, and a nebulize
         'soluble insulin + 25 g glucose; then 10% glucose infusion if pre-treatment glucose &lt;7 mmol/L (126 mg/dL); monitor glucose ≥6 '
         'h|Salbutamol nebulized::10–20 mg (10 mg if ischemic heart disease); adjunct only|Hyponatremia correction limit::≤8–10 mmol/L per '
         '24 h (≤8 if high risk); ≤18 mmol/L per 48 h|Winter&rsquo;s formula::Expected pCO₂ = 1.5 x HCO₃⁻ + 8 ± 2}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A maintenance hemodialysis (HD) patient with weakness has potassium 7.1 mmol/L and a broad QRS after missing two '
-                  'sessions. The next session is booked for tomorrow.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The man who missed Friday and Monday',
+          'html': '<p>Mr. Ocampo, 62, dialyzes on Mondays, Wednesdays, and Fridays. He missed Friday because his tricycle driver was sick, '
+                  'and he missed Monday because he had no money for the fare. On Tuesday morning his son brings him to your unit because '
+                  '&ldquo;his legs are weak.&rdquo; He makes no urine.</p>\n'
+                  '<p>The nurse draws blood while the physician on duty, Dr. Salonga, records an electrocardiogram. The potassium is 7.1 '
+                  'mmol/L. The QRS is wide. Dr. Salonga calls you: &ldquo;Doctor, there is no free chair until his regular slot tomorrow. '
+                  'Should I give calcium and send him home with a binder?&rdquo;</p>\n',
+          'questions': ['What happens in the next ten minutes?',
+                        'Can his dialysis wait until tomorrow?',
+                        'What will stop this from happening again?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -61,11 +67,20 @@ MODULE = {'image_alt': 'A cardiac monitor, an ampule and syringe, and a nebulize
                '{{call:<ul><li>Wide QRS, bradycardia or sine wave with high potassium</li><li>Hyponatremia with seizure or reduced '
                'consciousness</li><li>Urine output surging during hyponatremia correction</li><li>Anion gap acidosis with an osmolal gap '
                '(toxic alcohol; consider EXTRIP criteria and urgent HD)</li></ul>}}\n')],
- 'debrief': ['<p>This is an emergency. Start continuous cardiac monitoring and give 30 mL 10% calcium gluconate, repeated until the QRS '
-             'narrows. Then give 10 units insulin with 25 g glucose, salbutamol 10–20 mg nebulized and a potassium binder. Arrange '
-             'dialysis today, because shifting agents last only hours and an anuric patient cannot excrete potassium. Repeat ECG and '
-             'potassium at 1–2 hours and glucose hourly for 6 hours. After dialysis, explore why sessions were missed (transport, cost, '
-             'symptoms) and fix the barrier.</p>'],
+ 'debrief': ['<p><strong>The next ten minutes.</strong> This is an emergency, and Dr. Salonga should treat it as one. He puts Mr. Ocampo '
+             'on a cardiac monitor and gives 30 mL of 10% calcium gluconate intravenously over 5 to 10 minutes, repeated if the QRS stays '
+             'wide. Then he gives 10 units of soluble insulin with 25 g of glucose, nebulized salbutamol as an adjunct, and a potassium '
+             'binder.</p>\n'
+             '<p><strong>Can dialysis wait?</strong> No. Potassium kills by making the heart cell&rsquo;s resting potential less negative, '
+             'until conduction slows and the QRS widens. Calcium raises the threshold and restores that gap, but it does not lower '
+             'potassium. Insulin and salbutamol only push potassium into the cells, for about four to six hours. An anuric man cannot '
+             'excrete it. He needs dialysis today. Find the chair. Ask the head nurse to move a stable patient&rsquo;s start time, add an '
+             'extra session at the end of the day, or transfer him to a hospital that can dialyze him now. Do not send him home. Repeat '
+             'the electrocardiogram and potassium at 1 to 2 hours, and check glucose every hour for at least 6 hours, because insulin can '
+             'cause hypoglycemia after the glucose wears off.</p>\n'
+             '<p><strong>Next time.</strong> The cause was transport and money, not his kidneys. Ask the social worker or head nurse to '
+             'look at fare support, a transport list, or a schedule closer to his home. Write in his chart that a missed session is a '
+             'reason to call him the same day.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Recognizes ECG toxicity', False),
@@ -74,11 +89,11 @@ MODULE = {'image_alt': 'A cardiac monitor, an ampule and syringe, and a nebulize
                       ('Writes a sodium-correction ceiling and rescue plan', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which disposition is appropriate for potassium 7.1 mmol/L with a broad QRS in an HD patient?',
-           ['Emergency monitored management and same-day dialysis',
-            'Wait for the routine session',
+           ['Wait for the routine session',
+            'Emergency monitored management and same-day dialysis',
             'Repeat an outpatient sample tomorrow',
             'Give oral binder and discharge'],
-           0,
+           1,
            'ECG toxicity signals immediate arrhythmia risk and requires urgent stabilization and definitive removal.'),
           ('What must be anticipated when correcting chronic severe hyponatremia?',
            ['Overcorrection risk and a serial monitoring plan with a rescue strategy',
@@ -88,23 +103,23 @@ MODULE = {'image_alt': 'A cardiac monitor, an ampule and syringe, and a nebulize
            0,
            'Duration, risk factors and an evolving water diuresis determine safety.'),
           ('Why is a 10% glucose infusion added after insulin-glucose when baseline glucose is below 7 mmol/L?',
-           ['To prevent delayed hypoglycemia, which can occur hours after insulin',
+           ['To raise the calcium level',
             'To push more potassium into cells',
             'To treat hyponatremia',
-            'To raise the calcium level'],
-           0,
+            'To prevent delayed hypoglycemia, which can occur hours after insulin'],
+           3,
            'Insulin&rsquo;s hypoglycemic effect outlasts the initial glucose bolus, especially in chronic kidney disease (CKD) with '
            'reduced insulin clearance.'),
           ('Which treatment actually removes potassium from the body?',
-           ['Hemodialysis', 'Calcium gluconate', 'IV insulin with glucose', 'Nebulized salbutamol'],
-           0,
+           ['IV insulin with glucose', 'Calcium gluconate', 'Hemodialysis', 'Nebulized salbutamol'],
+           2,
            'Calcium protects the membrane, insulin and salbutamol shift potassium; only gut, kidney or dialysis remove it.'),
           ('HCO₃⁻ 12 mmol/L with pCO₂ 38 mmHg indicates:',
-           ['Metabolic acidosis with a concomitant respiratory acidosis',
-            'Appropriate respiratory compensation',
+           ['Appropriate respiratory compensation',
+            'Metabolic acidosis with a concomitant respiratory acidosis',
             'Primary respiratory alkalosis',
             'Pure metabolic alkalosis'],
-           0,
+           1,
            'Winter&rsquo;s formula predicts pCO₂ of 26 ± 2; a value of 38 means ventilation is inadequate.')],
  'terms': [('ECG', 'Electrocardiogram'),
            ('Na-K ATPase', 'Sodium-potassium pump'),

@@ -12,10 +12,18 @@ MODULE = {'image_alt': 'A physician takes a phone call at a corridor window, loo
         '{{cards:Key numbers|AN review frequency, maintenance hemodialysis (HD)::At least monthly, preferably face to face|Philippine '
         'Health Insurance Corporation (PhilHealth) HD sessions per year::Up to 156 (3 per week x 52 weeks)|PhilHealth HD package rate::PHP '
         '6,350 per session since October 9, 2024; verify current rate on the date of service}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A freestanding clinic offers you an HD panel. You can cover weekdays, and its night POD has been told to message you '
-                  'directly. The clinic cannot name a backup consultant or an accepting hospital.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The panel that starts on Monday',
+          'html': '<p>Bagong Pag-asa Dialysis Center, a freestanding unit in Bulacan with 18 stations and three shifts, asks you to take '
+                  'over a panel of 22 patients. Their attending nephrologist emigrated last month. The administrator, Ms. Lagman, wants '
+                  'you to start on Monday.</p>\n'
+                  '<p>You can round on weekdays. The night shift runs until 11 p.m., and the physician on duty for that shift has been '
+                  'told to &ldquo;just message the doctor&rdquo; if something happens. When you ask who covers you when you cannot answer, '
+                  'Ms. Lagman says, &ldquo;The last doctor never needed a backup.&rdquo; Nobody can tell you which hospital accepts their '
+                  'emergency transfers. The License to Operate on the wall expired three weeks ago; she says the renewal is &ldquo;being '
+                  'processed.&rdquo;</p>\n',
+          'questions': ['Would you start on Monday? What must be in writing first?',
+                        'What will the physician on duty do at 9 p.m. if you do not answer?',
+                        'Which of these gaps belong to you, and which belong to the facility?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -54,10 +62,19 @@ MODULE = {'image_alt': 'A physician takes a phone call at a corridor window, loo
                '{{call:<ul><li>No named backup consultant</li><li>No written transfer agreement</li><li>POD told to &rsquo;message the '
                'doctor&rsquo; with no time limit before escalation</li><li>License to Operate expired or service capability not covering '
                'the patients enrolled</li></ul>}}\n')],
- 'debrief': ['<p>Decline to start until three things are in writing: primary and backup cover with response times, an escalation rule for '
-             'unanswered calls (for example, backup at 10 minutes and emergency transfer at 20 for an unstable patient), and a confirmed '
-             'accepting hospital with a named contact. Review the License to Operate and service capability with the facility head, and '
-             'file the credential packet. Your clinical skill cannot protect a patient whose call never reaches a responder.</p>'],
+ 'debrief': ['<p><strong>Would you start on Monday?</strong> Not on these terms. Three things must be in writing before you accept a '
+             'single patient: who covers when you cannot answer, with response times; an escalation rule the physician on duty can follow '
+             'without you (for example, the backup is called at 10 minutes, and an unstable patient goes to the emergency transfer at 20); '
+             'and a named accepting hospital with a contact person. Ask to see the renewal application for the License to Operate and the '
+             'unit&rsquo;s service capability. File your own credential packet: identification card, appointment and privilege letter, PSN '
+             'or chapter endorsement, and PhilHealth accreditation status.</p>\n'
+             '<p><strong>What happens at 9 p.m.?</strong> As things stand, the physician on duty sends a message and waits. That is the '
+             'conduction failure this module describes: a call that goes to a phone nobody answers. Before Monday, walk through one '
+             'simulated night call with the head nurse and the physician on duty, from the first symptom to a patient in an '
+             'ambulance.</p>\n'
+             '<p><strong>Whose gaps are these?</strong> The license and the transfer agreement belong to the facility and its medical '
+             'director. The coverage arrangement and your credentials belong to you. You can offer to start once both sides are in '
+             'writing, and you can say why: twenty-two patients are about to depend on a promise that someone will answer.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Verifies the credential packet against originals', False),
@@ -66,11 +83,11 @@ MODULE = {'image_alt': 'A physician takes a phone call at a corridor window, loo
                       ('States which role is acting (AN, Medical Director or Clinical Head)', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What should be settled before the first shift?',
-           ['Written primary, backup and transfer arrangements',
-            'A standing saline order alone',
+           ['A standing saline order alone',
+            'Written primary, backup and transfer arrangements',
             'The monthly billing deadline',
             'A list of preferred dialyzer brands'],
-           0,
+           1,
            'An order set cannot allocate responsibility when a clinician is unavailable or a patient needs transfer.'),
           ('Which document defines whether the facility may operate an HD service?',
            ['The facility&rsquo;s applicable DOH License to Operate',
@@ -80,25 +97,25 @@ MODULE = {'image_alt': 'A physician takes a phone call at a corridor window, loo
            0,
            'A facility license, physician credentials and payer accreditation establish different authorities.'),
           ('Under the PSN 2024 HD guidelines, how often should the AN review a maintenance HD patient?',
-           ['At least monthly, preferably face to face, with telemedicine when necessary',
+           ['Only at initiation and annual renewal',
             'Only when the POD calls',
             'Every six months',
-            'Only at initiation and annual renewal'],
-           0,
+            'At least monthly, preferably face to face, with telemedicine when necessary'],
+           3,
            'Section 1.2 sets a minimum monthly consultation; documentation of each review supports continuity and claims integrity.'),
           ('A clinic&rsquo;s night POD cannot reach you during an emergency. What design element was missing?',
-           ['A time-limited escalation rule to a named backup and an emergency transfer pathway',
+           ['A larger dialysate inventory',
             'A second copy of the HD prescription',
-            'A larger dialysate inventory',
+            'A time-limited escalation rule to a named backup and an emergency transfer pathway',
             'A quarterly staff meeting'],
-           0,
+           2,
            'Escalation must not depend on one person answering; a time trigger converts an unanswered call into an action.'),
           ('One physician serves as both the AN and the unit&rsquo;s Medical Director. What should the record show?',
-           ['Which role is acting for each decision',
-            'Nothing, since the roles are identical',
+           ['Nothing, since the roles are identical',
+            'Which role is acting for each decision',
             'Only the Medical Director signature',
             'Only the PhilHealth accreditation number'],
-           0,
+           1,
            'Individual patient care and facility oversight carry different duties; naming the acting role keeps accountability clear.')],
  'terms': [('PRC', 'Professional Regulation Commission'),
            ('PSN', 'Philippine Society of Nephrology'),

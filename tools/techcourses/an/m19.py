@@ -10,10 +10,16 @@ MODULE = {'image_alt': 'A transplanted kidney in the lower right abdomen, connec
         '{{cards:Key numbers|Referral timing (KDIGO 2020)::At least 6–12 months before expected dialysis; generally estimated glomerular '
         'filtration rate (eGFR) &lt;30 and declining|Transplant benefit revision::Philippine Health Insurance Corporation (PhilHealth) '
         '2026-0019 listed November 21, 2026; full text pending}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A kidney recipient 5 months after transplant reports fever and creatinine rising from 1.2 to 1.9 mg/dL. Ten days ago '
-                  'a clinic started clarithromycin for bronchitis.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The clarithromycin from the corner clinic',
+          'html': '<p>Mrs. Ramos, 46, dialyzed at your unit for three years before a living-donor transplant five months ago. She still '
+                  'visits your clinic for blood pressure and shared follow-up with the transplant center in Manila.</p>\n'
+                  '<p>Today she comes in with a fever of 38.3 &deg;C. Her creatinine, 1.2 mg/dL last month, is now 1.9. Her urine output '
+                  'has dropped a little. Ten days ago a clinic near her home started clarithromycin for bronchitis. She takes tacrolimus, '
+                  'mycophenolate, and prednisone. Your clinic nurse asks whether to schedule her for a session &ldquo;since her kidney is '
+                  'going down.&rdquo;</p>\n',
+          'questions': ['What could be causing the creatinine rise?',
+                        'Which of these causes did a single prescription create?',
+                        'What do you do today, and what must you not do on your own?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -50,11 +56,18 @@ MODULE = {'image_alt': 'A transplanted kidney in the lower right abdomen, connec
                '{{call:<ul><li>Creatinine rise &gt;20–25% from the graft&rsquo;s baseline</li><li>Fever in the first year after '
                'transplant</li><li>New interacting drug started by another prescriber</li><li>Missed immunosuppressant '
                'doses</li></ul>}}\n')],
- 'debrief': ['<p>Several causes may coexist: high tacrolimus levels from CYP3A4 inhibition, infection (CMV, BK virus, urinary sepsis), '
-             'rejection or obstruction. Assess stability and send a tacrolimus trough, blood and urine cultures, CMV and BK PCR '
-             '(polymerase chain reaction) tests where available, urinalysis and a graft ultrasound. Contact the transplant team the same '
-             'day. Stop clarithromycin in favor of a non-interacting antibiotic, and agree any immunosuppression change with the '
-             'transplant team, including who will monitor levels and response.</p>'],
+ 'debrief': ['<p><strong>Possible causes.</strong> Several may be present at once: tacrolimus toxicity, infection (urinary sepsis, '
+             'cytomegalovirus, or BK virus), acute rejection, or obstruction. A 58% rise in creatinine with a fever five months after '
+             'transplant needs all of them considered.</p>\n'
+             '<p><strong>The prescription.</strong> Tacrolimus is broken down by the liver enzyme CYP3A4. Clarithromycin blocks that '
+             'enzyme, so tacrolimus levels can climb. High tacrolimus constricts the afferent arteriole and injures the graft. The '
+             'interaction is well established and predictable, which is why it is preventable.</p>\n'
+             '<p><strong>Today.</strong> Check whether she is stable. Send a tacrolimus trough level, blood and urine cultures, CMV and BK '
+             'PCR where available, a urinalysis, and a graft ultrasound. Replace clarithromycin with an antibiotic that does not interact. '
+             'Call the transplant team today and agree with them who adjusts immunosuppression and who follows the levels. Do not change '
+             'her tacrolimus, mycophenolate, or prednisone on your own. Dialysis is not the question today; finding the cause is.</p>\n'
+             '<p><strong>Afterwards.</strong> Give her a wallet card that lists her immunosuppressants and says &ldquo;check interactions '
+             'before prescribing,&rdquo; and ask her to show it at every clinic she visits.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Writes a transplant referral with a complete dataset', False),
@@ -62,11 +75,11 @@ MODULE = {'image_alt': 'A transplanted kidney in the lower right abdomen, connec
                       ('Confirms transplant-service acceptance and the monitoring plan', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What should guide immunosuppression changes in a febrile recipient with rising creatinine?',
-           ['Urgent transplant-team coordination with evaluation of competing causes',
-            'An automatic stop of all agents',
+           ['An automatic stop of all agents',
+            'Urgent transplant-team coordination with evaluation of competing causes',
             'A routine review several weeks later',
             'Doubling the tacrolimus dose'],
-           0,
+           1,
            'Several high-risk causes can coexist, and uncoordinated changes may worsen outcomes.'),
           ('Which information improves a transplant referral?',
            ['Cause and trajectory, comorbidity, sensitizing events and barriers the team can address',
@@ -76,25 +89,25 @@ MODULE = {'image_alt': 'A transplanted kidney in the lower right abdomen, connec
            0,
            'The receiving service can prioritize and coordinate a complete evaluation.'),
           ('Clarithromycin raises tacrolimus levels by:',
-           ['Inhibiting CYP3A4 metabolism',
+           ['Enhancing renal excretion',
             'Increasing tacrolimus absorption via P-glycoprotein induction',
             'Displacing it from albumin only',
-            'Enhancing renal excretion'],
-           0,
+            'Inhibiting CYP3A4 metabolism'],
+           3,
            'CYP3A4 inhibition reduces clearance, raising levels and nephrotoxicity risk.'),
           ('When does KDIGO 2020 suggest referral for transplant evaluation?',
-           ['At least 6–12 months before anticipated dialysis, generally eGFR &lt;30 and declining',
+           ['When eGFR falls below 5',
             'Only after 1 year of dialysis',
-            'When eGFR falls below 5',
+            'At least 6–12 months before anticipated dialysis, generally eGFR &lt;30 and declining',
             'At chronic kidney disease (CKD) diagnosis regardless of trajectory'],
-           0,
+           2,
            'Early referral enables pre-emptive transplantation.'),
           ('Why is a living donor evaluated by an independent team?',
-           ['To protect donor safety and ensure the decision is voluntary',
-            'To speed the recipient&rsquo;s surgery',
+           ['To speed the recipient&rsquo;s surgery',
+            'To protect donor safety and ensure the decision is voluntary',
             'Because the recipient&rsquo;s nephrologist cannot read donor labs',
             'To avoid PhilHealth paperwork'],
-           0,
+           1,
            'Separating donor advocacy from recipient care avoids conflicts of interest.')],
  'terms': [('CYP3A4', 'Cytochrome P450 3A4'), ('eGFR', 'Estimated glomerular filtration rate'), ('BP', 'Blood pressure')],
  'readings': [('kidney-transplant.html', 'Beyond Dialysis: Understanding Kidney Transplant')],

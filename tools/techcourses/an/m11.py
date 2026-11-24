@@ -12,10 +12,16 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
         'exchange consideration in antineutrophil cytoplasmic antibodies (ANCA)-associated vasculitis (AAV)::Creatinine &gt;3.4 mg/dL, '
         'dialysis, rapid rise or alveolar hemorrhage with hypoxemia|igA nephropathy (IgAN) proteinuria target (KDIGO 2025)::&lt;0.5 g/day, '
         'ideally &lt;0.3 g/day}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A patient with rapidly rising creatinine, hematuria and new hemoptysis presents to a hospital without on-site kidney '
-                  'biopsy. Oxygen saturation is 89% on room air.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'Coughing blood on the treatment floor',
+          'html': '<p>Mrs. Santiago, 52, started dialysis at your unit three weeks ago after a hospital admission for &ldquo;kidney '
+                  'failure of unknown cause.&rdquo; Nobody did a biopsy, and she was discharged with a catheter. Halfway through her '
+                  'Wednesday session she coughs up bright red blood. The physician on duty, Dr. Mendoza, calls you: her oxygen saturation '
+                  'is 89% on room air, and she has a new purple rash on both shins.</p>\n'
+                  '<p>The nearest hospital is a district hospital with no biopsy service and no plasma exchange. A tertiary center in '
+                  'Manila is two hours away. Her husband asks whether she can &ldquo;just finish the session first.&rdquo;</p>\n',
+          'questions': ['What do you think is happening?',
+                        'What should Dr. Mendoza do in the next 15 minutes?',
+                        'Where should she go, and what must not wait for a biopsy?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -55,11 +61,17 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
                '{{call:<ul><li>Hemoptysis with AKI (pulmonary-renal syndrome)</li><li>Creatinine doubling within weeks with active '
                'sediment</li><li>Anti-GBM positivity</li><li>Nephrotic syndrome with leg swelling asymmetry or flank pain (renal vein '
                'thrombosis)</li></ul>}}\n')],
- 'debrief': ['<p>This is a pulmonary-renal syndrome until proven otherwise: ANCA vasculitis, anti-GBM disease or both. Send ANCA and '
-             'anti-GBM serologies now, obtain chest imaging, and arrange monitored transfer to a center with intensive care unit (ICU), '
-             'plasma exchange and biopsy capability. Alveolar hemorrhage with hypoxemia is an indication to consider plasma exchange. With '
-             'compatible serology, start pulse methylprednisolone without waiting for biopsy, and document the decision and the receiving '
-             'team.</p>'],
+ 'debrief': ['<p><strong>What is happening.</strong> Hemoptysis, a vasculitic rash, and kidney failure without a diagnosis make this a '
+             'pulmonary-renal syndrome until proven otherwise: ANCA vasculitis, anti-GBM disease, or both. An admission that ended with a '
+             'catheter and no diagnosis is a warning sign in itself.</p>\n'
+             '<p><strong>The next 15 minutes.</strong> Dr. Mendoza ends the session, returns her blood if it is safe to do so, and gives '
+             'oxygen. He sends blood for antineutrophil cytoplasmic antibodies and anti-glomerular basement membrane antibodies before '
+             'anything else is started, along with a blood count and clotting studies, and stops the heparin.</p>\n'
+             '<p><strong>Where, and what cannot wait.</strong> She needs monitored transfer to a center with an ICU, plasma exchange, and '
+             'biopsy, not the district hospital. Call the receiving nephrologist yourself and confirm acceptance. Alveolar hemorrhage with '
+             'low oxygen is an indication to consider plasma exchange. If the serology fits, start pulse methylprednisolone without '
+             'waiting for a biopsy. Document the decision, the time, and the receiving team. Then ask a harder question about how your '
+             'unit accepts new patients: who asks &ldquo;what is the cause?&rdquo; before the first session.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Identifies rapid progression from tempo and sediment', False),
@@ -67,11 +79,11 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
                       ('Presents a clinicopathologic summary with infection prophylaxis', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which action fits suspected pulmonary-renal syndrome?',
-           ['Urgent multidisciplinary assessment and transfer coordination',
-            'Wait for an elective biopsy date',
+           ['Wait for an elective biopsy date',
+            'Urgent multidisciplinary assessment and transfer coordination',
             'Treat hematuria as isolated urologic disease',
             'Start nonsteroidal anti-inflammatory drugs (NSAIDs) for pain'],
-           0,
+           1,
            'A pulmonary-renal presentation can involve life-threatening organ injury and needs urgent evaluation.'),
           ('What makes kidney biopsy most useful?',
            ['A reasonable chance of changing management at an acceptable procedural risk',
@@ -81,23 +93,23 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
            0,
            'Clinical impact and safety guide biopsy selection.'),
           ('What did PEXIVAS show?',
-           ['Plasma exchange did not reduce death or kidney failure overall; reduced-dose steroids were noninferior with fewer infections',
+           ['Rituximab was inferior to cyclophosphamide',
             'Plasma exchange halved mortality',
             'Standard-dose steroids prevented all relapses',
-            'Rituximab was inferior to cyclophosphamide'],
-           0,
+            'Plasma exchange did not reduce death or kidney failure overall; reduced-dose steroids were noninferior with fewer infections'],
+           3,
            'These findings reshaped KDIGO 2024 toward selective plasma exchange and lower steroid exposure.'),
           ('Which screening is essential before rituximab?',
-           ['Hepatitis B surface antigen and core antibody', 'Serum amylase', 'Thyroid ultrasound', 'Bone density scan'],
-           0,
+           ['Thyroid ultrasound', 'Serum amylase', 'Hepatitis B surface antigen and core antibody', 'Bone density scan'],
+           2,
            'Rituximab can reactivate occult hepatitis B, sometimes fatally; core-antibody-positive patients need monitoring or '
            'prophylaxis.'),
           ('Why are nephrotic patients prone to thrombosis?',
-           ['Urinary loss of antithrombin with increased hepatic clotting-factor synthesis',
-            'Excess platelet destruction',
+           ['Excess platelet destruction',
+            'Urinary loss of antithrombin with increased hepatic clotting-factor synthesis',
             'Low fibrinogen',
             'Hypercalcemia'],
-           0,
+           1,
            'The coagulation balance tips toward clotting as anticoagulant proteins leak and procoagulants rise.')],
  'terms': [('GFR', 'Glomerular filtration rate'),
            ('KDIGO', 'Kidney Disease: Improving Global Outcomes'),

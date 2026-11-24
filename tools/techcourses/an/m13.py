@@ -12,11 +12,16 @@ MODULE = {'image_alt': 'A couple walks hand in hand along a garden path toward a
         '{{cards:Key numbers|Initiating Dialysis Early and Late trial (IDEAL) start eGFR arms::10–14 vs 5–7 mL/min/1.73 m²; no survival '
         'difference|Preparation trigger (KDIGO 2024)::2-year Kidney Failure Risk Equation (KFRE) &gt;40%|Philippine Health Insurance '
         'Corporation (PhilHealth) HD coverage::Up to 156 sessions per year}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A 55-year-old with chronic kidney disease (CKD) G5 (eGFR 9) prefers home treatment, but transport to PD training is '
-                  'difficult. The family expects immediate HD because &rsquo;the number is very low.&rsquo; He has mild nausea, no edema '
-                  'and potassium 5.0 mmol/L.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': '&ldquo;The number is very low, Doctor&rdquo;',
+          'html': '<p>Mr. Torres, 55, has CKD G5 with an eGFR of 9. He has been coming to your pre-dialysis clinic for a year and has said '
+                  'many times that he wants dialysis at home. The peritoneal dialysis training center is 2 hours away by bus, and he does '
+                  'not drive.</p>\n'
+                  '<p>Today his wife and two adult children come with him. They have read his result online. &ldquo;The number is very '
+                  'low, Doctor. Please start him on the machine today. There is a free chair, we saw it.&rdquo; He has mild nausea in the '
+                  'mornings, no swelling, and a potassium of 5.0 mmol/L. He has no fistula yet.</p>\n',
+          'questions': ['Does he need to start dialysis today?',
+                        'How can you keep his choice of home therapy alive?',
+                        'What will you tell the family, and what will you write?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -50,10 +55,18 @@ MODULE = {'image_alt': 'A couple walks hand in hand along a garden path toward a
                '{{fig:an13_a}}\n'
                '{{call:<ul><li>Uremic pericarditis or encephalopathy</li><li>Refractory hyperkalemia or pulmonary '
                'edema</li><li>Progressive weight and albumin loss</li><li>No access plan with 2-year KFRE &gt;40%</li></ul>}}\n')],
- 'debrief': ['<p>There is no emergency indication today, so there is time to plan. Explain that the eGFR alone does not decide the start '
-             'date. Arrange PD catheter placement and ask whether home-visit or local training is possible to solve the transport problem. '
-             'Refer for transplant evaluation and set clear triggers for starting (worsening nausea, weight loss, edema or rising '
-             'potassium). Use teach-back with the family and document his preference.</p>'],
+ 'debrief': ['<p><strong>Today?</strong> No. He has no emergency indication: no severe potassium, no fluid overload, no pericarditis, no '
+             'confusion. In the IDEAL trial, starting at a higher eGFR did not improve survival, and most late starters began when '
+             'symptoms appeared. An eGFR of 9 tells you to prepare quickly. It does not set the start date.</p>\n'
+             '<p><strong>Keeping home therapy alive.</strong> Arrange a peritoneal dialysis catheter now, so the catheter is ready before '
+             'he needs it. Ask the PD program whether home-visit training or training at a closer site is possible. That solves the '
+             'transport problem without giving up his choice. Refer him for transplant evaluation at the same time. If he ends up starting '
+             'hemodialysis urgently, record why, and come back to the decision once he is stable. An urgent start does not have to be '
+             'permanent.</p>\n'
+             '<p><strong>The family.</strong> Thank them for coming. Explain that you are watching for specific signs: worsening nausea, '
+             'weight loss, swelling, breathlessness, or rising potassium. Give them those signs in writing, with the number to call. Use '
+             'teach-back with the whole family. Then document his preference in his own words. The free chair they saw will still be '
+             'there; a planned start is safer than an unplanned one.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Compares modality burdens in daily-life terms', False),
@@ -61,11 +74,11 @@ MODULE = {'image_alt': 'A couple walks hand in hand along a garden path toward a
                       ('Documents a shared decision and start triggers', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What justifies starting dialysis in an otherwise uncertain case?',
-           ['A patient-specific indication supported by trajectory and complications',
-            'An eGFR number alone',
+           ['An eGFR number alone',
+            'A patient-specific indication supported by trajectory and complications',
             'An available chair alone',
             'Family preference alone'],
-           0,
+           1,
            'A start decision integrates clinical indications, feasibility and patient goals.'),
           ('Which action supports planned kidney failure care?',
            ['Early access planning and transplant referral aligned with goals',
@@ -75,25 +88,25 @@ MODULE = {'image_alt': 'A couple walks hand in hand along a garden path toward a
            0,
            'Preparation gives patients time to choose and services time to coordinate.'),
           ('What did the IDEAL trial show?',
-           ['No survival benefit from starting dialysis at a higher eGFR',
+           ['Better quality of life with late start',
             'A 30% survival benefit with early start',
             'Higher mortality with early start',
-            'Better quality of life with late start'],
-           0,
+            'No survival benefit from starting dialysis at a higher eGFR'],
+           3,
            'Symptom-guided starts are as safe as early, number-based starts.'),
           ('Why protect residual kidney function after dialysis starts?',
-           ['It provides continuous middle-molecule and phosphate clearance and is associated with better survival',
+           ['It eliminates the need for dietary advice',
             'It increases dialyzer clearance',
-            'It eliminates the need for dietary advice',
+            'It provides continuous middle-molecule and phosphate clearance and is associated with better survival',
             'It raises hemoglobin directly'],
-           0,
+           2,
            'Native clearance works 24 hours a day and eases fluid and diet limits.'),
           ('Which timeline is most appropriate for creating an arteriovenous fistula?',
-           ['Months before the expected start, because maturation takes time',
-            'After the first catheter infection',
+           ['After the first catheter infection',
+            'Months before the expected start, because maturation takes time',
             'On the day dialysis starts',
             'Only after transplant is ruled out'],
-           0,
+           1,
            'Maturation commonly takes weeks to months, and some fistulas need intervention before use.')],
  'terms': [('eGFR', 'Estimated glomerular filtration rate'),
            ('KFRE', 'Kidney Failure Risk Equation'),

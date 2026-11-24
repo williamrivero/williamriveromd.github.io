@@ -10,10 +10,16 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
         '{{cards:Key numbers|Effluent diagnostic threshold::white blood cell count (WBC) &gt;100/µL with &gt;50% neutrophils after ≥2 h '
         'dwell|Unit peritonitis rate target::≤0.40 episodes per patient-year at risk|Peritonitis-free patients::&gt;80% per '
         'year|Culture-negative episodes::&lt;15%|Refractory definition::No clearing after 5 days of appropriate antibiotics}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A peritoneal dialysis (PD) patient calls with cloudy bags, abdominal pain and fever of 38.4 °C. A new staff member '
-                  'suggests waiting for the routine clinic next week.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': '&ldquo;Just come to clinic next week&rdquo;',
+          'html': '<p>On a Sunday evening, Mr. Castro, 60, calls your unit&rsquo;s after-hours number. He has been on PD for two years. '
+                  'His bags are cloudy, his abdomen hurts, and his temperature is 38.4 &deg;C. The call is answered by Nurse Ruiz, who '
+                  'joined the unit two weeks ago from the hemodialysis floor.</p>\n'
+                  '<p>She tells him to take paracetamol and come to the PD clinic on Thursday. She mentions the call to you on Monday '
+                  'morning, almost in passing. When you look at the unit&rsquo;s PD records, you find this is the fourth peritonitis '
+                  'episode among your 14 PD patients this year, and two of the effluent cultures were negative.</p>\n',
+          'questions': ['What should have happened on Sunday night, and what happens now?',
+                        'Why does a delay of days matter to the peritoneum?',
+                        'What do the four episodes and two negative cultures tell you about the program?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -48,10 +54,19 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
                '{{fig:an18_b}}\n'
                '{{call:<ul><li>Septic shock or peritonism suggesting surgical abdomen</li><li>Multiple organisms or anaerobes (bowel '
                'perforation)</li><li>Fungal elements on Gram stain</li><li>Effluent not clearing by day 5</li></ul>}}\n')],
- 'debrief': ['<p>This needs assessment today. Ask the patient to bring the first cloudy bag. Take effluent for cell count, Gram stain and '
-             'culture in blood-culture bottles, start intraperitoneal empiric gram-positive and gram-negative coverage, and add antifungal '
-             'prophylaxis. Arrange culture review at 48–72 hours and a repeat effluent count by day 5. Escalate if the patient is unstable '
-             'or a surgical abdomen is suspected. Brief the staff member on the call-back pathway.</p>'],
+ 'debrief': ['<p><strong>Now.</strong> Call Mr. Castro and see him today. Ask him to bring the first cloudy bag. Send effluent for cell '
+             'count and differential, Gram stain, and culture in blood-culture bottles. Start intraperitoneal antibiotics that cover both '
+             'gram-positive and gram-negative organisms, according to your antibiogram, and add antifungal prophylaxis. Review the '
+             'cultures at 48 to 72 hours, narrow the treatment, and repeat the effluent count by day 5. If he looks septic or his abdomen '
+             'is rigid, he needs a surgical opinion. Several organisms, or anaerobes, suggest a bowel perforation.</p>\n'
+             '<p><strong>Why the delay matters.</strong> Peritonitis is an inflammation of the membrane that is his dialyzer. Each '
+             'episode, and each day it goes untreated, injures the mesothelium and can lead to scarring and loss of ultrafiltration. '
+             'Cloudy bags mean peritonitis until proven otherwise.</p>\n'
+             '<p><strong>The program.</strong> Four episodes in about 14 patient-years is roughly 0.29 per patient-year at risk, within '
+             'the ISPD target of 0.40 or less. But two of four culture-negative is 50%, far above the target of under 15%. That usually '
+             'means a sampling or laboratory problem, so check that effluent goes into blood-culture bottles. Most of all, the after-hours '
+             'call failed. Brief Nurse Ruiz kindly, then write a call-back pathway that any staff member can follow: cloudy bag, same-day '
+             'assessment, no exceptions.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Gives the urgent call-back plan', False),
@@ -59,11 +74,11 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
                       ('Assigns response review and catheter decision dates', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which workflow is most appropriate for cloudy effluent with pain and fever?',
-           ['Same-day evaluation, effluent studies and empiric treatment plus follow-up',
-            'Wait for growth before planning treatment',
+           ['Wait for growth before planning treatment',
+            'Same-day evaluation, effluent studies and empiric treatment plus follow-up',
             'Advise a routine exchange and clinic next month',
             'Oral antibiotics without effluent studies'],
-           0,
+           1,
            'Early treatment and reassessment reduce delay and help identify refractory or complicated infection.'),
           ('What must happen after starting treatment for suspected PD peritonitis?',
            ['Assign culture review and a timely clinical reassessment',
@@ -73,25 +88,25 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
            0,
            'Follow-up identifies response, the need to narrow treatment and complications.'),
           ('Which effluent finding meets the ISPD 2022 laboratory criterion?',
-           ['WBC 350/µL with 80% neutrophils after a 4-hour dwell',
+           ['Any cloudy appearance without a count',
             'WBC 60/µL with 30% neutrophils',
             'WBC 90/µL with 90% lymphocytes',
-            'Any cloudy appearance without a count'],
-           0,
+            'WBC 350/µL with 80% neutrophils after a 4-hour dwell'],
+           3,
            'The criterion is &gt;100/µL with &gt;50% neutrophils after at least 2 hours.'),
           ('What is the ISPD 2022 target for overall peritonitis rate?',
-           ['≤0.40 episodes per patient-year at risk',
+           ['Zero episodes ever',
             '≤1.0 episode per patient-year',
-            'Zero episodes ever',
+            '≤0.40 episodes per patient-year at risk',
             '≤0.1 episodes per patient-month'],
-           0,
+           2,
            'Units should monitor and report this rate at least annually.'),
           ('When is catheter removal recommended?',
-           ['Refractory peritonitis not clearing after 5 days of appropriate antibiotics, or fungal peritonitis',
-            'After any first episode',
+           ['After any first episode',
+            'Refractory peritonitis not clearing after 5 days of appropriate antibiotics, or fungal peritonitis',
             'When culture is coagulase-negative staphylococcus responding promptly',
             'Whenever the patient asks'],
-           0,
+           1,
            'Removal protects the membrane and the patient&rsquo;s life when infection cannot be cleared.')],
  'terms': [('PD', 'Peritoneal dialysis'), ('ISPD', 'International Society for Peritoneal Dialysis'), ('WBC', 'White blood cell count')],
  'readings': [('peritoneal-dialysis-ckd.html', 'Peritoneal Dialysis: Your Complete Guide'),

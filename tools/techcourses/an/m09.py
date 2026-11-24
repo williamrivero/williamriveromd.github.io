@@ -12,11 +12,17 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
         '{{cards:Key numbers|Kidney Failure Risk Equation (KFRE) nephrology referral threshold (KDIGO 2024)::5-year risk ≥3–5%|KFRE kidney '
         'replacement therapy (KRT) preparation threshold::2-year risk &gt;40%|DAPA-CKD / EMPA-KIDNEY::hazard ratio (HR) 0.61 / HR 0.72 for '
         'kidney progression|FLOW semaglutide::Major kidney events 18.7% vs 23.2%; HR 0.76}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A 62-year-old with type 2 diabetes has stable estimated glomerular filtration rate (eGFR) 37 and urine '
-                  'albumin-to-creatinine ratio (UACR) 850 mg/g on losartan 50 mg. Potassium is 5.1 mmol/L. She can afford labs only every '
-                  '3 months.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The patient who is not on your floor yet',
+          'html': '<p>Every Thursday afternoon your dialysis center runs a pre-dialysis clinic in the consultation room beside the '
+                  'treatment floor. Mrs. Aquino, 62, has type 2 diabetes. Her estimated glomerular filtration rate (eGFR) has been about 37 for a year, and her urine '
+                  'albumin-to-creatinine ratio is 850 mg/g on losartan 50 mg. Her potassium is 5.1 mmol/L and her blood pressure is 142/88 '
+                  'mm Hg.</p>\n'
+                  '<p>She watches the patients on the floor through the glass and asks, &ldquo;Doctor, how long before I am in one of '
+                  'those chairs?&rdquo; She tells you she can afford laboratory tests only every three months. Your clinic nurse whispers '
+                  'that the pharmacy across the street sells a generic sodium-glucose cotransporter 2 (SGLT2) inhibitor.</p>\n',
+          'questions': ['How would you answer her question with a number?',
+                        'Which treatment would you add first, and why?',
+                        'How do you fit a careful plan into one laboratory visit every three months?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -58,11 +64,21 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
                '{{call:<ul><li>eGFR decline &gt;5 mL/min/1.73 m² per year</li><li>UACR rising despite therapy</li><li>Potassium &gt;5.5 '
                'mmol/L after starting RAS inhibitor or finerenone</li><li>eGFR fall &gt;30% after starting RAS blockade (look for '
                'renovascular disease or volume depletion)</li></ul>}}\n')],
- 'debrief': ['<p>She is G3b A3, very high risk. Calculate her KFRE and share the number with her. Add an SGLT2 inhibitor now; it also '
-             'lowers potassium modestly. Uptitrate losartan if blood pressure allows, then add finerenone once potassium settles below '
-             '5.0. Consider a GLP-1 receptor agonist if she is overweight or glucose is uncontrolled. Time each change to fit her 3-month '
-             'lab schedule, or arrange a single extra potassium check after the finerenone start. Document the plan with primary '
-             'care.</p>'],
+ 'debrief': ['<p><strong>Her question.</strong> She is CKD G3b A3, a very high-risk group. Calculate her Kidney Failure Risk Equation '
+             '(KFRE) result and share it as a number she can understand: her chance of needing dialysis or a transplant within two and '
+             'five years. A number she can see is the strongest reason she has to stay on treatment, and it tells you when to start '
+             'preparing.</p>\n'
+             '<p><strong>What first.</strong> Add an SGLT2 inhibitor now. They lower the pressure inside each glomerulus from the afferent '
+             'side, which is why they protect the nephrons that are still working. In DAPA-CKD and EMPA-KIDNEY, kidney progression fell by '
+             'a relative 39% and 28% (hazard ratios 0.61 and 0.72). Her absolute benefit will be larger than average, because her '
+             'albuminuria puts her at high baseline risk. They also lower potassium a little. The generic is a good choice if it is '
+             'affordable. Increase losartan if her blood pressure allows. Add finerenone once potassium is below 5.0 mmol/L. If she is '
+             'overweight or her glucose is not controlled, a GLP-1 receptor agonist is worth discussing. In FLOW, semaglutide reduced '
+             'major kidney events from 23.2% to 18.7%.</p>\n'
+             '<p><strong>Fitting it to her budget.</strong> Change one thing at a time, and time each change so the next routine check is '
+             'two to four weeks later, or arrange one extra potassium test after finerenone starts. Write the plan in a letter to her '
+             'primary care doctor. The goal of this clinic is that she reaches your floor as late as possible, and with a fistula and a '
+             'transplant referral if she does.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Documents CGA classification and KFRE', False),
@@ -70,8 +86,8 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
                       ('Assigns affordable follow-up monitoring', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which measure adds important prognostic information to eGFR?',
-           ['Urine albumin-to-creatinine ratio', 'Serum sodium alone', 'A single office pulse', 'Serum uric acid alone'],
-           0,
+           ['Serum sodium alone', 'Urine albumin-to-creatinine ratio', 'A single office pulse', 'Serum uric acid alone'],
+           1,
            'Albuminuria contributes independent prognostic information and can influence treatment.'),
           ('Which finding helps establish CKD chronicity?',
            ['Persistent abnormalities documented over more than 3 months',
@@ -81,25 +97,25 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
            0,
            'Serial records separate chronic disease from acute changes.'),
           ('How do SGLT2 inhibitors lower intraglomerular pressure?',
-           ['By restoring macula densa sodium delivery, activating tubuloglomerular feedback and constricting the afferent arteriole',
+           ['By increasing renin release',
             'By dilating the afferent arteriole',
             'By blocking aldosterone synthesis',
-            'By increasing renin release'],
-           0,
+            'By restoring macula densa sodium delivery, activating tubuloglomerular feedback and constricting the afferent arteriole'],
+           3,
            'Feedback-mediated afferent constriction complements efferent dilation from RAS blockade.'),
           ('What did CONFIDENCE demonstrate?',
-           ['Greater UACR reduction with combined finerenone and empagliflozin than either alone (a surrogate outcome)',
+           ['Fewer dialysis starts at 5 years',
             'Lower mortality with the combination',
-            'Fewer dialysis starts at 5 years',
+            'Greater UACR reduction with combined finerenone and empagliflozin than either alone (a surrogate outcome)',
             'No added effect from combination'],
-           0,
+           2,
            'The trial was powered for albuminuria change; hard outcomes remain to be shown.'),
           ('A KFRE 2-year risk above 40% should prompt:',
-           ['Preparation for kidney replacement therapy, including access and transplant planning',
-            'Discharge to primary care',
+           ['Discharge to primary care',
+            'Preparation for kidney replacement therapy, including access and transplant planning',
             'Repeat KFRE in 5 years',
             'Stopping all renoprotective drugs'],
-           0,
+           1,
            'KDIGO 2024 uses a 2-year risk above 40% to trigger KRT preparation.')],
  'terms': [('CKD', 'Chronic kidney disease'),
            ('SGLT2', 'Sodium-glucose cotransporter 2'),

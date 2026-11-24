@@ -11,11 +11,17 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
         '{{cards:Key numbers|Delivered effluent dose (KDIGO 2012)::20–25 mL/kg/h; prescribe about 25–30|Filtration fraction '
         'ceiling::≲20–25%|Citrate accumulation signal::Total-to-ionized calcium ratio &gt;2.5|RENAL and ATN higher-intensity arms::No '
         'survival benefit|Regional citrate versus heparin trial (RICH) median filter life::47 h citrate vs 26 h heparin}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A 70-kg patient is prescribed CVVHDF (continuous venovenous hemodiafiltration) at 2,100 mL/h of effluent but '
-                  'received only 12 hours in the last 24 because of repeated clotting. Meropenem was dosed assuming uninterrupted '
-                  'treatment.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The filter that keeps clotting',
+          'html': '<p>Your unit staffs the continuous kidney replacement therapy service at a partner hospital&rsquo;s intensive care unit (ICU). On your '
+                  'morning round, the nurse shows you the flowsheet for Mr. Lim, 70 kg, who is on continuous venovenous hemodiafiltration '
+                  'for AKI after cardiac surgery.</p>\n'
+                  '<p>The prescription is 2,100 mL/hour of effluent. In the last 24 hours the filter clotted three times, and with priming '
+                  'and a trip to CT scan he received only 12 hours of treatment. He is on systemic heparin at a low dose because of a '
+                  'bleeding drain. His meropenem was dosed by the ICU pharmacist &ldquo;for full-time CRRT.&rdquo; The nurse asks, '
+                  '&ldquo;Doctor, should we just increase the effluent to make up for it?&rdquo;</p>\n',
+          'questions': ['How much treatment did he actually receive?',
+                        'Should you raise the dose to make up for lost hours?',
+                        'What happens to his antibiotic when the machine stops and starts?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -52,10 +58,20 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
                '{{call:<ul><li>Filter life repeatedly under 12 hours</li><li>Rising total-to-ionized calcium ratio with worsening '
                'acidosis</li><li>Antibiotic doses based on an assumed, not delivered, dose</li><li>Thrombocytopenia with hemolysis on CRRT '
                '(consider TTP or heparin-induced thrombocytopenia)</li></ul>}}\n')],
- 'debrief': ['<p>Prescribed dose is 30 mL/kg/h; delivered over 24 hours is about 15 mL/kg/h, half the target. Check catheter position and '
-             'flow, filtration fraction and anticoagulation, and switch to regional citrate if there is no contraindication. Ask pharmacy '
-             'to recalculate meropenem: during interruptions the drug accumulates, and when therapy resumes clearance rises again. Set a '
-             'net fluid-balance target and document what will trigger a switch to intermittent therapy or a trial off.</p>'],
+ 'debrief': ['<p><strong>The arithmetic.</strong> The prescribed dose is 2,100 &divide; 70 = 30 mL/kg/hour. Delivered over 24 hours, it is '
+             'about 15 mL/kg/hour, half the target and below the 20 to 25 mL/kg/hour that trials support.</p>\n'
+             '<p><strong>Raise the dose?</strong> Not first. Fix the delivery. Check the catheter position and flows, review the '
+             'filtration fraction (above about 20 to 25%, blood thickens in the filter and clots), and review the anticoagulation. With a '
+             'bleeding risk and repeated clotting, regional citrate is the better choice if he has no contraindication. Citrate needs a '
+             'liver that can clear it, so check his liver function and watch the total-to-ionized calcium ratio. In the RICH trial, '
+             'filters lasted a median 47 hours on citrate compared with 26 on heparin, with fewer bleeds. Then reassess whether the '
+             'prescribed dose still covers the downtime you expect.</p>\n'
+             '<p><strong>The antibiotic.</strong> Meropenem dosed for continuous treatment is too much while the machine is off and may be '
+             'too little when it runs again. Ask the pharmacist to dose it to the clearance he is actually getting. Under-dosing in sepsis '
+             'is the more common error.</p>\n'
+             '<p><strong>Every morning.</strong> Record run time, delivered dose, filter life, net fluid removed against the target, and '
+             'the reason for each interruption. Write the trigger that would make you switch to intermittent therapy or try a period off '
+             'the machine.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Calculates delivered treatment time and dose', False),
@@ -64,11 +80,11 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
                       ('States stopping criteria', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which measure best reveals a delivery gap?',
-           ['Actual run time and delivered effluent dose',
-            'The signed prescription alone',
+           ['The signed prescription alone',
+            'Actual run time and delivered effluent dose',
             'The number of replacement fluid bags ordered',
             'The dialysate brand'],
-           0,
+           1,
            'Interruptions can materially reduce delivered treatment despite a correct order.'),
           ('Which team should review drug exposure after an unexpected CRRT interruption?',
            ['The treating team with pharmacy input',
@@ -78,22 +94,22 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
            0,
            'Delivered therapy affects drug clearance and can change exposure.'),
           ('A 70-kg patient receives 2,100 mL/h effluent for 12 of 24 hours. What is the delivered dose?',
-           ['About 15 mL/kg/h', '30 mL/kg/h', '25 mL/kg/h', '45 mL/kg/h'],
-           0,
+           ['45 mL/kg/h', '30 mL/kg/h', '25 mL/kg/h', 'About 15 mL/kg/h'],
+           3,
            '2,100 x 12 / 24 / 70 = 15 mL/kg/h, below the 20–25 mL/kg/h target.'),
           ('During regional citrate anticoagulation, a total-to-ionized calcium ratio of 2.8 with worsening acidosis suggests:',
-           ['Citrate accumulation from impaired metabolism',
+           ['Normal citrate kinetics',
             'Inadequate citrate dose',
-            'Normal citrate kinetics',
+            'Citrate accumulation from impaired metabolism',
             'Hypercalcemia from bone resorption'],
-           0,
+           2,
            'Unmetabolized citrate binds ionized calcium while total calcium rises, widening the ratio.'),
           ('What did the RENAL and ATN trials show about CRRT intensity?',
-           ['Higher intensity did not improve survival compared with standard intensity',
-            'Doubling the dose halved mortality',
+           ['Doubling the dose halved mortality',
+            'Higher intensity did not improve survival compared with standard intensity',
             'Lower intensity was harmful at 20 mL/kg/h',
             'Intensity only mattered in sepsis'],
-           0,
+           1,
            'Both trials support a delivered dose of 20–25 mL/kg/h without escalation.')],
  'terms': [('KDIGO', 'Kidney Disease: Improving Global Outcomes'),
            ('CT', 'Computed tomography'),

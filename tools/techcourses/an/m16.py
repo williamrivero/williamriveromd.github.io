@@ -9,10 +9,17 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
         'not homes, and every catheter-day carries a small, cumulative risk.}}\n'
         '{{cards:Key numbers|LOCK IT-100 catheter-related bloodstream infection (CRBSI) rate::0.13 vs 0.46 per 1,000 catheter-days; hazard '
         'ratio (HR) 0.29|Infection surveillance metric::Bloodstream infections per 1,000 catheter-days (or per 100 patient-months)}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A patient with a tunneled catheter develops rigors 30 minutes into hemodialysis (HD) and becomes hypotensive (BP '
-                  '82/50).</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'Rigors at 30 minutes',
+          'html': '<p>Mr. Domingo, 49, has dialyzed through a tunneled jugular catheter for seven months. His fistula surgery was '
+                  'postponed twice. Thirty minutes into his Friday session he starts shaking uncontrollably. His temperature is 39.2 '
+                  '&deg;C and his blood pressure falls to 82/50 mm Hg.</p>\n'
+                  '<p>Dr. Salonga, the physician on duty, calls you. &ldquo;He had the same thing last month. Blood culture grew '
+                  '<em>Staphylococcus aureus</em>, and they gave him antibiotics through the catheter. Should I give paracetamol and '
+                  'finish the session?&rdquo; Your head nurse adds that this is the unit&rsquo;s third catheter bloodstream infection this '
+                  'quarter.</p>\n',
+          'questions': ['What should Dr. Salonga do now?',
+                        'Should the catheter stay?',
+                        'What does the third infection this quarter tell you, and what will you do about it?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -44,11 +51,18 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
                '{{call:<ul><li>Rigors or hypotension during HD with a catheter</li><li>Pulsatile bleeding or a ruptured '
                'aneurysm</li><li>Cold, painful hand after access creation (steal)</li><li>Swelling of the whole arm (central vein '
                'stenosis)</li></ul>}}\n')],
- 'debrief': ['<p>Stop the session, activate the sepsis pathway and resuscitate. Take blood cultures from the catheter and a peripheral '
-             'vein, then give empiric vancomycin and gram-negative coverage per local antibiogram. Transfer for monitored care. Plan '
-             'catheter removal given septic shock, and arrange a temporary access for further dialysis. Notify the access team, record the '
-             'event in surveillance and review the catheter-care audit.</p>\n'
-             '{{fig:an16_b}}\n'],
+ 'debrief': ['<p><strong>Now.</strong> Stop the session. This is septic shock, not a fever to be treated with paracetamol. Activate the '
+             'sepsis pathway and resuscitate. Take blood cultures from the catheter and from a peripheral vein, then give empiric '
+             'vancomycin plus gram-negative cover according to the local antibiogram. Transfer him for monitored care and confirm who '
+             'receives him.</p>\n'
+             '<p><strong>The catheter.</strong> It has to come out. Septic shock and a previous <em>S. aureus</em> infection are both '
+             'reasons for removal. Bacteria living in the biofilm on its surface are protected from antibiotics, and a repeat infection '
+             'with the same organism points straight at the catheter. Arrange a temporary access for further dialysis, and ask the access '
+             'surgeon for a firm date for his fistula. Seven months on a catheter was a plan that drifted.</p>\n'
+             '<p><strong>The third infection.</strong> Count it as a rate, not a number. Calculate infections per 1,000 catheter-days and '
+             'compare them with last quarter. Then audit catheter care on every shift: hand hygiene, chlorhexidine skin preparation, and '
+             'how the hubs are handled. Record this event in surveillance. Then make sure every catheter patient on your panel has an '
+             'access life-plan with a named surgeon and a date.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Examines or describes access findings', False),
@@ -56,11 +70,11 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
                       ('Assigns a definitive access review', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which action matters most in an unstable patient with suspected access sepsis?',
-           ['Emergency stabilization and coordinated infection management',
-            'Schedule a future access clinic',
+           ['Schedule a future access clinic',
+            'Emergency stabilization and coordinated infection management',
             'Wait for final culture before escalation',
             'Continue the session to finish fluid removal'],
-           0,
+           1,
            'Instability requires immediate intervention and source assessment.'),
           ('What makes a vascular access life-plan individualized?',
            ['It accounts for treatment trajectory, anatomy and patient goals',
@@ -70,25 +84,25 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
            0,
            'Selection should anticipate current and future access needs.'),
           ('What did LOCK IT-100 show?',
-           ['A 71% lower risk of catheter-related bloodstream infection with taurolidine-heparin lock',
+           ['Lower mortality as the primary outcome',
             'No difference from heparin',
             'Higher thrombosis with taurolidine',
-            'Lower mortality as the primary outcome'],
-           0,
+            'A 71% lower risk of catheter-related bloodstream infection with taurolidine-heparin lock'],
+           3,
            'The primary endpoint was time to adjudicated catheter-related bloodstream infection.'),
           ('Which organism usually requires catheter removal in catheter-related bloodstream infection?',
-           ['Staphylococcus aureus',
+           ['Any organism after one dose of antibiotics',
             'Coagulase-negative Staphylococcus with prompt response',
-            'Any organism after one dose of antibiotics',
+            'Staphylococcus aureus',
             'Contaminant Bacillus species'],
-           0,
+           2,
            'S. aureus, Pseudomonas and Candida infections are poorly cleared from biofilm.'),
           ('Why compare infection rates per 1,000 catheter-days rather than raw counts?',
-           ['The denominator adjusts for how many patients had catheters and for how long',
-            'Raw counts are always lower',
+           ['Raw counts are always lower',
+            'The denominator adjusts for how many patients had catheters and for how long',
             'It is a Philippine Health Insurance Corporation (PhilHealth) form requirement',
             'It removes the need for cultures'],
-           0,
+           1,
            'Exposure-based rates allow fair comparison over time.')],
  'terms': [('ESKD', 'End-stage kidney disease'),
            ('IV', 'Intravenous'),

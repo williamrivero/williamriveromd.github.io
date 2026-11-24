@@ -9,10 +9,16 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
         'whether the unit is getting better. All three depend on precise definitions.}}\n'
         '{{cards:Key numbers|number needed to treat (NNT) formula::NNT = 1 / absolute risk reduction (ARR)|FLOW example::ARR about 4.5% '
         'over 3.4 years → NNT about 22|Run chart shift rule::≥6 consecutive points on one side of the median}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A unit reports fewer access infections this quarter (3 versus 6) but also treated fewer catheter patients '
-                  '(catheter-days fell from 2,400 to 1,000).</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'Fewer infections, or fewer catheters?',
+          'html': '<p>At the quarterly quality meeting, the infection-control nurse presents a slide in green: &ldquo;Access infections '
+                  'down by half! 3 this quarter, 6 last quarter.&rdquo; The administrator wants to put it in the newsletter. A new '
+                  'nephrology fellow rotating through your unit, Dr. Cruz, asks you afterwards whether that proves the new catheter-care '
+                  'bundle works.</p>\n'
+                  '<p>You look at the census. Last quarter the unit had about 2,400 catheter-days. This quarter, after many patients moved '
+                  'to fistulas, it had about 1,000.</p>\n',
+          'questions': ['Did infections fall?',
+                        'What would you teach Dr. Cruz from this slide?',
+                        'How would you test whether the bundle works?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -46,10 +52,19 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
                '{{call:<ul><li>Relative risk reduction quoted without absolute effect</li><li>Rates compared with different '
                'denominators</li><li>Improvement claimed from a single data point</li><li>No balancing measure for a change that adds '
                'work</li></ul>}}\n')],
- 'debrief': ['<p>Raw counts mislead. Last quarter&rsquo;s rate was 6 / 2,400 x 1,000 = 2.5 per 1,000 catheter-days; this quarter it is 3 / '
-             '1,000 x 1,000 = 3.0. The rate rose. Check case definitions and data completeness, then test one prevention practice (for '
-             'example, an audited catheter-care checklist), and track a balancing measure such as missed or delayed treatments.</p>\n'
-             '{{fig:an23_a}}\n'],
+ 'debrief': ['<p><strong>Did infections fall?</strong> No. Counts mislead when exposure changes. Last quarter: 6 &divide; 2,400 &times; '
+             '1,000 = 2.5 infections per 1,000 catheter-days. This quarter: 3 &divide; 1,000 &times; 1,000 = 3.0. The rate rose. The good '
+             'news on the slide is real, but it is a different success: fewer patients on catheters.</p>\n'
+             '<p><strong>What to teach.</strong> A rate needs a numerator, a denominator that reflects exposure, and a baseline. Ask Dr. '
+             'Cruz to recalculate it himself, then present the corrected version at the next meeting. That is entrustment in practice: you '
+             'observe a real task, ask for his reasoning, and agree on one behavior to repeat. Here the behavior is never to compare '
+             'counts without denominators. The same habit applies when he reads a trial: a relative reduction without the absolute effect '
+             'is half the story.</p>\n'
+             '<p><strong>Testing the bundle.</strong> Check case definitions and data completeness first. Then run one small test of '
+             'change, such as an audited catheter-care checklist on every shift. Track a process measure (checklist completion), the '
+             'outcome (infections per 1,000 catheter-days), and a balancing measure (delayed or shortened treatments). Plot the rate '
+             'monthly on a run chart. Six or more consecutive points on one side of the median signal a real change. One good quarter does '
+             'not.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Defines numerator and denominator', False),
@@ -57,11 +72,11 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
                       ('Drafts a measurement plan with a balancing measure', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which comparison supports assessment of the apparent improvement?',
-           ['Rates based on comparable catheter exposure',
-            'Raw counts only',
+           ['Raw counts only',
+            'Rates based on comparable catheter exposure',
             'A comparison of staff head counts',
             'Patient satisfaction alone'],
-           0,
+           1,
            'The exposure denominator accounts for a changing population at risk.'),
           ('What is an example of a balancing measure in a catheter-reduction project?',
            ['Missed or delayed treatments associated with the change',
@@ -71,22 +86,22 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
            0,
            'Balancing measures detect new harms introduced by an improvement.'),
           ('A trial shows event rates of 20% vs 15%. What is the NNT?',
-           ['20', '5', '15', '33'],
-           0,
+           ['33', '5', '15', '20'],
+           3,
            'ARR = 5 percentage points; NNT = 1 / 0.05 = 20.'),
           ('Why does the same relative risk reduction yield more benefit in high-risk patients?',
-           ['Absolute risk reduction scales with baseline risk',
+           ['High-risk patients adhere better',
             'Relative risk rises with age',
-            'High-risk patients adhere better',
+            'Absolute risk reduction scales with baseline risk',
             'Statistical significance is easier to reach'],
-           0,
+           2,
            'A constant relative effect applied to a larger baseline risk removes more events.'),
           ('Which feedback is most useful to a learner?',
-           ['&rsquo;Next time, read back the potassium order before ending the call&rsquo;',
-            '&rsquo;Good job overall&rsquo;',
+           ['&rsquo;Good job overall&rsquo;',
+            '&rsquo;Next time, read back the potassium order before ending the call&rsquo;',
             '&rsquo;Be more careful&rsquo;',
             '&rsquo;You need to improve communication&rsquo;'],
-           0,
+           1,
            'Specific, behavior-focused feedback gives a repeatable action.')],
  'terms': [('QI', 'Quality improvement'), ('ARR', 'Absolute risk reduction'), ('NNT', 'Number needed to treat')],
  'readings': [('dialysis-qapi-vs-cqi.html', 'Dialysis Center QAPI vs. CQI: A Quality Management Field Manual')],

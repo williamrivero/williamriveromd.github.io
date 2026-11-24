@@ -10,10 +10,17 @@ MODULE = {'image_alt': "Overhead view of a care team's hands arranging cards aro
         '{{cards:Key numbers|Station and capstone pass::8/10 with all critical actions met (Academy design)}}\n'
         '\n'
         '{{fig:an24_a}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A chronic kidney disease (CKD) G5 patient who wanted home therapy starts hemodialysis (HD) through a catheter after '
-                  'an urgent admission. In week two he develops rigors during HD, and a cancelled session appears in a draft claim.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'Three weeks of one patient',
+          'html': '<p>Mr. Salazar, 57, had CKD G5 and wanted peritoneal dialysis at home. Three weeks ago he was admitted breathless, with '
+                  'a potassium of 6.8 mmol/L, and started hemodialysis through a temporary jugular catheter. He now dialyzes at your '
+                  'unit.</p>\n'
+                  '<p>In his second week, 40 minutes into a session, he develops rigors and his blood pressure falls to 84/50 mm Hg. Dr. '
+                  'Ilagan, the physician on duty, calls you. Two days later, while you are reviewing the month&rsquo;s claims, you notice '
+                  'that a session cancelled during his admission appears on his draft PhilHealth claim. His wife asks you whether '
+                  '&ldquo;the home dialysis plan is finished now.&rdquo;</p>\n',
+          'questions': ['What do you tell Dr. Ilagan in the first call?',
+                        'Is the home dialysis plan finished?',
+                        'What will you correct, and what will you measure so the next patient does better?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -39,11 +46,20 @@ MODULE = {'image_alt': "Overhead view of a care team's hands arranging cards aro
                '{{fig:an24_b}}\n'
                '{{call:<ul><li>Any missed critical action</li><li>Handoff without confirmed receipt</li><li>Claim attested before '
                'reconciliation</li><li>QI claim without baseline or denominator</li></ul>}}\n')],
- 'debrief': ['<p>Run the urgent response with the physician on duty (POD): stop the session, resuscitate, take cultures, start empiric '
-             'antibiotics and transfer, confirming acceptance. Review the catheter and plan source control. After stabilization, reopen PD '
-             '(urgent-start PD may suit him) and refer for transplant evaluation. Correct the claim by removing the cancelled session '
-             'through the approved workflow, and propose a measurable change, such as days from urgent start to modality education, with a '
-             'baseline and a balancing measure.</p>'],
+ 'debrief': ['<p><strong>The first call.</strong> Stop the session, resuscitate, take blood cultures from the catheter and a peripheral '
+             'vein, start empiric antibiotics, and transfer him with acceptance confirmed by a named receiving doctor. Ask Dr. Ilagan to '
+             'read the plan back. Review the catheter as the likely source and plan its removal or exchange. A catheter placed in an '
+             'emergency is a bridge, and it is the commonest route for infection.</p>\n'
+             '<p><strong>Home dialysis.</strong> No. An urgent start does not cancel his choice. Once he is stable, reopen the '
+             'conversation about peritoneal dialysis, which may suit him even soon after an urgent start, and refer him for transplant '
+             'evaluation. Write down the named clinicians and the dates. Explain to his wife that the plan was delayed, not '
+             'abandoned.</p>\n'
+             '<p><strong>The claim.</strong> Remove the cancelled session through the approved correction workflow, with an audit trail. '
+             'Do not edit the source record. Check his other dates against the flowsheets before you attest.</p>\n'
+             '<p><strong>The measure.</strong> Propose one change with a baseline, for example the number of days from an urgent start to '
+             'modality education. Track a balancing measure such as delayed discharges. Mr. Salazar touched almost every module of this '
+             'track in three weeks; the capstone asks you to hold all of those threads at once, and to explain the reasoning between each '
+             'step.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Defends initial and maintenance plans', False),
@@ -51,11 +67,11 @@ MODULE = {'image_alt': "Overhead view of a care team's hands arranging cards aro
                       ('Corrects the claim and proposes a measurable change', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which follow-through is required after the acute transfer?',
-           ['Confirm receipt, reconcile the erroneous claim and reassign longitudinal follow-up',
-            'Assume the receiving team owns all future decisions',
+           ['Assume the receiving team owns all future decisions',
+            'Confirm receipt, reconcile the erroneous claim and reassign longitudinal follow-up',
             'Close the case when transport leaves',
             'Wait for the patient to call back'],
-           0,
+           1,
            'Continuity includes acceptance, documentation integrity and a named next clinician.'),
           ('What outcome would make the capstone QI claim credible?',
            ['An explicitly defined measure compared with baseline at a planned review',
@@ -65,25 +81,25 @@ MODULE = {'image_alt': "Overhead view of a care team's hands arranging cards aro
            0,
            'Baseline, denominator and review make improvement observable.'),
           ('After stabilization from catheter sepsis, what should happen to his home-therapy preference?',
-           ['Reopen PD planning and refer for transplant evaluation',
+           ['Decide on his behalf',
             'Record HD as his permanent modality',
             'Wait a year before discussing',
-            'Decide on his behalf'],
-           0,
+            'Reopen PD planning and refer for transplant evaluation'],
+           3,
            'An urgent start does not cancel informed modality choice.'),
           ('Which is a critical action in the capstone claims task?',
-           ['Stopping release of a knowingly inaccurate claim',
+           ['Asking the patient to pay the difference',
             'Submitting on time regardless',
-            'Asking the patient to pay the difference',
+            'Stopping release of a knowingly inaccurate claim',
             'Reducing the claimed rate'],
-           0,
+           2,
            'Integrity takes precedence over deadlines.'),
           ('A missed critical action at a station results in:',
-           ['Feedback and repeat assessment with a different case',
-            'Automatic pass if the total score is 8',
+           ['Automatic pass if the total score is 8',
+            'Feedback and repeat assessment with a different case',
             'Permanent failure of the track',
             'No consequence'],
-           0,
+           1,
            'Critical actions are non-compensable.')],
  'terms': [('HD', 'Hemodialysis'), ('POD', 'Physician on duty'), ('PD', 'Peritoneal dialysis'), ('QI', 'Quality improvement')],
  'readings': [('dialysis-adequacy.html', 'Dialysis Adequacy'),

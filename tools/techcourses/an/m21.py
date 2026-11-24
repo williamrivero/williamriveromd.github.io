@@ -9,9 +9,17 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
         'credibility to every line, so a single unchecked date can turn an honest unit into an inaccurate one.}}\n'
         '{{cards:Key numbers|Annual hemodialysis (HD) session limit::156 sessions (3 per week x 52 weeks)|HD package rate::PHP 6,350 per '
         'session from October 9, 2024; up to PHP 990,600 per year}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A mock monthly claim lists twelve HD dates, but one reflects a cancelled session and another appears twice.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The claim you are asked to sign on Friday',
+          'html': '<p>On the last Friday of the month, the billing clerk brings you a stack of Philippine Health Insurance Corporation (PhilHealth) claim forms to sign before the 5 '
+                  'p.m. courier. &ldquo;They are all correct, Doctor. Just sign on the flags.&rdquo; You pull one at random: Mr. Lopez, 12 '
+                  'sessions.</p>\n'
+                  '<p>You compare it with the treatment flowsheets. On the 9th, his session was cancelled because the water system was '
+                  'down, but the date is on the claim. The 16th appears twice. The clerk explains that the system bills from the schedule, '
+                  'and that the server crashed on the 16th and the entries were typed again. &ldquo;It is only two sessions, Doctor, and '
+                  'we have done it this way for years.&rdquo;</p>\n',
+          'questions': ['Do you sign the stack?',
+                        'How is the claim corrected, and by whom?',
+                        'What is the real problem, and how will you fix it?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -47,10 +55,17 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
                '{{call:<ul><li>Claimed date with no treatment record</li><li>Duplicate dates after system downtime</li><li>Requests to '
                '&rsquo;adjust&rsquo; logs to match a claim</li><li>Rebate or incentive offers tied to referrals or '
                'supplies</li></ul>}}\n')],
- 'debrief': ['<p>Hold attestation. Compare each date with the treatment flowsheet and machine log, remove the cancelled and duplicated '
-             'entries through the approved correction process, recheck the corrected claim, and document reviewer, date and result. Then '
-             'find the cause: a scheduling system that bills booked rather than delivered sessions is a process flaw to fix, not a one-off '
-             'error.</p>'],
+ 'debrief': ['<p><strong>Do you sign?</strong> Not this claim, and not the stack until it has been checked. Your signature states that '
+             'each listed session happened on that date. A cancelled session and a duplicate are two false statements, however small, and '
+             'the attending&rsquo;s name is what gives the claim its credibility.</p>\n'
+             '<p><strong>The correction.</strong> Hold the claim. Ask authorized billing staff to remove the cancelled and duplicated '
+             'dates through the approved correction workflow, so the audit trail shows who changed what, when, and why. Nobody edits or '
+             'rewrites the flowsheets to match a claim; the treatment record is the source, and the claim follows it. Recheck the '
+             'corrected claim against the flowsheets and machine logs, and record who reviewed it and when.</p>\n'
+             '<p><strong>The real problem.</strong> A system that bills the schedule rather than delivered treatments will produce this '
+             'error every month, for every patient who misses a session. Change the process so claims are generated only from completed '
+             'treatment records, and add a duplicate check after any downtime. Sample a few claims each month against the flowsheets. Tell '
+             'the administrator plainly why the 5 p.m. courier will carry fewer forms today.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Matches session dates to source records', False),
@@ -58,11 +73,11 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
                       ('Logs the reviewer, correction and result', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What should the AN do first when records conflict?',
-           ['Hold attestation and reconcile source records',
-            'Sign to meet the deadline',
+           ['Sign to meet the deadline',
+            'Hold attestation and reconcile source records',
             'Ask staff to overwrite the treatment log',
             'Submit and correct next year'],
-           0,
+           1,
            'Truthful attestation depends on a traceable reconciliation of actual services.'),
           ('Which records support verification of an actual dialysis session?',
            ['The treatment record and corresponding claim documentation',
@@ -72,22 +87,22 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
            0,
            'Claims attest to services delivered on verifiable dates.'),
           ('How many HD sessions per year does PhilHealth cover under Circular 2023-0009?',
-           ['Up to 156', '90', '144', 'Unlimited'],
-           0,
+           ['Unlimited', '90', '144', 'Up to 156'],
+           3,
            'The benefit equals three sessions a week for 52 weeks.'),
           ('What is the correct way to fix a duplicated claim entry?',
-           ['Correct it through the approved workflow with an audit trail',
+           ['Ask the patient to sign a new form',
             'Delete the treatment record',
-            'Ask the patient to sign a new form',
+            'Correct it through the approved workflow with an audit trail',
             'Ignore it if the amount is small'],
-           0,
+           2,
            'Traceable corrections preserve integrity and protect staff.'),
           ('Which principle governs sharing claims data?',
-           ['Minimum necessary disclosure through approved channels under the Data Privacy Act',
-            'Posting lists in group chats for speed',
+           ['Posting lists in group chats for speed',
+            'Minimum necessary disclosure through approved channels under the Data Privacy Act',
             'Emailing full charts to any requester',
             'Printing records for every staff member'],
-           0,
+           1,
            'Proportional, secure processing protects patients and the facility.')],
  'terms': [],
  'readings': [('philhealth-acr-to-drg.html', 'From All Case Rates to DRG'),

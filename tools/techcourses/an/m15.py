@@ -9,9 +9,15 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
         'at once, think water, dialysate or a product batch first, because every other patient on the floor may be next.}}\n'
         '{{cards:Key numbers|Dialysate cooling::About 0.5 °C below core temperature (hypotension-prone patients)|Hemolysis rule::Do not '
         'return circuit blood}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>Two patients develop chest discomfort and dark circuit blood within minutes of each other. One is hypotensive.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'Two patients, one minute apart',
+          'html': '<p>It is 10:40 on a Tuesday morning. Dr. Alonzo, the physician on duty, calls you from the floor. &ldquo;Doctor, '
+                  'station 3 has chest pain and back pain, and the blood in his venous line looks dark, almost like wine. Then station 7 '
+                  'said the same thing a minute later. Station 7&rsquo;s blood pressure is 80/50.&rdquo;</p>\n'
+                  '<p>Both started at 10 a.m. from the same water loop. Twelve other patients are running. The water technician changed '
+                  'the carbon tanks yesterday afternoon. Dr. Alonzo asks, &ldquo;Should I return their blood and stop?&rdquo;</p>\n',
+          'questions': ['What is this until proven otherwise?',
+                        'What do you tell Dr. Alonzo to do with the two patients, and with the other twelve?',
+                        'Who must be told, and what must be kept?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -47,11 +53,18 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
                '{{call:<ul><li>Two or more patients with similar symptoms within minutes</li><li>Dark or cherry-red blood in the venous '
                'line</li><li>Sudden dyspnea, cough or neurologic signs after a line disconnection</li><li>Chest pain with '
                'electrocardiogram (ECG) changes during hemodialysis (HD)</li></ul>}}\n')],
- 'debrief': ['<p>This is a suspected cluster hemolysis event. Stop both treatments without returning blood, and stop or hold every machine '
-             'on the same water and dialysate supply. Activate the emergency response: monitored care, urgent potassium and ECG, '
-             'hyperkalemia treatment and transfer of the hypotensive patient. Alert the unit head and biomedical and water technicians, '
-             'keep dialysate and water samples, record machine logs, and notify per protocol. Document the timeline and each '
-             'patient&rsquo;s disposition.</p>'],
+ 'debrief': ['<p><strong>What it is.</strong> Two patients with the same symptoms within minutes, and dark blood in the lines, is a '
+             'cluster hemolysis event until proven otherwise. Think of the water first: chloramine breaking through a newly changed carbon '
+             'tank is a known cause. Every patient on that water is at risk.</p>\n'
+             '<p><strong>The two patients.</strong> Stop both pumps, clamp the lines, and do not return the blood. It is full of potassium '
+             'released from broken red cells. Put both on monitors, check potassium urgently, record an electrocardiogram, treat '
+             'hyperkalemia, and transfer the hypotensive patient for monitored care.</p>\n'
+             '<p><strong>The other twelve.</strong> Hold every treatment on the same water and dialysate supply now, before anyone else '
+             'develops symptoms. Assess each patient, and check potassium in any with symptoms.</p>\n'
+             '<p><strong>Who is told, and what is kept.</strong> Call the clinical head, the biomedical and water technicians, and the '
+             'head nurse. Keep dialysate and water samples, the lines and dialyzers, the chlorine test records, and the machine logs. Do '
+             'not restart until the water has been tested and released. Notify the DOH as your unit protocol requires. Afterwards, write '
+             'the timeline and each patient&rsquo;s outcome. This is the event the morning chlorine test exists to prevent.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Uses a closed-loop call', False),
@@ -59,11 +72,11 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
                       ('Documents event, actions and disposition', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What is the priority when several patients deteriorate concurrently?',
-           ['Activate emergency response and alert leadership to a possible shared hazard',
-            'Treat each as routine cramping',
+           ['Treat each as routine cramping',
+            'Activate emergency response and alert leadership to a possible shared hazard',
             'Wait until the end of the shift to report',
             'Increase dialysate flow'],
-           0,
+           1,
            'Clustering changes the immediate risk to other patients and requires parallel unit action.'),
           ('Why is circuit blood not returned in suspected hemolysis?',
            ['It carries free hemoglobin and released potassium that can cause arrhythmia',
@@ -73,25 +86,25 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
            0,
            'Lysed red cells release potassium; reinfusion adds to the cardiac risk.'),
           ('Immediate positioning for suspected venous air embolism:',
-           ['Left side down with head down, after clamping the venous line',
+           ['Right side down with head up',
             'Sitting upright',
             'Prone with legs raised',
-            'Right side down with head up'],
-           0,
+            'Left side down with head down, after clamping the venous line'],
+           3,
            'This position aims to trap air in the right atrium and away from the pulmonary outflow.'),
           ('First steps for intradialytic hypotension:',
-           ['Stop ultrafiltration, lay flat and give a small saline bolus within protocol',
+           ['Give a large potassium dose',
             'Increase ultrafiltration to finish faster',
-            'Give a large potassium dose',
+            'Stop ultrafiltration, lay flat and give a small saline bolus within protocol',
             'Remove the needles immediately in all cases'],
-           0,
+           2,
            'Removing the cause and restoring blood volume usually resolves it; recurrent episodes need target-weight review.'),
           ('Which exposure classically causes cluster hemolysis in HD units?',
-           ['Chloramine breakthrough in the water treatment system',
-            'High-flux dialyzers',
+           ['High-flux dialyzers',
+            'Chloramine breakthrough in the water treatment system',
             'Low blood flow rates',
             'Bicarbonate dialysate'],
-           0,
+           1,
            'Chloramine oxidizes hemoglobin; carbon tank exhaustion is a classic outbreak cause.')],
  'terms': [('HD', 'Hemodialysis'), ('UF', 'Ultrafiltration'), ('ECG', 'Electrocardiogram'), ('BP', 'Blood pressure')],
  'readings': [('hemodialysis-complications.html', 'Managing Complications of Hemodialysis')],

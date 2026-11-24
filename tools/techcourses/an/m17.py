@@ -9,10 +9,17 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
         'fits the person&rsquo;s day and the remaining kidney function carries part of the load.}}\n'
         '{{cards:Key numbers|Transport test::4-hour dialysate-to-plasma creatinine (PET)|Adequacy approach (ISPD 2020)::Goal-directed; '
         'Kt/V is one input, not the target}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A working adult on continuous ambulatory peritoneal dialysis (CAPD) has fatigue and new edema after urine output '
-                  'fell from 800 to 250 mL/day. Exchange logs show missed midday dwells on workdays.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The midday exchange that never happens',
+          'html': '<p>Your dialysis center runs a small peritoneal dialysis program, and on Saturdays you review the home patients after '
+                  'the hemodialysis rounds. Ms. Herrera, 44, is a bank teller on continuous ambulatory peritoneal dialysis, four exchanges '
+                  'a day. Over three months her urine output has fallen from 800 to 250 mL a day. She is tired, her ankles are swollen, '
+                  'and she has gained 2 kilograms.</p>\n'
+                  '<p>The PD nurse shows you her exchange log. On workdays the midday exchange is blank. &ldquo;She says she cannot do it '
+                  'in the bank restroom,&rdquo; the nurse explains. Ms. Herrera says quietly, &ldquo;Maybe I should just move to the '
+                  'machine here, Doctor. I am failing at this.&rdquo;</p>\n',
+          'questions': ['What two things have changed?',
+                        'Is she failing at peritoneal dialysis, or is the prescription failing her?',
+                        'What would you change, and how would you protect the urine she still makes?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -47,10 +54,19 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
                '{{fig:an17_b}}\n'
                '{{call:<ul><li>Falling urine output with new edema</li><li>Repeated missed exchanges</li><li>Poor drainage or one-way '
                'obstruction</li><li>Weight loss with low albumin</li></ul>}}\n')],
- 'debrief': ['<p>Two things changed: residual function fell, and the prescription is not being delivered. Assess volume, check for '
-             'constipation and catheter malposition, and review medications for nephrotoxins. Consider switching to APD overnight with an '
-             'icodextrin day dwell so that work no longer competes with exchanges, and add a loop diuretic for urine volume. Revise the '
-             'plan with the PD nurse and the patient, and confirm package implications separately.</p>'],
+ 'debrief': ['<p><strong>Two changes.</strong> Her own kidneys are doing less, and the prescription is not being delivered. Early in PD, '
+             'residual kidney function often does a large share of the work, so when urine output falls, a missed exchange that used to be '
+             'tolerable becomes fluid overload. Check her volume, look for constipation and catheter position (both can slow drainage), '
+             'and review her medicines for anything harmful to the kidneys.</p>\n'
+             '<p><strong>Is she failing?</strong> No. Tell her so plainly. Under ISPD 2020, adequacy is goal-directed: the prescription '
+             'should fit her life, her symptoms, and her volume, with Kt/V as one input among several. A plan that needs an exchange in a '
+             'bank restroom does not fit her life.</p>\n'
+             '<p><strong>What to change.</strong> Consider automated PD at night, with an icodextrin dwell during the day. Icodextrin '
+             'pulls water by a large-molecule gradient that lasts through a long dwell, so the day stops competing with her job. Add a '
+             'loop diuretic to keep her urine volume up, avoid nephrotoxic drugs, and continue renin-angiotensin blockade if she tolerates '
+             'it. The evidence that these steps preserve residual function is mostly observational, but the mechanism is sound and the '
+             'cost is low. Agree on the plan with her and the PD nurse, and check the PD benefit package requirements separately from the '
+             'clinical decision.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Reviews home logs', False),
@@ -58,11 +74,11 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
                       ('Documents monitoring and after-hours contact instructions', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which information is essential in a PD review?',
-           ['Symptoms, fluid balance, residual function and delivered exchanges',
-            'A clearance figure in isolation',
+           ['A clearance figure in isolation',
+            'Symptoms, fluid balance, residual function and delivered exchanges',
             'The delivery schedule alone',
             'The catheter brand'],
-           0,
+           1,
            'Goal-directed assessment integrates delivery, residual clearance and patient outcomes.'),
           ('How should the team respond to recurring missed exchanges?',
            ['Identify practical barriers and redesign support with the patient',
@@ -72,25 +88,25 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
            0,
            'Addressing schedule, training and supply barriers improves deliverability.'),
           ('A fast transporter on a long glucose dwell is most likely to experience:',
-           ['Fluid reabsorption and poor ultrafiltration',
+           ['Improved phosphate clearance with no downside',
             'Excess ultrafiltration',
             'Hypernatremia from sodium sieving only',
-            'Improved phosphate clearance with no downside'],
-           0,
+            'Fluid reabsorption and poor ultrafiltration'],
+           3,
            'The glucose gradient dissipates quickly, so fluid is reabsorbed late in the dwell; icodextrin helps.'),
           ('What did ADEMEX show about peritoneal small-solute clearance?',
-           ['Raising peritoneal clearance above moderate levels did not improve survival',
+           ['Kt/V below 1.0 is safe for all',
             'Higher Kt/V halved mortality',
-            'Kt/V below 1.0 is safe for all',
+            'Raising peritoneal clearance above moderate levels did not improve survival',
             'Only residual function matters, so no dialysis is needed'],
-           0,
+           2,
            'This supports goal-directed rather than number-driven prescribing.'),
           ('Why does early hypertonic dwell cause sodium sieving?',
-           ['Aquaporins move free water without sodium early in the dwell',
-            'Sodium is actively pumped into the peritoneum',
+           ['Sodium is actively pumped into the peritoneum',
+            'Aquaporins move free water without sodium early in the dwell',
             'Glucose binds sodium',
             'Lymphatics absorb only water'],
-           0,
+           1,
            'Water crosses through aquaporins faster than sodium diffuses, lowering dialysate sodium transiently.')],
  'terms': [('PD', 'Peritoneal dialysis'),
            ('UF', 'Ultrafiltration'),

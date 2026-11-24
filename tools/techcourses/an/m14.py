@@ -11,10 +11,16 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
         '{{cards:Key numbers|spKt/V (KDOQI 2015)::Target 1.4; minimum delivered 1.2 per thrice-weekly session|Ultrafiltration rate '
         'associated with harm::&gt;10–13 mL/kg/h (observational)|Comparison of high-dose hemodiafiltration (HDF) with high-flux HD trial '
         '(CONVINCE) high-dose HDF::All-cause mortality hazard ratio (HR) about 0.77 vs high-flux HD}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A patient has spKt/V falling from 1.45 to 1.05 over two months, frequent cramps and multiple sessions shortened by '
-                  '30–45 minutes. Notes show repeated arterial pressure alarms with the blood pump turned down.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The Kt/V that fell',
+          'html': '<p>At the monthly quality meeting, your head nurse puts up Mrs. Panganiban&rsquo;s results. Her spKt/V has fallen from '
+                  '1.45 to 1.05 over two months. Her prescription has not changed. The nurse&rsquo;s notes show she cramps most sessions '
+                  'and has gone home 30 to 45 minutes early four times this month.</p>\n'
+                  '<p>The night-shift notes say &ldquo;arterial pressure alarm, BFR reduced to 250&rdquo; several times a week. The '
+                  'physician on duty proposes a larger dialyzer. The administrator, who attends the meeting, asks why the unit&rsquo;s '
+                  'adequacy numbers are falling just before the PhilHealth quality review.</p>\n',
+          'questions': ['Did her dose fall, or did her delivery fall?',
+                        'What are the four checks before anyone changes the prescription?',
+                        'What will you tell the administrator?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -50,10 +56,17 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
                '{{call:<ul><li>Kt/V falling with repeated arterial pressure alarms (access dysfunction)</li><li>Interdialytic weight gain '
                'consistently &gt;4% of body weight</li><li>Repeated sessions shortened by cramps or hypotension</li><li>Pre-dialysis '
                'potassium &gt;6.0 mmol/L</li></ul>}}\n')],
- 'debrief': ['<p>The prescription did not change; delivery did. Arterial alarms with a lowered pump speed point to inflow stenosis or '
-             'needle problems. Refer the access for assessment (examination, access flow measurement, imaging). Review time lost to cramps '
-             'and fix their cause, which is usually aggressive ultrafiltration, by reassessing target weight and capping the '
-             'ultrafiltration rate. Recheck Kt/V with a correctly timed sample after delivery is restored.</p>'],
+ 'debrief': ['<p><strong>Dose or delivery?</strong> Delivery. The order did not change, but she is getting less of it: shorter sessions '
+             'and a slower blood pump. A larger dialyzer will not fix a pump that cannot draw blood.</p>\n'
+             '<p><strong>The four checks.</strong> First, time: count the minutes actually delivered, not the minutes ordered. Second, the '
+             'sample: confirm the post-dialysis blood was drawn correctly, at the right time and with the right technique. Third, blood '
+             'flow: arterial alarms with the pump turned down point to an inflow stenosis or a needle problem. Fourth, the access: refer '
+             'it for examination, access flow measurement, and imaging. Then deal with the cramps. They usually mean fluid is being pulled '
+             'too fast. Reassess her target weight and cap the ultrafiltration rate.</p>\n'
+             '<p><strong>The administrator.</strong> Tell him the truth: the number fell because the access and the fluid plan need '
+             'attention, and both are fixable. Show him the plan and the date you will recheck Kt/V with a correctly timed sample. A '
+             'quality number is worth something only if it describes the patient; adjusting the sampling to pass the review would hide a '
+             'failing fistula until it clots.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Reviews a complete order for safety and feasibility', False),
@@ -61,11 +74,11 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
                       ('Sets a repeat measurement plan', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('What is a sound first step in falling adequacy with frequent alarms?',
-           ['Check delivered time, sampling and access function',
-            'Increase clearance targets without investigation',
+           ['Increase clearance targets without investigation',
+            'Check delivered time, sampling and access function',
             'Ignore shortened sessions',
             'Switch dialyzer brand'],
-           0,
+           1,
            'Confirm the reason for inadequate delivery before changing the prescription.'),
           ('What should a target-weight revision consider?',
            ['Symptoms, examination, blood pressure trend and treatment tolerance',
@@ -75,22 +88,22 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
            0,
            'Volume goals balance congestion against harms of excessive fluid removal.'),
           ('What is the KDOQI 2015 minimum delivered spKt/V for thrice-weekly HD?',
-           ['1.2', '0.9', '1.7', '2.0'],
-           0,
+           ['2.0', '0.9', '1.7', '1.2'],
+           3,
            'The target is 1.4 to keep delivered dose above the 1.2 minimum.'),
           ('Why is equilibrated Kt/V lower than single-pool Kt/V?',
-           ['Urea rebounds from tissues into blood after dialysis ends',
+           ['Blood samples are diluted',
             'The dialyzer loses efficiency over time',
-            'Blood samples are diluted',
+            'Urea rebounds from tissues into blood after dialysis ends',
             'Urea is produced faster during dialysis'],
-           0,
+           2,
            'Delayed transfer from intracellular compartments raises post-dialysis urea.'),
           ('Which statement about hemodiafiltration evidence is accurate?',
-           ['CONVINCE showed lower mortality with high-dose HDF; confirmation from H4RT is pending',
-            'HDF has been proven harmful',
+           ['HDF has been proven harmful',
+            'CONVINCE showed lower mortality with high-dose HDF; confirmation from H4RT is pending',
             'All trials show no effect',
             'HDF benefit requires low convection volumes'],
-           0,
+           1,
            'A single large trial supports benefit at convection volumes of at least 23 L.')],
  'terms': [('KDOQI', 'Kidney Disease Outcomes Quality Initiative'),
            ('eKt/V', 'Equilibrated Kt/V'),

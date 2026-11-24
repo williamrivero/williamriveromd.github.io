@@ -10,11 +10,17 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
         '{{cards:Key numbers|Acceptable creatinine rise after starting renin-angiotensin system (RAS) inhibitor or sodium-glucose '
         'cotransporter 2 (SGLT2) inhibitor::Up to about 30% from baseline without stopping|Metformin (KDIGO 2024)::Reduce dose at '
         'estimated glomerular filtration rate (eGFR) &lt;45; stop at eGFR &lt;30}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>After AKI during gastroenteritis, a patient with diabetic chronic kidney disease (CKD) G3a has two discharge lists '
-                  'with conflicting instructions for losartan, empagliflozin and metformin. Creatinine is back to 1.4 mg/dL (baseline '
-                  '1.3).</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'Two lists in one plastic bag',
+          'html': '<p>Mr. Navarro, 58, comes to your clinic at the dialysis center a week after a hospital stay for gastroenteritis that '
+                  'pushed his kidney function down. He has diabetes and chronic kidney disease (CKD) G3a, and he is not on dialysis. He hands you a plastic bag '
+                  'with every box of medicine he owns and two discharge sheets, one from the ward and one from the emergency room.</p>\n'
+                  '<p>One sheet says &ldquo;stop losartan, empagliflozin, and metformin.&rdquo; The other says &ldquo;continue all home '
+                  'medicines.&rdquo; He has been taking only his amlodipine &ldquo;to be safe.&rdquo; His creatinine today is 1.4 mg/dL; '
+                  'his baseline before the illness was 1.3. He is eating and drinking normally. His daughter, who manages his medicines, '
+                  'asks, &ldquo;Doctor, which list is right?&rdquo;</p>\n',
+          'questions': ['Which list is right?',
+                        'How will you make sure the family does not end up with a third version?',
+                        'What should happen the next time he has vomiting or diarrhea?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -50,11 +56,18 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
                '{{fig:an04_b}}\n'
                '{{call:<ul><li>Two conflicting discharge lists</li><li>&rsquo;Resume all when well&rsquo;</li><li>Renally cleared drug at '
                'full dose after AKI</li><li>Held cardioprotective therapy with no restart plan</li></ul>}}\n')],
- 'debrief': ['<p>Confirm what is actually being taken. Kidney function has recovered to within 10% of baseline and the patient is eating '
-             'and drinking, so restart losartan and empagliflozin for their kidney and heart protection. Restart metformin at the '
-             'eGFR-appropriate dose. Write one reconciled list with sick-day rules for future vomiting or diarrhea, and arrange potassium '
-             'and creatinine checks in 1–2 weeks. Name who communicates the result. Use teach-back to confirm the patient knows which '
-             'tablets to pause during illness and when to restart them.</p>'],
+ 'debrief': ['<p><strong>Which list is right?</strong> Neither, as written. Start from what he is actually taking, which is only '
+             'amlodipine. His kidney function is back to within 10% of baseline and he is eating and drinking, so restart losartan and '
+             'empagliflozin. Both protect his kidneys and heart, and the small creatinine rise they cause is expected. Restart metformin '
+             'at the dose his eGFR allows.</p>\n'
+             '<p><strong>One list.</strong> Write a single reconciled list. For each drug, record whether to continue, change, hold, or '
+             'stop, and why. Arrange potassium and creatinine checks in one to two weeks and name who will call the family with the '
+             'result. Ask his daughter to throw away both discharge sheets and keep yours. Then use teach-back: &ldquo;Tell me in your own '
+             'words which tablets he takes from tomorrow.&rdquo;</p>\n'
+             '<p><strong>Next time he is sick.</strong> Give sick-day rules in writing: when he cannot keep fluids down, he pauses '
+             'losartan, empagliflozin, and metformin, and he restarts them once he is eating and drinking normally again. Add the most '
+             'important line: &ldquo;Call the clinic if you are not better in two days.&rdquo; Sick-day rules without a restart trigger '
+             'become permanent stops.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Uses teach-back', False),
@@ -62,11 +75,11 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
                       ('Assigns each pending medication decision an owner and a date', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Which medication instruction supports safe follow-up?',
-           ['A defined review date, trigger and owner',
-            'Resume everything when well',
+           ['Resume everything when well',
+            'A defined review date, trigger and owner',
             'Hold indefinitely pending advice',
             'Ask the pharmacy to decide'],
-           0,
+           1,
            'Explicit monitoring and responsibility reduce both unsafe exposure and unintended long-term omission.'),
           ('How should the physician check consent comprehension?',
            ['Ask the patient to explain the options and agreed plan in their own words',
@@ -76,22 +89,22 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
            0,
            'Teach-back reveals misunderstandings while there is time to address them.'),
           ('Two weeks after starting an SGLT2 inhibitor, creatinine rises 18% with stable potassium. Best action?',
-           ['Continue and recheck; this is the expected hemodynamic effect',
+           ['Switch to an NSAID',
             'Stop immediately',
             'Order a kidney biopsy',
-            'Switch to an NSAID'],
-           0,
+            'Continue and recheck; this is the expected hemodynamic effect'],
+           3,
            'Reduced intraglomerular pressure produces an early, reversible eGFR dip associated with long-term kidney protection.'),
           ('Which drug property most predicts substantial removal by high-flux hemodialysis (HD)?',
-           ['Low protein binding with a small volume of distribution',
+           ['Extensive tissue binding',
             'High lipid solubility',
-            'Extensive tissue binding',
+            'Low protein binding with a small volume of distribution',
             'Very high molecular weight above 50 kDa'],
-           0,
+           2,
            'Unbound drug in plasma water crosses the membrane; drug sequestered in tissue is not reached.'),
           ('Under KDIGO 2024, metformin should be stopped when eGFR falls below:',
-           ['30 mL/min/1.73 m²', '60 mL/min/1.73 m²', '45 mL/min/1.73 m²', '15 mL/min/1.73 m²'],
-           0,
+           ['60 mL/min/1.73 m²', '30 mL/min/1.73 m²', '45 mL/min/1.73 m²', '15 mL/min/1.73 m²'],
+           1,
            'The dose is reduced below 45 and stopped below 30 because of lactic acidosis risk.')],
  'terms': [('GFR', 'Glomerular filtration rate'),
            ('ACE', 'Angiotensin-converting enzyme'),

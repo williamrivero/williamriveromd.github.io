@@ -10,10 +10,17 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
         '{{cards:Key numbers|Tolvaptan candidacy (KDIGO 2025)::Rapid progression risk, e.g. Mayo class 1C–1E|thrombotic thrombocytopenic '
         'purpura (TTP) diagnostic marker::A disintegrin and metalloproteinase with thrombospondin motifs 13 (ADAMTS13) activity '
         '&lt;10%}}\n',
- 'case': {'title': 'Case',
-          'html': '<p>A 41-year-old with hypertension and bilateral renal cysts on ultrasound asks whether his 38-year-old sister can '
-                  'donate a kidney. Their mother started dialysis at 58.</p>',
-          'questions': ['What would you do first, and what would you put in writing?']},
+ 'case': {'title': 'The patient who wants his sister&rsquo;s kidney',
+          'html': '<p>Mr. Velasco, 41, has dialyzed at your unit for eight months. He has hypertension, and his intake ultrasound showed '
+                  'both kidneys enlarged and full of cysts. His mother started dialysis at 58; his grandfather &ldquo;died of the '
+                  'kidneys.&rdquo;</p>\n'
+                  '<p>After his Saturday session he tells you his sister, 38, has offered him a kidney. &ldquo;Her ultrasound last year '
+                  'was normal, so she is fine, Doctor. Can you sign the referral today so we can start?&rdquo; His sister is waiting in '
+                  'the lobby. The transplant coordinator at the referral hospital has asked you to send &ldquo;everything you '
+                  'have.&rdquo;</p>\n',
+          'questions': ['What is his likely diagnosis, and how would you confirm it?',
+                        'Is his sister&rsquo;s normal ultrasound enough?',
+                        'What is your role, and what belongs to the transplant center?']},
  'sections': [('physiology',
                'Physiology',
                'How it works',
@@ -52,11 +59,17 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
                '{{call:<ul><li>Thrombocytopenia with schistocytes and acute kidney injury (AKI)</li><li>Severe hypertension with retinal '
                'hemorrhage and rising creatinine</li><li>AKI with new rash and eosinophilia after a new drug</li><li>Hypokalemia with '
                'metabolic alkalosis and normal blood pressure (consider tubulopathy or diuretic use)</li></ul>}}\n')],
- 'debrief': ['<p>This pattern fits ADPKD. Confirm the phenotype with imaging criteria and kidney volume, and consider genetic testing for '
-             'him first, since a known familial variant makes testing his sister more definitive. His sister needs an independent donor '
-             'evaluation at the transplant center, including imaging and genetic exclusion; a negative ultrasound at 38 does not fully '
-             'exclude PKD2 disease. Offer genetic counseling before testing, and discuss what a positive result would mean for her own '
-             'health and insurability.</p>'],
+ 'debrief': ['<p><strong>His diagnosis.</strong> Enlarged cystic kidneys, hypertension, and a dialysis history down the generations fit '
+             'autosomal dominant polycystic kidney disease (ADPKD). Confirm it with imaging criteria and kidney volume, and offer genetic '
+             'testing to him first. A known variant in the family makes testing his sister far more definitive.</p>\n'
+             '<p><strong>His sister&rsquo;s ultrasound.</strong> It is not enough. At 38, a normal ultrasound does not fully exclude the '
+             'milder PKD2 form of the disease. If she carries the gene, giving away a kidney would put her own future at risk. She needs '
+             'her own independent evaluation at the transplant center, with imaging and, where possible, genetic exclusion. That '
+             'evaluation includes a donor advocate who is not your patient&rsquo;s doctor.</p>\n'
+             '<p><strong>Your role.</strong> Send the transplant team a clear summary of his cause, family history, trajectory, and '
+             'serologies, and refer the family for genetic counseling before anyone is tested. Talk to Mr. Velasco without his sister in '
+             'the room, and do not ask her questions on his behalf. Explain that a careful evaluation protects her, and that it is the '
+             'fastest honest route to a transplant, from her or from someone else.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Creates a focused phenotype summary', False),
@@ -64,11 +77,11 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
                       ('Documents a genetic counseling referral', False)],
             'placement': 'Simulation or supervised practice'},
  'quiz': [('Who evaluates suitability of a potentially affected sibling as donor?',
-           ['The transplant donor team through an independent evaluation',
-            'The recipient alone',
+           ['The recipient alone',
+            'The transplant donor team through an independent evaluation',
             'The dialysis unit claims officer',
             'The recipient&rsquo;s nephrologist alone'],
-           0,
+           1,
            'Independent assessment addresses donor safety, inherited risk and voluntariness.'),
           ('What should prompt urgent assessment for thrombotic microangiopathy?',
            ['AKI with thrombocytopenia and evidence of hemolysis',
@@ -78,25 +91,25 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
            0,
            'The combination raises concern for organ-threatening vascular injury.'),
           ('Why is ADAMTS13 sent before giving plasma in suspected TMA?',
-           ['Plasma replaces ADAMTS13 and can mask the diagnosis of TTP',
+           ['It is a billing requirement',
             'Plasma increases ADAMTS13 production by the liver',
             'ADAMTS13 testing requires a fasting sample',
-            'It is a billing requirement'],
-           0,
+            'Plasma replaces ADAMTS13 and can mask the diagnosis of TTP'],
+           3,
            'A pre-treatment level distinguishes TTP from complement-mediated and other TMAs.'),
           ('What is the mechanism of tolvaptan in ADPKD?',
-           ['Vasopressin V2-receptor blockade reduces cyclic AMP-driven cyst growth',
+           ['Inhibition of complement C5',
             'Direct cyst drainage',
-            'Inhibition of complement C5',
+            'Vasopressin V2-receptor blockade reduces cyclic AMP-driven cyst growth',
             'Blocking angiotensin II receptors'],
-           0,
+           2,
            'Lower cyclic AMP slows cell proliferation and fluid secretion into cysts.'),
           ('Which feature suggests drug-induced interstitial nephritis?',
-           ['Sterile pyuria and white-cell casts after starting a proton pump inhibitor',
-            'Red-cell casts with hemoptysis',
+           ['Red-cell casts with hemoptysis',
+            'Sterile pyuria and white-cell casts after starting a proton pump inhibitor',
             'Nephrotic-range proteinuria with lipiduria',
             'Bilateral hydronephrosis'],
-           0,
+           1,
            'Interstitial inflammation produces a leukocyte-predominant sediment with low-grade proteinuria.')],
  'terms': [('TMA', 'Thrombotic microangiopathy'),
            ('aHUS', 'Atypical hemolytic uremic syndrome'),
