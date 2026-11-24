@@ -51,8 +51,8 @@ QUAL = {
    "Must be a registered and licensed Nutritionist-Dietitian (PRC and Board of Nutrition and Dietetics), which requires a BS in Nutrition and Dietetics and the licensure examination. <span class=q-src>RA 10862</span>",
    "The DOH and PSN dialysis rules do not list a dietitian position."]),
  "medical-records-officer": ("Medical Records Officer/Custodian", [
-   "A designated staff member who keeps the records and serves as the PRDR coordinator. <span class=q-src>DOH</span>",
-   "Training in ICD-10, basic records management, and hospital health information management as required by DOH. <span class=q-src>PSN</span>"]),
+   "A designated staff member who keeps the records and serves as the Philippine Renal Disease Registry (PRDR) coordinator. <span class=q-src>DOH</span>",
+   "Training in the International Classification of Diseases, 10th Revision (ICD-10), basic records management, and hospital health information management as required by DOH. <span class=q-src>PSN</span>"]),
  "dialysis-unit-manager": ("Unit Operations Manager/Unit Manager", [
    "At least 2 years of proven success in operations management, or as head of a unit or department with at least 5 employees. <span class=q-src>PSN</span>",
    "Bachelor&rsquo;s degree in operations management, business administration, or a medically related 4-year course; master&rsquo;s in hospital or business administration preferred. <span class=q-src>PSN</span>",
