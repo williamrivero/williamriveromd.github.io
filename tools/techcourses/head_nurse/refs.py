@@ -77,6 +77,6 @@ REFS = {
     "hn_laborcode": ("Department of Labor and Employment. (2022). <em>Labor Code of the Philippines</em> (Presidential Decree No. 442, as amended and renumbered). Book III (conditions of employment) and Article 300 (termination by employee)."),
     "hn_dole147": ("Department of Labor and Employment. (2015). <em>Department Order No. 147-15: Amending the implementing rules and regulations of Book VI of the Labor Code of the Philippines</em>."),
     "hn_csc1991": ("Civil Service Commission. (1991). <em>Memorandum Circular No. 4, s. 1991: Policy on absenteeism and tardiness</em>."),
-    "hn_csc1998": ("Civil Service Commission. (1998). <em>Memorandum Circular No. 23, s. 1998</em> [Habitual tardiness; definition as quoted in Supreme Court decisions, e.g., A.M. No. P-04-1860 (2004)]."),
+    "hn_csc1998": ("Civil Service Commission. (1998). <em>Memorandum Circular No. 23, s. 1998</em> (June 15, 1998) [Reclassification of habitual tardiness as a light offense, with its definition and penalties]."),
     "hn_perla2011": ("Perla, R. J., Provost, L. P., &amp; Murray, S. K. (2011). The run chart: A simple analytical tool for learning from variation in healthcare processes. <em>BMJ Quality &amp; Safety, 20</em>(1), 46&ndash;51. " + _doi("10.1136/bmjqs.2009.037895")),
 }
