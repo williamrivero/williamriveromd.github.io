@@ -19,6 +19,9 @@ COURSE = {
     "audience_type": "Charge nurses in hemodialysis units",
     "level": "Registered nurses with dialysis experience, written in plain language",
     "review_date": "2026-11-24",
+    "exam_abbrev": ("Advanced Cardiovascular Life Support (ACLS); Administrative Order (AO); cardiopulmonary resuscitation (CPR); "
+                    "Department of Health (DOH); International Society for Peritoneal Dialysis (ISPD); Kidney Disease Outcomes Quality "
+                    "Initiative (KDOQI); Situation-Background-Assessment-Recommendation (SBAR)."),
     "draw": 8,
     "mastery": "7 of 8",
     "exam_draw": 40,

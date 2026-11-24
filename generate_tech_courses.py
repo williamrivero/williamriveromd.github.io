@@ -1218,7 +1218,7 @@ def build_exam(course, built):
     <div class="tc-card"><b>Proposed pass mark</b>{passmark} of {draw} best answers (80 percent). Your trainer may set a different mark.</div>
     <div class="tc-card"><b>If you fall short</b>Each explanation names its module. Reread those modules, then select <strong>New set of questions</strong>.</div>
   </div>
-  <div class="tc-stop"><span class="tc-lab">What a pass means</span>A pass shows that you know the material. It does not show that you can do the work. Competence is demonstrated on your unit&rsquo;s own equipment and signed off by a preceptor.</div>
+{('  <p class="tc-abbrev"><strong>Abbreviations in this examination.</strong> ' + course.meta['exam_abbrev'] + '</p>' + chr(10)) if course.meta.get('exam_abbrev') else ''}  <div class="tc-stop"><span class="tc-lab">What a pass means</span>A pass shows that you know the material. It does not show that you can do the work. Competence is demonstrated on your unit&rsquo;s own equipment and signed off by a preceptor.</div>
   <div class="table-wrap"><table>
   <thead><tr><th>No.</th><th>Module</th><th>Questions in the bank</th></tr></thead>
   <tbody>
