@@ -78,6 +78,10 @@ def main():
         os.replace(src, dst)                 # rename, so nothing is left behind in guides/
         dst.write_text(text, encoding="utf-8")
     print(("would move " if DRY else "moved ") + f"{len(moved)} academy page(s) to academy/")
+    if not DRY:   # keep the Academy taxonomy (groups, breadcrumbs, track names) after every generator run
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("apply_taxonomy", Path(__file__).with_name("apply_taxonomy.py"))
+        T = importlib.util.module_from_spec(spec); spec.loader.exec_module(T); T.main()
 
 
 if __name__ == "__main__":

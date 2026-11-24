@@ -23,26 +23,26 @@ SITE = "https://renalcarematters.com/"
 
 GROUP = {  # accent colors from the locked site palette
     "academy":    ("#1A6B72", "RENAL CARE ACADEMY"),
-    "nursing":    ("#1A6B72", "NEPHROLOGY NURSING"),
-    "physicians": ("#1F3864", "RENAL CARE PHYSICIANS"),
-    "technician": ("#C55A11", "RENAL TECHNICIANS"),
-    "ancillary":  ("#2E6B3E", "ANCILLARY STAFF"),
-    "administrative": ("#4B3280", "ADMINISTRATIVE STAFF"),
+    "nursing":    ("#1A6B72", "NEPHROLOGY NURSING TRACK"),
+    "physicians": ("#1F3864", "RENAL CARE PHYSICIANS TRACK"),
+    "technician": ("#C55A11", "RENAL TECHNICIANS TRACK"),
+    "ancillary":  ("#2E6B3E", "ANCILLARY STAFF TRACK"),
+    "administrative": ("#4B3280", "ADMINISTRATIVE STAFF TRACK"),
 }
 
 # slug: (page, group, title, tag line under group, stats line)
 TRACKS = {
     "academy-index": ("academy/index.html", "academy", "Training for the people who deliver kidney care",
-                      "14 TRACKS · 197 MODULES", "Self-study · onboarding · a new role · free"),
-    "nephrology-nursing": ("academy/nephrology-nursing.html", "nursing", "Nephrology Nursing & Hemodialysis",
-                           "HEMODIALYSIS NURSE", "16 core + 1 advanced module · two paths"),
-    "transplant-nurse": ("academy/transplant-nurse.html", "nursing", "Transplant Nurse",
-                         "SUBTRACK", "12 modules · referral to graft care"),
+                      "5 TRACKS · 14 SUBTRACKS · 197 MODULES", "Self-study · onboarding · a new role · free"),
+    "nephrology-nursing": ("academy/nephrology-nursing.html", "nursing", "Hemodialysis Nurse",
+                           "BY SPECIALIZATION", "16 core + 1 advanced module · two paths"),
+    "transplant-nurse": ("academy/transplant-nurse.html", "nursing", "Kidney Transplant Nurse",
+                         "BY SPECIALIZATION", "12 modules · referral to graft care"),
     "peritoneal-dialysis-nurse": ("academy/peritoneal-dialysis-nurse.html", "nursing", "Peritoneal Dialysis Nurse",
-                                  "SUBTRACK", "12 modules · five skills stations · final exam"),
-    "dialysis-head-nurse": ("academy/dialysis-head-nurse.html", "nursing", "Dialysis Head Nurse",
-                            "LEADERSHIP", "13 modules · staffing, safety, and the roster"),
-    "physician-on-duty": ("academy/physician-on-duty.html", "physicians", "Physician on Duty in the Dialysis Unit",
+                                  "BY SPECIALIZATION", "12 modules · five skills stations · final exam"),
+    "dialysis-head-nurse": ("academy/dialysis-head-nurse.html", "nursing", "Head Nurse",
+                            "BY ROLE", "13 modules · staffing, safety, and the roster"),
+    "physician-on-duty": ("academy/physician-on-duty.html", "physicians", "Physician-on-Duty",
                           "SHIFT COVERAGE", "First-shift modules open · three tiers"),
     "attending-nephrologist": ("academy/attending-nephrologist.html", "physicians", "Attending Nephrologist",
                                "CONSULTANT", "24 modules · calculators in every module"),
@@ -53,16 +53,16 @@ TRACKS = {
     "hemodialysis-technician": ("academy/hemodialysis-technician.html", "technician", "Dialysis Technician",
                                 "FOUNDATION · CHAIRSIDE", "12 modules · skills checklists · final exam"),
     "water-treatment-technician": ("academy/water-treatment-technician.html", "technician",
-                                   "Water Treatment System Technician", "SPECIALIST · WATER ROOM",
+                                   "Water Treatment Technician", "SPECIALIST · WATER ROOM",
                                    "12 modules · skills checklists · final exam"),
     "dialysis-biomedical-technician": ("academy/dialysis-biomedical-technician.html", "technician",
-                                       "Hemodialysis Center Biomedical Technician", "SPECIALIST · WORKSHOP",
+                                       "Biomedical Equipment Technician", "SPECIALIST · WORKSHOP",
                                        "12 modules · skills checklists · final exam"),
-    "dialysis-unit-manager": ("academy/dialysis-unit-manager.html", "administrative", "Dialysis Unit Operations Manager",
+    "dialysis-unit-manager": ("academy/dialysis-unit-manager.html", "administrative", "Unit Operations Manager/Unit Manager",
                               "UNIT MANAGEMENT", "19 modules · freestanding and hospital paths"),
-    "philhealth-claims": ("academy/philhealth-claims.html", "administrative", "PhilHealth Liaison, Claims Officer and Clerk",
+    "philhealth-claims": ("academy/philhealth-claims.html", "administrative", "PhilHealth Liaison/Claims Officer",
                           "CLAIMS", "10 modules + practicum · 5 calculators"),
-    "medical-records-officer": ("academy/medical-records-officer.html", "ancillary", "Medical Records Officer and Custodian",
+    "medical-records-officer": ("academy/medical-records-officer.html", "ancillary", "Medical Records Officer/Custodian",
                                 "RECORDS", "14 modules · capstone · calculator toolkit"),
 }
 
@@ -136,7 +136,7 @@ def compose(slug, art_path=None):
     size = 60
     while True:
         tf = font("bold", size); lines = wrap(d, title, tf, 470)
-        if len(lines) <= 3 or size <= 40: break
+        if (len(lines) <= 3 and max(d.textlength(l, font=tf) for l in lines) <= 470) or size <= 40: break
         size -= 4
     lh = int(size * 1.12)
     y = 330 - (len(lines) * lh) // 2 - 10
