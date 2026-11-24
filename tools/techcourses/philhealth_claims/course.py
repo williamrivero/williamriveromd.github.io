@@ -142,7 +142,8 @@ _ROWS = [
 ]
 MODULES = []
 for _id, _slug, _title, _part, _sub, _brief in _ROWS:
-    row = {"id": _id, "slug": _slug, "title": _title, "sub": _sub, "part": _part, "hero_brief": _HB + _brief}
+    row = {"id": _id, "slug": _slug, "title": _title, "sub": _sub, "part": _part, "hero_brief": _HB + _brief,
+           "card_img": f"{HUB}-{_id}-card.webp"}
     if _id == "11":
         row["hero_file"] = f"{HUB}-practicum-vignette-hero"
     MODULES.append(row)

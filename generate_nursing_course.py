@@ -16,6 +16,8 @@ An existing page's article:published_time is carried over, so re-running never r
 """
 import argparse, html, importlib.util, json, os, re, subprocess, sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent / "tools" / "academy"))
+from tile_img import tile, TILE_CSS  # noqa: E402  (module-tile thumbnails)
 
 ROOT = Path(__file__).resolve().parent
 GUIDES = ROOT / "guides"
@@ -387,6 +389,7 @@ html[data-theme="dark"] .nc-path[aria-pressed="true"]{box-shadow:0 0 0 3px #0a28
 .nc-mod-desc{font-size:14px;line-height:1.55;color:var(--text-mid);}
 .nc-mod-status{font-size:12.5px;font-weight:700;color:var(--text-muted);}
 .nc-mod-done{color:var(--green);}
+""" + TILE_CSS + """
 #nc-modules[data-path="neph"] .nc-emph-hd,#nc-modules[data-path="hd"] .nc-emph-neph{display:none;}
 .nc-progress{display:flex;flex-wrap:wrap;gap:10px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin:10px 0;background:var(--bg);font-size:14px;color:var(--text-mid);}
 .nc-progress[hidden],.nc-btn[hidden],.nc-rat[hidden],.nc-q[hidden]{display:none !important;}
@@ -1072,12 +1075,10 @@ def build_hub():
             emph.append('<span class="nc-chip nc-chip-core nc-emph-hd">Emphasized on this path</span>')
         else:
             emph.append('<span class="nc-chip nc-emph-hd">Foundation</span>')
-        cards.append(f"""    <a class="nc-mod" href="{m['slug']}.html" data-module="{mid}" data-order-neph="{C.PATH_ORDER['neph'].index(mid)}" data-order-hd="{C.PATH_ORDER['hd'].index(mid)}">
-      <span class="nc-mod-top"><span class="nc-mod-step">Step {C.PATH_ORDER['neph'].index(mid) + 1}</span><span>Module {int(mid)}</span>{''.join(emph)}</span>
+        cards.append(tile(f"""    <a class="nc-mod" href="{m['slug']}.html" data-module="{mid}" data-order-neph="{C.PATH_ORDER['neph'].index(mid)}" data-order-hd="{C.PATH_ORDER['hd'].index(mid)}">""", f"""      <span class="nc-mod-top"><span class="nc-mod-step">Step {C.PATH_ORDER['neph'].index(mid) + 1}</span><span>Module {int(mid)}</span>{''.join(emph)}</span>
       <span class="nc-mod-title">{m['plain']}</span>
       <span class="nc-mod-desc">{html.escape(first, quote=False)}</span>
-      <span class="nc-mod-status" aria-live="off"></span>
-    </a>""")
+      <span class="nc-mod-status" aria-live="off"></span>""", m['slug']))
     syl = []
     for mid in ORDER:
         m = MODS[mid]

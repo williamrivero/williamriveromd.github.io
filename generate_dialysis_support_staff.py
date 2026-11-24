@@ -18,6 +18,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 import generate_nursing_course as N  # noqa: E402  (chrome, course CSS, helpers)
+sys.path.insert(0, str(Path(__file__).resolve().parent / "tools" / "academy"))
+from tile_img import tile  # noqa: E402  (module-tile thumbnails)
 
 GUIDES = ROOT / "guides"
 ACADEMY = ROOT / "academy"
@@ -478,12 +480,10 @@ def build_hub():
     cards = []
     for mid in ORDER:
         m = MODS[mid]
-        cards.append(f"""    <a class="nc-mod" href="{m['slug']}.html" data-module="duss{mid}">
-      <span class="nc-mod-top"><span class="nc-mod-step">Day {m['week']}</span><span>Module {int(mid)}</span><span class="nc-chip">{m['hours']:g} h</span><span class="nc-chip">{', '.join(m['comps']) if len(m['comps']) < 8 else 'S1–S8'}</span></span>
+        cards.append(tile(f"""    <a class="nc-mod" href="{m['slug']}.html" data-module="duss{mid}">""", f"""      <span class="nc-mod-top"><span class="nc-mod-step">Day {m['week']}</span><span>Module {int(mid)}</span><span class="nc-chip">{m['hours']:g} h</span><span class="nc-chip">{', '.join(m['comps']) if len(m['comps']) < 8 else 'S1–S8'}</span></span>
       <span class="nc-mod-title">{m['title']}</span>
       <span class="nc-mod-desc">{html.escape(html.unescape(m['sub']), quote=False)}</span>
-      <span class="nc-mod-status" aria-live="off"></span>
-    </a>""")
+      <span class="nc-mod-status" aria-live="off"></span>""", m['slug']))
     sched = "\n".join(
         f"<tr><td>{m['week']}</td><td><a href=\"{m['slug']}.html\">DUSS-{mid} {m['title']}</a></td><td>{m['guided']:g}</td><td>{m['practice_h']:g}</td>"
         f"<td>{m['hours']:g}</td><td>{m['pathway']}</td><td>{m['evidence_out']}</td></tr>" for m in (MODS[x] for x in ORDER))

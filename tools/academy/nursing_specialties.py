@@ -25,10 +25,11 @@ CARDS = [
 
 
 def cards_html():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from tile_img import tile
     return "".join(
-        f"""    <a class="nc-mod" href="{c['href']}">
-      <span class="nc-mod-top"><span class="nc-mod-step">Specialty</span><span>{c['meta']}</span></span>
+        tile(f"""    <a class="nc-mod" href="{c['href']}">""", f"""      <span class="nc-mod-top"><span class="nc-mod-step">Specialty</span><span>{c['meta']}</span></span>
       <span class="nc-mod-title">{c['title']}</span>
-      <span class="nc-mod-desc">{c['desc']}</span>
-    </a>
-""" for c in CARDS)
+      <span class="nc-mod-desc">{c['desc']}</span>""", c['href'].split('#')[0][:-5]) + "\n" for c in CARDS)
