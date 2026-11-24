@@ -47,13 +47,15 @@ OUT = REPO / "assets" / "theme-dim.css"
 SKIP_DIRS = {".git", "node_modules", "tests", "scripts-qa", "blueprints", "docs"}
 
 DARK_ATTR = re.compile(r"\[data-theme=(['\"]?)dark\1\]")
+# Some stylesheets (Dosis drugdb.css, guides/index.html) mark dark mode with
+# body.dark-mode instead; their rules are picked up too.
+DARK_MARK = re.compile(r"\[data-theme=(['\"]?)dark\1\]|body\.dark-mode\b")
 COLOR_RE = re.compile(
     r"#[0-9a-fA-F]{8}\b|#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3,4}\b"
     r"|rgba?\(\s*[\d.]+%?\s*,?\s*[\d.]+%?\s*,?\s*[\d.]+%?\s*(?:[,/]\s*[\d.]+%?\s*)?\)"
 )
 
 # Lightest Dim card surface that text may sit on; text must clear 4.5:1 on it.
-REF_SURFACE_LUM = 0.052          # ≈ #3a414c
 MIN_TEXT_CONTRAST = 4.6           # a hair above 4.5 for rounding safety
 TEXT_TOKENS = re.compile(r"^--(text|red|amber|green|purple|teal|gold|blue|orange|link|accent|muted|faint|ink|fg|slate|gray|grey|subtle|body|heading)(?!.*(soft|bg|surface|light|border|tint|wash))")
 COLOR_PROPS = re.compile(r"^(color|background(-color|-image)?|border(-top|-right|-bottom|-left)?(-color)?|outline(-color)?|fill|stroke|-webkit-text-fill-color|caret-color|text-decoration-color|--.*)$", re.I)
@@ -94,13 +96,27 @@ def lum(r, g, b):
     return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b)
 
 
+DIM_LIGHTNESS = 1.25   # Dim surfaces 25% lighter than the original charcoal (Nov 25 2026)
+
+
 def lift_surface(r, g, b):
-    """Map a near-black surface to soft charcoal, keeping hue."""
+    """Map a near-black surface to soft charcoal. Neutral surfaces are lifted
+    and desaturated; saturated brand colors (navy buttons, deep teal chips)
+    keep their hue and saturation so they still read as the brand color."""
     h, l, s = colorsys.rgb_to_hls(r / 255, g / 255, b / 255)
-    l2 = 0.112 + 0.68 * l
-    s2 = s * 0.45
+    if s >= 0.4 and l >= 0.12:
+        l2 = min(0.42, l * 1.18)
+        s2 = s
+    else:
+        l2 = (0.112 + 0.68 * l) * DIM_LIGHTNESS
+        s2 = s * 0.45
     rr, gg, bb = colorsys.hls_to_rgb(h, l2, s2)
     return rr * 255, gg * 255, bb * 255
+
+
+def _ref_surface_lum():
+    """Text must clear 4.5:1 on the lightest common Dim card (up to lifted #2a3548, used for tags)."""
+    return max(lum(*lift_surface(*c)) for c in ((0x1a, 0x25, 0x35), (0x1e, 0x30, 0x40), (0x14, 0x1c, 0x2a), (0x2a, 0x35, 0x48)))
 
 
 def ensure_text(r, g, b):
@@ -123,6 +139,8 @@ def map_value(prop, value):
         return None
     is_text = p == "color" or p == "-webkit-text-fill-color" or (p.startswith("--") and TEXT_TOKENS.match(p))
     is_custom = p.startswith("--")
+    if p.startswith("--navy"):
+        return None   # brand navy stays the Dark value (buttons, headers)
     changed = False
 
     def repl(m):
@@ -153,6 +171,9 @@ def map_value(prop, value):
 
     new = COLOR_RE.sub(repl, value)
     return new if changed else None
+
+
+REF_SURFACE_LUM = _ref_surface_lum()
 
 
 # ── tiny CSS parser ──────────────────────────────────────────────────────────
@@ -298,7 +319,7 @@ def base_text_rule(pre, body):
         return None
     sels = []
     for sel in split_selectors(pre):
-        if not sel or sel.startswith(("html", ":root", "body")) or ":root" in sel or "[data-theme" in sel:
+        if not sel or sel.startswith(("html", ":root", "body")) or ":root" in sel or "[data-theme" in sel or "dark-mode" in sel:
             continue
         sels.append('html[data-theme="dark"] ' + sel)
     if not sels:
@@ -319,7 +340,7 @@ def dim_rules(css, memo):
                 continue
             if pre.startswith("@"):
                 continue
-            sels = [s for s in split_selectors(pre) if DARK_ATTR.search(s)]
+            sels = [s for s in split_selectors(pre) if DARK_MARK.search(s)]
             if not sels:
                 base = base_text_rule(pre, body)
                 if base:
@@ -347,9 +368,11 @@ def dim_rules(css, memo):
 
 
 def scope(sel, group):
-    m = DARK_ATTR.search(sel)
     tag = '[data-shade="dim"]' + (f'[data-dimg~="{group}"]' if group else "[data-dimg]")
-    return sel[:m.end()] + tag + sel[m.end():]
+    m = DARK_ATTR.search(sel)
+    if m:
+        return sel[:m.end()] + tag + sel[m.end():]
+    return 'html[data-theme="dark"]' + tag + " " + sel   # body.dark-mode rules
 
 
 def build():
@@ -360,7 +383,7 @@ def build():
     rule_pages, order, dark_pages = {}, [], []
     for path in iter_pages():
         css = page_css(path, css_cache)
-        if not DARK_ATTR.search(css):
+        if not DARK_MARK.search(css):
             continue
         key = page_key(path)
         dark_pages.append(key)
