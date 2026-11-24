@@ -414,6 +414,23 @@
   .site-header .header-nav { margin-left: 0; padding-left: 0; }
   @media (max-width: 420px) { .site-header { padding: 0 10px; } .site-header .header-nav { gap: 7px; } .site-header .header-nav a { font-size: 9.6px; letter-spacing: .01em; } }
   .rcm-header--lang { justify-content: flex-end; padding: 16px 0 0; }
+
+  /* ── Hero: subtle ambient motion (soft drifting light + slow flow lines) ── */
+  .rcm-hero-anim { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+  .rha-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .22; mix-blend-mode: screen; will-change: transform; }
+  .rha-orb--teal { width: 46vmax; height: 46vmax; left: -10vmax; top: 8%; background: radial-gradient(circle, #2BB3B8 0%, rgba(43,179,184,0) 68%); animation: rhaDriftA 34s ease-in-out infinite alternate; }
+  .rha-orb--gold { width: 34vmax; height: 34vmax; right: -8vmax; top: 34%; background: radial-gradient(circle, #F2B44E 0%, rgba(242,180,78,0) 66%); opacity: .14; animation: rhaDriftB 41s ease-in-out infinite alternate; }
+  .rha-orb--blue { width: 40vmax; height: 40vmax; left: 32%; bottom: -18vmax; background: radial-gradient(circle, #5B8BD9 0%, rgba(91,139,217,0) 66%); opacity: .18; animation: rhaDriftC 47s ease-in-out infinite alternate; }
+  .rha-waves { position: absolute; left: 0; bottom: 6%; width: 200%; height: 46%; opacity: .5; animation: rhaFlow 60s linear infinite; }
+  .rha-waves path { fill: none; stroke: rgba(143,211,214,.10); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+  .rha-waves path:nth-child(2) { stroke: rgba(242,180,78,.07); }
+  .rha-waves path:nth-child(3) { stroke: rgba(234,240,250,.06); }
+  @keyframes rhaDriftA { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(14vw,-6vh,0) scale(1.12); } }
+  @keyframes rhaDriftB { 0% { transform: translate3d(0,0,0) scale(1.05); } 100% { transform: translate3d(-12vw,8vh,0) scale(.92); } }
+  @keyframes rhaDriftC { 0% { transform: translate3d(0,0,0) scale(.95); } 100% { transform: translate3d(-10vw,-10vh,0) scale(1.1); } }
+  @keyframes rhaFlow { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+  @media (prefers-reduced-motion: reduce) { .rha-orb, .rha-waves { animation: none; } }
+  @media (max-width: 700px) { .rha-orb { filter: blur(40px); } .rha-waves { height: 34%; bottom: 10%; } }
 </style>
 <style id="text-size-adjust">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;}</style>
 <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*.json"}}]},"eagerness":"moderate"}],"prerender":[{"urls":["/guides/","/drugs/","/"],"eagerness":"moderate"}]}</script>
@@ -435,6 +452,16 @@
 
 <!-- ======================= HERO ======================= -->
 <section class="rcm-hero">
+  <div class="rcm-hero-anim" aria-hidden="true">
+    <span class="rha-orb rha-orb--teal"></span>
+    <span class="rha-orb rha-orb--gold"></span>
+    <span class="rha-orb rha-orb--blue"></span>
+    <svg class="rha-waves" viewBox="0 0 1440 400" preserveAspectRatio="none">
+      <path d="M0 220 C 180 170, 360 270, 540 220 S 900 170, 1080 220 S 1260 270, 1440 220 S 1800 170, 1980 220 S 2340 270, 2520 220 S 2700 170, 2880 220"/>
+      <path d="M0 260 C 200 215, 400 305, 600 260 S 1000 215, 1200 260 S 1400 305, 1600 260 S 2000 215, 2200 260 S 2600 305, 2880 260"/>
+      <path d="M0 300 C 160 270, 320 330, 480 300 S 800 270, 960 300 S 1120 330, 1280 300 S 1600 270, 1760 300 S 2080 330, 2240 300 S 2560 270, 2880 300"/>
+    </svg>
+  </div>
   <div class="rcm-header rcm-header--lang">
     <div class="rcm-langbar" id="rcm-langbar">
       <button data-lang-btn="en" class="active">ENG</button>
