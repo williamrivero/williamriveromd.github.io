@@ -1,0 +1,194 @@
+#!/usr/bin/env python3
+"""Build the Renal Care Academy share (Open Graph) cards: 1200 x 630 JPEG, <= 300 KB.
+
+GPT supplies text-free art (1536 x 1024, left 42% kept as a quiet field). This script crops it
+to 1.91:1, lays a legibility gradient over the left side, and sets every word itself, so titles
+are always spelled right and every track card shares one typographic system.
+
+  python3 build_academy_og.py --art "<folder with GPT art>"           # build all cards found
+  python3 build_academy_og.py --art "<folder>" --only dialysis-head-nurse
+  python3 build_academy_og.py --art "<folder>" --patch                  # also point og:image at the new cards
+  python3 build_academy_og.py --preview                                 # template preview with no art
+
+Art file names: <slug>.png / .jpg / .webp (slug = the track page name, or academy-index).
+Output: images/og/academy/<slug>.jpg
+"""
+import argparse, glob, io, os, re, sys
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+W, H = 1200, 630
+OUT = "images/og/academy"
+LIMIT = 300 * 1024
+SITE = "https://renalcarematters.com/"
+
+GROUP = {  # accent colors from the locked site palette
+    "academy":    ("#1A6B72", "RENAL CARE ACADEMY"),
+    "nursing":    ("#1A6B72", "NEPHROLOGY NURSING"),
+    "physicians": ("#1F3864", "RENAL CARE PHYSICIANS"),
+    "technician": ("#C55A11", "RENAL TECHNICIANS"),
+    "ancillary":  ("#2E6B3E", "ANCILLARY STAFF"),
+    "administrative": ("#4B3280", "ADMINISTRATIVE STAFF"),
+}
+
+# slug: (page, group, title, tag line under group, stats line)
+TRACKS = {
+    "academy-index": ("academy/index.html", "academy", "Training for the people who deliver kidney care",
+                      "14 TRACKS · 197 MODULES", "Self-study · onboarding · a new role · free"),
+    "nephrology-nursing": ("academy/nephrology-nursing.html", "nursing", "Nephrology Nursing & Hemodialysis",
+                           "HEMODIALYSIS NURSE", "16 core + 1 advanced module · two paths"),
+    "transplant-nurse": ("academy/transplant-nurse.html", "nursing", "Transplant Nurse",
+                         "SUBTRACK", "12 modules · referral to graft care"),
+    "peritoneal-dialysis-nurse": ("academy/peritoneal-dialysis-nurse.html", "nursing", "Peritoneal Dialysis Nurse",
+                                  "SUBTRACK", "12 modules · five skills stations · final exam"),
+    "dialysis-head-nurse": ("academy/dialysis-head-nurse.html", "nursing", "Dialysis Head Nurse",
+                            "LEADERSHIP", "13 modules · staffing, safety, and the roster"),
+    "physician-on-duty": ("academy/physician-on-duty.html", "physicians", "Physician on Duty in the Dialysis Unit",
+                          "SHIFT COVERAGE", "First-shift modules open · three tiers"),
+    "attending-nephrologist": ("academy/attending-nephrologist.html", "physicians", "Attending Nephrologist",
+                               "CONSULTANT", "24 modules · calculators in every module"),
+    "dialysis-clinical-head": ("academy/dialysis-clinical-head.html", "physicians", "Dialysis Clinical Head",
+                               "SERVICE LEADERSHIP", "14 modules · governance to the first 90 days"),
+    "renal-dietitian": ("academy/renal-dietitian.html", "ancillary", "Renal Dietitian",
+                        "MEDICAL NUTRITION THERAPY", "16 modules · four parts · final exam"),
+    "hemodialysis-technician": ("academy/hemodialysis-technician.html", "technician", "Dialysis Technician",
+                                "FOUNDATION · CHAIRSIDE", "12 modules · skills checklists · final exam"),
+    "water-treatment-technician": ("academy/water-treatment-technician.html", "technician",
+                                   "Water Treatment System Technician", "SPECIALIST · WATER ROOM",
+                                   "12 modules · skills checklists · final exam"),
+    "dialysis-biomedical-technician": ("academy/dialysis-biomedical-technician.html", "technician",
+                                       "Hemodialysis Center Biomedical Technician", "SPECIALIST · WORKSHOP",
+                                       "12 modules · skills checklists · final exam"),
+    "dialysis-unit-manager": ("academy/dialysis-unit-manager.html", "administrative", "Dialysis Unit Operations Manager",
+                              "UNIT MANAGEMENT", "19 modules · freestanding and hospital paths"),
+    "philhealth-claims": ("academy/philhealth-claims.html", "administrative", "PhilHealth Liaison, Claims Officer and Clerk",
+                          "CLAIMS", "10 modules + practicum · 5 calculators"),
+    "medical-records-officer": ("academy/medical-records-officer.html", "ancillary", "Medical Records Officer and Custodian",
+                                "RECORDS", "14 modules · capstone · calculator toolkit"),
+}
+
+FONT_DIRS = ["/usr/share/fonts/opentype/inter", os.path.expanduser("~/Library/Fonts"), "/Library/Fonts",
+             "/System/Library/Fonts/Supplemental"]
+
+def font(weight, size):
+    names = {"bold": ["Inter-Bold.otf", "Inter-Bold.ttf", "Arial Bold.ttf"],
+             "semi": ["Inter-SemiBold.otf", "Inter-SemiBold.ttf", "Arial Bold.ttf"],
+             "reg": ["Inter-Regular.otf", "Inter-Regular.ttf", "Arial.ttf"]}[weight]
+    for d in FONT_DIRS:
+        for n in names:
+            p = os.path.join(d, n)
+            if os.path.exists(p):
+                return ImageFont.truetype(p, size)
+    return ImageFont.load_default(size)
+
+def hexrgb(h):
+    h = h.lstrip("#"); return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+
+def wrap(draw, text, f, maxw):
+    lines, cur = [], ""
+    for w in text.split():
+        t = (cur + " " + w).strip()
+        if draw.textlength(t, font=f) <= maxw: cur = t
+        else: lines.append(cur); cur = w
+    lines.append(cur); return lines
+
+def fit_art(path):
+    im = Image.open(path).convert("RGB")
+    r = W / H
+    w, h = im.size
+    if w / h > r:   # too wide: trim sides, keep the right (subject) side
+        nw = int(h * r); im = im.crop((w - nw, 0, w, h))
+    else:           # too tall: center crop vertically (GPT 3:2 loses ~110 px top and bottom)
+        nh = int(w / r); top = (h - nh) // 2; im = im.crop((0, top, w, top + nh))
+    return im.resize((W, H), Image.LANCZOS)
+
+def placeholder():
+    im = Image.new("RGB", (W, H))
+    d = ImageDraw.Draw(im)
+    a, b = hexrgb("#dcefe8"), hexrgb("#f5efdc")
+    for x in range(W):
+        t = x / W; d.line([(x, 0), (x, H)], fill=tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3)))
+    d.rounded_rectangle((560, 70, 1150, 560), 30, outline=hexrgb("#9bbab4"), width=3)
+    d.text((855, 315), "GPT art zone", font=font("semi", 30), fill=hexrgb("#6c8f89"), anchor="mm")
+    return im
+
+def compose(slug, art_path=None):
+    page, grp, title, tag, stats = TRACKS[slug]
+    accent, gname = GROUP[grp]
+    base = fit_art(art_path) if art_path else placeholder()
+    # legibility veil: solid mint on the left, fading out by 62% width
+    veil = Image.new("RGBA", (W, H), (0, 0, 0, 0)); vd = ImageDraw.Draw(veil)
+    mint = hexrgb("#eef7f2")
+    for x in range(W):
+        t = x / W
+        a = 236 if t < 0.40 else max(0, int(236 * (1 - (t - 0.40) / 0.22)))
+        vd.line([(x, 0), (x, H)], fill=mint + (a,))
+    im = Image.alpha_composite(base.convert("RGBA"), veil).convert("RGB")
+    d = ImageDraw.Draw(im)
+    X = 64
+    ac = hexrgb(accent)
+    # wordmark
+    d.rectangle((X, 58, X + 6, 92), fill=ac)
+    d.text((X + 18, 58), "RENAL CARE ACADEMY", font=font("bold", 20), fill=hexrgb("#1A6B72"))
+    sub = gname if grp == "academy" else f"{gname}  ·  {tag}"
+    if grp == "academy": sub = tag
+    d.text((X + 18, 80), sub, font=font("semi", 15), fill=hexrgb("#3d635e"))
+    # title
+    size = 60
+    while True:
+        tf = font("bold", size); lines = wrap(d, title, tf, 470)
+        if len(lines) <= 3 or size <= 40: break
+        size -= 4
+    lh = int(size * 1.12)
+    y = 330 - (len(lines) * lh) // 2 - 10
+    for ln in lines:
+        d.text((X, y), ln, font=tf, fill=hexrgb("#123a36")); y += lh
+    d.text((X, y + 16), stats, font=font("reg", 23), fill=hexrgb("#2f5752"))
+    # footer
+    d.text((X, H - 74), "renalcarematters.com/academy", font=font("semi", 19), fill=hexrgb("#1A6B72"))
+    d.text((X, H - 50), "Free · no account · English", font=font("reg", 16), fill=hexrgb("#3d635e"))
+    d.rectangle((0, H - 10, W, H), fill=ac)
+    return im
+
+def save(im, slug):
+    os.makedirs(OUT, exist_ok=True)
+    dst = f"{OUT}/{slug}.jpg"
+    for q in (88, 84, 80, 76, 72, 68):
+        buf = io.BytesIO(); im.save(buf, "JPEG", quality=q, optimize=True, progressive=True)
+        if buf.tell() <= LIMIT: break
+    open(dst, "wb").write(buf.getvalue())
+    return dst, buf.tell()
+
+def patch(slug, dst):
+    page = TRACKS[slug][0]
+    s = open(page, encoding="utf-8").read()
+    url = SITE + dst
+    s = re.sub(r'(<meta property="og:image" content=")[^"]*', r'\g<1>' + url, s, 1)
+    s = re.sub(r'(<meta name="twitter:image" content=")[^"]*', r'\g<1>' + url, s, 1)
+    for k, v in (("og:image:width", "1200"), ("og:image:height", "630"), ("og:image:type", "image/jpeg")):
+        if f'property="{k}"' in s:
+            s = re.sub(rf'(<meta property="{k}" content=")[^"]*', r'\g<1>' + v, s, 1)
+        else:
+            s = s.replace(f'<meta name="twitter:image" content="{url}">',
+                          f'<meta property="{k}" content="{v}">\n<meta name="twitter:image" content="{url}">', 1)
+    open(page, "w", encoding="utf-8").write(s)
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--art"); ap.add_argument("--only"); ap.add_argument("--patch", action="store_true")
+    ap.add_argument("--preview", action="store_true")
+    a = ap.parse_args()
+    slugs = [a.only] if a.only else list(TRACKS)
+    for slug in slugs:
+        art = None
+        if a.art:
+            hits = [p for e in ("png", "jpg", "jpeg", "webp") for p in glob.glob(os.path.join(a.art, f"{slug}.{e}"))]
+            if not hits: print(f"skip {slug}: no art"); continue
+            art = hits[0]
+        elif not a.preview:
+            sys.exit("give --art <folder> or --preview")
+        dst, n = save(compose(slug, art), slug if not a.preview else f"preview-{slug}")
+        print(f"{dst}  {n // 1024} KB")
+        if a.patch and art: patch(slug, dst)
+
+if __name__ == "__main__":
+    main()
