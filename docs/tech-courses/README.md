@@ -45,6 +45,7 @@ Needs Python 3.10+ with Pillow. Do not hand-edit the generated pages.
 ## Before publication
 
 - Clinical and technical sign-off by Dr. Rivero on all pages; the Water Treatment and Biomedical series are newly written and have not been reviewed.
+- Dialysis Charge Nurse track (18 modules, trainer page, final exam, `calc-dialysis-charge-nurse-toolkit.html`): clinical sign-off by Dr. Rivero, 2026-11-24.
   `QUIZ-KEY-REGISTER.md` lists every keyed answer for review.
 - Numeric limits (ISO 23500 water and dialysis fluid limits, carbon contact time, IEC 62353 earth resistance) should be checked against the
   standard editions the facility follows.

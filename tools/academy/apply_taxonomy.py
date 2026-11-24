@@ -4,7 +4,7 @@
 One source of truth for how the Academy is organized (set by Dr. Rivero, Nov 2026):
 
   Nephrology Nursing Track      By Specialization: Hemodialysis Nurse, Peritoneal Dialysis Nurse, Kidney Transplant Nurse
-                                By Role: Head Nurse, Charge Nurse (in preparation)
+                                By Role: Head Nurse, Charge Nurse
   Renal Care Physicians Track   Dialysis Clinical Head, Attending Nephrologist, Physician-on-Duty
   Renal Technicians Track       Dialysis Technician, Water Treatment Technician, Biomedical Equipment Technician
   Ancillary Staff Track         Renal Dietitian, Medical Records Officer/Custodian, Dialysis Unit Support Staff
@@ -55,6 +55,7 @@ TRACKS = {
     "transplant-nurse": ("nursing", "spec", "Kidney Transplant Nurse", "Kidney Transplant <em>Nurse</em>",
                          ["Transplant Nurse"], [("Transplant Nurse Module", "Kidney Transplant Nurse Module")]),
     "dialysis-head-nurse": ("nursing", "role", "Head Nurse", "Head <em>Nurse</em>", ["Dialysis Head Nurse"], []),
+    "dialysis-charge-nurse": ("nursing", "role", "Charge Nurse", "Charge <em>Nurse</em>", ["Dialysis Charge Nurse"], []),
     "dialysis-clinical-head": ("physicians", None, "Dialysis Clinical Head", "Dialysis <em>Clinical Head</em>", [], []),
     "attending-nephrologist": ("physicians", None, "Attending Nephrologist", "Attending <em>Nephrologist</em>", [], []),
     "physician-on-duty": ("physicians", None, "Physician-on-Duty", "Physician-on-<em>Duty</em>",

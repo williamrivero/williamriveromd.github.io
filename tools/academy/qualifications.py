@@ -27,6 +27,10 @@ QUAL = {
    "DOH AO 2012-0001 does not define the head nurse role separately."]),
  "charge-nurse": ("Charge Nurse", [
    "Not defined in the DOH or PSN rules. In practice, a dialysis nurse who meets the hemodialysis nurse requirements, with current ACLS, designated by the head nurse for the shift."]),
+ "dialysis-charge-nurse": ("Charge Nurse", [
+   "Not defined separately in the DOH or PSN hemodialysis rules. In practice, a dialysis nurse who meets the hemodialysis nurse requirements: PRC license (R.A. 9173) and training in nursing care of renal dialysis patients. <span class=q-src>DOH, PSN</span>",
+   "Current Basic Life Support (BLS); DOH requires at least one nurse trained in Advanced Cardiovascular Life Support (ACLS) per shift, and the charge nurse is often that nurse. <span class=q-src>DOH, PSN</span>",
+   "Designated by the head nurse or employer for the shift; completing a study series is not an appointment."]),
  "dialysis-clinical-head": ("Dialysis Clinical Head", [
    "PRC-licensed physician; preferably a PSN board-certified nephrologist with a PSN Certificate of Attestation and PSN or chapter endorsement. <span class=q-src>DOH, PSN</span>",
    "If none is available, in order: board-eligible nephrologist; board-certified, then board-eligible internist or pediatrician with HDC experience (3 months under DOH, 6 months under PSN); general practitioner with 6 months&rsquo; experience. <span class=q-src>DOH, PSN</span>",
