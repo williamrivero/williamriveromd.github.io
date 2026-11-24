@@ -128,8 +128,8 @@ HOW_HTML = """
 # ── Renal Care Academy landing page (academy/index.html) ─────────────────────
 ACADEMY = {
     "desc": ("Renal Care Academy is the staff-training section of Renal Care Matters: free, structured study series for nephrology and dialysis nurses, "
-             "hemodialysis technicians, water treatment technicians, biomedical technicians, physicians on duty, and renal dietitians, each with cases, skills checklists, and self-assessments."),
-    "keywords": "renal care academy, physician on duty course, dialysis staff training Philippines, nephrology nursing course, hemodialysis technician course, dialysis water treatment training, dialysis biomedical technician training, renal dietitian course",
+             "renal technicians (dialysis, water treatment, and biomedical), physicians on duty, and renal dietitians, each with cases, skills checklists, and self-assessments."),
+    "keywords": "renal care academy, physician on duty course, dialysis staff training Philippines, nephrology nursing course, renal technician program, dialysis technician course, hemodialysis technician course, dialysis water treatment training, dialysis biomedical technician training, renal dietitian course",
     "sub": "Structured study series for the nurses, technicians, and other professionals who run kidney care. Separate from the guide library, and built for learning a role step by step.",
     "audience": "Dialysis and nephrology staff in training &middot; head nurses, chief technicians, educators, and medical directors",
     # href, card image, role line, title, blurb, meta line

@@ -2,7 +2,7 @@
 """Generate the dialysis technical-workforce courses (hub, trainer page, modules for each course).
 
 Courses (tools/techcourses/<package>/course.py):
-    hd_technician     Hemodialysis Technician            guides/hemodialysis-technician*.html
+    hd_technician     Dialysis Technician                guides/hemodialysis-technician*.html
     water_treatment   Water Treatment System Technician  guides/water-treatment-technician*.html
     biomed            Dialysis Biomedical Technician     guides/dialysis-biomedical-technician*.html
 
@@ -991,9 +991,9 @@ def pathways_section(course, page):
         return (f'<section class="section" id="pathways">\n  <div class="section-tag">{C.get("pathways_tag", "Pathways")}</div>\n'
                 f'  <h2>{C.get("pathways_h2", "How the series is organized")}</h2>\n{page.render(C["pathways_html"])}\n</section>')
     return f"""<section class="section" id="pathways">
-  <div class="section-tag">Career pathways</div>
+  <div class="section-tag">Renal Technician Program</div>
   <h2>One foundation, three technical roles</h2>
-  <p>A dialysis unit depends on three kinds of technical staff. Most people start at the chairside as a hemodialysis technician. From there, two specialist branches open up: the water room and the workshop. The three study series share the same format, so you can move between them.</p>
+  <p>A dialysis unit depends on three kinds of technical staff, grouped here as the Renal Technician Program. Most people start at the chairside as a dialysis technician. From there, two specialist branches open up: the water room and the workshop. The three study series share the same format, so you can move between them.</p>
   {branches_html(course)}
 {page.render(C.get('pathway_note', ''))}
 </section>"""
@@ -1429,11 +1429,16 @@ def build_academy():
         if live:
             return f'    <a class="tc-branch" href="{href}">{pic}\n      {body}\n    </a>'
         return f'    <div class="tc-branch tc-soon">{pic}\n      {body}\n    </div>'
-    cards = [track(*A["nursing"])]
+    cards, tech = [track(*A["nursing"])], []
     for pkg, c in get_courses().items():
         M = c.meta
-        cards.append(track(c.hub + ".html", M.get("branch_img", ""), M["branch_role"], M["title"], M["branch_blurb"],
-                           M.get("academy_meta") or f"{len(c.mods)} modules &middot; skills checklists &middot; trainer page"))
+        card = track(c.hub + ".html", M.get("branch_img", ""), M["branch_role"], M["title"], M["branch_blurb"],
+                     M.get("academy_meta") or f"{len(c.mods)} modules &middot; skills checklists &middot; trainer page")
+        (tech if M.get("tag") == "Renal Technician Program" else cards).append(card)
+    tech_block = (f'  <h3 id="renal-technician-program">Renal Technician Program</h3>\n'
+                  f'  <p>Three technician tracks in one program, written in the same format. Most people start at the chairside as a '
+                  f'dialysis technician; two specialist branches lead to the water room and the biomedical workshop.</p>\n'
+                  f'  <div class="tc-branches tc-tracks">\n{chr(10).join(tech)}\n  </div>\n') if tech else ""
     soon = [track("", "", role, title, blurb, "In preparation", live=False) for role, title, blurb in A["planned"]]
     soon_block = (f'  <h3>In preparation</h3>\n  <div class="tc-branches tc-tracks">\n{chr(10).join(soon)}\n  </div>\n') if soon else ""
     main = f"""<section class="section" id="about">
@@ -1449,7 +1454,7 @@ def build_academy():
   <div class="tc-branches tc-tracks">
 {chr(10).join(cards)}
   </div>
-{soon_block}</section>
+{tech_block}{soon_block}</section>
 
 <section class="section" id="how">
   <div class="section-tag">How the Academy works</div>
@@ -1476,7 +1481,7 @@ def build_academy():
     pre = ""
     n_nurse = int(re.match(r"(\d+)", A["nursing"][5]).group(1))
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
-    short = {"hemodialysis-technician": "Hemodialysis Technician", "water-treatment-technician": "Water Treatment Technician",
+    short = {"hemodialysis-technician": "Dialysis Technician", "water-treatment-technician": "Water Treatment Technician",
              "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head"}
     hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]

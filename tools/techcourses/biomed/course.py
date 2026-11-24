@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Dialysis Biomedical Technician study series (branch of the Hemodialysis Technician series).
+"""Dialysis Biomedical Technician study series (Renal Technician Program, specialist branch).
 Modules are authored natively in m01.py ... m06.py."""
 
 COURSE = {
@@ -7,7 +7,7 @@ COURSE = {
     "short": "Dialysis Biomedical Technician",
     "hub_slug": "dialysis-biomedical-technician",
     "label": "Study series for dialysis biomedical technicians",
-    "tag": "Technician Education",
+    "tag": "Renal Technician Program",
     "audience": "Biomedical equipment technicians working in or for hemodialysis centers &middot; chief technicians, head nurses, and medical directors",
     "audience_type": "Biomedical equipment technicians",
     "level": "Technical staff, college reading level",
@@ -34,7 +34,7 @@ COURSE = {
     "start_html": """
 <p>A hemodialysis (HD) machine mixes a fluid to a precise recipe, warms it to body temperature, pumps blood outside the body, removes an exact volume of water, and watches for air, blood leaks, and wrong pressures, for four hours at a time, several times a day. Each of those functions depends on sensors and pumps that drift, wear, and scale. The biomedical technician finds the drift before it reaches a patient.</p>
 {{fig:blood_circuit|A dialysis machine in use. Everything the patient depends on here, from the blood pump to the air trap sensor, is maintained and tested by the biomedical technician.}}
-<p>This series has twelve modules, written to the level of a technician who maintains the center&rsquo;s machines independently. It explains the electrical basics, how the machine works on the fluid side and the blood side, how each protective system is tested, how preventive maintenance and calibration are planned and recorded, how machines are disinfected and tested for electrical safety, and how to troubleshoot a fault and return a machine to service properly. It assumes you have studied the <a href="hemodialysis-technician.html">Hemodialysis Technician</a> series, especially the modules on principles, machines, and water.</p>
+<p>This series has twelve modules, written to the level of a technician who maintains the center&rsquo;s machines independently. It explains the electrical basics, how the machine works on the fluid side and the blood side, how each protective system is tested, how preventive maintenance and calibration are planned and recorded, how machines are disinfected and tested for electrical safety, and how to troubleshoot a fault and return a machine to service properly. It assumes you have studied the <a href="hemodialysis-technician.html">Dialysis Technician</a> series, especially the modules on principles, machines, and water.</p>
 {{cards:What a dialysis biomedical technician does|Maintains::Carries out scheduled preventive maintenance by the manufacturer&rsquo;s plan.|Calibrates::Checks and adjusts sensors against reference instruments.|Tests safety::Verifies alarms, protective systems, and electrical safety.|Repairs::Finds and fixes faults with approved parts.|Documents and releases::Keeps the service history and formally returns equipment to use.}}
 """,
     "is_not": ("It is study material. It is not manufacturer training, a license, or authorization to service any machine. Dialysis machines are medical devices built to "

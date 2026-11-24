@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Water Treatment System Technician study series (branch of the Hemodialysis Technician series).
+"""Water Treatment System Technician study series (Renal Technician Program, specialist branch).
 Modules are authored natively in m01.py ... m06.py."""
 
 COURSE = {
@@ -7,7 +7,7 @@ COURSE = {
     "short": "Water Treatment Technician",
     "hub_slug": "water-treatment-technician",
     "label": "Study series for dialysis water treatment technicians",
-    "tag": "Technician Education",
+    "tag": "Renal Technician Program",
     "audience": "Dialysis water treatment technicians and trainees &middot; chief technicians, head nurses, and medical directors who supervise the water system",
     "audience_type": "Dialysis water treatment technicians",
     "level": "Allied health and technical staff, college reading level",
@@ -34,7 +34,7 @@ COURSE = {
     "start_html": """
 <p>A dialysis patient&rsquo;s blood meets more than 300 liters of water every week, separated from it only by a thin membrane. If that water carries chlorine, metals, or bacterial fragments, every patient on the shift is exposed at the same moment. The water treatment technician is the person who prevents that.</p>
 {{fig:wts_train}}
-<p>This series has twelve modules, written to the level of a technician who runs the water room independently under the medical director. It explains what each tank and membrane removes, how to read every gauge and result, how to test, sample, disinfect, and maintain the system, how concentrates are mixed and delivered, and exactly what to do when a result is out of range. It assumes you have studied the <a href="hemodialysis-technician.html">Hemodialysis Technician</a> series, especially its module on water, concentrates, and dialysate.</p>
+<p>This series has twelve modules, written to the level of a technician who runs the water room independently under the medical director. It explains what each tank and membrane removes, how to read every gauge and result, how to test, sample, disinfect, and maintain the system, how concentrates are mixed and delivered, and exactly what to do when a result is out of range. It assumes you have studied the <a href="hemodialysis-technician.html">Dialysis Technician</a> series, especially its module on water, concentrates, and dialysate.</p>
 {{cards:What a water treatment technician does|Operates::Runs and watches the filters, softener, carbon tanks, reverse osmosis unit, and loop.|Tests::Checks chlorine, hardness, pressures, and water quality at set times, and records the real numbers.|Samples::Collects water for bacteria, endotoxin, and chemical testing using clean technique.|Disinfects::Carries out scheduled disinfection and proves the chemical is rinsed out.|Stops and reports::Holds treatments and alerts the nurse and medical director when a limit is crossed.}}
 """,
     "is_not": ("It is study material. It is not a license or a certificate, and it does not make you competent on a system you have not been trained on. "

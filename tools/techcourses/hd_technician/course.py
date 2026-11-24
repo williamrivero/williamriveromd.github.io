@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Hemodialysis Technician study series.
+"""Dialysis Technician study series (Renal Technician Program; formerly titled Hemodialysis Technician; slugs unchanged).
 
 Lesson text, cases, checklists and question banks come from the Markdown sources in src/NN/
 (Study Guide.md, Self-Assessment.md, Answer Key.md), copied from ~/Documents/HD Technicians.
@@ -7,28 +7,28 @@ Everything in `enrich` below is added on top: the plain-words opener, extra figu
 glossary terms and site reading. Edit the Markdown to change the lesson; edit here to change the extras."""
 
 COURSE = {
-    "title": "Hemodialysis Technician",
-    "short": "Hemodialysis Technician",
+    "title": "Dialysis Technician",
+    "short": "Dialysis Technician",
     "hub_slug": "hemodialysis-technician",
-    "label": "Study series for hemodialysis technicians",
-    "tag": "Technician Education",
-    "audience": "Entry-level hemodialysis technicians and trainees &middot; preceptors, head nurses, and training providers",
-    "audience_type": "Hemodialysis technicians",
+    "label": "Study series for dialysis technicians",
+    "tag": "Renal Technician Program",
+    "audience": "Entry-level dialysis technicians and trainees &middot; preceptors, head nurses, and training providers",
+    "audience_type": "Dialysis technicians",
     "level": "Entry-level allied health, college reading level",
     "review_date": "2026-11-23",
     "draw": 5,
     "exam_draw": 40,
     "mastery": "4 of 5",
-    "keywords": "hemodialysis technician training Philippines, dialysis technician course, dialysis technician study guide, hemodialysis machine setup, dialysis water treatment basics, dialyzer reprocessing, dialysis technician competency checklist",
-    "page_title": "Hemodialysis Technician: A 12-Module Study Series",
-    "desc": ("A free 12-module study series for hemodialysis technicians in the Philippines: the dialysis unit and your role in it, "
+    "keywords": "dialysis technician training Philippines, renal technician course, hemodialysis technician training Philippines, dialysis technician course, dialysis technician study guide, hemodialysis machine setup, dialysis water treatment basics, dialyzer reprocessing, dialysis technician competency checklist",
+    "page_title": "Dialysis Technician: A 12-Module Study Series",
+    "desc": ("A free 12-module study series for dialysis technicians in the Philippines: the dialysis unit and your role in it, "
              "kidney failure, how hemodialysis works, infection prevention, machines and the blood circuit, water and dialysate, vascular access, "
              "the treatment session, emergencies, and dialyzer reprocessing. Plain language and many figures, with a case, a skills checklist, and a self-assessment in every module."),
-    "h1": "Hemodialysis <em>Technician</em>",
+    "h1": "Dialysis <em>Technician</em>",
     "sub": "A twelve-module study series for the people who prepare and check the equipment that keeps dialysis patients alive. It is written in plain language, with a picture for every idea that needs one.",
-    "disclaimer": ("Educational study material for hemodialysis technicians. It does not replace physician orders, the supervising nurse&rsquo;s direction, "
+    "disclaimer": ("Educational study material for dialysis technicians. It does not replace physician orders, the supervising nurse&rsquo;s direction, "
                    "approved unit procedures, manufacturer instructions, DOH licensing requirements, or supervised training."),
-    "scope_note": ("This module is study material for hemodialysis technicians. It explains why safe practice works the way it does. It does not replace "
+    "scope_note": ("This module is study material for dialysis technicians. It explains why safe practice works the way it does. It does not replace "
                    "the physician&rsquo;s orders, the supervising nurse&rsquo;s direction, your unit&rsquo;s approved procedures, or the manufacturer&rsquo;s "
                    "instructions for use. What a technician may do differs between countries and between facilities, so do only the tasks you are trained, "
                    "assigned, and signed off to do. Every case is fictional."),
@@ -65,7 +65,7 @@ COURSE = {
 """,
     "trainer_h2": "A proposed 300-hour program",
     "trainer_html": """
-<p>The series is built to be the guided-study part of a provider-led program for entry-level, in-center hemodialysis technicians. The proposed design runs for three calendar months: 72 classroom hours, 60 skills-lab hours, and 168 hours of supervised placement. It starts with the foundations of role and safety, moves through technology and treatment support, and ends with integrated assessment. The hours for each module are in the syllabus on the <a href="hemodialysis-technician.html#syllabus">course home page</a>.</p>
+<p>The series is built to be the guided-study part of a provider-led program for entry-level, in-center dialysis technicians. The proposed design runs for three calendar months: 72 classroom hours, 60 skills-lab hours, and 168 hours of supervised placement. It starts with the foundations of role and safety, moves through technology and treatment support, and ends with integrated assessment. The hours for each module are in the syllabus on the <a href="hemodialysis-technician.html#syllabus">course home page</a>.</p>
 {{flow:Suggested teaching sequence for each module|Present the case::Ask learners for a first response before you teach anything.|Teach the lesson::Follow the objectives in order, with one worked example.|Revisit the case::Have learners explain and defend their response.|Skills lab::Simulate the checklist on training equipment.|Placement::Log one related activity, the level of supervision, and the preceptor&rsquo;s feedback.}}
 <p>Record observation, simulation, and supervised performance separately. Patient-facing duties and sign-off follow the facility&rsquo;s authorization and Philippine regulation, not this series.[[doh2012]][[psn2024]]</p>
 """,
