@@ -40,7 +40,7 @@ CLOSE = START + """
 NAV_ITEM = (START + "\n"
     '    <a class="acad-track acad-subtrack" href="transplant-nurse.html"><span class="acad-track-ico"><svg viewBox="0 0 24 24" aria-hidden="true">'
     '<path d="M12 21c-4-2.5-6-6-6-10a6 6 0 0 1 12 0c0 4-2 7.5-6 10z"/><path d="M12 8v6M9 11h6"/></svg></span>'
-    '<span class="acad-track-t"><strong>Transplant Nurse</strong><small>Nephrology Nursing subtrack</small></span></a>\n' + END + "\n")
+    '<span class="acad-track-t"><strong>Transplant Nurse</strong><small>12 modules</small></span></a>\n' + END + "\n")
 OLD_NAV = re.compile(r'^    <a class="acad-track" href="transplant-nurse\.html">.*?</a>\n', re.M | re.S)
 
 
