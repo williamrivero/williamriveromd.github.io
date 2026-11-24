@@ -397,6 +397,19 @@
   .modal-footer-note strong { color: #16294a; }
   .modal-dismiss { background: #16294a; color: white; border: none; padding: 8px 18px; border-radius: 100px; font-size: 0.78rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
   .modal-dismiss:hover { background: #1F3864; }
+
+  /* ── Site navbar, identical to /guides/ ── */
+  .site-header { background: #1F3864; padding: 0 24px; display: flex; align-items: center; height: 56px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,.08); }
+  .site-header .brand { color: #fff; font-family: 'Inter', system-ui, sans-serif; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em; text-decoration: none; flex-shrink: 0; }
+  .site-header .brand:hover { color: rgba(255,255,255,.85); }
+  .header-nav { margin-left: auto; display: flex; gap: 22px; align-items: center; flex: 0 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-left: 16px; }
+  .header-nav::-webkit-scrollbar { display: none; }
+  .header-nav a { color: rgba(255,255,255,0.75); text-decoration: none; font-family: 'Inter', system-ui, sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; white-space: nowrap; }
+  .header-nav a:hover { color: #fff; }
+  @media (max-width: 700px) { .site-header { padding: 0 16px; } .header-nav { gap: 14px; } .header-nav a { font-size: 0.72rem; letter-spacing: 0.04em; } }
+  @media (max-width: 640px) { .header-nav { gap: 10px; } .header-nav a { font-size: 10.5px; letter-spacing: .04em; } }
+  @media (max-width: 420px) { .header-nav { gap: 8px; } .header-nav a { font-size: 10px; letter-spacing: .02em; } }
+  .rcm-header--lang { justify-content: flex-end; padding: 16px 0 0; }
 </style>
 <style id="text-size-adjust">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;}</style>
 <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*.json"}}]},"eagerness":"moderate"}],"prerender":[{"urls":["/guides/","/drugs/","/"],"eagerness":"moderate"}]}</script>
@@ -404,47 +417,29 @@
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to content</a>
-
-<div id="mobile-overlay" class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Site menu">
-  <button class="mobile-overlay-close" id="mobile-overlay-close" aria-label="Close menu">&times;</button>
-  <nav class="mobile-overlay-nav">
-    <a href="/guides/">Guides</a>
-    <a href="/guides/calculators.html">Tools</a>
-    <a href="/drugs/">Drugs</a>
-    <a href="#library">Specialties</a>
-    <a href="/about.html">About</a>
+<!-- NAV (same as /guides/) -->
+<header class="site-header">
+  <a href="https://renalcarematters.com" class="brand">HOME</a>
+  <nav class="header-nav">
+    <a href="/guides/calculators.html">CALCULATORS</a>
+    <a href="/guides/kidney-physiology.html">PHYSIOLOGY</a>
+    <a href="/guides/nephrology-atlas.html">ATLAS</a>
+    <a href="/guides/">GUIDES</a><a href="/drugs/">DRUGS</a><a href="/academy/">ACADEMY</a><a href="/about.html">ABOUT</a>
   </nav>
-</div>
+</header>
 
 <main id="main">
 
 <!-- ======================= HERO ======================= -->
 <section class="rcm-hero">
-  <header class="rcm-header">
-    <a href="/" class="rcm-brand">
-      <img src="/brand/icon-dark.svg" alt="Renal Care Matters" width="30" height="38">
-      <span class="rcm-brand-text">
-        <span class="rcm-brand-word">Renal Care Matters</span>
-        <span class="rcm-brand-tag">NEPHROLOGY &middot; KIDNEY HEALTH</span>
-      </span>
-    </a>
-    <nav class="rcm-desknav">
-      <a href="/guides/">Guides</a>
-      <a href="/guides/calculators.html">Tools</a>
-      <a href="/drugs/">Drugs</a>
-      <a href="#library">Specialties</a>
-      <a href="/about.html">About</a>
-    </nav>
+  <div class="rcm-header rcm-header--lang">
     <div class="rcm-langbar" id="rcm-langbar">
       <button data-lang-btn="en" class="active">ENG</button>
       <button data-lang-btn="tl">TAG</button>
       <button data-lang-btn="ceb">CEB</button>
       <button data-lang-btn="kap">KAP</button>
     </div>
-    <button class="rcm-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-overlay">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
+  </div>
 
   <div class="rcm-hero-mid">
     <div class="rcm-eyebrow-row reveal is-visible">
@@ -926,19 +921,6 @@
 </div>
 
 <script>
-// ── NAV: mobile hamburger overlay ────────────────────────────────────────
-(function(){
-  var hamburger = document.getElementById('hamburger');
-  var overlay = document.getElementById('mobile-overlay');
-  var closeBtn = document.getElementById('mobile-overlay-close');
-  function openOverlay(){ overlay.classList.add('open'); hamburger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
-  function closeOverlay(){ overlay.classList.remove('open'); hamburger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
-  hamburger.addEventListener('click', openOverlay);
-  closeBtn.addEventListener('click', closeOverlay);
-  overlay.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeOverlay); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeOverlay(); });
-})();
-
 // ── LANGUAGE PREFERENCE (sets the site-wide wgmr-lang key; homepage copy
 //    itself stays English — actual translated copy lives on guide pages) ──
 (function(){
