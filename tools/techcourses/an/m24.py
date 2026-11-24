@@ -26,7 +26,13 @@ MODULE = {'image_alt': "Overhead view of a care team's hands arranging cards aro
                'How it works',
                '<p>The capstone reuses the causal chains from earlier modules: why the kidney failed, why dialysis was needed, why a '
                'catheter infects, why residual function matters for peritoneal dialysis (PD), and why a claim must match the record. '
-               'Assessors look for the reasoning between the steps, not only the final orders.</p>\n'),
+               'Assessors look for the reasoning between the steps, not only the final orders.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">The capstone panel &middot; fictional</span><p>A candidate presents Mr. '
+               'Salazar&rsquo;s case. She lists the right orders but cannot say why his catheter infected, or why his residual urine '
+               'output matters for peritoneal dialysis.</p><p>The examiner asks her to link each step to the earlier modules. Her '
+               'reasoning improves her score more than any single order.</p><p class="tc-scene-take"><b>What this shows.</b> The capstone '
+               'scores the reasoning between the steps.</p></div>\n'
+               '\n'),
               ('evidence',
                'Evidence',
                'What the evidence shows',
@@ -44,6 +50,12 @@ MODULE = {'image_alt': "Overhead view of a care team's hands arranging cards aro
                'data owner, change, process and balancing measures, and the review date.</p>\n'
                '\n'
                '{{fig:an24_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">Writing the continuity plan &middot; fictional</span><p>For Mr. Salazar, the '
+               'plan has five lines. First call: stop, cultures, antibiotics, transfer confirmed with Dr. Ramos at the receiving hospital. '
+               'Catheter: remove and replace on Thursday. Modality: peritoneal dialysis education with the PD nurse on the 14th. '
+               'Transplant referral: sent on the 10th. Claim: corrected through the workflow on the 3rd.</p><p>Each line has a person and '
+               'a date.</p><p class="tc-scene-take"><b>What this shows.</b> A plan becomes real when each step has an owner and a '
+               'deadline.</p></div>\n'
                '{{call:<ul><li>Any missed critical action</li><li>Handoff without confirmed receipt</li><li>Claim attested before '
                'reconciliation</li><li>QI claim without baseline or denominator</li></ul>}}\n')],
  'debrief': ['<p><strong>The first call.</strong> Stop the session, resuscitate, take blood cultures from the catheter and a peripheral '

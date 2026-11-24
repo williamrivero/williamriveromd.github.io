@@ -32,6 +32,13 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
                'deficiency (TTP), drugs and pregnancy. In ADPKD (autosomal dominant polycystic kidney disease), PKD1 or PKD2 mutations '
                'disturb ciliary calcium signaling; cyclic AMP driven by vasopressin promotes cyst growth. That is the rationale for '
                'tolvaptan, a vasopressin V2-receptor antagonist.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">On the floor, a blood film &middot; fictional</span><p>Mrs. Rivera, admitted '
+               'with a blood pressure of 230/130 mm Hg and acute kidney injury (AKI), is referred for urgent dialysis. Her platelets are 42,000/&micro;L. The '
+               'laboratory reports schistocytes.</p><p>You stop the plan for fresh frozen plasma that the ward has started. You ask for an '
+               'ADAMTS13 sample first and call hematology. If this is thrombotic thrombocytopenic purpura, that sample makes the '
+               'diagnosis, and plasma given first can blur it.</p><p class="tc-scene-take"><b>What this shows.</b> Low platelets with '
+               'broken red cells in AKI is a thrombotic microangiopathy until proven otherwise.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an12_a}}\n'),
               ('evidence',
@@ -56,6 +63,12 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
                'and potential donors before testing.</p>\n'
                '\n'
                '{{fig:an12_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">In the clinic, the pedigree &middot; fictional</span><p>You draw Mr. '
+               'Velasco&rsquo;s family on the back of his chart: his mother on dialysis at 58, his grandfather &ldquo;died of the '
+               'kidneys,&rdquo; two uncles with hypertension, and his sister and a cousin who want to donate.</p><p>In five minutes the '
+               'drawing shows who should be offered counseling and who should not be evaluated as a donor until they are tested.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> A three-generation pedigree is the cheapest genetic test you '
+               'have.</p></div>\n'
                '{{call:<ul><li>Thrombocytopenia with schistocytes and acute kidney injury (AKI)</li><li>Severe hypertension with retinal '
                'hemorrhage and rising creatinine</li><li>AKI with new rash and eosinophilia after a new drug</li><li>Hypokalemia with '
                'metabolic alkalosis and normal blood pressure (consider tubulopathy or diuretic use)</li></ul>}}\n')],

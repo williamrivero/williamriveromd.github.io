@@ -27,6 +27,13 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
                'low-fluid emergency diet slows the rise, and pre-emptive extra sessions before a storm add a buffer. Floods add '
                'leptospirosis risk, crush injuries add rhabdomyolysis, and crowded evacuation centers spread respiratory and '
                'gastrointestinal infection.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">During a power outage &middot; fictional</span><p>Your unit loses power for '
+               'three days after a storm. Mr. Bernardo, anuric, last dialyzed on Friday. Ms. Cruz still passes a liter of urine a day and '
+               'dialyzed on Saturday.</p><p>You send Mr. Bernardo to the first available slot. He cannot excrete potassium, and the long '
+               'gap after Friday is when risk peaks. Ms. Cruz can wait one more day with a strict emergency diet and a potassium '
+               'binder.</p><p class="tc-scene-take"><b>What this shows.</b> Triage by days since the last session, urine output, and '
+               'potassium history.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an22_b}}\n'),
               ('evidence',
@@ -50,6 +57,11 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
                'until every patient has a disposition. During a cluster, involve infection prevention and preserve incident data.</p>\n'
                '\n'
                '{{fig:an22_a}}\n'
+               '<div class="tc-scene"><span class="tc-lab">Before typhoon season &middot; fictional</span><p>In May you check every '
+               'patient&rsquo;s emergency card. Twelve cards are missing their dry weight, and four list a unit that has closed. The head '
+               'nurse updates them during the next week&rsquo;s sessions.</p><p>You also sign a mutual-aid agreement with a unit across '
+               'the river, listing how many extra slots each unit can offer the other.</p><p class="tc-scene-take"><b>What this shows.</b> '
+               'Preparation in May decides who is safe in September.</p></div>\n'
                '{{call:<ul><li>Dyspnea or chest pain after missed sessions</li><li>Anuric patient missing ≥2 sessions</li><li>Patient '
                'unreachable after the event</li><li>Evacuation-center fever or diarrhea cluster among dialysis patients</li></ul>}}\n')],
  'debrief': ['<p><strong>First.</strong> Mr. Bernardo goes to emergency assessment now. Breathlessness and orthopnea in an anuric patient '

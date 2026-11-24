@@ -34,6 +34,13 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
                'non-oliguric, hypokalemic tubulointerstitial nephritis. The leptospiral outer membrane protein injures the proximal tubule '
                'and thick ascending limb, producing urinary potassium and sodium wasting. Severe disease (Weil syndrome) adds jaundice, '
                'thrombocytopenia and pulmonary hemorrhage.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">On a partner hospital&rsquo;s ward &middot; fictional</span><p>Mrs. Uy has AKI '
+               'after pneumonia. Over two days she has received 7 liters of fluid. Her urine output has not risen, her neck veins are '
+               'full, and her oxygen requirement is climbing. The ward team asks if she needs &ldquo;one more liter.&rdquo;</p><p>You '
+               'explain the physiology at the bedside. High venous pressure lowers the gradient that pushes blood through the kidney, and '
+               'fluid swells a kidney that sits inside a capsule that cannot stretch. More fluid is now making perfusion worse.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Euvolemia, not maximum fluid, is the target in AKI.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an05_a}}\n'),
               ('evidence',
@@ -59,6 +66,12 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
                'clinician. AKI survivors have a higher risk of later CKD.</p>\n'
                '\n'
                '{{fig:an05_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">At discharge, a forgotten patient &middot; fictional</span><p>Three months '
+               'after a dialysis-requiring AKI, Mr. Ferrer comes to your unit&rsquo;s clinic only because his pharmacist told him to. His '
+               'discharge summary lists no stage, no follow-up, and no medicine changes. His creatinine is 1.8 mg/dL, and his baseline was '
+               '1.0.</p><p>You record the AKI stage, check his urine albumin, review his medicines, and book him into your CKD '
+               'clinic.</p><p class="tc-scene-take"><b>What this shows.</b> AKI survivors carry a higher risk of later CKD. A named '
+               'follow-up owner is part of the treatment.</p></div>\n'
                '{{call:<ul><li>Oliguria persisting after perfusion is restored</li><li>Leptospirosis with hemoptysis or falling oxygen '
                'saturation (pulmonary hemorrhage)</li><li>Potassium ≥6.5 mmol/L or electrocardiogram (ECG) changes</li><li>Fluid overload '
                'with rising oxygen requirement</li></ul>}}\n')],

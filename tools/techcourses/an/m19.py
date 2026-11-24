@@ -29,6 +29,12 @@ MODULE = {'image_alt': 'A transplanted kidney in the lower right abdomen, connec
                'activation, but they also constrict the afferent arteriole and are metabolized by CYP3A4 (cytochrome P450 3A4). Inhibitors '
                'of that enzyme (clarithromycin, azole antifungals, diltiazem, grapefruit) raise drug levels and cause nephrotoxicity. '
                'Inducers (rifampicin, phenytoin, carbamazepine) lower levels and risk rejection.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">In the clinic, the grapefruit question &middot; fictional</span><p>Mrs. Ramos '
+               'asks whether she can eat pomelo. Her neighbor said it is &ldquo;good for the kidneys.&rdquo;</p><p>You explain that '
+               'pomelo, like grapefruit, can block the liver enzyme CYP3A4, which breaks down tacrolimus. Her levels could rise and injure '
+               'the new kidney. She asks you to write it on her medicine card.</p><p class="tc-scene-take"><b>What this shows.</b> '
+               'Transplant medicines interact with food as well as drugs. Ask about both.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an19_a}}\n'),
               ('evidence',
@@ -53,6 +59,11 @@ MODULE = {'image_alt': 'A transplanted kidney in the lower right abdomen, connec
                'contact the transplant team the same day before changing immunosuppression.</p>\n'
                '\n'
                '{{fig:an19_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">Your panel, a census check &middot; fictional</span><p>You review your 40 '
+               'hemodialysis patients for transplant referral. Eleven are under 60 and have no clear contraindication. Only three have '
+               'ever been referred.</p><p>You write eight referral letters that month, each with the cause of kidney disease, serologies, '
+               'transfusion history, and the barriers you can help with.</p><p class="tc-scene-take"><b>What this shows.</b> The commonest '
+               'reason a suitable patient is not transplanted is that nobody referred them.</p></div>\n'
                '{{call:<ul><li>Creatinine rise &gt;20–25% from the graft&rsquo;s baseline</li><li>Fever in the first year after '
                'transplant</li><li>New interacting drug started by another prescriber</li><li>Missed immunosuppressant '
                'doses</li></ul>}}\n')],

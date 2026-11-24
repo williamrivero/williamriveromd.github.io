@@ -30,6 +30,13 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
                'recirculation sends cleaned blood straight back into the arterial needle, or when high negative arterial pressure means '
                'the pump cannot draw the set flow. Fluid removed faster than the plasma can refill from tissues lowers blood volume. That '
                'causes cramps, hypotension and repeated organ stunning of the heart and brain.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">At the machine, the alarm that was silenced &middot; fictional</span><p>You '
+               'watch Mrs. Panganiban&rsquo;s session. Every few minutes the arterial pressure alarm sounds, and the nurse turns the blood '
+               'pump down from 350 to 250 mL/min. The machine screen still shows the prescribed four hours.</p><p>At 250 mL/min for three '
+               'and a half hours, she receives far less clearance than the order assumes. Nothing on the prescription sheet has '
+               'changed.</p><p class="tc-scene-take"><b>What this shows.</b> Kt/V falls when time or flow falls. Look at the machine, not '
+               'only at the order.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an14_a}}\n'),
               ('evidence',
@@ -53,6 +60,11 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
                'high, rather than pulling fluid harder.</p>\n'
                '\n'
                '{{fig:an14_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">At the quality meeting &middot; fictional</span><p>Nurse Cabral presents the '
+               'unit&rsquo;s adequacy: 82% of patients at or above a single-pool Kt/V of 1.2. You ask a second question: how many sessions '
+               'ended early because of cramps or low pressure? The answer is 14% of sessions last month.</p><p>You set two measures for '
+               'next quarter: Kt/V and minutes lost per session.</p><p class="tc-scene-take"><b>What this shows.</b> A dose that is not '
+               'delivered is not a dose.</p></div>\n'
                '{{call:<ul><li>Kt/V falling with repeated arterial pressure alarms (access dysfunction)</li><li>Interdialytic weight gain '
                'consistently &gt;4% of body weight</li><li>Repeated sessions shortened by cramps or hypotension</li><li>Pre-dialysis '
                'potassium &gt;6.0 mmol/L</li></ul>}}\n')],

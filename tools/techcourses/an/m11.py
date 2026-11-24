@@ -32,6 +32,13 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
                'liver overproduces lipoproteins and clotting factors while antithrombin is lost in urine, explaining hyperlipidemia and '
                'thrombosis. Light microscopy shows pattern, immunofluorescence shows which immune proteins deposit, and electron '
                'microscopy shows where.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">In the pre-dialysis clinic &middot; fictional</span><p>Two patients arrive on '
+               'the same morning. Ms. Robles, 24, has swollen legs, frothy urine, a protein of 6 g/day, an albumin of 1.9 g/dL, and a '
+               'normal creatinine. Mr. Abrenica, 55, has cola-colored urine, hypertension, and a creatinine that doubled in two '
+               'weeks.</p><p>One has a broken filter barrier that leaks protein. The other has an inflamed capillary that leaks blood and '
+               'loses filtration fast. Both need a biopsy, but only one needs it this week.</p><p class="tc-scene-take"><b>What this '
+               'shows.</b> Nephrotic and nephritic presentations differ in mechanism, and the tempo tells you how fast to move.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an11_a}}\n'),
               ('evidence',
@@ -58,6 +65,12 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
                'steroids or rituximab, and define response by proteinuria and eGFR at set time points.</p>\n'
                '\n'
                '{{fig:an11_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">In the consent conversation &middot; fictional</span><p>Ms. Robles&rsquo;s '
+               'mother refuses the biopsy because a neighbor &ldquo;bled to death&rdquo; after one. You give numbers: in large series of '
+               'image-guided biopsies, about 1.6 in 100 patients needed a transfusion and about 3 in 1,000 needed a procedure to stop '
+               'bleeding.</p><p>Then you explain what the biopsy would change: which treatment, how long, and whether her daughter needs '
+               'steroids at all.</p><p class="tc-scene-take"><b>What this shows.</b> Patients weigh risk better when they hear numbers and '
+               'benefits in the same conversation.</p></div>\n'
                '{{call:<ul><li>Hemoptysis with AKI (pulmonary-renal syndrome)</li><li>Creatinine doubling within weeks with active '
                'sediment</li><li>Anti-GBM positivity</li><li>Nephrotic syndrome with leg swelling asymmetry or flank pain (renal vein '
                'thrombosis)</li></ul>}}\n')],

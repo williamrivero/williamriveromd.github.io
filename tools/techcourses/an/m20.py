@@ -29,6 +29,13 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
                'dialysis: diuretics, sodium bicarbonate, erythropoiesis-stimulating agent (ESA), antipruritics, dietary protein adjustment '
                'and antiemetics. In frail patients, dialysis initiation itself is often followed by functional decline: hospital stays, '
                'catheter placement and the physical cost of thrice-weekly travel.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">At home, a conservative care visit &middot; fictional</span><p>Lola Pacing, 87, '
+               'chose conservative management. Her daughter calls because she is itchy all night and has stopped eating '
+               'breakfast.</p><p>You treat each symptom with a specific step: skin care and an adjusted antipruritic for the itch, an '
+               'antiemetic before breakfast, and a review of her protein intake with the dietitian. Two weeks later she is sleeping '
+               'again.</p><p class="tc-scene-take"><b>What this shows.</b> Conservative kidney management is active treatment of symptoms, '
+               'not the absence of treatment.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an20_b}}\n'),
               ('evidence',
@@ -52,6 +59,12 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
                'arrange palliative care and home support.</p>\n'
                '\n'
                '{{fig:an20_a}}\n'
+               '<div class="tc-scene"><span class="tc-lab">The time-limited trial &middot; fictional</span><p>Mr. Pineda agrees to a '
+               '2-month trial of hemodialysis. You write three measures with him: whether he still has energy to sit with his '
+               'grandchildren, how many days a month he spends in hospital, and whether he finds the travel bearable. You set a review '
+               'date and name yourself as the reviewer.</p><p>At the review, he has spent 9 days in hospital and is exhausted after each '
+               'session. He chooses to stop, and the palliative team visits that week.</p><p class="tc-scene-take"><b>What this shows.</b> '
+               'A trial without measures and a date is not a trial.</p></div>\n'
                '{{call:<ul><li>Family requesting decisions be made without the patient</li><li>Capacity uncertain for the decision at '
                'hand</li><li>Uncontrolled symptoms on either pathway</li><li>No documented emergency plan</li></ul>}}\n')],
  'debrief': ['<p><strong>Without him?</strong> No, and you can say so kindly. The decision is his unless he lacks the capacity to make it. '

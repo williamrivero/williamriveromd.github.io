@@ -26,7 +26,13 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
                '<p>A fistula matures as raised flow remodels the vein: shear stress dilates it and thickens its wall. Neointimal '
                'hyperplasia at the swing segment or outflow causes stenosis, which shows as high venous pressure, prolonged bleeding or '
                'poor flow. A catheter&rsquo;s surface acquires a biofilm within days. Bacteria embedded there are protected from '
-               'antibiotics and host defenses, so a recurrent bacteremia with the same organism points to the catheter.</p>\n'),
+               'antibiotics and host defenses, so a recurrent bacteremia with the same organism points to the catheter.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">At the access clinic &middot; fictional</span><p>Mr. Domingo&rsquo;s blood '
+               'cultures grow <em>Staphylococcus aureus</em> again, four weeks after the last course. The catheter looks clean.</p><p>You '
+               'explain to the fellow that a biofilm forms on the catheter surface within days. Bacteria inside it are shielded from '
+               'antibiotics and white cells. When the same organism returns after treatment, the catheter is the reservoir.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> A clean exit site does not mean a clean catheter.</p></div>\n'
+               '\n'),
               ('evidence',
                'Evidence',
                'What the evidence shows',
@@ -48,6 +54,11 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
                'prevalence and infections per 1,000 catheter-days monthly.</p>\n'
                '\n'
                '{{fig:an16_a}}\n'
+               '<div class="tc-scene"><span class="tc-lab">At the monthly infection review &middot; fictional</span><p>Your unit has 11 '
+               'patients on catheters. Five have no date for fistula surgery. Two have had their surgery postponed twice.</p><p>You write '
+               'an access life-plan for each: current access, next access, the arm to protect, the surgeon, and the date. You ask the head '
+               'nurse to bring the list to every monthly review until the column of dates is full.</p><p class="tc-scene-take"><b>What '
+               'this shows.</b> A catheter without a removal date tends to become permanent.</p></div>\n'
                '{{call:<ul><li>Rigors or hypotension during HD with a catheter</li><li>Pulsatile bleeding or a ruptured '
                'aneurysm</li><li>Cold, painful hand after access creation (steal)</li><li>Swelling of the whole arm (central vein '
                'stenosis)</li></ul>}}\n')],

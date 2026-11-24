@@ -12,10 +12,11 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
  'case': {'title': 'The call from the 8 p.m. shift',
           'html': '<p>You are at home when the physician on duty at your unit, Dr. Ilagan, calls. &ldquo;Doctor, Mrs. Dizon is dizzy. Can '
                   'I let her go home?&rdquo;</p>\n'
-                  '<p>You ask for more. Mrs. Dizon, 67, finished her hemodialysis (HD) session twenty minutes ago. She gained 3.8 kilograms over the '
-                  'weekend, and the nurse removed all of it in four hours. She nearly fainted twice when she stood up. Her blood pressure '
-                  'is 88/54 mm Hg sitting. She has not eaten since breakfast. Her son is waiting outside with a tricycle, and she is '
-                  'insisting on leaving because it is getting late. Dr. Ilagan has been a physician on duty for two weeks.</p>\n',
+                  '<p>You ask for more. Mrs. Dizon, 67, finished her hemodialysis (HD) session twenty minutes ago. She gained 3.8 '
+                  'kilograms over the weekend, and the nurse removed all of it in four hours. She nearly fainted twice when she stood up. '
+                  'Her blood pressure is 88/54 mm Hg sitting. She has not eaten since breakfast. Her son is waiting outside with a '
+                  'tricycle, and she is insisting on leaving because it is getting late. Dr. Ilagan has been a physician on duty for two '
+                  'weeks.</p>\n',
           'questions': ['What do you need to know before you give an instruction?',
                         'What exactly will you ask Dr. Ilagan to do, by when, and what happens if it does not work?',
                         'What should change before her next session?']},
@@ -29,6 +30,14 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
                'loop by making the receiver restate the instruction, which exposes mishearing at the moment it can still be fixed. SBAR '
                '(situation, background, assessment, recommendation) or ISBAR structures the data so the controller hears the trend, not '
                'just the latest value.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">By phone, two versions of the same call &middot; fictional</span><p>Version '
+               'one: &ldquo;Doctor, bed 6 is hypotensive.&rdquo; &ldquo;Okay, watch closely.&rdquo; Nobody knows what '
+               '&ldquo;closely&rdquo; means or what happens if it gets worse.</p><p>Version two: &ldquo;Bed 6, Mr. Cruz, third hour, 2.5 '
+               'liters off. Pressure fell from 130 to 86 over 20 minutes; he is yawning. Ultrafiltration is stopped and he is flat.&rdquo; '
+               'You answer: &ldquo;Give 200 mL of saline now, recheck in 15 minutes, and call me back. If he is still below 90, end the '
+               'session and send him to the emergency room. Read that back.&rdquo;</p><p class="tc-scene-take"><b>What this shows.</b> The '
+               'second call carries a trend, an action, an owner, a deadline, and a fallback. That is a closed loop.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an03_a}}\n'),
               ('evidence',
@@ -47,6 +56,11 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
                'the response to them. State the immediate action, who performs it, the reassessment deadline and the fallback if contact '
                'is lost. Have the caller read it back. Document in the chart, not only in a messaging app. For transfers, confirm '
                'acceptance by a named receiving clinician and send the minimum data set through the approved channel.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">At handoff, 6 p.m. &middot; fictional</span><p>You find a note in the chart '
+               'from last night: &ldquo;AN aware.&rdquo; Nothing else. You ask Dr. Ilagan what you were made aware of and what you said. '
+               'Neither of you is certain.</p><p>You agree a rule with Nurse Cabral: every call ends with a chart entry that has the '
+               'instruction, the reassessment time, and the name of the person who gave it.</p><p class="tc-scene-take"><b>What this '
+               'shows.</b> If the next shift cannot read the plan, the plan did not happen.</p></div>\n'
                '{{call:<ul><li>&rsquo;Team aware&rsquo; as the only documentation</li><li>Orders given by text with no chart '
                'entry</li><li>Patient leaving against advice with no capacity assessment</li><li>Instructions with no reassessment '
                'time</li></ul>}}\n')],

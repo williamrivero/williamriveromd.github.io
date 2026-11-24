@@ -35,6 +35,14 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
                'effective perfusion, although contrast, early obstruction and some glomerular diseases can do the same. Cystatin C is '
                'produced by all nucleated cells and is less dependent on muscle mass. It is the better marker in sarcopenia, amputation or '
                'very high muscle mass.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">In the clinic at the dialysis center &middot; fictional</span><p>Two referrals '
+               'arrive on the same afternoon, both &ldquo;creatinine 4.0.&rdquo; Mrs. Lim, 70, has small, bright kidneys on ultrasound and '
+               'a creatinine of 3.6 a year ago. Mr. Javier, 31, has normal-sized kidneys, a creatinine of 1.0 two months ago, and red-cell '
+               'casts in his urine.</p><p>The same number describes two different diseases. For Mrs. Lim it is the next step on a long '
+               'slope; for Mr. Javier it is an emergency that a biopsy may still reverse.</p><p class="tc-scene-take"><b>What this '
+               'shows.</b> Creatinine tells you how much filtration is lost. The timeline, the kidney size, and the sediment tell you '
+               'why.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an02_a}}\n'),
               ('evidence',
@@ -58,6 +66,12 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
                'the differential within minutes.</p>\n'
                '\n'
                '{{fig:an02_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">In the consult room &middot; fictional</span><p>You write Mr. Javier&rsquo;s '
+               'note in five lines. Baseline: 1.0 mg/dL two months ago. Category: AKI. Lesion: glomerular, active sediment. Urgency: '
+               'biopsy this week, admit if breathless or creatinine rises again. Owners: you follow the serologies by Friday; the general '
+               'practitioner rechecks creatinine in 48 hours.</p><p>The next physician who opens his chart understands the plan in thirty '
+               'seconds.</p><p class="tc-scene-take"><b>What this shows.</b> A consult note that answers the five questions is a handoff, '
+               'not a diary.</p></div>\n'
                '{{call:<ul><li>Red-cell casts or dysmorphic red cells with rising creatinine</li><li>Hemoptysis, rash or purpura with '
                'AKI</li><li>Anuria (consider obstruction or a vascular event)</li><li>Bilateral small echogenic kidneys reframing '
                '&rsquo;AKI&rsquo; as advanced CKD</li></ul>}}\n')],

@@ -28,6 +28,13 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
                'more in absolute terms. In QI, a rate needs a numerator, a denominator that reflects exposure, a baseline and enough data '
                'points to separate signal from noise. A run chart signals change with six or more consecutive points on one side of the '
                'median.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">Teaching the number needed to treat &middot; fictional</span><p>Dr. Cruz, the '
+               'rotating fellow, says a new drug &ldquo;cuts kidney events by 24%.&rdquo; You ask what the event rate was in the placebo '
+               'group.</p><p>In FLOW it was 23.2%, and 18.7% with semaglutide. The absolute difference is about 4.5 percentage points over '
+               'a median of 3.4 years, so about 22 patients are treated for one to avoid a major kidney event. For a patient at lower '
+               'risk, the same 24% would mean a much smaller absolute gain.</p><p class="tc-scene-take"><b>What this shows.</b> Relative '
+               'effects stay roughly constant; absolute benefit depends on baseline risk.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an23_b}}\n'),
               ('evidence',
@@ -49,6 +56,11 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
                'one small change, track a process and a balancing measure, and review at a fixed date.</p>\n'
                '\n'
                '{{fig:an23_c}}\n'
+               '<div class="tc-scene"><span class="tc-lab">The first test of change &middot; fictional</span><p>Your aim: reduce catheter '
+               'infections from 3.0 to below 1.5 per 1,000 catheter-days by June. Measures: the infection rate, checklist completion, and '
+               'minutes of delay to session start.</p><p>In month one, checklist completion is 60% and start times are unchanged. You '
+               'shorten the checklist from twelve items to six and test it again in month two.</p><p class="tc-scene-take"><b>What this '
+               'shows.</b> Test one small change, measure it honestly, and adjust.</p></div>\n'
                '{{call:<ul><li>Relative risk reduction quoted without absolute effect</li><li>Rates compared with different '
                'denominators</li><li>Improvement claimed from a single data point</li><li>No balancing measure for a change that adds '
                'work</li></ul>}}\n')],

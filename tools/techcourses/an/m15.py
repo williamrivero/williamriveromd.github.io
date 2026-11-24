@@ -27,6 +27,13 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
                'potassium can cause cardiac arrest, and returning the circuit blood adds to the load. Air entering the venous line travels '
                'to the right heart and pulmonary circulation, or across a patent foramen ovale to the brain. Dialyzer reactions range from '
                'early anaphylactoid responses to sterilant or membrane components to milder complement-mediated reactions.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">On the floor, warm dialysate &middot; fictional</span><p>Mr. Santos becomes '
+               'hypotensive in the third hour of most sessions. His target weight was lowered last month. The dialysate is set at 37 '
+               '&deg;C.</p><p>Fluid removal is outpacing refill from his tissues, and warm dialysate dilates his skin vessels when he '
+               'needs them constricted. You ask for a target-weight review, a cap on his ultrafiltration rate, and dialysate cooled about '
+               '0.5 &deg;C below his core temperature.</p><p class="tc-scene-take"><b>What this shows.</b> Intradialytic hypotension is '
+               'fluid removal minus refill, made worse by heat and food.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an15_b}}\n'),
               ('evidence',
@@ -50,6 +57,11 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
                'protocol.</p>\n'
                '\n'
                '{{fig:an15_a}}\n'
+               '<div class="tc-scene"><span class="tc-lab">The drill &middot; fictional</span><p>On a quiet Saturday afternoon you run an '
+               'air embolism drill with the floor team. The nurse clamps the venous line in 20 seconds. Turning the &ldquo;patient&rdquo; '
+               'onto the left side with the head down takes 90 seconds, because nobody knew how the chair reclined.</p><p>You repeat the '
+               'drill until it takes 30 seconds, and the chair instructions go on the wall.</p><p class="tc-scene-take"><b>What this '
+               'shows.</b> Rare emergencies are handled the way they were practiced.</p></div>\n'
                '{{call:<ul><li>Two or more patients with similar symptoms within minutes</li><li>Dark or cherry-red blood in the venous '
                'line</li><li>Sudden dyspnea, cough or neurologic signs after a line disconnection</li><li>Chest pain with '
                'electrocardiogram (ECG) changes during hemodialysis (HD)</li></ul>}}\n')],

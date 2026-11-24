@@ -27,7 +27,14 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
                'procedures) introduce organisms. Neutrophils pour into the peritoneal cavity, which clouds the effluent. Repeated or '
                'severe inflammation drives mesothelial loss and fibrosis, which can lead to ultrafiltration failure and eventually '
                'encapsulating peritoneal sclerosis. Mechanical problems differ: constipation or omental wrap causes one-way outflow '
-               'obstruction, and leaks show up as abdominal wall or genital edema with poor ultrafiltration, without cloudy fluid.</p>\n'),
+               'obstruction, and leaks show up as abdominal wall or genital edema with poor ultrafiltration, without cloudy fluid.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">By phone, the constipated patient &middot; fictional</span><p>Mr. Rosales calls '
+               'because his bags drain slowly. The fluid is clear and he has no fever. He has not moved his bowels in four '
+               'days.</p><p>This is a drainage problem, not an infection. A full colon presses on the catheter and blocks outflow. You '
+               'start a laxative and ask him to call back after his bowels move, and you book an X-ray if drainage does not improve.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Cloudy fluid is infection until proven otherwise. Clear fluid that will not '
+               'drain is usually mechanical.</p></div>\n'
+               '\n'),
               ('evidence',
                'Evidence',
                'What the evidence shows',
@@ -52,6 +59,12 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
                '{{fig:an18_a}}\n'
                '\n'
                '{{fig:an18_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">At the annual PD review &middot; fictional</span><p>You calculate your '
+               'program&rsquo;s numbers with the PD nurse: 6 episodes in 18 patient-years, a rate of 0.33 per patient-year, within the '
+               'target of 0.40 or less. Two cultures were negative.</p><p>You trace both back to the same problem: effluent sent in a '
+               'plain container, not in blood-culture bottles. The nurse rewrites the collection sheet.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> A peritonitis rate is useful only when the cultures behind it are '
+               'reliable.</p></div>\n'
                '{{call:<ul><li>Septic shock or peritonism suggesting surgical abdomen</li><li>Multiple organisms or anaerobes (bowel '
                'perforation)</li><li>Fungal elements on Gram stain</li><li>Effluent not clearing by day 5</li></ul>}}\n')],
  'debrief': ['<p><strong>Now.</strong> Call Mr. Castro and see him today. Ask him to bring the first cloudy bag. Send effluent for cell '

@@ -30,6 +30,12 @@ MODULE = {'image_alt': 'A couple walks hand in hand along a garden path toward a
                'and diet, so a number cannot stand in for the person. Residual kidney function is worth protecting. Each mL/min of native '
                'clearance removes middle molecules and phosphate around the clock, eases fluid limits, and is associated with better '
                'survival on both HD and PD.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">In the pre-dialysis clinic &middot; fictional</span><p>Mr. Garcia and Mrs. Tan '
+               'both have an eGFR of 8. He is a 45-year-old mason with large muscles who feels well and is still working. She is 72, '
+               'weighs 42 kilograms, has lost her appetite, and has been vomiting each morning.</p><p>Same number, different patients. Her '
+               'uremia shows in her intake and her weight; his creatinine reflects his muscle as much as his kidneys.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Start dialysis for the person, not for the number.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an13_b}}\n'),
               ('evidence',
@@ -53,6 +59,12 @@ MODULE = {'image_alt': 'A couple walks hand in hand along a garden path toward a
                'good PD candidates.</p>\n'
                '\n'
                '{{fig:an13_a}}\n'
+               '<div class="tc-scene"><span class="tc-lab">Describing a typical week &middot; fictional</span><p>Mrs. Tan&rsquo;s son asks '
+               'which dialysis is &ldquo;better.&rdquo; You answer with a calendar. Hemodialysis: Monday, Wednesday, Friday, four hours '
+               'each, plus travel by tricycle, with fluid and diet limits between sessions. Peritoneal dialysis: four exchanges at home '
+               'each day, or a machine at night, with someone trained to help.</p><p>Then you add the third option: conservative care at '
+               'home, with symptom control. The family looks at the calendar for a long time.</p><p class="tc-scene-take"><b>What this '
+               'shows.</b> People choose between weeks, not between modalities.</p></div>\n'
                '{{call:<ul><li>Uremic pericarditis or encephalopathy</li><li>Refractory hyperkalemia or pulmonary '
                'edema</li><li>Progressive weight and albumin loss</li><li>No access plan with 2-year KFRE &gt;40%</li></ul>}}\n')],
  'debrief': ['<p><strong>Today?</strong> No. He has no emergency indication: no severe potassium, no fluid overload, no pericarditis, no '

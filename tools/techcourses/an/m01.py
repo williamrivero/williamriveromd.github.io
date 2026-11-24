@@ -36,6 +36,14 @@ MODULE = {'image_alt': 'A physician takes a phone call at a corridor window, loo
                'Section 1.2 of the Philippine Society of Nephrology (PSN) 2024 HD guidelines asks the attending nephrologist (AN) to '
                'assess before initiation, document consent, prescribe initial and maintenance HD, coordinate access and emergencies, and '
                'see each patient at least monthly. Face to face is preferred, with telemedicine when necessary.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">By phone, 9:20 p.m. &middot; fictional</span><p>Dr. Salonga, the physician on '
+               'duty, calls your mobile three times. You are in a cinema with the phone on silent. At 9:35 he messages the clinical head, '
+               'who is abroad. At 9:50 the patient with chest pain is still on the floor, because nobody told him which hospital accepts '
+               'the unit&rsquo;s transfers.</p><p>Nobody in this story lacked knowledge. Dr. Salonga knew the patient needed a hospital. '
+               'The signal simply had nowhere to go.</p><p class="tc-scene-take"><b>What this shows.</b> Most night failures are '
+               'conduction failures. Your job begins before the call: a named backup, a time limit, and a confirmed receiving '
+               'hospital.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an01_a}}\n'),
               ('evidence',
@@ -59,6 +67,13 @@ MODULE = {'image_alt': 'A physician takes a phone call at a corridor window, loo
                'patients at risk from the first night.</p>\n'
                '\n'
                '{{fig:an01_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">In the administrator&rsquo;s office &middot; fictional</span><p>Before signing, '
+               'you ask Ms. Lagman for four things: the current License to Operate, the transfer agreement, the roster for next month, and '
+               'the escalation sheet posted at the nurses&rsquo; station. She finds the first two. The roster lists no backup, and the '
+               'escalation sheet still carries the name of the attending who emigrated.</p><p>You agree on a start date two weeks away, '
+               'and together you write who the physician on duty calls first, after 10 minutes, and after 20.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> A two-week delay with a working escalation route is safer than a Monday '
+               'start without one.</p></div>\n'
                '{{call:<ul><li>No named backup consultant</li><li>No written transfer agreement</li><li>POD told to &rsquo;message the '
                'doctor&rsquo; with no time limit before escalation</li><li>License to Operate expired or service capability not covering '
                'the patients enrolled</li></ul>}}\n')],

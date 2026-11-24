@@ -32,7 +32,15 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
                'removing these threats earlier and exposing patients who would have recovered to catheter infection, hypotension, nutrient '
                'and drug loss and delayed recovery. Intermittent hemodialysis (HD) removes solute and fluid fast, which can drop blood '
                'pressure and, by rapidly lowering plasma osmolality, drive water into an injured brain. Continuous therapy spreads the '
-               'same work over 24 hours, trading efficiency for hemodynamic and osmotic stability.</p>\n'),
+               'same work over 24 hours, trading efficiency for hemodynamic and osmotic stability.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">On the ICU round &middot; fictional</span><p>The intensivist points at Mr. '
+               'Ramos&rsquo;s creatinine: 5.2 mg/dL. &ldquo;Should we start?&rdquo; You look at the rest: potassium 4.6, bicarbonate 20, '
+               'oxygen improving, urine output 700 mL yesterday and rising.</p><p>No homeostasis has been lost that the body cannot buy '
+               'back. You write: &ldquo;No indication today. Start if potassium exceeds 6.0 despite treatment, pH falls below 7.15, or '
+               'oxygen requirement rises with a positive fluid balance. Review tomorrow.&rdquo;</p><p class="tc-scene-take"><b>What this '
+               'shows.</b> Dialysis earns its risks when it replaces something the kidney can no longer do, not when a number crosses a '
+               'line.</p></div>\n'
+               '\n'),
               ('evidence',
                'Evidence',
                'What the evidence shows',
@@ -60,6 +68,12 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
                'creatinine clearance when available.</p>\n'
                '\n'
                '{{fig:an07_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">By phone, the head injury &middot; fictional</span><p>A hospital calls about a '
+               'man with a subdural hematoma and AKI. They have booked a standard four-hour hemodialysis session.</p><p>You explain that a '
+               'fast session lowers plasma urea quickly, and water can then move into the injured brain. You ask for continuous therapy if '
+               'available, or a short, gentle session with low blood flow, and you write the reason in the order.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Choosing the modality is part of the prescription, and the brain is one of '
+               'the reasons.</p></div>\n'
                '{{call:<ul><li>Potassium rising despite shifting therapy</li><li>Fluid overload with escalating ventilator or oxygen '
                'requirements</li><li>Uremic pericarditis or encephalopathy</li><li>Dialyzable toxin meeting EXTRIP '
                'criteria</li></ul>}}\n')],

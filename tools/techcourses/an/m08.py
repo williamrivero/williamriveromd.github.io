@@ -12,9 +12,9 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
         'ceiling::≲20–25%|Citrate accumulation signal::Total-to-ionized calcium ratio &gt;2.5|RENAL and ATN higher-intensity arms::No '
         'survival benefit|Regional citrate versus heparin trial (RICH) median filter life::47 h citrate vs 26 h heparin}}\n',
  'case': {'title': 'The filter that keeps clotting',
-          'html': '<p>Your unit staffs the continuous kidney replacement therapy service at a partner hospital&rsquo;s intensive care unit (ICU). On your '
-                  'morning round, the nurse shows you the flowsheet for Mr. Lim, 70 kg, who is on continuous venovenous hemodiafiltration '
-                  'for AKI after cardiac surgery.</p>\n'
+          'html': '<p>Your unit staffs the continuous kidney replacement therapy service at a partner hospital&rsquo;s intensive care unit '
+                  '(ICU). On your morning round, the nurse shows you the flowsheet for Mr. Lim, 70 kg, who is on continuous venovenous '
+                  'hemodiafiltration for AKI after cardiac surgery.</p>\n'
                   '<p>The prescription is 2,100 mL/hour of effluent. In the last 24 hours the filter clotted three times, and with priming '
                   'and a trip to CT scan he received only 12 hours of treatment. He is on systemic heparin at a low dose because of a '
                   'bleeding drain. His meropenem was dosed by the ICU pharmacist &ldquo;for full-time CRRT.&rdquo; The nurse asks, '
@@ -32,6 +32,13 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
                'chelates ionized calcium in the circuit to stop the coagulation cascade; the liver metabolizes returning citrate to '
                'bicarbonate. When the liver cannot do this, total calcium rises while ionized calcium falls. A total-to-ionized calcium '
                'ratio above about 2.5 signals citrate accumulation.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">At the CRRT machine &middot; fictional</span><p>The night nurse shows you a '
+               'filter that clotted after 7 hours. The filtration fraction on the screen is 31%.</p><p>You explain that too much plasma '
+               'water is being pulled from too little blood flow, so the blood inside the filter thickens and clots. You raise the blood '
+               'flow, move part of the replacement fluid before the filter, and review the anticoagulation.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Filter life is a dose problem. Every clotted filter is lost treatment '
+               'time.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an08_b}}\n'),
               ('evidence',
@@ -55,6 +62,11 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
                'recovers and the indication has resolved, and plan a defined observation period with chemistry and fluid checks.</p>\n'
                '\n'
                '{{fig:an08_a}}\n'
+               '<div class="tc-scene"><span class="tc-lab">On the morning round &middot; fictional</span><p>You write four numbers on Mr. '
+               'Lim&rsquo;s chart each morning: hours run, delivered effluent in mL/kg/hour, filter life, and net fluid removed against '
+               'the target. On day three the delivered dose reaches 23 mL/kg/hour after citrate is started.</p><p>You also ask the '
+               'pharmacist to re-dose meropenem to the clearance he is now receiving.</p><p class="tc-scene-take"><b>What this shows.</b> '
+               'What gets written down every morning gets fixed.</p></div>\n'
                '{{call:<ul><li>Filter life repeatedly under 12 hours</li><li>Rising total-to-ionized calcium ratio with worsening '
                'acidosis</li><li>Antibiotic doses based on an assumed, not delivered, dose</li><li>Thrombocytopenia with hemolysis on CRRT '
                '(consider TTP or heparin-induced thrombocytopenia)</li></ul>}}\n')],

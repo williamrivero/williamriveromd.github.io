@@ -14,9 +14,9 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
         'kidney progression|FLOW semaglutide::Major kidney events 18.7% vs 23.2%; HR 0.76}}\n',
  'case': {'title': 'The patient who is not on your floor yet',
           'html': '<p>Every Thursday afternoon your dialysis center runs a pre-dialysis clinic in the consultation room beside the '
-                  'treatment floor. Mrs. Aquino, 62, has type 2 diabetes. Her estimated glomerular filtration rate (eGFR) has been about 37 for a year, and her urine '
-                  'albumin-to-creatinine ratio is 850 mg/g on losartan 50 mg. Her potassium is 5.1 mmol/L and her blood pressure is 142/88 '
-                  'mm Hg.</p>\n'
+                  'treatment floor. Mrs. Aquino, 62, has type 2 diabetes. Her estimated glomerular filtration rate (eGFR) has been about '
+                  '37 for a year, and her urine albumin-to-creatinine ratio is 850 mg/g on losartan 50 mg. Her potassium is 5.1 mmol/L and '
+                  'her blood pressure is 142/88 mm Hg.</p>\n'
                   '<p>She watches the patients on the floor through the glass and asks, &ldquo;Doctor, how long before I am in one of '
                   'those chairs?&rdquo; She tells you she can afford laboratory tests only every three months. Your clinic nurse whispers '
                   'that the pharmacy across the street sells a generic sodium-glucose cotransporter 2 (SGLT2) inhibitor.</p>\n',
@@ -34,6 +34,13 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
                'overactivation drives inflammation and fibrosis that persist despite RAS blockade, which nonsteroidal antagonists such as '
                'finerenone target. GLP-1 (glucagon-like peptide-1) receptor agonists act through weight, glucose, blood pressure and '
                'likely direct anti-inflammatory effects. This is why the effects add up.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">In the pre-dialysis clinic &middot; fictional</span><p>Mr. Dela Paz, 58, asks '
+               'why you are adding a &ldquo;diabetes tablet&rdquo; when his sugar is controlled. You draw two pipes into a small balloon '
+               'on a sheet of paper.</p><p>&ldquo;The pipe coming in is the afferent arteriole. Empagliflozin narrows it. The pipe going '
+               'out is the efferent arteriole. Your losartan widens it. Both lower the pressure in the balloon, which is the glomerulus. '
+               'Less pressure means less damage to the filters you still have.&rdquo;</p><p class="tc-scene-take"><b>What this shows.</b> '
+               'Protective drugs make sense once the patient sees that they work on pressure, not on sugar.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an09_a}}\n'),
               ('evidence',
@@ -61,6 +68,11 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
                'a lab plan the patient can afford.</p>\n'
                '\n'
                '{{fig:an09_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">In the clinic, the same patient a month later &middot; fictional</span><p>Mr. '
+               'Dela Paz returns worried. His creatinine rose from 2.0 to 2.3 mg/dL after empagliflozin. His family wants him to stop '
+               'it.</p><p>You explain that a rise of up to about 30% is expected, because the drug lowers pressure inside the filters. You '
+               'keep the drug and check again in four weeks.</p><p class="tc-scene-take"><b>What this shows.</b> An expected change is not '
+               'a side effect. Stopping protection because of it takes away the benefit.</p></div>\n'
                '{{call:<ul><li>eGFR decline &gt;5 mL/min/1.73 m² per year</li><li>UACR rising despite therapy</li><li>Potassium &gt;5.5 '
                'mmol/L after starting RAS inhibitor or finerenone</li><li>eGFR fall &gt;30% after starting RAS blockade (look for '
                'renovascular disease or volume depletion)</li></ul>}}\n')],

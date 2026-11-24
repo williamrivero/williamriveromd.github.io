@@ -30,6 +30,12 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
                'equilibrate quickly but lose the glucose gradient early and need short dwells or icodextrin for long dwells. Slow '
                'transporters need longer dwells. Residual kidney function often supplies a large share of total clearance early in '
                'PD.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">At the PD clinic &middot; fictional</span><p>Mrs. Lacson, a fast transporter on '
+               'her peritoneal equilibration test, drains less than she infuses after her long overnight dwell.</p><p>Her membrane moves '
+               'glucose quickly, so the osmotic gradient disappears early in the dwell, and fluid flows back. You change the long dwell to '
+               'icodextrin, whose large molecules hold the gradient for many hours.</p><p class="tc-scene-take"><b>What this shows.</b> '
+               'Transport type decides how long a dwell can work.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an17_a}}\n'),
               ('evidence',
@@ -52,6 +58,12 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
                'First Z Benefit package requirements and provider accreditation separately from the clinical plan.</p>\n'
                '\n'
                '{{fig:an17_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">Reading the exchange log &middot; fictional</span><p>You read Mr. '
+               'Aquino&rsquo;s log line by line. Ultrafiltration falls on weekends, when he visits his mother in the province and skips '
+               'the evening exchange. His weight is up 1.5 kilograms on Mondays.</p><p>You ask him what would make the weekend work. He '
+               'chooses to bring supplies and do the exchange at his mother&rsquo;s house, and the PD nurse arranges a home check '
+               'there.</p><p class="tc-scene-take"><b>What this shows.</b> The prescription that fits the patient&rsquo;s life is the one '
+               'that gets delivered.</p></div>\n'
                '{{call:<ul><li>Falling urine output with new edema</li><li>Repeated missed exchanges</li><li>Poor drainage or one-way '
                'obstruction</li><li>Weight loss with low albumin</li></ul>}}\n')],
  'debrief': ['<p><strong>Two changes.</strong> Her own kidneys are doing less, and the prescription is not being delivered. Early in PD, '

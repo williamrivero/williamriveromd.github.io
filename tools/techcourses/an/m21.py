@@ -10,9 +10,9 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
         '{{cards:Key numbers|Annual hemodialysis (HD) session limit::156 sessions (3 per week x 52 weeks)|HD package rate::PHP 6,350 per '
         'session from October 9, 2024; up to PHP 990,600 per year}}\n',
  'case': {'title': 'The claim you are asked to sign on Friday',
-          'html': '<p>On the last Friday of the month, the billing clerk brings you a stack of Philippine Health Insurance Corporation (PhilHealth) claim forms to sign before the 5 '
-                  'p.m. courier. &ldquo;They are all correct, Doctor. Just sign on the flags.&rdquo; You pull one at random: Mr. Lopez, 12 '
-                  'sessions.</p>\n'
+          'html': '<p>On the last Friday of the month, the billing clerk brings you a stack of Philippine Health Insurance Corporation '
+                  '(PhilHealth) claim forms to sign before the 5 p.m. courier. &ldquo;They are all correct, Doctor. Just sign on the '
+                  'flags.&rdquo; You pull one at random: Mr. Lopez, 12 sessions.</p>\n'
                   '<p>You compare it with the treatment flowsheets. On the 9th, his session was cancelled because the water system was '
                   'down, but the date is on the claim. The 16th appears twice. The clerk explains that the system bills from the schedule, '
                   'and that the server crashed on the 16th and the entries were typed again. &ldquo;It is only two sessions, Doctor, and '
@@ -27,6 +27,13 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
                'physician note) is upstream, the dialysis log and statement of account are midstream, and the claim is the outlet. Errors '
                'enter at predictable points: sessions scheduled but cancelled, transfers mid-month, duplicated entries after system '
                'downtime, and edits made without an audit trail. Reconciliation checks the outlet against the source.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">Tracing one date &middot; fictional</span><p>You pick one date from Mr. '
+               'Lopez&rsquo;s claim, the 9th, and follow it upstream. The claim says a session happened. The statement of account says the '
+               'same. The dialysis log says &ldquo;cancelled, water system down.&rdquo; There is no machine log and no nursing '
+               'flowsheet.</p><p>The error entered at the first step, where the system copied the schedule into the billing file.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Reconciliation means checking the outlet against the source, one date at a '
+               'time.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an21_b}}\n'),
               ('evidence',
@@ -52,6 +59,11 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
                'or the facility.</p>\n'
                '\n'
                '{{fig:an21_a}}\n'
+               '<div class="tc-scene"><span class="tc-lab">The correction, done properly &middot; fictional</span><p>The billing clerk '
+               'deletes the two wrong dates and prints a new claim. You ask her to undo it and use the correction workflow instead, so the '
+               'record shows the original entry, the change, who made it, and why.</p><p>A month later, a PhilHealth auditor asks about '
+               'that claim. The audit trail answers the question in two minutes.</p><p class="tc-scene-take"><b>What this shows.</b> A '
+               'correction without a trail looks the same as an alteration.</p></div>\n'
                '{{call:<ul><li>Claimed date with no treatment record</li><li>Duplicate dates after system downtime</li><li>Requests to '
                '&rsquo;adjust&rsquo; logs to match a claim</li><li>Rebate or incentive offers tied to referrals or '
                'supplies</li></ul>}}\n')],

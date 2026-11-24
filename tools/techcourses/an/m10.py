@@ -32,6 +32,13 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                'endogenous erythropoietin and lowering hepcidin. In mineral metabolism, falling phosphate excretion raises FGF23 '
                '(fibroblast growth factor 23), which suppresses calcitriol. Low calcitriol and later hyperphosphatemia drive parathyroid '
                'hormone up. Metabolic acidosis from reduced ammonium excretion breaks down muscle and bone.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">At the monthly anemia review &middot; fictional</span><p>Nurse Cabral lists six '
+               'patients whose erythropoietin doses have doubled in three months. Four of them have a transferrin saturation below 20% '
+               'with a ferritin above 500 ng/mL. Three had infections.</p><p>You explain the lock. Inflammation raises hepcidin, hepcidin '
+               'closes the iron exit from cells, and the marrow starves while the stores look full. Higher erythropoietin doses cannot '
+               'make red cells without available iron.</p><p class="tc-scene-take"><b>What this shows.</b> Ferritin is an acute-phase '
+               'protein. Read it with transferrin saturation and C-reactive protein.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an10_a}}\n'),
               ('evidence',
@@ -58,6 +65,12 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                'frailty and poor intake, and involve the renal dietitian at each review.</p>\n'
                '\n'
                '{{fig:an10_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">On the floor, the binder taken at the wrong time &middot; '
+               'fictional</span><p>Mrs. Garcia&rsquo;s phosphate stays high despite three binder tablets a day. You ask when she takes '
+               'them. &ldquo;Before breakfast, all three, so I don&rsquo;t forget.&rdquo;</p><p>A binder works only when it meets the '
+               'phosphate in food. You ask her to take one with each meal, and you ask the dietitian to review her processed-food '
+               'intake.</p><p class="tc-scene-take"><b>What this shows.</b> Before adding a drug, check how the current one is being '
+               'taken.</p></div>\n'
                '{{call:<ul><li>Falling hemoglobin with positive stool occult blood</li><li>Ferritin very high with low TSAT during '
                'infection (hold IV iron)</li><li>Hypercalcemia on calcitriol or calcium-based binders</li><li>Calciphylaxis (painful '
                'violaceous skin lesions)</li></ul>}}\n')],

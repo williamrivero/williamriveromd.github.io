@@ -12,8 +12,9 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
         'estimated glomerular filtration rate (eGFR) &lt;45; stop at eGFR &lt;30}}\n',
  'case': {'title': 'Two lists in one plastic bag',
           'html': '<p>Mr. Navarro, 58, comes to your clinic at the dialysis center a week after a hospital stay for gastroenteritis that '
-                  'pushed his kidney function down. He has diabetes and chronic kidney disease (CKD) G3a, and he is not on dialysis. He hands you a plastic bag '
-                  'with every box of medicine he owns and two discharge sheets, one from the ward and one from the emergency room.</p>\n'
+                  'pushed his kidney function down. He has diabetes and chronic kidney disease (CKD) G3a, and he is not on dialysis. He '
+                  'hands you a plastic bag with every box of medicine he owns and two discharge sheets, one from the ward and one from the '
+                  'emergency room.</p>\n'
                   '<p>One sheet says &ldquo;stop losartan, empagliflozin, and metformin.&rdquo; The other says &ldquo;continue all home '
                   'medicines.&rdquo; He has been taking only his amlodipine &ldquo;to be safe.&rdquo; His creatinine today is 1.4 mg/dL; '
                   'his baseline before the illness was 1.3. He is eating and drinking normally. His daughter, who manages his medicines, '
@@ -33,6 +34,13 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
                'receptor blockers) and SGLT2 (sodium-glucose cotransporter 2) inhibitors reduce intraglomerular pressure and cause an '
                'expected early creatinine rise. nonsteroidal anti-inflammatory drugs (NSAIDs) remove prostaglandin-mediated afferent '
                'dilation. Hence the &rsquo;sick day&rsquo; rule for volume-depleting illness.</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">On the treatment floor &middot; fictional</span><p>Mr. Tolentino, on '
+               'hemodialysis, was given vancomycin in hospital and told to &ldquo;have a dose after dialysis.&rdquo; On Wednesday the '
+               'nurse asks whether to give it. You ask what membrane he dialyzes on. It is high-flux.</p><p>Vancomycin is small, '
+               'water-soluble, and mostly unbound, so a high-flux session removes a large share of it. You ask for a level and dose to it, '
+               'instead of guessing.</p><p class="tc-scene-take"><b>What this shows.</b> Drug exposure is dose divided by clearance. '
+               'Dialysis adds clearance that depends on the drug and the membrane.</p></div>\n'
+               '\n'
                '\n'
                '{{fig:an04_a}}\n'),
               ('evidence',
@@ -54,6 +62,12 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
                'teach-back: &rsquo;Tell me in your own words what we agreed and why.&rsquo;</p>\n'
                '\n'
                '{{fig:an04_b}}\n'
+               '<div class="tc-scene"><span class="tc-lab">In the clinic, teach-back &middot; fictional</span><p>You finish explaining Mr. '
+               'Navarro&rsquo;s new list and ask his daughter, &ldquo;Tell me in your own words what he takes tomorrow.&rdquo; She lists '
+               'the tablets correctly, then adds, &ldquo;And if he has diarrhea, he stops all of them.&rdquo;</p><p>You correct it: only '
+               'losartan, empagliflozin, and metformin pause, and they restart once he is eating and drinking again. Amlodipine continues '
+               'unless his pressure is low. She writes it on the list herself.</p><p class="tc-scene-take"><b>What this shows.</b> '
+               'Teach-back finds the misunderstanding while you can still fix it.</p></div>\n'
                '{{call:<ul><li>Two conflicting discharge lists</li><li>&rsquo;Resume all when well&rsquo;</li><li>Renally cleared drug at '
                'full dose after AKI</li><li>Held cardioprotective therapy with no restart plan</li></ul>}}\n')],
  'debrief': ['<p><strong>Which list is right?</strong> Neither, as written. Start from what he is actually taking, which is only '
