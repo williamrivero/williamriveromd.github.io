@@ -1093,9 +1093,20 @@ def build_hub(course, built):
   <h2>Using the series in a training program</h2>
   <p>{C.get('trainers_intro', 'A head nurse, chief technician, or training provider can use these modules as the guided-study part of a supervised program. ')}The <a href="{course.trainer}.html">trainer and preceptor page</a> gathers the proposed hours, completion criteria, and every skills checklist in one printable place. These are proposals for a provider to adapt and validate on its own equipment; they are not requirements of any regulator.</p>
 </section>"""
-    main = N.auto_expand(main, fname)
     nav = [("start", "Start here"), ("pathways", C.get("pathways_nav", "Career pathways")), ("modules", "Modules"), ("how", "How it works"),
            ("syllabus", "Syllabus"), ("assessment", "Assessment"), ("sources", "Sources"), ("trainers", "For trainers")]
+    # optional extra course-home sections (course.py HUB_SECTIONS): each is placed before an existing section id
+    for x in C.get("hub_sections", []):
+        block = (f'<section class="section" id="{x["id"]}">\n  <div class="section-tag">{x["tag"]}</div>\n'
+                 f'  <h2>{x["h2"]}</h2>\n{page.render(x["html"])}\n</section>\n\n')
+        anchor = f'<section class="section" id="{x["before"]}">'
+        if anchor not in main:
+            err(f"{fname}: hub section {x['id']} has unknown 'before' id {x['before']}")
+            continue
+        main = main.replace(anchor, block + anchor, 1)
+        ids = [i for i, _ in nav]
+        nav.insert(ids.index(x["before"]) if x["before"] in ids else len(nav), (x["id"], x["nav"]))
+    main = N.auto_expand(main, fname)
     live = [d for d in course.mods if built[d["id"]][0] is not None]
     rel = [(live[0]["slug"] + ".html", "Module 1", live[0]["title"], "Begin here.")] if live else []
     rel.append((course.trainer + ".html", "Trainers", "Trainer and Preceptor Resource", "Hours, completion criteria, and printable checklists."))

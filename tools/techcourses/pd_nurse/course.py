@@ -58,8 +58,18 @@ COURSE = {
     "pathways_h2": "Six weeks, sixty planned hours",
     "pathways_nav": "Weeks",
     "pathways_html": """
-<p>Each week pairs two modules with about four hours of self-study and case work, two hours of simulation or coached review, and four hours of supervised practice or structured observation (24, 12 and 24 hours in all). These are design estimates; extend supervised practice until the required opportunities and your facility&rsquo;s criteria are met.</p>
-{{flow:Suggested sequence|Week 1 &middot; PD01 and PD02::Explain the three-pore model; conduct a readiness interview. Evidence: a shared decision or readiness plan (A).|Week 2 &middot; PD03 and PD04::Grade exit sites from photographs; run a mock exchange with a seeded breach. Evidence: access assessment and observed CAPD (B).|Week 3 &middot; PD05 and PD06::Cross-check a cycler program against the order; time PET samples. Evidence: APD setup and a longitudinal nursing note (B, E).|Week 4 &middot; PD07 and PD08::Timed cloudy-bag call; power-failure drill. Evidence: supervised triage or scenario log (C).|Week 5 &middot; PD09 and PD10::Teach-back lab; ward handoff with an icodextrin alert. Evidence: readiness and retraining records (D, E).|Week 6 &middot; PD11 and PD12::Assisted PD plan; infection-rate calculation and run chart. Evidence: capstone and quality exercise (E, F).}}
+<p>Each week pairs two modules with about four hours of self-study and case work, two hours of simulation or coached review, and four hours of supervised practice or structured observation: 24, 12 and 24 hours in all. These are design estimates. Extend supervised practice until the required opportunities and your facility&rsquo;s criteria are met, and record rare events practiced in simulation as simulation.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Week</th><th>Modules</th><th>Coached session</th><th>Supervised evidence</th><th>Competency</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>1 &middot; How PD works<br>2 &middot; Modality counseling and readiness</td><td>Explain the three-pore model with a drawing; conduct a readiness interview with a role-player</td><td>A shared decision or readiness plan with owners and a reassessment date</td><td>A</td></tr>
+<tr><td>2</td><td>3 &middot; Catheter and exit site<br>4 &middot; The manual exchange</td><td>Grade exit sites from photographs; mock exchange with a seeded packaging defect and a dry and a wet breach</td><td>Exit-site and tunnel assessment; an observed exchange</td><td>B</td></tr>
+<tr><td>3</td><td>5 &middot; The cycler<br>6 &middot; Monitoring and membrane testing</td><td>Cross-check a cycler program against a mock order; time peritoneal equilibration test samples</td><td>Cycler setup or record review; a longitudinal nursing note</td><td>B, E</td></tr>
+<tr><td>4</td><td>7 &middot; Peritonitis<br>8 &middot; Mechanical and urgent problems</td><td>Timed cloudy-bag call with SBAR; after-hours power-failure drill</td><td>Supervised triage call or scenario log</td><td>C</td></tr>
+<tr><td>5</td><td>9 &middot; Teach, validate, retrain<br>10 &middot; Longitudinal care and transitions</td><td>Teach-back lab with a learner who reads poorly; ward handoff with an icodextrin alert</td><td>Readiness and retraining records; a supervised handoff</td><td>D, E</td></tr>
+<tr><td>6</td><td>11 &middot; Pediatric, acute and assisted PD<br>12 &middot; Philippine practice and quality</td><td>Assistance plan for a stroke survivor; infection-rate calculation and run chart</td><td>Capstone and quality exercise</td><td>E, F</td></tr>
+</tbody></table></div>
+<p><strong>Before week 1.</strong> Confirm your current PRC license, complete Nephrology Nursing Module 10, meet your preceptor, obtain the unit&rsquo;s PD protocols and device instructions, and get oriented to emergency procedures and incident reporting. <strong>After week 6.</strong> Continue supervised practice until every sign-off item is observed on the unit&rsquo;s own equipment.</p>
 """,
     "modules_h2": "Twelve modules in six weeks",
     "modules_intro": ("Study the modules in order. Each starts from a plain picture of what is happening, moves to the physiology and the evidence, "
@@ -67,8 +77,18 @@ COURSE = {
     "syllabus_note": ("Each module takes about 2.5 to 3.5 hours to read and work through, plus coached practice. Skills checklists are completed with a "
                       "preceptor, in simulation first and then in supervised practice."),
     "assessment_html": """
-<p>Each module ends with a self-assessment of 5 questions drawn at random from a bank of 15; the mastery mark is 4 of 5 on two different sets. The end-of-track examination draws 40 questions from all twelve banks. A separate 24-point faculty knowledge check (threshold 20 of 24) and five observed skills stations (each at least 4 of 5 with every critical step) are run by the preceptor, and the capstone is scored 0 to 10 with full credit required for the urgent response.</p>
-<p><strong>Three separate milestones.</strong> Academy training (modules and self-assessments), simulation (skills stations and rare-event drills), and clinical sign-off (observed practice signed by the preceptor and approved by the facility) are recorded separately. Completing the first two never substitutes for the third.</p>
+<p>Each module ends with a self-assessment of 5 questions drawn at random from a bank of 15; the mastery mark is 4 of 5 on two different sets. The self-assessments are for learning. They tell you what to reread; they do not show that you can do the work.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Milestone</th><th>What it involves</th><th>Pass mark</th><th>Who records it</th></tr></thead>
+<tbody>
+<tr><td><strong>1 &middot; Academy training</strong></td><td>All twelve modules, cases and self-assessments; the end-of-track examination (40 questions from all banks)</td><td>4 of 5 on two sets per module</td><td>You, in your own learning record</td></tr>
+<tr><td><strong>2 &middot; Knowledge check</strong></td><td>A 24-point faculty check built from questions kept off the learner pages</td><td>20 of 24</td><td>Nurse educator</td></tr>
+<tr><td><strong>3 &middot; Simulation</strong></td><td>Five skills stations: manual exchange, cycler setup, cloudy-bag call, exit site and low drain, teaching a learner with limited vision</td><td>4 of 5 per station, every critical behavior</td><td>Preceptor</td></tr>
+<tr><td><strong>4 &middot; Capstone</strong></td><td>Readiness and risk plan, urgent SBAR, follow-up note and one improvement aim for a fictional CAPD patient</td><td>8 of 10, full credit for the urgent response</td><td>Nurse educator</td></tr>
+<tr><td><strong>5 &middot; Clinical sign-off</strong></td><td>Observed practice on the unit&rsquo;s own devices: two manual exchanges, two cycler setups or reviews, two exit-site assessments, one readiness or training encounter, one handoff</td><td>Independent and safe, critical items met</td><td>Preceptor, approved by the facility</td></tr>
+</tbody></table></div>
+<p><strong>Remediation.</strong> When a domain is weak, the preceptor arranges coached practice and reassesses on an equivalent case. When consent or opportunities limit observation, the gap is recorded and the affected task is deferred or supervised longer. Reassessment is triggered by a relevant incident, an extended absence, a change of device or protocol, and the facility&rsquo;s scheduled interval.</p>
+<p>Completing milestone 1 or 3 never substitutes for milestone 5. Academy completion is an educational learning record only.</p>
 """,
     "sources_html": """
 <p>Clinical content follows the International Society for Peritoneal Dialysis (ISPD) recommendations on peritonitis (2022), catheter-related infection (2023), goal-directed prescribing (2020), membrane evaluation (2021), access (2019), acute PD (2020), assisted PD (2024), teaching PD (2025), nutrition with the International Society of Renal Nutrition and Metabolism (2026), and tracking loss from PD therapy (2026), together with the trials and cohorts they rest on.[[pd_li2022]][[pd_chow2023]][[pd_brown2020]][[pd_morelle2021]][[pd_crabtree2019]][[pd_cullis2021]][[pd_oliver2024]][[pd_chow2025]][[pd_wang2026]][[pd_quinn2026]][[pd_perl2020]]</p>
@@ -146,3 +166,10 @@ MODULES = []
 for _id, _slug, _title, _w in _ROWS:
     MODULES.append({"id": _id, "slug": _slug, "title": _title, "sub": SUBS.get(int(_id), _title), "part": W[_w],
                     "hours": (2, 1, 2), "card_img": f"{HUB}-{_id}-card.webp"})
+
+try:
+    _h = _u.spec_from_file_location("_pd_hub", _P(__file__).with_name("hub.py"))
+    _hm = _u.module_from_spec(_h); _h.loader.exec_module(_hm)
+    COURSE["hub_sections"] = _hm.HUB_SECTIONS
+except Exception as _e:  # surface the problem at build time rather than silently dropping content
+    raise

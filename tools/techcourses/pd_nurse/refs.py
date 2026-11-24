@@ -35,4 +35,6 @@ REFS = {
     "pd_ph_pc2024": ("Philippine Health Insurance Corporation. (2024). <em>PhilHealth Circular No. 2024-0036</em> [Peritoneal dialysis Z benefit contracting]. " + _url("https://www.philhealth.gov.ph/circulars/2024/PC2024-0036.pdf")),
     "pd_ph_sat": ("Philippine Health Insurance Corporation. (n.d.). <em>Self-assessment tool: PD First</em>. " + _url("https://www.philhealth.gov.ph/downloads/accreditation/SAT_PDFirst.pdf")),
     "pd_ph_pa2026": ("Philippine Health Insurance Corporation. (2026). <em>PhilHealth Advisory No. 2026-0013</em> [Extension of the pediatric automated peritoneal dialysis pilot]. " + _url("https://www.philhealth.gov.ph/advisories/2026/PA2026-0013.pdf")),
+    "pd_cfr494140": ("Conditions for Coverage for End-Stage Renal Disease Facilities: Personnel qualifications, 42 C.F.R. &sect; 494.140 (2025). " + _url("https://www.govinfo.gov/content/pkg/CFR-2025-title42-vol5/pdf/CFR-2025-title42-vol5-sec494-140.pdf")),
+    "pd_cfr494100": ("Conditions for Coverage for End-Stage Renal Disease Facilities: Care at home, 42 C.F.R. &sect; 494.100 (2024). " + _url("https://www.govinfo.gov/content/pkg/CFR-2024-title42-vol5/pdf/CFR-2024-title42-vol5-part494.pdf")),
 }

@@ -6,7 +6,7 @@ SUBS = {1: "How diffusion, osmosis and fluid reabsorption work across the perito
  3: 'Catheter anatomy, how bacteria travel the tunnel, ISPD 2023 exit-site and tunnel infection definitions, and same-day triage.',
  4: 'Flush before fill and its trial evidence, supply checks, honest ultrafiltration measurement, and dry versus wet contamination.',
  5: 'What each APD prescription element does, cross-checking the cycler, reading the treatment record, and alarms as clinical signals.',
- 6: 'Why more clearance did not prolong life, goal-directed review, the PET and low-ultrafiltration thresholds, and valid samples.',
+ 6: 'Why more clearance did not prolong life, goal-directed review, the peritoneal equilibration test and low-ultrafiltration thresholds, and valid samples.',
  7: 'Routes of infection, the ISPD 2022 diagnostic criteria, the first hour after a cloudy bag, outcome definitions, and prevention.',
  8: 'Outflow failure, leaks, hernias, pleural leak, emergencies that override troubleshooting, and typhoon and power-failure plans.',
  9: 'Adult learning, teach-back, the ISPD 2025 teaching position paper, readiness by return demonstration, and retraining triggers.',
