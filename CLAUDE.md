@@ -857,7 +857,42 @@ Two token sets exist — **do not mix them**:
 
 Guides also expose `--text-mid`, `--text-muted`, `--text-faint`, `--red`, `--red-soft`, `--amber`, `--amber-soft`, `--green`, `--green-soft`, `--purple`, `--purple-soft`. All foreground/background combinations are WCAG AA verified (≥4.5:1 normal text, ≥3:1 large text).
 
-Dark mode on the homepage is `html[data-theme="dark"]`. Guides do not currently have dark mode.
+Dark mode is `html[data-theme="dark"]` (guides, calculators, Academy, Dosis). The homepage (`index.html`) has no dark-mode CSS.
+
+### Appearance themes: Auto / Light / Dim / Dark (Nov 2026, lock-in)
+
+The dark toggle button on every page cycles **Auto → Light → Dim → Dark**
+(choice stored in `localStorage['wgmr-theme-mode']`; default `auto`).
+
+| Theme | `<html>` attributes |
+|---|---|
+| Light | no `data-theme` (or `data-theme="light"`) |
+| Dim | `data-theme="dark" data-shade="dim"` + `/assets/theme-dim.<hash>.css` |
+| Dark | `data-theme="dark"` |
+
+**Auto:** the system dark setting wins (→ Dark); otherwise local clock — Light
+06:00–17:59, Dim 18:00–21:59, Dark 22:00–05:59. Web pages cannot read the
+ambient-light sensor; phones set to automatic appearance switch at sunset and
+Auto follows them.
+
+- **Dim is generated, never hand-written.** `build_theme_dim.py` reads every
+  dark-mode rule site-wide and re-emits it for Dim with near-black surfaces
+  lifted to charcoal and text re-checked to WCAG AA. Rules not shared by every
+  page are scoped with `[data-dimg~="<id>"]` (per-page ids in
+  `assets/theme-dim-groups.json`) so one page's tokens never leak into another.
+- **`patch_theme_modes.py`** runs the build, writes fingerprinted
+  `theme.<hash>.js` / `theme-dim.<hash>.css`, and puts the pre-paint bootstrap
+  (`<!-- rc-theme-boot -->` block, with that page's `data-dimg` ids) in every
+  page with dark mode, replacing the old `wgmr-dark` one-liner.
+  **Run it after adding or regenerating any page, and after changing any
+  dark-mode CSS** (idempotent): `python3 patch_theme_modes.py`.
+  `python3 build_theme_dim.py --check` exits 1 when Dim is stale.
+- Edit behavior in `assets/theme.js` (the source), then re-run the patch.
+- The bootstrap must stay in `<head>`, before first paint — never a post-paint
+  restore (CLS). The legacy `wgmr-dark` key is kept in sync for older
+  per-page scripts; new pages need no theme code of their own.
+- Dark-mode contrast rule 8 still applies; Dim inherits every dark fix
+  automatically on the next patch run.
 
 ### Supporting data files
 
