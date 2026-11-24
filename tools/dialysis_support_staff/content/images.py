@@ -103,7 +103,7 @@ FIGURES = [
     fig("DUSS03-F2", "03", "bloodborne", "virus-survival-on-surfaces", "D", L, "How long can bloodborne viruses survive on a dry surface?",
         "One-panel poster: a semi-photorealistic dialysis chair armrest at left with a nearly invisible smear magnified in a dashed circle. To the right, three horizontal bars on a day scale 0-7: Hepatitis B (red) 'about a week in a laboratory study'; Hepatitis C (amber) 'up to 5 days in laboratory tests'; HIV (grey) 'fragile outside the body'. Bottom strip: 'You cannot see it, so clean every listed surface every time.' Small footnote: 'Laboratory conditions; not a guarantee for any one surface.'",
         "Bar chart of dried bloodborne virus survival in laboratory studies: hepatitis B about a week, hepatitis C up to five days, HIV fragile.",
-        "Hepatitis B and C can stay infectious on dry surfaces for days in laboratory studies, even when no blood is visible.",
+        "Hepatitis B and C can stay infectious on dry surfaces for days in laboratory studies, and one study found hepatitis C for up to six weeks, even when no blood is visible.",
         "Appreciate", "Makes invisible risk concrete so that 'it looks clean' stops being the test.", [("HIV", "Human immunodeficiency virus")]),
     fig("DUSS03-F3", "03", "hands", "five-steps-hand-transmission", "C", L, "How hands carry germs from one patient to the next",
         "Five cards with simple illustrated hands: 1 germs on patient skin and nearby surfaces; 2 transfer to the worker's hand; 3 survive on the hand for minutes; 4 hand hygiene skipped (red X over handrub bottle); 5 hand touches the next patient's chair. Card 4 highlighted green with 'This step is yours to stop.'",

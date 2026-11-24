@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 MODULE = {
-    "sub": "Why truthful records protect patients and you, how fluorescent-marker and hand hygiene audits work and what a percentage really means, how small improvement cycles fix problems without blame, and the six capstone stations that end the subtrack.",
+    "sub": "Why truthful records protect patients and you, how fluorescent-marker and hand hygiene audits work and what a percentage really means, how small improvement cycles fix problems without blame, and the six capstone stations that end the track.",
     "desc": "Dialysis Unit Support Staff Module 15: honest cleaning and waste records, correcting errors, fluorescent-marker and hand hygiene audits with worked percentages, audit and feedback evidence, simple Plan-Do-Study-Act improvement, and the six-station practical capstone with critical failures.",
     "keywords": "cleaning log hospital housekeeping, fluorescent marker audit percentage, hand hygiene compliance audit calculation, PDSA housekeeping improvement, dialysis support staff capstone assessment",
     "image_alt": "An EVS supervisor and an aide reviewing a simple run chart of cleaning audit results pinned on a staff-room board, a small ultraviolet flashlight on the table.",
@@ -40,7 +40,7 @@ MODULE = {
 """},
         {"id": "improve", "nav": "Improvement without blame", "tag": "Practice", "h2": "Small cycles, no blame",
          "html": """
-<p>When an audit or a near miss shows a problem, ask &ldquo;what in the system made this easy to get wrong?&rdquo; before &ldquo;who did it?&rdquo; Most failures in this subtrack&rsquo;s cases came from empty dispensers, short gaps, small bins, missing contact numbers or unclear task cards. Fixing those helps everyone; blaming one person usually changes nothing.</p>
+<p>When an audit or a near miss shows a problem, ask &ldquo;what in the system made this easy to get wrong?&rdquo; before &ldquo;who did it?&rdquo; Most failures in this track&rsquo;s cases came from empty dispensers, short gaps, small bins, missing contact numbers or unclear task cards. Fixing those helps everyone; blaming one person usually changes nothing.</p>
 <ol class="tc-flow">
 <li><b>Plan</b>Pick one small problem and one change. &ldquo;Chair-arm undersides are missed; add them to the task card and practice once.&rdquo;</li>
 <li><b>Do</b>Try it for a week on a few stations.</li>

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Dialysis Unit Support Staff subtrack of the Renal Care Academy (Nephrology Nursing).
+"""Dialysis Unit Support Staff track of the Renal Care Academy (Ancillary Staff Track).
 
 Orderlies and environmental service (EVS) aides. Course metadata, abbreviations, references and shared copy.
 Module content lives in mNN.py. Rendered by generate_dialysis_support_staff.py; never hand-edit the pages.
@@ -94,6 +94,7 @@ PUBMED_REFS = {
     "kuhar2013": "23917901", "waters1993": "8339717", "pittet2000": "11073019", "fuller2011": "22080658",
     "schillie2018": "29939980", "lee2019": "30474130", "engst2005": "15764316", "west2019": "30201413",
     "doerrbecker2011": "22013220", "dumas2021": "33284160", "dumas2020": "31692020",
+    "paintsil2014": "24273176",
 }
 
 JOURNALS = {

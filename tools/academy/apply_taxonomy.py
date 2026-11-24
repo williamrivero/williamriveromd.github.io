@@ -7,7 +7,7 @@ One source of truth for how the Academy is organized (set by Dr. Rivero, Nov 202
                                 By Role: Head Nurse, Charge Nurse (in preparation)
   Renal Care Physicians Track   Dialysis Clinical Head, Attending Nephrologist, Physician-on-Duty
   Renal Technicians Track       Dialysis Technician, Water Treatment Technician, Biomedical Equipment Technician
-  Ancillary Staff Track         Renal Dietitian, Medical Records Officer/Custodian
+  Ancillary Staff Track         Renal Dietitian, Medical Records Officer/Custodian, Dialysis Unit Support Staff
   Administrative Staff Track    Unit Operations Manager/Unit Manager, PhilHealth Liaison/Claims Officer
 
 For each page it sets: the hero tag ("<Group> Track · <By ...> · Module n of N"), the breadcrumb
@@ -67,6 +67,8 @@ TRACKS = {
     "renal-dietitian": ("ancillary", None, "Renal Dietitian", "Renal <em>Dietitian</em>", [], []),
     "medical-records-officer": ("ancillary", None, "Medical Records Officer/Custodian", "Medical Records <em>Officer/Custodian</em>",
                                 ["Medical Records Officer and Custodian"], [("Records Officer Module", "Medical Records Officer Module")]),
+    "dialysis-unit-support-staff": ("ancillary", None, "Dialysis Unit Support Staff", "Dialysis Unit <em>Support Staff</em>",
+                                    [], [("Dialysis Support Staff Module", "Dialysis Unit Support Staff Module")]),
     "dialysis-unit-manager": ("administrative", None, "Unit Operations Manager/Unit Manager", "Unit Operations Manager/<em>Unit Manager</em>",
                               ["Dialysis Unit Operations Manager"], []),
     "philhealth-claims": ("administrative", None, "PhilHealth Liaison/Claims Officer", "PhilHealth Liaison/<em>Claims Officer</em>",
@@ -78,7 +80,7 @@ OLD_TAGS = sorted([
     "Nursing Education", "Nursing Specialty", "Nursing Leadership", "Physician Leadership", "Physician Practice", "Physician Education",
     "Renal Technician Program", "Dietitian Education", "Health Information", "Unit Operations", "Claims &amp; Coverage",
     "Nephrology Nursing &middot; Specialization", "Nephrology Nursing &middot; Role", "Renal Care Physicians", "Renal Technicians",
-    "Ancillary Staff", "Administrative Staff",
+    "Ancillary Staff", "Administrative Staff", "Nephrology Nursing &middot; Support Staff",
     "Nephrology Nursing Track &middot; By Specialization", "Nephrology Nursing Track &middot; By Role", "Renal Care Physicians Track",
     "Renal Technicians Track", "Ancillary Staff Track", "Administrative Staff Track"], key=len, reverse=True)
 

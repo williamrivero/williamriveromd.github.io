@@ -20,7 +20,7 @@ MODULE = {
 """},
         {"id": "statuses", "nav": "Four statuses", "tag": "Workflow", "h2": "Four station statuses",
          "html": """
-<p>This subtrack uses four status labels so that everyone can see where a station is in the pit stop. Your unit may use different words, colored cards or a whiteboard; the idea is the same.</p>
+<p>This track uses four status labels so that everyone can see where a station is in the pit stop. Your unit may use different words, colored cards or a whiteboard; the idea is the same.</p>
 <ol class="tc-flow">
 <li><b>Occupied</b>A patient is at the station, connected or not. Environmental disinfection does not start.</li>
 <li><b>Awaiting cleaning</b>The nurse has cleared it clinically and the patient has left. Mark it unavailable.</li>

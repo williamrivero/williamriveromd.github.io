@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Renal Care Academy · Nephrology Nursing · Dialysis Unit Support Staff subtrack (orderlies and EVS aides).
+"""Renal Care Academy · Ancillary Staff Track · Dialysis Unit Support Staff (orderlies and EVS aides).
 
 Pages: hub (dialysis-unit-support-staff), 15 modules (dialysis-unit-support-staff-NN-<slug>), end-of-course knowledge
 check (dialysis-unit-support-staff-final-exam), and the Support Staff Toolkit calculator (guides/calc-dialysis-support-staff-toolkit.html).
@@ -232,7 +232,7 @@ def finish(page):
 def bar(label):
     return f"""<div class="container">
   <div class="nc-bar">
-    <a href="renal-care-academy.html">Renal Care Academy</a><span class="nc-sep">›</span><a href="{PARENT}">Nephrology Nursing</a><span class="nc-sep">›</span><a href="{HUB}">{COURSE['title']}</a><span class="nc-sep">›</span><span>{label}</span>
+    <a href="renal-care-academy.html">Renal Care Academy</a><span class="nc-sep">›</span><a class="nc-group" href="renal-care-academy.html#track-ancillary">Ancillary Staff Track</a><span class="nc-sep">›</span><a href="{HUB}">{COURSE['title']}</a><span class="nc-sep">›</span><span>{label}</span>
   </div>
   <div class="alert alert-teal">
     <div class="alert-icon">🩺</div>
@@ -434,7 +434,7 @@ def build_module(mid):
 {chr(10).join(rd)}
   </ul>
 {calc_cards(m.get('calcs', []), f'module {mid}')}
-  <p>Back to the <a href="{HUB}">Support Staff subtrack home</a> &middot; the <a href="{PARENT}">Nephrology Nursing course</a> &middot; the infection prevention lesson nurses study, <a href="{ENTRY}">Nephrology Nursing Module 7</a>.</p>
+  <p>Back to the <a href="{HUB}">Support Staff course home</a> &middot; the <a href="{PARENT}">Nephrology Nursing course</a> &middot; the infection prevention lesson nurses study, <a href="{ENTRY}">Nephrology Nursing Module 7</a>.</p>
   <div class="nc-nextprev">
     {np[0]}
     {np[1]}
@@ -455,7 +455,7 @@ def build_module(mid):
             cards.append((f, "Assigned reading", N.D.READING_TITLES.get(f) or html.escape(meta[0], quote=False), why))
     title = f"{m['title']}: Dialysis Support Staff Module {n}"
     page = N.shell(
-        fname, title, m["desc"], m["keywords"], f"Nephrology Nursing &middot; Support Staff &middot; Module {n}", m["title"], m["sub"],
+        fname, title, m["desc"], m["keywords"], f"Ancillary Staff Track &middot; Module {n} of {len(MODS)}", m["title"], m["sub"],
         "Dialysis unit orderlies, environmental service aides, utility workers and contracted cleaners &middot; their supervisors and preceptors",
         nav, bar(f"Module {n}"), main, N.glossary_block(main, m.get("terms", [])), N.related_block(cards),
         jsonld_extra={"isPartOf": {"@type": "Course", "name": "Dialysis Unit Support Staff (Renal Care Academy)", "url": f"{SITE}/guides/{COURSE['hub_slug']}"},
@@ -493,13 +493,13 @@ def build_hub():
     n_mod = len(ORDER)
     main = f"""<section class="section" id="start">
   <div class="section-tag">Start here</div>
-  <h2>A nonclinical support pathway inside Nephrology Nursing</h2>
-  <p>This subtrack is for the people who keep a hemodialysis unit clean, safe and moving: orderlies, environmental service (EVS) aides, utility workers, porters and contracted cleaners. It sits under the Nephrology Nursing course because nurses direct the patient care that your work supports. That placement does not make you a nurse or a nursing assistant, and nothing here authorizes nursing, machine or water-system work.</p>
+  <h2>A nonclinical track that works alongside nursing</h2>
+  <p>This track is for the people who keep a hemodialysis unit clean, safe and moving: orderlies, environmental service (EVS) aides, utility workers, porters and contracted cleaners. It sits in the Ancillary Staff Track and links closely to the Nephrology Nursing course, because nurses direct the patient care that your work supports. That link does not make you a nurse or a nursing assistant, and nothing here authorizes nursing, machine or water-system work.</p>
   <p>The {n_mod} modules explain the reason behind every task before the task itself. Why does dried blood matter if you cannot see it? Why does a disinfectant need to stay wet? Why does a patient faint after dialysis, and why should you never lift a person alone? Each module opens with a plain picture, then explains what is really happening, then says how strong the evidence is, then shows exactly what you do and what you leave to others. Every module has a fictional case set in a Philippine unit, a debrief, a harder second round, a 15-question knowledge check with a reason for every answer, and a checklist to practice with your preceptor.</p>
   <div class="alert alert-amber">
     <div class="alert-icon">⚠️</div>
     <div class="alert-body">
-      <h4>What this subtrack is, and is not</h4>
+      <h4>What this track is, and is not</h4>
       <p>It is education and practice preparation. Finishing it does not prove competence, grant permission for any task, or carry Department of Health (DOH), Philippine Health Insurance Corporation (PhilHealth), Philippine Society of Nephrology (PSN) or Professional Regulation Commission continuing professional development (CPD) recognition, or basic life support certification. Your employer authorizes tasks after observed practice. Hours and pass marks are Academy proposals, not national minimums. {COURSE['status']}.</p>
     </div>
   </div>
@@ -524,7 +524,7 @@ def build_hub():
 <section class="section" id="entry">
   <div class="section-tag">Before you begin</div>
   <h2>Entry and readiness</h2>
-  <p>Before practical work, complete your employer&rsquo;s induction, an occupational health review that fits your actual duties (including your hepatitis B vaccination record), and chemical, protective-equipment and manual-handling orientation. Covered workers also need the occupational safety and health seminar required by Philippine law; this subtrack does not replace it. Recommended readiness: you can understand safety instructions and labels in English or Filipino with help, tell someone about an urgent problem, and take part in hands-on practice. Ask for reasonable accommodations if you need them.</p>
+  <p>Before practical work, complete your employer&rsquo;s induction, an occupational health review that fits your actual duties (including your hepatitis B vaccination record), and chemical, protective-equipment and manual-handling orientation. Covered workers also need the occupational safety and health seminar required by Philippine law; this track does not replace it. Recommended readiness: you can understand safety instructions and labels in English or Filipino with help, tell someone about an urgent problem, and take part in hands-on practice. Ask for reasonable accommodations if you need them.</p>
   <p><strong>Delivery.</strong> About {tg:g} hours of guided learning and {tp:g} hours of practice or simulation, {tg + tp:g} hours in all. At eight scheduled hours a day (excluding breaks) this fits about eight days, followed by observed practice at work until each assigned skill is demonstrated. Never shorten a wet contact time, a patient&rsquo;s recovery or your own rest breaks to meet a timetable.</p>
 </section>
 
@@ -587,33 +587,33 @@ def build_hub():
 <section class="section" id="calculators">
   <div class="section-tag">Tools</div>
   <h2>The Support Staff Toolkit</h2>
-  <p>Built for this subtrack. It has four tools: a <strong>label dilution and contact-time planner</strong> that uses only the numbers printed on your product&rsquo;s label; a <strong>station turnover time budget</strong> that shows whether the gap between shifts leaves time for full wet contact; a <strong>safe lift check</strong> using the revised NIOSH (National Institute for Occupational Safety and Health) lifting equation for boxes, jugs and bins; and an <strong>audit tally</strong> for fluorescent-marker cleaning checks and hand hygiene observations.</p>
+  <p>Built for this track. It has four tools: a <strong>label dilution and contact-time planner</strong> that uses only the numbers printed on your product&rsquo;s label; a <strong>station turnover time budget</strong> that shows whether the gap between shifts leaves time for full wet contact; a <strong>safe lift check</strong> using the revised NIOSH (National Institute for Occupational Safety and Health) lifting equation for boxes, jugs and bins; and an <strong>audit tally</strong> for fluorescent-marker cleaning checks and hand hygiene observations.</p>
 {calc_cards(['calc-dialysis-support-staff-toolkit.html', 'calc-qapi-run-chart-spc.html'], 'hub').replace('Calculators for this module', 'Calculators')}
 </section>
 
 <section class="section" id="sources">
   <div class="section-tag">Evidence and policy register</div>
-  <h2>Sources behind this subtrack</h2>
+  <h2>Sources behind this track</h2>
   <p>Desk review dated 24 November 2026. Before publication or workplace use, the unit&rsquo;s clinical head, nurse educator, IPC, EVS, waste, safety and transport leads should review the wording, and the current DOH licensing circular and assessment tool, current PSN infection-control updates and current PhilHealth provisions should be obtained and reconciled. Local product cards and waste plans always govern.{cites.render(src)}</p>
 </section>"""
     main = tn_expand(main, HUB)
     nav = [("start", "Start here"), ("day", "A day in the unit"), ("pathways", "Pathways"), ("entry", "Entry"), ("modules", "Modules"),
            ("outcomes", "Competencies"), ("schedule", "Schedule"), ("assessment", "Assessment"), ("educators", "For educators"),
            ("calculators", "Toolkit"), ("sources", "Sources")]
-    related = [(PARENT, "Parent course", "Nephrology Nursing &amp; Hemodialysis", "The nursing course that directs the care this work supports."),
+    related = [(PARENT, "Partner course", "Nephrology Nursing &amp; Hemodialysis", "The nursing course that directs the care this work supports."),
                (ENTRY, "Related lesson", "Nephrology Nursing Module 7: Vascular Access and Infection Prevention", "How nurses prevent infection at the chairside."),
-               (MODS["01"]["slug"] + ".html", "Start", MODS["01"]["title"], "Module 1 of the subtrack."),
+               (MODS["01"]["slug"] + ".html", "Start", MODS["01"]["title"], "Module 1 of the course."),
                (EXAM, "Knowledge check", "End-of-Course Knowledge Check", f"{COURSE['exam_items']} questions, one per module; pass at {COURSE['pass_correct']}.")]
     page = N.shell(
         HUB, "Dialysis Unit Support Staff: Orderlies and EVS Aides · Renal Care Academy",
-        f"A free Philippine-first training subtrack of the Renal Care Academy for dialysis unit orderlies and environmental service aides: {n_mod} modules on scope, dignity, how germs travel, hand hygiene, aseptic habits, cleaning products, station turnover, spills and sharps, health care waste, linen, patient transport, safe lifting, emergencies and records.",
+        f"A free Philippine-first training track in the Renal Care Academy&rsquo;s Ancillary Staff Track, for dialysis unit orderlies and environmental service aides: {n_mod} modules on scope, dignity, how germs travel, hand hygiene, aseptic habits, cleaning products, station turnover, spills and sharps, health care waste, linen, patient transport, safe lifting, emergencies and records.",
         "dialysis unit orderly training, environmental service aide dialysis, hospital housekeeping infection control Philippines, health care waste segregation training, patient transport orderly course, renal care academy",
-        "Nephrology Nursing &middot; Support Staff", "Dialysis Unit Support Staff",
+        "Ancillary Staff Track &middot; Course home", "Dialysis Unit Support Staff",
         f"{n_mod} modules for orderlies and environmental service aides: the reason behind every cleaning, waste and transport task, what the evidence shows, and exactly where your role begins and ends.",
         "Orderlies, environmental service aides, utility workers and contracted cleaners in hemodialysis units &middot; their supervisors and preceptors",
         nav, bar("Subtrack home").replace(f'<span class="nc-sep">›</span><a href="{HUB}">{COURSE["title"]}</a><span class="nc-sep">›</span><span>Subtrack home</span>', f'<span class="nc-sep">›</span><span>{COURSE["title"]}</span>'),
         main, N.glossary_block(main, []), N.related_block(related),
-        jsonld_extra={"@type": ["MedicalWebPage", "Course"], "description": "Nonclinical training subtrack for dialysis unit orderlies and environmental service aides.",
+        jsonld_extra={"@type": ["MedicalWebPage", "Course"], "description": "Nonclinical training track for dialysis unit orderlies and environmental service aides.",
                       "provider": {"@type": "Organization", "name": "Renal Care Matters", "url": SITE},
                       "hasPart": [{"@type": "LearningResource", "name": MODS[x]["title"], "url": f"{SITE}/guides/{MODS[x]['slug']}"} for x in ORDER],
                       "lastReviewed": COURSE["review_date"]},
@@ -655,14 +655,14 @@ def build_exam():
 <section class="section" id="next">
   <div class="section-tag">After the check</div>
   <h2>Next steps</h2>
-  <p>Prepare for the six <a href="{MODS['15']['slug']}.html#stations">capstone stations</a> and arrange observed practice of your assigned tasks with your supervisor. Return to the <a href="{HUB}">subtrack home</a>.</p>
+  <p>Prepare for the six <a href="{MODS['15']['slug']}.html#stations">capstone stations</a> and arrange observed practice of your assigned tasks with your supervisor. Return to the <a href="{HUB}">course home</a>.</p>
 </section>"""
     main = tn_expand(main, EXAM)
     page = N.shell(
         EXAM, "End-of-Course Knowledge Check: Dialysis Unit Support Staff · Renal Care Academy",
-        f"{COURSE['exam_items']}-question end-of-course knowledge check for the Renal Care Academy Dialysis Unit Support Staff subtrack, one question drawn from each module, pass mark {COURSE['pass_correct']} of {COURSE['exam_items']}, with reasons for every answer.",
+        f"{COURSE['exam_items']}-question end-of-course knowledge check for the Renal Care Academy Dialysis Unit Support Staff course, one question drawn from each module, pass mark {COURSE['pass_correct']} of {COURSE['exam_items']}, with reasons for every answer.",
         "dialysis orderly quiz, environmental service aide test, dialysis housekeeping knowledge check, renal care academy",
-        "Nephrology Nursing &middot; Support Staff", "End-of-Course Knowledge Check",
+        "Ancillary Staff Track &middot; Examination", "End-of-Course Knowledge Check",
         f"One question from each of the {n_mod} modules, drawn at random each sitting. Pass with {COURSE['pass_correct']} of {COURSE['exam_items']}.",
         "Learners who have completed the Dialysis Unit Support Staff modules",
         [("exam", "Knowledge check"), ("next", "Next steps")], bar("Knowledge check"), main, N.glossary_block(main, []),
@@ -685,7 +685,7 @@ def entry_blocks():
 <section class="section" id="support-staff">
   <div class="section-tag">For the whole team</div>
   <h2>Training the support staff who share your infection prevention work</h2>
-  <p>Orderlies and environmental service aides clean the stations, carry the waste and move the patients you care for. The Renal Care Academy&rsquo;s <a href="{HUB}">Dialysis Unit Support Staff subtrack</a> gives them the reasons behind the tasks: {len(ORDER)} modules on scope, hand hygiene, aseptic habits, product labels and wet contact time, station turnover after clinical clearance, spills and exposures, health care waste, linen, patient transport and safe lifting. Use it to onboard new support staff and to keep the clinical and environmental phases of turnover distinct.</p>
+  <p>Orderlies and environmental service aides clean the stations, carry the waste and move the patients you care for. The Renal Care Academy&rsquo;s <a href="{HUB}">Dialysis Unit Support Staff course</a> gives them the reasons behind the tasks: {len(ORDER)} modules on scope, hand hygiene, aseptic habits, product labels and wet contact time, station turnover after clinical clearance, spills and exposures, health care waste, linen, patient transport and safe lifting. Use it to onboard new support staff and to keep the clinical and environmental phases of turnover distinct.</p>
 </section>
 {ENTRY_MARK[1]}
 """
@@ -708,7 +708,8 @@ def wire_parent():
         return done
     s = s.replace(anchor, entry_blocks() + anchor, 1)
     if 'href="#support-staff"' not in s:
-        s = s.replace('<a class="nav-pill" href="#case">', '<a class="nav-pill" href="#support-staff">Support staff subtrack</a>\n<a class="nav-pill" href="#case">', 1)
+        s = s.replace('<a class="nav-pill" href="#case">', '<a class="nav-pill" href="#support-staff">Support staff track</a>\n<a class="nav-pill" href="#case">', 1)
+    s = s.replace('href="#support-staff">Support staff subtrack</a>', 'href="#support-staff">Support staff track</a>')
     p.write_text(s, encoding="utf-8")
     done.append(ENTRY)
     return done

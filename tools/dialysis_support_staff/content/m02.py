@@ -66,7 +66,7 @@ MODULE = {
 <li><b>Tell</b>Tell the nurse directly, by name if you can: what you saw, where, and when. &ldquo;Nurse Jessa, Station 12, Sir Ben looks pale and sweaty and isn&rsquo;t answering me. Just now.&rdquo;</li>
 <li><b>Stay</b>Wait until the nurse acknowledges or takes over. If nobody comes and the person looks worse, call louder or press the call bell.</li>
 </ol>
-<p>Structured handoff tools such as SBAR (Situation, Background, Assessment, Recommendation) are widely used by nurses and doctors. Stop, Tell, Stay is a shorter version written for this subtrack; it is a teaching tool, not a tested instrument, and its value is simple: it makes you say where and what, and it stops you walking away before anyone has heard.</p>
+<p>Structured handoff tools such as SBAR (Situation, Background, Assessment, Recommendation) are widely used by nurses and doctors. Stop, Tell, Stay is a shorter version written for this track; it is a teaching tool, not a tested instrument, and its value is simple: it makes you say where and what, and it stops you walking away before anyone has heard.</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Tell the nurse immediately (call loudly if needed)</th><th>Tell the nurse soon</th></tr></thead>
 <tbody>
@@ -114,7 +114,7 @@ MODULE = {
     "calcs": [],
     "terms": [("Bantay", "A family member or companion who stays with a patient and helps; a partner in care, but not the patient."),
               ("Sensitive personal information", "Information such as health status, which the Data Privacy Act protects more strictly."),
-              ("Stop, Tell, Stay", "This subtrack&rsquo;s three-step reporting habit: pause and keep safe, tell the nurse what, where and when, and wait until someone takes over.")],
+              ("Stop, Tell, Stay", "This track&rsquo;s three-step reporting habit: pause and keep safe, tell the nurse what, where and when, and wait until someone takes over.")],
     "quiz": [
         {"stem": "Why do many patients feel weak and slow right after dialysis?", "options": [
             ("Water and waste were removed quickly, which can lower blood pressure and cloud thinking.", True, "Rapid fluid removal is the main reason."),

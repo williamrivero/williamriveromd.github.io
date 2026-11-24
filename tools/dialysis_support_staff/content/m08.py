@@ -45,7 +45,7 @@ MODULE = {
          "html": """
 <p>Three rooms in many dialysis units are technical areas with their own trained staff: the <strong>water treatment room</strong>, which makes the ultra-pure water for dialysis; the <strong>dialyzer reprocessing room</strong>, where filters are cleaned and sterilized for reuse in units that reprocess; and the <strong>concentrate mixing or storage area</strong>. They contain pressurized tanks, strong chemicals and equipment whose settings affect every patient. A valve turned or a hose knocked loose can contaminate water for the whole unit.</p>
 <div class="tc-stop"><span class="tc-lab">Enter only with permission</span>Do not enter these rooms unless your supervisor has assigned you and a technician is present or has authorized it. Do not touch valves, switches, tanks, filters, hoses, test kits or chemicals. Clean only the floors or surfaces named in a written procedure for that room. If you see a leak, a spill, an alarm, or water on the floor, leave and tell the technician or supervisor.</div>
-<p>Water testing, disinfection of the water system, dialyzer reprocessing and concentrate mixing belong to the technician pathways of the Renal Care Academy, not this subtrack.</p>
+<p>Water testing, disinfection of the water system, dialyzer reprocessing and concentrate mixing belong to the technician pathways of the Renal Care Academy, not this track.</p>
 """},
         {"id": "pests", "nav": "Pests", "tag": "Practice", "h2": "Pests",
          "html": """
@@ -116,7 +116,7 @@ MODULE = {
             ("Turn off the nearest valve.", False, "Excluded."),
             ("Mop it up quickly.", False, "Could hide the source and expose you."),
             ("Close the door and forget it.", False, "Must be reported.")], "sources": []},
-        {"stem": "Which of these is outside this subtrack?", "options": [
+        {"stem": "Which of these is outside this track?", "options": [
             ("Testing or disinfecting the water system.", True, "Technician pathway."),
             ("Mopping the waiting area.", False, "Core EVS work."),
             ("Reporting pests.", False, "Everyone reports."),

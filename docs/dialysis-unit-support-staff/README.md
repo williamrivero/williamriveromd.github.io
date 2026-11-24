@@ -46,7 +46,7 @@ Checks run: `--check` clean; `audit_apa_references.py` 0 non-compliant citations
 
 ## Open items before release
 
-1. **Placement decision.** v1 placed the subtrack under Nephrology Nursing. The Academy taxonomy (Nov 2026) also has an Ancillary Staff Track. Decide which parent shows it on the Academy landing page; neither `academy/index.html` nor the Nephrology Nursing hub's specialty cards were changed.
+1. **Placement.** The track sits in the Academy's Ancillary Staff Track (taxonomy in `tools/academy/apply_taxonomy.py`, qualifications in `tools/academy/qualifications.py`), with a card, quick-pick tile, qualifications row, and onboarding row on `academy/index.html`. It stays cross-linked from Nephrology Nursing Module 7.
 2. **Clinical and regulatory review** by the clinical head, nurse educator, IPC, EVS, waste, safety and transport leads, and resolution of the v1 REGULATORY_REVIEW items (DC 2026-0112 and current DOH tool, PSN infectious-disease updates, readable PhilHealth provisions).
 3. **Waste colors.** Aligned to Table 4 of the DOH Health Care Waste Management Manual, 4th edition (2020); each unit should still confirm against its posted facility chart.
 4. **Run on the Mac:** `python3 generate_dialysis_support_staff.py --calc --patch`, then `build_calc_app.py` and `generate_latest_calculators.py`, so Calculo's offline manifest and the calculators page include the toolkit (the remote workspace had no image files, so those outputs were not shipped).

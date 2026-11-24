@@ -63,7 +63,7 @@ MODULE = {
 """},
         {"id": "pathways", "nav": "Two pathways", "tag": "Scope", "h2": "Two pathways and the scope matrix",
          "html": """
-<p>This subtrack has two pathways. Everyone studies all fifteen modules. What you practice and get signed off on depends on your job.</p>
+<p>This track has two pathways. Everyone studies all fifteen modules. What you practice and get signed off on depends on your job.</p>
 <div class="tc-cards">
 <div class="tc-card"><b>Environmental service aide</b>Cleaning and disinfection, products, zones, waste, linen, hazards and records. Station and machine-surface cleaning only if specifically assigned. Patient movement: recognize danger, prepare the route, call for help.</div>
 <div class="tc-card"><b>Orderly</b>The same foundations, plus escort and transfer practice for the duties in your job description, always under the nurse&rsquo;s plan. Environmental tasks only if they are in your job and you are signed off.</div>
@@ -97,9 +97,9 @@ MODULE = {
 """},
         {"id": "ph", "nav": "Philippine context", "tag": "Local practice", "h2": "The Philippine setting",
          "html": """
-<p>Philippine dialysis units range from large hospital units to freestanding clinics, and many run three or even four shifts a day. Support staff may be hired directly, outsourced through an agency, or shared with the rest of the hospital. A national kidney hospital&rsquo;s recent procurement for outsourced utility workers asked for basic literacy and did not specify prior training or experience.[[nkti2025]] That is one employer, not a national rule, but it shows why on-the-job training like this subtrack matters: most people start this work without any dialysis background.</p>
+<p>Philippine dialysis units range from large hospital units to freestanding clinics, and many run three or even four shifts a day. Support staff may be hired directly, outsourced through an agency, or shared with the rest of the hospital. A national kidney hospital&rsquo;s recent procurement for outsourced utility workers asked for basic literacy and did not specify prior training or experience.[[nkti2025]] That is one employer, not a national rule, but it shows why on-the-job training like this track matters: most people start this work without any dialysis background.</p>
 <p>Contracted and agency staff need the same unit induction, the same task sign-offs and the same named contacts as directly employed staff. Germs do not check employment contracts. If you are contracted, ask on your first day who your unit supervisor is, who the nurse on duty is, and where the written task list and product cards are kept.</p>
-<p>Your employer must also give you the occupational safety orientation required for your work under Philippine occupational safety and health (OSH) law, including a safety seminar for covered workers.[[ra11058]] This subtrack does not replace that seminar, your hepatitis B vaccination check, or your facility&rsquo;s own induction.</p>
+<p>Your employer must also give you the occupational safety orientation required for your work under Philippine occupational safety and health (OSH) law, including a safety seminar for covered workers.[[ra11058]] This track does not replace that seminar, your hepatitis B vaccination check, or your facility&rsquo;s own induction.</p>
 """},
     ],
     "case": {
@@ -169,7 +169,7 @@ MODULE = {
             ("Do it carefully; she asked you.", False, "Being asked is not being authorized."),
             ("Clean only the parts you can see.", False, "Partial, untrained cleaning gives a false sense of safety."),
             ("Leave without saying anything.", False, "Silence leaves the station uncleaned and the nurse uninformed.")], "sources": []},
-        {"stem": "Which of these is excluded for both EVS aides and orderlies in this subtrack?", "options": [
+        {"stem": "Which of these is excluded for both EVS aides and orderlies in this track?", "options": [
             ("Pressing a button to silence a machine alarm.", True, "Machine controls and alarms belong to clinical and technical staff."),
             ("Mopping the waiting area.", False, "General cleaning is a core EVS task."),
             ("Moving a closed waste bag along the approved route.", False, "Closed waste movement is allowed for assigned categories."),
@@ -204,13 +204,13 @@ MODULE = {
             ("Whoever opens the supply cabinet first.", False, "Product choice is not improvised."),
             ("The product salesperson.", False, "Vendors inform; the facility decides."),
             ("The patient.", False, "Patients do not choose disinfectants.")], "sources": []},
-        {"stem": "Does finishing this online subtrack make you authorized to do station cleaning?", "options": [
+        {"stem": "Does finishing this online track make you authorized to do station cleaning?", "options": [
             ("No. Authorization comes from your employer after observed practice and sign-off.", True, "Online learning is education, not workplace competence."),
             ("Yes, once you pass the knowledge check.", False, "A quiz cannot observe your hands."),
             ("Yes, if you print the certificate.", False, "There is no certificate of authorization here."),
             ("Only on weekends.", False, "Authorization does not depend on the day.")], "sources": []},
         {"stem": "Which law requires covered workers to receive an occupational safety and health seminar from the employer?", "options": [
-            ("Republic Act No. 11058.", True, "RA 11058 sets OSH standards, including worker safety training; this subtrack does not replace it."),
+            ("Republic Act No. 11058.", True, "RA 11058 sets OSH standards, including worker safety training; this track does not replace it."),
             ("The Data Privacy Act.", False, "That law covers personal information."),
             ("The Philippine Nursing Act.", False, "That law covers nursing practice."),
             ("No law covers worker safety.", False, "RA 11058 does.")], "sources": ["ra11058"]},

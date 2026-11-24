@@ -20,7 +20,7 @@ MODULE = {
 """},
         {"id": "patient-emergency", "nav": "Patient emergencies", "tag": "Practice", "h2": "When a patient collapses or bleeds",
          "html": """
-<p><strong>Collapse.</strong> If a patient becomes unresponsive, shout for the nurse and press the alarm or call the emergency code your unit uses. Then do what your training and role assign: bring the emergency cart or automated external defibrillator (AED), clear space around the chair, move visitors and other people back, hold doors, and guide the response team. Cardiopulmonary resuscitation (CPR) and the AED are used only by those trained and certified under your unit&rsquo;s policy; this subtrack does not certify you.</p>
+<p><strong>Collapse.</strong> If a patient becomes unresponsive, shout for the nurse and press the alarm or call the emergency code your unit uses. Then do what your training and role assign: bring the emergency cart or automated external defibrillator (AED), clear space around the chair, move visitors and other people back, hold doors, and guide the response team. Cardiopulmonary resuscitation (CPR) and the AED are used only by those trained and certified under your unit&rsquo;s policy; this track does not certify you.</p>
 <p><strong>Heavy bleeding from the access.</strong> If a needle comes out or a line separates during treatment, blood can be lost quickly because the machine is pumping. Shout for the nurse at once and press the alarm. Do not touch the machine, clamps or lines. If your unit has trained and authorized you in emergency first aid, apply firm pressure over the bleeding site with a gloved hand or gauze while help comes, exactly as trained. Keep the patient lying back and talk to them.</p>
 <div class="tc-stop"><span class="tc-lab">Never in an emergency</span>Never disconnect a patient, clamp or cut lines, stop or move a machine, give food, drink or medicine, or move a patient before the clinical team says so.</div>
 <p>The site&rsquo;s guide on code response in the dialysis unit explains what the clinical team is doing while you support them.</p>
@@ -161,7 +161,7 @@ MODULE = {
             ("It is not useful.", False, "It is."),
             ("Only injuries count.", False, "Near misses count.")], "sources": []},
         {"stem": "Who may perform CPR and use the AED in your unit?", "options": [
-            ("Staff trained and authorized under the unit&rsquo;s policy.", True, "This subtrack does not certify you."),
+            ("Staff trained and authorized under the unit&rsquo;s policy.", True, "This track does not certify you."),
             ("Anyone who has seen it on TV.", False, "Training needed."),
             ("Only the patient&rsquo;s relative.", False, "No."),
             ("Nobody.", False, "Trained staff.")], "sources": []},
