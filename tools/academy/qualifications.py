@@ -48,6 +48,11 @@ QUAL = {
    "PRC-licensed, in order of preference: nephrologist (board-certified, then board-eligible); internist or pediatrician with at least 3 months&rsquo; HDC experience; nephrology fellow or qualifying resident; general or family practitioner with at least 6 months&rsquo; experience. <span class=q-src>DOH, PSN</span>",
    "Current ACLS from a DOH-accredited provider, and a PSN-conducted or accredited post-graduate course for PODs. <span class=q-src>DOH, PSN</span>",
    "Present during all operating hours. Ratio no more than 1:15 stations (DOH); PSN allows up to 1:20 where PODs are scarce. <span class=q-src>DOH, PSN</span>"]),
+ "dialyzer-reprocessing-technician": ("Dialyzer Reprocessing Technician", [
+   "DOH lists daily reprocessor calibration, collection, reprocessing, acceptance testing, labeling, reuse records and storage among dialysis technician duties. <span class=q-src>DOH</span>",
+   "High school graduate who has completed a structured technician training program of 3 months or longer. <span class=q-src>PSN</span>",
+   "No separate PRC license. Release authority is granted by the facility after an observed practical assessment on its own reprocessor.",
+   "Reuse must follow the unit&rsquo;s approved program; PhilHealth cites up to 5 total uses per dialyzer and TCV of at least 80%. <span class=q-src>PhilHealth</span>"]),
  "hemodialysis-technician": ("Dialysis Technician", [
    "At least a high school graduate, with structured dialysis technician training of 3 months or more where needed (renal function, machines, water treatment, infection control, emergency roles). <span class=q-src>PSN</span>",
    "Works under the supervision of the physician and nurse; assists in emergencies. DOH lists duties but no qualifications. <span class=q-src>DOH, PSN</span>"]),
