@@ -40,7 +40,7 @@ organ→inset→injury/intervention/benefit review-article schematic use
 
 ## Typography (when labels ARE requested)
 - **Approved fonts (MANDATORY): use only a clean sans-serif typeface — Inter,
-  Nunito Sans, IBM Plex Sans, or Manrope. No other fonts, and never a serif font.**
+  Nunito Sans, IBM Plex Sans, Manrope, or DM Sans. No other fonts, and never a serif font.**
   Name the chosen font explicitly in the generated prompt whenever any text label
   appears. The sigil default is label-free; this rule applies the moment a label,
   caption, or organ name is added.
@@ -75,7 +75,7 @@ RELATIONSHIP:
 Show [physiologic relationship / feedback loop / disease pathway] using dotted curved arrows or subtle flow lines.
 
 STYLE:
-Minimal clinical line-art, thin monoline strokes, soft teal-blue palette, white background, clean rounded organ shapes, balanced sigil-like composition, generous whitespace, no photorealism, no 3D, no text labels unless specified. If any label is included, set all type in a clean sans-serif font — Inter, Nunito Sans, IBM Plex Sans, or Manrope only (never a serif font).
+Minimal clinical line-art, thin monoline strokes, soft teal-blue palette, white background, clean rounded organ shapes, balanced sigil-like composition, generous whitespace, no photorealism, no 3D, no text labels unless specified. If any label is included, set all type in a clean sans-serif font — Inter, Nunito Sans, IBM Plex Sans, Manrope, or DM Sans only (never a serif font).
 
 COMPOSITION:
 Place [primary organ] at the top/center and [secondary organ/s] below or around it. Connect them with dotted arrows forming a gentle circular or bidirectional loop. Keep the design simple, symbolic, and suitable for a patient-education medical website.
@@ -111,4 +111,4 @@ Use skeletal muscle icon and kidneys connected by dotted metabolic arrows.
 Triangular composition with brain top, gut lower left, kidney lower right, circular dotted arrows.
 
 ## Negative Prompt
-Avoid: photorealistic anatomy, surgical detail, excessive labels, dark background, neon colors, complex infographics, crowded arrows, thick cartoon outlines, 3D rendering, glossy icons, dramatic lighting, stock-photo style. If text is present, never use serif or decorative fonts — Inter, Nunito Sans, IBM Plex Sans, or Manrope only. Never omit the renalcarematters.com attribution.
+Avoid: photorealistic anatomy, surgical detail, excessive labels, dark background, neon colors, complex infographics, crowded arrows, thick cartoon outlines, 3D rendering, glossy icons, dramatic lighting, stock-photo style. If text is present, never use serif or decorative fonts — Inter, Nunito Sans, IBM Plex Sans, Manrope, or DM Sans only. Never omit the renalcarematters.com attribution.

@@ -34,7 +34,7 @@ wires it. When validating, accept the mechanism skill's template fields
 a complete prompt. Confirm every prompt — regardless of authoring skill — carries
 the shared `© renalcarematters.com` attribution before building manifests. Also
 confirm every prompt that renders on-image text names an approved sans-serif font
-(Inter, Nunito Sans, IBM Plex Sans, or Manrope); flag any text-bearing prompt that
+(Inter, Nunito Sans, IBM Plex Sans, Manrope, or DM Sans); flag any text-bearing prompt that
 omits the font or specifies a serif/decorative typeface. Text-free photorealistic
 prompts (e.g. "no text embedded" heroes) are exempt.
 
@@ -223,7 +223,7 @@ as an Open Graph / social share card.
   "No journal names, guideline acronyms, brand names, or watermarks."
 - Clinician algorithms use the conservative flat-flowchart style:
   white background, boxes, diamond decisions, minimal color, no 3D/icons.
-- All on-image typography uses one of the four approved sans-serif fonts only —
-  Inter, Nunito Sans, IBM Plex Sans, or Manrope. No serif or decorative fonts.
+- All on-image typography uses one of the five approved sans-serif fonts only —
+  Inter, Nunito Sans, IBM Plex Sans, Manrope, or DM Sans. No serif or decorative fonts.
 - OG image always points to the `.webp` version of the primary image.
 - Commit directly to `main`. No PRs.
