@@ -28,6 +28,8 @@ MODULE = {
 <p>The session note is how the next nurse, the physician, and the patient&rsquo;s next unit find out what happened. A copied note does two kinds of harm at once. It invents a session that a reviewer will pay for, and it hides a missed session from the team caring for the patient. Module 2 showed that missed sessions carry a mortality signal.[[hn_foley2011]][[hn_alsalmi2018]] The billing error and the clinical error are the same error.</p>
 <p><strong>What a session note must carry:</strong> the current order version, consent, the pre-treatment assessment, the access, actual start and end times, fluid removed, any interruption and its reason, medicines given, the response, teaching, the condition at discharge, and the handoff.</p>
 <p>Write it during or right after the session. A late entry is allowed when it is labeled as late, with the real time and the real author. Never back-date.</p>
+{{scene:The note the next unit trusted|<p>Mrs. Perla Ignacio transfers to a unit near her daughter&rsquo;s home. Her last three session notes from your unit read &ldquo;Session completed, 4 hours, UF 2.5 L, tolerated well.&rdquo; The notes were copied from a template. In fact, she cramped badly in each session and stopped at about three hours with less than 2 liters removed.</p>
+<p>The receiving unit reads the notes and keeps her prescription unchanged, believing it works. She arrives at her second session there short of breath. The copied notes did not only misstate three sessions. They told the next team that a failing plan was succeeding. A note that said &ldquo;Stopped at 3 hours 5 minutes for cramps, UF 1.8 L&rdquo; would have told them what they needed to know on the first day.</p>}}
 """),
         ("rules", "The rules", "What PhilHealth covers, as verified on November 23, 2026", """
 <div class="table-wrap"><table>
@@ -49,6 +51,8 @@ MODULE = {
 {{flow:Five rungs|Agreement form::Signed, with the right session number and date.|Order::Current on the date of the session.|Machine log::A treatment on that station, at that time, for about that length.|Nursing note::Assessment, times, fluid removed, condition at discharge.|Medicine record::Every medicine claimed was ordered and given.}}
 {{formula:<strong>Tracer completeness</strong> = rungs verified &divide; rungs checked.<br>5 claims &times; 5 rungs = 25. If 23 are verified, completeness is 92%. Report the two failures by rung, not by patient.}}
 <p>Route every missing or disagreeing rung to billing or compliance, with an owner. Use synthetic identifiers in any training material.</p>
+{{scene:The medicine that was claimed but not given|<p>In the September tracer, the fourth claim passes the first four rungs. The agreement form, the order, the machine log, and the nursing note all match. On the fifth rung, the claim lists an injection of an erythropoiesis-stimulating agent. The medicine record shows it was ordered but not given, because the unit had run out that week, and the nurse wrote &ldquo;out of stock.&rdquo;</p>
+<p>The claim was built from the order, not from what was given. That is a system problem, not one person&rsquo;s dishonesty: the billing template pulls from the order list. You route it to billing and compliance with an owner. The claim is corrected before submission, and the template is changed so that a medicine is claimed only when the medicine record shows it was given.</p>}}
 {{call:Stop the claim and call billing, compliance, and the clinical head when a prepared claim does not match the clinical record. Never submit a claim that the records do not support. Follow your unit&rsquo;s protocol while you reconcile.}}
 """),
         ("ledger", "Session ledger", "Know who will run out before December", """
@@ -56,11 +60,15 @@ MODULE = {
 {{formula:<strong>Arithmetic illustration.</strong> 140 sessions used by November 1, at three a week.<br>156 &minus; 140 = 16 left. 16 &divide; 3 = about 5.3 weeks.<br>The allocation runs out around December 8, more than three weeks before the year ends. Remaining value: 16 &times; PHP 6,350 = PHP 101,600.}}
 {{fig:hn10_ledger}}
 <p>The calculator does this for each patient. Bring the list to the monthly review in September, October, and November.</p>
+{{scene:Planning in September, not December|<p>In September, the ledger shows that Mr. Victor Santos will use up his sessions around the second week of December. At the monthly review, the nurse brings his name, the projected date, and the number of sessions he will still need before the year ends.</p>
+<p>Because it is September, there is time. The social worker helps the family look into other sources of help, and the nephrologist reviews whether any extra sessions earlier in the year can be avoided by better fluid control. Mr. Santos is not told in December that his coverage has run out. He is told in September, with a plan already in progress.</p>}}
 """),
         ("amend", "Correct, never erase", "Correcting a record", """
 {{fig:hn10_amend}}
 <p>Correct an error by an authenticated addendum that shows the original, the correction, who made it, and when. Deleting or overwriting is what turns an error into misconduct.</p>
 <p>Ask why the error was possible. Copy functions, templates that pre-fill &ldquo;session completed,&rdquo; and notes written before the session ends are common sources. Each is a system problem that Module 11 can fix.</p>
+{{scene:2.0, not 3.0|<p>On Wednesday, a nurse notices that her Monday note for Mrs. Rosalinda Uy records 3.0 liters removed. The machine log shows 2.0. She typed the wrong number.</p>
+<p>The wrong way to fix it is to open the note and overwrite 3.0 with 2.0, or to cover it with correction fluid on paper. Either way, the record now hides that it was ever wrong. The right way is an addendum: &ldquo;Correction to the note of [date]: fluid removed was 2.0 L, not 3.0 L, per the machine log. Entered [date and time] by [name].&rdquo; The original stays visible. Anyone reading the record later sees the error, the correction, and who made it. That is exactly what an honest record looks like.</p>}}
 {{key:An error corrected openly is a record of honesty. An error erased is a record of something else.}}
 """),
     ],

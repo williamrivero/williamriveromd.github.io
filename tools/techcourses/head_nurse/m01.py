@@ -29,6 +29,8 @@ MODULE = {
 <p>That is why a missing check matters more here than on a ward. An untested water system, an unreleased machine, a needle under a blanket, or a shift with no one trained in advanced life support each removes one layer between a fragile physiology and harm.</p>
 {{fig:hn01_huddle}}
 <p>The workload is growing. Press reports citing national registry figures put 64,845 Filipinos on dialysis in 2024, up 22% from 53,296 in 2023. Press reports also quoted PhilHealth as paying about PHP 27 billion for more than 2 million hemodialysis claims in the first half of 2025. More chairs, more new staff, and more payer review all land on the nurse who runs the floor. These figures come from news reports, not from the registry itself.</p>
+{{scene:Three small things on one Tuesday|<p>On a Tuesday morning, three things go slightly wrong. A reliever nurse from another unit is used to a different machine model. The morning chlorine test was done but not signed, because the technician was called away. And Mr. Ramil Garcia, 69, asks for a blanket because the room is cold.</p>
+<p>None of these alone would hurt anyone. Together they remove three layers at once. If the reliever misreads an alarm, if the water was out of limit, and if the blanket hides a needle, there is nothing left between Mr. Garcia and harm. The head nurse who notices all three at 6:10 asks the senior nurse to pair with the reliever, sends the technician back to sign the test before the first connection, and tucks the blanket below Mr. Garcia&rsquo;s elbow. None of these steps takes more than two minutes.</p>}}
 {{key:A dialysis unit is safe because many small checks hold at once. Your job is to know, every morning, which ones are holding.}}
 """),
         ("evidence", "What the evidence shows", "What the research shows about nurses and outcomes", """
@@ -42,6 +44,8 @@ MODULE = {
 <tr><td>Staffing and transplant, United States</td><td>Among 54,141 young patients, units with the most patients per nurse had 14% lower incidence of transplant[[hn_bicki2024]]</td><td>Large cohort</td></tr>
 </tbody></table></div>
 <p>Philippine data on staffing and outcomes were not found. Taken together, these studies support a reasonable inference: the mix of experience and the workload on the floor are patient-safety variables. They do not prove that any particular ratio is correct.</p>
+{{scene:When the administrator asks for proof|<p>Ms. Liza Ramos, the administrator, is planning next year&rsquo;s budget. &ldquo;Is there proof that we need experienced nurses? New graduates cost less.&rdquo;</p>
+<p>A weak answer is &ldquo;Studies prove experienced nurses save lives.&rdquo; No study proves that. A stronger answer keeps to what was found: &ldquo;Units with more experienced nurses met more treatment targets, and units with more trained staff hours had fewer skipped sessions. Skipping is linked to higher mortality. These are associations, not trials, so we cannot say exactly how many experienced nurses we need. What we can say is that experience and workload are patient-safety variables, so I would rather not cut both at once.&rdquo; Ms. Ramos is more likely to trust the head nurse who does not overclaim.</p>}}
 """),
         ("rules", "The rules", "Which rule governs what", """
 <p>Your unit answers to several authorities at once. Each governs a different question. Keep them apart, because a document that satisfies one does not satisfy another.</p>
@@ -70,6 +74,8 @@ MODULE = {
 <tr><td>Head nurse</td><td>Nursing assignments, holding a station, stopping the opening, coaching, the evidence register</td><td>&mdash;</td></tr>
 </tbody></table></div>
 <p>The rule for this series is the same in every module. <strong>Follow your unit&rsquo;s protocol, and ask the attending nephrologist for guidance.</strong> Where a limit is not written down, do not invent one. Ask.</p>
+{{scene:The wedding on Saturday|<p>Mrs. Rosario Lim&rsquo;s daughter is getting married on Saturday. At 6:30 on Friday, Mrs. Lim asks her nurse to &ldquo;just do three hours today&rdquo; so that she can go home and help cook. The nurse asks you.</p>
+<p>Shortening the session is a change to the prescription, so it is not yours or the nurse&rsquo;s to grant. It is also not yours to refuse flatly. You call the attending nephrologist, give the facts (Mrs. Lim&rsquo;s weight gain, her last potassium, the reason for the request), and ask for a decision. The nephrologist suggests a full session today and an earlier start time, which the unit can arrange. You write down the call, the time, and the decision. If the nephrologist had agreed to three hours, you would record that order in the same way.</p>}}
 {{key:You cannot release a machine, change a prescription, or decide that a patient can wait. You can, and must, stop anything from starting until the people who can have done so.}}
 """),
         ("gates", "Five gates", "Five gates before the first connection", """
@@ -78,6 +84,8 @@ MODULE = {
 {{flow:The five gates|Nurses cleared::Count only nurses with site sign-off to work alone. Stations planned divided by four, rounded up, is the minimum.|ACLS cover::At least one nurse on the shift with a current certificate.|Physician reachable::The physician on duty is present, or the attending nephrologist answers.|Water and machines released::Today&rsquo;s water tests are within limit and signed. Every machine back from repair has a signed release.|Emergency cart ready::Checked, stocked, sealed, and the defibrillator tested.}}
 <p>When a gate fails, the stations that depend on it stay closed. Say it aloud at the huddle, name the owner, and write down the time. A hold is temporary. Hoping is not a plan.</p>
 {{formula:<strong>Arithmetic illustration.</strong> 12 stations &divide; 4 = 3 nurses with sign-off. With 2, you may open 8 stations on nursing grounds. A missing ACLS nurse is a separate gate that the third nurse may or may not fill.}}
+{{scene:The defibrillator that did not pass|<p>At 5:45 the defibrillator self-test on the emergency cart fails. The battery will not hold a charge. Everything else on the cart is complete.</p>
+<p>The fifth gate is closed, and it guards every station, not only one. At the huddle you say: &ldquo;Gate five failed at 5:45. The defibrillator battery will not charge. No one connects until we have a working defibrillator. Dante is calling biomedical, and I am asking the emergency room next door for a loaner.&rdquo; The loaner arrives at 6:05 and passes its test. You record both times and the loaner&rsquo;s serial number. The first patients connect fifteen minutes late, and the reason is written down rather than hidden.</p>}}
 {{call:Stop and call nursing administration and the clinical head when a gate cannot be closed before the scheduled start. Ask the attending nephrologist or physician on duty which waiting patients cannot safely be delayed. Follow your unit&rsquo;s protocol while you call.}}
 """),
         ("register", "The register", "The evidence register", """
@@ -94,6 +102,8 @@ MODULE = {
 <tr><td>Follow-up</td><td>Renewal booked for two nurses in January</td></tr>
 </tbody></table></div>
 <p>Start with personnel files, roster cover, emergency and referral documents, approved policies, water records, and quality meeting minutes. Review the register monthly, and look ahead ninety days for anything about to expire.</p>
+{{scene:Two minutes or two hours|<p>A DOH inspector asks to see the corrective action for a high bacterial count in the product water last March. In one unit, the head nurse opens the register, finds the row for water testing, follows the link to the water folder, and shows the out-of-limit result, the disinfection record, the repeat test that passed, and the signed release. It takes two minutes.</p>
+<p>In another unit, the same request starts a search through three binders and a technician&rsquo;s phone. The corrective action may have happened, but no one can show it. To an inspector, an action that cannot be shown did not happen.</p>}}
 """),
     ],
     "debrief": ["""

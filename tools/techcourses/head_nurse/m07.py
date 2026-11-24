@@ -29,6 +29,8 @@ MODULE = {
 {{fig:hn07_compensate}}
 <p>A nadir systolic below 90 mm Hg is the level most strongly linked to mortality in observational data.[[hn_flythe2015]] A low pressure that does not improve after stopping fluid removal and laying the patient flat is something else until proven otherwise: a heart attack, an arrhythmia, bleeding, infection, or fluid around the heart.</p>
 <p>Cardiac arrest is the most common cause of death in patients on hemodialysis.[[hn_pun2007]] Risk peaks after the long gap.[[hn_foley2011]] In a case-control study of in-clinic arrests, low-potassium dialysis fluid was among the factors associated with arrest.[[hn_pun2011]]</p>
+{{scene:The low pressure that did not come back|<p>Mrs. Corazon Medina, 64, has diabetes and dialyzes on the morning shift. At two and a half hours, her systolic pressure is 82 mm Hg. Her nurse stops fluid removal, lays her flat, and raises her legs. Ten minutes later the pressure is still 80. Mrs. Medina is sweating, and when asked, she says her jaw aches.</p>
+<p>A drop caused by fluid removal usually improves when removal stops and the patient lies flat, because refilling catches up. This one did not. That is the signal to think beyond fluid. Her nurse calls the physician on duty at once and says, &ldquo;Low pressure not responding to stopping UF, sweating, and jaw pain. I am worried about her heart.&rdquo; The physician orders an electrocardiogram under the unit&rsquo;s protocol. The nurse&rsquo;s job was not to diagnose a heart attack. It was to notice that the usual explanation no longer fit, and to say so in words that got the physician to the chair.</p>}}
 """),
         ("table", "The fork", "Cause or bystander, event by event", """
 <p>Actions follow your unit&rsquo;s algorithm and the physician&rsquo;s direction. This table teaches the reasoning behind them.[[hn_greenberg2021]]</p>
@@ -45,6 +47,8 @@ MODULE = {
 <tr><td>Seizure or sudden confusion</td><td>New patient with very high urea suggests disequilibrium. Otherwise think of sugar, stroke, pressure</td><td>On order</td><td>Protect the airway, check glucose, stop or slow, call</td></tr>
 </tbody></table></div>
 <p>The left-side-down position in air embolism is meant to hold the air in the right side of the heart, away from the outflow to the lungs. It comes from physiology and expert advice, not trials.</p>
+{{scene:Two patients and the color of the line|<p>Twenty minutes into the second shift, the patient at station 5 says his chest feels tight and his back hurts. At station 6, a patient complains of the same thing a minute later. The nurse looks at the venous line on both machines. The blood in the lines looks darker and clearer than usual, like red wine.</p>
+<p>Two patients on the same water system, with the same symptoms at the same time, and blood that looks hemolyzed, point to the fluid, not the patients. The nurses stop both blood pumps and clamp the lines. They do not return the blood, because returning hemolyzed blood would deliver the potassium released from the broken red cells straight into the patient. The physician is called, every other connection on that water system is held, and the water lead is called to test the system (Module 6).</p>}}
 {{call:Stop the blood pump, clamp the lines, and do not return the blood when air, hemolysis, or a severe dialyzer reaction is suspected. Call the physician on duty and the attending nephrologist at once. Follow your unit&rsquo;s protocol while you call.}}
 """),
         ("arrest", "Cardiac arrest", "What the evidence shows about arrests in dialysis clinics", """
@@ -70,6 +74,8 @@ MODULE = {
         ("after", "Afterward", "After the emergency", """
 <p>Spend ten minutes on a debrief: what happened, what went well, what to change, and how everyone is. Restock and reseal the emergency cart before the station is used again. Deeper review goes to Module 11.</p>
 <p>Time every drill: seconds from collapse to first compression, to the call made, and to pads on. Plot the drills on a run chart (Module 11) so the team can see whether practice is making them faster.</p>
+{{scene:From 74 seconds to 31|<p>In January, the unit&rsquo;s first timed drill shows 74 seconds from the call &ldquo;No response at station 3&rdquo; to the first chest compression. The nurses spent the time lowering the chair, finding the backboard, and deciding who would start.</p>
+<p>After the debrief, the backboard is clipped to the side of the emergency cart, the chair&rsquo;s flat button is marked in red, and the first nurse at the chair is told that her job is compressions, not the circuit. The drills are repeated monthly with different nurses and plotted on a run chart. By April, the time is 31 seconds. No single change did it. The team did, by practicing and measuring.</p>}}
 {{key:In an emergency, the head nurse&rsquo;s first job is often not at the chest. It is making sure that every job has a name and that the other eleven patients are watched.}}
 """),
     ],

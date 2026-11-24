@@ -37,6 +37,8 @@ MODULE = {
 <tr><td>Health literacy</td><td>In 480 new patients, 32% had limited health literacy, which was associated with higher mortality (hazard ratio 1.54)[[hn_cavanaugh2010]]</td><td>Cohort</td></tr>
 </tbody></table></div>
 <p>A fiftyfold difference between countries cannot be explained by patient character. It points to transport, scheduling, cost, and support, which is where you can act. You cannot tell by looking which patients have limited health literacy, so teach everyone as if they might.</p>
+{{scene:The washed-out afternoon|<p>Mrs. Linda Soriano, 57, tells her nurse that she &ldquo;loses the whole afternoon&rdquo; after dialysis. She lies down when she gets home and cannot cook dinner. She thinks this is just how dialysis is.</p>
+<p>Her weight gains are often 4 kilograms on a dry weight of 55, so her machine removes about 18 mL/kg/h over four hours. The nurse explains in plain words: &ldquo;When the machine has to take off a lot of water in a short time, your blood pressure drops and your body has to work hard to catch up. That is part of why you feel washed out. If you come in carrying less water, the machine can go gentler.&rdquo; The nurse brings in the dietitian to talk about salt and thirst. Six weeks later, Mrs. Soriano&rsquo;s gains average 2.8 kilograms, and she says she can cook dinner on dialysis days again. She did not change her habits because she was told to. She changed them because she could feel the difference.</p>}}
 """),
         ("ask", "Ask first", "Ask before you teach", """
 <p>&ldquo;What makes it hard to stay the full time?&rdquo; Then be quiet. Typical answers, and who can act:</p>
@@ -50,6 +52,8 @@ MODULE = {
 <tr><td>Low mood, hopelessness</td><td>Attending nephrologist, mental health referral</td><td>Screen, refer, follow up</td></tr>
 <tr><td>Needle pain or fear</td><td>Senior cannulator, nephrologist</td><td>A consistent cannulator, numbing cream if ordered</td></tr>
 </tbody></table></div>
+{{scene:Better off without me|<p>Mr. Arturo Valdez, 58, has missed two Fridays this month. When the nurse asks what makes it hard to come, he says quietly, &ldquo;My children are paying for all of this. They would be better off without the expense.&rdquo;</p>
+<p>That sentence is not a scheduling problem. It may be hopelessness, and it is one of the triggers in this module for calling the attending nephrologist the same day. The nurse thanks him for saying it, stays with him, and tells you. You call the nephrologist, who speaks with Mr. Valdez before he leaves, arranges a referral for support, and asks the social worker to look at coverage. You document what he said, in his words, and who was told. Asking &ldquo;What makes it hard?&rdquo; is how this came out. A note that said &ldquo;missed sessions, counseled&rdquo; would have missed it.</p>}}
 {{call:Stop and call the attending nephrologist when a patient has shortened or missed two or more sessions in a month, when a patient expresses hopelessness or a wish to stop dialysis, or when cramps or low pressure are driving early sign-off. Follow your unit&rsquo;s protocol while you call.}}
 """),
         ("teach", "Teach-back", "Teaching that you can check", """
@@ -58,16 +62,22 @@ MODULE = {
 <p>&ldquo;Do you understand?&rdquo; almost always gets a yes. It measures politeness, not understanding.</p>
 <p>The evidence for teach-back is modest. A systematic review in kidney disease found six studies with 520 participants and some evidence of better self-management, self-efficacy, and knowledge, but limited evidence for quality of life, and the studies were too different to combine.[[hn_jagodage2024]] A broader review in chronic disease found similar results.[[hn_hadinh2016]] The method costs nothing and has no known harm, which is why it is recommended despite the limited evidence.</p>
 <p>Use the patient&rsquo;s language. Offer the site&rsquo;s Tagalog, Cebuano, or Kapampangan materials where reviewed translations exist. Bring in the family member who cooks and the one who drives.</p>
+{{scene:The answer that needed fixing|<p>The nurse explains to Mr. Gregorio Lopez that if he misses a session, potassium builds up and can make the heart beat dangerously. Then she asks, &ldquo;I want to be sure I explained that well. If you miss Friday, what would you do?&rdquo;</p>
+<p>Mr. Lopez says, &ldquo;I&rsquo;d drink more water to flush it out.&rdquo; That is the opposite of safe, and &ldquo;Do you understand?&rdquo; would never have revealed it. The nurse corrects it gently: &ldquo;Without kidneys, water doesn&rsquo;t flush potassium out. It just adds to the fluid. If you miss a session, call us to come in as early as possible, avoid fruits like banana, and go to the emergency room if you feel weak or your heart is racing.&rdquo; Then she asks again, and he says it back correctly. She records the topic and his answer.</p>}}
 """),
         ("monthly", "Two questions", "Two questions every month", """
 <p>&ldquo;How long does it take you to recover after a session?&rdquo; One patient in ten takes more than twelve hours, and longer recovery was associated with hospital admission and death.[[hn_rayner2014]] &ldquo;What symptom bothers you most?&rdquo; Routine electronic symptom checks with feedback to clinicians are feasible in dialysis units and take under seven minutes.[[hn_agarwal2023]] Whether they improve outcomes is still being tested.</p>
 <p>Record both answers and bring them to the monthly review with the nephrologist and dietitian.</p>
+{{scene:Sixteen hours|<p>At the monthly review, Mr. Simeon Bautista answers the first question: &ldquo;It takes me until the next morning to feel normal. Maybe sixteen hours.&rdquo; He has never mentioned it, because no one asked.</p>
+<p>His records show weight gains of 3.5 to 4 kilograms and frequent cramping in the last hour. The nurse brings both to the nephrologist with his recovery time. The nephrologist adds thirty minutes to his sessions and asks the dietitian to see him. Two months later, he says he feels normal by evening. The question took ten seconds. Without it, his long recovery would have stayed invisible, because nothing in the machine records it.</p>}}
 """),
         ("referral", "Referrals", "Options, and closing referrals", """
 <p>Every patient should have a documented conversation about transplant and peritoneal dialysis, and where appropriate about conservative care. Staffing touches this too: in young patients, the most stretched nursing quartile was associated with 14% lower incidence of transplant.[[hn_bicki2024]] Referral work is among the tasks left undone.</p>
 {{fig:hn09_referral}}
 <p>Track each referral to an outcome: referred, seen, decision, next step. A referral with no recorded outcome is still open.</p>
 <p><strong>When a patient wants to leave early.</strong> Signing off early is the patient&rsquo;s right. Leaving without being assessed is the unit&rsquo;s failure. Assess symptoms, explain the specific risk in plain words, confirm the next session, inform the physician, and document the conversation. In a conflict, lower your voice, acknowledge the concern, state the safety boundary, offer the options that exist, and call for support if there is any threat.</p>
+{{scene:Leaving at three hours, done properly|<p>At three hours, Mrs. Teresa Garcia asks to stop because her grandson&rsquo;s school program starts at 5:00. The nurse does not argue and does not simply disconnect.</p>
+<p>She checks Mrs. Garcia&rsquo;s pressure and symptoms, and explains: &ldquo;You still have about 800 mL of fluid that we planned to remove. Leaving now means you start the weekend carrying it, which can make you short of breath by Sunday.&rdquo; She tells the physician, confirms Monday&rsquo;s session, and agrees with Mrs. Garcia that she will come early on Monday. She writes down what was said, the actual minutes and fluid removed, and the reason. Mrs. Garcia leaves for the program. The record shows an informed choice, not a refusal.</p>}}
 """),
     ],
     "debrief": ["""

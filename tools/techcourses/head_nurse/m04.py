@@ -37,6 +37,8 @@ MODULE = {
 <tr><td>Cold, pale, numb, or painful hand</td><td>The fistula stealing blood from the hand</td></tr>
 </tbody></table></div>
 <p>A mature fistula is often described by the rule of sixes: flow above 600 mL/min, diameter at least 6 millimeters, depth no more than 6 millimeters. The KDOQI 2019 guideline moved away from &ldquo;fistula first&rdquo; toward an access plan built around each patient&rsquo;s life, and it relies on regular physical examination by trained staff as the core of monitoring.[[hn_lok2020]]</p>
+{{scene:Twenty-five minutes of bleeding|<p>Mr. Nestor Aguilar&rsquo;s fistula has served him for four years. Over the past three weeks, his nurses have noticed that his needle sites bleed for 20 to 25 minutes after removal instead of the usual 10. His venous pressure at the same blood flow has crept from about 160 to about 210 mm Hg. The fistula now feels pulsatile, like a pulse rather than a buzz, and the vein stays full when he raises his arm.</p>
+<p>Each finding alone could be dismissed. Together they point to one place: a narrowing downstream, on the outflow side, pushing pressure back into the access. The nurse who records the trend and raises it gives the nephrologist the chance to refer him for imaging and treatment of the narrowing while the fistula still works. The nurse who simply holds pressure longer each week waits for the morning it clots.</p>}}
 {{call:Stop and call the attending nephrologist before cannulation for an absent thrill or bruit, scabbed or shiny skin over an aneurysm, signs of infection, or a cold, painful hand. Do not cannulate through or beside a scabbed aneurysm. Follow your unit&rsquo;s protocol while you call.}}
 """),
         ("alarm", "The silent alarm", "Why the alarm may not sound", """
@@ -52,6 +54,8 @@ MODULE = {
 {{flow:Access bleeding or needle dislodgement|Stop::Stop the blood pump.|Clamp::Clamp both lines near the access.|Press::Firm, direct pressure on the site with gauze.|Call by name::&ldquo;Grace, call the physician on duty and tell me when you have reached him.&rdquo;|Lay flat::Lay the patient flat and check pressure, pulse, and consciousness.|Save::Keep the needle, the tape, and the lines. Record the times.}}
 <p>Do not restart, and do not return blood through a needle that has been out of the vein. The physician decides whether and how the session continues. Module 7 covers the team roles when the bleeding is severe.</p>
 <p>A ruptured aneurysm bleeds fast and does not stop easily. Teach patients and families to press hard with a clean cloth and call for emergency help.</p>
+{{scene:The drill that took 95 seconds|<p>On a quiet Thursday, you run an unannounced drill with a practice arm and a circuit filled with colored water. You tell a nurse, &ldquo;The venous needle is out. Go.&rdquo; She looks for gauze first, then for gloves, then stops the pump. Ninety-five seconds pass before the pump stops. At 300 mL/min, that would have cost close to half a liter.</p>
+<p>No one is blamed. You talk through the order: pump first, because the pump is what moves the blood. The gauze can wait the three seconds it takes to press a button. The next week, the same nurse stops the pump in under ten seconds. The drill takes five minutes and costs nothing. Repeated every month with different nurses, it turns a written flow into a reflex.</p>}}
 """),
         ("catheters", "Catheters", "Catheters: the access with the most infection", """
 <p>A catheter gives organisms a plastic surface on which to build a slimy layer called a biofilm. For catheters used for months, most bloodstream infections start inside the lumen, from the hub each time it is opened. That is why hub handling matters more than the dressing.</p>
@@ -65,11 +69,15 @@ MODULE = {
 </tbody></table></div>
 <p>The gram-negative pattern in the Philippine cohort points toward water, solutions, and multidose containers as possible sources. That is an inference from the organisms, not a finding of the study. It is why Module 5 treats medicine preparation as part of access care.</p>
 <p>The dialysis catheter is for dialysis. Using it for transfusion or other infusions needs an explicit order and the same aseptic technique.</p>
+{{scene:The transfusion overnight|<p>Mr. Danilo Reyes, 60, dialyzes through a tunneled neck catheter. He was admitted overnight for anemia, and the ward ran a unit of blood through his dialysis catheter because his arm veins were hard to find. At his next session, 40 minutes after connection, he shivers and his temperature is 38.6 &deg;C.</p>
+<p>The nurse calls the physician, who orders blood cultures from the catheter and a vein and starts treatment. You record that the catheter was used for a transfusion, by whom, and when, because the Philippine cohort found exactly this to be a risk factor. Then you act on the system: a label on every dialysis catheter that reads &ldquo;For dialysis only,&rdquo; a note to the wards that refer patients to your unit, and a line in the discharge summary template. One infection is a patient event. A label prevents the next one.</p>}}
 """),
         ("list", "The catheter list", "Keep a list of every long-term catheter", """
 <p>Each month, list every patient dialyzing through a catheter for more than 90 days. For each one, record the reason and the next step toward a permanent access: vein mapping, surgical referral, a maturing fistula, or a documented decision to stay with a catheter.</p>
 {{formula:<strong>Catheter dependence</strong> = patients on a catheter more than 90 days &divide; all patients.<br>9 of 95 = 9.5%.}}
 <p>The list belongs to the nephrologists and the access surgeon as much as to you. Your contribution is to keep it current and to bring it to the monthly review, so that no catheter stays in by default.</p>
+{{scene:Seven months by default|<p>At the monthly review, the catheter list shows that Mrs. Erlinda Castro has dialyzed through a catheter for seven months. Vein mapping was done in May. A referral to the access surgeon was written the same week. Nothing has happened since.</p>
+<p>No one decided that Mrs. Castro should keep a catheter. The referral was simply lost between visits. When the nurse asks her, Mrs. Castro says she could not afford the surgeon&rsquo;s fee and was embarrassed to say so. The nephrologist asks the social worker to help with coverage and a referral to a government hospital, and a fistula is created in September. Without the list, the eighth month and the ninth would have passed the same way.</p>}}
 """),
     ],
     "debrief": ["""

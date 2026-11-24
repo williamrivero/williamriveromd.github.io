@@ -30,6 +30,8 @@ MODULE = {
 <p><strong>The environment.</strong> Hepatitis B virus survives on surfaces for days at high concentrations and spreads through invisible blood on shared equipment. That durability, not the severity of the disease, is why hepatitis B alone needs a dedicated room, machine, supplies, and staff. Hepatitis C is less hardy. Guidelines do not recommend isolating it and rely on strict standard precautions, because outbreaks have been traced to lapses such as shared medicine vials and poor station cleaning.</p>
 <p><strong>The fluid.</strong> Gram-negative water organisms grow in stagnant water, bicarbonate concentrate, and reused containers. Module 6 covers the water system.</p>
 {{fig:hn05_hub}}
+{{scene:One glucose meter for the whole floor|<p>On the morning shift, one glucose meter moves from station to station as patients with diabetes are checked. Between patients it is put back in its case. It is not wiped. Nobody sees blood on it.</p>
+<p>The meter does not need visible blood to carry a virus. A trace of blood from one finger is enough, and the next patient&rsquo;s finger touches the same surface. Outbreaks of hepatitis B and C in dialysis units have been traced to shared items handled in this way. The fix is simple: a meter assigned to each station or each patient, or a meter cleaned and disinfected by the approved method after every use, and never a shared lancing device.</p>}}
 """),
         ("core", "Core interventions", "The core interventions and what they achieved", """
 <p>The United States Centers for Disease Control and Prevention (CDC) groups its recommendations for dialysis units into a set of core interventions.[[hn_cdc_core]]</p>
@@ -42,6 +44,8 @@ MODULE = {
 <p><strong>Medicines.</strong> Draw up medicines in a clean area away from the stations, never at the chair. Single-dose vials are for one patient. Multidose vials are dated, stay in the clean area, and never go to a station. Nothing returns from a station to clean supply.</p>
 <p><strong>Turnover.</strong> A station is ready only when the last patient has left, all disposables are gone, and every surface has been wiped with the approved disinfectant and stayed wet for its full contact time. If the gap between shifts is shorter than that takes, the schedule is the hazard. Fix the schedule, not the nurse.</p>
 <p><strong>Hepatitis B.</strong> Confirm with the infection prevention lead that screening, vaccination, and the dedicated room, machine, supplies, and staff assignment can actually be delivered with today&rsquo;s roster. A policy the roster cannot staff is not in force.</p>
+{{scene:The twenty-minute turnover|<p>The roster allows 20 minutes between the first and second shift. You stand and watch one turnover. The nurse strips the bloodlines, wipes the chair and the machine in about a minute, and starts priming the next circuit while the surfaces are still drying. The disinfectant on the shelf needs the surface to stay wet for longer than that.</p>
+<p>The nurse is not careless. She is doing what the schedule allows. The fix is in the schedule: stagger the second-shift start by station so that each chair gets its full turnover time, and post the disinfectant&rsquo;s contact time on the bottle. After the change, you watch again, and the surfaces stay wet for their full time.</p>}}
 {{key:Watch, do not ask. A nurse asked whether she cleaned the hub will say yes. A nurse watched for twenty minutes will show you what actually happens.}}
 """),
         ("numbers", "Honest numbers", "Reporting audits and rates honestly", """
@@ -50,6 +54,8 @@ MODULE = {
 <p>Aim for at least 30 observations before comparing one month with another.</p>
 {{formula:<strong>Infection rate</strong> = events &divide; patient-months &times; 100.<br>3 bloodstream infections in 95 patients over one month = 3.2 per 100 patient-months.<br><strong>Catheter rate</strong> = events &divide; catheter-days &times; 1,000.<br>2 infections in 30 catheter patients over 30 days = 2.2 per 1,000 catheter-days.}}
 <p>Use the same case definition every month, or the trend means nothing. Post the results where staff can see them, without patient names.</p>
+{{scene:100% on paper, 62% on the floor|<p>For six months, the unit&rsquo;s hand-hygiene report has said 100%. The report is a checklist each nurse fills in at the end of the shift.</p>
+<p>You stand at the nurses&rsquo; station for twenty minutes on three different days and count. Of 61 opportunities, 38 were met: 62%. The nurses are not lying. They believe they wash their hands, and most of the time they do. The misses cluster in a few moments, such as touching the machine screen and then the access without cleaning hands in between. The 62% is the first honest number the unit has had, and the specific moments tell you exactly what to coach. Repeat the observation monthly, and report the count beside the percentage.</p>}}
 """),
         ("cluster", "A possible cluster", "When two patients shiver on the same shift", """
 <p>Two events on one shift may be chance. They may also be the first sign of a shared source. Patients come first, then the investigation, and the two run together.</p>

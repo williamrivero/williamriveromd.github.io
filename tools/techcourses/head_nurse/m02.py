@@ -29,6 +29,8 @@ MODULE = {
 {{fig:hn02_sawtooth}}
 <p>The long gap shows up in deaths. In a large United States cohort of patients on thrice-weekly dialysis, all-cause mortality on the day after the two-day gap was 22.1 per 100 person-years, against 18.0 on other days. Deaths from cardiac causes and admissions for heart attack were also higher.[[hn_foley2011]] This is an observational finding, but it is large, consistent, and fits the physiology.</p>
 <p>Missing a session makes it worse. In the international Dialysis Outcomes and Practice Patterns Study (DOPPS), missed sessions were associated with 68% higher mortality. The risk of missing ranged from under 1% in Italy and Japan to 24% in the United States, and longer travel time and depressive symptoms predicted it.[[hn_alsalmi2018]] A fiftyfold difference between countries means that much of the problem lies in systems, not in patients. Module 9 returns to this.</p>
+{{scene:The dry weight that stopped fitting|<p>Mr. Benjamin Torres, 71, spent two weeks in hospital with pneumonia and returns to dialysis on Wednesday. His weight is 61.2 kilograms, just above his dry weight of 61 kilograms. By the scale, he has almost no fluid to remove.</p>
+<p>But his ankles are swollen, and he props himself on two pillows to breathe. During the admission he lost muscle and fat. The tissue is gone, so the same weight now carries more water. The dry weight was right for the body he had a month ago. It is not right for the body he has now. The nurse who reads only the scale will remove almost nothing. The nurse who examines him raises it as a Today finding, and the nephrologist sets a new, lower dry weight.</p>}}
 {{key:Monday is the most dangerous day of the week for a Monday-Wednesday-Friday patient, and the patient who missed Friday is the most dangerous patient on Monday.}}
 """),
         ("refill", "Removal and refill", "Why fast fluid removal drops the pressure", """
@@ -46,6 +48,8 @@ MODULE = {
 </tbody></table></div>
 <p>No trial has shown that capping the fluid removal rate at any number saves lives. The numbers 10 and 13 are flags for a conversation with the nephrologist, not limits for the nurse to enforce.</p>
 {{formula:<strong>Arithmetic illustration, not a target.</strong> UF rate = fluid to remove (mL) &divide; hours &divide; weight (kg).<br>3,400 mL over 4 hours in a 60-kg patient = about 14 mL/kg/h. The same 3,400 mL over 3 hours = about 19 mL/kg/h.}}
+{{scene:Same fluid, different patients|<p>Two patients on the same afternoon shift each need 3,000 mL removed over four hours. Mrs. Lourdes Navarro weighs 45 kilograms. Mr. Eduardo Salcedo weighs 80 kilograms.</p>
+<p>For Mrs. Navarro, 3,000 &divide; 4 &divide; 45 = about 17 mL/kg/h. For Mr. Salcedo, 3,000 &divide; 4 &divide; 80 = about 9 mL/kg/h. The same goal on the screen asks almost twice as much of the smaller patient&rsquo;s refilling. This is why the number is worth calculating. It does not tell you what to do. It tells you that Mrs. Navarro&rsquo;s goal should go to the nephrologist before connection, with her blood pressure history, so that the prescriber can decide on more time, an extra session, or a different goal.</p>}}
 """),
         ("lanes", "Three lanes", "Sort every finding into a lane", """
 <p>A pre-dialysis assessment produces many findings. The skill is to decide how fast each one needs action.</p>
@@ -59,6 +63,8 @@ MODULE = {
 </tbody></table></div>
 <p>The thresholds for &ldquo;Now&rdquo; follow your unit&rsquo;s protocol. Where the protocol is silent, ask the attending nephrologist.</p>
 <p>For anemia, the KDIGO 2026 guideline replaced the 2012 edition. For patients on hemodialysis, it suggests weighing the benefits and risks of starting an erythropoiesis-stimulating agent when hemoglobin is 9 to 10 g/dL or below, once iron deficiency and other causes are addressed, and pausing intravenous iron during active infection.[[hn_kdigo_anemia2026]] Use your unit&rsquo;s adopted targets for maintenance ranges.</p>
+{{scene:Sorting three findings at 6:15|<p>Before the first connection, a nurse brings you three findings. Mr. Ronaldo Pascual&rsquo;s potassium from yesterday&rsquo;s blood test is 7.1 mmol/L. Mrs. Celia Bautista has gained 4.2 kilograms over the weekend, a planned UF rate of 16 mL/kg/h. And Mr. Jose Manalo&rsquo;s hemoglobin has drifted from 10.4 to 9.6 g/dL over two months.</p>
+<p>The laboratory flagged the potassium as critical, so it goes to the Now lane: a physician decides before Mr. Pascual connects. Mrs. Bautista&rsquo;s goal is a Today finding, raised before connection. Mr. Manalo&rsquo;s hemoglobin is a This month finding: it goes on the monthly review list with an owner, and nobody needs to be woken up for it. Sorting does not make any finding less important. It decides how fast each one needs a decision.</p>}}
 {{call:Stop and call the physician on duty or the attending nephrologist at once for any Now finding. Do not connect on the existing order until a physician has decided. Follow your unit&rsquo;s protocol while you call.}}
 """),
         ("loop", "Closing the loop", "Closing a result loop", """
@@ -67,6 +73,8 @@ MODULE = {
 {{flow:A closed loop|Received::The result reaches a named nurse, with the time.|Told::A named physician hears the value, the time it was taken, and the clinical context. Ask for a read-back.|Decided::The physician gives an order or a plan.|Recorded::The order, the time, and who gave it are written down.|Owned::A named person is responsible for the next step: a repeat test, a change in the prescription, a call to the patient.}}
 <p>Check the context before calling. A potassium from a hemolyzed sample, or one drawn after a long tourniquet, may be falsely high. Report it anyway, with that context. The physician decides whether to repeat it.</p>
 <p>Two questions belong in every monthly review. &ldquo;How long does it take you to recover after a session?&rdquo; and &ldquo;What symptom bothers you most?&rdquo; The first has outcome data behind it.[[hn_rayner2014]]</p>
+{{scene:The call at 4:50|<p>At 4:50 in the afternoon, the laboratory calls. Mrs. Gloria Rivera, who finished dialysis at noon and went home, has a potassium of 6.8 mmol/L on her pre-dialysis sample. The nurse who takes the call writes down the value and the time and reads it back.</p>
+<p>The loop is not closed yet. The nurse calls the physician on duty, gives the value, the fact that it was drawn before this morning&rsquo;s session, and that the sample was not hemolyzed, and asks for a decision. The physician asks for a repeat test and asks that Mrs. Rivera be told to avoid potassium-rich food until then. The nurse calls Mrs. Rivera at 5:20 and records the physician&rsquo;s order, the time, and the call. A named nurse on tomorrow&rsquo;s shift owns the repeat test. Now the loop is closed.</p>}}
 {{key:A loop is closed when a named person owns the next step. Until then, it is open, however many people have seen the result.}}
 """),
     ],
