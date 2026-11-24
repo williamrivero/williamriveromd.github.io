@@ -887,6 +887,9 @@ Auto follows them.
   **Run it after adding or regenerating any page, and after changing any
   dark-mode CSS** (idempotent): `python3 patch_theme_modes.py`.
   `python3 build_theme_dim.py --check` exits 1 when Dim is stale.
+  CI runs it too: the `sitemap` workflow (every push to `main`) and `drugdb-pages`
+  (after the drug generator, which still emits the legacy one-liner) both run it
+  and commit the result, so generated pages never lose the themes.
 - Edit behavior in `assets/theme.js` (the source), then re-run the patch.
 - The bootstrap must stay in `<head>`, before first paint — never a post-paint
   restore (CLS). The legacy `wgmr-dark` key is kept in sync for older

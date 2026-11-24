@@ -47,14 +47,18 @@ jobs:
       - name: Calculo (calculators app) files
         run: python3 build_calc_app.py
 
+      - name: Appearance themes (Auto / Light / Dim / Dark bootstrap + Dim CSS)
+        run: python3 patch_theme_modes.py
+
       - name: Commit if changed
         run: |
-          if git diff --quiet -- sitemap.xml guides/search-index.json && git diff --quiet -- 'guides/*.html' && git diff --quiet -- assets/ && [ -z "$(git ls-files --others --exclude-standard assets/)" ]; then
+          if git diff --quiet -- sitemap.xml guides/search-index.json && git diff --quiet -- '*.html' && git diff --quiet -- assets/ && [ -z "$(git ls-files --others --exclude-standard assets/)" ]; then
             echo "sitemap.xml and search-index.json already in sync — nothing to commit."
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add sitemap.xml guides/search-index.json 'guides/*.html' guides/calc-app.webmanifest guides/calc-sw.js guides/calc-offline-manifest.json assets/
-          git commit -m "Regenerate sitemap.xml, search index and Calculo app files [skip ci]"
+          git add -A -- '*.html'
+          git commit -m "Regenerate sitemap.xml, search index, Calculo app and theme files [skip ci]"
           git push
