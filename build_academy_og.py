@@ -33,7 +33,7 @@ GROUP = {  # accent colors from the locked site palette
 # slug: (page, group, title, tag line under group, stats line)
 TRACKS = {
     "academy-index": ("academy/index.html", "academy", "Training for the people who deliver kidney care",
-                      "5 TRACKS · 14 SUBTRACKS · 197 MODULES", "Self-study · onboarding · a new role · free"),
+                      "5 TRACKS · 15 SUBTRACKS · 215 MODULES", "Self-study · onboarding · a new role · free"),
     "nephrology-nursing": ("academy/nephrology-nursing.html", "nursing", "Hemodialysis Nurse",
                            "BY SPECIALIZATION", "16 core + 1 advanced module · two paths"),
     "transplant-nurse": ("academy/transplant-nurse.html", "nursing", "Kidney Transplant Nurse",
@@ -42,6 +42,8 @@ TRACKS = {
                                   "BY SPECIALIZATION", "12 modules · five skills stations · final exam"),
     "dialysis-head-nurse": ("academy/dialysis-head-nurse.html", "nursing", "Head Nurse",
                             "BY ROLE", "13 modules · staffing, safety, and the roster"),
+    "dialysis-charge-nurse": ("academy/dialysis-charge-nurse.html", "nursing", "Charge Nurse",
+                              "BY ROLE", "18 modules · the shift, chair by chair"),
     "physician-on-duty": ("academy/physician-on-duty.html", "physicians", "Physician-on-Duty",
                           "SHIFT COVERAGE", "First-shift modules open · three tiers"),
     "attending-nephrologist": ("academy/attending-nephrologist.html", "physicians", "Attending Nephrologist",
