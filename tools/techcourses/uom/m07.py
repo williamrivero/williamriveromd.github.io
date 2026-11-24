@@ -10,109 +10,132 @@ MODULE = {'objectives': ['List the high-risk emergencies in hemodialysis and the
                'The physiology behind',
                'The physiology behind the urgency',
                '{{fig:uom07a}}\n'
-               '<ul><li><strong>Venous needle dislodgement.</strong> The blood pump keeps running at 300 mL/min or more. If the '
-               'venous needle slips out, the return line can pour blood onto the floor while the venous pressure alarm, set too '
-               'wide or silenced, fails to stop the pump. Taped, visible access and correct alarm limits are the '
-               'defense.</li><li><strong>Hyperkalemia.</strong> Rising potassium makes cardiac cell membranes less negative, '
-               'slowing conduction until the rhythm degenerates. The risk peaks before the first session of the week (Module '
-               '04).</li><li><strong>Intradialytic hypotension.</strong> Fluid removal outpaces refilling from tissues into '
-               'blood. The patient yawns, cramps, feels nauseated and then loses consciousness.</li><li><strong>Air '
-               'embolism.</strong> Air entering the circuit and passing the air detector can lodge in the heart or brain. Rare '
-               'with modern machines, but catastrophic.</li><li><strong>Dialyzer and drug reactions.</strong> Anaphylactoid '
-               'reactions can occur within minutes of starting.</li><li><strong>Facility events.</strong> Power failure stops '
-               'pumps; blood must be returned manually. Fire and earthquake require evacuation of patients connected to '
-               'machines, which means disconnection procedures every staff member must know.</li></ul>'),
+               '<p><strong>Venous needle dislodgement.</strong> The blood pump keeps running at 300 milliliters a minute or '
+               'more. If the venous needle slips out, blood can pour onto the floor while a venous pressure alarm set too wide '
+               'fails to stop the pump. At that rate, a patient can lose a dangerous amount of blood within minutes. Taped, '
+               'visible access and correct alarm limits are the defense.</p>\n'
+               '<p><strong>High potassium.</strong> Rising potassium makes heart cell membranes less negative and slows '
+               'conduction until the rhythm collapses. The risk peaks before the first session of the week (Module 4).</p>\n'
+               '<p><strong>Low blood pressure during treatment.</strong> Fluid is removed from the blood faster than the tissues '
+               'can refill it. The patient yawns, cramps, feels nauseated, and then loses consciousness.</p>\n'
+               '<p><strong>Air embolism.</strong> Air entering the circuit and passing the air detector can lodge in the heart '
+               'or brain. It is rare with modern machines, and catastrophic.</p>\n'
+               '<p><strong>Dialyzer and drug reactions.</strong> Severe allergic-type reactions can start within minutes of '
+               'beginning treatment.</p>\n'
+               '<p><strong>Facility events.</strong> A power failure stops the pumps, and blood must be returned by hand. A fire '
+               'or an earthquake requires evacuating patients connected to machines, which means a disconnection procedure every '
+               'staff member knows.</p>'),
               ('what-the-evidence-shows',
                'What the evidence shows',
                'What the evidence shows',
-               '<ul><li><strong>Structured communication reduces harm.</strong> The I-PASS program was associated with a 30% '
-               'reduction in preventable adverse events in a nine-hospital study[[uom_starmer2014]]. Emergency communication '
-               'with clear roles and read-back applies the same principle.</li><li><strong>Preparation changes outcomes in '
-               'disasters.</strong> Before Hurricane Sandy (2012), dialysis patients in New York and New Jersey who received '
-               'early dialysis had lower odds of an emergency department visit (about 20% lower), hospitalization (about 21% '
-               'lower) and death within 30 days (about 28% lower) in adjusted analyses than those who did not[[dch_lurie2015]]. '
-               'Observational, but consistent with physiology. The authors recommended routine drills of emergency and '
-               'communication plans.</li><li><strong>Drills reveal hidden failures.</strong> Simulation literature consistently '
-               'shows that rehearsed teams find equipment and role gaps that never appear on paper checklists. This is '
-               '<strong>evidence-supported inference</strong> from healthcare simulation research rather than dialysis-specific '
-               'trials.</li></ul>'),
-              ('readiness-checklist-owned-by-you-verifie',
+               '<p><strong>Structured communication reduces harm.</strong> The I-PASS program was associated with a 30% fall in '
+               'preventable adverse events in a nine-hospital study.[[uom_starmer2014]] Emergency communication with clear roles '
+               'and read-back applies the same principle.</p>\n'
+               '<p><strong>Preparation changes outcomes in disasters.</strong> Before Hurricane Sandy struck the United States '
+               'in 2012, dialysis patients in New York and New Jersey who received an early session had, in adjusted analyses, '
+               'about 20% lower odds of an emergency department visit, 21% lower odds of hospitalization, and 28% lower odds of '
+               'death within 30 days than those who did not.[[dch_lurie2015]] The study was observational, but the finding fits '
+               'the physiology. The authors recommended routine drills of emergency and communication plans.</p>\n'
+               '<p><strong>Drills reveal hidden failures.</strong> Simulation research consistently shows that rehearsed teams '
+               'find equipment and role gaps that never appear on paper checklists. This is reasonable inference from healthcare '
+               'simulation studies, not from dialysis-specific trials.</p>'),
+              ('readiness-checklist',
                'Readiness checklist',
-               'Readiness checklist (owned by you, verified by clinicians)',
+               'Readiness checklist',
+               '<p>You own the checklist. Clinicians verify the clinical items.</p>\n'
+               '{{fig:uom07b}}\n'
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Item</th><th>Frequency</th><th>Verified by</th></tr></thead>\n'
                '<tbody>\n'
                '<tr><td>Emergency cart contents and expiry</td><td>Daily seal check; full check monthly</td><td>Assigned '
                'nurse</td></tr>\n'
-               '<tr><td>Defibrillator or AED function</td><td>Daily</td><td>Assigned nurse</td></tr>\n'
+               '<tr><td>Defibrillator or automated external defibrillator (AED)</td><td>Daily</td><td>Assigned nurse</td></tr>\n'
                '<tr><td>Oxygen and suction</td><td>Daily</td><td>Assigned nurse</td></tr>\n'
-               '<tr><td>Emergency drugs per protocol</td><td>Per protocol</td><td>Head nurse and physician on duty '
-               '(POD)</td></tr>\n'
-               '<tr><td>Manual blood return procedure</td><td>Competency annually</td><td>Head nurse</td></tr>\n'
+               '<tr><td>Emergency drugs per protocol</td><td>Per protocol</td><td>Head nurse and physician on duty</td></tr>\n'
+               '<tr><td>Manual blood return</td><td>Competency yearly</td><td>Head nurse</td></tr>\n'
                '<tr><td>Generator test under load</td><td>Weekly or per policy</td><td>Biomedical technician</td></tr>\n'
                '<tr><td>Fire extinguishers and exits</td><td>Monthly</td><td>Operations manager</td></tr>\n'
                '<tr><td>Hospital transfer agreement and contacts</td><td>Quarterly</td><td>Operations manager</td></tr>\n'
                '<tr><td>Patient emergency information sheets</td><td>Updated quarterly</td><td>Nurse in charge</td></tr>\n'
                '</tbody></table></div>\n'
-               '{{fig:uom07b}}'),
+               '<p><strong>Example.</strong> During a monthly full check at a unit in Naga, the head nurse breaks the cart seal '
+               'and finds two ampules of epinephrine that expired five weeks earlier. The daily seal checks had all been signed '
+               '"intact," which was true. The seal proved no one had opened the cart. It did not prove the contents were usable. '
+               'The unit adds the earliest expiry date to a tag on the outside of the seal.</p>'),
               ('incident-command-for-a-clinical-emergenc',
                'Incident command for',
                'Incident command for a clinical emergency',
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Role</th><th>Usually</th><th>Does</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td>Clinical lead</td><td>POD</td><td>Directs resuscitation and treatment</td></tr>\n'
+               '<tr><td>Clinical lead</td><td>Physician on duty</td><td>Directs resuscitation and treatment</td></tr>\n'
                '<tr><td>Patient nurse</td><td>Assigned nurse</td><td>Stops the pump, clamps, returns blood if instructed, '
                'monitors</td></tr>\n'
-               '<tr><td>Cart and drugs</td><td>Second nurse</td><td>Brings cart, prepares drugs, records times</td></tr>\n'
-               '<tr><td>Communicator</td><td>Operations manager</td><td>Calls ambulance and receiving hospital, notifies '
+               '<tr><td>Cart and drugs</td><td>Second nurse</td><td>Brings the cart, prepares drugs, records times</td></tr>\n'
+               '<tr><td>Communicator</td><td>Operations manager</td><td>Calls the ambulance and receiving hospital, notifies the '
                'attending and family per policy</td></tr>\n'
-               '<tr><td>Floor safety</td><td>Charge nurse</td><td>Keeps other patients monitored, reassures, controls the '
+               '<tr><td>Floor safety</td><td>Charge nurse</td><td>Watches the other patients, reassures, controls the '
                'area</td></tr>\n'
-               '<tr><td>Recorder</td><td>Any trained staff</td><td>Timeline of events, drugs and actions</td></tr>\n'
+               '<tr><td>Recorder</td><td>Any trained staff</td><td>Keeps the timeline of events, drugs, and actions</td></tr>\n'
                '</tbody></table></div>\n'
-               '<p>The manager does not crowd the bedside. You protect the space, make the calls, and watch the other 14 '
-               'patients who still need care.</p>'),
+               '{{key:During a code, the manager protects the space, makes the calls, and watches the other patients. The '
+               'manager does not crowd the bedside.}}'),
               ('incident-command-for-a-facility-emergenc',
                'Incident command for',
-               'Incident command for a facility emergency (fire, quake, outage)',
-               '<ol><li><strong>Declare</strong> the emergency and the command lead (usually the most senior available manager '
-               'or charge nurse).</li><li><strong>Protect patients on machines</strong>: stop pumps, return blood or clamp and '
-               'cut per the emergency disconnection procedure, as directed by clinical staff.</li><li><strong>Evacuate</strong> '
-               'by priority: ambulatory first, then those needing assistance, then stretcher patients, with staff assigned by '
-               'name.</li><li><strong>Account</strong> for everyone at the assembly point against the shift '
-               'list.</li><li><strong>Communicate</strong> with emergency services, the Medical Director, the owner and '
-               "patients' families.</li><li><strong>Recover</strong>: decide with clinical leads when and where interrupted "
-               'treatments resume (Module 12).</li></ol>'),
+               'Incident command for a facility emergency',
+               '{{flow:Fire, earthquake, or major outage|Declare::Name the emergency and the command lead, usually the most '
+               'senior manager or charge nurse present.|Protect patients on machines::Stop pumps and return blood, or clamp and '
+               'disconnect by the emergency procedure, as clinical staff direct.|Evacuate by priority::Walking patients first, '
+               'then those needing help, then stretcher patients, with staff assigned by name.|Account::Check everyone at the '
+               'assembly point against the shift list.|Communicate::Emergency services, the Medical Director, the owner, and '
+               'families.|Recover::Decide with clinical leads when and where interrupted treatments resume (Module 12).}}\n'
+               '<p><strong>Example.</strong> A unit in Marikina runs its first full evacuation drill on a Saturday afternoon, '
+               'with staff playing patients connected to machines. The drill takes 19 minutes. The debrief finds three problems: '
+               'the emergency disconnection kits were in a locked cabinet; the shift list for the headcount was on a computer '
+               'that had been switched off; and no one was assigned to the patient in the isolation room. The second drill, a '
+               'month later, takes 11 minutes, with printed shift lists clipped to the exit door and the kits on every '
+               'machine.</p>\n'
+               '{{fig:uom07c}}'),
               ('reporting-disclosure-and-review',
                'Reporting, disclosure',
-               'Reporting, disclosure and review',
-               '<p><strong>Report</strong> every adverse event and near miss within the shift using the facility system. Near '
+               'Reporting, disclosure, and review',
+               "<p><strong>Report</strong> every adverse event and near miss within the shift, using the facility's system. Near "
                'misses are free lessons.</p>\n'
-               '<p><strong>Disclose</strong> harm to the patient and family honestly, promptly and through the designated '
+               '<p><strong>Disclose</strong> harm to the patient and family honestly and promptly, through the designated '
                'clinician: what happened, what is being done, and that the unit is reviewing it. Disclosure is not an admission '
                'of liability. It is a professional obligation.</p>\n'
-               '<p><strong>Review</strong> serious events with a structured root cause analysis that asks <em>what in the system '
-               'allowed this</em>, not <em>who failed</em>. Just culture distinguishes:</p>\n'
-               '<ul><li><strong>human error</strong> (a slip; console and redesign the system);</li><li><strong>at-risk '
-               'behavior</strong> (a shortcut that drifted into normal; coach and remove the '
-               'incentive);</li><li><strong>reckless behavior</strong> (conscious disregard of a known risk; discipline is '
-               'appropriate).</li></ul>\n'
-               '<p>Most events are the first two. Treating every error as reckless drives reporting underground.</p>'),
+               '<p><strong>Review</strong> serious events with a structured root cause analysis that asks what in the system '
+               'allowed the event. Just culture separates three kinds of behavior:</p>\n'
+               '<ul><li><strong>Human error</strong>, a slip. Console the person and redesign the '
+               'system.</li><li><strong>At-risk behavior</strong>, a shortcut that drifted into normal. Coach, and remove the '
+               'incentive for the shortcut.</li><li><strong>Reckless behavior</strong>, conscious disregard of a known risk. '
+               'Discipline is appropriate.</li></ul>\n'
+               '<p>Most events are the first two. Treating every error as reckless drives reporting underground.</p>\n'
+               '{{call:When a patient is harmed or nearly harmed, preserve the machine, the supplies, and the records, and '
+               'notify the Medical Director the same shift. Disclosure to the family goes through the designated clinician, '
+               'never through the manager alone.}}'),
               ('common-failure-modes',
                'Common failure modes',
                'Common failure modes',
-               '<ul><li>Drills that skip the hard part: actually disconnecting and evacuating.</li><li>Emergency drugs expired '
-               'because the cart seal was "always intact."</li><li>No one assigned to watch the rest of the floor during a '
-               'code.</li><li>Blame-focused reviews that stop reporting.</li></ul>')],
- 'debrief': ['{{fig:uom07c}}\n'
-             '<p><strong>Response.</strong> Pump stopped, site compressed, POD called, fluid given and the patient stabilized '
-             'and transferred. The manager makes the calls, keeps the floor safe and preserves the machine settings for '
-             'review.</p>\n'
-             '<p><strong>Review.</strong> The root cause analysis found that nuisance alarms came from a batch of loose '
-             'needle-tubing connections, that staff widened limits as a workaround (at-risk behavior), and that access sites '
-             'were routinely covered by blankets. Corrective actions: replace the lot, standardize alarm limits, keep access '
-             'visible at all times, and audit weekly for a month.</p>'],
+               '<ul><li><strong>Drills that skip the hard part.</strong> Talking through the evacuation instead of actually '
+               'disconnecting and moving people.</li><li><strong>Seals instead of checks.</strong> Emergency drugs expired '
+               'because the cart seal was "always intact."</li><li><strong>Everyone at the bedside.</strong> No one watching the '
+               'other patients during a code.</li><li><strong>Blame reviews.</strong> Root cause analyses that name a person and '
+               'stop, so reporting stops too.</li></ul>')],
+ 'debrief': ['<p><strong>The first two minutes.</strong> Nurse Lim stops the pump, clamps the lines, and presses on the needle '
+             'site. She calls out. The physician on duty, Dr. Arvin Santos, takes the clinical lead and orders fluids. A second '
+             "nurse brings the emergency cart and records times. Mrs. Reyes's blood pressure recovers. Dr. Santos arranges her "
+             'transfer to the hospital for a blood count and observation.</p>\n'
+             '<p><strong>The manager.</strong> Ms. Melody Garcia, the manager, does not crowd the bedside. She calls the '
+             'ambulance and the receiving hospital, notifies the attending nephrologist and, through the designated clinician, '
+             'the family. She asks the charge nurse to watch the other 15 patients. She tags machine 11 "Do not use" and leaves '
+             'its settings untouched for review.</p>\n'
+             '<p><strong>The review.</strong> The root cause analysis asks what in the system allowed this, not who failed. It '
+             'finds three things: a batch of needle tubing with loose connectors caused the nuisance alarms; staff widened alarm '
+             'limits as a workaround, a shortcut that had become normal; and access sites were often covered by blankets. The '
+             'corrective actions are a new lot of tubing, standard alarm limits locked by the biomedical lead, a "keep the '
+             'access visible" rule with warm patient gowns instead of blankets over the arm, and weekly audits for a month. No '
+             'one is disciplined. Reports of near misses rise the following month, which is what a healthy unit should see.</p>'],
  'quiz': [('Why can venous needle dislodgement cause rapid blood loss?',
            ['The dialyzer stores blood',
             'The blood pump continues returning blood at high flow if the alarm fails to stop it',
@@ -145,7 +168,7 @@ MODULE = {'objectives': ['List the high-risk emergencies in hemodialysis and the
           ('Who usually leads clinical resuscitation in the unit?',
            ['The physician on duty', 'The billing officer', 'The security guard', 'The operations manager'],
            0,
-           'The POD provides medical leadership during the shift.'),
+           'The physician on duty (POD) provides medical leadership during the shift.'),
           ('What should a root cause analysis ask?',
            ['How much the event cost only',
             'Who should be blamed',
@@ -205,16 +228,32 @@ MODULE = {'objectives': ['List the high-risk emergencies in hemodialysis and the
            'Fear suppresses the information needed to fix systems.')],
  'readings': [('code-blue-acls-dialysis-unit.html', 'Running a cardiac arrest in a dialysis unit.'),
               ('hemodialysis-complications.html', 'The complications staff must recognize during treatment.')],
- 'big': '<p>Dialysis emergencies are fast. A dislodged venous needle can lose a dangerous volume of blood in minutes. '
-        'Hyperkalemic cardiac arrest gives little warning. An earthquake gives none. In the first five minutes, clinicians treat '
-        'the patient. Everyone else needs to know exactly what they do so the clinicians can do their job. That choreography is '
-        'yours to build and rehearse.</p>',
+ 'big': '{{plain:In an emergency, a dialysis unit has the same people it had five minutes earlier. What changes is that every '
+        'one of them needs a different job, at once, without a meeting. Incident command is the plan that hands out those jobs '
+        'in advance, so that when the alarm sounds, people move instead of asking.}}\n'
+        '<p>The picture has a limit. Plans do not move; people do, and people under stress forget plans they have only read. A '
+        'plan becomes real only when staff have rehearsed it with their hands: clamping lines, returning blood with the power '
+        'off, wheeling a patient out of a smoky room. That is why this module asks you to drill, not just to write.</p>\n'
+        '<p>The unit is unusual among clinical areas. Up to 15 patients are connected to machines that move their blood at 300 '
+        'milliliters a minute or more. In a fire, an earthquake, or a power failure, you cannot simply walk everyone out. Each '
+        'one must first be safely disconnected.</p>\n'
+        '{{cards:Key terms for this module|Incident command::A pre-assigned set of roles that takes over during an '
+        'emergency.|Command lead::The person who declares the emergency and coordinates the response.|Manual blood '
+        'return::Returning the blood in the circuit to the patient by hand when the machine cannot.|Emergency disconnection::The '
+        'approved way to separate a patient from the circuit quickly when evacuation is needed.|Drill::A rehearsal with real '
+        'actions, timed and debriefed.|Near miss::An event that could have caused harm but did not.|Just culture::A review '
+        'approach that separates honest error, risky shortcuts, and reckless behavior.}}',
  'case': {'title': 'The silenced alarm',
-          'html': '<p>At 14:20 a nurse finds a patient pale with blood soaking the blanket. The venous needle has slipped out. '
-                  'The venous pressure alarm had been widened after repeated nuisance alarms.</p>',
-          'questions': ['What must you protect first, and whose decision is it?',
-                        'Which facts would you confirm before you act?',
-                        'What would you record, and where?']},
+          'html': '<p>At 14:20 on a Friday at a 16-station unit in Bacoor, Cavite, Nurse Jenny Lim walks past station 11 and '
+                  'sees Mrs. Corazon Reyes, 72, pale and drowsy, with blood soaking the blanket over her arm. The venous needle '
+                  'has slipped out of her fistula. The blood pump is still running.</p>\n'
+                  '<p>The venous pressure alarm did not stop the pump. Earlier that week, after repeated nuisance alarms on '
+                  'several machines, staff had widened the alarm limits. Mrs. Reyes had pulled the blanket up because the room '
+                  'was cold, covering the access.</p>',
+          'questions': ['In the first two minutes, who does what?',
+                        "What is the manager's role, and what should the manager not do?",
+                        'After Mrs. Reyes is safe, how would you find out why this happened without driving staff into '
+                        'silence?']},
  'skills': {'title': 'Supervised practice',
             'intro': 'Complete these with your preceptor at your own unit, using fictional or de-identified data.',
             'items': [('Run a clinical emergency drill (needle dislodgement or arrest) and time each role.', True),

@@ -1,9 +1,14 @@
-# 15. Leadership, communication and patient experience
+# 15. Leadership, communication, and patient experience
 
-**Core** · 40 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-15 (Understand) · FIG-15B (Apply) · FIG-15C (Appreciate) · **Calculator:** CALC-13 Turnover and vacancy rates
+## The big picture
 
-> **Why this matters.** Dialysis patients see the same staff three times a week for years. They know who is tired, who is kind and who rushes. Staff see the same patients decline, recover, complain and sometimes die. That intimacy is the unit's greatest strength and its greatest source of strain. Leadership in a dialysis unit means protecting both sides of that relationship.
+{{plain:Staffing, burnout, and patient experience form a loop. Too few staff means too much work. Too much work wears people out. Worn-out people make more mistakes, snap at patients, and resign. Each resignation leaves fewer staff, and the loop turns again, a little faster each time.}}
+
+The picture has a limit. A loop sounds like a machine that runs by itself, and that can make a manager feel helpless. It does not run by itself. Every turn passes through decisions a manager can change: how many people are hired, how the work is arranged, whether problems raised by staff get fixed, and whether a complaint from a patient leads to a scolding or to a system change. You cannot make anyone resilient. You can stop making their work harder than it needs to be.
+
+This module covers the evidence on burnout, the numbers that show the loop turning, a simple way to coach, a fair grievance process, and what to do about the patient everyone calls "difficult."
+
+{{cards:Key terms for this module|Burnout::Emotional exhaustion, detachment, and a sense of not achieving, caused by chronic work stress.|Turnover rate::The share of staff who leave in a period.|Vacancy rate::The share of budgeted positions that are unfilled.|Exit interview::A conversation with a departing staff member about why they are leaving.|Coaching conversation::A short, structured talk to improve one specific practice.|Grievance::A complaint from a patient or family that needs a recorded response.|De-escalation::Techniques to calm an angry person before a situation becomes unsafe.}}
 
 ## Learning objectives
 
@@ -12,72 +17,95 @@
 3. Coach a staff member using a structured conversation.
 4. Respond to a patient grievance fairly, on time and with documented closure.
 
+## Field case: the "difficult" patient
+
+**Situation.** At a 20-station unit in Mandaue City, Cebu, the nurses have a name for Mr. Wilfredo Abellana, 52: "the shouter." Three times in two weeks, he has raised his voice at the reception desk about waiting times. Last Thursday he held up his phone and said he would post a video "so everyone sees how this clinic treats patients." Two nurses have asked the head nurse to have him discharged from the unit.
+
+The manager, Ms. Maricel Ybañez, reads the incident notes. Every one describes what Mr. Abellana said. None says what time he was seated.
+
+**Before reading on, decide:**
+
+- What would you want to know before deciding anything about Mr. Abellana?
+- Who decides whether a patient may be discharged from a unit?
+- How would you protect the staff and still respect the patient's right to dialysis?
+
+**Case review.**
+
+**What she finds.** Ms. Ybañez pulls a month of start times. Mr. Abellana's second-shift sessions have started a median of 40 minutes late, because the first shift regularly overruns. He is a jeepney driver who earns by the trip. Every hour he waits is an hour of income his family loses.
+
+**The meeting.** She meets him with the head nurse, in a private room. She listens first. Then she says: "You were right that you have been waiting too long. Here is why, and here is what we are changing." She offers him a first-shift slot, which he accepts. She also says, calmly, that shouting at staff and filming them is not acceptable, and asks him to bring complaints to her directly. He agrees.
+
+**The system.** First-shift overrun goes on the quality dashboard. The head nurse finds that late arrivals and slow turnover cleaning cause most of it, and a cleaning aide is moved to the changeover period. Median second-shift delay falls to 10 minutes.
+
+**The staff.** In the next staff meeting, Ms. Ybañez explains what happened and what changed. The nurses see that the complaint led to a fix, not just a scolding. Discharge from the unit was never her decision to make; it belongs to the Medical Director, and it was not needed.
+
 ## The model: a loop, not a line
 
-Chronic understaffing raises workload. High workload raises burnout. Burnout increases errors, infections and rudeness, and drives resignations. Resignations increase understaffing. Each turn of the loop makes the next one worse. Patients feel it as longer waits, rushed cannulation and less explanation. The manager's levers sit at every point: staffing (Module 03), workload design, recognition, fair scheduling, development and the speed with which problems are fixed.
+{{fig:uom15a}}
+
+Chronic understaffing raises workload. High workload raises burnout. Burnout increases errors, infections, and rudeness, and drives resignations. Resignations deepen understaffing. Patients feel each turn as longer waits, rushed cannulation, and less explanation.
+
+The manager's levers sit at every point: staffing (Module 3), how the work is designed, recognition, fair schedules, development, and how fast problems are fixed.
 
 ## What the evidence shows
 
-- **Burnout is associated with worse safety and experience.** A 2024 meta-analysis of 85 studies and 288,581 nurses found burnout associated with lower safety climate, more healthcare-associated infections, more falls and medication errors, and lower patient satisfaction (Li et al., *JAMA Network Open* 2024). Observational but consistent across countries and settings.
-- **Burnout can be reduced.** A meta-analysis of intervention studies in clinical nurses found that programs (mindfulness, stress management, education and organizational changes) reduced emotional exhaustion and depersonalization with moderate-to-large effect sizes (Lee and Cha, *Scientific Reports* 2023). Study quality varied, so treat these as **supported** rather than proven, and pair individual programs with workload fixes.
-- **Staffing burden is associated with patient outcomes** (Plantinga et al., *JAMA Network Open* 2024; Module 03).
-- **Patient-reported experience is measurable.** In-center hemodialysis patient experience surveys (for example, the US ICH CAHPS instrument) assess communication, staff care and information. Locally validated tools are preferable; translated, unvalidated surveys should be described as such.
+**Burnout is associated with worse safety and patient experience.** A 2024 meta-analysis of 85 studies and 288,581 nurses found burnout associated with a weaker safety climate, more healthcare-associated infections, more falls and medication errors, and lower patient satisfaction.[[uom_li2024]] The data are observational but consistent across countries and settings.
 
-## Calculator CALC-13: turnover and vacancy rates
+**Burnout can be reduced.** A meta-analysis of intervention studies in clinical nurses found that programs such as mindfulness, stress management, education, and organizational changes reduced emotional exhaustion and detachment, with moderate to large effects.[[uom_leecha2023]] Study quality varied, so treat this as supported rather than proven, and pair individual programs with fixes to the workload itself. A yoga session does not help a nurse carrying six patients.
 
-**Inputs:** separations in the period (resignations, terminations, retirements), headcount at start and end of the period, months in the period, budgeted positions and filled positions.
+**Staffing burden is associated with patient outcomes** (Module 3).[[uom_plantinga2024]]
 
-**Formulas**
+**Patient experience can be measured.** Patient experience surveys for in-center hemodialysis assess communication, staff care, and information. Locally validated tools are better. A translated survey that has not been validated should be described as such.
 
-- Average headcount = (start + end) ÷ 2
-- Turnover (%) for the period = separations ÷ average headcount × 100
-- Annualized turnover (%) = period turnover × (12 ÷ months in the period)
-- Vacancy rate (%) = (budgeted − filled) ÷ budgeted × 100
+## Calculator CALC-13: turnover and vacancy
 
-**Worked example.** Six nurses left in six months; headcount was 18 at the start and 16 at the end. Average headcount 17; turnover 35% for the half year; annualized about 71%. Two of 18 budgeted positions are vacant: 11% vacancy. At that rate, the unit replaces most of its nursing staff every 18 months, and competency (Module 03) never stabilizes. That is a strategic risk to bring to governance, with exit-interview themes attached.
+You need: staff who left in the period (resignations, terminations, retirements), headcount at the start and end of the period, months in the period, budgeted positions, and filled positions.
+
+{{formula:**Average headcount** = (start + end) ÷ 2.<br>**Turnover for the period** = departures ÷ average headcount × 100.<br>**Annualized turnover** = period turnover × (12 ÷ months in the period).<br>**Vacancy rate** = (budgeted − filled) ÷ budgeted × 100.}}
+
+**Worked example.** Six nurses left in six months. Headcount was 18 at the start and 16 at the end, so the average was 17. Turnover for the half year is 6 ÷ 17 × 100 = 35%. Annualized, that is about 71%. Two of 18 budgeted positions are vacant: an 11% vacancy rate.
+
+At that rate, the unit replaces most of its nurses every 18 months, and competency (Module 3) never stabilizes. That is a strategic risk. Bring it to governance with the exit-interview themes attached.
+
+**Example.** A unit in Lipa City does exit interviews for the first time after losing five nurses in four months. Four of the five give the same reason: the schedule is posted only three days ahead, so they cannot plan family life or second jobs. Posting the schedule four weeks ahead costs nothing. In the following six months, one nurse leaves.
+
+{{key:Burnout is a workload signal, not a personal weakness. Fix the work before you send people to a wellness seminar.}}
 
 ## Coaching conversations
 
-Use a short, repeatable structure:
+{{fig:uom15b}}
 
-1. **Observe:** state what you saw, specifically. "Yesterday at station 6, the catheter hub was not scrubbed before connection."
-2. **Ask:** "Walk me through what happened." Listen for system causes: missing supplies, time pressure, unclear procedure.
-3. **Agree:** the expected practice and why it matters (link to infection risk, not to rules).
-4. **Support:** what you will fix (supplies at bedside, time in the schedule).
-5. **Follow up:** a date to observe again and recognize improvement.
+{{flow:A five-step coaching conversation|Observe::State what you saw, specifically. "Yesterday at station 6, the catheter hub was not scrubbed before connection."|Ask::"Walk me through what happened." Listen for system causes: missing supplies, time pressure, unclear procedure.|Agree::The expected practice and why it matters. Link it to infection risk, not to rules.|Support::What you will fix: supplies at the bedside, time in the schedule.|Follow up::A date to observe again, and recognition when it improves.}}
 
-Praise specific good practice publicly; correct privately.
+Praise specific good practice in public. Correct in private.
+
+**Example.** When the manager in the example above asks the nurse to walk through what happened at station 6, she learns that the chlorhexidine swabs were kept in the supply room at the far end of the unit, and the nurse had four patients coming off at once. The swabs now sit in a holder on every machine. The coaching conversation ended up fixing the supply room as much as the practice.
 
 ## Patient grievances
 
 A grievance process that works:
 
-- **Receive** in any form (verbal, written, social media). Thank the patient for raising it.
-- **Log** it with date, issue, owner and response deadline (for example, acknowledge within 24 hours, resolve or update within 7 days).
-- **Investigate** facts with the staff involved, without prejudging.
-- **Respond** in plain language: what you found, what you will change and what the patient can do if unsatisfied.
-- **Learn:** review grievance themes monthly at QAPI.
+- **Receive** complaints in any form: spoken, written, or on social media. Thank the patient for raising it.
+- **Log** it with the date, the issue, an owner, and a response deadline: acknowledge within 24 hours; resolve or update within seven days.
+- **Investigate** the facts with the staff involved, without prejudging.
+- **Respond** in plain language: what you found, what you will change, and what the patient can do if still unsatisfied.
+- **Learn:** review grievance themes every month at the quality meeting.
 
-Clinical complaints (about a prescription or a clinical decision) go to the Medical Director. Privacy complaints go to the DPO. Allegations of abuse or harassment follow the facility's protection policy without delay.
+Clinical complaints, about a prescription or a clinical decision, go to the Medical Director. Privacy complaints go to the Data Protection Officer. Allegations of abuse or harassment follow the facility's protection policy without delay.
 
 ## Workplace safety and aggression
 
-Some patients, burdened by chronic illness, cognitive change or family stress, become verbally or physically aggressive. Have a written policy: de-escalation training, a way to call for help, documentation, and a clinical review of the patient's needs, with transfer to another unit as a last resort that the Medical Director decides. Staff safety is not optional, and neither is the patient's right to dialysis.
+Some patients, burdened by chronic illness, confusion, or family stress, become verbally or physically aggressive. Have a written policy that covers de-escalation training, a way to call for help, documentation, and a clinical review of the patient's needs. Transfer to another unit is a last resort, and the Medical Director decides it.
 
-## Field case: the "difficult" patient
-
-**Situation.** A patient repeatedly shouts at nurses about waiting times and threatens to post videos. Staff ask for him to be discharged.
-
-**What the manager finds.** He is a jeepney driver who loses income for every hour he waits. His start times have slipped by 40 minutes on most days because the previous shift overruns.
-
-**Response.** The manager meets him with the head nurse, listens, explains the cause and moves him to a first-shift slot. Shift overrun is added to the QAPI dashboard. The shouting stops. Staff see that the complaint led to a system fix, not just a scolding.
+{{call:When a patient or visitor threatens or harms a staff member, make the area safe first, call for help, and inform the Medical Director the same day. Discharging a patient from the unit is never a manager's decision.}}
 
 ## Common failure modes
 
-- Treating burnout as a personal weakness rather than a workload signal.
-- Exit interviews never done or never read.
-- Grievances answered defensively.
-- Correction delivered in front of patients.
+- **Burnout as weakness.** Treating exhaustion as a personal failing instead of a workload signal.
+- **Silent departures.** Exit interviews never done, or done and never read.
+- **Defensive replies.** Grievances answered with explanations instead of fixes.
+- **Public correction.** Coaching delivered in front of patients.
+- **The label that sticks.** Calling a patient "difficult" and never asking why.
 
 ## Supervised practice
 

@@ -10,93 +10,115 @@ MODULE = {'objectives': ['Identify the critical dependencies of a hemodialysis u
  'sections': [('the-model-dependencies-and-buffers',
                'The model',
                'The model: dependencies and buffers',
-               '<p>A hemodialysis session needs, at the same time: electricity, treated water at the right quality and pressure, '
-               'a trained team, supplies, a working machine and a patient who can reach the unit. Losing any one stops the '
-               'session. Continuity planning asks for each dependency: <strong>How long can we run without it, and what is our '
-               'backup?</strong></p>\n'
+               '<p>A hemodialysis session needs, all at once, electricity, treated water at the right quality and pressure, a '
+               'trained team, supplies, a working machine, and a patient who can reach the unit. Losing any one stops the '
+               'session. For each dependency, ask two questions: how long can we run without it, and what is our backup?</p>\n'
                '{{fig:uom12a}}\n'
-               '\n'
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Dependency</th><th>Typical failure</th><th>Buffer</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td>Grid power</td><td>Brownout, typhoon damage</td><td>Generator sized for machines plus RO plus lighting; '
-               'automatic transfer switch; fuel contract</td></tr>\n'
-               '<tr><td>Municipal water</td><td>Supply interruption, contamination after floods</td><td>Raw-water storage; '
-               'treated-water storage; tanker arrangement; testing after resumption</td></tr>\n'
-               '<tr><td>Staff</td><td>Cannot travel; affected families</td><td>Staff contact tree; local staff map; '
+               '<tr><td>Grid power</td><td>Brownout, typhoon damage</td><td>Generator sized for machines, reverse osmosis, and '
+               'lighting; automatic transfer switch; fuel contract</td></tr>\n'
+               '<tr><td>Municipal water</td><td>Supply interruption, contamination after floods</td><td>Raw-water and '
+               'treated-water storage; tanker agreement; testing after supply resumes</td></tr>\n'
+               '<tr><td>Staff</td><td>Cannot travel; families affected</td><td>Staff contact tree; map of who lives near; '
                'accommodation; mutual aid</td></tr>\n'
-               '<tr><td>Supplies</td><td>Road closure, port delays</td><td>Safety stock (Module 08); pre-positioned stock before '
-               'typhoon season</td></tr>\n'
-               '<tr><td>Communications</td><td>Cellular failure</td><td>Landline, alternate network SIMs, radio if available; '
-               'printed patient list</td></tr>\n'
+               '<tr><td>Supplies</td><td>Road closure, port delays</td><td>Safety stock (Module 8); supplies pre-positioned '
+               'before typhoon season</td></tr>\n'
+               '<tr><td>Communications</td><td>Mobile network failure</td><td>Landline, SIMs on a second network, radio if '
+               'available; printed patient list</td></tr>\n'
                '<tr><td>Patients</td><td>Flooded roads, evacuation centers</td><td>Early dialysis; emergency information sheet; '
                'partner-unit list</td></tr>\n'
                '</tbody></table></div>'),
               ('what-the-evidence-shows',
                'What the evidence shows',
                'What the evidence shows',
-               '<ul><li><strong>Early dialysis before a predictable disaster is associated with better outcomes.</strong> Before '
-               'Hurricane Sandy, patients who received an early session had lower adjusted odds of emergency visits (about 20%), '
-               'hospitalization (about 21%) and 30-day death (about 28%)[[dch_lurie2015]]. Observational, but strongly '
-               'consistent with the physiology of missed treatment (Module 04).</li><li><strong>Disasters disrupt care and '
-               'increase harm.</strong> Patients in Sandy-affected areas had more emergency department visits and '
-               'hospitalizations and a small rise in mortality compared with unaffected '
-               'regions[[uom_kelman2015]].</li><li><strong>Asia-Pacific experience.</strong> Reviews of earthquakes, tsunamis '
-               'and typhoons across the region, including the Philippines, describe the same lessons: patient tracking, '
-               'pre-agreed transfer arrangements, emergency supplies and staff welfare[[uom_gray2015]].</li></ul>'),
+               '<p><strong>Early dialysis before a predictable disaster is associated with better outcomes.</strong> Before '
+               'Hurricane Sandy, patients who received an early session had, in adjusted analyses, about 20% lower odds of an '
+               'emergency department visit, 21% lower odds of hospitalization, and 28% lower odds of death within 30 '
+               'days.[[dch_lurie2015]] The study was observational, but it fits the physiology of missed treatment (Module '
+               '4).</p>\n'
+               '<p><strong>Disasters disrupt care and increase harm.</strong> Dialysis patients in areas hit by Sandy had more '
+               'emergency department visits and hospitalizations, and a small rise in deaths, compared with patients in '
+               'unaffected regions.[[uom_kelman2015]]</p>\n'
+               '<p><strong>The lessons are the same across Asia and the Pacific.</strong> Reviews of earthquakes, tsunamis, and '
+               'typhoons in the region, including the Philippines, describe the same priorities: tracking every patient, '
+               'pre-agreed transfer arrangements, emergency supplies, and staff welfare.[[uom_gray2015]]</p>'),
               ('calculator-calc-12-outage-autonomy',
                'Calculator CALC-12',
                'Calculator CALC-12: outage autonomy',
-               '<p><strong>Inputs:</strong> usable generator fuel (L), generator consumption at expected load (L/h), active '
-               'machines, dialysate flow rate (mL/min), additional treated-water use per hour (rinse, reprocessing, RO reject '
-               'not recycled), usable treated-water storage (L).</p>\n'
-               '<p><strong>Formulas</strong></p>\n'
-               '<ul><li>Generator runtime (h) = usable fuel ÷ consumption per hour</li><li>Treated-water demand (L/h) = machines '
-               '× dialysate flow (L/min) × 60 + additional use</li><li>Water autonomy (h) = usable treated-water storage ÷ '
-               'demand</li><li>Operating autonomy = the smaller of the two (the binding constraint)</li><li>Sessions possible = '
-               'operating autonomy ÷ session length × machines (rounded down)</li></ul>\n'
-               '<p><strong>Worked example.</strong> Fuel 400 L at 22 L/h: about 18 hours. Fifteen machines at 500 mL/min: 15 × '
-               '0.5 × 60 = 450 L/h, plus 100 L/h other use = 550 L/h. Storage 3,000 L: about 5.5 hours. <strong>Water is the '
-               'binding constraint</strong>, enough for one full shift of 4-hour sessions on all 15 machines, not two. The plan '
-               'therefore needs a water tanker agreement or reduced stations, not more diesel.</p>\n'
-               "<p>Check generator sizing with the biomedical technician; consumption depends on load, and the RO system's pumps "
-               'add significant demand.</p>\n'
-               '{{fig:uom12b}}'),
+               "<p>You need: usable generator fuel in liters, the generator's consumption per hour at expected load, the number "
+               'of active machines, the dialysate flow rate, other treated-water use per hour (rinsing, reprocessing, reverse '
+               'osmosis reject not recycled), and usable treated-water storage.</p>\n'
+               '{{formula:<strong>Generator runtime (hours)</strong> = usable fuel ÷ consumption per '
+               'hour.<br><strong>Treated-water demand (liters per hour)</strong> = machines × dialysate flow (liters per minute) '
+               '× 60 + other use.<br><strong>Water autonomy (hours)</strong> = usable treated-water storage ÷ '
+               'demand.<br><strong>Operating autonomy</strong> = the smaller of the two. That is the binding '
+               'constraint.<br><strong>Sessions possible</strong> = operating autonomy ÷ session length × machines, rounded '
+               'down.}}\n'
+               '<p><strong>Worked example.</strong> The unit has 400 liters of fuel and burns 22 liters an hour: about 18 hours. '
+               'Fifteen machines at 500 milliliters a minute use 15 × 0.5 × 60 = 450 liters an hour, plus 100 liters an hour of '
+               'other use, for 550 liters an hour. With 3,000 liters of storage, water lasts 3,000 ÷ 550 = about 5.5 hours. '
+               'Water is the binding constraint: enough for one full shift of 4-hour sessions on all 15 machines, not two. The '
+               'plan needs a water tanker agreement or fewer stations, not more diesel.</p>\n'
+               '{{fig:uom12b}}\n'
+               '<p>Check generator sizing with the biomedical technician. Consumption depends on load, and the reverse osmosis '
+               'pumps add a lot of it.</p>\n'
+               '{{key:Find the binding constraint first. Solving the wrong shortage wastes the hours you have.}}'),
               ('a-phased-typhoon-plan',
                'A phased typhoon plan',
                'A phased typhoon plan',
-               '<p><strong>Season start (May to June):</strong> test generator under load, confirm fuel and water contracts, '
-               'update patient emergency information sheets, pre-position supplies for at least two weeks, refresh staff contact '
-               'tree, confirm partner units.</p>\n'
-               '<p><strong>Advisory (72 hours before landfall):</strong> monitor PAGASA bulletins; the Medical Director decides '
-               'on early dialysis[[dch_lurie2015]]; notify patients of revised schedules; top up fuel and water; secure records '
-               'and equipment above flood level.</p>\n'
-               '<p><strong>Imminent (24 hours):</strong> complete early sessions; give patients their emergency information '
-               "sheet and the dietitian's emergency diet guidance; confirm where each patient will shelter; staff who will stay "
-               'on site are identified with food and accommodation.</p>\n'
-               '<p><strong>During:</strong> close safely if conditions make travel dangerous; maintain communication; record '
-               'patient contacts.</p>\n'
-               '<p><strong>Recovery:</strong> inspect building, power and water; have the water system tested and released '
-               'before treatment (Module 06); reopen in phases, highest-risk patients first; contact every patient; arrange '
-               'transfers for those who cannot reach the unit.</p>'),
+               '{{flow:Typhoon plan by phase|Season start (May to June)::Test the generator under load, confirm fuel and water '
+               "contracts, update every patient's emergency information sheet, pre-position at least two weeks of supplies, "
+               'refresh the staff contact tree, confirm partner units.|Advisory (72 hours before landfall)::Monitor PAGASA '
+               'bulletins. The Medical Director decides on early dialysis. Notify patients of revised schedules. Top up fuel and '
+               'water. Move records and equipment above flood level.|Imminent (24 hours)::Complete early sessions. Give each '
+               "patient the emergency information sheet and the dietitian's emergency diet guidance. Confirm where each patient "
+               'will shelter. Identify staff who will stay on site, with food and a place to sleep.|During::Close safely if '
+               'travel is dangerous. Keep communication open. Record every patient contact.|Recovery::Inspect the building, '
+               'power, and water. Have the water tested and released before treatment (Module 6). Reopen in phases, highest-risk '
+               'patients first. Contact every patient. Arrange transfers for those who cannot reach the unit.}}\n'
+               '<p><strong>Example.</strong> With a Signal No. 3 typhoon forecast to make landfall in Eastern Samar on Thursday '
+               'night, the manager of a unit in Borongan meets with the Medical Director on Tuesday. All Thursday and Friday '
+               'patients are moved to Wednesday and early Thursday morning. By Thursday noon, every patient has been treated '
+               'within the previous 36 hours and has a printed sheet in a plastic folder. The nurses call each patient on '
+               'Saturday morning; 31 of 34 are reached. The barangay health workers find the other three in an evacuation '
+               'center. The unit reopens on Sunday after the water is released, starting with the three patients whose families '
+               'could not be reached.</p>\n'
+               '{{call:When patients cannot reach the unit or the unit cannot open, the Medical Director or attending decides on '
+               'transfers, early sessions, and changes to treatment. Your job is to know where every patient is and to make '
+               'their decision happen.}}'),
               ('partner-units-and-transfer',
                'Partner units and transfer',
                'Partner units and transfer',
-               '<p>Maintain written agreements (memoranda of agreement) with at least two partner units outside your likely '
-               'hazard zone. Each agreement states how patients are referred, what records travel with them (prescription, '
-               'serology, access type, Philippine Health Insurance Corporation (PhilHealth) Dialysis Database (PDD) status) and '
-               'how billing is handled. Test it once a year by sending one transient patient through the process.</p>'),
+               '<p>Keep written memoranda of agreement with at least two partner units outside your likely hazard zone. Each '
+               'agreement states how patients are referred, what records travel with them (prescription, serology, access type, '
+               'Philippine Health Insurance Corporation (PhilHealth) Dialysis Database status), and how billing is handled. Test '
+               'it once a year by sending one transient patient through the process.</p>'),
               ('common-failure-modes',
                'Common failure modes',
                'Common failure modes',
-               '<ul><li>Generator tested without load.</li><li>Planning only for power, forgetting water.</li><li>Patient '
-               'contact lists only in the electronic system that went down.</li><li>Partner agreements that exist on paper but '
-               'have never been used.</li></ul>')],
- 'debrief': ['{{fig:uom12c}}\n'
-             '<p><strong>Response.</strong> The manager runs CALC-12 with current figures: about 2 hours of water at full load. '
-             'With the Medical Director and head nurse, the afternoon shift is reduced to the eight highest-risk patients. Seven '
-             'stable patients are transferred to a partner unit with records. A water tanker is called under the standing '
-             'contract. Treatment resumes at full capacity the next morning after the technician confirms water quality.</p>'],
+               '<ul><li><strong>The generator that was never loaded.</strong> Tested every week with no machines '
+               'running.</li><li><strong>Power only.</strong> Planning for electricity and forgetting water.</li><li><strong>The '
+               'list in the dead computer.</strong> Patient contacts only in the electronic system that went '
+               'down.</li><li><strong>Paper partners.</strong> Agreements signed and never used.</li><li><strong>Late '
+               'decisions.</strong> Waiting for landfall to decide on early dialysis.</li></ul>')],
+ 'debrief': ['<p><strong>The binding constraint.</strong> The manager, Ms. Lorelie Bautista, runs the outage calculator with '
+             'current figures. The fuel will last another 16 hours. The water, at full load, will last about two hours. Water is '
+             'the binding constraint. Buying more diesel would not help.</p>\n'
+             '<p><strong>Who decides.</strong> Ms. Bautista brings the numbers to the Medical Director and the head nurse. They '
+             'reduce the afternoon shift to the eight highest-risk patients: those with the longest gap, the highest last '
+             "potassium, and the heaviest weight gains. Ms. Bautista's job is to make the plan work, not to choose the "
+             'patients.</p>\n'
+             '<p><strong>The other seven.</strong> She calls the partner unit in Iloilo City, which can take seven patients on '
+             'its evening shift. Each patient travels with an emergency information sheet: prescription, access type, serology, '
+             'and PhilHealth Dialysis Database status. She arranges a van. She calls the water tanker under the standing '
+             'contract.</p>\n'
+             '<p><strong>Recovery.</strong> Power returns at 02:00. Before the morning shift, Mr. Arceo tests the water and the '
+             "Medical Director's designee releases it. All 15 stations open at 06:00. Ms. Bautista adds a line to the plan: test "
+             'the reverse osmosis output on generator power during the next generator load test, so this is known in '
+             'advance.</p>\n'
+             '{{fig:uom12c}}'],
  'quiz': [('Before a forecast typhoon, early dialysis was associated in the Sandy study with:',
            ['Higher mortality', 'Lower odds of death within 30 days', 'No effect', 'More emergency visits'],
            1,
@@ -131,7 +153,8 @@ MODULE = {'objectives': ['Identify the critical dependencies of a hemodialysis u
            ['Staff schedules',
             "Only the patient's name",
             "The unit's budget",
-            'Prescription, serology, access type and PDD status'],
+            'Prescription, serology, access type and Philippine Health Insurance Corporation (PhilHealth) Dialysis Database '
+            '(PDD) status'],
            3,
            'The receiving unit needs these to treat safely.'),
           ('Generator testing should be done:',
@@ -139,7 +162,7 @@ MODULE = {'objectives': ['Identify the critical dependencies of a hemodialysis u
            2,
            'No-load tests miss failures that appear under demand.'),
           ('Why keep a printed patient contact list?',
-           ['Printing is required by Philippine Health Insurance Corporation (PhilHealth)',
+           ['Printing is required by PhilHealth',
             'Electronic systems may be unavailable during outages',
             'It is cheaper',
             'Patients prefer paper'],
@@ -184,17 +207,33 @@ MODULE = {'objectives': ['Identify the critical dependencies of a hemodialysis u
  'readings': [('typhoon-disaster-preparedness-dialysis.html', 'Typhoon preparedness for dialysis patients.'),
               ('climate-extremes-kidney-care.html', 'Heat, floods and kidney care.')],
  'calcs': ['calc-dialysis-clinical-head-toolkit.html'],
- 'big': '<p>The Philippines sits in the typhoon belt and on the Pacific Ring of Fire. Floods, brownouts, earthquakes and water '
-        'interruptions are not rare events for a dialysis unit here. They are seasonal. Patients cannot postpone dialysis for a '
-        'week while roads clear. Continuity planning is how a unit keeps its promise of three treatments a week through the '
-        'worst week of the year.</p>',
+ 'big': '{{plain:Every dialysis patient carries a clock. It starts when their last treatment ends and runs until potassium, '
+        'fluid, and acid become dangerous, usually within a few days. A typhoon, an earthquake, or a three-day brownout does not '
+        'stop the clock. Continuity planning is the work of making sure every patient gets treated before their clock runs out, '
+        'even when the unit cannot open.}}\n'
+        '<p>The picture has a limit. The clock does not tick at the same speed for everyone. A patient who ate lechon at a '
+        'fiesta, or who has little remaining kidney function, runs faster than one who still makes urine. And the clock does not '
+        'ring an alarm. Patients can feel fine until they do not. That is why continuity plans start days before the storm, not '
+        'the morning after.</p>\n'
+        '<p>The Philippines sits in the typhoon belt and on the Ring of Fire. Every unit will face these events. The units that '
+        'do well are not the ones with the biggest generators. They are the ones that planned, rehearsed, and knew where every '
+        'patient was.</p>\n'
+        '{{cards:Key terms for this module|Dependency::Anything a session cannot run without: power, water, staff, supplies, '
+        'communications, transport.|Buffer::The backup for a dependency, and how long it lasts.|Binding constraint::The '
+        'dependency that runs out first. It sets how long you can operate.|Autonomy::How many hours the unit can keep treating '
+        'without outside help.|Early dialysis::A session moved earlier so patients start a disaster freshly treated.|Partner '
+        'unit::A unit outside your hazard zone that has agreed in writing to take your patients.|Emergency information sheet::A '
+        'one-page summary each patient carries: prescription, access, serology, contacts.}}',
  'case': {'title': 'The brownout that lasted',
-          'html': '<p>A provincial grid failure starts at 08:00 on a Monday. The generator starts. At 13:00 the water technician '
-                  'reports that treated-water storage is falling faster than reverse osmosis (RO) output because the RO is '
-                  'running at reduced pressure.</p>',
-          'questions': ['What must you protect first, and whose decision is it?',
-                        'Which facts would you confirm before you act?',
-                        'What would you record, and where?']},
+          'html': '<p>It is 08:00 on a Monday at a 15-station unit in Roxas City, Capiz. A provincial grid failure takes out '
+                  'power across the city. The generator starts within seconds, and the morning shift continues.</p>\n'
+                  '<p>At 13:00, the water technician, Mr. Danilo Arceo, reports a problem. The reverse osmosis system is running '
+                  'at reduced pressure on generator power, and the treated-water storage tank is falling faster than it refills. '
+                  'The afternoon shift of 15 patients starts at 14:00. The power company says the grid may be back "tonight or '
+                  'tomorrow."</p>',
+          'questions': ['Which will run out first, fuel or water? How would you find out?',
+                        'If you cannot treat all 15 afternoon patients, who decides which ones are treated?',
+                        'What happens to the patients who are not treated today?']},
  'skills': {'title': 'Supervised practice',
             'intro': 'Complete these with your preceptor at your own unit, using fictional or de-identified data.',
             'items': [("Map your unit's dependencies and buffers using the table above.", False),

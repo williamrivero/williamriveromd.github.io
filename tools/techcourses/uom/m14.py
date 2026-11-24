@@ -10,15 +10,16 @@ MODULE = {'objectives': ['Map the hospital departments your unit depends on and 
  'sections': [('the-model-one-unit-many-interfaces',
                'The model',
                'The model: one unit, many interfaces',
+               '{{fig:uom14a}}\n'
                '<div class="table-wrap"><table>\n'
-               '<thead><tr><th>Interface</th><th>What flows</th><th>Agreement to define</th></tr></thead>\n'
+               '<thead><tr><th>Interface</th><th>What flows</th><th>What to agree in writing</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td>Emergency department</td><td>Urgent dialysis requests, hyperkalemia, fluid overload</td><td>Request '
-               'process, response time, who transports</td></tr>\n'
+               '<tr><td>Emergency room</td><td>Urgent dialysis requests, high potassium, fluid overload</td><td>Request process, '
+               'response time, who transports</td></tr>\n'
                '<tr><td>Wards</td><td>Scheduled inpatient sessions</td><td>Daily request cutoff, patient preparation, transport, '
                'return handoff</td></tr>\n'
-               '<tr><td>intensive care unit (ICU)</td><td>Bedside HD or other modalities where privileged</td><td>Who brings the '
-               'machine, water source, staffing, physician responsibility</td></tr>\n'
+               '<tr><td>ICU</td><td>Bedside dialysis or other treatments where privileged</td><td>Who brings the machine, water '
+               'source, staffing, physician responsibility</td></tr>\n'
                '<tr><td>Nursing service</td><td>Staff allocation, floating, competency</td><td>Who can float into the unit and '
                'with which signed competencies</td></tr>\n'
                '<tr><td>Laboratory</td><td>Pre- and post-dialysis tests, serology</td><td>Turnaround times, critical value '
@@ -30,81 +31,97 @@ MODULE = {'objectives': ['Map the hospital departments your unit depends on and 
                '<tr><td>Infection prevention committee</td><td>Surveillance, outbreak response</td><td>Reporting and audit '
                'schedule</td></tr>\n'
                '<tr><td>Billing and Philippine Health Insurance Corporation (PhilHealth) unit</td><td>Claims for outpatient and '
-               'inpatient sessions</td><td>Route, documentation and responsibility</td></tr>\n'
+               'inpatient sessions</td><td>Route, documentation, and responsibility</td></tr>\n'
                '</tbody></table></div>\n'
-               '<p>Write each as a short service agreement: what is requested, by whom, by when, how it is delivered and how '
-               'failures are escalated.</p>\n'
-               '{{fig:uom14a}}\n'),
+               '<p>Write each as a short service agreement: what is requested, by whom, by when, how it is delivered, and how '
+               'failures are escalated.</p>'),
               ('balancing-outpatient-and-inpatient-deman',
                'Balancing outpatient',
                'Balancing outpatient and inpatient demand',
-               '<p>A typical rule approved by the Medical Director:</p>\n'
-               '<ol><li><strong>Emergent</strong> (life-threatening hyperkalemia, pulmonary edema, severe acidosis): treat '
+               '{{fig:uom14b}}\n'
+               '<p>A typical rule, approved by the Medical Director, has four tiers:</p>\n'
+               '<ol><li><strong>Emergent</strong> (life-threatening high potassium, fluid in the lungs, severe acidosis): treat '
                'immediately, wherever capacity can be made, displacing the least urgent session after the attending '
-               'agrees.</li><li><strong>Urgent inpatient</strong> (needs dialysis today): next available station on the same '
-               'day.</li><li><strong>Scheduled outpatient</strong>: protected slots, displaced only by emergent cases, and '
-               'rescheduled within the clinical window.</li><li><strong>Elective inpatient</strong> (routine maintenance session '
+               'agrees.</li><li><strong>Urgent inpatient</strong> (needs dialysis today): the next available station the same '
+               'day.</li><li><strong>Scheduled outpatient:</strong> protected slots, displaced only by emergent cases, and '
+               'rescheduled within the safe window.</li><li><strong>Elective inpatient</strong> (a routine maintenance session '
                'for an admitted chronic patient): fitted into planned inpatient slots.</li></ol>\n'
-               '<p>Reserve inpatient capacity based on historical demand (CALC-02 with an inpatient block). A unit that books '
-               'every station with outpatients will displace them daily.</p>\n'
-               '{{fig:uom14b}}'),
+               '<p>Reserve inpatient capacity based on past demand (Calculator CALC-02 with an inpatient block). A unit that '
+               'books every station with outpatients will displace them every day.</p>\n'
+               '<p><strong>Example.</strong> A hospital unit in Davao City reviews three months of data and finds it receives an '
+               'average of 9 inpatient requests a day, with a peak of 15. It reserves 6 station-sessions a day for inpatients '
+               'and protects the rest for outpatients. Outpatient displacements fall from about 20 a week to 3. On days with '
+               'fewer inpatients, the unused reserved slots are offered for make-up sessions.</p>\n'
+               '{{key:Reserve capacity for the demand you know is coming. Booking every station with outpatients means '
+               'displacing them every day.}}'),
               ('what-the-evidence-shows',
                'What the evidence shows',
                'What the evidence shows',
-               '<ul><li><strong>Structured handoffs reduce harm.</strong> The I-PASS bundle (Illness severity, Patient summary, '
-               'Action list, Situation awareness and contingency planning, Synthesis by receiver) was associated with a 23% '
-               'reduction in medical errors and a 30% reduction in preventable adverse events across nine hospitals, without '
-               'lengthening handoffs[[uom_starmer2014]]. The study was in pediatric resident handoffs; adapting it to nurse '
-               'handoffs between ward and dialysis is <strong>evidence-supported inference</strong>.</li><li><strong>Missed and '
-               'delayed inpatient dialysis carries the same physiology as outpatient misses</strong> (Module 04). Transport '
-               'delays and incomplete preparation are among the most common causes.</li></ul>'),
-              ('i-pass-adapted-for-ward-to-dialysis-hand',
-               'I-PASS adapted',
-               'I-PASS adapted for ward-to-dialysis handoff',
+               '<p><strong>Structured handoffs reduce harm.</strong> The I-PASS bundle was associated with a 23% fall in medical '
+               'errors and a 30% fall in preventable adverse events across nine hospitals, without making handoffs '
+               'longer.[[uom_starmer2014]] The study involved pediatric residents. Applying it to handoffs between ward nurses '
+               'and dialysis nurses is reasonable inference, not tested evidence.</p>\n'
+               '<p><strong>Missed and delayed inpatient dialysis carries the same physiology as missed outpatient '
+               'sessions</strong> (Module 4). Transport delays and incomplete preparation are among the most common causes.</p>'),
+              ('i-pass-adapted-for-the-ward-to-dialysis',
+               'I-PASS adapted for',
+               'I-PASS adapted for the ward-to-dialysis handoff',
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Element</th><th>What the ward nurse tells the dialysis nurse</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td><strong>I</strong>llness severity</td><td>Stable, watcher or unstable</td></tr>\n'
+               '<tr><td><strong>I</strong>llness severity</td><td>Stable, watcher, or unstable</td></tr>\n'
                '<tr><td><strong>P</strong>atient summary</td><td>Reason for admission, dialysis prescription, access type and '
                'site, isolation status, allergies, code status</td></tr>\n'
-               '<tr><td><strong>A</strong>ction list</td><td>Pre-dialysis labs pending, medications held or given '
-               '(antihypertensives, insulin), blood products ordered</td></tr>\n'
-               '<tr><td><strong>S</strong>ituation awareness</td><td>Fall risk, confusion, oxygen needs, recent hypotension, '
-               'what to do if X happens</td></tr>\n'
-               '<tr><td><strong>S</strong>ynthesis by receiver</td><td>Dialysis nurse reads back key points and confirms '
-               'questions answered</td></tr>\n'
+               '<tr><td><strong>A</strong>ction list</td><td>Pre-dialysis tests pending, medicines held or given (blood pressure '
+               'medicines, insulin), blood products ordered</td></tr>\n'
+               '<tr><td><strong>S</strong>ituation awareness</td><td>Fall risk, confusion, oxygen needs, recent low blood '
+               'pressure, what to do if something changes</td></tr>\n'
+               '<tr><td><strong>S</strong>ynthesis by receiver</td><td>The dialysis nurse reads back key points and confirms '
+               'questions are answered</td></tr>\n'
                '</tbody></table></div>\n'
-               '<p>Use the same structure in reverse when the patient returns to the ward, with the treatment summary, fluid '
-               'removed, events and post-dialysis instructions.</p>'),
+               '<p>Use the same structure in reverse when the patient returns to the ward: the treatment summary, fluid removed, '
+               'events, and post-dialysis instructions.</p>'),
               ('claims-and-documentation-routes',
                'Claims and documentation',
                'Claims and documentation routes',
-               '<p>Maintenance outpatient HD for Philippine Health Insurance Corporation (PhilHealth) Dialysis Database '
-               '(PDD)-registered patients follows the outpatient package (Module 10). Sessions for admitted patients and acute '
-               'dialysis for acute kidney injury may follow different benefit rules and documentation requirements. Train '
-               'billing and nursing to identify the route for each session at the time of request. Confirm current rules for '
-               "inpatient and acute sessions with your PhilHealth Regional Office and the hospital's PhilHealth unit.</p>"),
+               '<p>Maintenance outpatient hemodialysis for patients registered in the PhilHealth Dialysis Database follows the '
+               'outpatient package (Module 10). Sessions for admitted patients and acute dialysis for acute kidney injury may '
+               'follow different benefit rules and documentation. Train billing and nursing to identify the route for each '
+               "session when it is requested. Confirm the current rules with your PhilHealth Regional Office and the hospital's "
+               'PhilHealth unit.</p>'),
               ('nursing-governance-in-a-hospital',
                'Nursing governance in',
                'Nursing governance in a hospital',
-               "<p>The hospital's chief nurse or nursing service director holds overall nursing authority. The dialysis head "
-               'nurse leads within that structure. If you, as unit manager, are not the head nurse, your operating decisions '
-               'about staffing must route through nursing service. Floating nurses from wards into dialysis requires signed '
-               'dialysis competencies (Module 03). A ward nurse without them cannot take a dialysis assignment, however '
-               'short-staffed the day.</p>'),
+               "<p>The hospital's chief nurse holds overall nursing authority. The dialysis head nurse leads within that "
+               'structure. If you are the unit manager but not the head nurse, your staffing decisions route through nursing '
+               'service.</p>\n'
+               '<p>A nurse floated from a ward into dialysis needs signed dialysis competencies (Module 3). A ward nurse without '
+               'them cannot take a dialysis assignment, however short the day.</p>\n'
+               '{{call:When an inpatient arrives without preparation, serology, or a handoff, the physician on duty decides '
+               'whether and where the patient dialyzes. Do not seat the patient at a general station until the isolation '
+               'decision is made.}}'),
               ('common-failure-modes',
                'Common failure modes',
                'Common failure modes',
-               '<ul><li>Every station booked with outpatients, so inpatients displace them daily.</li><li>Transport left to '
-               'whoever is free.</li><li>Ward nurses floated into dialysis without competencies.</li><li>Inpatient sessions '
-               'billed through the wrong route.</li></ul>')],
- 'debrief': ['{{fig:uom14c}}\n'
-             '<p><strong>Problems.</strong> Higher hypotension and hypoglycemia risk, no laboratory guide for the prescription, '
-             'and an isolation decision that cannot be made safely.</p>\n'
-             '<p><strong>Fix.</strong> The physician on duty (POD) reviews the patient; serology is sent urgently and the '
-             'patient dialyzes at an isolation-capable station under precautions until results return. The manager then agrees a '
-             'request process with the ward: a request form with a cutoff, a preparation checklist (medications, meal, labs, '
-             'serology) and the I-PASS handoff. Compliance is audited weekly for a month.</p>'],
+               '<ul><li><strong>Every station booked.</strong> Outpatients displaced by inpatients every '
+               'day.</li><li><strong>Transport by whoever is free.</strong> Patients waiting on stretchers in the '
+               'corridor.</li><li><strong>The willing ward nurse.</strong> Floated into dialysis without signed '
+               'competencies.</li><li><strong>The wrong claim route.</strong> Inpatient sessions billed as outpatient, or the '
+               'reverse.</li><li><strong>"For HD today."</strong> A note instead of a handoff.</li></ul>')],
+ 'debrief': ['<p><strong>The risks.</strong> A blood pressure medicine taken three hours ago raises the risk of low blood '
+             'pressure during fluid removal. Insulin with no breakfast raises the risk of low blood sugar. Without a potassium '
+             'result, the prescription is a guess. And without hepatitis B status, the isolation decision cannot be made '
+             'safely.</p>\n'
+             '<p><strong>The decisions.</strong> The physician on duty, Dr. Mylene Garcia, reviews him, orders a blood sugar '
+             'check, a potassium level, and an urgent hepatitis B screen, and asks for a snack. Because his status is unknown, '
+             'he dialyzes at the isolation-capable station under precautions until the result returns. The manager, Ms. Aileen '
+             "David, makes the station available by moving one stable outpatient's start by 40 minutes, with the outpatient's "
+             'agreement.</p>\n'
+             '<p><strong>The fix.</strong> Ms. David meets the ward head nurses that afternoon. Together they agree on a request '
+             'process: a request form by 16:00 the day before, a preparation checklist (hold or give which medicines, a meal, '
+             'pre-dialysis laboratory tests, serology), and the I-PASS handoff below. She audits it weekly for a month. In week '
+             'one, 6 of 14 requests used the form. By week four, 13 of 15 did.</p>\n'
+             '{{fig:uom14c}}'],
  'quiz': [('In I-PASS, what does the final "S" stand for?',
            ['Signature', 'Synthesis by receiver', 'Schedule', 'Safety only'],
            1,
@@ -190,17 +207,32 @@ MODULE = {'objectives': ['Map the hospital departments your unit depends on and 
            3,
            'System changes prevent recurrence.')],
  'readings': [('hemodialysis-complications.html', 'Complications staff must recognize during treatment.')],
- 'big': '<p>A hospital dialysis unit serves two populations at once: stable outpatients who need the clock to run on time, and '
-        'admitted patients who arrive sick, late and unpredictable from the emergency department, wards and intensive care. '
-        'Every admitted patient crosses at least two handoffs, ward to unit and back. Most harm in hospitals happens at those '
-        'crossings. The unit manager in a hospital is, above all, a manager of interfaces.</p>',
+ 'big': '{{plain:A hospital dialysis unit is a crossroads. Patients arrive from the wards, the intensive care unit (ICU), and '
+        "the emergency room, each with a different story and a different urgency, while the unit's own outpatients keep their "
+        "regular appointments. The manager's job is to direct traffic so that the most urgent patient goes first, no one waits "
+        'too long, and nothing is lost at the handoff.}}\n'
+        '<p>The picture has a limit. Traffic is predictable on a map; hospital demand is not. Some mornings bring three '
+        'emergency requests at once, and some weeks bring none. A crossroads also has no memory, but patients carry their '
+        'histories with them, and the most dangerous moment is when that history is passed from a ward nurse to a dialysis nurse '
+        'in a hurry.</p>\n'
+        '<p>This module is for managers of hospital units. It covers the departments you depend on, a fair rule for competing '
+        'demands, the structured handoff, and the billing routes that differ between outpatients and inpatients.</p>\n'
+        '{{cards:Key terms for this module|Interface::Any department whose work flows into or out of the unit.|Service '
+        'agreement::A written statement of what is requested, by whom, by when, and how failures are '
+        'escalated.|Emergent::Life-threatening, needing dialysis now.|Urgent::Needing dialysis today.|I-PASS::A structured '
+        'handoff: Illness severity, Patient summary, Action list, Situation awareness, Synthesis by receiver.|Float nurse::A '
+        'nurse from another area assigned to the unit for a shift.}}',
  'case': {'title': 'The patient who arrived unprepared',
-          'html': '<p>A ward sends a patient for dialysis at 10:00 without notice. The patient received his usual '
-                  'antihypertensive and insulin at 07:00 and has not eaten. No pre-dialysis potassium was drawn. He is hepatitis '
-                  'B surface antigen (HBsAg) status unknown.</p>',
-          'questions': ['What must you protect first, and whose decision is it?',
-                        'Which facts would you confirm before you act?',
-                        'What would you record, and where?']},
+          'html': '<p>It is 10:00 on a Wednesday at a 24-station unit in a tertiary hospital in Olongapo City. A ward orderly '
+                  'wheels in Mr. Rodrigo Sangalang, 59, admitted two days ago for pneumonia, with a note: "For HD today." No one '
+                  'called ahead.</p>\n'
+                  '<p>The dialysis nurse, Mr. Kevin Lacson, asks the orderly a few questions and checks the chart. Mr. Sangalang '
+                  'received his usual amlodipine and insulin at 07:00. He has not eaten since last night because he was "on hold '
+                  'for a procedure" that was cancelled. No pre-dialysis potassium was drawn. His hepatitis B status is not in '
+                  'the chart. All 24 stations are in use.</p>',
+          'questions': ['What are the clinical risks of dialyzing Mr. Sangalang right now?',
+                        'Who decides whether and where he dialyzes?',
+                        'What would prevent this from happening with the next inpatient?']},
  'skills': {'title': 'Supervised practice',
             'intro': 'Complete these with your preceptor at your own unit, using fictional or de-identified data.',
             'items': [('Draft service agreements with three hospital departments.', False),

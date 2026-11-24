@@ -1,9 +1,14 @@
-# 03. Staffing, rostering and competency
+# 03. Staffing, rostering, and competency
 
-**Core** · 45 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-03 (Understand) · FIG-03B (Apply) · FIG-03C (Appreciate) · **Calculator:** CALC-01 Station staffing and FTE planner
+## The big picture
 
-> **Why this matters.** A roster is a safety device that happens to look like a spreadsheet. The ratio printed in the regulation is a ceiling, not a target. What actually keeps patients safe is having the right person, with a signed competency for the task in front of them, at the station when the alarm sounds, and a relief plan for the day someone does not come.
+{{plain:A roster is a promise that the right hands will be at each station. A body in the building is not the same as a pair of hands that can do the job. A nurse counts toward a station only when she is present, rested, licensed, and signed off for what that station needs today.}}
+
+The picture has a limit. Hands are easy to count; judgment is not. The 1:4 ratio in the Department of Health (DOH) order tells you the most patients one nurse may carry. It does not tell you that four is safe for the four patients you actually have this afternoon: a man on his first week of dialysis, a woman with a fresh fistula, a man in the isolation room, and a patient whose catheter needs a dressing change.
+
+Staffing is where operations and patient safety meet most directly. Get it right, and the clinical team has room to think. Get it wrong, and every other system in the unit starts failing because people are too stretched to follow it.
+
+{{cards:Key terms for this module|Position::A slot the shift needs, such as "nurse, stations 1 to 4."|Full-time equivalent (FTE)::One person's contracted hours. Two half-time nurses equal one FTE.|Relief factor::The multiplier that covers leave, holidays, training, and sick days, so the roster still fills when people are away.|Ceiling::The most patients one staff member may carry. Not a target.|Competency::A skill observed, signed, and dated by a qualified assessor.|Competency matrix::One table showing each person's signed skills, restrictions, and reassessment dates.|Float pool::Pre-credentialed staff who can fill gaps on short notice.}}
 
 ## Learning objectives
 
@@ -12,95 +17,122 @@
 3. Build a competency matrix that links each staff member to signed skills, restrictions and reassessment dates.
 4. Reallocate a roster after an absence without breaching ratio, competency or rest limits.
 
-## The operating model: positions, people and proof
+## Field case: the competent but exhausted nurse
 
-Staffing has three layers, and most units manage only the first.
+**Situation.** It is Saturday, 15:40, at a 15-station unit in Antipolo, Rizal. The evening shift starts at 17:00 with 12 patients booked, including one in the isolation room and a man in his first week of dialysis.
 
-**Positions** are the slots the shift needs: so many nurses, one POD, technicians, a water operator. You derive them from stations in use and from acuity.
+Nurse Mark Villanueva texts that he has a high fever. The head nurse, Ms. Annabelle Cruz, calls around. The only nurse who says yes is Ms. Rhea Domingo, a skilled dialysis nurse who has just finished a 12-hour shift at a hospital in Cainta. "I'm tired, but I can push through," she says. "The patients need us."
 
-**People** fill positions. A person counts toward a position only if they are present, rested, credentialed and competent for that position's tasks.
+The manager, Mr. Jerome Aquino, knows the unit is chronically short. He has raised it twice in budget meetings and lost both times.
 
-**Proof** is the competency record: a signed, dated checklist showing that the person was observed doing the skill correctly. Under pressure, units fill positions with people who lack proof. That is how a newly hired nurse ends up cannulating a fresh fistula alone on her second day.
+**Before reading on, decide:**
+
+- Should Ms. Domingo work the evening shift? Whose decision is it?
+- If she does not, what happens to the 12 patients?
+- What should Mr. Aquino do with this evening, beyond getting through it?
+
+**Case review.**
+
+**The offer.** The decision belongs to the head nurse, and Ms. Cruz declines it, kindly: "Thank you, Rhea. Go home and sleep. We'll manage." Fatigue degrades vigilance in ways the tired person cannot judge for herself. A nurse 12 hours into her day who misses a falling blood pressure is not a bad nurse. She is a predictable result of a bad roster.
+
+**The shift.** With three nurses present, Ms. Cruz can safely cover eight stations, including the isolation room with a dedicated nurse. She and the physician on duty (POD) review the 12 patients. Four stable patients who dialyzed on Thursday, with modest weight gains and normal last potassium results, are offered Sunday morning slots. The attending nephrologists agree by phone. The new-start patient and the isolation patient stay on Saturday.
+
+**What the manager does next.** Mr. Aquino logs the gap and, on Monday, runs the staffing calculator below. The unit employs 13.5 nurse FTE. It needs 15.3. He brings that number, this Saturday's log, and two similar weekends to the next budget meeting, with a proposal for a three-nurse float pool. A missing number lost the earlier budget arguments. This time he has one.
+
+{{fig:uom03c}}
+
+## The operating model: positions, people, and proof
+
+Staffing has three layers. Most units manage only the first.
+
+{{fig:uom03a}}
+
+**Positions** are the slots the shift needs: nurses, a POD, technicians, a water operator. You derive them from the stations in use and from how sick the patients are.
+
+**People** fill positions. A person counts toward a position only if they are present, rested, licensed, and competent for that position's tasks.
+
+**Proof** is the competency record: a signed, dated checklist showing the person was watched doing the skill correctly. Under pressure, units fill positions with people who lack proof. That is how a nurse hired on Monday ends up cannulating a three-week-old fistula alone on Wednesday.
 
 ### Why the ratio is a ceiling
 
-DOH AO 2012-0001 sets ceilings of one nurse to four HD stations and one POD to fifteen HD stations. The ratio assumes stable patients and a functioning unit. Each of the following needs extra cover:
+DOH Administrative Order (AO) 2012-0001 sets ceilings of one nurse to four hemodialysis stations and one POD to fifteen stations.[[doh2012]] Those ratios assume stable patients and a unit running normally. Each of these needs more cover:
 
-- **Isolation stations** (for example HBsAg-positive patients), where staff should not move freely between isolated and non-isolated patients.
-- **New starts and first-week patients**, who have higher rates of hypotension, access problems and anxiety.
-- **Catheter-dependent patients**, whose connection and disconnection require more nurse time and aseptic attention.
+- **Isolation stations**, for example for patients positive for hepatitis B surface antigen (HBsAg), where staff should not move freely between isolated and non-isolated patients.
+- **New starts and first-week patients**, who have more low blood pressure, access problems, and anxiety.
+- **Patients with catheters**, whose connection and disconnection take more nurse time and careful aseptic technique.
 - **Breaks**, when one nurse covers another's patients.
-- **Turnover periods**, when one shift ends and the next begins and disinfection, reprocessing and setup overlap.
-- **Concurrent services**, such as an acute bedside treatment pulling a nurse away.
+- **Changeover**, when one shift ends, the next begins, and disinfection, setup, and reprocessing overlap.
+- **Concurrent services**, such as an acute treatment in the hospital pulling a nurse away.
+
+**Example.** A unit in Lipa has 12 patients on its morning shift and three nurses: exactly 1:4. Two patients started dialysis this week, one has a catheter with a red exit site, and one is in isolation. On paper the shift is fully staffed. In practice, the isolation nurse cannot help anyone else, so the other nine patients share two nurses, nearly 1:5. The ratio was met, and the shift was still short.
+
+{{key:Ratios are the most a person may carry, not what a person should carry. Count the patients you actually have.}}
 
 ## What the evidence shows
 
-- **Staffing burden is associated with outcomes.** In a US Renal Data System cohort of 236,126 patients starting in-center hemodialysis, facilities in the highest versus lowest quartile of patients per patient care technician had a 7% higher mortality rate (IRR 1.07; 95% CI 1.02–1.12), a 5% higher hospitalization rate, and an 8% higher rate of sepsis-related hospitalization (Plantinga et al., *JAMA Network Open* 2024). This is **observational**: facilities with heavy staffing burden may differ in other ways. It **is associated with** worse outcomes. It does not prove that adding staff alone fixes them.
-- **Staffing varies widely, and ownership matters.** US facility surveys found registered nurse ratios 35% lower and technician ratios 16% higher in for-profit than nonprofit units after adjustment (Yoder et al., *AJKD* 2013). Staffing mix is a management choice, not a fixed fact.
-- **Burnout is a safety variable.** A 2024 meta-analysis of 85 studies (288,581 nurses) linked nurse burnout to lower safety climate, more healthcare-associated infections, falls and medication errors, and lower patient satisfaction (Li et al., *JAMA Network Open* 2024). Chronic short-staffing produces burnout, which in turn degrades care. Again, this is association, but it is consistent across settings.
+**Staffing burden is associated with outcomes.** In a United States cohort of 236,126 patients starting in-center hemodialysis, facilities in the highest quarter of patients per patient care technician, compared with the lowest, had a 7% higher death rate, a 5% higher hospitalization rate, and an 8% higher rate of hospitalization for sepsis.[[uom_plantinga2024]] The study was observational. Facilities with heavy staffing burden may differ in other ways, such as patient mix or resources. Heavy staffing burden is associated with worse outcomes; the study does not prove that adding staff alone fixes them.
+
+**Staffing varies, and it is a choice.** United States facility surveys found registered nurse ratios 35% lower and technician ratios 16% higher in for-profit than in nonprofit units, after adjustment.[[uom_yoder2013]] Staffing mix is decided by management. It is not a law of nature.
+
+**Burnout is a safety variable.** A 2024 meta-analysis of 85 studies and 288,581 nurses linked nurse burnout with a weaker safety climate, more healthcare-associated infections, more falls and medication errors, and lower patient satisfaction.[[uom_li2024]] This too is association, but it is consistent across countries and settings. Chronic short-staffing breeds burnout, and burnout degrades care.
 
 ## Philippine rules that change the decision
 
 | Rule | Implication | Verify |
 |---|---|---|
-| AO 2012-0001 §V.B.2 | 1:4 nurse and 1:15 POD ceilings; POD present during operating hours | CHD interpretation for mixed or acute services |
-| Labor Code Art. 83 | Health personnel in cities of at least one million people, or in hospitals and clinics of at least 100 beds, work 40 hours a week (generally five days of eight hours). Elsewhere the normal workday is eight hours | HR classification of your facility and each worker |
+| AO 2012-0001 | 1:4 nurse and 1:15 POD ceilings; POD present during operating hours | Center for Health Development interpretation for mixed or acute services |
+| Labor Code Art. 83 | Health personnel in cities of at least one million people, or in hospitals and clinics of at least 100 beds, work 40 hours a week (generally five days of eight hours). Elsewhere the normal workday is eight hours | Human resources classification of your facility and each worker |
 | Labor Code rest-day rules | At least 24 consecutive hours of rest after six consecutive workdays | Employer policy, collective agreement |
-| PSN guidelines | Training expectations for POD and staff | Current PSN requirements |
+| PSN guidelines | Training expectations for POD and staff | Current Philippine Society of Nephrology requirements |
 
 ## Calculator CALC-01: station staffing and FTE planner
 
-**Inputs:** stations in use per shift (S), isolation stations (I), shifts per day, operating days per week, paid hours per shift, contracted hours per FTE per week, non-productive fraction (leave, holidays, training, sick time).
+The calculator turns stations into people. You need: stations in use per shift, isolation stations, shifts per day, operating days per week, paid hours per shift, contracted hours per FTE, and the non-productive fraction (leave, holidays, training, and sick time).
 
-**Formulas**
+{{formula:<strong>Nurse positions per shift</strong> = ceiling((stations &minus; isolation stations) &divide; 4) + one dedicated nurse per isolation area (or your local policy).<br><strong>POD positions per shift</strong> = ceiling(stations &divide; 15).<br><strong>Weekly nurse hours</strong> = positions &times; shifts per day &times; days per week &times; paid hours per shift.<br><strong>Base FTE</strong> = weekly hours &divide; contracted hours per FTE.<br><strong>Relief factor</strong> = 1 &divide; (1 &minus; non-productive fraction).<br><strong>Required FTE</strong> = base FTE &times; relief factor.}}
 
-- Nurse positions per shift = ceiling((S − I) ÷ 4) + I × (isolation staffing per local policy, default one dedicated nurse per isolation area)
-- POD positions per shift = ceiling(S ÷ 15)
-- Weekly nurse hours = nurse positions × shifts per day × days per week × paid hours per shift
-- Base FTE = weekly nurse hours ÷ contracted hours per FTE
-- Relief factor = 1 ÷ (1 − non-productive fraction)
-- Required FTE = base FTE × relief factor
+**Worked example.** The Antipolo unit has 15 stations, one isolation area with one station, three shifts a day, six days a week, six paid hours per shift, 40 contracted hours per FTE, and 12% non-productive time.
 
-**Worked example.** Fifteen stations, one isolation area with one station, three shifts a day, six days a week, six paid hours per shift, 40 contracted hours, 12% non-productive time.
-- Nurse positions = ceiling(14 ÷ 4) + 1 = 4 + 1 = 5 per shift
-- Weekly hours = 5 × 3 × 6 × 6 = 540
-- Base FTE = 540 ÷ 40 = 13.5
-- Relief factor = 1 ÷ 0.88 = 1.136
-- Required FTE = 15.3, so plan to hire 16 nurses
+- Nurse positions = ceiling(14 &divide; 4) + 1 = 4 + 1 = 5 per shift
+- Weekly hours = 5 &times; 3 &times; 6 &times; 6 = 540
+- Base FTE = 540 &divide; 40 = 13.5
+- Relief factor = 1 &divide; 0.88 = 1.136
+- Required FTE = 13.5 &times; 1.136 = 15.3, so plan to hire 16 nurses
 
-If you hire only 13.5 FTE, every leave day becomes either overtime or a breached ratio. The calculator makes that visible to finance before the first month goes wrong.
+At 13.5 FTE, every vacation day, seminar, and fever becomes either overtime or a broken ratio. The calculator makes that visible to finance before the first bad weekend, not after the third.
 
 ## The competency matrix
 
-| Staff | Role | License expiry | Cannulation AVF | CVC care | Isolation | Machine setup | Emergency response | Restrictions | Reassess |
+One table, kept current, visible to the person making the roster.
+
+| Staff | Role | License expiry | Fistula cannulation | Catheter care | Isolation | Machine setup | Emergency response | Restrictions | Reassess |
 |---|---|---|---|---|---|---|---|---|---|
 | RN A | Staff nurse | 2027-06 | Signed | Signed | Signed | Signed | BLS 2026-08 | None | 2027-01 |
 | RN B | New hire | 2028-02 | Supervised only | Signed | Not yet | Signed | BLS 2026-10 | No solo new fistula | 2026-12 |
 
-Rules: a skill counts only when signed by a qualified assessor with a date. "Supervised only" means the person needs a named supervisor on that shift. Restrictions appear on the daily roster, not just in the HR file.
+The rules are simple. A skill counts only when a qualified assessor has signed and dated it. "Supervised only" means the person needs a named supervisor on that shift. Restrictions appear on the daily roster, not just in the human resources file.
+
+**Example.** At a hospital unit in Cebu City, a newly hired nurse, Mr. Paul Tan, is rostered alone on the isolation room in his second week. His matrix row says "Isolation: not yet." No one checked, because the matrix lived in a folder in the nursing office. After a near miss with a shared tourniquet, the unit prints a one-line restriction next to each name on the daily roster board. The roster maker now sees it every morning.
 
 ## Doing it on Monday: reallocating after an absence
 
-1. Recompute positions for each shift with the absent person removed.
-2. Check who is available: off-duty staff who have had adequate rest, part-timers, a float pool or an agency with verified credentials.
-3. Match competencies to the stations that need cover. The isolation area and new patients need your strongest available people.
-4. If you still cannot meet the ceiling, reduce stations for that shift and reschedule patients within the treatment window (see Module 04). Do not stretch the ratio.
-5. Record the change, the approver (nursing lead) and the time.
+{{fig:uom03b}}
 
-## Field case: the competent but exhausted nurse
+1. **Recount positions** for each shift with the absent person removed.
+2. **Check who is available:** off-duty staff who have had enough rest, part-timers, a float pool, or an agency with verified credentials.
+3. **Match competencies to stations.** The isolation room and new patients get your strongest available people.
+4. **If you still cannot meet the ceiling,** reduce stations for that shift and reschedule patients within a safe window (Module 4). Do not stretch the ratio.
+5. **Record** the change, the approver (the nursing lead), and the time.
 
-**Situation.** Saturday evening shift. One nurse is ill. The only available replacement has just finished a 12-hour hospital shift elsewhere and offers to stay.
-
-**Problem.** She is competent but has not rested. Fatigue degrades vigilance in ways the person cannot self-assess.
-
-**Solution.** The head nurse declines the offer, reduces the evening shift from 12 to 8 stations, and moves four stable patients to Sunday morning with their attending's agreement. The manager logs the gap and presents a float-pool proposal at the next budget meeting, with the CALC-01 output showing the unit was staffed at 13.5 FTE against a requirement of 15.3.
+{{call:When the nursing lead cannot staff a shift within the ratio and competency limits, reduce stations and ask the attending nephrologists to review the patients being moved. Never open a station by stretching a ratio or using an unsigned skill.}}
 
 ## Common failure modes
 
-- Counting a person as "staff" because they are in the building, not because they are competent for that station.
-- Planning FTEs with no relief factor, which guarantees chronic overtime.
-- Competency records kept by HR but invisible on the floor.
-- Treating 1:4 as the goal rather than the limit.
+- **Bodies instead of hands.** Counting a person as staff because they are in the building, not because they are competent for that station.
+- **No relief factor.** Planning FTEs as if no one ever takes leave, which guarantees chronic overtime.
+- **Invisible restrictions.** Competency records kept in human resources and never seen on the floor.
+- **Ratio as goal.** Treating 1:4 as the target rather than the limit.
+- **The hero offer.** Accepting a tired colleague's offer to "push through" because it solves tonight's problem.
 
 ## Supervised practice
 

@@ -1,9 +1,14 @@
 # 19. Integrated readiness and improvement capstone
 
-**Core** · 45 minutes study · 120 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-19 (Understand) · FIG-19B (Apply) · FIG-19C (Appreciate) · **Calculator:** all track calculators (CALC-01 to CALC-13)
+## The big picture
 
-> **Why this matters.** Real problems never arrive one module at a time. A typhoon warning lands in the same week as a nurse resignation, a returned claims batch and an out-of-range water culture. The capstone tests whether you can hold all of it at once: protect patients first, route each decision to its owner, use numbers to argue for what the unit needs, and leave a written trail that a surveyor, an owner or your successor can follow.
+{{plain:Each module so far has handed you one tool: a decision map, an evidence index, a roster calculator, a water log audit, a claims trace, a budget, a typhoon plan. A real week never brings one problem at a time. It brings six, all on a Tuesday, all urgent, each owned by someone different. The capstone asks you to pick up every tool at once and use the right one for each problem, in the right order.}}
+
+The picture has a limit. A toolbox suggests that every problem has its tool and that skill means choosing well. Choosing matters, but the harder skill is restraint: knowing which problems are not yours to solve, and making sure the person who owns each one knows about it in time. The best capstone responses are not the busiest. They are the ones where every decision has a named owner and a time, and no patient's safety depends on the manager guessing.
+
+The capstone has three parts: a timed simulation, a portfolio defense, and a short independent review.
+
+{{cards:Key terms for this module|Inject::A new development the preceptor releases during the simulation.|Decision log::A running record of each decision, its owner, and the time.|Readiness dashboard::One page showing staffing, water, supplies, continuity, claims, and finance status together.|Portfolio::The set of artifacts you built during the track, each from a module.|Safety gate::A non-negotiable rule. Breaking one stops the capstone.|Rubric::The 0-to-2 scale the panel uses to score each item.}}
 
 ## Learning objectives
 
@@ -12,36 +17,60 @@
 3. Use at least four track calculators to support decisions.
 4. Defend a readiness and improvement portfolio before a panel.
 
+## Field case: the week before Signal No. 3
+
+**Situation.** It is Monday, 07:00, at a 15-station freestanding unit in Legazpi City, Albay. PAGASA forecasts a typhoon landfall in the Bicol region in about 72 hours, on Thursday morning. You are the operations manager. The unit treats 84 patients on Monday–Wednesday–Friday and Tuesday–Thursday–Saturday schedules.
+
+Over the next hour, six things land on your desk:
+
+1. The head nurse reports that two nurses have resigned effective Friday, and one is on maternity leave.
+2. The monthly culture from the water distribution loop returns at 70 CFU/mL. The facility program sets the action level at 50 and the maximum at 100.
+3. Billing reports that 38 claims from last month were returned for documentation errors.
+4. The owner messages: "Can we just close Thursday and Friday to protect the staff?"
+5. A Tuesday–Thursday–Saturday patient, Mrs. Remedios Bonganay, has used 152 of her 156 PhilHealth sessions.[[dch_philhealth2024]]
+6. The generator fuel supplier says delivery may be delayed because of the storm.
+
+**Before reading on, decide:**
+
+- Which of the six threatens a patient first, and whose decision is it?
+- Which items can wait until after the storm, and which cannot?
+- Which calculators answer which questions?
+
+**Case review.**
+
+**Clinical priority first.** You call the Medical Director, who decides on early dialysis.[[dch_lurie2015]] With the head nurse, you prepare the high-risk list: patients coming off the long gap, those with high last potassium, those with catheters, and new starts. Thursday and Friday patients are moved to Tuesday, Wednesday, and early Thursday. No patient goes more than three days without treatment.
+
+**The water.** A result of 70 CFU/mL is above the action level but below the maximum. It is not "fine." You make sure the water technician disinfects the loop and retests, and that the Medical Director knows. Before the extra sessions start, you confirm the release status. The decision is theirs; the follow-up is yours.
+
+**Staffing.** You run the staffing calculator (CALC-01) for the compressed schedule. The head nurse brings in float or agency nurses with verified competencies, and approves the roster. You compute overtime and holiday premiums with CALC-10 so the volunteers know what they will be paid.
+
+**Continuity.** You run the outage calculator (CALC-12) with current fuel and water. Water, not fuel, is the binding constraint. You activate the water tanker contract and a second fuel supplier, alert the partner units in Naga and Sorsogon, and make sure every patient has an emergency information sheet and the dietitian's emergency diet guidance.
+
+**The owner.** You reply with facts, not argument: closing Thursday and Friday would leave some patients five days without treatment. You propose compressing the schedule instead, with the staffing cost and the premium pay laid out. The owner agrees.
+
+**The payer items.** The 38 returned claims matter, but they can wait until after the storm. You assign them to billing with a deadline the following week. You use the session-cap tracker (CALC-07) for Mrs. Bonganay: with 4 sessions left and about six weeks to the end of the year, she will run out in about ten days, long before December 31. The social worker counsels her family now, and the attending knows. Her dialysis continues.
+
+**Records.** You keep a decision log with times and owners, and open corrective actions for the claims errors and the water result.
+
+{{fig:uom19b}}
+
 ## How the capstone works
 
-**Part A: integrated simulation (60 minutes).** The preceptor releases scenario injects every 10 to 15 minutes. You run the response as manager, with colleagues or the preceptor playing the head nurse, Medical Director, water technician, billing officer and owner.
+**Part A: integrated simulation (60 minutes).** The preceptor releases injects every 10 to 15 minutes, like the case above but with a scenario you have not seen. You run the response as manager. Colleagues or the preceptor play the head nurse, Medical Director, water technician, billing officer, and owner.
 
-**Part B: portfolio defense (40 minutes).** You present your portfolio (below) and answer questions.
+**Part B: portfolio defense (40 minutes).** You present your portfolio and answer the panel's questions.
 
-**Part C: independent review (35 minutes).** Thirteen short-answer questions in the trainer guide, self-checked against the model key.
+**Part C: independent review (35 minutes).** Thirteen short-answer questions from the trainer guide, checked against the model key.
 
-## Sample scenario: "The week before Signal No. 3"
+{{fig:uom19a}}
 
-**Day 1, 07:00.** PAGASA forecasts a typhoon landfall in 72 hours. Your unit has 84 patients on a Monday-Wednesday-Friday and Tuesday-Thursday-Saturday schedule.
-
-**Inject 1.** The head nurse reports that two nurses have resigned effective Friday and one is on maternity leave.
-**Inject 2.** The monthly loop culture returns at 70 CFU/mL (action level 50, maximum 100 under the facility program).
-**Inject 3.** Billing reports that 38 claims from last month were returned for documentation errors.
-**Inject 4.** The owner asks whether the unit can close Thursday and Friday to protect staff.
-**Inject 5.** A patient on Tuesday-Thursday-Saturday has used 152 of 156 sessions.
-**Inject 6.** The generator fuel supplier says delivery may be delayed.
-
-**What a strong response includes**
-
-- **Clinical priority:** Medical Director decides on early dialysis; high-risk list (long-gap, high potassium, catheter, new starts) prepared; no patient left more than three days without treatment.
-- **Water:** action-level response with the technician (disinfect and retest) and Medical Director awareness; release status confirmed before the extra sessions; no assumption that "below maximum means fine."
-- **Staffing:** CALC-01 run for the compressed schedule; float or agency staff with verified competencies; overtime and holiday premiums computed with CALC-10; nursing lead approves the roster.
-- **Continuity:** CALC-12 run with current fuel and water; tanker and fuel alternatives activated; partner units alerted; patient emergency sheets and diet guidance distributed.
-- **Owner:** a factual reply proposing schedule compression rather than closure, with staffing and cost implications.
-- **Payer:** returned claims assigned for correction after the storm with a deadline; CALC-07 used to counsel the patient near the cap and inform the attending.
-- **Records:** decision log with times and owners; CAPA opened for the claims errors and the water result.
+{{key:A strong response is not the busiest one. It is the one where every decision has a named owner and a time.}}
 
 ## The readiness and improvement portfolio
+
+Each artifact comes from a module. Use fictional or de-identified data throughout.
+
+{{fig:uom19c}}
 
 | Artifact | From module |
 |---|---|
@@ -63,11 +92,13 @@
 | Cutoff audit and premium recomputation (CALC-10) | 17 |
 | Remittance reconciliation and benefits matrix (CALC-11) | 18 |
 
-All artifacts use fictional or de-identified data.
+**Example.** At a defense in Cebu, a panel member asks a candidate why her evidence index has four red rows. She answers: "Two are staff hepatitis B titers due this month, with appointments booked. One is the fire inspection, scheduled for the 18th. One is our transfer agreement with the second hospital, which their legal office is still reviewing; my deadline to escalate is the 30th." The panel scores her well. A clean index would have been less convincing than an honest one with owners and dates.
 
 ## Scoring
 
-The trainer uses the 0–2 rubric in the trainer guide. A score of 0 on any safety-critical item (missed hold, unauthorized clinical decision, clearance bypass, disclosure of patient data) stops the capstone and requires supervised reassessment.
+The trainer uses the 0-to-2 rubric in the trainer guide. A score of 0 on any safety gate stops the capstone and requires supervised reassessment.
+
+{{call:The four safety gates: no missed safety hold; no clinical decision outside the manager's authority; no clearance or release step bypassed; no patient data disclosed outside the need-to-know rule. Breaking any one stops the capstone.}}
 
 ## Question bank
 

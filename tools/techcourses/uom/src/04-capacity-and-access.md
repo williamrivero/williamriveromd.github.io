@@ -1,9 +1,14 @@
-# 04. Capacity, access and patient flow
+# 04. Capacity, access, and patient flow
 
-**Core** · 40 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-04 (Understand) · FIG-04B (Apply) · FIG-04C (Appreciate) · **Calculator:** CALC-02 Capacity, utilization and waitlist planner
+## The big picture
 
-> **Why this matters.** For a patient on maintenance hemodialysis, a missed session is not a scheduling inconvenience. Potassium, fluid and acid keep accumulating whether or not a chair is free. Every capacity decision you make, from how many shifts to run to who gets the last slot on a holiday, has a physiology attached to it.
+{{plain:Healthy kidneys work every hour of every day. Hemodialysis three times a week replaces that with about twelve hours, delivered in bursts. Between sessions, potassium, fluid, and acid pile up like water behind a dam. Your schedule decides how high the water gets before the next session opens the gate.}}
+
+The picture has a limit. A dam fills at a steady rate; patients do not. A fiesta weekend, a salty meal, or a missed tablet of potassium binder changes how fast it rises. And a dam does not die if it overflows; a patient can. That is why capacity in a dialysis unit is not a business word. It is the operational form of a clinical rule: every enrolled patient gets every session, on time, as prescribed.
+
+This module teaches you to count capacity correctly, protect the long gap, run a waitlist you can defend, and rebuild the schedule after a typhoon or a holiday without letting any patient go too long.
+
+{{cards:Key terms for this module|Station-session::One station used for one treatment. The real unit of capacity.|Long interdialytic interval::The two-day gap over the weekend in a Monday–Wednesday–Friday schedule (or Sunday in a Tuesday–Thursday–Saturday schedule).|Utilization::Sessions delivered divided by station-sessions available.|Waitlist::A written, dated, ordered list of patients waiting for a slot.|Make-up session::A session given on another day to replace one that was missed or cancelled.|Treatment window::The longest gap the attending nephrologist accepts for a given patient.}}
 
 ## Learning objectives
 
@@ -12,79 +17,107 @@
 3. Run a fair, documented waitlist and referral acceptance process.
 4. Reschedule patients after a disruption while keeping each within a clinically acceptable window.
 
+## Field case: the holiday week
+
+**Situation.** It is early December at a 15-station unit in San Fernando, Pampanga. Christmas Day and New Year's Day both fall on Fridays. Half the staff have asked for leave on both days. The owner, Mrs. Teresita Lugtu, proposes the simplest solution: close both Fridays.
+
+The unit's manager, Ms. Joanna Pineda, pulls up the Friday list. Thirty patients dialyze Monday–Wednesday–Friday. Several had potassium results in the high-normal range on Mondays, after an ordinary two-day weekend gap. One, Mr. Rolando Sicat, 67, arrived last Monday with a weight gain of 4.2 kilograms.
+
+**Before reading on, decide:**
+
+- If the unit closes Friday, how long is the gap for a Monday–Wednesday–Friday patient?
+- Who decides whether a longer gap is acceptable for a particular patient?
+- What would a holiday schedule look like that keeps every patient within three days?
+
+**Case review.**
+
+**The gap.** Closing Friday turns a two-day gap into four: Wednesday after treatment to Monday. For patients who already arrive on Mondays with high potassium and heavy fluid gains, that is the riskiest change you can make to a schedule. Whether any patient can tolerate a longer gap is a clinical decision for the attending nephrologist, not an operational one.
+
+**The plan.** Ms. Pineda does not close Friday. She moves the Friday patients to Thursday and Saturday of the same week, runs an extended Saturday with two extra shifts, and offers holiday premium pay (Module 17) to volunteers. Eight nurses volunteer, enough for the extra shifts at safe ratios. The attending nephrologists review the three highest-risk patients, including Mr. Sicat, and ask that his Saturday session start early. No patient goes more than three days without treatment.
+
+**The communication.** Patients receive the new schedule two weeks ahead, in writing and by text, in Filipino and Kapampangan, with a phone number for questions. Nurses confirm each patient's new slot at their last session before the holiday.
+
+**The owner.** Mrs. Lugtu approves the plan once she sees it costs less in premium pay than the hospital admissions it is meant to prevent.
+
+{{fig:uom04c}}
+
 ## The physiology behind the schedule
 
-Healthy kidneys work 168 hours a week. Thrice-weekly hemodialysis replaces that with about 12 hours, delivered in pulses. Between sessions, three things build up:
+Three things accumulate between sessions in a patient without kidney function.
 
-- **Potassium.** Dietary potassium enters the blood and, without kidney excretion, raises serum levels. Hyperkalemia slows cardiac conduction and can cause fatal arrhythmia without warning symptoms.
-- **Fluid.** Every glass of water and every salty meal adds volume that the patient cannot excrete. Volume expands the blood compartment, raises blood pressure and, if large enough, floods the lungs.
-- **Acid.** Metabolism produces hydrogen ions daily. Without renal excretion, bicarbonate is consumed and the patient becomes acidemic.
+{{fig:uom04a}}
 
-The **long interdialytic interval** (the two-day gap over the weekend in a Monday-Wednesday-Friday schedule) lets all three accumulate the longest. That is why the day after the long gap carries the highest risk, and why skipping a session effectively turns a two-day gap into a four-day gap.
+**Potassium.** Potassium from food enters the blood, and without kidney excretion the serum level rises. High potassium slows electrical conduction in the heart and can cause a fatal rhythm with no warning symptoms at all. A patient can feel perfectly well with a potassium level high enough to stop the heart.
+
+**Fluid.** Every glass of water and every salty meal adds volume the patient cannot excrete. Volume expands the blood compartment, raises blood pressure, and, if large enough, floods the lungs. The patient who arrives breathless on a Monday morning is often the patient who had a family celebration on Saturday.
+
+**Acid.** The body produces acid every day. Without the kidneys, bicarbonate is used up and the blood becomes acidic.
+
+The **long interdialytic interval**, the weekend gap, lets all three build up the longest. That is why the day after the long gap carries the highest risk, and why a skipped session turns a two-day gap into a four-day gap.
+
+{{key:Protect against skipped sessions first, long gaps second, and shortened sessions third. Shortening a prescription is never an operations decision.}}
 
 ## What the evidence shows
 
-- **Missed sessions are associated with death.** In the international DOPPS cohort, skipping one or more sessions per month was associated with a 30% higher mortality risk (RR 1.30) (Saran et al., *Kidney International* 2003). Observational: patients who skip may differ in other ways, but the physiology makes the association plausible.
-- **The long gap is dangerous.** In a large US cohort, deaths and cardiovascular hospitalizations clustered on the day after the long interdialytic interval (Foley et al., *NEJM* 2011).
-- **Rescheduling helps, but only partly.** In a matched US cohort, a missed session was associated with a 2.09-fold higher hospitalization rate over the next 7 days. Attending a rescheduled session the next day lowered that excess to 1.68-fold but did not remove it (Cohen et al., *Kidney Medicine* 2020).
-- **Shortened sessions matter too.** In DOPPS, treatment time longer than 240 minutes was associated with lower mortality (RR 0.81), and ultrafiltration rates above 10 mL/kg/h were associated with more intradialytic hypotension (Saran et al., *Kidney International* 2006). Observational again, but it tells you that "we'll just cut everyone to three hours today" is a clinical decision, not an operational one. It belongs to the attending nephrologist.
+**Missed sessions are associated with death.** In the international Dialysis Outcomes and Practice Patterns Study (DOPPS), skipping one or more sessions a month was associated with a 30% higher risk of death.[[dch_saran2003]] The study was observational. Patients who skip sessions may differ in other ways, such as depression, transport problems, or illness, but the physiology makes the association plausible.
 
-**Management translation:** your capacity plan should protect against skipped sessions first, long gaps second and shortened sessions third. Shortening a prescription is never your call.
+**The day after the long gap is dangerous.** In a large United States cohort, deaths and cardiovascular hospitalizations clustered on the day after the long interdialytic interval.[[dch_foley2011]]
+
+**Rescheduling helps, but only partly.** In a matched United States cohort, a missed session was associated with a 2.09-fold higher hospitalization rate over the next seven days. Attending a rescheduled session the next day lowered that excess to 1.68-fold but did not remove it.[[uom_cohen2020]] A make-up session is better than none. It is not as good as the session that was never missed.
+
+**Shortened sessions matter too.** In DOPPS, treatment longer than 240 minutes was associated with lower mortality, and ultrafiltration rates above 10 milliliters per kilogram per hour were associated with more low blood pressure during treatment.[[uom_saran2006]] This too is observational, but it tells you that "let's cut everyone to three hours today" is a clinical decision that belongs to the attending nephrologist.
 
 ## Philippine context
 
-PhilHealth covers up to 156 maintenance HD sessions per calendar year for eligible, PDD-registered CKD stage 5 patients, explicitly based on three sessions a week for 52 weeks. Capacity planning that cannot deliver thrice-weekly treatment for every enrolled patient leaves benefits unused and patients under-dialyzed. Reported dialysis numbers rose from about 53,300 in 2023 to about 64,800 in 2024 (PRDR data as reported by NKTI; confirm the latest figures with the registry). Demand is growing faster than most units can add stations.
+PhilHealth covers up to 156 maintenance hemodialysis sessions per calendar year for eligible patients with chronic kidney disease stage 5 registered in the PhilHealth Dialysis Database, based on three sessions a week for 52 weeks.[[dch_philhealth2024]] A capacity plan that cannot deliver thrice-weekly treatment for every enrolled patient leaves benefits unused and patients under-dialyzed.
 
-## Calculator CALC-02: capacity, utilization and waitlist
+Demand is growing fast. Reported dialysis numbers rose from about 53,300 in 2023 to about 64,800 in 2024 (Philippine Renal Disease Registry data as reported by the National Kidney and Transplant Institute; confirm the latest figures with the registry). Most units cannot add stations as fast as patients arrive.
 
-**Inputs:** stations (S), shifts per day (H), operating days per week (D), sessions per patient per week (default 3), sessions actually delivered last month, isolation stations reserved, patients on waitlist.
+## Calculator CALC-02: capacity, utilization, and waitlist
 
-**Formulas**
+You need: stations, shifts per day, operating days per week, sessions per patient per week (usually three), sessions delivered last month, reserved isolation stations, and the number of patients on the waitlist.
 
-- Weekly station-sessions available = S × H × D
-- Patient slots at thrice weekly = floor(available ÷ 3)
-- Utilization (%) = delivered sessions ÷ available station-sessions × 100
-- Open slots = patient slots − current enrolled patients
-- Weeks to clear waitlist = waitlist ÷ (expected new openings per week)
+{{formula:**Weekly station-sessions available** = stations × shifts per day × days per week.<br>**Patient slots at three a week** = available ÷ 3, rounded down.<br>**Utilization** = sessions delivered ÷ station-sessions available × 100.<br>**Open slots** = patient slots − enrolled patients.<br>**Weeks to clear the waitlist** = patients waiting ÷ expected openings per week.}}
 
-**Worked example.** Fifteen stations, three shifts, six days: 270 station-sessions per week, or 90 patient slots at three sessions each. With 84 enrolled patients, there are six open slots. If one isolation station is reserved and used only for two HBsAg-positive patients (six sessions a week out of 18 possible), 12 isolation station-sessions sit idle. That idle capacity is a design choice, so state it openly rather than counting it as available.
+**Worked example.** Fifteen stations, three shifts a day, six days a week: 15 × 3 × 6 = 270 station-sessions a week, or 90 patient slots at three sessions each. With 84 enrolled patients, there are six open slots.
 
-A utilization above about 95% leaves no room for make-up sessions after an outage. Plan a buffer.
+Now look closer. One isolation station is reserved for two patients positive for hepatitis B surface antigen, who use six of its 18 weekly sessions. The other 12 sessions on that station sit idle, because a non-isolated patient cannot use them. That idle capacity is a design choice for infection safety. State it openly, rather than counting it as available.
+
+Utilization above about 95% leaves no room for make-up sessions after an outage. Plan a buffer, the way a good hospital keeps a few beds empty for the emergency room.
 
 ## The waitlist and referral process
 
-A fair waitlist is written, dated and ordered by criteria that the Medical Director approves, for example urgency (new start from hospital, catheter-dependent), date of request and continuity (existing patient changing shift). Record every referral with:
+A fair waitlist is written, dated, and ordered by criteria the Medical Director approves: urgency (a new start leaving the hospital, a patient with a catheter), the date of the request, and continuity (an existing patient changing shift).
 
-- date and time received, referring facility and contact;
-- clinical summary and serology status (needed to decide isolation placement);
-- PDD and payer status;
-- decision, decision-maker and date;
+Record every referral with:
+
+- date and time received, the referring facility, and a contact;
+- a clinical summary and serology status, needed to decide isolation placement;
+- PhilHealth Dialysis Database and payer status;
+- the decision, who made it, and the date;
 - if declined, the reason and the alternative offered.
 
-A unit that accepts patients informally, through personal connections, will eventually face a complaint it cannot defend.
+**Example.** A unit in Bacolod fills its last two slots in March through a board member's request and a councilor's call. In April, a 34-year-old jeepney driver who has been on the written waitlist since January is told there is still no slot. His sister files a complaint with the city. The unit cannot show why two later requests went first, because there was no rule. A written waitlist would not have made that conversation pleasant. It would have made it defensible.
 
 ## Rescheduling after a disruption
 
-1. List affected patients and their last completed session.
-2. Prioritize by risk: patients coming off the long gap, those with high potassium or heavy weight gain on the last session, catheter users and new starts.
-3. Offer the earliest available slot. Run an extra shift if staffing allows.
-4. For patients you cannot place within the clinical window, the POD or attending decides on transfer to a partner unit or a hospital.
-5. Document every offer, acceptance and refusal.
+When a typhoon, a power outage, or a water failure cancels sessions, work through the list in order.
 
-## Field case: the holiday week
+{{fig:uom04b}}
 
-**Situation.** Christmas Day and New Year's Day fall on Fridays. Half the staff request leave. The owner proposes closing both Fridays.
+{{flow:Rescheduling after a disruption|List::Every affected patient and the date and time of their last completed session.|Prioritize::Patients coming off the long gap, those with high potassium or heavy weight gain last time, catheter users, and new starts go first.|Offer::The earliest available slot. Run an extra shift if staffing allows.|Escalate::For anyone you cannot place within the window, the physician on duty or attending decides on transfer to a partner unit or a hospital.|Document::Every offer, acceptance, and refusal, with the time.}}
 
-**Problem.** Closing Friday gives Monday-Wednesday-Friday patients a gap from Wednesday to Monday, five days. Several have potassium values that were high-normal after a two-day gap.
+**Example.** After a 9-hour power outage on a Tuesday in Tacloban, 22 sessions are cancelled. The manager lists them by last treatment. Seven patients last dialyzed on Saturday; by Wednesday morning they will be four days out. They go first, on an early extra shift at 04:00. The remaining 15 fit into Wednesday's regular shifts and an evening extension. One patient refuses the 04:00 slot because he has no transport; the physician on duty calls him, documents the discussion, and arranges a tricycle through the barangay.
 
-**Solution.** The manager shifts the Friday patients to Thursday and Saturday the same week, runs an extended Saturday, offers holiday premium pay (see Module 17) to volunteers, and has the attending review the three highest-risk patients. No patient goes more than three days without treatment. The plan and patient notifications are sent two weeks in advance.
+{{call:When a patient cannot be placed within the window the attending nephrologist set, stop and call the physician on duty or the attending. Transfer, an emergency room visit, or an extra session is their decision, not a scheduling choice.}}
 
 ## Common failure modes
 
-- Capacity counted in stations rather than station-sessions.
-- Holiday closures planned by finance without clinical review.
-- Referrals accepted by whoever answers the phone.
-- "Short treatments for everyone" decided by the operations team.
+- **Stations instead of station-sessions.** Counting 15 stations as 15 slots hides two-thirds of the real arithmetic.
+- **Holidays planned by finance.** Closing days without a clinical review of who will be harmed by the gap.
+- **The phone is the waitlist.** Referrals accepted by whoever answers.
+- **"Short treatments for everyone."** Decided by operations to clear a backlog.
+- **The 100% unit.** Running so full that one outage leaves nowhere to put anyone.
 
 ## Supervised practice
 

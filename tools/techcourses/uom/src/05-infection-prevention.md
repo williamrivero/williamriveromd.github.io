@@ -1,9 +1,14 @@
 # 05. Infection prevention and surveillance
 
-**Core** · 45 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-05 (Understand) · FIG-05B (Apply) · FIG-05C (Appreciate) · **Calculator:** CALC-03 Infection surveillance rates
+## The big picture
 
-> **Why this matters.** Hemodialysis deliberately breaks the skin barrier two or three times a week, connects the bloodstream to an external circuit and brings many patients into one room with shared surfaces. Infection is the second leading cause of death in dialysis patients after cardiovascular disease. Most dialysis infections are preventable, and prevention is mostly a management system: supplies in the right place, audits that happen, results that someone reads.
+{{plain:Hemodialysis opens the bloodstream to the outside world three times a week, in a room full of other patients doing the same thing. Every needle site, every catheter hub, every glove, clamp, and machine surface is a possible bridge between one person's blood and another's. Infection prevention is the work of keeping those bridges closed, every shift, for everyone.}}
+
+The picture has a limit. Bridges are visible; bacteria and viruses are not. Hepatitis B can travel on an amount of blood too small to see, and a catheter hub that looks clean can carry skin bacteria straight into the heart. You cannot inspect your way to safety by looking around the room. You need systems that work even when no one can see the danger: audits, rates, results that someone reads, and rules that do not bend on busy days.
+
+Infection is the second leading cause of death in dialysis patients, after cardiovascular disease. Most dialysis infections are preventable, and most of prevention is a management system: supplies in the right place, audits that happen, and results that someone acts on.
+
+{{cards:Key terms for this module|Bloodstream infection (BSI)::Bacteria in the blood, confirmed by a positive blood culture.|Access-related BSI::A bloodstream infection that started at the fistula, graft, or catheter.|Central venous catheter (CVC)::A plastic tube in a large vein, used when a fistula or graft is not ready.|Patient-months::The number of patients counted in a month, used as the denominator for infection rates.|Hepatitis B surface antigen (HBsAg)::The blood test that shows active hepatitis B infection.|Anti-HBs::The antibody that shows protection after vaccination or past infection.|Core Interventions::The Centers for Disease Control and Prevention (CDC) bundle of practices to prevent dialysis bloodstream infections.}}
 
 ## Learning objectives
 
@@ -12,72 +17,91 @@
 3. Calculate BSI rates per 100 patient-months and hand-hygiene compliance, and interpret a change.
 4. Organize serologic screening, vaccination and isolation so that results are acted on, not just filed.
 
+## Field case: the unread result
+
+**Situation.** At a 20-station unit in Quezon City, the monthly laboratory results arrive by email on the 3rd. On the 12th, the head nurse, Ms. Liza Bernardo, is looking for a different report when she opens the file for Mr. Ernesto Dela Paz, 58. His hepatitis B surface antigen, negative for three years, is now positive.
+
+The report has sat in the shared inbox for nine days. During those nine days, Mr. Dela Paz dialyzed four times at station 7 in the general area, on a machine that three other patients also use across the week. No one was assigned to read the monthly results. Everyone assumed someone else did.
+
+**Before reading on, decide:**
+
+- What must happen in the next hour, and who decides it?
+- Who else may have been exposed, and how would you find them?
+- What system failed, and how would you fix it so this cannot recur?
+
+**Case review.**
+
+**The next hour.** The manager, Mr. Noel Garcia, calls the Medical Director immediately. The Medical Director confirms the result, orders isolation for Mr. Dela Paz's next session, and asks the attending to speak with him and his family. Mr. Garcia's job is to make the isolation possible today: a dedicated machine, a dedicated nurse for that shift, and the isolation room cleared.
+
+**The contacts.** Using the treatment records, Mr. Garcia lists every patient who dialyzed on the same shift or on the same machine during the nine days: 14 patients. He gives the list to the Medical Director, who orders repeat testing for the susceptible ones, those without protective antibody levels, according to the physician's plan. Required reports are filed.
+
+**The system.** The failure was not medical. It was that no one owned the inbox. Mr. Garcia writes a corrective and preventive action (Module 2): a named reviewer and a backup, a 48-hour rule from receipt to review, and a log showing date received, date reviewed, and action taken. He checks it each month for three months to prove it works.
+
+{{fig:uom05c}}
+
 ## The mechanism: how infections reach the patient
 
-**Bacteria through the access.** Skin organisms, especially *Staphylococcus aureus*, enter at the needle site or the catheter hub. A central venous catheter (CVC) is a plastic highway into the bloodstream: its hub is touched at every connection, and biofilm forms on its inner surface within days. That is why catheter-dependent patients have far higher BSI rates than patients with an arteriovenous fistula.
+{{fig:uom05a}}
 
-**Bloodborne viruses through the environment.** Hepatitis B virus (HBV) survives on surfaces for at least seven days and is transmitted by invisible amounts of blood. Contaminated gloves, shared multidose vials, clamps, tourniquets and machine surfaces can carry it from one station to the next. Hepatitis C virus (HCV) spreads the same way, though less efficiently.
+**Bacteria through the access.** Skin bacteria, especially *Staphylococcus aureus*, enter at the needle site or the catheter hub. A central venous catheter is a plastic highway into the bloodstream. Its hub is touched at every connection, and a slimy film of bacteria, called biofilm, forms on its inner surface within days. That is why patients who depend on a catheter have far higher bloodstream infection rates than patients with an arteriovenous fistula.
 
-**The lesson from outbreaks.** CDC investigations of HBV outbreaks in five US dialysis centers in 1994 found the same failures again and again: infected patients not identified or not isolated, staff and supplies shared between infected and susceptible patients, monthly screening results that nobody reviewed, and low vaccination rates (*MMWR* 1996). In one center, a shared heparin vial was the probable route. None of those failures was a lack of medical knowledge. Every one was a system failure a manager can prevent.
+**Bloodborne viruses through the environment.** Hepatitis B virus (HBV) survives on surfaces for at least seven days and spreads through invisible amounts of blood. Contaminated gloves, shared multidose vials, clamps, tourniquets, and machine surfaces can carry it from one station to the next. Hepatitis C virus (HCV) spreads the same way, though less efficiently.
+
+**The lesson from outbreaks.** CDC investigations of hepatitis B outbreaks in five United States dialysis centers in 1994 found the same failures again and again: infected patients not identified or not isolated, staff and supplies shared between infected and susceptible patients, monthly screening results that nobody reviewed, and low vaccination rates.[[uom_cdc1996]] In one center, a shared heparin vial was the probable route. None of those failures was a lack of medical knowledge. Every one was a system failure a manager can prevent.
+
+{{key:A result that no one reads protects no one. Every test needs a named reader and a deadline.}}
 
 ## What the evidence shows
 
-- **The Core Interventions work.** In the CDC Dialysis BSI Prevention Collaborative, 17 outpatient facilities that implemented the bundle saw overall BSIs fall by 32% and access-related BSIs fall by 54% (Patel et al., *AJKD* 2013), and the fall in access-related BSIs persisted for up to four years, although overall BSI rates drifted back toward baseline (Yi et al., *Infection Control and Hospital Epidemiology* 2016). Gains fade when audits and feedback stop. This was a before-and-after design without a control group, so it **supports** rather than proves benefit. National US surveillance then showed the pooled BSI standardized infection ratio falling by 40% between 2014 and 2019 as the practices spread (CDC NHSN).
-- **Isolation of HBV-positive patients is established practice.** Since CDC recommendations were introduced in 1977, HBV incidence among US dialysis patients and staff fell sharply (CDC, *MMWR Recommendations and Reports* 2001). Current standards call for HBsAg-positive patients to dialyze in a separate room or area with dedicated machines, equipment, supplies and staff.
-- **HCV is managed differently.** KDIGO's guideline on HCV in CKD (2018) emphasizes rigorous standard precautions and regular audits rather than routine isolation or dedicated machines for HCV. Your unit policy, the PSN guidelines and DOH requirements decide local practice. Know which one your unit follows and why.
+**The Core Interventions work.** In the CDC Dialysis Bloodstream Infection Prevention Collaborative, 17 outpatient facilities that put the bundle in place saw overall bloodstream infections fall by 32% and access-related infections by 54%.[[dch_patel2013]] The fall in access-related infections lasted up to four years, although overall rates drifted back toward baseline.[[uom_yi2016]] Gains fade when audits and feedback stop. The design was before-and-after, without a control group, so it supports rather than proves the benefit. National United States surveillance then showed the pooled bloodstream infection ratio falling by 40% between 2014 and 2019 as the practices spread.[[cdc_dialysis]]
 
-## The CDC Core Interventions (management view)
+**Isolating patients with hepatitis B is established practice.** Since CDC recommendations were introduced in 1977, hepatitis B among United States dialysis patients and staff fell sharply.[[uom_cdc2001]] Current standards call for patients positive for HBsAg to dialyze in a separate room or area with dedicated machines, equipment, supplies, and staff.
 
-| Intervention | What you, as manager, make happen |
+**Hepatitis C is managed differently.** Kidney Disease: Improving Global Outcomes (KDIGO) guidance on hepatitis C in chronic kidney disease (2018) emphasizes rigorous standard precautions and regular audits rather than routine isolation or dedicated machines.[[uom_kdigo_hcv2018]] Your unit policy, the Philippine Society of Nephrology (PSN) guidelines, and Department of Health (DOH) requirements decide local practice. Know which your unit follows and why.
+
+## The CDC Core Interventions, from the manager's side
+
+| Intervention | What you make happen |
 |---|---|
-| Monthly BSI surveillance with feedback | A named person counts events and reports the rate at the staff meeting |
+| Monthly bloodstream infection surveillance with feedback | A named person counts events and reports the rate at the staff meeting |
 | Hand-hygiene observations with feedback | Monthly audits, results posted by shift |
-| Catheter and vascular access care observations | Quarterly observation of connection, disconnection and dressing change |
-| Staff competency in infection control | Training at hire and annually; competency on the matrix (Module 03) |
+| Catheter and access care observations | Quarterly observation of connection, disconnection, and dressing change |
+| Staff competency in infection control | Training at hire and every year; competency on the matrix (Module 3) |
 | Patient education | Access care, hand hygiene, signs of infection |
-| Catheter reduction | Track catheter prevalence; push referrals for fistula creation |
-| Chlorhexidine skin antisepsis | Stock and use as the standard for catheter care |
-| Catheter hub disinfection | Standardized scrub technique with the approved agent |
+| Catheter reduction | Track how many patients have catheters; push referrals for fistula creation |
+| Chlorhexidine skin antisepsis | Stock it and make it the standard for catheter care |
+| Catheter hub disinfection | One scrub technique, with the approved agent |
 | Antimicrobial ointment at the catheter exit site | Where policy and product availability support it |
+
+**Example.** A unit in General Santos posts its monthly hand-hygiene score on the staff room door, by shift. The afternoon shift sits at 62% for two months. The head nurse watches a shift and finds the reason in ten minutes: the alcohol rub dispensers on stations 9 to 12 are on the far wall, behind the machines. Two dispensers are moved to the bed rails. The next month, the afternoon shift reaches 88%. The audit did not change the nurses. It found the obstacle.
 
 ## Calculator CALC-03: infection surveillance rates
 
-**Inputs:** BSI events in the month (positive blood cultures meeting the surveillance definition), patient-months, hand-hygiene opportunities observed and opportunities with correct hand hygiene.
+You need: bloodstream infection events in the month (positive blood cultures meeting the definition), patient-months, hand-hygiene opportunities observed, and opportunities with correct hand hygiene.
 
-**Formulas**
+{{formula:**Patient-months**: following the National Healthcare Safety Network convention, the number of maintenance hemodialysis patients treated in the unit on the first two working days of the month.<br>**Bloodstream infection rate** = events ÷ patient-months × 100 (per 100 patient-months).<br>**Access-related rate**: the same, counting only access-related events.<br>**Hand-hygiene compliance** = correct opportunities ÷ observed opportunities × 100.}}
 
-- Patient-months: following the NHSN convention, the number of maintenance HD patients treated in the unit on the first two working days of the month
-- BSI rate = BSI events ÷ patient-months × 100 (reported per 100 patient-months)
-- Access-related BSI rate: same formula using only access-related events
-- Hand-hygiene compliance (%) = compliant opportunities ÷ observed opportunities × 100
+**Worked example.** Eighty patients counted, two bloodstream infections, one access-related: the overall rate is 2 ÷ 80 × 100 = 2.5 per 100 patient-months, and the access-related rate is 1.25. Of 120 observed hand-hygiene opportunities, 96 were correct: 80%.
 
-**Worked example.** Eighty patients counted, two BSIs, one access-related: overall rate 2.5 per 100 patient-months; access-related rate 1.25. With 120 observed opportunities and 96 compliant, hand hygiene is 80%.
+**Reading the number.** In a small unit, one month means little; a single event can double the rate. Plot the monthly rate on a run chart (Module 9) and watch the trend. Break the rate down by access type. Most of the excess will come from patients with catheters.
 
-**Interpretation.** A single month means little in a small unit; one event can double the rate. Plot the monthly rate on a run chart (Module 09) and watch the trend, and break rates down by access type. Most of the excess will come from catheter patients.
+## Serology, vaccination, and isolation: the result must trigger an action
 
-## Serology, vaccination and isolation: the result must trigger an action
+{{fig:uom05b}}
 
-1. **Screening schedule.** Follow the Medical Director-approved schedule for HBsAg, anti-HBs, anti-HCV (and other tests per policy) at admission and at set intervals.
-2. **Result review.** Name the reviewer and set a deadline (for example, within 48 hours of receipt). The 1994 outbreaks show that unread results protect no one.
-3. **Action.** A new positive result triggers isolation decisions, notification of the Medical Director and contact review the same day.
-4. **Vaccination.** Track HBV vaccination series and anti-HBs response. Non-responders need a documented plan.
-5. **Transient patients.** Visiting patients need current serology before their first session.
+{{flow:From blood test to action|Screen::Follow the Medical Director's schedule for HBsAg, anti-HBs, anti-HCV, and other tests at admission and at set intervals.|Review::A named reviewer and a backup read every result within 48 hours of receipt.|Act::A new positive result triggers the Medical Director's isolation decision, notification, and contact review the same day.|Vaccinate::Track hepatitis B vaccination and antibody response. Non-responders need a documented plan.|Check visitors::Transient patients need current serology before their first session.}}
 
-## Field case: the unread result
+**Example.** A patient from Cagayan de Oro asks to dialyze at your unit in Makati for two weeks while visiting her daughter. Her last hepatitis B result is four months old. Your policy requires results within the last month. The intake clerk does not refuse her; she calls the home unit, which sends a result from last week through its privacy officer. The patient dialyzes on her planned date.
 
-**Situation.** A patient's monthly HBsAg comes back positive. It was previously negative. The report sat in an inbox for nine days while the patient dialyzed at a general station on a shared machine.
-
-**What went wrong.** No named reviewer, no deadline, no escalation.
-
-**What a good manager does.** Triggers isolation immediately with the Medical Director, starts a contact review of patients who shared the shift and machine, arranges repeat testing of susceptible contacts per the physician's plan, reports as required, and then fixes the system: a named reviewer, a 48-hour rule and a log showing date received, date reviewed and action. The CAPA from Module 02 documents it all.
+{{call:When a new positive hepatitis B or hepatitis C result appears, call the Medical Director the same day. Do not wait for the next meeting, and do not move or isolate patients on your own judgment.}}
 
 ## Common failure modes
 
-- Audits done but never fed back to staff.
-- Hand-rub dispensers empty, placed far from stations or not at the point of care.
-- Clean and dirty supply areas next to each other.
-- Multidose vials carried between stations.
-- Catheter prevalence accepted as "just how our patients are."
+- **Audits without feedback.** Data collected and filed, never shown to the people who can change it.
+- **Hand rub out of reach.** Dispensers empty, far from the stations, or not at the point of care.
+- **Clean beside dirty.** Clean supplies stored next to used equipment and waste.
+- **The traveling vial.** Multidose vials carried between stations.
+- **"Our patients just have catheters."** Catheter prevalence accepted rather than tracked and reduced.
 
 ## Supervised practice
 

@@ -1,9 +1,14 @@
-# 16. Unit accounting, internal controls and month-end close
+# 16. Unit accounting, internal controls, and month-end close
 
-**Core** · 45 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-16 (Understand) · FIG-16B (Apply) · FIG-16C (Appreciate) · **Calculator:** CALC-09 Receivables aging and days sales outstanding
+## The big picture
 
-> **Why this matters.** You do not need to be an accountant to run a dialysis unit, but you must be able to prove that every session delivered became a claim, every claim became cash or a documented denial, and every peso spent was requested, approved, received and paid by different people. Internal controls protect patients' money, the owner's money and the honest staff who handle it.
+{{plain:Every dialysis session should leave footprints you can follow from the chair to the bank: the treatment record, the charge, the claim, the payment advice, the deposit, and the ledger entry. At the end of each month, you walk the trail. Where the footprints match, the money is accounted for. Where a footprint is missing, something was lost, delayed, or taken.}}
+
+The picture has a limit. Footprints in mud are obvious; footprints in a spreadsheet are not. A missing claim looks exactly like a claim that was never needed, until someone counts. And most gaps are not theft. They are late submissions, returned claims, unapplied payments, and supplies issued without a record. Internal controls exist to catch the honest mistakes early, and to make the dishonest ones hard.
+
+You do not need to be an accountant for this module. You need to know what to reconcile, who should not do two jobs at once, and how to investigate a gap without accusing anyone before the facts are in.
+
+{{cards:Key terms for this module|Reconciliation::Comparing two records that should agree and explaining every difference.|Receivable::Money owed to the unit for sessions already delivered.|Remittance advice::The payer's statement of which claims it paid, and how much.|Days sales outstanding (DSO)::How many days of revenue are waiting to be collected.|Segregation of duties::Keeping requesting, approving, holding, recording, paying, and reconciling with different people.|Compensating control::An extra check used when one person must hold two duties.|Three-way match::Paying only when the purchase order, the receiving report, and the invoice agree.|Imprest petty cash::A fixed fund, refilled only against receipts.}}
 
 ## Learning objectives
 
@@ -12,81 +17,100 @@
 3. Apply segregation of duties and compensating controls in a small team.
 4. Run a month-end close checklist with the accountant.
 
+## Field case: the missing ESA vials
+
+**Situation.** At the October month-end count in a 16-station unit in Tuguegarao City, the storekeeper, Ms. Lovely Mabbayad, finds 40 fewer vials of erythropoietin, an erythropoiesis-stimulating agent (ESA), than the stock ledger predicts. At about 1,200 pesos a vial, that is 48,000 pesos.
+
+By lunchtime, the rumor has reached the nurses' station that "someone is stealing." Two nurses who worked nights that month feel they are being watched.
+
+**Before reading on, decide:**
+
+- What records would you compare first?
+- What would you say to the staff today, before the facts are known?
+- If the cause turns out to be a system gap, how would you prove the fix works?
+
+**Case review.**
+
+**Today.** The manager, Mr. Jerome Agustin, tells the staff plainly: "We have a count difference. We do not know why yet. No one is being accused. We will look at the records and I will tell you what we find." Then he asks for the records, not for names.
+
+**The records.** He compares three sources: the stock issued to the floor, the doses ordered for each patient, and the doses recorded as given. The doses recorded as given match the orders exactly. The gap traces to one week when vials were issued to the floor in boxes of 20 rather than by patient dose, and the night nurse recorded usage at the end of each shift from memory. Some given doses were never subtracted from the floor stock. Some vials were likely dropped, cracked, or used and not recorded.
+
+**The fix.** ESA is now issued by patient dose and recorded at the moment of administration. The floor stock is counted daily for one month, then weekly. The difference falls to zero in November and stays there. Mr. Agustin tells the staff what he found. The night nurses, who had done nothing wrong, are relieved. The system change protects them as much as it protects the stock.
+
+{{fig:uom16c}}
+
 ## The model: follow the session
 
-Every session should leave a trail you can follow forward and backward:
+{{fig:uom16a}}
 
-**Session delivered** (treatment record) → **charge** (billing entry) → **claim** (submitted to PhilHealth or other payer; patient share billed if applicable) → **receivable** (amount expected) → **remittance** (payer's payment advice) → **deposit** (bank statement) → **ledger** (general ledger entries).
+{{flow:From the chair to the bank|Session delivered::The signed treatment record.|Charge::The billing entry for that session.|Claim::Submitted to PhilHealth or another payer[[dch_philhealth2024]]; any patient share billed if it applies.|Receivable::The amount expected.|Remittance::The payer's payment advice.|Deposit::The bank statement.|Ledger::The general ledger entries.}}
 
-At month-end, the counts and amounts at each step must reconcile, or the differences must be explained: claims not yet submitted, denials, partial payments, adjustments. Unexplained differences are where errors and fraud hide.
+At month-end, the counts and amounts at each step must agree, or the differences must be explained: claims not yet submitted, denials, partial payments, adjustments. Unexplained differences are where errors and fraud hide.
+
+**Example.** A unit in Cotabato City delivers 1,312 sessions in August. Billing shows 1,298 claims. The 14-session gap is explained in an hour: 9 patients were still awaiting PhilHealth Dialysis Database registration, 3 were self-pay, and 2 sessions were charted but never billed because the encoder was on leave. Those 2 are filed the next day. Without the reconciliation, they would have been lost.
 
 ## Purchasing and payment
 
-The **three-way match** pays a supplier only when three documents agree on item, quantity, price and terms: the approved purchase order, the signed receiving report and the supplier's invoice. Differences beyond a set tolerance go back to purchasing.
+{{fig:uom16b}}
 
-**Petty cash** uses an imprest system: a fixed fund, replenished only against receipts that bring the fund back to its original amount. Count it unannounced at least monthly.
+The **three-way match** pays a supplier only when three documents agree on the item, quantity, price, and terms: the approved purchase order, the signed receiving report, and the supplier's invoice. Differences beyond a set tolerance go back to purchasing.
 
-**Tax documentation:** the Ease of Paying Taxes Act (RA 11976, 2024) changed invoicing rules, making the invoice the primary document for sales of goods and services. Your accountant confirms the current documentary requirements for receipts, invoices and withholding.
+**Petty cash** uses an imprest system: a fixed fund, refilled only against receipts that bring it back to its original amount. Count it without warning at least once a month.
+
+**Tax documents.** The Ease of Paying Taxes Act (RA 11976, 2024) made the invoice the primary document for sales of goods and services.[[uom_ra11976]] Your accountant confirms the current requirements for receipts, invoices, and withholding.
 
 ## Segregation of duties
 
-Keep these functions with different people wherever possible:
-
 | Function | Example |
 |---|---|
-| Requesting | Head nurse requests supplies |
-| Approving | Administrator approves purchase |
-| Custody | Storekeeper receives and holds stock |
-| Recording | Bookkeeper posts entries |
+| Requesting | The head nurse requests supplies |
+| Approving | The administrator approves the purchase |
+| Custody | The storekeeper receives and holds stock |
+| Recording | The bookkeeper posts entries |
 | Paying | Finance releases payment |
-| Reconciling | Accountant or manager reconciles bank and subledgers |
+| Reconciling | The accountant or manager reconciles the bank and subledgers |
 
-In a small unit, one person may hold two roles. Then add a **compensating control**: an independent monthly review by the owner or an outside accountant, surprise cash counts, or bank statements sent directly to the reviewer.
+In a small unit, one person may have to hold two roles. Then add a **compensating control**: an independent monthly review by the owner or an outside accountant, surprise cash counts, or bank statements sent directly to the reviewer.
+
+**Example.** In a 10-station unit in Iligan, the administrator both approves purchases and releases payments, because there is no one else. The owner, a nephrologist who visits weekly, now receives the bank statement directly from the bank, and every month picks five payments at random and asks to see the purchase order, receiving report, and invoice for each. It takes her 20 minutes. It also makes a fake supplier much harder to hide.
+
+{{key:The review someone actually performs matters more than the policy on paper.}}
 
 ## What the evidence shows
 
-Internal control frameworks (for example, COSO) are professional standards rather than trial-tested interventions. Fraud surveys by professional associations consistently find that small organizations suffer proportionally larger losses and that lack of internal controls and override of existing controls are the most commonly cited weaknesses, with most frauds detected by tips or management review rather than external audit. Treat this as **descriptive evidence** that reinforces a simple principle: the review that someone actually performs matters more than the policy on paper.
+Internal control frameworks are professional standards, not trial-tested interventions. Fraud surveys by professional associations consistently find that small organizations lose proportionally more, that missing controls and overridden controls are the most common weaknesses, and that most frauds are detected by tips or management review rather than by external audit. This is descriptive evidence. It supports a simple principle: a check that is actually performed beats a policy that is not.
 
 ## Calculator CALC-09: receivables aging and DSO
 
-**Inputs:** outstanding receivables by service month or by days outstanding; net revenue for the last 90 days.
+You need: outstanding receivables, by service month or by days outstanding, and net revenue for the last 90 days.
 
-**Formulas**
+{{formula:**Aging buckets:** 0 to 30, 31 to 60, 61 to 90, and over 90 days, each as an amount and as a percentage of the total.<br>**Average daily revenue** = net revenue for the last 90 days ÷ 90.<br>**DSO** = total receivables ÷ average daily revenue.}}
 
-- Aging buckets: 0–30, 31–60, 61–90 and over 90 days, each as amount and % of total
-- Average daily revenue = net revenue for the last 90 days ÷ 90
-- DSO (days) = total receivables ÷ average daily revenue
+**Worked example.** Receivables are 2.4 million pesos at 0 to 30 days, 1.9 million at 31 to 60, 1.1 million at 61 to 90, and 0.9 million over 90: 6.3 million in total. Revenue for the last 90 days was 7.56 million pesos, or 84,000 pesos a day. DSO = 6,300,000 ÷ 84,000 = 75 days. The over-90 share is 0.9 ÷ 6.3 = 14%.
 
-**Worked example.** Receivables: ₱2.4 million (0–30 days), ₱1.9 million (31–60), ₱1.1 million (61–90), ₱0.9 million (over 90). Total ₱6.3 million. Revenue for the last 90 days: ₱7.56 million, or ₱84,000 a day. DSO = 6.3 ÷ 0.084 = 75 days. Fourteen percent is over 90 days.
-
-**Interpretation.** Watch the over-90 share and the DSO trend month by month. A rising over-90 bucket usually means unsubmitted, returned or unresolved claims (Module 10). Work the list claim by claim.
+**Reading it.** Watch the over-90 share and the DSO trend month by month. A growing over-90 bucket usually means claims that were never submitted, were returned, or are unresolved (Module 10). Work the list claim by claim.
 
 ## Month-end close checklist
 
-1. Lock the session count for the month (treatment records).
-2. Reconcile sessions to claims submitted, pending and not billable (with reasons).
-3. Reconcile remittances received to claims; post unapplied cash to a holding account and resolve it.
+1. Lock the session count for the month from the treatment records.
+2. Reconcile sessions to claims submitted, pending, and not billable, with reasons.
+3. Reconcile remittances to claims. Post unapplied cash to a holding account and resolve it.
 4. Reconcile the bank account to the ledger.
-5. Count inventory of high-value items (ESAs, dialyzers) and compare with the stock ledger.
+5. Count high-value stock, such as ESAs and dialyzers, and compare with the stock ledger.
 6. Count petty cash.
-7. Review open purchase orders, unmatched receipts and accruals with the accountant.
-8. Prepare the variance report: actual versus budget, with explanations for material differences.
-9. Send the management report (Module 13 format) with exceptions, owners and due dates.
+7. Review open purchase orders, unmatched receipts, and accruals with the accountant.
+8. Prepare the variance report: actual against budget, with explanations for material differences.
+9. Send the management report (Module 13 format) with exceptions, owners, and due dates.
 
-## Field case: the missing ESA vials
-
-**Situation.** Month-end count shows 40 fewer erythropoietin vials than the stock ledger predicts.
-
-**Investigation.** The administration log matches patient orders. The difference traces to a week when vials were issued to the floor in boxes, not by patient, and the night nurse recorded usage at the end of each shift from memory.
-
-**Fix.** Issue by patient dose, record at administration, count daily for one month, then weekly. The variance falls to zero. No individual is accused without evidence, and the system change protects the staff.
+{{call:When a count difference, an unexplained payment, or a missing deposit suggests possible loss or fraud, secure the records and tell the licensee and the accountant in writing. Do not confront or accuse any staff member until the facts are reviewed.}}
 
 ## Common failure modes
 
-- Billing and clinical session counts in different systems, never reconciled.
-- Unapplied cash left sitting for months.
-- One person requesting, receiving and paying.
-- Inventory counted only at year-end.
+- **Two systems, no bridge.** Billing and clinical session counts never reconciled.
+- **Unapplied cash.** Payments sitting in a holding account for months.
+- **One person, every job.** The same person requests, receives, and pays, with no review.
+- **Year-end counting.** High-value stock counted once a year.
+- **The rumor investigation.** Looking for a culprit before looking at the records.
 
 ## Supervised practice
 

@@ -11,83 +11,101 @@ MODULE = {'objectives': ['List the external services a freestanding unit depends
                'The model: a small facility with outside lifelines',
                '{{fig:uom13a}}\n'
                '<div class="table-wrap"><table>\n'
-               '<thead><tr><th>Need</th><th>Hospital unit gets it from</th><th>Freestanding unit secures it '
+               '<thead><tr><th>Need</th><th>A hospital unit gets it from</th><th>A freestanding unit secures it '
                'by</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td>Emergency transfer</td><td>Emergency department next door</td><td>Written transfer agreement with a '
-               'nearby hospital; ambulance contract</td></tr>\n'
-               '<tr><td>Laboratory</td><td>Hospital lab</td><td>Contract with an accredited laboratory with defined turnaround '
-               'times</td></tr>\n'
-               '<tr><td>Water testing</td><td>Hospital engineering and lab</td><td>Contract laboratory for cultures, endotoxin '
-               'and chemical analysis</td></tr>\n'
-               '<tr><td>Biomedical service</td><td>Hospital biomedical department</td><td>Vendor service agreement and an '
+               '<tr><td>Emergency transfer</td><td>The emergency department next door</td><td>Written transfer agreements with '
+               'at least two hospitals; ambulance contracts</td></tr>\n'
+               '<tr><td>Laboratory</td><td>The hospital laboratory</td><td>A contract with an accredited laboratory with defined '
+               'turnaround times</td></tr>\n'
+               '<tr><td>Water testing</td><td>Hospital engineering and laboratory</td><td>A contract laboratory for cultures, '
+               'endotoxin, and chemical analysis</td></tr>\n'
+               '<tr><td>Biomedical service</td><td>The hospital biomedical department</td><td>A vendor service agreement and an '
                'in-house technician</td></tr>\n'
-               '<tr><td>Pharmacy</td><td>Hospital pharmacy</td><td>Licensed supplier; drug storage per regulation</td></tr>\n'
-               '<tr><td>Waste management</td><td>Hospital waste contract</td><td>Accredited transporter and treatment facility '
-               'for healthcare waste; manifest records</td></tr>\n'
-               '<tr><td>Infection control committee</td><td>Hospital committee</td><td>Unit-level infection prevention program '
+               '<tr><td>Pharmacy</td><td>The hospital pharmacy</td><td>A licensed supplier; drug storage according to '
+               'regulation</td></tr>\n'
+               '<tr><td>Waste management</td><td>The hospital waste contract</td><td>An accredited transporter and treatment '
+               'facility; manifest records</td></tr>\n'
+               '<tr><td>Infection control committee</td><td>The hospital committee</td><td>A unit infection prevention program '
                'led by the Medical Director</td></tr>\n'
-               '<tr><td>Security and fire safety</td><td>Hospital systems</td><td>Own fire safety inspection, alarms, '
-               'extinguishers and drills</td></tr>\n'
-               '</tbody></table></div>'),
+               '<tr><td>Security and fire safety</td><td>Hospital systems</td><td>Its own fire safety inspection, alarms, '
+               'extinguishers, and drills</td></tr>\n'
+               '</tbody></table></div>\n'
+               '<p><strong>Example.</strong> A unit in Tagum City has a laboratory contract that says nothing about turnaround '
+               'time. Monthly hepatitis B results take 10 to 14 days. After the manager adds "results within 72 hours; critical '
+               'values phoned within one hour" to the renewal and tracks it for three months, the median falls to two days. The '
+               'laboratory had always been able to do it. No one had asked.</p>'),
               ('permits-beyond-the-doh-license',
                'Permits beyond the DOH',
                'Permits beyond the DOH license',
-               '<p>Confirm with your local government and administrator. Typical items include the business permit, the Bureau '
-               'of Fire Protection fire safety inspection certificate, sanitary permit, registration as a generator of hazardous '
-               '(healthcare) waste with the environmental regulator, and building and occupancy permits for renovations. Each '
-               'goes in the evidence index (Module 02) with an expiry date.</p>'),
+               '<p>Confirm the list with your local government and administrator. It typically includes the business permit, the '
+               'Bureau of Fire Protection fire safety inspection certificate, the sanitary permit, registration as a generator '
+               'of hazardous healthcare waste with the environmental regulator, and building and occupancy permits for '
+               'renovations. Each goes in the evidence index (Module 2) with its expiry date.</p>'),
               ('healthcare-waste',
                'Healthcare waste',
                'Healthcare waste',
-               '<p>Sharps, blood-contaminated items, used dialyzers and bloodlines are infectious waste. The management '
-               'system:</p>\n'
-               '<ol><li><strong>Segregate</strong> at the point of generation using the national color code (yellow for '
-               'infectious, sharps in puncture-proof containers, black for general waste; confirm against current DOH healthcare '
-               'waste guidance).</li><li><strong>Store</strong> in a secured, labeled area with limited storage '
-               'time.</li><li><strong>Transport</strong> only through an accredited '
-               'transporter.</li><li><strong>Document</strong> each pickup with a manifest; reconcile volumes '
-               'monthly.</li></ol>\n'
-               '<p>Waste is also a cost line. Mis-segregated general waste in yellow bags multiplies disposal fees.</p>\n'
-               '{{fig:uom13b}}'),
+               '{{fig:uom13b}}\n'
+               '{{flow:Healthcare waste in four steps|Segregate::At the point of generation, using the national color code: '
+               'yellow for infectious waste, sharps in puncture-proof containers, black for general waste. Confirm against '
+               'current DOH healthcare waste guidance.|Store::In a secured, labeled area, for a limited time.|Transport::Only '
+               'through an accredited transporter.|Document::A manifest for each pickup; reconcile volumes every month.}}\n'
+               '<p>Waste is also a cost. General waste put in yellow bags multiplies disposal fees.</p>\n'
+               '<p><strong>Example.</strong> A unit in Cabuyao pays for 320 kilograms of infectious waste a month. A one-week '
+               'audit of the yellow bins finds food wrappers, paper towels from hand-washing, and empty saline bags. After a '
+               'black bin is placed beside every hand-washing sink and the staff are shown the audit, infectious waste falls to '
+               '210 kilograms. The savings pay for the new bins in two months.</p>'),
               ('owner-and-governance-reporting',
                'Owner and governance',
                'Owner and governance reporting',
-               '<p>Owners of freestanding units are often physicians, families or investors who are not on the floor every day. '
-               'Give them a predictable monthly report:</p>\n'
-               '<ul><li><strong>Safety:</strong> incidents, infections, water exceptions and their '
-               'status.</li><li><strong>Quality:</strong> the quality assessment and performance improvement (QAPI) dashboard '
-               '(Module 09).</li><li><strong>Operations:</strong> sessions delivered versus capacity, missed sessions, staffing '
-               'gaps.</li><li><strong>Finance:</strong> revenue, cost per treatment, receivables aging, cash position (Modules '
-               '11 and 16).</li><li><strong>Compliance:</strong> amber and red rows of the evidence '
-               'index.</li><li><strong>Decisions needed:</strong> each with options, cost and risk.</li></ul>\n'
-               '<p>Facts presented consistently build trust. Owners who trust the numbers rarely override safety decisions.</p>'),
+               '<p>Owners of freestanding units are often physicians, families, or investors who are not on the floor every day. '
+               'Give them a predictable monthly report, in the same format every time:</p>\n'
+               '<ul><li><strong>Safety:</strong> incidents, infections, water exceptions, and their '
+               'status.</li><li><strong>Quality:</strong> the quality dashboard (Module 9).</li><li><strong>Operations:</strong> '
+               'sessions delivered against capacity, missed sessions, staffing gaps.</li><li><strong>Finance:</strong> revenue, '
+               'cost per treatment, receivables aging, and cash (Modules 11 and 16).</li><li><strong>Compliance:</strong> the '
+               'amber and red rows of the evidence index.</li><li><strong>Decisions needed:</strong> each with options, cost, '
+               'and risk.</li></ul>\n'
+               '{{key:Facts presented the same way every month build trust. Owners who trust the numbers rarely override safety '
+               'decisions.}}'),
               ('networks-and-multisite-operations',
                'Networks and multisite',
                'Networks and multisite operations',
-               '<p>When one operator runs several units, standardize what must be the same (policies, forms, indicator '
-               'definitions, supplier contracts) and allow local variation only where justified (staffing patterns, transport '
-               'routes). Shared float pools and centralized purchasing give scale. Rotating managers across sites spreads good '
-               'practice but must not leave a site without a named accountable manager on any day.</p>'),
+               '<p>When one operator runs several units, standardize what must be the same: policies, forms, indicator '
+               'definitions, and supplier contracts. Allow local variation only where it is justified, such as staffing patterns '
+               'and transport routes. Shared float pools and central purchasing give scale. Rotating managers spreads good '
+               'practice, but no site should ever be left without a named accountable manager on any day.</p>'),
               ('what-the-evidence-shows',
                'What the evidence shows',
                'What the evidence shows',
-               '<p>There are no trials comparing freestanding and hospital-based dialysis governance in the Philippines. '
-               'International observational data show wide variation in staffing and outcomes by facility ownership and chain '
-               'affiliation[[uom_yoder2013]][[uom_plantinga2024]]. The defensible conclusion is that <strong>structure matters '
-               'less than the systems behind it</strong>: a freestanding unit with strong agreements, staffing and audits can '
-               'match or exceed a hospital unit with weak ones.</p>'),
+               '<p>No trial has compared freestanding and hospital-based dialysis governance in the Philippines. International '
+               'observational data show wide variation in staffing and outcomes by facility ownership and chain '
+               'affiliation.[[uom_yoder2013]][[uom_plantinga2024]] The defensible conclusion: structure matters less than the '
+               'systems behind it. A freestanding unit with strong agreements, staffing, and audits can match or exceed a '
+               'hospital unit with weak ones.</p>\n'
+               '{{call:When a patient needs emergency transfer, the physician on duty decides. If the first hospital or '
+               'ambulance cannot respond, move immediately to the next on the list, and tell the physician on duty each time a '
+               'step fails.}}'),
               ('common-failure-modes',
                'Common failure modes',
                'Common failure modes',
-               '<ul><li>A single transfer hospital and a single ambulance.</li><li>Laboratory contracts without turnaround '
-               'times, so serology results arrive late.</li><li>Permits renewed only after expiry notices.</li><li>Owner reports '
-               'that change format every month.</li></ul>')],
- 'debrief': ['{{fig:uom13c}}\n'
-             '<p><strong>What went wrong.</strong> One hospital, one ambulance, no backup.</p>\n'
-             '<p><strong>Fix.</strong> The manager negotiates transfer agreements with two hospitals in different directions, '
-             'adds a second ambulance provider, posts both on the emergency contact board, and runs a transfer drill each '
-             'quarter, timing call to departure.</p>'],
+               '<ul><li><strong>One of everything.</strong> A single transfer hospital and a single '
+               'ambulance.</li><li><strong>Contracts without clocks.</strong> Laboratory agreements with no turnaround '
+               'time.</li><li><strong>Renew after the notice.</strong> Permits renewed only when the expiry letter '
+               'arrives.</li><li><strong>The shape-shifting report.</strong> Owner reports in a new format every '
+               'month.</li><li><strong>Yellow bags for everything.</strong> Paying infectious-waste rates for paper '
+               'towels.</li></ul>')],
+ 'debrief': ['<p><strong>The cause.</strong> Not the physician, not the manager. One hospital, one ambulance, no backup. The '
+             'plan had no second option for either.</p>\n'
+             '<p><strong>The fix.</strong> Mr. Sison negotiates transfer agreements with two more hospitals in different '
+             "directions: one in Imus and one in Silang. He adds a second ambulance provider and the city's emergency response "
+             'number. All three hospitals and both ambulances, with phone numbers and expected travel times, go on the emergency '
+             "contact board by the nurses' station.</p>\n"
+             '<p><strong>The test.</strong> He runs a transfer drill every quarter, timing the interval from the decision to '
+             "transfer to the ambulance leaving. The first drill takes 31 minutes, because the second ambulance company's number "
+             'had changed. The second takes 18. Mr. Ramos, who had a heart attack and recovered, returns to the unit six weeks '
+             'later. His son asks what has changed. Mr. Sison shows him the board.</p>\n'
+             '{{fig:uom13c}}'],
  'quiz': [('A freestanding unit secures emergency transfer through:',
            ['Hoping the nearest emergency room (ER) accepts',
             'Written agreements with nearby hospitals and ambulance providers',
@@ -167,16 +185,31 @@ MODULE = {'objectives': ['List the external services a freestanding unit depends
            3,
            'Transparency reduces conflict.')],
  'readings': [('hemodialysis-transfer-guide.html', 'Transfers between units and hospitals.')],
- 'big': '<p>A hospital dialysis unit can borrow a laboratory, a pharmacy, an engineer and a code team down the hall. A '
-        'freestanding unit has none of that. Everything a hospital provides by default, you provide by contract, by agreement or '
-        'by your own staff. The unit is only as strong as its weakest outside arrangement.</p>',
+ 'big': '{{plain:A hospital dialysis unit is a room in a big house. When it needs a laboratory, an ambulance, a pharmacist, or a '
+        'fire alarm, someone down the hall already has one. A freestanding unit is a small house on its own lot. Everything the '
+        'big house provides for free, it must arrange by contract, by phone number, and by rehearsal.}}\n'
+        '<p>The picture has a limit. A small house is also more nimble. A freestanding unit can choose its suppliers, change its '
+        'schedule without a hospital committee, and know every patient by name. Many of the best-run units in the country are '
+        'freestanding. Structure matters less than the systems behind it. But those systems do not come with the building; you '
+        'have to build them.</p>\n'
+        '<p>This module is for managers of freestanding units. If you run a hospital unit, Module 14 is yours, though the two '
+        'overlap.</p>\n'
+        '{{cards:Key terms for this module|Transfer agreement::A written arrangement with a hospital to accept your patients in '
+        'an emergency.|Service agreement::A contract that states what an outside provider delivers, by when, and how failures '
+        'are escalated.|Turnaround time::How long a laboratory takes from sample to result.|Healthcare waste::Sharps, '
+        'blood-contaminated items, used dialyzers, and bloodlines.|Manifest::The signed record of each waste pickup.|Governance '
+        'report::A monthly summary for the owner, in the same format every month.}}',
  'case': {'title': 'The transfer that took two hours',
-          'html': '<p>A patient develops chest pain and hypotension mid-session. The physician on duty (POD) stabilizes him and '
-                  "calls for transfer. The nearest hospital's emergency department says it is full. The ambulance contract lists "
-                  'one vehicle, which is on another call.</p>',
-          'questions': ['What must you protect first, and whose decision is it?',
-                        'Which facts would you confirm before you act?',
-                        'What would you record, and where?']},
+          'html': '<p>It is 10:40 on a Tuesday at a 12-station freestanding unit in Dasmariñas, Cavite. Mr. Eduardo Ramos, 64, '
+                  'develops crushing chest pain and a blood pressure of 80/50 midway through his session. The physician on duty, '
+                  'Dr. Clarissa Uy, stops ultrafiltration, gives oxygen, gets an electrocardiogram, and calls for transfer.</p>\n'
+                  "<p>The manager, Mr. Ferdinand Sison, calls the hospital named in the unit's only transfer agreement. Its "
+                  'emergency department says it is full and is diverting ambulances. He calls the ambulance provider on the '
+                  'contract. Its one vehicle is on another call, 40 minutes away. Mr. Ramos leaves the unit at 12:45, in a '
+                  'private car driven by his son, to a hospital 25 minutes away.</p>',
+          'questions': ['What made this transfer take two hours?',
+                        'What should be in place so the next one takes 20 minutes?',
+                        'How would you know it works before the next real emergency?']},
  'skills': {'title': 'Supervised practice',
             'intro': 'Complete these with your preceptor at your own unit, using fictional or de-identified data.',
             'items': [('List every external service and its agreement, contact and expiry.', False),

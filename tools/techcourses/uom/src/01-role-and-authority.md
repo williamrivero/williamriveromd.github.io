@@ -1,9 +1,14 @@
 # 01. Who runs the dialysis unit
 
-**Core** · 40 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-01 (Understand) · FIG-01B (Apply) · FIG-01C (Appreciate) · **Calculator:** none
+## The big picture
 
-> **Why this matters.** A dialysis unit is a small hospital that opens and closes three times a day. Most bad mornings are not caused by a lack of skill. They happen because two people each assumed the other one had decided, or because the loudest person in the room decided something that was not theirs to decide. Your first job as manager is to make authority visible before anyone needs it.
+{{plain:A dialysis unit runs on four wires that meet at one patient. One wire carries the license and the money. One carries medical orders. One carries nursing assignments. One carries the schedule, the supplies, and the paperwork. You hold the fourth wire. Your job is to know, for every decision, which wire is live.}}
+
+The picture has a limit. Wires do not argue, and people do. In a real unit the owner, the Medical Director, the head nurse, and the manager will sometimes want different things at 05:30 on a Monday. The point of the picture is not that the lines never cross. It is that every decision has exactly one owner, a named backup, and a time by which someone must decide.
+
+Most bad mornings in dialysis units are not caused by a lack of skill. They happen because two people each assumed the other had decided, or because the loudest person in the room decided something that was not theirs to decide. This module teaches you to make authority visible before anyone needs it.
+
+{{cards:Key terms for this module|Licensee::The person or organization that holds the Department of Health (DOH) license to operate. In a hospital, this is the hospital.|Medical Director::The physician who owns medical and technical oversight of the unit. The Philippine Society of Nephrology (PSN) calls this role the Dialysis Clinical Head.|Physician on duty (POD)::The physician who covers the unit during operating hours under delegated authority.|Nursing lead::The head nurse or charge nurse who assigns nurses to patients.|Decision-rights map::A one-page table naming the owner, backup, trigger, and deadline for each recurring decision.|Safety hold::Your authority to stop something that looks unsafe. It never includes the authority to restart it.|Closed loop::A message is closed only when the receiver repeats the action, the owner, and the time.}}
 
 ## Learning objectives
 
@@ -14,43 +19,84 @@ By the end of this module you can:
 3. Run a closed-loop opening huddle in under four minutes and record what was decided and by whom.
 4. Recognize when a request from an owner, a physician or a patient falls outside your appointment, and route it without delay or conflict.
 
+## Field case: the 05:30 phone call
+
+**Situation.** You are Ms. Carla Mendoza, operations manager of a 15-station freestanding unit in Malolos, Bulacan. It is Monday, 05:30. Twenty-four patients are booked across the first two shifts, and twelve of them have been off dialysis since Friday.
+
+Your phone rings. Nurse Joy Santiago has a fever and will not come in. A minute later you see that Dr. Paolo Reyes, the physician on duty for the first shift, has not confirmed his arrival. He usually texts by 05:15.
+
+Then the owner, Mr. Ramon Tan, posts in the staff group chat: "Patients are already outside. Seat everyone on time. We cannot afford complaints this week."
+
+**Before reading on, decide:**
+
+- How many stations can you open safely at 06:00, and who decides that number?
+- Who do you call first, second, and third, and what do you write down?
+- What do you tell Mr. Tan, and what do you tell the patients waiting outside?
+
+**Case review.**
+
+**Who decides capacity.** Not you, and not Mr. Tan. The head nurse, Ms. Grace Ilagan, decides how many patients the nurses present can safely care for. You call her first: "Joy is out. Who do we have, and how many stations can you cover at your usual ratio?" She answers that she can cover 12 stations now and all 15 when the relief nurse arrives at 07:00.
+
+**Who covers the physician gap.** You call Dr. Reyes directly. No answer. At 05:40 you call the backup POD on the coverage list, Dr. Liza Cruz, who says she can be there by 06:15. At 05:52 Dr. Reyes calls back: a flat tire on the MacArthur Highway, arriving 06:05. You write all four times in the shift log.
+
+**What opens.** Twelve stations open at 06:00 with full nurse coverage. The three patients with the longest gap since Friday and the highest weight gains go first, as Ms. Ilagan and the POD decide. Three patients start at 07:00.
+
+**What you say.** To the patients outside: "We are starting twelve treatments now. Three of you will start at seven because we are waiting for one more nurse. No one will miss a session today." No blame, no staff names. To Mr. Tan, in the same group chat so the record is complete: "Opening 12 of 15 at 06:00 with full nurse coverage. Three start at 07:00 when the relief nurse arrives. POD confirmed 05:52, arriving 06:05. No session will be skipped." Owners rarely argue with a plan that protects both the patients and the license.
+
+**What you fix this week.** The real failure was not the fever. It was that the unit had no standby nurse and no rule for when a POD must confirm. Put both on the agenda for the weekly review.
+
+{{fig:uom01c}}
+
 ## The operating model: four lines, one patient
 
-Think of authority in a dialysis unit as four parallel wires feeding one patient. Each wire carries a different current, and the unit is safe only when you can tell which wire is live for a given decision.
+Every decision in a dialysis unit belongs to one of four lines of authority. The unit is safe only when everyone can tell which line owns a decision before the decision is needed.
 
-**Governance.** The licensee, owner or hospital administration holds the license and the money. It appoints the Medical Director, approves budgets and contracts, and signs the delegations that tell everyone else what they may do. Under DOH AO 2012-0001, the facility, not the individual manager, is accountable for meeting licensing standards.
+{{fig:uom01a}}
 
-**Medical.** The Medical Director (the PSN calls this role the Dialysis Clinical Head) owns technical and medical oversight: protocols, staff education requirements, quality assessment and performance improvement (QAPI), infection surveillance and water safety. The attending nephrologist owns patient-specific prescriptions. The physician on duty (POD) provides delegated medical coverage during the shift. None of these can be overridden by a schedule or a budget.
+**Governance.** The licensee, owner, or hospital administration holds the license and the money. It appoints the Medical Director, approves budgets and contracts, and signs the delegations that say what everyone else may do. Under DOH Administrative Order (AO) 2012-0001, the facility, not the individual manager, is accountable for meeting licensing standards.[[doh2012]]
 
-**Nursing.** The head nurse or nursing lead assigns nurses to patients, judges acuity, supervises competency and owns nursing quality. RA 9173 §29 sets the minimum qualifications for a supervisory nursing position: Philippine RN registration, at least two years of experience in general nursing service administration, a BSN with at least nine graduate units in nursing administration, and good standing in the accredited professional organization. Whether a manager's specific job falls under §29 is an HR and legal question. Document the answer rather than assuming it.
+**Medical.** The Medical Director owns medical and technical oversight: protocols, staff education requirements, quality assessment and performance improvement (QAPI), infection surveillance, and water safety. The attending nephrologist owns each patient's prescription. The POD provides delegated medical coverage during the shift. A schedule or a budget never overrides any of them.
 
-**Operations.** You coordinate people, capacity, supplies, records, vendors, claims and the physical plant. You make the other three lines work on time. You do not prescribe, assign nurses unless you also hold a nursing appointment, or release water or machines.
+**Nursing.** The head nurse or nursing lead assigns nurses to patients, judges acuity, supervises competency, and owns nursing quality. Republic Act (RA) 9173, Section 29, sets the minimum qualifications for a supervisory nursing position: Philippine registered nurse (RN) registration, at least two years of experience in nursing service administration, a Bachelor of Science in Nursing with at least nine graduate units in nursing administration, and good standing in the accredited professional organization.[[pd_ra9173]] Whether your own job falls under Section 29 is a question for human resources and legal counsel. Get the answer in writing.
 
-One person may legitimately hold more than one line, for example a head nurse who is also the appointed unit manager. When that happens, the written appointment must say so, and the person should state which hat they are wearing when they decide.
+**Operations.** You coordinate people, capacity, supplies, records, vendors, claims, and the building. You make the other three lines work on time. You do not prescribe. You do not assign nurses unless you also hold a nursing appointment. You do not release water or machines.
 
-### The safety hold: the one clinical-adjacent power you do hold
+**Example.** At a 20-station hospital unit in Pampanga, Ms. Lorna Dizon is both head nurse and unit manager. Her appointment letter names both roles. When she moves a nurse from station 4 to station 9, she says, "As head nurse, I am reassigning Nurse Ben." When she postpones a supply order, she says, "As unit manager, I am holding this order until Friday." It sounds formal. It also means no one argues later about which authority she used.
 
-Every approved policy should give the operations manager the authority to **stop** something that looks unsafe, such as delaying an opening, quarantining a lot or holding a station, without giving the manager the authority to **restart** it. Restart (release) belongs to the technical and clinical owners. This asymmetry is deliberate. Stopping is cheap and reversible. Releasing without the right expertise is how patients get hurt.
+{{key:One person may hold two lines. The written appointment must say so, and the person should say which role they are using when they decide.}}
+
+## The safety hold
+
+Every approved policy should give you the authority to **stop** something that looks unsafe: delay an opening, quarantine a lot of bloodlines, take a station out of service. It should not give you the authority to **restart** it. Release belongs to the technical and clinical owners.
+
+The asymmetry is deliberate. Stopping is cheap and reversible: at worst, a treatment starts 40 minutes late. Releasing without the right expertise is how patients get hurt.
+
+**Example.** At 07:20, two nurses report that bloodlines from the same carton leaked at the arterial connector during priming. No patient was harmed. You cannot judge whether the lot is defective, and you do not try. You pull the remaining boxes of that lot, tag them "On hold, do not use," move stock from another lot to the floor, and call the biomedical lead and the head nurse. The supplier's representative and the biomedical lead examine the lines that afternoon. The lot stays on hold until they sign a decision. The hold cost you one stock transfer. Using the lot could have cost a patient a blood loss mid-treatment.
+
+{{call:Place a safety hold whenever a release record is missing, incomplete, or unsigned, and call the owner of that release. Never restart a held station, loop, or lot yourself.}}
 
 ## What the evidence shows
 
-Direct trials of governance structures in dialysis do not exist, so we reason from adjacent evidence and say so plainly.
+No trial has compared organizational charts in dialysis units, so this section reasons from nearby evidence and says so.
 
-- **Communication failures drive preventable harm.** In a nine-hospital prospective study, a standardized handoff bundle (I-PASS) was associated with a 23% fall in medical errors and a 30% fall in preventable adverse events (4.7 to 3.3 per 100 admissions) without lengthening handoffs (Starmer et al., *NEJM* 2014). That study was in pediatric residents, not dialysis units, so treat it as **evidence-supported inference**: structured, closed-loop communication reduces harm across settings.
-- **Regulators in comparable systems separate the roles explicitly.** US Medicare Conditions for Coverage (42 CFR Part 494) distinguish the governing body, the physician medical director and the full-time RN nurse manager. Singapore's 2023 outpatient renal dialysis regulations name a Clinical Governance Officer and a supervising nurse. These are policy choices, not outcome trials, but they show that mature systems do not leave role boundaries to chance.
+**Structured communication reduces harm.** In a prospective study in nine hospitals, a standardized handoff program called I-PASS was associated with a 23% fall in medical errors and a 30% fall in preventable adverse events, from 4.7 to 3.3 per 100 admissions, without making handoffs longer.[[uom_starmer2014]] The study involved pediatric residents, not dialysis units. Treat it as reasonable inference: closed-loop communication reduces harm across settings, and a dialysis opening is a handoff from the night to the day.
+
+**Mature systems write the roles down.** United States Medicare rules for dialysis facilities separate the governing body, the physician medical director, and the registered nurse manager.[[dch_cfr494]] These are policy choices, not outcome trials. They show that well-regulated systems do not leave role boundaries to chance.
 
 ## Philippine rules that change the decision
 
 | Rule | What it changes on Monday | Verify locally |
 |---|---|---|
-| DOH AO 2012-0001 §V.B.2 | The Medical Director role, a POD during operating hours, and staffing ceilings exist in writing. Your decision map must show them. | Current CHD interpretation for your configuration |
+| DOH AO 2012-0001 | A Medical Director, a POD during operating hours, and staffing requirements exist in writing. Your map must show them. | Current interpretation from your Center for Health Development |
 | PSN 2024 HD Guidelines (3rd ed.) | Sample Dialysis Clinical Head appointment and training expectations | Current PSN attestation forms |
-| RA 9173 §29 | Minimum qualifications if your role is a supervisory nursing position | HR determination in your file |
-| RA 10173 | Health data are sensitive personal information. You decide who sees what. | Facility Data Protection Officer (DPO) contact |
+| RA 9173, Section 29 | Minimum qualifications if your role is a supervisory nursing position | Human resources determination in your file |
+| RA 10173 | Health data are sensitive personal information. You decide who sees what. | Contact for your facility's Data Protection Officer (DPO) |
 
 ## Doing it on Monday: the decision-rights map
 
-Build a one-page map. For each decision, write the owner, the backup, what triggers escalation, and the deadline for escalating.
+Build a one-page map. For each recurring decision, write the owner, the backup, what triggers escalation, and the deadline. Post it where the huddle happens.
+
+{{fig:uom01b}}
 
 | Decision | Owner | Backup | Escalate when | Deadline |
 |---|---|---|---|---|
@@ -65,35 +111,23 @@ Build a one-page map. For each decision, write the owner, the backup, what trigg
 | Data access request | DPO | Administrator | Any third party | Before release |
 | Media or social media inquiry | Administrator | Owner | Any | Before any response |
 
-## The opening huddle (four minutes)
+**Example.** A daughter calls at 14:00 asking you to send her father's last three treatment records to a hospital in Manila "right now, by Viber." The map tells you this is not your call. It belongs to the DPO, and the backup is the administrator. You say: "I want to get this to the hospital quickly and safely. Our privacy officer handles record releases. I am calling her now and she will call you back within the hour." You have not refused. You have routed.
 
-1. **Coverage:** POD present? Nurses and technicians by name against the roster?
-2. **Release:** water log complete and signed? Machines cleared? Emergency cart checked?
-3. **Capacity:** booked patients, isolation needs, any patient needing a hospital bed?
-4. **Risks:** one sentence each from nursing, medical and technical.
-5. **Decision and owner:** say aloud "We open stations 1–12 at 06:00; stations 13–15 hold pending POD confirmation, owner: head nurse, check at 05:45." Write it down with the time.
+## The opening huddle in four minutes
 
-Closed loop means the receiver repeats the action and owner. "Noted" is not closure.
+{{flow:The four-minute opening huddle|Coverage::POD present or confirmed? Nurses and technicians by name against the roster?|Release::Water log complete and signed? Machines cleared? Emergency cart checked?|Capacity::Booked patients, isolation needs, anyone who may need a hospital bed?|Risks::One sentence each from nursing, medical, and technical.|Decision and owner::Say it aloud, with the owner and the check time, and write it down.}}
 
-## Field case: the 05:30 phone call
+A good decision statement sounds like this: "We open stations 1 to 12 at 06:00. Stations 13 to 15 hold pending the relief nurse. Owner: Ms. Ilagan. Check at 06:45." The head nurse repeats it back. You write it in the log with the time.
 
-**Situation.** At 05:30 a nurse calls in sick. The POD for the first shift has not confirmed arrival. Twenty-four patients are booked across two shifts. The owner messages the group chat: "Seat everyone on time, patients are waiting outside."
-
-**What goes wrong in weak units.** Someone seats all patients to keep the peace. The remaining nurses run at 1:6. A patient becomes hypotensive while the only physician is still in traffic.
-
-**What a good manager does.**
-1. Calls the head nurse: "Can you staff 12 stations at 1:4 with who is here?" The head nurse reassigns and says she can cover 12 now and 15 when the relief nurse arrives at 07:00.
-2. Calls the POD directly, then the backup POD on the coverage list. Records times.
-3. Opens the stations that are fully covered. Holds the rest. Tells waiting patients the expected start time and why, without blaming staff.
-4. Replies to the owner with facts, not argument: "Opening 12 of 15 at 06:00 with full nurse coverage. Three patients start at 07:00 when the relief nurse arrives. POD confirmed 05:52. No session will be skipped." Owners rarely object to a plan that protects both patients and the license.
-5. Logs the event for the weekly review: why was there no standby?
+{{key:"Noted" is not closure. A message is closed when the receiver repeats the action, the owner, and the time.}}
 
 ## Common failure modes
 
-- Treating the group chat as an escalation. A message is not received until someone accepts it.
-- Letting the person with the most seniority decide outside their line.
-- A manager approving a prescription change "because the doctor said so on the phone." Verbal orders go to the licensed clinician who can receive them.
-- Decision maps that list job titles but no names or backups.
+- **The group chat as escalation.** A message posted is not a message received. Escalation ends with a named person who accepts it.
+- **Seniority instead of authority.** The longest-serving nurse is not the nursing lead unless she is appointed.
+- **The manager as order relay.** A physician phones you a potassium change. You transfer the call to the nurse or POD who can read it back and document it. You never write it on the whiteboard.
+- **Maps with titles but no names.** "Biomedical technician" is not an owner. "Mr. Rico Manalo, backup Mr. Allan Bueno" is.
+- **Dual roles never written down.** The first dispute will be about which hat was on.
 
 ## Supervised practice
 

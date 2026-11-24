@@ -82,7 +82,7 @@ READINGS = {
     "04": [("dialysis-adequacy.html", "Why time on dialysis and dose matter."),
            ("hemodialysis-transfer-guide.html", "Moving a patient safely between units.")],
     "05": [("dialysis-access-infection.html", "Access infections, from the patient side."),
-           ("viral-infections-vaccinations-ckd.html", "Hepatitis B vaccination and viral infections in kidney disease.")],
+],
     "06": [("dialysis-water-treatment-systems.html", "The full clinical and engineering reference on dialysis water.")],
     "07": [("code-blue-acls-dialysis-unit.html", "Running a cardiac arrest in a dialysis unit."),
            ("hemodialysis-complications.html", "The complications staff must recognize during treatment.")],
@@ -123,7 +123,9 @@ def inline(s):
     s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
     s = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", s)
     s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
-    s = s.replace("&lt;", "&lt;").replace(" - ", " &ndash; ")
+    s = s.replace(" - ", " &ndash; ")
+    s = re.sub(r"&amp;([a-z]+|#\d+);", r"&\1;", s)                       # named entities written in the Markdown
+    s = re.sub(r"&lt;(/?(?:br|strong|em|sup|sub))&gt;", r"<\1>", s)        # a few inline tags allowed in macros
     return s
 
 
@@ -135,7 +137,14 @@ def blocks(lines):
         if not ln.strip():
             i += 1
             continue
-        if ln.startswith("### "):
+        if ln.lstrip().startswith("{{"):
+            buf = [ln.strip()]
+            while not buf[-1].endswith("}}") and i + 1 < len(lines):
+                i += 1
+                buf.append(lines[i].strip())
+            out.append(inline(" ".join(buf)))
+            i += 1
+        elif ln.startswith("### "):
             out.append(f"<h3>{inline(ln[4:].strip())}</h3>")
             i += 1
         elif ln.lstrip().startswith("|"):
@@ -163,7 +172,7 @@ def blocks(lines):
             out.append("<ol>" + "".join(f"<li>{inline(x)}</li>" for x in items) + "</ol>")
         else:
             para = []
-            while i < len(lines) and lines[i].strip() and not re.match(r"^(\s*- |\s*\d+\. |\s*\||### )", lines[i]):
+            while i < len(lines) and lines[i].strip() and not re.match(r"^(\s*- |\s*\d+\. |\s*\||### |\s*\{\{)", lines[i]):
                 para.append(lines[i].strip())
                 i += 1
             out.append(f"<p>{inline(' '.join(para))}</p>")
@@ -173,6 +182,7 @@ def blocks(lines):
 def cite(text, used):
     for pat, key in CITES:
         text = re.sub(r"\s?" + pat, "[[" + key + "]]", text)
+    used |= set(re.findall(r"\[\[([a-z0-9_]+)\]\]", text))
     for pat, key in FIRST:
         if key in used:
             continue
@@ -200,21 +210,38 @@ def parse(path):
     body, sep, bank = raw.partition("\n## Question bank")
     raw = cite(body, used) + sep + bank
     title = re.search(r"^# \d+\. (.+)$", raw, re.M).group(1).strip()
-    why = re.search(r"^> \*\*Why this matters\.\*\* (.+)$", raw, re.M).group(1).strip()
+    wm = re.search(r"^> \*\*Why this matters\.\*\* (.+)$", raw, re.M)
+    why = wm.group(1).strip() if wm else ""
     secs = re.split(r"^## ", raw, flags=re.M)[1:]
     mod = {"objectives": [], "sections": [], "debrief": [], "quiz": [], "readings": READINGS.get(mid, [])}
     if mid in CALCS:
         mod["calcs"] = CALCS[mid]
-    mod["big"] = f"<p>{inline(why)}</p>"
+    mod["big"] = f"<p>{inline(why)}</p>" if why else ""
     for sec in secs:
         head, _, body = sec.partition("\n")
         head = head.strip()
         lines = body.splitlines()
-        if head == "Learning objectives":
+        if head == "The big picture":
+            mod["big"] = blocks(lines)
+        elif head == "Learning objectives":
             mod["objectives"] = [inline(re.sub(r"^\d+\. ", "", l).strip()) for l in lines if re.match(r"^\d+\. ", l)]
         elif head.startswith("Field case"):
             ctitle = head.split(":", 1)[1].strip() if ":" in head else "A day in the unit"
             text = "\n".join(lines)
+            if "**Case review.**" in text:
+                pre, _, post = text.partition("**Case review.**")
+                qs = []
+                if "**Before reading on, decide:**" in pre:
+                    pre, _, qblock = pre.partition("**Before reading on, decide:**")
+                    qs = [inline(re.sub(r"^\s*- ", "", l).strip()) for l in qblock.splitlines() if l.strip().startswith("- ")]
+                pre = pre.replace("**Situation.** ", "", 1)
+                mod["case"] = {"title": inline(ctitle[:1].upper() + ctitle[1:]).rstrip("."),
+                               "html": blocks(pre.strip().splitlines()),
+                               "questions": qs or ["What must you protect first, and whose decision is it?",
+                                                   "Which facts would you confirm before you act?", "What would you record, and where?"]}
+                post = post.strip()
+                mod["debrief"] = [("" if "{{fig:uom%sc}}" % mid in raw else FIG_C % mid + "\n") + blocks(post.splitlines())]
+                continue
             sit = re.search(r"\*\*Situation\.\*\* (.+?)(?=\n\n)", text, re.S)
             situation = sit.group(1).strip() if sit else ""
             rest = text.replace(sit.group(0), "") if sit else text
@@ -269,11 +296,14 @@ def parse(path):
                          "intro": "Assemble each artifact with fictional or de-identified data, then defend it. A zero on any safety gate stops the capstone.",
                          "items": items, "placement": ""}
     # Figures: A after the first paragraph of the first lesson section; B in the "Monday" section (else the last section).
+    allhtml = str(mod["sections"]) + str(mod.get("big", "")) + str(mod["debrief"])
     s0 = mod["sections"][0]
-    s0[3] = after_first_para(s0[3], FIG_A % mid)
+    if (FIG_A % mid) not in allhtml:
+        s0[3] = after_first_para(s0[3], FIG_A % mid)
     want = B_SECTION.get(mid, "doing it on monday").lower()
     bi = next((k for k, s in enumerate(mod["sections"]) if s[2].lower().startswith(want)), len(mod["sections"]) - 1)
-    mod["sections"][bi][3] += "\n" + FIG_B % mid
+    if (FIG_B % mid) not in allhtml:
+        mod["sections"][bi][3] += "\n" + FIG_B % mid
     mod["sections"] = [tuple(s) for s in mod["sections"]]
     nocite = lambda t: re.sub(r"\[\[[a-z0-9_\]\[]+\]\]", "", t)   # quiz, checklist and objectives render without reference links
     mod["quiz"] = [(nocite(a), [nocite(o) for o in b], c, nocite(d)) for a, b, c, d in mod["quiz"]]
@@ -291,7 +321,7 @@ EXTRA_ABBR = {"POD": "physician on duty", "QAPI": "quality assessment and perfor
               "RO": "reverse osmosis", "ICU": "intensive care unit", "ER": "emergency room", "FTE": "full-time equivalent",
               "PPE": "personal protective equipment", "SOA": "statement of account", "RA": "Republic Act", "NPC": "National Privacy Commission",
               "ISO": "International Organization for Standardization", "CDC": "Centers for Disease Control and Prevention",
-              "KDOQI": "Kidney Disease Outcomes Quality Initiative", "DOPPS": "Dialysis Outcomes and Practice Patterns Study"}
+              "KDOQI": "Kidney Disease Outcomes Quality Initiative", "IRR": "incidence rate ratio", "DOPPS": "Dialysis Outcomes and Practice Patterns Study"}
 
 
 def abbr_table():
@@ -357,7 +387,7 @@ def expand_first_use(mod, table):
                         continue                       # asset IDs (HD-07) and clock times (6:00 PM)
                     if tok == "PD" and re.match(r" \d", nxt):
                         continue                       # Presidential Decree numbers (PD 851)
-                    if re.search(r"(Guidelines|2024) $", prev) or nxt.startswith(" Guid"):
+                    if re.search(r"(Guidelines|2024) $", prev) or nxt.startswith(" Gu"):
                         continue                       # titles such as "PSN 2024 HD Guidelines"
                     hit = (k, m)
                     break

@@ -1,9 +1,14 @@
-# 08. Equipment, supplies and procurement
+# 08. Equipment, supplies, and procurement
 
-**Core** · 40 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-08 (Understand) · FIG-08B (Apply) · FIG-08C (Appreciate) · **Calculator:** CALC-05 Reorder point, days-on-hand and machine availability
+## The big picture
 
-> **Why this matters.** Every session consumes a predictable bundle: a dialyzer (new or reprocessed), bloodlines, needles or catheter supplies, concentrates, saline, heparin, gloves, dressings and an erythropoiesis-stimulating agent for many patients. Run out of one item and the session does not happen. Use one recalled lot and you need to find every patient who received it, today. Inventory is clinical continuity measured in boxes.
+{{plain:Every treatment uses a machine that must work and a box of supplies that must be safe. Think of each item as having a passport: where it came from, which lot it belongs to, when it expires, who checked it, and which patient it reached. When something goes wrong with a product, the passport lets you find every patient it touched within the hour.}}
+
+The picture has a limit. Passports are checked at borders; supplies are rarely checked after the receiving dock. A box of dialyzers can sit for months in a hot stockroom, and a machine can be "fixed" by a vendor and put back into service without anyone signing that it passed its checks. The passport is only as good as the habit of writing in it.
+
+This module covers the three things that keep a unit supplied and safe: an asset register that knows every machine's history, a stock system that never runs out and never uses expired items, and a purchasing process that no single person controls.
+
+{{cards:Key terms for this module|Asset register::One list of every machine and major piece of equipment, with its history.|Preventive maintenance (PM)::Scheduled servicing done before something breaks.|First expiry, first out (FEFO)::Use the lot that expires first, regardless of when it arrived.|Lot traceability::Recording which lot each patient received, for high-risk items.|Reorder point::The stock level at which you must order to avoid running out.|Safety stock::Extra stock held to cover delays and surges.|Quarantine::Physically separating suspect stock so it cannot be used.|Three-way match::Paying only when the purchase order, the receiving report, and the invoice agree.}}
 
 ## Learning objectives
 
@@ -12,84 +17,99 @@
 3. Trace a lot from receipt to patient and execute a recall or quarantine.
 4. Run a transparent procurement that separates requesting, approving, receiving and paying.
 
-## The operating model: assets, consumables and traceability
+## Field case: the cheaper dialyzer
 
-**Assets** (machines, RO system, chairs, defibrillator, reprocessing equipment) have a lifecycle: acceptance testing, scheduled preventive maintenance, repair, release and eventual retirement. Each has a unique identifier and a history.
+**Situation.** At a 20-station unit in Batangas City, the finance officer, Mr. Rey Panganiban, brings the manager, Ms. Cheryl Mercado, a quotation. A new vendor offers a dialyzer 18% cheaper than the brand the unit has used for six years. With about 1,000 dialyzers a month, the savings would cover most of a nurse's salary. "Let's switch next month," he says. "A dialyzer is a dialyzer."
 
-**Consumables** move: received, stored, issued, used. Two rules matter most:
+Ms. Mercado notices that the new dialyzer has a different membrane material and a smaller surface area. The unit reprocesses dialyzers for some patients.
 
-- **First expiry, first out (FEFO):** use the earliest-expiring lot first. Not first in, first out, because a later delivery can carry an earlier expiry.
-- **Lot traceability:** record which lot each patient received for high-risk items (dialyzers, bloodlines, concentrates, injectable drugs). When a recall arrives, you need a list of patients within an hour, not a week.
+**Before reading on, decide:**
 
-**Reprocessed dialyzers** add a layer. Each reused dialyzer belongs to one patient, carries a label with the patient's identity and reuse number, and must pass performance testing (total cell volume or equivalent) and germicide checks before each use. The reprocessing log is both a quality record and a traceability record. Follow your PSN and DOH-aligned reprocessing policy and the manufacturer's instructions.
+- Who should decide whether to switch, and on what evidence?
+- What could go wrong for patients if the switch happens without review?
+- What should Ms. Mercado bring to that decision?
+
+**Case review.**
+
+**Who decides.** A dialyzer is part of the prescription. A change in membrane and surface area can change how much waste is cleared each session, and reprocessing compatibility may differ. This is a clinical product decision for the Medical Director, informed by cost, not driven by it.
+
+**What she brings.** Ms. Mercado prepares a one-page comparison: Philippine Food and Drug Administration registration, membrane type, surface area and published clearance, price per unit and per month, the vendor's supply record and lead time, reprocessing compatibility, and service support.
+
+**The decision.** The Medical Director approves a monitored trial: twelve patients for six weeks, with dialysis adequacy measured before and after, and the reprocessing team checking performance tests on each reused dialyzer. In week four, two patients' adequacy results fall below target, and the attending nephrologists adjust their prescriptions. The trial shows the new dialyzer works, but some patients need a longer session or a larger size. The final decision includes that cost. The record shows clinical review came before the cost decision.
+
+{{fig:uom08c}}
+
+## The operating model: assets, consumables, and traceability
+
+{{fig:uom08a}}
+
+**Assets** are the machines, the reverse osmosis system, chairs, the defibrillator, and reprocessing equipment. Each one has a life: acceptance testing, scheduled preventive maintenance, repairs, release back to service, and eventual retirement. Each has a unique identifier and a history you can read.
+
+**Consumables** move: received, stored, issued, used. Two rules matter most.
+
+- **First expiry, first out.** Use the earliest-expiring lot first. Not first in, first out, because a later delivery can carry an earlier expiry date.
+- **Lot traceability.** Record which lot each patient received for high-risk items: dialyzers, bloodlines, concentrates, and injectable drugs. When a recall arrives, you need a list of patients within an hour, not a week.
+
+**Reprocessed dialyzers** add a layer. Each reused dialyzer belongs to one patient and carries a label with the patient's identity and reuse number. Before each use it must pass a performance test (total cell volume or an equivalent) and a check that the germicide is present and then fully rinsed out. The reprocessing log is both a quality record and a traceability record. Follow your PSN and DOH-aligned reprocessing policy and the manufacturer's instructions.[[psn2024]]
+
+**Example.** A stockroom in Legazpi receives bloodlines in March with an expiry date in September, and another delivery in May that expires in July. Under first in, first out, the March stock is used first, and in August the clerk finds 240 sets from the May delivery past their date. Under first expiry, first out, the May stock would have been used first, and nothing would have expired.
 
 ## What the evidence shows
 
-- **Equipment failures are a recognized source of harm** in dialysis, including alarm failures, air detector malfunction and conductivity errors. Structured preventive maintenance and documented release are **established practice** across international standards (for example, IEC 60601-2-16 for hemodialysis equipment safety and ISO 23500 for the water system). Outcome trials comparing maintenance intervals do not exist. Follow the manufacturer's schedule as the minimum.
-- **Dialyzer reuse** has a mixed observational evidence base. Some older US analyses associated certain germicides and reuse practices with higher mortality, while others found no difference when reprocessing was well controlled. The defensible position is that **reuse safety depends on process control**: validated methods, performance testing, germicide verification and accurate records.
-- **Supply-chain disruptions are real.** Global shortages of dialysis supplies (for example, bloodline shortages in several countries in recent years) have forced units to ration. Safety stock and alternative-supplier planning are the only defense.
+**Equipment failures cause harm.** Alarm failures, air detector malfunctions, and conductivity errors are recognized causes of injury in dialysis. Scheduled preventive maintenance and documented release are established practice across international standards for hemodialysis equipment and, for the water system, ISO 23500.[[iso23500_1]] No trial compares maintenance intervals, so follow the manufacturer's schedule as the minimum.
 
-## Calculator CALC-05: reorder point, days-on-hand and machine availability
+**Dialyzer reuse depends on process control.** Some older United States analyses associated certain germicides and reuse practices with higher mortality. Others found no difference when reprocessing was well controlled. The defensible position is that the safety of reuse depends on validated methods, performance testing, germicide checks, and accurate records.
 
-**Inputs:** average daily usage (units/day), supplier lead time (days), safety stock days, current stock on hand; for machines: scheduled treatment hours and hours unavailable for repair.
+**Supply chains break.** Shortages of dialysis supplies, including bloodlines, have forced units in several countries to ration in recent years. Safety stock and a second supplier are the only defense.
 
-**Formulas**
+## Calculator CALC-05: reorder point, days on hand, and machine availability
 
-- Safety stock = safety stock days × average daily usage
-- Reorder point = (average daily usage × lead time) + safety stock
-- Days on hand = current stock ÷ average daily usage
-- Machine availability (%) = (scheduled hours − unavailable hours) ÷ scheduled hours × 100
+You need: average daily use, supplier lead time in days, safety stock days, current stock, and, for machines, scheduled treatment hours and hours lost to repair.
 
-**Worked example.** A unit runs 45 sessions a day using new bloodlines. Supplier lead time is 10 days. The Medical Director and administrator choose 14 days of safety stock because the supplier is a single importer.
+{{formula:**Safety stock** = safety stock days × average daily use.<br>**Reorder point** = (average daily use × lead time) + safety stock.<br>**Days on hand** = current stock ÷ average daily use.<br>**Machine availability** = (scheduled hours − hours down) ÷ scheduled hours × 100.}}
+
+**Worked example.** A unit runs 45 sessions a day using new bloodlines. The supplier's lead time is 10 days. Because the supplier is a single importer, the Medical Director and administrator choose 14 days of safety stock.
+
 - Safety stock = 14 × 45 = 630 sets
 - Reorder point = 45 × 10 + 630 = 1,080 sets
-- With 1,400 sets on hand, days on hand = 31
+- With 1,400 sets on hand, days on hand = 1,400 ÷ 45 = 31 days
 
-Order when stock falls to 1,080. If the supplier warns of delays, raise the lead time in the calculator and the reorder point rises with it.
+Order when stock falls to 1,080. If the supplier warns of a delay at the port, raise the lead time in the calculator, and the reorder point rises with it.
 
-**Machine example.** 15 machines × 18 scheduled hours a day × 26 days = 7,020 hours a month. If machines were down 210 hours, availability is 97%. Track by machine: one unit that is down repeatedly is a retirement decision, not a repair.
+**Machine example.** Fifteen machines × 18 scheduled hours a day × 26 days = 7,020 hours a month. If machines were down 210 hours, availability is (7,020 − 210) ÷ 7,020 = 97%. Track it per machine. One machine that keeps breaking is a retirement decision, not another repair.
 
 ## The asset register
 
-| Asset ID | Type | Serial | Location | Acceptance date | PM interval | Last PM | Next PM | Repairs (12 months) | Status |
+| Asset ID | Type | Serial | Location | Accepted | PM interval | Last PM | Next PM | Repairs (12 months) | Status |
 |---|---|---|---|---|---|---|---|---|---|
 | M-07 | Dialysis machine | XXXX | Station 7 | 2021-03 | 6 months | 2026-09 | 2027-03 | 2 | In service |
-| RO-01 | RO system | YYYY | Water room | 2019-11 | Per vendor | 2026-10 | 2026-12 | 1 | In service |
+| RO-01 | Reverse osmosis system | YYYY | Water room | 2019-11 | Per vendor | 2026-10 | 2026-12 | 1 | In service |
+
+{{key:A machine returns to service only on a documented release by the biomedical technician, never because the vendor has left.}}
 
 ## Recall and quarantine
 
-1. Receive the notice; verify product, lot and action required.
-2. Physically quarantine affected stock with a clear label and log entry.
-3. Pull the usage record: which patients received the lot and when.
-4. Notify the Medical Director and head nurse; clinical leads decide on patient follow-up.
-5. Arrange replacement stock; record the vendor's return or credit.
-6. File the recall record in the evidence index.
+{{fig:uom08b}}
+
+{{flow:A recall in one hour|Verify::Confirm the product, the lot, and the action required.|Quarantine::Physically separate the stock, label it, and log it.|Trace::Pull the usage record: which patients received the lot, and when.|Notify::Tell the Medical Director and head nurse. Clinical leads decide on patient follow-up.|Replace::Arrange replacement stock and record the vendor's return or credit.|File::Put the recall record in the evidence index (Module 2).}}
+
+**Example.** At 10:00 on a Tuesday, a supplier emails a recall for a lot of acid concentrate with a labeling error in its potassium content. The manager in Ormoc finds four cartons of that lot in the stockroom and one on the floor. The lot log shows it was used for 22 treatments since Saturday. By 10:50 the stock is quarantined, the floor carton is removed, and the Medical Director has the list of 22 patients. The attending nephrologists order potassium checks for those still in the unit and call the others. Without lot records, the unit would have had to test every patient who dialyzed in five days.
+
+{{call:When a recall or a suspected defective lot affects patients, quarantine the stock and give the Medical Director the patient list. Patient follow-up is a clinical decision.}}
 
 ## Procurement with internal controls
 
-- **Requisition:** the requesting unit states need, quantity and specification.
-- **Approval:** someone with budget authority approves, separate from the requester where possible.
-- **Quotation:** obtain comparable quotes per policy; document the selection reason (price, registration with the Philippine FDA, delivery reliability, service support).
-- **Purchase order:** issued before delivery.
-- **Receiving:** count, check lot, expiry and condition; sign the receiving report.
-- **Payment:** finance pays after matching purchase order, receiving report and invoice (the three-way match; see Module 16).
+{{flow:Buying without risk|Requisition::The requesting area states the need, quantity, and specification.|Approval::Someone with budget authority approves, separate from the requester where possible.|Quotation::Comparable quotes per policy; document the reason for the choice: price, Food and Drug Administration registration, delivery reliability, service support.|Purchase order::Issued before delivery.|Receiving::Count, check lot, expiry, and condition; sign the receiving report.|Payment::Finance pays after the three-way match (Module 16).}}
 
-Clinical product changes (a new dialyzer brand, a different concentrate) need Medical Director approval, not just a better price.
-
-## Field case: the cheaper dialyzer
-
-**Situation.** A vendor offers a dialyzer 18% cheaper than the current brand. Finance wants to switch immediately.
-
-**Problem.** Different membrane, surface area and clearance characteristics can change delivered dose. Reprocessing compatibility may differ.
-
-**Solution.** The manager prepares a comparison (registration status, specifications, price, supply reliability, reprocessing compatibility) and sends it to the Medical Director. The Medical Director approves a monitored trial on a subset of patients with adequacy measurements before full conversion. The decision record shows clinical review preceded the cost decision.
+A clinical product change, such as a new dialyzer brand or a different concentrate, needs Medical Director approval, not just a better price.
 
 ## Common failure modes
 
-- FIFO instead of FEFO, leaving expired stock at the back.
-- No lot recorded per patient, making recalls guesswork.
-- One person requests, approves, receives and pays.
-- Machines returned to service after repair without a documented release check.
+- **First in, first out.** Expired stock found at the back of the shelf.
+- **No lot per patient.** Recalls become guesswork.
+- **One person does everything.** The same person requests, approves, receives, and pays.
+- **Silent return to service.** A machine back in use after repair with no release check.
+- **Price before prescription.** A clinical product switched by finance.
 
 ## Supervised practice
 

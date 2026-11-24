@@ -9,19 +9,21 @@ MODULE = {'objectives': ['Lead a simulated 72-hour scenario that combines clinic
  'sections': [('how-the-capstone-works',
                'How the capstone works',
                'How the capstone works',
-               '<p><strong>Part A: integrated simulation (60 minutes).</strong> The preceptor releases scenario injects every 10 '
-               'to 15 minutes. You run the response as manager, with colleagues or the preceptor playing the head nurse, Medical '
-               'Director, water technician, billing officer and owner.</p>\n'
-               '{{fig:uom19a}}\n'
-               '\n'
-               '<p><strong>Part B: portfolio defense (40 minutes).</strong> You present your portfolio (below) and answer '
+               '<p><strong>Part A: integrated simulation (60 minutes).</strong> The preceptor releases injects every 10 to 15 '
+               'minutes, like the case above but with a scenario you have not seen. You run the response as manager. Colleagues '
+               'or the preceptor play the head nurse, Medical Director, water technician, billing officer, and owner.</p>\n'
+               "<p><strong>Part B: portfolio defense (40 minutes).</strong> You present your portfolio and answer the panel's "
                'questions.</p>\n'
-               '<p><strong>Part C: independent review (35 minutes).</strong> Thirteen short-answer questions in the trainer '
-               'guide, self-checked against the model key.</p>\n'
-               '{{fig:uom19b}}'),
+               '<p><strong>Part C: independent review (35 minutes).</strong> Thirteen short-answer questions from the trainer '
+               'guide, checked against the model key.</p>\n'
+               '{{fig:uom19a}}\n'
+               '{{key:A strong response is not the busiest one. It is the one where every decision has a named owner and a '
+               'time.}}'),
               ('the-readiness-and-improvement-portfolio',
                'The readiness',
                'The readiness and improvement portfolio',
+               '<p>Each artifact comes from a module. Use fictional or de-identified data throughout.</p>\n'
+               '{{fig:uom19c}}\n'
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Artifact</th><th>From module</th></tr></thead>\n'
                '<tbody>\n'
@@ -44,28 +46,45 @@ MODULE = {'objectives': ['Lead a simulated 72-hour scenario that combines clinic
                '<tr><td>Cutoff audit and premium recomputation (CALC-10)</td><td>17</td></tr>\n'
                '<tr><td>Remittance reconciliation and benefits matrix (CALC-11)</td><td>18</td></tr>\n'
                '</tbody></table></div>\n'
-               '<p>All artifacts use fictional or de-identified data.</p>\n'
-               '{{fig:uom19c}}\n'),
+               '<p><strong>Example.</strong> At a defense in Cebu, a panel member asks a candidate why her evidence index has '
+               'four red rows. She answers: "Two are staff hepatitis B titers due this month, with appointments booked. One is '
+               'the fire inspection, scheduled for the 18th. One is our transfer agreement with the second hospital, which their '
+               'legal office is still reviewing; my deadline to escalate is the 30th." The panel scores her well. A clean index '
+               'would have been less convincing than an honest one with owners and dates.</p>'),
               ('scoring',
                'Scoring',
                'Scoring',
-               '<p>The trainer uses the 0–2 rubric in the trainer guide. A score of 0 on any safety-critical item (missed hold, '
-               'unauthorized clinical decision, clearance bypass, disclosure of patient data) stops the capstone and requires '
-               'supervised reassessment.</p>')],
- 'debrief': ['<p><strong>What a strong response includes</strong></p>\n'
-             '<ul><li><strong>Clinical priority:</strong> Medical Director decides on early dialysis[[dch_lurie2015]]; high-risk '
-             'list (long-gap, high potassium, catheter, new starts) prepared; no patient left more than three days without '
-             'treatment.</li><li><strong>Water:</strong> action-level response with the technician (disinfect and retest) and '
-             'Medical Director awareness; release status confirmed before the extra sessions; no assumption that "below maximum '
-             'means fine."</li><li><strong>Staffing:</strong> CALC-01 run for the compressed schedule; float or agency staff '
-             'with verified competencies; overtime and holiday premiums computed with CALC-10; nursing lead approves the '
-             'roster.</li><li><strong>Continuity:</strong> CALC-12 run with current fuel and water; tanker and fuel alternatives '
-             'activated; partner units alerted; patient emergency sheets and diet guidance '
-             'distributed.</li><li><strong>Owner:</strong> a factual reply proposing schedule compression rather than closure, '
-             'with staffing and cost implications.</li><li><strong>Payer:</strong> returned claims assigned for correction after '
-             'the storm with a deadline; CALC-07 used to counsel the patient near the cap and inform the '
-             'attending.</li><li><strong>Records:</strong> decision log with times and owners; CAPA opened for the claims errors '
-             'and the water result.</li></ul>'],
+               '<p>The trainer uses the 0-to-2 rubric in the trainer guide. A score of 0 on any safety gate stops the capstone '
+               'and requires supervised reassessment.</p>\n'
+               "{{call:The four safety gates: no missed safety hold; no clinical decision outside the manager's authority; no "
+               'clearance or release step bypassed; no patient data disclosed outside the need-to-know rule. Breaking any one '
+               'stops the capstone.}}')],
+ 'debrief': ['<p><strong>Clinical priority first.</strong> You call the Medical Director, who decides on early '
+             'dialysis.[[dch_lurie2015]] With the head nurse, you prepare the high-risk list: patients coming off the long gap, '
+             'those with high last potassium, those with catheters, and new starts. Thursday and Friday patients are moved to '
+             'Tuesday, Wednesday, and early Thursday. No patient goes more than three days without treatment.</p>\n'
+             '<p><strong>The water.</strong> A result of 70 CFU/mL is above the action level but below the maximum. It is not '
+             '"fine." You make sure the water technician disinfects the loop and retests, and that the Medical Director knows. '
+             'Before the extra sessions start, you confirm the release status. The decision is theirs; the follow-up is '
+             'yours.</p>\n'
+             '<p><strong>Staffing.</strong> You run the staffing calculator (CALC-01) for the compressed schedule. The head '
+             'nurse brings in float or agency nurses with verified competencies, and approves the roster. You compute overtime '
+             'and holiday premiums with CALC-10 so the volunteers know what they will be paid.</p>\n'
+             '<p><strong>Continuity.</strong> You run the outage calculator (CALC-12) with current fuel and water. Water, not '
+             'fuel, is the binding constraint. You activate the water tanker contract and a second fuel supplier, alert the '
+             'partner units in Naga and Sorsogon, and make sure every patient has an emergency information sheet and the '
+             "dietitian's emergency diet guidance.</p>\n"
+             '<p><strong>The owner.</strong> You reply with facts, not argument: closing Thursday and Friday would leave some '
+             'patients five days without treatment. You propose compressing the schedule instead, with the staffing cost and the '
+             'premium pay laid out. The owner agrees.</p>\n'
+             '<p><strong>The payer items.</strong> The 38 returned claims matter, but they can wait until after the storm. You '
+             'assign them to billing with a deadline the following week. You use the session-cap tracker (CALC-07) for Mrs. '
+             'Bonganay: with 4 sessions left and about six weeks to the end of the year, she will run out in about ten days, '
+             'long before December 31. The social worker counsels her family now, and the attending knows. Her dialysis '
+             'continues.</p>\n'
+             '<p><strong>Records.</strong> You keep a decision log with times and owners, and open corrective actions for the '
+             'claims errors and the water result.</p>\n'
+             '{{fig:uom19b}}'],
  'quiz': [('A typhoon is forecast in 72 hours. Who decides on early dialysis?',
            ['The owner', 'The Medical Director and clinical team', 'The billing officer', 'The generator vendor'],
            1,
@@ -159,23 +178,36 @@ MODULE = {'objectives': ['Lead a simulated 72-hour scenario that combines clinic
  'readings': [('typhoon-disaster-preparedness-dialysis.html', 'The patient side of the capstone scenario.'),
               ('dialysis-qapi-vs-cqi.html', 'Turning findings into improvement.')],
  'calcs': ['calc-dialysis-clinical-head-toolkit.html'],
- 'big': '<p>Real problems never arrive one module at a time. A typhoon warning lands in the same week as a nurse resignation, a '
-        'returned claims batch and an out-of-range water culture. The capstone tests whether you can hold all of it at once: '
-        'protect patients first, route each decision to its owner, use numbers to argue for what the unit needs, and leave a '
-        'written trail that a surveyor, an owner or your successor can follow.</p>',
+ 'big': '{{plain:Each module so far has handed you one tool: a decision map, an evidence index, a roster calculator, a water log '
+        'audit, a claims trace, a budget, a typhoon plan. A real week never brings one problem at a time. It brings six, all on '
+        'a Tuesday, all urgent, each owned by someone different. The capstone asks you to pick up every tool at once and use the '
+        'right one for each problem, in the right order.}}\n'
+        '<p>The picture has a limit. A toolbox suggests that every problem has its tool and that skill means choosing well. '
+        'Choosing matters, but the harder skill is restraint: knowing which problems are not yours to solve, and making sure the '
+        'person who owns each one knows about it in time. The best capstone responses are not the busiest. They are the ones '
+        "where every decision has a named owner and a time, and no patient's safety depends on the manager guessing.</p>\n"
+        '<p>The capstone has three parts: a timed simulation, a portfolio defense, and a short independent review.</p>\n'
+        '{{cards:Key terms for this module|Inject::A new development the preceptor releases during the simulation.|Decision '
+        'log::A running record of each decision, its owner, and the time.|Readiness dashboard::One page showing staffing, water, '
+        'supplies, continuity, claims, and finance status together.|Portfolio::The set of artifacts you built during the track, '
+        'each from a module.|Safety gate::A non-negotiable rule. Breaking one stops the capstone.|Rubric::The 0-to-2 scale the '
+        'panel uses to score each item.}}',
  'case': {'title': 'The week before Signal No. 3',
-          'html': '<p><strong>Day 1, 07:00.</strong> PAGASA forecasts a typhoon landfall in 72 hours. Your unit has 84 patients '
-                  'on a Monday-Wednesday-Friday and Tuesday-Thursday-Saturday schedule.</p>\n'
-                  '<p><strong>Inject 1.</strong> The head nurse reports that two nurses have resigned effective Friday and one '
-                  'is on maternity leave. <strong>Inject 2.</strong> The monthly loop culture returns at 70 colony-forming units '
-                  '(CFU)/mL (action level 50, maximum 100 under the facility program)[[iso23500_1]]. <strong>Inject 3.</strong> '
-                  'Billing reports that 38 claims from last month were returned for documentation errors. <strong>Inject '
-                  '4.</strong> The owner asks whether the unit can close Thursday and Friday to protect staff. <strong>Inject '
-                  '5.</strong> A patient on Tuesday-Thursday-Saturday has used 152 of 156 sessions[[dch_philhealth2024]]. '
-                  '<strong>Inject 6.</strong> The generator fuel supplier says delivery may be delayed.</p>',
-          'questions': ['Which inject threatens a patient first?',
-                        'Who owns each decision?',
-                        'Which calculator answers which question?']},
+          'html': '<p>It is Monday, 07:00, at a 15-station freestanding unit in Legazpi City, Albay. PAGASA forecasts a typhoon '
+                  'landfall in the Bicol region in about 72 hours, on Thursday morning. You are the operations manager. The unit '
+                  'treats 84 patients on Monday–Wednesday–Friday and Tuesday–Thursday–Saturday schedules.</p>\n'
+                  '<p>Over the next hour, six things land on your desk:</p>\n'
+                  '<ol><li>The head nurse reports that two nurses have resigned effective Friday, and one is on maternity '
+                  'leave.</li><li>The monthly culture from the water distribution loop returns at 70 colony-forming units '
+                  '(CFU)/mL. The facility program sets the action level at 50 and the maximum at 100.</li><li>Billing reports '
+                  'that 38 claims from last month were returned for documentation errors.</li><li>The owner messages: "Can we '
+                  'just close Thursday and Friday to protect the staff?"</li><li>A Tuesday–Thursday–Saturday patient, Mrs. '
+                  'Remedios Bonganay, has used 152 of her 156 Philippine Health Insurance Corporation (PhilHealth) '
+                  'sessions.[[dch_philhealth2024]]</li><li>The generator fuel supplier says delivery may be delayed because of '
+                  'the storm.</li></ol>',
+          'questions': ['Which of the six threatens a patient first, and whose decision is it?',
+                        'Which items can wait until after the storm, and which cannot?',
+                        'Which calculators answer which questions?']},
  'skills': {'title': 'Capstone portfolio and safety gates',
             'intro': 'Assemble each artifact with fictional or de-identified data, then defend it. A zero on any safety gate '
                      'stops the capstone.',

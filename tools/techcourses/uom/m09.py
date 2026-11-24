@@ -10,101 +10,119 @@ MODULE = {'objectives': ['Choose a balanced set of indicators covering adequacy,
  'sections': [('the-model-what-to-measure-and-why',
                'The model',
                'The model: what to measure and why',
-               '<p>Indicators should track what patients experience (death, hospitalization, infection, symptoms) and the '
-               'processes that drive those outcomes. A balanced dashboard for a maintenance hemodialysis (HD) unit:</p>\n'
+               '<p>Indicators should track what patients experience, such as death, hospitalization, infection, and symptoms, '
+               'and the processes that lead to those outcomes.</p>\n'
                '{{fig:uom09a}}\n'
-               '\n'
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Domain</th><th>Example indicator</th><th>Why it matters</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td>Adequacy</td><td>% of patients with single-pool Kt/V ≥ 1.2</td><td>KDOQI (2015)[[dch_kdoqi2015]] sets a '
-               'target spKt/V of 1.4 per thrice-weekly session and a minimum delivered dose of 1.2</td></tr>\n'
-               '<tr><td>Vascular access</td><td>% using an arteriovenous fistula; % catheter-dependent &gt; 90 '
-               'days</td><td>Catheters drive infection and hospitalization (Module 05)</td></tr>\n'
-               "<tr><td>Anemia</td><td>% with hemoglobin in the unit's target range</td><td>Kidney Disease: Improving Global "
-               'Outcomes (KDIGO) advises against routinely targeting high hemoglobin with erythropoiesis-stimulating agents '
-               '(ESAs)[[uom_kdigo_anemia2012]] because of cardiovascular and stroke risk</td></tr>\n'
-               '<tr><td>Mineral metabolism</td><td>% with phosphate in target range</td><td>Hyperphosphatemia is associated with '
-               'vascular calcification and mortality</td></tr>\n'
-               '<tr><td>Infection</td><td>bloodstream infection (BSI) per 100 patient-months</td><td>Preventable harm</td></tr>\n'
-               '<tr><td>Attendance</td><td>Missed and shortened sessions per 100 scheduled</td><td>Linked to mortality (Module '
-               '04)</td></tr>\n'
-               '<tr><td>Hospitalization</td><td>Admissions per patient-year</td><td>Patient-important outcome</td></tr>\n'
-               '<tr><td>Experience</td><td>Patient-reported experience survey score</td><td>Captures what laboratory values '
+               '<tr><td>Adequacy</td><td>Percentage of patients with single-pool Kt/V of at least 1.2</td><td>KDOQI '
+               '(2015)[[dch_kdoqi2015]] sets a target of 1.4 per thrice-weekly session and a minimum delivered dose of '
+               '1.2</td></tr>\n'
+               '<tr><td>Vascular access</td><td>Percentage using an arteriovenous fistula; percentage with a catheter beyond 90 '
+               'days</td><td>Catheters drive infection and hospitalization (Module 5)</td></tr>\n'
+               "<tr><td>Anemia</td><td>Percentage with hemoglobin in the unit's target range</td><td>Kidney Disease: Improving "
+               'Global Outcomes (KDIGO) advises against routinely targeting high hemoglobin with erythropoiesis-stimulating '
+               'agents (ESAs)[[uom_kdigo_anemia2012]] because of cardiovascular and stroke risk</td></tr>\n'
+               '<tr><td>Mineral metabolism</td><td>Percentage with phosphate in the target range</td><td>High phosphate is '
+               'associated with vascular calcification and death</td></tr>\n'
+               '<tr><td>Infection</td><td>Bloodstream infections per 100 patient-months</td><td>Preventable harm</td></tr>\n'
+               '<tr><td>Attendance</td><td>Missed and shortened sessions per 100 scheduled</td><td>Linked to death (Module '
+               '4)</td></tr>\n'
+               '<tr><td>Hospitalization</td><td>Admissions per patient-year</td><td>An outcome patients feel</td></tr>\n'
+               '<tr><td>Experience</td><td>Patient-reported experience score</td><td>Captures what laboratory values '
                'miss</td></tr>\n'
                '</tbody></table></div>\n'
-               '<p><strong>Surrogate warning.</strong> Kt/V, hemoglobin and phosphate are <strong>surrogate</strong> measures. '
-               'Hitting them is necessary but not sufficient. The HEMO trial (2002)[[uom_eknoyan2002]] showed that pushing dose '
-               'higher than the standard did not improve survival. A unit can have perfect Kt/V and still harm patients through '
-               'infections or missed sessions, which is why the dashboard includes hard outcomes.</p>'),
+               '<p><strong>A warning about surrogates.</strong> Kt/V, hemoglobin, and phosphate are surrogates. Meeting them is '
+               'necessary but not enough. The HEMO trial (2002)[[uom_eknoyan2002]] showed that pushing dialysis dose above the '
+               'standard did not improve survival. A unit can have perfect Kt/V and still harm patients through infections or '
+               'missed sessions. That is why the dashboard includes hard outcomes.</p>\n'
+               '{{key:A laboratory target met is not the same as a patient helped. Keep at least one outcome patients feel on '
+               'every dashboard.}}'),
               ('the-data-dictionary',
                'The data dictionary',
                'The data dictionary',
-               '<p>Ambiguous definitions produce false trends. Each indicator needs:</p>\n'
-               '<ul><li><strong>Numerator:</strong> exactly who counts (for example, patients with spKt/V ≥ 1.2 on the monthly '
-               'sample).</li><li><strong>Denominator:</strong> who is eligible (for example, patients on maintenance HD in the '
-               'unit for at least 30 days, sampled that month).</li><li><strong>Exclusions:</strong> stated in advance (for '
-               'example, patients dialyzed fewer than three times in the month).</li><li><strong>Data source and owner:</strong> '
-               'where it comes from and who extracts it.</li><li><strong>Frequency and due date.</strong></li></ul>\n'
-               '{{fig:uom09b}}'),
+               '<p>Vague definitions produce false trends. Each indicator needs:</p>\n'
+               '{{fig:uom09b}}\n'
+               '<ul><li><strong>Numerator:</strong> exactly who counts, for example, patients with a single-pool Kt/V of at '
+               'least 1.2 on the monthly sample.</li><li><strong>Denominator:</strong> who is eligible, for example, patients on '
+               'maintenance hemodialysis in the unit for at least 30 days who were sampled that '
+               'month.</li><li><strong>Exclusions:</strong> stated in advance, for example, patients dialyzed fewer than three '
+               'times in the month.</li><li><strong>Data source and owner:</strong> where it comes from and who extracts '
+               'it.</li><li><strong>Frequency and due date.</strong></li><li><strong>Change log:</strong> every change to the '
+               'definition, with the date and the approver.</li></ul>'),
               ('what-the-evidence-shows-about-improvemen',
                'What the evidence shows',
                'What the evidence shows about improvement methods',
-               '<ul><li><strong>Run charts beat month-to-month comparison.</strong> Standard rules distinguish real change from '
-               'noise[[uom_perla2011]]: a <strong>shift</strong> is six or more consecutive points above or below the median; a '
-               '<strong>trend</strong> is five or more consecutive points all increasing or all decreasing; too few or too many '
-               'runs, or an obvious outlier, also signal non-random variation. These are statistical conventions with '
-               '<strong>established</strong> methodological support.</li><li><strong>Bundles plus measurement plus feedback '
-               'improve dialysis outcomes.</strong> The Centers for Disease Control and Prevention (CDC) BSI collaborative '
-               'paired monthly surveillance and feedback with practice changes and saw large '
-               'reductions[[dch_patel2013]].</li><li><strong>PDSA quality varies.</strong> Systematic reviews of PDSA use in '
-               'healthcare find that many projects skip the "study" step or test changes that are too large. Small, documented, '
-               'sequential cycles work better. This is <strong>evidence-supported inference</strong> from implementation '
-               'research.</li></ul>'),
+               '<p><strong>Run charts beat month-to-month comparison.</strong> Standard rules separate real change from '
+               'noise.[[uom_perla2011]] A shift is six or more consecutive points above or below the median. A trend is five or '
+               'more consecutive points all rising or all falling. Too few or too many runs, or an obvious outlier, also signal '
+               'something non-random. These are statistical conventions with strong methodological support.</p>\n'
+               '<p><strong>Measurement plus feedback improves outcomes.</strong> The Centers for Disease Control and Prevention '
+               'bloodstream infection collaborative paired monthly surveillance and feedback with practice changes and saw large '
+               'reductions.[[dch_patel2013]]</p>\n'
+               '<p><strong>PDSA quality varies.</strong> Reviews of PDSA use in healthcare find that many projects skip the '
+               '"study" step or test changes that are too large. Small, documented, sequential cycles work better. This is '
+               'reasonable inference from implementation research.</p>'),
               ('calculator-calc-06-missed-treatment-rate',
                'Calculator CALC-06',
                'Calculator CALC-06: missed-treatment rate and run-chart signal checker',
-               '<p><strong>Inputs:</strong> scheduled sessions, missed sessions, shortened sessions (delivered time less than '
-               'prescribed by more than a set threshold, for example 15 minutes), and the last 12 to 24 monthly values of any '
-               'indicator.</p>\n'
-               '<p><strong>Formulas</strong></p>\n'
-               '<ul><li>Missed sessions per 100 scheduled = missed ÷ scheduled × 100</li><li>Shortened sessions per 100 '
-               'delivered = shortened ÷ delivered × 100</li><li>Median of the series; flag a <strong>shift</strong> (≥ 6 '
-               'consecutive points on one side of the median, ignoring points on the median) and a <strong>trend</strong> (≥ 5 '
-               'consecutive increases or decreases)</li></ul>\n'
-               '<p><strong>Worked example.</strong> 1,080 scheduled sessions, 27 missed: 2.5 per 100. Over 12 months the rate '
-               'was 3.1, 3.4, 2.9, 3.3, 3.0, 3.2, 2.6, 2.4, 2.5, 2.3, 2.6, 2.5 (median 2.75). The last six points all fall below '
-               'the median: a shift. Something real changed in month 7, which was when the unit started reminder calls the '
-               'evening before each session. The timing supports the change as the cause, provided nothing else changed that '
-               'month (a new shift pattern, a transport program). Ask before you claim it.</p>'),
+               '<p>You need: scheduled sessions, missed sessions, shortened sessions (delivered time shorter than prescribed by '
+               'more than a set threshold, such as 15 minutes), and the last 12 to 24 monthly values of any indicator.</p>\n'
+               '{{formula:<strong>Missed sessions per 100 scheduled</strong> = missed ÷ scheduled × 100.<br><strong>Shortened '
+               'sessions per 100 delivered</strong> = shortened ÷ delivered × 100.<br><strong>Signals:</strong> find the median '
+               'of the series. A <strong>shift</strong> is six or more consecutive points on one side of the median, ignoring '
+               'points on it. A <strong>trend</strong> is five or more consecutive increases or decreases.}}\n'
+               '<p><strong>Worked example.</strong> In a month with 1,080 scheduled sessions, 27 were missed: 27 ÷ 1,080 × 100 = '
+               '2.5 per 100. Over 12 months the rate was 3.1, 3.4, 2.9, 3.3, 3.0, 3.2, 2.6, 2.4, 2.5, 2.3, 2.6, 2.5. Sorted, the '
+               'middle two values are 2.6 and 2.9, so the median is 2.75. The last six points all fall below it: a shift. '
+               'Something real changed in month 7.</p>\n'
+               '<p>Month 7 was when the unit started calling patients the evening before each session. The timing supports the '
+               'calls as the cause, provided nothing else changed that month, such as a new shift pattern or a barangay '
+               'transport program. Ask before you claim it.</p>'),
               ('running-a-pdsa-cycle',
                'Running a PDSA cycle',
                'Running a PDSA cycle',
-               '<p><strong>Aim</strong> (specific, measurable, time-bound): "Reduce missed sessions from 3.1 to below 2.0 per '
-               '100 scheduled by June 30."</p>\n'
-               '<ol><li><strong>Plan:</strong> predict what will happen. "If the shift nurse calls patients with two or more '
-               'misses last month, the evening before, at least half will attend."</li><li><strong>Do:</strong> test with 10 '
-               'patients for two weeks.</li><li><strong>Study:</strong> compare results with the prediction. What surprised '
-               'you?</li><li><strong>Act:</strong> adopt, adapt or abandon. Then test the next change.</li></ol>'),
+               '<p><strong>Aim:</strong> "Reduce missed sessions from 3.1 to below 2.0 per 100 scheduled by June 30." Specific, '
+               'measurable, and with a deadline.</p>\n'
+               '{{flow:One PDSA cycle|Plan::Predict what will happen. "If the shift nurse calls patients with two or more misses '
+               'last month, the evening before, at least half will attend."|Do::Test it with 10 patients for two '
+               'weeks.|Study::Compare the result with the prediction. What surprised you?|Act::Adopt, adapt, or abandon, then '
+               'test the next change.}}\n'
+               '<p><strong>Example.</strong> A unit in Cagayan de Oro tests evening reminder calls with ten patients. Seven '
+               'attend every session in two weeks, up from four. But the study step surfaces a surprise: three of the ten said '
+               'they missed sessions because the jeepney route changed, not because they forgot. The next cycle tests a shared '
+               'tricycle arrangement with the barangay for those three. A reminder call alone would never have fixed their '
+               'problem.</p>'),
               ('the-qapi-meeting',
                'The QAPI meeting',
                'The QAPI meeting',
-               '<ul><li>Chaired by the Medical Director, with nursing, technical, dietitian, social worker (where present) and '
-               'operations.</li><li>Review the dashboard as run charts, not tables.</li><li>For each signal: owner, action, due '
-               'date.</li><li>Minutes record decisions and follow-up from the last meeting.</li><li>Keep patient identifiers out '
-               'of shared slides.</li></ul>'),
+               '<ul><li>Chaired by the Medical Director, with nursing, technical, dietitian, social worker (where present), and '
+               'operations.</li><li>The dashboard is shown as run charts, not tables.</li><li>Each signal gets an owner, an '
+               'action, and a due date.</li><li>The minutes record decisions and the follow-up from the last '
+               'meeting.</li><li>Patient identifiers stay out of shared slides.</li></ul>\n'
+               "{{call:If an indicator's definition, source, or calculation changed, flag it on the chart and tell the Medical "
+               'Director before the result is used or presented. Never let a definition change pass as an improvement.}}'),
               ('common-failure-modes',
                'Common failure modes',
                'Common failure modes',
-               '<ul><li>Reacting to every monthly up or down.</li><li>Changing definitions without recording '
-               'it.</li><li>Projects with no numeric aim or deadline.</li><li>Dashboards with only surrogate laboratory targets '
-               'and no outcomes.</li></ul>')],
- 'debrief': ['{{fig:uom09c}}\n'
-             '<p><strong>Problem.</strong> The data dictionary was checked. The extractor had changed the denominator to exclude '
-             'patients in their first 90 days, which removed many catheter users.</p>\n'
-             '<p><strong>Solution.</strong> The definition was restored, the series recalculated (fistula use was 49%), and the '
-             'dictionary was locked with a change log. A real improvement project then began on referral time to the vascular '
-             'surgeon.</p>'],
+               '<ul><li><strong>Chasing every wiggle.</strong> Reacting to each monthly rise or fall.</li><li><strong>Silent '
+               'definition changes.</strong> The denominator moves, and the trend lies.</li><li><strong>Aims without '
+               'numbers.</strong> Projects with no target or deadline.</li><li><strong>Surrogates only.</strong> Dashboards full '
+               'of laboratory targets and no outcomes patients feel.</li><li><strong>Meetings without owners.</strong> Signals '
+               'discussed, no one assigned.</li></ul>')],
+ 'debrief': ['<p><strong>The check.</strong> Mr. Ledesma opens the data dictionary entry and compares it with how the number was '
+             'calculated this month. A new data clerk, trying to tidy the report, had excluded patients in their first 90 days '
+             'of dialysis from the denominator. Many of those patients still have catheters while their fistulas mature. '
+             'Removing them made fistula use jump without a single new fistula.</p>\n'
+             '<p><strong>The correction.</strong> The original definition is restored, and the month is recalculated: 49%. The '
+             'earlier months were calculated correctly and stand. Mr. Ledesma tells the meeting plainly and without blame, and '
+             'the Medical Director withdraws the presentation.</p>\n'
+             '<p><strong>The lock.</strong> The dictionary is locked with a change log. Any change to a definition needs the '
+             "Medical Director's approval and is noted on the chart. Then the team starts a real improvement project on the time "
+             'from referral to the vascular surgeon. Six months later, fistula use reaches 56%, and this time the run chart '
+             'shows a genuine shift.</p>\n'
+             '{{fig:uom09c}}'],
  'quiz': [('What minimum delivered spKt/V per thrice-weekly session does KDOQI (2015) set?',
            ['0.8', '1.2', '2.0', '1.0'],
            1,
@@ -188,15 +206,31 @@ MODULE = {'objectives': ['Choose a balanced set of indicators covering adequacy,
            'Small, documented cycles work better.')],
  'readings': [('dialysis-qapi-vs-cqi.html', 'Quality assessment and continuous improvement in dialysis.'),
               ('dialysis-adequacy.html', 'What Kt/V measures and what it does not.')],
- 'big': '<p>Every unit says it gives quality care. The difference between a unit that improves and one that stays the same is '
-        "whether it measures the right things the same way every month, looks at the trend rather than last month's number, and "
-        "tests changes small and fast. Quality assessment and performance improvement (QAPI) is the Medical Director's program. "
-        'Making its data honest and its meetings productive is largely your work.</p>',
+ 'big': "{{plain:A unit's quality numbers are like a patient's vital signs. One reading tells you little; a series tells you a "
+        'lot. A single high blood pressure might be a nervous patient. Six rising readings in a row is a trend that needs '
+        'action. Quality work is the habit of reading the series, not reacting to the single reading.}}\n'
+        "<p>The picture has a limit. A patient's blood pressure is measured the same way every time. A unit's indicators often "
+        'are not. If someone quietly changes who is counted in the denominator, the number moves even though nothing in the unit '
+        'changed. So quality measurement has two parts: defining each number so tightly that it means the same thing every '
+        'month, and then reading the series with rules that separate real change from noise.</p>\n'
+        '<p>You do not need statistics training for this module. You need a ruler, a pencil, and the discipline to ask "what '
+        'exactly are we counting?" before anyone celebrates or panics.</p>\n'
+        '{{cards:Key terms for this module|Indicator::A number tracked over time to show how well the unit is doing.|Numerator '
+        'and denominator::Who is counted as meeting the indicator, and who is eligible to be counted.|Data dictionary::The '
+        'written definition of each indicator, so it never drifts.|Surrogate::A laboratory or process measure that stands in for '
+        'an outcome patients feel.|Run chart::A line graph of an indicator over time, with its median drawn across.|Shift::Six '
+        'or more points in a row on the same side of the median.|Trend::Five or more points in a row all going up, or all going '
+        'down.|Plan-Do-Study-Act (PDSA)::A small, documented test of a change.}}',
  'case': {'title': 'The improving number that was not real',
-          'html': '<p>Fistula use rose from 48% to 61% in one month. The team celebrated.</p>',
-          'questions': ['What must you protect first, and whose decision is it?',
-                        'Which facts would you confirm before you act?',
-                        'What would you record, and where?']},
+          'html': '<p>At the monthly quality assessment and performance improvement (QAPI) meeting of a 24-station hospital unit '
+                  'in Iloilo City, the dashboard shows fistula use jumping from 48% to 61% in a single month. The vascular '
+                  'access nurse, Ms. Rowena Tan, is congratulated. The Medical Director suggests presenting the result at the '
+                  "hospital's quality forum.</p>\n"
+                  '<p>The manager, Mr. Jose Ledesma, is pleased too, but something bothers him. Nothing new happened in access '
+                  'referrals that month. The vascular surgeon was on leave for two weeks.</p>',
+          'questions': ['What should Mr. Ledesma check before the result is presented anywhere?',
+                        'If the definition changed, what happens to the earlier months?',
+                        'How would you prevent this from happening again?']},
  'skills': {'title': 'Supervised practice',
             'intro': 'Complete these with your preceptor at your own unit, using fictional or de-identified data.',
             'items': [('Write data dictionary entries for five indicators.', False),

@@ -1,9 +1,14 @@
-# 18. Employee benefits, leave and payroll remittances
+# 18. Employee benefits, leave, and payroll remittances
 
-**Core** · 45 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-18 (Understand) · FIG-18B (Apply) · FIG-18C (Appreciate) · **Calculator:** CALC-11 Statutory contributions and 13th-month pay
+## The big picture
 
-> **Why this matters.** A nurse who discovers at the SSS branch that her contributions were deducted but never remitted loses trust in the unit overnight, and the employer faces penalties and liability. Benefits and remittances are invisible when they work and explosive when they fail. The manager does not compute every peso, but makes sure the system computes, remits and reconciles them every month.
+{{plain:Every month, a small part of each staff member's pay goes into three savings jars kept by the government: the Social Security System (SSS), PhilHealth, and Pag-IBIG. The unit adds its own share. Those jars pay for a nurse's maternity leave, her hospital bill, her housing loan, and one day her pension. Your job is to make sure every peso deducted actually lands in the right person's jar.}}
+
+The picture has a limit. A jar is something you can look into. These are not. A staff member usually discovers a missing contribution only when she applies for a loan or a benefit, months later, and is told her record shows nothing. By then the unit has already paid; the money went somewhere, but not to her. Reconciliation is how you look into the jar before she has to.
+
+This module covers the current contribution rules, the leaves the law requires, 13th-month pay, and the monthly check that catches posting errors before a staff member does.
+
+{{cards:Key terms for this module|Monthly salary credit (MSC)::The salary bracket SSS uses to compute contributions.|Employee share::The part of a contribution deducted from pay.|Employer share::The part the unit adds on top.|Remittance::Paying the deducted and employer shares to the agency.|Posting::The agency crediting the payment to each employee's record.|13th-month pay::One-twelfth of the basic salary earned in the year, paid by December 24.|Service incentive leave::Five days of paid leave a year after one year of service, for covered employees.|Final pay::Everything owed to an employee who leaves.}}
 
 ## Learning objectives
 
@@ -12,95 +17,120 @@
 3. Reconcile payroll deductions and employer shares to remittance records and agency posting.
 4. Process leave confidentially, without exposing diagnoses on rosters.
 
+## Field case: deducted but not posted
+
+**Situation.** Mr. Jayson Manalastas, a dialysis technician at a 14-station unit in Tarlac City, applies for an SSS salary loan in June to repair his roof before the rainy season. SSS tells him his record shows no contributions for January through April. His payslips show the deductions every month.
+
+He comes to the manager, Ms. Rowena Dizon, upset and a little suspicious: "Ma'am, where did my money go?"
+
+**Before reading on, decide:**
+
+- What three records would you compare to find the answer?
+- What should Ms. Dizon say to Mr. Manalastas today?
+- How would you find out whether anyone else is affected?
+
+**Case review.**
+
+**Today.** Ms. Dizon does not guess and does not defend the unit. She says: "Your payslips show the deductions, so you are right to ask. I will find out where the money went and tell you by Friday."
+
+**The records.** She compares three things: the payroll register (what was deducted and added), the payment confirmations (what was remitted), and the SSS employer report and posting record (what SSS credited to whom). The remittances were paid on time and in full. But Mr. Manalastas was hired in December, and his SSS number was typed into the employer report with two digits reversed. His contributions posted to a number that belongs to no one.
+
+**The fix.** Payroll files the correction with SSS, with his ID and the payment records. His four months are posted within three weeks, and he gets his loan. Ms. Dizon then checks every employee's posting record, not just the totals, for the last 12 months. She finds one more error: a nurse whose PhilHealth record shows the wrong employer. It is fixed the same month.
+
+**The system.** The monthly reconciliation now compares agency posting reports with the payroll register for every employee by name, and new hires' agency numbers are checked against their ID cards on their first day.
+
+{{fig:uom18c}}
+
 ## The model: deduct, add, remit, reconcile
 
-Each month: payroll **deducts** employee shares, **adds** employer shares, **remits** both to each agency by its deadline, and **reconciles** what was remitted against what each agency posted to each employee's record. Any break in that chain becomes a member complaint months later.
+{{fig:uom18a}}
 
-## Current statutory figures (verify before each payroll year)
+{{flow:Every month, for each agency|Deduct::Payroll deducts each employee's share.|Add::The unit adds the employer share.|Remit::Both shares are paid to the agency by its deadline.|Reconcile::What was remitted is checked against what the agency posted to each employee's record.}}
+
+Any break in that chain becomes a staff member's complaint months later.
+
+## Current statutory figures (confirm before each payroll year)
 
 | Program | Rate and split | Base and limits | Source |
 |---|---|---|---|
-| SSS | 15% of monthly salary credit (MSC): employer 10%, employee 5%; plus employer Employees' Compensation premium (₱10 if MSC below ₱15,000, ₱30 otherwise) | MSC ₱5,000 to ₱35,000, in brackets | RA 11199; SSS circulars effective January 2025 |
-| PhilHealth | 5% of monthly basic salary, shared equally | Floor ₱10,000 (premium ₱500); ceiling ₱100,000 (premium ₱5,000) | RA 11223; PhilHealth Advisory 2025-0002 (unchanged for 2026 per available reports; confirm) |
-| Pag-IBIG | Employee 1% (pay ₱1,500 or less) or 2%; employer 2% | Maximum fund salary ₱10,000 (₱200 each) | Pag-IBIG Circular 460, effective February 2024 |
-| 13th-month pay | Total basic salary earned in the calendar year ÷ 12, paid on or before December 24 | Rank-and-file private employees regardless of position designation or employment status, subject to listed exemptions | PD 851; DOLE advisory for the year |
-| Tax on 13th-month and other benefits | Exempt up to ₱90,000 combined | Excess is taxable | TRAIN law (RA 10963) |
+| SSS | 15% of the MSC: employer 10%, employee 5%; plus the employer's Employees' Compensation premium (10 pesos if the MSC is below 15,000, 30 pesos otherwise) | MSC from 5,000 to 35,000 pesos, in brackets | SSS schedule effective January 2025[[uom_sss2025]] |
+| PhilHealth | 5% of monthly basic salary, shared equally | Floor 10,000 pesos (premium 500); ceiling 100,000 pesos (premium 5,000) | PhilHealth Advisory 2025-0002[[uom_ph_pa2025]] (reported unchanged for 2026; confirm) |
+| Pag-IBIG | Employee 1% (pay of 1,500 pesos or less) or 2%; employer 2% | Maximum fund salary 10,000 pesos (200 pesos each) | Pag-IBIG Circular 460, effective February 2024[[uom_hdmf460]] |
+| 13th-month pay | Basic salary earned in the calendar year ÷ 12, paid on or before December 24 | Rank-and-file private employees, whatever their designation or employment status, subject to listed exemptions | PD 851[[uom_pd851]] and the DOLE advisory for the year |
+| Tax on 13th-month pay and other benefits | Exempt up to 90,000 pesos combined | The excess is taxable | Tax Reform for Acceleration and Inclusion (TRAIN) law (RA 10963) |
 
-Contribution tables, rates and limits change by law, agency circular or board resolution. The figures above are the November 2026 review baseline.
+Contribution tables, rates, and limits change by law, circular, or board resolution. These figures are the November 2026 baseline.
 
-## Statutory leaves (private sector; HR confirms eligibility)
+## Statutory leaves (private sector; human resources confirms eligibility)
+
+{{fig:uom18b}}
 
 | Leave | Entitlement | Law |
 |---|---|---|
-| Service incentive leave | 5 days paid per year after one year of service (with exemptions, such as establishments with fewer than 10 employees or workers already given at least 5 days' paid leave) | Labor Code Art. 95 |
-| Maternity leave | 105 days paid (live birth), with 15 additional days for solo mothers; option to allocate up to 7 days to the father or alternate caregiver; 60 days for miscarriage or emergency termination | RA 11210 |
-| Paternity leave | 7 days paid for married male employees, for the first four deliveries of the legitimate spouse | RA 8187 |
-| Solo parent leave | 7 working days per year after six months of service | RA 11861 |
-| Special leave for women | Up to 2 months full pay after surgery for gynecological disorders, with qualifying service | RA 9710 |
-| Leave for victims of violence against women and children | Up to 10 days paid | RA 9262 |
+| Service incentive leave | 5 paid days a year after one year of service, with exemptions such as establishments with fewer than 10 employees or workers already given at least 5 days of paid leave | Labor Code Art. 95 |
+| Maternity leave | 105 paid days for a live birth, plus 15 days for solo mothers; up to 7 days can be given to the father or another caregiver; 60 days for miscarriage or emergency termination | RA 11210[[uom_ra11210]] |
+| Paternity leave | 7 paid days for married male employees, for the first four deliveries of the legitimate spouse | RA 8187 |
+| Solo parent leave | 7 working days a year after six months of service | RA 11861 |
+| Special leave for women | Up to 2 months at full pay after surgery for gynecological disorders, with qualifying service | RA 9710 |
+| Leave for victims of violence against women and children | Up to 10 paid days | RA 9262 |
 
-Company policy and collective agreements may add vacation, sick and emergency leave. **Government employees** follow CSC leave rules and GSIS coverage instead of SSS.
+Company policy and collective agreements may add vacation, sick, and emergency leave. **Government employees** follow Civil Service Commission leave rules and are covered by the Government Service Insurance System instead of SSS.
 
 ## Calculator CALC-11: statutory contributions and 13th-month pay
 
-**Inputs:** monthly basic salary, basic salary earned year to date (or months worked), employee category (private or government), other non-taxable benefits already paid this year.
+You need: monthly basic salary, basic salary earned so far this year (or months worked), employee category (private or government), and other non-taxable benefits already paid this year.
 
-**Formulas**
+{{formula:**SSS MSC** = salary rounded to its 500-peso bracket, from 5,000 to 35,000 (use the official table for edge cases).<br>**SSS employee** = 5% × MSC. **SSS employer** = 10% × MSC + Employees' Compensation (10 or 30 pesos).<br>**PhilHealth total** = 5% × basic salary, kept between 10,000 and 100,000; each side pays half.<br>**Pag-IBIG employee** = 1% (if basic is 1,500 or less) or 2% × basic, up to 10,000. **Pag-IBIG employer** = 2% × basic, up to 10,000.<br>**13th-month pay** = basic salary earned in the year ÷ 12.<br>**Taxable part** = 13th-month pay + other benefits − 90,000, if positive.}}
 
-- SSS MSC = salary rounded to the nearest ₱500 bracket, limited to ₱5,000 to ₱35,000 (use the official table for edge cases)
-- SSS employee = 5% × MSC; SSS employer = 10% × MSC + EC (₱10 or ₱30)
-- PhilHealth total = 5% × min(max(basic, ₱10,000), ₱100,000); employee and employer each pay half
-- Pag-IBIG employee = (1% if basic ≤ ₱1,500, else 2%) × min(basic, ₱10,000); employer = 2% × min(basic, ₱10,000)
-- 13th-month pay = basic salary earned in the calendar year ÷ 12
-- Taxable portion of 13th-month and other benefits = max(0, 13th-month + other benefits − ₱90,000)
+**Worked example.** A nurse earns a monthly basic salary of 30,000 pesos and is employed all year.
 
-**Worked example.** Monthly basic salary ₱30,000, employed all year.
-- SSS: MSC ₱30,000; employee ₱1,500; employer ₱3,000 + EC ₱30 = ₱3,030
-- PhilHealth: 5% × ₱30,000 = ₱1,500; employee ₱750; employer ₱750
-- Pag-IBIG: employee ₱200; employer ₱200
-- Total employee deductions (before tax): ₱2,450; total employer share: ₱3,980
-- 13th-month pay: ₱360,000 ÷ 12 = ₱30,000, fully within the ₱90,000 exemption if other benefits are small
+- SSS: MSC 30,000; employee 1,500; employer 3,000 + 30 = 3,030 pesos
+- PhilHealth: 5% × 30,000 = 1,500; employee 750; employer 750 pesos
+- Pag-IBIG: employee 200; employer 200 pesos
+- Total employee deductions before tax: 1,500 + 750 + 200 = 2,450 pesos
+- Total employer share: 3,030 + 750 + 200 = 3,980 pesos
+- 13th-month pay: 360,000 ÷ 12 = 30,000 pesos, fully within the 90,000-peso exemption if other benefits are small
 
-**Budget note.** The employer share adds about 13% to this employee's monthly cost, before the 13th month (another 8.3% of annual basic pay). Staffing budgets that use basic salary alone understate cost by roughly one-fifth.
+**A budget note.** The employer share adds about 13% to this nurse's monthly cost, and the 13th month adds another 8.3% of annual basic pay. A staffing budget that uses basic salary alone understates the real cost by about one-fifth (Module 11).
+
+{{key:Reconcile every employee by name, every month. Totals that match can hide a person whose money posted to no one.}}
 
 ## Remittance reconciliation
 
-Monthly, for each agency:
+For each agency, every month:
 
-1. Total employee deductions + employer shares per the payroll register.
-2. Amount remitted per the payment confirmation.
-3. Amount posted per the agency's employer report or portal.
-4. Differences explained and corrected; new hires and separations checked for correct start and end months.
+1. Total employee deductions and employer shares from the payroll register.
+2. The amount remitted, from the payment confirmation.
+3. The amount posted, from the agency's employer report or portal, by employee.
+4. Every difference explained and corrected. New hires and separations checked for the right start and end months.
 
-Verify current due dates and reporting systems (for example, Pag-IBIG's electronic remittance requirements) with each agency for your employer type.
+Confirm current due dates and reporting systems, such as Pag-IBIG's electronic remittance requirements, with each agency for your employer type.
 
 ## Leave and confidentiality
 
-Process leave through HR with the documents the law or policy requires. Rosters say "on leave," not "on leave for surgery" or a diagnosis. Medical certificates are kept in HR files with restricted access (RA 10173).
+Process leave through human resources with the documents the law or policy requires. The roster says "on leave," not "on leave for surgery" or a diagnosis. Medical certificates stay in human resources files with restricted access, under the Data Privacy Act (RA 10173).
 
-## Onboarding and separation checklist
+**Example.** A unit in Malaybalay writes "SL – dengue" and "ML – CS delivery" on the roster board by the nurses' station, which patients and visitors pass all day. A patient's relative asks one nurse about her operation. The nurse, embarrassed, complains. The board now shows only "Leave," and the reason lives in the human resources file.
 
-**Onboarding:** agency numbers verified, enrollment confirmed, first contribution month correct, benefits explained in writing.
-**Separation:** last contribution month, final pay (unpaid salary, prorated 13th month, convertible leave, other amounts due) computed and released within the period DOLE guidance sets (generally within 30 days unless a more favorable policy applies), certificate of employment issued, tax certificate (BIR Form 2316) prepared, unit access removed and assets returned.
+## Onboarding and separation
+
+**Onboarding:** verify each agency number against the person's ID card, confirm enrollment, check that the first contribution month is correct, and explain benefits in writing.
+
+**Separation:** the last contribution month; final pay (unpaid salary, prorated 13th-month pay, convertible leave, and other amounts due) computed and released within the period DOLE guidance sets, generally within 30 days unless a more favorable policy applies; a certificate of employment; the tax certificate (Bureau of Internal Revenue Form 2316); access removed and unit property returned.
+
+{{call:When an employee reports a missing contribution or benefit, compare the payroll register, the remittance proof, and the agency posting record before responding, and give the employee a written answer with a date. If deductions were made but not remitted, notify the licensee in writing the same day.}}
 
 ## What the evidence shows
 
-Benefit administration is a legal duty rather than a clinical intervention. Its relevance to care is through trust and retention: unfairness and administrative failures are recurring themes in nurse turnover research, and turnover undermines competency (Module 15). The strongest "evidence" in this module is the law itself: get the figures right and keep proof.
-
-## Field case: the unposted contributions
-
-**Situation.** A technician applying for a salary loan finds that four months of SSS contributions are missing from his record, though they were deducted from his pay.
-
-**Investigation.** Remittances were paid on time, but a new hire's SSS number was mistyped in the employer report, so his contributions posted to no one.
-
-**Fix.** Payroll corrects the report with SSS, the technician's record is updated, and the unit adds a monthly check: compare agency posting reports with the payroll register for every employee, not just totals.
+Benefit administration is a legal duty, not a clinical intervention. It touches care through trust and retention: unfairness and administrative failures recur in nurse turnover research, and turnover undermines competency (Module 15). The strongest evidence in this module is the law itself. Get the figures right, and keep the proof.
 
 ## Common failure modes
 
-- Reconciling totals only, so individual posting errors hide.
-- Budgeting staff at basic salary without employer shares and 13th month.
-- Diagnoses written on rosters.
-- Final pay delayed for months after separation.
+- **Totals only.** Individual posting errors hidden inside matching totals.
+- **Basic-salary budgets.** Staff costs planned without employer shares and the 13th month.
+- **Diagnoses on the board.** Medical reasons for leave visible to anyone walking by.
+- **Final pay in months.** Departing staff waiting long after their last day.
+- **Unchecked new-hire numbers.** One transposed digit, and four months of contributions vanish.
 
 ## Supervised practice
 

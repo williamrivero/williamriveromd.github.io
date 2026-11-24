@@ -13,73 +13,87 @@ MODULE = {'objectives': ['Separate the four authority lines in a hemodialysis se
  'sections': [('the-operating-model-four-lines-one-patie',
                'The operating model',
                'The operating model: four lines, one patient',
-               '<p>Think of authority in a dialysis unit as four parallel wires feeding one patient. Each wire carries a '
-               'different current, and the unit is safe only when you can tell which wire is live for a given decision.</p>\n'
+               '<p>Every decision in a dialysis unit belongs to one of four lines of authority. The unit is safe only when '
+               'everyone can tell which line owns a decision before the decision is needed.</p>\n'
                '{{fig:uom01a}}\n'
-               '\n'
-               '<p><strong>Governance.</strong> The licensee, owner or hospital administration holds the license and the money. '
-               'It appoints the Medical Director, approves budgets and contracts, and signs the delegations that tell everyone '
-               'else what they may do. Under Department of Health (DOH) Administrative Order (AO) 2012-0001[[doh2012]], the '
-               'facility, not the individual manager, is accountable for meeting licensing standards.</p>\n'
-               '<p><strong>Medical.</strong> The Medical Director (the Philippine Society of Nephrology (PSN) calls this role '
-               'the Dialysis Clinical Head) owns technical and medical oversight: protocols, staff education requirements, '
-               'quality assessment and performance improvement (QAPI), infection surveillance and water safety. The attending '
-               'nephrologist owns patient-specific prescriptions. The physician on duty (POD) provides delegated medical '
-               'coverage during the shift. None of these can be overridden by a schedule or a budget.</p>\n'
+               '<p><strong>Governance.</strong> The licensee, owner, or hospital administration holds the license and the money. '
+               'It appoints the Medical Director, approves budgets and contracts, and signs the delegations that say what '
+               'everyone else may do. Under DOH Administrative Order (AO) 2012-0001, the facility, not the individual manager, '
+               'is accountable for meeting licensing standards.[[doh2012]]</p>\n'
+               '<p><strong>Medical.</strong> The Medical Director owns medical and technical oversight: protocols, staff '
+               'education requirements, quality assessment and performance improvement (QAPI), infection surveillance, and water '
+               "safety. The attending nephrologist owns each patient's prescription. The POD provides delegated medical coverage "
+               'during the shift. A schedule or a budget never overrides any of them.</p>\n'
                '<p><strong>Nursing.</strong> The head nurse or nursing lead assigns nurses to patients, judges acuity, '
-               'supervises competency and owns nursing quality. Republic Act (RA) 9173 §29[[pd_ra9173]] sets the minimum '
-               'qualifications for a supervisory nursing position: Philippine RN registration, at least two years of experience '
-               'in general nursing service administration, a BSN with at least nine graduate units in nursing administration, '
-               "and good standing in the accredited professional organization. Whether a manager's specific job falls under §29 "
-               'is an HR and legal question. Document the answer rather than assuming it.</p>\n'
-               '<p><strong>Operations.</strong> You coordinate people, capacity, supplies, records, vendors, claims and the '
-               'physical plant. You make the other three lines work on time. You do not prescribe, assign nurses unless you also '
-               'hold a nursing appointment, or release water or machines.</p>\n'
-               '<p>One person may legitimately hold more than one line, for example a head nurse who is also the appointed unit '
-               'manager. When that happens, the written appointment must say so, and the person should state which hat they are '
-               'wearing when they decide.</p>\n'
-               '<h3>The safety hold: the one clinical-adjacent power you do hold</h3>\n'
-               '<p>Every approved policy should give the operations manager the authority to <strong>stop</strong> something '
-               'that looks unsafe, such as delaying an opening, quarantining a lot or holding a station, without giving the '
-               'manager the authority to <strong>restart</strong> it. Restart (release) belongs to the technical and clinical '
-               'owners. This asymmetry is deliberate. Stopping is cheap and reversible. Releasing without the right expertise is '
-               'how patients get hurt.</p>'),
+               'supervises competency, and owns nursing quality. Republic Act (RA) 9173, Section 29, sets the minimum '
+               'qualifications for a supervisory nursing position: Philippine registered nurse (RN) registration, at least two '
+               'years of experience in nursing service administration, a Bachelor of Science in Nursing with at least nine '
+               'graduate units in nursing administration, and good standing in the accredited professional '
+               'organization.[[pd_ra9173]] Whether your own job falls under Section 29 is a question for human resources and '
+               'legal counsel. Get the answer in writing.</p>\n'
+               '<p><strong>Operations.</strong> You coordinate people, capacity, supplies, records, vendors, claims, and the '
+               'building. You make the other three lines work on time. You do not prescribe. You do not assign nurses unless you '
+               'also hold a nursing appointment. You do not release water or machines.</p>\n'
+               '<p><strong>Example.</strong> At a 20-station hospital unit in Pampanga, Ms. Lorna Dizon is both head nurse and '
+               'unit manager. Her appointment letter names both roles. When she moves a nurse from station 4 to station 9, she '
+               'says, "As head nurse, I am reassigning Nurse Ben." When she postpones a supply order, she says, "As unit '
+               'manager, I am holding this order until Friday." It sounds formal. It also means no one argues later about which '
+               'authority she used.</p>\n'
+               '{{key:One person may hold two lines. The written appointment must say so, and the person should say which role '
+               'they are using when they decide.}}'),
+              ('the-safety-hold',
+               'The safety hold',
+               'The safety hold',
+               '<p>Every approved policy should give you the authority to <strong>stop</strong> something that looks unsafe: '
+               'delay an opening, quarantine a lot of bloodlines, take a station out of service. It should not give you the '
+               'authority to <strong>restart</strong> it. Release belongs to the technical and clinical owners.</p>\n'
+               '<p>The asymmetry is deliberate. Stopping is cheap and reversible: at worst, a treatment starts 40 minutes late. '
+               'Releasing without the right expertise is how patients get hurt.</p>\n'
+               '<p><strong>Example.</strong> At 07:20, two nurses report that bloodlines from the same carton leaked at the '
+               'arterial connector during priming. No patient was harmed. You cannot judge whether the lot is defective, and you '
+               'do not try. You pull the remaining boxes of that lot, tag them "On hold, do not use," move stock from another '
+               "lot to the floor, and call the biomedical lead and the head nurse. The supplier's representative and the "
+               'biomedical lead examine the lines that afternoon. The lot stays on hold until they sign a decision. The hold '
+               'cost you one stock transfer. Using the lot could have cost a patient a blood loss mid-treatment.</p>\n'
+               '{{call:Place a safety hold whenever a release record is missing, incomplete, or unsigned, and call the owner of '
+               'that release. Never restart a held station, loop, or lot yourself.}}'),
               ('what-the-evidence-shows',
                'What the evidence shows',
                'What the evidence shows',
-               '<p>Direct trials of governance structures in dialysis do not exist, so we reason from adjacent evidence and say '
-               'so plainly.</p>\n'
-               '<ul><li><strong>Communication failures drive preventable harm.</strong> In a nine-hospital prospective study, a '
-               'standardized handoff bundle (I-PASS) was associated with a 23% fall in medical errors and a 30% fall in '
-               'preventable adverse events (4.7 to 3.3 per 100 admissions) without lengthening handoffs[[uom_starmer2014]]. That '
-               'study was in pediatric residents, not dialysis units, so treat it as <strong>evidence-supported '
-               'inference</strong>: structured, closed-loop communication reduces harm across '
-               'settings.</li><li><strong>Regulators in comparable systems separate the roles explicitly.</strong> US Medicare '
-               'Conditions for Coverage (42 CFR Part 494) distinguish the governing body, the physician medical director and the '
-               "full-time RN nurse manager. Singapore's 2023 outpatient renal dialysis regulations name a Clinical Governance "
-               'Officer and a supervising nurse. These are policy choices, not outcome trials, but they show that mature systems '
-               'do not leave role boundaries to chance.</li></ul>'),
+               '<p>No trial has compared organizational charts in dialysis units, so this section reasons from nearby evidence '
+               'and says so.</p>\n'
+               '<p><strong>Structured communication reduces harm.</strong> In a prospective study in nine hospitals, a '
+               'standardized handoff program called I-PASS was associated with a 23% fall in medical errors and a 30% fall in '
+               'preventable adverse events, from 4.7 to 3.3 per 100 admissions, without making handoffs '
+               'longer.[[uom_starmer2014]] The study involved pediatric residents, not dialysis units. Treat it as reasonable '
+               'inference: closed-loop communication reduces harm across settings, and a dialysis opening is a handoff from the '
+               'night to the day.</p>\n'
+               '<p><strong>Mature systems write the roles down.</strong> United States Medicare rules for dialysis facilities '
+               'separate the governing body, the physician medical director, and the registered nurse manager.[[dch_cfr494]] '
+               'These are policy choices, not outcome trials. They show that well-regulated systems do not leave role boundaries '
+               'to chance.</p>'),
               ('philippine-rules-that-change-the-decisio',
                'Philippine rules that',
                'Philippine rules that change the decision',
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Rule</th><th>What it changes on Monday</th><th>Verify locally</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td>DOH AO 2012-0001 §V.B.2</td><td>The Medical Director role, a POD during operating hours, and staffing '
-               'ceilings exist in writing. Your decision map must show them.</td><td>Current CHD interpretation for your '
-               'configuration</td></tr>\n'
+               '<tr><td>DOH AO 2012-0001</td><td>A Medical Director, a POD during operating hours, and staffing requirements '
+               'exist in writing. Your map must show them.</td><td>Current interpretation from your Center for Health '
+               'Development</td></tr>\n'
                '<tr><td>PSN 2024 HD Guidelines (3rd ed.)[[psn2024]]</td><td>Sample Dialysis Clinical Head appointment and '
                'training expectations</td><td>Current PSN attestation forms</td></tr>\n'
-               '<tr><td>RA 9173 §29</td><td>Minimum qualifications if your role is a supervisory nursing position</td><td>HR '
-               'determination in your file</td></tr>\n'
+               '<tr><td>RA 9173, Section 29</td><td>Minimum qualifications if your role is a supervisory nursing '
+               'position</td><td>Human resources determination in your file</td></tr>\n'
                '<tr><td>RA 10173[[dch_ra10173]]</td><td>Health data are sensitive personal information. You decide who sees '
-               'what.</td><td>Facility Data Protection Officer (DPO) contact</td></tr>\n'
+               "what.</td><td>Contact for your facility's Data Protection Officer (DPO)</td></tr>\n"
                '</tbody></table></div>'),
               ('doing-it-on-monday-the-decision-rights-m',
                'Doing it on Monday',
                'Doing it on Monday: the decision-rights map',
-               '<p>Build a one-page map. For each decision, write the owner, the backup, what triggers escalation, and the '
-               'deadline for escalating.</p>\n'
+               '<p>Build a one-page map. For each recurring decision, write the owner, the backup, what triggers escalation, and '
+               'the deadline. Post it where the huddle happens.</p>\n'
+               '{{fig:uom01b}}\n'
                '<div class="table-wrap"><table>\n'
                '<thead><tr><th>Decision</th><th>Owner</th><th>Backup</th><th>Escalate when</th><th>Deadline</th></tr></thead>\n'
                '<tbody>\n'
@@ -104,36 +118,52 @@ MODULE = {'objectives': ['Separate the four authority lines in a hemodialysis se
                '<tr><td>Media or social media inquiry</td><td>Administrator</td><td>Owner</td><td>Any</td><td>Before any '
                'response</td></tr>\n'
                '</tbody></table></div>\n'
-               '{{fig:uom01b}}'),
-              ('the-opening-huddle-four-minutes',
-               'The opening huddle',
-               'The opening huddle (four minutes)',
-               '<ol><li><strong>Coverage:</strong> POD present? Nurses and technicians by name against the '
-               'roster?</li><li><strong>Release:</strong> water log complete and signed? Machines cleared? Emergency cart '
-               'checked?</li><li><strong>Capacity:</strong> booked patients, isolation needs, any patient needing a hospital '
-               'bed?</li><li><strong>Risks:</strong> one sentence each from nursing, medical and '
-               'technical.</li><li><strong>Decision and owner:</strong> say aloud "We open stations 1–12 at 06:00; stations '
-               '13–15 hold pending POD confirmation, owner: head nurse, check at 05:45." Write it down with the time.</li></ol>\n'
-               '<p>Closed loop means the receiver repeats the action and owner. "Noted" is not closure.</p>'),
+               "<p><strong>Example.</strong> A daughter calls at 14:00 asking you to send her father's last three treatment "
+               'records to a hospital in Manila "right now, by Viber." The map tells you this is not your call. It belongs to '
+               'the DPO, and the backup is the administrator. You say: "I want to get this to the hospital quickly and safely. '
+               'Our privacy officer handles record releases. I am calling her now and she will call you back within the hour." '
+               'You have not refused. You have routed.</p>'),
+              ('the-opening-huddle-in-four-minutes',
+               'The opening huddle in four',
+               'The opening huddle in four minutes',
+               '{{flow:The four-minute opening huddle|Coverage::POD present or confirmed? Nurses and technicians by name against '
+               'the roster?|Release::Water log complete and signed? Machines cleared? Emergency cart checked?|Capacity::Booked '
+               'patients, isolation needs, anyone who may need a hospital bed?|Risks::One sentence each from nursing, medical, '
+               'and technical.|Decision and owner::Say it aloud, with the owner and the check time, and write it down.}}\n'
+               '<p>A good decision statement sounds like this: "We open stations 1 to 12 at 06:00. Stations 13 to 15 hold '
+               'pending the relief nurse. Owner: Ms. Ilagan. Check at 06:45." The head nurse repeats it back. You write it in '
+               'the log with the time.</p>\n'
+               '{{key:"Noted" is not closure. A message is closed when the receiver repeats the action, the owner, and the '
+               'time.}}'),
               ('common-failure-modes',
                'Common failure modes',
                'Common failure modes',
-               '<ul><li>Treating the group chat as an escalation. A message is not received until someone accepts '
-               'it.</li><li>Letting the person with the most seniority decide outside their line.</li><li>A manager approving a '
-               'prescription change "because the doctor said so on the phone." Verbal orders go to the licensed clinician who '
-               'can receive them.</li><li>Decision maps that list job titles but no names or backups.</li></ul>')],
- 'debrief': ['{{fig:uom01c}}\n'
-             '<p><strong>What goes wrong in weak units.</strong> Someone seats all patients to keep the peace. The remaining '
-             'nurses run at 1:6. A patient becomes hypotensive while the only physician is still in traffic.</p>\n'
-             '<p><strong>What a good manager does.</strong></p>\n'
-             '<ol><li>Calls the head nurse: "Can you staff 12 stations at 1:4 with who is here?" The head nurse reassigns and '
-             'says she can cover 12 now and 15 when the relief nurse arrives at 07:00.</li><li>Calls the POD directly, then the '
-             'backup POD on the coverage list. Records times.</li><li>Opens the stations that are fully covered. Holds the rest. '
-             'Tells waiting patients the expected start time and why, without blaming staff.</li><li>Replies to the owner with '
-             'facts, not argument: "Opening 12 of 15 at 06:00 with full nurse coverage. Three patients start at 07:00 when the '
-             'relief nurse arrives. POD confirmed 05:52. No session will be skipped." Owners rarely object to a plan that '
-             'protects both patients and the license.</li><li>Logs the event for the weekly review: why was there no '
-             'standby?</li></ol>'],
+               '<ul><li><strong>The group chat as escalation.</strong> A message posted is not a message received. Escalation '
+               'ends with a named person who accepts it.</li><li><strong>Seniority instead of authority.</strong> The '
+               'longest-serving nurse is not the nursing lead unless she is appointed.</li><li><strong>The manager as order '
+               'relay.</strong> A physician phones you a potassium change. You transfer the call to the nurse or POD who can '
+               'read it back and document it. You never write it on the whiteboard.</li><li><strong>Maps with titles but no '
+               'names.</strong> "Biomedical technician" is not an owner. "Mr. Rico Manalo, backup Mr. Allan Bueno" '
+               'is.</li><li><strong>Dual roles never written down.</strong> The first dispute will be about which hat was '
+               'on.</li></ul>')],
+ 'debrief': ['<p><strong>Who decides capacity.</strong> Not you, and not Mr. Tan. The head nurse, Ms. Grace Ilagan, decides how '
+             'many patients the nurses present can safely care for. You call her first: "Joy is out. Who do we have, and how '
+             'many stations can you cover at your usual ratio?" She answers that she can cover 12 stations now and all 15 when '
+             'the relief nurse arrives at 07:00.</p>\n'
+             '<p><strong>Who covers the physician gap.</strong> You call Dr. Reyes directly. No answer. At 05:40 you call the '
+             'backup POD on the coverage list, Dr. Liza Cruz, who says she can be there by 06:15. At 05:52 Dr. Reyes calls back: '
+             'a flat tire on the MacArthur Highway, arriving 06:05. You write all four times in the shift log.</p>\n'
+             '<p><strong>What opens.</strong> Twelve stations open at 06:00 with full nurse coverage. The three patients with '
+             'the longest gap since Friday and the highest weight gains go first, as Ms. Ilagan and the POD decide. Three '
+             'patients start at 07:00.</p>\n'
+             '<p><strong>What you say.</strong> To the patients outside: "We are starting twelve treatments now. Three of you '
+             'will start at seven because we are waiting for one more nurse. No one will miss a session today." No blame, no '
+             'staff names. To Mr. Tan, in the same group chat so the record is complete: "Opening 12 of 15 at 06:00 with full '
+             'nurse coverage. Three start at 07:00 when the relief nurse arrives. POD confirmed 05:52, arriving 06:05. No '
+             'session will be skipped." Owners rarely argue with a plan that protects both the patients and the license.</p>\n'
+             '<p><strong>What you fix this week.</strong> The real failure was not the fever. It was that the unit had no '
+             'standby nurse and no rule for when a POD must confirm. Put both on the agenda for the weekly review.</p>\n'
+             '{{fig:uom01c}}'],
  'quiz': [('Who assigns nurses to patients for a shift?',
            ['The operations manager, because she owns the roster',
             'The authorized nursing lead',
@@ -244,17 +274,36 @@ MODULE = {'objectives': ['Separate the four authority lines in a hemodialysis se
            'A coverage list exists for this moment. You document, hold what is not covered and escalate.')],
  'readings': [('dialysis-qapi-vs-cqi.html', 'How dialysis units organize quality assessment and improvement.'),
               ('nephrology-workforce-crisis-or-opportunity.html', 'The people side of running a kidney service.')],
- 'big': '<p>A dialysis unit is a small hospital that opens and closes three times a day. Most bad mornings are not caused by a '
-        'lack of skill. They happen because two people each assumed the other one had decided, or because the loudest person in '
-        'the room decided something that was not theirs to decide. Your first job as manager is to make authority visible before '
-        'anyone needs it.</p>',
+ 'big': '{{plain:A dialysis unit runs on four wires that meet at one patient. One wire carries the license and the money. One '
+        'carries medical orders. One carries nursing assignments. One carries the schedule, the supplies, and the paperwork. You '
+        'hold the fourth wire. Your job is to know, for every decision, which wire is live.}}\n'
+        '<p>The picture has a limit. Wires do not argue, and people do. In a real unit the owner, the Medical Director, the head '
+        'nurse, and the manager will sometimes want different things at 05:30 on a Monday. The point of the picture is not that '
+        'the lines never cross. It is that every decision has exactly one owner, a named backup, and a time by which someone '
+        'must decide.</p>\n'
+        '<p>Most bad mornings in dialysis units are not caused by a lack of skill. They happen because two people each assumed '
+        'the other had decided, or because the loudest person in the room decided something that was not theirs to decide. This '
+        'module teaches you to make authority visible before anyone needs it.</p>\n'
+        '{{cards:Key terms for this module|Licensee::The person or organization that holds the Department of Health (DOH) '
+        'license to operate. In a hospital, this is the hospital.|Medical Director::The physician who owns medical and technical '
+        'oversight of the unit. The Philippine Society of Nephrology (PSN) calls this role the Dialysis Clinical Head.|Physician '
+        'on duty (POD)::The physician who covers the unit during operating hours under delegated authority.|Nursing lead::The '
+        'head nurse or charge nurse who assigns nurses to patients.|Decision-rights map::A one-page table naming the owner, '
+        'backup, trigger, and deadline for each recurring decision.|Safety hold::Your authority to stop something that looks '
+        'unsafe. It never includes the authority to restart it.|Closed loop::A message is closed only when the receiver repeats '
+        'the action, the owner, and the time.}}',
  'case': {'title': 'The 05:30 phone call',
-          'html': '<p>At 05:30 a nurse calls in sick. The physician on duty (POD) for the first shift has not confirmed arrival. '
-                  'Twenty-four patients are booked across two shifts. The owner messages the group chat: "Seat everyone on time, '
-                  'patients are waiting outside."</p>',
-          'questions': ['What must you protect first, and whose decision is it?',
-                        'Which facts would you confirm before you act?',
-                        'What would you record, and where?']},
+          'html': '<p>You are Ms. Carla Mendoza, operations manager of a 15-station freestanding unit in Malolos, Bulacan. It is '
+                  'Monday, 05:30. Twenty-four patients are booked across the first two shifts, and twelve of them have been off '
+                  'dialysis since Friday.</p>\n'
+                  '<p>Your phone rings. Nurse Joy Santiago has a fever and will not come in. A minute later you see that Dr. '
+                  'Paolo Reyes, the physician on duty for the first shift, has not confirmed his arrival. He usually texts by '
+                  '05:15.</p>\n'
+                  '<p>Then the owner, Mr. Ramon Tan, posts in the staff group chat: "Patients are already outside. Seat everyone '
+                  'on time. We cannot afford complaints this week."</p>',
+          'questions': ['How many stations can you open safely at 06:00, and who decides that number?',
+                        'Who do you call first, second, and third, and what do you write down?',
+                        'What do you tell Mr. Tan, and what do you tell the patients waiting outside?']},
  'skills': {'title': 'Supervised practice',
             'intro': 'Complete these with your preceptor at your own unit, using fictional or de-identified data.',
             'items': [('Draft the ten-row decision-rights map for your unit and have the head nurse and Medical Director sign '

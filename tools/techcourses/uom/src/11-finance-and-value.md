@@ -1,9 +1,14 @@
-# 11. Budgeting, cost per treatment and cash
+# 11. Budgeting, cost per treatment, and cash
 
-**Core** · 45 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-11 (Understand) · FIG-11B (Apply) · FIG-11C (Appreciate) · **Calculator:** CALC-08 Cost per treatment and break-even
+## The big picture
 
-> **Why this matters.** A dialysis unit can be profitable on paper and still unable to pay its nurses on the 15th. Revenue is earned when the session is delivered, but cash arrives weeks or months later, after claims are filed, reviewed and paid. Meanwhile, supplies, salaries and electricity are due now. A manager who understands cost per treatment, break-even and cash timing can defend safe staffing with numbers instead of pleas.
+{{plain:A dialysis unit's money works like a household's. The rent and the salaries are due whether you treat 300 patients this month or 400. Each treatment brings in a little more than its supplies cost, and that difference slowly pays the rent. But the money for a treatment arrives weeks or months after the treatment. A household can earn enough and still run out of cash on payday.}}
+
+The picture has a limit. A household's bills are simple; a unit's are not. Some costs stay flat, some rise with every session, and some jump all at once when you add a shift. And the "income" a unit books is not the cash in its account. A unit can look profitable on paper and still be unable to make payroll, because PhilHealth has not paid yet for sessions delivered in September.
+
+You do not need to be an accountant. You need to know three numbers for your unit, what drives them, and how to defend safe staffing when someone proposes saving money by cutting it.
+
+{{cards:Key terms for this module|Fixed cost::Stays the same whatever the session volume: rent, core salaries, depreciation.|Variable cost::Rises with each session: dialyzer, bloodlines, concentrate, erythropoiesis-stimulating agents (ESAs).|Step cost::Jumps at a threshold, such as a new nurse team for a fourth shift.|Cost per treatment::Total cost divided by sessions delivered.|Contribution margin::What each session brings in minus its variable cost.|Break-even::The number of sessions needed to cover fixed costs.|Receivables::Money owed to the unit for sessions already delivered.|Working capital::The cash needed to keep running while waiting to be paid.}}
 
 ## Learning objectives
 
@@ -12,84 +17,98 @@
 3. Explain the difference between billed revenue, recognized revenue and cash collected.
 4. Build a budget case that includes safe staffing, maintenance and realistic collection timing.
 
+## Field case: profitable but broke
+
+**Situation.** It is the 10th of the month at a 15-station freestanding unit in Santa Rosa, Laguna. The monthly report shows a healthy operating margin for the third month running. Payroll is due on the 15th. The accountant, Ms. Gemma Rivera, calls the manager, Mr. Allan Navarro: "We are short by 640,000 pesos for payroll."
+
+The owner's first reaction is to propose cutting two nurse positions "until things stabilize." Mr. Navarro asks for one day before anyone decides. He pulls the aging report. Receivables older than 90 days have doubled in four months.
+
+**Before reading on, decide:**
+
+- How can a unit be profitable and short of cash at the same time?
+- Where would you look first for the missing money?
+- What should Mr. Navarro say about the proposal to cut two nurses?
+
+**Case review.**
+
+**Profit is not cash.** The income statement counts revenue when the session is delivered. The bank account counts it when PhilHealth pays. If claims slow down, the profit stays the same and the cash disappears.
+
+**Where the money went.** Mr. Navarro reconciles claims by month of service. Two months of claims were submitted late, because the billing encoder resigned and was not replaced for six weeks. One month's batch was returned for documentation errors (Module 10). About 1.9 million pesos is sitting in claims that are late, returned, or not yet filed.
+
+**The plan.** He presents a recovery plan the next morning: resubmit the corrected claims within two weeks, hire a backup billing encoder, track "claims submitted within seven days of service" as a key indicator, and ask the owner to approve a short-term credit line to cover two payrolls until collections recover.
+
+**The nurses.** He shows that cutting two nurses would drop the unit below its required staffing (Module 3) and would save about 70,000 pesos a month, far less than the cash gap, while raising risk for patients. The owner approves the credit line. Staffing is not cut. By the third month, receivables older than 90 days are back below 15%.
+
+{{fig:uom11c}}
+
 ## The model: three kinds of cost
 
-- **Fixed costs** do not change with session volume within a range: rent, base salaries of the core team, insurance, depreciation of machines and the water system, licenses and subscriptions.
-- **Variable costs** rise with each session: dialyzer (or the reprocessing cost per use), bloodlines, needles, concentrates, saline, heparin, ESAs, gloves and dressings, water and electricity per session, laundry.
-- **Step costs** jump at thresholds: adding a third shift needs another nurse team; adding stations beyond the POD ratio needs another physician on duty.
+{{fig:uom11a}}
 
-**Cost per treatment** = (fixed + variable) ÷ completed sessions. Because fixed costs spread over volume, cost per treatment falls as volume rises, until you hit a step and it jumps.
+**Fixed costs** do not change with session volume, within a range: rent, the base salaries of the core team, insurance, depreciation of machines and the water system, licenses, and subscriptions.
 
-**Contribution margin per session** = net revenue per session − variable cost per session. Each session contributes this amount toward fixed costs.
+**Variable costs** rise with each session: the dialyzer (or the reprocessing cost per use), bloodlines, needles, concentrates, saline, heparin, ESAs, gloves and dressings, water and electricity per session, and laundry.
 
-**Break-even volume** = fixed costs ÷ contribution margin per session.
+**Step costs** jump at thresholds. Adding a third shift needs another nurse team. Adding stations beyond the physician-on-duty ratio needs another physician.
+
+{{formula:**Cost per treatment** = (fixed costs + variable costs) ÷ sessions delivered.<br>**Contribution margin per session** = net revenue per session − variable cost per session.<br>**Break-even volume** = fixed costs ÷ contribution margin per session.}}
+
+Because fixed costs spread over more sessions as volume rises, cost per treatment falls, until you hit a step and it jumps.
 
 ## What the evidence shows
 
-Peer-reviewed cost data for Philippine units are scarce and quickly outdated by price changes, so use your own ledger. Two general findings hold:
+Published cost data for Philippine units are scarce and quickly outdated by price changes, so use your own ledger. Two general findings still hold.
 
-- **Staffing is the largest controllable cost and the one most tied to outcomes.** Facilities with heavier staffing burden show higher mortality and hospitalization rates (Plantinga et al., *JAMA Network Open* 2024; Module 03). A budget that balances by cutting below safe staffing is not a saving. It is a transfer of cost to patients and, eventually, to hospital admissions and reputation.
-- **Missed sessions cost the unit as well as the patient.** A missed session loses its revenue while fixed costs continue, and it is associated with higher hospitalization (Module 04). Attendance improvement is both a quality and a financial project.
+**Staffing is the largest controllable cost, and the one most tied to outcomes.** Facilities with heavier staffing burden show higher death and hospitalization rates.[[uom_plantinga2024]] The data are observational, but a budget that balances by cutting below safe staffing is not a saving. It moves the cost to patients, and eventually to hospital admissions and the unit's reputation.
+
+**Missed sessions cost the unit as well as the patient.** A missed session loses its revenue while fixed costs continue, and it is associated with more hospitalization (Module 4). Improving attendance is both a quality project and a financial one.
 
 ## Calculator CALC-08: cost per treatment and break-even
 
-**Inputs:** monthly fixed costs, variable cost per session, completed sessions per month, net facility revenue per session (the payer rate less any professional-fee portion, deductions or discounts that do not stay with the facility; confirm how your PhilHealth package is split), average days to collect.
+You need: monthly fixed costs, variable cost per session, sessions delivered per month, net facility revenue per session (the payer rate minus any professional-fee portion, deductions, or discounts that do not stay with the facility; confirm how your package is split), and the average days to collect.
 
-**Formulas**
+**Worked example (fictional).** Fixed costs are 920,000 pesos a month. Variable cost is 2,100 pesos a session. Net facility revenue, for illustration only, is 6,350 pesos a session.
 
-- Total cost = fixed + (variable × sessions)
-- Cost per treatment = total cost ÷ sessions
-- Contribution margin = net revenue per session − variable cost per session
-- Break-even sessions = fixed ÷ contribution margin (rounded up)
-- Monthly operating margin = (net revenue − variable) × sessions − fixed
-- Cash tied up in receivables ≈ net revenue per day × average days to collect
-
-**Worked example (fictional).** Fixed costs ₱920,000 a month. Variable cost ₱2,100 a session. Net facility revenue ₱6,350 a session (for illustration only; confirm your actual net).
-
-| Sessions | Total cost | Cost per treatment | Operating margin |
+| Sessions per month | Total cost (pesos) | Cost per treatment (pesos) | Operating margin (pesos) |
 |---|---|---|---|
-| 400 | ₱1,760,000 | ₱4,400 | ₱780,000 |
-| 350 | ₱1,655,000 | ₱4,729 | ₱567,500 |
-| 217 (break-even) | ₱1,375,700 | ₱6,340 | about ₱0 |
+| 400 | 1,760,000 | 4,400 | 780,000 |
+| 350 | 1,655,000 | 4,729 | 567,500 |
+| 217 (break-even) | 1,375,700 | 6,340 | about 0 |
 
-- Contribution margin = 6,350 − 2,100 = ₱4,250
+- Contribution margin = 6,350 − 2,100 = 4,250 pesos per session
 - Break-even = 920,000 ÷ 4,250 = 216.5, so 217 sessions a month
 
-**Cash view.** At 400 sessions a month, net revenue is about ₱2.54 million, or ₱84,700 a day over 30 days. If claims take an average of 75 days to pay, about ₱6.35 million is tied up in receivables at any time. That is the working capital the unit must finance even when the income statement looks healthy.
+**The cash view.** At 400 sessions a month, net revenue is about 2.54 million pesos, or about 84,700 pesos a day over 30 days. If claims take an average of 75 days to pay, about 84,700 × 75 = 6.35 million pesos is tied up in receivables at any moment. That is the working capital the unit must finance, even when the income statement looks healthy.
 
-**Step test.** Adding 45 sessions a month by opening a fourth shift may require a new nurse team costing more than 45 × ₱4,250 = ₱191,250. Run the step before you promise the volume.
+**The step test.** Opening a fourth shift to add 45 sessions a month brings in 45 × 4,250 = 191,250 pesos of contribution. If the new nurse team costs more than that, the extra volume loses money. Run the step before you promise the volume.
 
-## Revenue, recognition and cash
+{{key:Never balance a budget by removing a safety control. Show the trade-off and let governance decide with full information.}}
 
-- **Billed (charged):** what the unit claims for the session.
+## Revenue, recognition, and cash
+
+{{fig:uom11b}}
+
+- **Billed:** what the unit claims for the session.
 - **Recognized revenue:** what accounting books as earned under the approved policy, often net of expected denials.
 - **Cash collected:** what reaches the bank.
 
-Track all three by month of service (vintage). A rising gap between recognized revenue and cash, or receivables aging past 90 days, is an early warning (Module 16 builds the aging report).
+Track all three by month of service. A widening gap between recognized revenue and cash, or receivables aging past 90 days, is an early warning. Module 16 builds the aging report.
+
+**Example.** A hospital unit in Baguio books 2.4 million pesos of dialysis revenue in July. By the end of September, 2.1 million has been collected. Another 180,000 is in returned claims, and 120,000 is in claims that were never filed because two patients' PhilHealth Dialysis Database registrations were incomplete. The income statement for July never showed the 300,000-peso problem. The vintage report did.
 
 ## Building a budget case
 
-1. Start from **clinical requirements**: stations, shifts, staffing from CALC-01, maintenance from the asset register.
-2. Add **volume assumptions** with a conservative and an expected case.
-3. Apply **collection timing** from actual remittance history, not hope.
-4. Include **contingency**: replacement of a failing machine, RO membrane, generator fuel.
-5. Show **sensitivity**: what happens to margin and cash if volume drops 10%, denials rise to 5%, or collection slows by 30 days.
-6. Never balance the budget by removing a safety control. State the trade-off and let governance decide with full information.
+{{flow:A budget that can be defended|Clinical requirements::Stations, shifts, staffing from CALC-01, maintenance from the asset register.|Volume::A conservative case and an expected case.|Collection timing::From actual remittance history, not hope.|Contingency::A failing machine, a reverse osmosis membrane, generator fuel.|Sensitivity::What happens to margin and cash if volume drops 10%, denials rise to 5%, or collections slow by 30 days.|Trade-offs::Never balance by removing a safety control. State the trade-off and let governance decide.}}
 
-## Field case: profitable but broke
-
-**Situation.** The fee schedule shows a healthy margin, but there is not enough cash for payroll. Receivables over 90 days have doubled.
-
-**Analysis.** Reconciling by vintage shows that claims for two months were submitted late because of a staffing gap in billing, and one month's batch was returned for documentation errors (Module 10).
-
-**Solution.** The manager presents a recovery plan: resubmit corrected claims within two weeks, assign a backup billing encoder, track submission within seven days of service as a key indicator, and arrange a short-term credit line with the owner's approval to cover payroll until collections recover. Staffing is not cut.
+{{call:When a budget proposal would reduce staffing, maintenance, water testing, or emergency readiness below the approved standard, put the clinical impact in writing to the Medical Director and the licensee before it is approved.}}
 
 ## Common failure modes
 
-- Confusing price with cost.
-- Calculating cost per treatment without depreciation or maintenance.
-- Budgets assuming every session is paid within 30 days.
-- Volume growth planned without the staffing step cost.
+- **Price mistaken for cost.** Knowing what PhilHealth pays but not what a session costs.
+- **Cost without depreciation.** A machine bought five years ago still costs money every month.
+- **The 30-day fantasy.** Budgets that assume every session is paid within a month.
+- **Growth without steps.** Volume planned without the staffing cost of the next shift.
+- **Cutting the wrong line.** Nurses cut to fix a billing problem.
 
 ## Supervised practice
 

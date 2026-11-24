@@ -12,109 +12,123 @@ MODULE = {'objectives': ['Explain why dialysis water must meet a far stricter st
  'sections': [('the-mechanism-why-dialysis-water-is-diff',
                'The mechanism',
                'The mechanism: why dialysis water is different',
-               '<p>Dialyzer membranes let small molecules pass in both directions. Anything dissolved in dialysate that is lower '
-               "in the patient's blood moves into the patient. Three groups of contaminants matter:</p>\n"
+               '<p>Dialyzer membranes let small molecules pass in both directions. Anything dissolved in the dialysate that is '
+               "lower in the patient's blood moves into the patient. Three groups of contaminants matter.</p>\n"
                '{{fig:uom06a}}\n'
-               '\n'
-               '<ul><li><strong>Chemical.</strong> Chlorine and chloramine (added by municipal suppliers to kill bacteria) '
-               'oxidize hemoglobin and cause hemolysis and methemoglobinemia. Aluminum historically caused dialysis '
-               'encephalopathy and bone disease. Fluoride, copper, nitrates and heavy metals have each caused clusters of '
-               'harm.</li><li><strong>Microbiological.</strong> Bacteria themselves rarely cross an intact membrane, but their '
-               'fragments do. Endotoxin and other bacterial products can cross, especially with high-flux membranes, and trigger '
-               'fever, chills and chronic inflammation.</li><li><strong>Toxins.</strong> In 1996, in Caruaru, '
-               'Brazil[[dch_jochimsen1998]], dialysis water drawn from a reservoir contaminated by cyanobacteria carried '
-               'microcystins into patients. Dozens died of acute liver failure. Every safeguard in this module exists because '
-               'something like that once happened.</li></ul>\n'
+               '<p><strong>Chemicals.</strong> Chlorine and chloramine, added by water suppliers to kill bacteria, damage red '
+               'blood cells and cause hemolysis and methemoglobinemia. Aluminum once caused dialysis dementia and bone disease. '
+               'Fluoride, copper, nitrates, and heavy metals have each caused clusters of harm.</p>\n'
+               '<p><strong>Microbes.</strong> Bacteria rarely cross an intact membrane, but their fragments do. Endotoxin and '
+               'other bacterial products can cross, especially with high-flux membranes, and trigger fever, chills, and chronic '
+               'inflammation.</p>\n'
+               '<p><strong>Toxins.</strong> In 1996, in Caruaru, Brazil, dialysis water drawn from a reservoir contaminated by '
+               'blue-green algae carried microcystin toxins into patients. Dozens died of acute liver '
+               'failure.[[dch_jochimsen1998]] Every safeguard in this module exists because something like that once happened '
+               'somewhere.</p>\n'
                '<h3>The treatment train</h3>\n'
-               '<p>Each stage protects the next one:</p>\n'
-               '<ol><li><strong>Pretreatment</strong>: sediment filters, softener (removes calcium and magnesium that would '
-               'scale the reverse osmosis (RO) membrane).</li><li><strong>Carbon beds</strong>: remove chlorine and chloramine. '
-               'Usually two in series, because breakthrough in the first must be caught before the water moves on. Total '
-               'chlorine is tested at the outlet of the first bed before each shift.</li><li><strong>Reverse osmosis '
-               '(RO)</strong>: removes most dissolved salts, metals and microbes. Monitored by conductivity and rejection '
-               'rate.</li><li><strong>Storage and distribution loop</strong>: the most common site of bacterial regrowth and '
-               'biofilm. Requires scheduled disinfection.</li><li><strong>Point of use</strong>: the machine and, where used, '
-               'endotoxin-retentive filters.</li></ol>'),
+               '<p>Each stage protects the next.</p>\n'
+               '{{flow:The water treatment train|Pretreatment::Sediment filters and a softener remove particles, calcium, and '
+               'magnesium that would scale the reverse osmosis membrane.|Carbon beds::Remove chlorine and chloramine. Usually '
+               'two in series, so a breakthrough in the first is caught before the water moves on. Total chlorine is tested at '
+               "the first bed's outlet before each shift.|Reverse osmosis::Removes most dissolved salts, metals, and microbes. "
+               'Monitored by conductivity and rejection rate.|Storage and distribution loop::The most common site of bacterial '
+               'regrowth and biofilm. Needs scheduled disinfection.|Point of use::The machine and, where used, '
+               'endotoxin-retentive filters.}}'),
               ('what-the-standards-say',
                'What the standards say',
                'What the standards say',
                '<p>The international standard for dialysis fluids is the International Organization for Standardization (ISO) '
-               '23500 series (second edition 2024)[[iso23500_1]]. Its microbiological limits:</p>\n'
+               '23500 series, second edition 2024.[[iso23500_1]] Its microbiological limits:</p>\n'
                '<div class="table-wrap"><table>\n'
-               '<thead><tr><th>Fluid</th><th>Viable microbes, maximum</th><th>Endotoxin, maximum</th><th>Action '
+               '<thead><tr><th>Fluid</th><th>Living bacteria, maximum</th><th>Endotoxin, maximum</th><th>Action '
                'level</th></tr></thead>\n'
                '<tbody>\n'
-               '<tr><td>Dialysis water</td><td>&lt; 100 colony-forming units (CFU)/mL</td><td>&lt; 0.25 endotoxin units '
-               '(EU)/mL</td><td>Typically 50% of the maximum (50 CFU/mL; 0.125 EU/mL)</td></tr>\n'
-               '<tr><td>Standard dialysis fluid</td><td>&lt; 100 CFU/mL</td><td>&lt; 0.5 EU/mL</td><td>Typically 50% of the '
-               'maximum</td></tr>\n'
-               '<tr><td>Ultrapure dialysis fluid</td><td>&lt; 0.1 CFU/mL</td><td>&lt; 0.03 EU/mL</td><td>Set by '
+               '<tr><td>Dialysis water</td><td>Less than 100 CFU/mL</td><td>Less than 0.25 EU/mL</td><td>Usually half the '
+               'maximum (50 CFU/mL; 0.125 EU/mL)</td></tr>\n'
+               '<tr><td>Standard dialysis fluid</td><td>Less than 100 CFU/mL</td><td>Less than 0.5 EU/mL</td><td>Usually half '
+               'the maximum</td></tr>\n'
+               '<tr><td>Ultrapure dialysis fluid</td><td>Less than 0.1 CFU/mL</td><td>Less than 0.03 EU/mL</td><td>Set by the '
                'program</td></tr>\n'
                '</tbody></table></div>\n'
-               '<p>The <strong>action level</strong> is your early-warning line: reaching it means disinfect, investigate and '
-               'retest before you reach the maximum. US Medicare regulations still reference older, looser limits (&lt; 200 '
-               'CFU/mL; &lt; 2 EU/mL), which shows that standards differ between authorities. <strong>In the Philippines, '
-               "Department of Health (DOH) Administrative Order (AO) 2013-0003[[dch_doh2013]] and your facility's approved water "
-               'program set the controlling numbers, sampling points and frequencies.</strong> Know where those are '
-               'written.</p>\n'
-               '<p><strong>Evidence strength.</strong> These limits are <strong>established standards</strong> built from '
-               'outbreak investigations, physiology and expert consensus. Ultrapure dialysate is associated in observational '
-               'studies with lower inflammatory markers, but whether it improves survival in routine hemodialysis is <strong>not '
-               'established</strong>.</p>'),
+               '<p>The <strong>action level</strong> is the early-warning line. Reaching it means disinfect, investigate, and '
+               'retest before you reach the maximum. United States Medicare regulations still refer to older, looser limits, '
+               'which shows that authorities differ. <strong>In the Philippines, Department of Health (DOH) Administrative Order '
+               "(AO) 2013-0003 and your facility's approved water program set the controlling numbers, sampling points, and "
+               'frequencies.</strong>[[dch_doh2013]] Know exactly where those are written in your unit.</p>\n'
+               '<p><strong>How strong is the evidence?</strong> These limits are established standards, built from outbreak '
+               'investigations, physiology, and expert consensus. Ultrapure dialysate is associated in observational studies '
+               'with lower inflammatory markers, but whether it improves survival in routine hemodialysis is not '
+               'established.</p>'),
               ('your-role-completeness-hold-and-release',
                'Your role',
-               'Your role: completeness, hold and release',
-               '<p>You do not interpret a chlorine test or decide whether an RO membrane is failing. The water technician and '
-               'biomedical lead do that, with the Medical Director accountable. You make sure:</p>\n'
-               '<ul><li>the sampling schedule exists and every scheduled test has a result;</li><li>each result is linked to '
-               'time, sampling point, operator and reviewer;</li><li>results above an action level trigger a documented '
-               'response;</li><li>missing results trigger a hold, not an assumption;</li><li>release after a hold is signed by '
-               'the authorized technical and clinical owners.</li></ul>'),
+               'Your role: completeness, hold, and release',
+               '<p>You make sure that:</p>\n'
+               '<ul><li>the sampling schedule exists, and every scheduled test has a result;</li><li>each result is linked to a '
+               'time, a sampling point, an operator, and a reviewer;</li><li>results above an action level trigger a documented '
+               'response;</li><li>a missing result triggers a hold, never an assumption;</li><li>release after a hold is signed '
+               'by the authorized technical and clinical owners.</li></ul>\n'
+               '{{key:You own the completeness of the water record. You never own the water release.}}'),
               ('calculator-calc-04-water-result-action-l',
                'Calculator CALC-04',
-               'Calculator CALC-04: water-result action-level checker (educational)',
-               '<p><strong>Inputs:</strong> fluid type (water, standard dialysate, ultrapure), viable count (CFU/mL), endotoxin '
-               '(EU/mL), local maximum and action levels (prefilled with ISO defaults, editable to match the facility '
+               'Calculator CALC-04: water-result action-level checker',
+               '<p>This is a teaching tool, not a release tool. You enter the fluid type, the bacterial count, the endotoxin '
+               "result, and the facility's maximum and action levels (prefilled with ISO defaults, editable to match your "
                'program).</p>\n'
-               '<p><strong>Logic</strong></p>\n'
-               '<ul><li>Below action level: "Within program limits. File with reviewer signature."</li><li>At or above the '
-               'action level and below the maximum: "Action level reached. Notify the water technician and Medical Director; '
-               'disinfect and retest per program."</li><li>At or above the maximum: "Exceeds maximum. Initiate hold and '
-               'affected-scope review per policy."</li></ul>\n'
-               '<p><strong>Worked example.</strong> Loop sample 62 CFU/mL and 0.08 EU/mL against ISO water defaults: microbial '
-               'count above action level (50) but below maximum (100); endotoxin below action level (0.125). Output: '
-               'action-level response for microbial count.</p>\n'
-               '<p><strong>Guardrail.</strong> The calculator never outputs "release." Release is a signed decision by '
-               'authorized people.</p>'),
+               "{{formula:<strong>Below the action level:</strong> within program limits; file with the reviewer's "
+               'signature.<br><strong>At or above the action level but below the maximum:</strong> notify the water technician '
+               'and Medical Director; disinfect and retest according to the program.<br><strong>At or above the '
+               'maximum:</strong> start a hold and a review of which treatments may have been affected, according to policy.}}\n'
+               '<p><strong>Worked example.</strong> A loop sample shows 62 CFU/mL and 0.08 EU/mL, checked against the ISO '
+               'defaults for dialysis water. The bacterial count is above the action level (50) but below the maximum (100). '
+               'Endotoxin is below its action level (0.125). The result is an action-level response for bacteria: disinfect the '
+               'loop, find out why, and retest.</p>\n'
+               '<p>The checker never says "release." Release is a signed decision by authorized people.</p>'),
               ('doing-it-on-monday-auditing-a-water-log',
                'Doing it on Monday',
                'Doing it on Monday: auditing a water log',
-               '<p>Check every line for:</p>\n'
-               '<ol><li>Date and time of sample.</li><li>Sampling point (named, matching the map).</li><li>Test and result with '
-               'units.</li><li>Operator initials.</li><li>Reviewer signature and date.</li><li>For any out-of-range result: the '
-               'action taken, the retest result and release signature.</li></ol>\n'
-               '<p>Red flags: identical values day after day, results entered in the same handwriting at the same time for a '
-               'whole week, blank reviewer fields, corrections with no initials.</p>\n'
-               '{{fig:uom06b}}'),
+               '{{fig:uom06b}}\n'
+               '<p>Check every line for six things:</p>\n'
+               '<ol><li>Date and time of the sample.</li><li>Sampling point, named and matching the map.</li><li>The test and '
+               'its result, with units.</li><li>Operator initials.</li><li>Reviewer signature and date.</li><li>For any result '
+               'out of range: the action taken, the retest result, and the release signature.</li></ol>\n'
+               '<p>Then look for red flags: identical values day after day, a whole week of results in the same handwriting and '
+               'ink, blank reviewer fields, and corrections without initials.</p>\n'
+               '<p><strong>Example.</strong> A manager in Dagupan audits a month of logs and finds the endotoxin results for the '
+               'distribution loop reported as "0.03" for 18 consecutive samples, including two days when the technician was on '
+               'leave. The values may be real. They may also have been written in advance. She does not accuse anyone. She asks '
+               'the technician to show her the laboratory reports for those 18 samples. Six cannot be found. The finding goes '
+               'into a corrective action, and the Medical Director decides what retesting is needed.</p>\n'
+               '{{call:Hold the affected loop or stations when a critical water result is missing, untraceable, or above the '
+               'maximum. Call the water technician and the Medical Director. Treatment restarts only on a signed release.}}'),
               ('dialyzer-reprocessing-and-water',
                'Dialyzer reprocessing',
                'Dialyzer reprocessing and water',
-               '<p>Units that reprocess dialyzers use treated water for rinsing and germicide preparation. That water must meet '
-               'the same quality standard. Include reprocessing points in your sampling map.</p>'),
+               '<p>Units that reprocess dialyzers use treated water for rinsing and for preparing the germicide. That water must '
+               'meet the same standard. Include the reprocessing points in your sampling map.</p>'),
               ('common-failure-modes',
                'Common failure modes',
                'Common failure modes',
-               '<ul><li>A sampling map that does not match the physical system after renovations.</li><li>Monthly cultures sent '
-               'but results never reviewed.</li><li>Disinfection of the distribution loop skipped during busy '
-               'months.</li><li>Pressure to open on time overriding a missing test.</li></ul>')],
- 'debrief': ['{{fig:uom06c}}\n'
-             '<p><strong>Problem.</strong> If the carbon bed has broken through, chloramine reaches patients within minutes of '
-             'the first treatment. The copied value would hide it.</p>\n'
-             '<p><strong>Solution.</strong> The manager declines, places the opening on hold, calls the water technician to run '
-             'the test, and informs the head nurse and physician on duty (POD) of a possible delay. The test is run at 05:35, '
-             "the result is within limits, the technician signs and the Medical Director's designee releases. Patients start 15 "
-             "minutes late. The manager then finds the root cause: the night technician's shift ended at 05:00 and no one was "
-             'assigned the pre-opening test. The schedule is fixed.</p>'],
+               '<ul><li><strong>The old map.</strong> A sampling map that no longer matches the pipes after a '
+               'renovation.</li><li><strong>Cultures sent, never read.</strong> Monthly results received and filed without '
+               'review.</li><li><strong>Busy-month shortcuts.</strong> Loop disinfection skipped in '
+               'December.</li><li><strong>The clock wins.</strong> Pressure to open on time overriding a missing '
+               'test.</li><li><strong>Perfect numbers.</strong> Values so consistent that no one asks whether they were '
+               'measured.</li></ul>')],
+ 'debrief': ['<p><strong>Why not copy.</strong> If the first carbon bed has broken through, chloramine reaches the dialysate '
+             'within minutes of the first treatment. Chloramine damages red blood cells: patients can develop hemolysis, with '
+             'back pain, chest tightness, and falling hemoglobin, sometimes in several patients at once. A copied value would '
+             'hide the one test designed to catch that.</p>\n'
+             '<p><strong>What she decides.</strong> Ms. Pascual says no, places the opening on hold, and calls Mr. Bautista back '
+             'and the on-call biomedical lead. She tells the head nurse and the physician on duty there may be a delay. She does '
+             'not run the test herself or judge the result.</p>\n'
+             '<p><strong>The release.</strong> Mr. Bautista returns at 05:35, tests the outlet, and records 0.02 milligrams per '
+             "liter, within the facility limit. He signs, and the Medical Director's designee releases the water. The first "
+             'patients start 15 minutes late. Ms. Pascual explains the delay to the waiting patients without blaming '
+             'anyone.</p>\n'
+             '<p><strong>The fix.</strong> The real gap was the schedule: the night shift ended at 05:00, and no one was '
+             'assigned the pre-opening test. The technician schedule now overlaps by 30 minutes, and the log has a mandatory '
+             '"tested by" field before the opening line can be signed.</p>\n'
+             '{{fig:uom06c}}'],
  'quiz': [('Why must dialysis water be purer than drinking water?',
            ['Dialysis machines rust faster',
             'Patients are exposed to over a hundred liters per session through a thin membrane',
@@ -203,17 +217,33 @@ MODULE = {'objectives': ['Explain why dialysis water must meet a far stricter st
            3,
            'Contaminated rinse water contaminates reused dialyzers.')],
  'readings': [('dialysis-water-treatment-systems.html', 'The full clinical and engineering reference on dialysis water.')],
- 'big': '<p>A person drinks about 2 liters of water a day, filtered by the gut and the liver before anything reaches the blood. '
-        'A hemodialysis patient is exposed to roughly 120 to 200 liters of dialysate per session, separated from the blood only '
-        'by a thin membrane, three times a week. Contaminants that would be harmless in drinking water become toxic at that '
-        "volume. Water is the unit's most dangerous invisible drug, and you run the system that decides whether it is "
-        'released.</p>',
+ 'big': '{{plain:A person drinks about two liters of water a day, and the gut and liver filter what is in it. A dialysis '
+        "patient's blood meets 120 to 150 liters of water-based dialysate in a single session, separated only by a thin "
+        'membrane. Anything in that water that the membrane lets through goes straight into the blood. That is why water that is '
+        'safe to drink can be dangerous to dialyze.}}\n'
+        '<p>The picture has a limit. The membrane is a filter, but not a wall. Most bacteria cannot cross an intact membrane, '
+        'yet their fragments, called endotoxins, can, and so can chemicals like chlorine and aluminum. The danger is not '
+        'dramatic. Contaminated water rarely looks or smells different. It shows up as a patient who shivers and spikes a fever '
+        'an hour into treatment, or as a cluster of patients with unexplained anemia weeks later.</p>\n'
+        '<p>You will not test water or decide whether a reverse osmosis membrane is failing. Your job is to make sure that every '
+        'required test happens, is recorded, is read, and that no patient is dialyzed on water nobody has released.</p>\n'
+        '{{cards:Key terms for this module|Dialysate::The fluid on the other side of the dialyzer membrane, made from treated '
+        'water and concentrate.|Carbon bed::A tank of activated carbon that removes chlorine and chloramine.|Reverse osmosis '
+        '(RO)::The membrane system that removes most salts, metals, and microbes.|Distribution loop::The pipes that carry '
+        'treated water to each machine, where bacteria can regrow.|Colony-forming units (CFU)::The count of living bacteria in a '
+        'water sample.|Endotoxin units (EU)::The measure of bacterial fragments that can cause fever and inflammation.|Action '
+        'level::The early-warning line, usually half the maximum, that triggers disinfection and retesting.|Release::The signed '
+        'decision that water is safe to use for treatment.}}',
  'case': {'title': 'The copied value',
-          'html': '<p>At 05:15 the morning total chlorine result is missing. A staff member says, "It\'s always the same, just '
-                  'copy yesterday\'s."</p>',
-          'questions': ['What must you protect first, and whose decision is it?',
-                        'Which facts would you confirm before you act?',
-                        'What would you record, and where?']},
+          'html': '<p>It is 05:15 on a Wednesday at a 14-station unit in Cabanatuan, Nueva Ecija. The first shift starts at '
+                  '06:00. The water log has every entry for the morning except one: total chlorine at the outlet of the first '
+                  'carbon bed, which must be tested before each shift.</p>\n'
+                  '<p>The night technician, Mr. Arnel Bautista, finished at 05:00 and has gone home. The day technician arrives '
+                  'at 06:30. A staff nurse, trying to help, says to the manager, Ms. Kristine Pascual: "Ma\'am, the result is '
+                  'always 0.02. Just copy yesterday\'s so we can start."</p>',
+          'questions': ['What could happen if the carbon bed has failed and the value is copied?',
+                        'What can Ms. Pascual decide, and what must she leave to others?',
+                        'What would she fix after this morning is over?']},
  'skills': {'title': 'Supervised practice',
             'intro': 'Complete these with your preceptor at your own unit, using fictional or de-identified data.',
             'items': [('Walk the water system with the technician and mark every sampling point on the facility map.', False),

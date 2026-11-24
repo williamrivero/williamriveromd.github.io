@@ -1,9 +1,14 @@
 # 14. Managing hospital dialysis interfaces
 
-**UMH path** · 40 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-14 (Understand) · FIG-14B (Apply) · FIG-14C (Appreciate) · **Calculator:** uses CALC-01 and CALC-02
+## The big picture
 
-> **Why this matters.** A hospital dialysis unit serves two populations at once: stable outpatients who need the clock to run on time, and admitted patients who arrive sick, late and unpredictable from the emergency department, wards and intensive care. Every admitted patient crosses at least two handoffs, ward to unit and back. Most harm in hospitals happens at those crossings. The unit manager in a hospital is, above all, a manager of interfaces.
+{{plain:A hospital dialysis unit is a crossroads. Patients arrive from the wards, the intensive care unit (ICU), and the emergency room, each with a different story and a different urgency, while the unit's own outpatients keep their regular appointments. The manager's job is to direct traffic so that the most urgent patient goes first, no one waits too long, and nothing is lost at the handoff.}}
+
+The picture has a limit. Traffic is predictable on a map; hospital demand is not. Some mornings bring three emergency requests at once, and some weeks bring none. A crossroads also has no memory, but patients carry their histories with them, and the most dangerous moment is when that history is passed from a ward nurse to a dialysis nurse in a hurry.
+
+This module is for managers of hospital units. It covers the departments you depend on, a fair rule for competing demands, the structured handoff, and the billing routes that differ between outpatients and inpatients.
+
+{{cards:Key terms for this module|Interface::Any department whose work flows into or out of the unit.|Service agreement::A written statement of what is requested, by whom, by when, and how failures are escalated.|Emergent::Life-threatening, needing dialysis now.|Urgent::Needing dialysis today.|I-PASS::A structured handoff: Illness severity, Patient summary, Action list, Situation awareness, Synthesis by receiver.|Float nurse::A nurse from another area assigned to the unit for a shift.}}
 
 ## Learning objectives
 
@@ -12,72 +17,100 @@
 3. Run a structured handoff (I-PASS adapted for dialysis) between ward and unit.
 4. Distinguish claims and documentation routes for maintenance outpatient HD, inpatient HD and acute treatments.
 
+## Field case: the patient who arrived unprepared
+
+**Situation.** It is 10:00 on a Wednesday at a 24-station unit in a tertiary hospital in Olongapo City. A ward orderly wheels in Mr. Rodrigo Sangalang, 59, admitted two days ago for pneumonia, with a note: "For HD today." No one called ahead.
+
+The dialysis nurse, Mr. Kevin Lacson, asks the orderly a few questions and checks the chart. Mr. Sangalang received his usual amlodipine and insulin at 07:00. He has not eaten since last night because he was "on hold for a procedure" that was cancelled. No pre-dialysis potassium was drawn. His hepatitis B status is not in the chart. All 24 stations are in use.
+
+**Before reading on, decide:**
+
+- What are the clinical risks of dialyzing Mr. Sangalang right now?
+- Who decides whether and where he dialyzes?
+- What would prevent this from happening with the next inpatient?
+
+**Case review.**
+
+**The risks.** A blood pressure medicine taken three hours ago raises the risk of low blood pressure during fluid removal. Insulin with no breakfast raises the risk of low blood sugar. Without a potassium result, the prescription is a guess. And without hepatitis B status, the isolation decision cannot be made safely.
+
+**The decisions.** The physician on duty, Dr. Mylene Garcia, reviews him, orders a blood sugar check, a potassium level, and an urgent hepatitis B screen, and asks for a snack. Because his status is unknown, he dialyzes at the isolation-capable station under precautions until the result returns. The manager, Ms. Aileen David, makes the station available by moving one stable outpatient's start by 40 minutes, with the outpatient's agreement.
+
+**The fix.** Ms. David meets the ward head nurses that afternoon. Together they agree on a request process: a request form by 16:00 the day before, a preparation checklist (hold or give which medicines, a meal, pre-dialysis laboratory tests, serology), and the I-PASS handoff below. She audits it weekly for a month. In week one, 6 of 14 requests used the form. By week four, 13 of 15 did.
+
+{{fig:uom14c}}
+
 ## The model: one unit, many interfaces
 
-| Interface | What flows | Agreement to define |
+{{fig:uom14a}}
+
+| Interface | What flows | What to agree in writing |
 |---|---|---|
-| Emergency department | Urgent dialysis requests, hyperkalemia, fluid overload | Request process, response time, who transports |
+| Emergency room | Urgent dialysis requests, high potassium, fluid overload | Request process, response time, who transports |
 | Wards | Scheduled inpatient sessions | Daily request cutoff, patient preparation, transport, return handoff |
-| ICU | Bedside HD or other modalities where privileged | Who brings the machine, water source, staffing, physician responsibility |
+| ICU | Bedside dialysis or other treatments where privileged | Who brings the machine, water source, staffing, physician responsibility |
 | Nursing service | Staff allocation, floating, competency | Who can float into the unit and with which signed competencies |
 | Laboratory | Pre- and post-dialysis tests, serology | Turnaround times, critical value calls |
 | Pharmacy | Heparin, ESAs, emergency drugs | Stock, dispensing, formulary |
 | Engineering and biomedical | Power, water, machines | Response times, preventive maintenance |
 | Infection prevention committee | Surveillance, outbreak response | Reporting and audit schedule |
-| Billing and PhilHealth unit | Claims for outpatient and inpatient sessions | Route, documentation and responsibility |
+| Billing and PhilHealth unit | Claims for outpatient and inpatient sessions | Route, documentation, and responsibility |
 
-Write each as a short service agreement: what is requested, by whom, by when, how it is delivered and how failures are escalated.
+Write each as a short service agreement: what is requested, by whom, by when, how it is delivered, and how failures are escalated.
 
 ## Balancing outpatient and inpatient demand
 
-A typical rule approved by the Medical Director:
+{{fig:uom14b}}
 
-1. **Emergent** (life-threatening hyperkalemia, pulmonary edema, severe acidosis): treat immediately, wherever capacity can be made, displacing the least urgent session after the attending agrees.
-2. **Urgent inpatient** (needs dialysis today): next available station on the same day.
-3. **Scheduled outpatient**: protected slots, displaced only by emergent cases, and rescheduled within the clinical window.
-4. **Elective inpatient** (routine maintenance session for an admitted chronic patient): fitted into planned inpatient slots.
+A typical rule, approved by the Medical Director, has four tiers:
 
-Reserve inpatient capacity based on historical demand (CALC-02 with an inpatient block). A unit that books every station with outpatients will displace them daily.
+1. **Emergent** (life-threatening high potassium, fluid in the lungs, severe acidosis): treat immediately, wherever capacity can be made, displacing the least urgent session after the attending agrees.
+2. **Urgent inpatient** (needs dialysis today): the next available station the same day.
+3. **Scheduled outpatient:** protected slots, displaced only by emergent cases, and rescheduled within the safe window.
+4. **Elective inpatient** (a routine maintenance session for an admitted chronic patient): fitted into planned inpatient slots.
+
+Reserve inpatient capacity based on past demand (Calculator CALC-02 with an inpatient block). A unit that books every station with outpatients will displace them every day.
+
+**Example.** A hospital unit in Davao City reviews three months of data and finds it receives an average of 9 inpatient requests a day, with a peak of 15. It reserves 6 station-sessions a day for inpatients and protects the rest for outpatients. Outpatient displacements fall from about 20 a week to 3. On days with fewer inpatients, the unused reserved slots are offered for make-up sessions.
+
+{{key:Reserve capacity for the demand you know is coming. Booking every station with outpatients means displacing them every day.}}
 
 ## What the evidence shows
 
-- **Structured handoffs reduce harm.** The I-PASS bundle (Illness severity, Patient summary, Action list, Situation awareness and contingency planning, Synthesis by receiver) was associated with a 23% reduction in medical errors and a 30% reduction in preventable adverse events across nine hospitals, without lengthening handoffs (Starmer et al., *NEJM* 2014). The study was in pediatric resident handoffs; adapting it to nurse handoffs between ward and dialysis is **evidence-supported inference**.
-- **Missed and delayed inpatient dialysis carries the same physiology as outpatient misses** (Module 04). Transport delays and incomplete preparation are among the most common causes.
+**Structured handoffs reduce harm.** The I-PASS bundle was associated with a 23% fall in medical errors and a 30% fall in preventable adverse events across nine hospitals, without making handoffs longer.[[uom_starmer2014]] The study involved pediatric residents. Applying it to handoffs between ward nurses and dialysis nurses is reasonable inference, not tested evidence.
 
-## I-PASS adapted for ward-to-dialysis handoff
+**Missed and delayed inpatient dialysis carries the same physiology as missed outpatient sessions** (Module 4). Transport delays and incomplete preparation are among the most common causes.
+
+## I-PASS adapted for the ward-to-dialysis handoff
 
 | Element | What the ward nurse tells the dialysis nurse |
 |---|---|
-| **I**llness severity | Stable, watcher or unstable |
+| **I**llness severity | Stable, watcher, or unstable |
 | **P**atient summary | Reason for admission, dialysis prescription, access type and site, isolation status, allergies, code status |
-| **A**ction list | Pre-dialysis labs pending, medications held or given (antihypertensives, insulin), blood products ordered |
-| **S**ituation awareness | Fall risk, confusion, oxygen needs, recent hypotension, what to do if X happens |
-| **S**ynthesis by receiver | Dialysis nurse reads back key points and confirms questions answered |
+| **A**ction list | Pre-dialysis tests pending, medicines held or given (blood pressure medicines, insulin), blood products ordered |
+| **S**ituation awareness | Fall risk, confusion, oxygen needs, recent low blood pressure, what to do if something changes |
+| **S**ynthesis by receiver | The dialysis nurse reads back key points and confirms questions are answered |
 
-Use the same structure in reverse when the patient returns to the ward, with the treatment summary, fluid removed, events and post-dialysis instructions.
+Use the same structure in reverse when the patient returns to the ward: the treatment summary, fluid removed, events, and post-dialysis instructions.
 
 ## Claims and documentation routes
 
-Maintenance outpatient HD for PDD-registered patients follows the outpatient package (Module 10). Sessions for admitted patients and acute dialysis for acute kidney injury may follow different benefit rules and documentation requirements. Train billing and nursing to identify the route for each session at the time of request. Confirm current rules for inpatient and acute sessions with your PhilHealth Regional Office and the hospital's PhilHealth unit.
+Maintenance outpatient hemodialysis for patients registered in the PhilHealth Dialysis Database follows the outpatient package (Module 10). Sessions for admitted patients and acute dialysis for acute kidney injury may follow different benefit rules and documentation. Train billing and nursing to identify the route for each session when it is requested. Confirm the current rules with your PhilHealth Regional Office and the hospital's PhilHealth unit.
 
 ## Nursing governance in a hospital
 
-The hospital's chief nurse or nursing service director holds overall nursing authority. The dialysis head nurse leads within that structure. If you, as unit manager, are not the head nurse, your operating decisions about staffing must route through nursing service. Floating nurses from wards into dialysis requires signed dialysis competencies (Module 03). A ward nurse without them cannot take a dialysis assignment, however short-staffed the day.
+The hospital's chief nurse holds overall nursing authority. The dialysis head nurse leads within that structure. If you are the unit manager but not the head nurse, your staffing decisions route through nursing service.
 
-## Field case: the patient who arrived unprepared
+A nurse floated from a ward into dialysis needs signed dialysis competencies (Module 3). A ward nurse without them cannot take a dialysis assignment, however short the day.
 
-**Situation.** A ward sends a patient for dialysis at 10:00 without notice. The patient received his usual antihypertensive and insulin at 07:00 and has not eaten. No pre-dialysis potassium was drawn. He is HBsAg status unknown.
-
-**Problems.** Higher hypotension and hypoglycemia risk, no laboratory guide for the prescription, and an isolation decision that cannot be made safely.
-
-**Fix.** The POD reviews the patient; serology is sent urgently and the patient dialyzes at an isolation-capable station under precautions until results return. The manager then agrees a request process with the ward: a request form with a cutoff, a preparation checklist (medications, meal, labs, serology) and the I-PASS handoff. Compliance is audited weekly for a month.
+{{call:When an inpatient arrives without preparation, serology, or a handoff, the physician on duty decides whether and where the patient dialyzes. Do not seat the patient at a general station until the isolation decision is made.}}
 
 ## Common failure modes
 
-- Every station booked with outpatients, so inpatients displace them daily.
-- Transport left to whoever is free.
-- Ward nurses floated into dialysis without competencies.
-- Inpatient sessions billed through the wrong route.
+- **Every station booked.** Outpatients displaced by inpatients every day.
+- **Transport by whoever is free.** Patients waiting on stretchers in the corridor.
+- **The willing ward nurse.** Floated into dialysis without signed competencies.
+- **The wrong claim route.** Inpatient sessions billed as outpatient, or the reverse.
+- **"For HD today."** A note instead of a handoff.
 
 ## Supervised practice
 

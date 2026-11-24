@@ -1,9 +1,14 @@
-# 10. PhilHealth claims, documentation and privacy
+# 10. PhilHealth claims, documentation, and privacy
 
-**Core** · 45 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-10 (Understand) · FIG-10B (Apply) · FIG-10C (Appreciate) · **Calculator:** CALC-07 PhilHealth session-cap tracker
+## The big picture
 
-> **Why this matters.** A dialysis session that is delivered but cannot be claimed is a session the unit paid for twice: once in supplies and staff, again in lost revenue. A claim filed without the evidence that the session happened is worse: it is a compliance risk. The claim is simply the last page of the clinical record. If the record is complete, the claim follows.
+{{plain:A PhilHealth claim is the last car of a train. In front of it are the eligibility check, the signed treatment record, the claim forms, the billing review, and the submission. If any car is missing, the claim is pulling air. The claim can only be as good as the record behind it.}}
+
+The picture has a limit. A train runs one way. In billing, errors often start at the end, in a template or a batch upload, and then travel backward when someone "fixes" the chart to match the claim. The rule runs in one direction only: the claim follows the record, never the reverse.
+
+This module covers how the PhilHealth hemodialysis package works, where claims fail, how to warn patients before they reach the annual cap, and how to handle the sensitive health information that every claim carries.
+
+{{cards:Key terms for this module|PhilHealth Dialysis Database (PDD)::The registry a patient must be in before the outpatient hemodialysis package can be claimed.|Package rate::The fixed amount PhilHealth pays per covered session.|Session cap::The maximum number of covered sessions per calendar year.|Minimum standards::The services, medicines, and supplies a covered session must include.|No copay::The rule that patients are not charged for items within the minimum standards.|Denial::A claim PhilHealth will not pay.|PhilHealth Regional Office (PRO)::Your regional contact for accreditation and claims questions.|Data Protection Officer (DPO)::The person who handles privacy requests and breaches.}}
 
 ## Learning objectives
 
@@ -12,18 +17,46 @@
 3. Track each patient's annual session use and warn early when the cap will be reached.
 4. Handle health information under RA 10173, including access control and breach response.
 
-## The package (verify before you rely on it)
+## Field case: the denied batch
 
-As of this review, under PhilHealth Circular 2024-0023 (Revision 2) and related issuances:
+**Situation.** In March, a 16-station unit in Lucena City receives 40 of its February claims back from PhilHealth. The reason codes all point to the same problem: the signature dates on the claim documents come before the treatment dates.
 
-- **Eligibility:** PhilHealth members and qualified dependents with CKD stage 5, registered in the PhilHealth Dialysis Database (PDD). PDD registration is free to the patient.
-- **Cap:** up to **156 sessions per calendar year**, set to match three sessions a week for 52 weeks (first institutionalized by PC 2023-0009).
-- **Rate:** **₱6,350 per session**, effective October 9, 2024 (up from ₱4,000 in July 2024 and ₱2,600 before that). The maximum annual benefit is therefore ₱990,600.
-- **Bundle:** the circular's minimum-standards table lists what the package covers, including dialyzer, solutions and supplies, anticoagulation, erythropoiesis-stimulating agents per the national formulary, and use of machines, utilities and staff time. Charges to patients for covered items must follow the circular's no-copayment rules; any patient charge needs review against the actual policy and documentation.
+The billing officer, Ms. Analyn Rosales, traces it quickly. To save time during a busy month, one attending nephrologist had signed the claim forms for all his patients' February sessions on February 1. The forms were then filled in as the sessions happened. Every session was delivered. Every form is still wrong.
 
-**Scale.** PhilHealth reported paying ₱27 billion for more than 2 million hemodialysis claims in the first half of 2025 alone, nearly its total for all of 2024. Dialysis is now one of the largest lines in the national insurer's budget, which means scrutiny of claims will only increase.
+**Before reading on, decide:**
 
-**Things that change:** claim forms, electronic submission systems, filing windows, treatment of inpatient and acute sessions, and exceptional cases. Verify each with your PhilHealth Regional Office (PRO) and the circular archive before training staff on them.
+- Why is a pre-signed form a problem if every session really happened?
+- What must stop today, and who needs to know?
+- How would you redesign the workflow so this cannot recur?
+
+**Case review.**
+
+**Why it matters.** A form signed before the session certifies something that had not yet happened. If a patient had been hospitalized on February 10 and missed her sessions, the pre-signed forms would have certified treatments that never occurred. That is a fraud risk, whatever the intention, and it puts the physician's license and the unit's accreditation in danger.
+
+**Today.** The manager, Mr. Romeo Villareal, stops the practice immediately and informs the Medical Director, who speaks with the attending nephrologist. Mr. Villareal works with the PRO on the correction process for the 40 claims. He does not alter any date on any form.
+
+**The redesign.** Claim forms are now signed at the end of each session or during the physician's rounds the same day. Before submission, billing compares every signature date with the treatment date. A random audit of 20 claims a month runs for six months. By the third month, no mismatches are found.
+
+{{fig:uom10c}}
+
+## The package: verify before you rely on it
+
+As of this review, under PhilHealth Circular 2024-0023 (Revision 2) and related issuances:[[dch_philhealth2024]]
+
+- **Eligibility:** PhilHealth members and qualified dependents with chronic kidney disease stage 5, registered in the PDD. Registration is free to the patient.
+- **Cap:** up to **156 sessions per calendar year**, matching three sessions a week for 52 weeks.
+- **Rate:** **6,350 pesos per session**, effective October 9, 2024, up from 4,000 pesos in July 2024 and 2,600 pesos before that. The maximum annual benefit is 990,600 pesos.[[dch_philhealth_news2024]]
+- **Bundle:** the circular's minimum-standards table lists what the package covers, including the dialyzer, solutions and supplies, anticoagulation, erythropoiesis-stimulating agents according to the national formulary, and the use of machines, utilities, and staff time. Charges to patients for covered items must follow the no-copayment rules. Any charge to a patient needs review against the actual policy.
+
+{{fig:uom10a}}
+
+**Scale.** PhilHealth reported paying 27 billion pesos for more than 2 million hemodialysis claims in the first half of 2025 alone, nearly its total for all of 2024 (confirm the latest figures with PhilHealth). Dialysis is now one of the largest lines in the national insurer's budget. Scrutiny of claims will only increase.
+
+**Things that change:** claim forms, electronic submission systems, filing windows, rules for inpatient and acute sessions, and exceptions. Confirm each with your PRO and the circular archive before training staff on them.
+
+**Example.** A patient's son at a unit in Dumaguete asks why his mother was charged 1,800 pesos for "monthly laboratory tests." The billing officer checks the minimum-standards table and finds that the routine monthly panel is already part of the package. The charge is reversed with a dated note, and the manager reviews five more patients' statements. Two have the same charge. The billing template, not the officer, was the cause.
+
+{{key:Coverage rules decide who pays. They never decide whether a patient is dialyzed today.}}
 
 ## The claim chain: where claims fail
 
@@ -31,56 +64,46 @@ As of this review, under PhilHealth Circular 2024-0023 (Revision 2) and related 
 |---|---|---|
 | 1. Eligibility | Membership status, PDD registration | Treatment before registration |
 | 2. Session delivered | Signed treatment record with times | Missing nurse or physician signature |
-| 3. Claim documents | Required claim forms signed **after** treatment by the patient and attending | Forms pre-signed in batches |
-| 4. Internal review | Billing check against treatment record | Session count mismatched with record |
+| 3. Claim documents | Required forms signed after treatment by the patient and attending | Forms pre-signed in batches |
+| 4. Internal review | Billing check against the treatment record | Session count does not match the record |
 | 5. Submission | Electronic submission confirmation | Missed filing window |
-| 6. Payment and reconciliation | Remittance advice matched to claims | Unmatched payments left unapplied |
+| 6. Payment and reconciliation | Remittance advice matched to claims | Payments left unmatched |
 | 7. Denial management | Reason code, correction, resubmission | Denials written off without analysis |
 
-**Never pre-sign.** Physicians and patients sign claim documents only after the session is delivered. Pre-signed forms for sessions that later did not happen are a fraud risk, whatever the intention.
+{{call:Hold any claim the treatment record does not support, and never change a record to match a claim. Report a suspected pattern of billing errors to the Medical Director and the licensee in writing.}}
 
 ## Calculator CALC-07: PhilHealth session-cap tracker
 
-**Inputs:** sessions claimed this calendar year (U), today's date, prescribed sessions per week (default 3), annual cap (default 156; editable), rate per session (default ₱6,350; editable).
+You need: sessions claimed this calendar year, today's date, prescribed sessions per week (usually three), the annual cap (156, editable), and the rate per session (6,350 pesos, editable).
 
-**Formulas**
+{{formula:**Remaining covered sessions** = cap − sessions used.<br>**Weeks left in the year** = days from today to December 31 ÷ 7.<br>**Sessions needed to year end** = sessions per week × weeks left, rounded up.<br>**Shortfall** = sessions needed − remaining, if positive.<br>**Projected date the cap runs out** = today + (remaining ÷ sessions per week) weeks.}}
 
-- Remaining covered sessions = cap − U
-- Weeks left in the year = days from today to December 31 ÷ 7
-- Sessions needed to year end = prescribed per week × weeks left (rounded up)
-- Shortfall = sessions needed − remaining (if positive)
-- Estimated uncovered amount = shortfall × the unit's self-pay charge (entered by the user)
-- Projected cap-exhaustion date = today + (remaining ÷ prescribed per week) weeks
+**Worked example.** On November 24, Mrs. Rosario Medina has claimed 150 sessions. She had nine extra sessions in July and August for fluid overload after a hospitalization. Remaining: 156 − 150 = 6. There are 37 days to December 31, or 5.3 weeks. At three a week, she needs 3 × 5.3 = 15.9, so 16 sessions. The shortfall is 10 sessions. At three sessions a week, her cap runs out in about two weeks, around December 8.
 
-**Worked example.** On November 24 a patient has claimed 150 sessions. Remaining: 6. Weeks left: 37 days ÷ 7 = 5.3. Sessions needed at three a week: 16. Shortfall: 10 sessions. At thrice-weekly treatment, the cap runs out in about two weeks, around December 8.
+{{fig:uom10b}}
 
-**Why it matters.** Patients rarely reach 156 by December unless they had extra sessions (for example, added treatments for fluid overload). When they do, they need to know weeks in advance, not at the counter. The social worker or billing officer counsels the patient on other assistance programs. The clinical team, not billing, decides whether the prescription can change. Never let the cap silently reduce dialysis.
+**Why it matters.** Patients rarely reach 156 before December unless they had extra sessions. When they do, they need to know weeks ahead, not at the counter on December 9. The social worker or billing officer counsels Mrs. Medina and her family in October about other assistance, such as the Malasakit Center or local government programs. The clinical team, not billing, decides whether her prescription can change. The cap must never silently reduce dialysis.
 
 ## Health information and RA 10173
 
-Health data are **sensitive personal information** under the Data Privacy Act. What that means in a dialysis unit:
+Health data are **sensitive personal information** under the Data Privacy Act, Republic Act (RA) 10173.[[dch_ra10173]] In a dialysis unit, that means:
 
-- **Need to know.** Staff access only the records they need for their role. Billing does not need full clinical notes; transport does not need diagnoses.
-- **No personal devices for patient data** unless the facility approves and secures them. No patient photos in staff group chats.
-- **Rosters and whiteboards** show what is needed for care, not diagnoses visible to other patients and visitors.
-- **Requests from third parties** (employers, insurers, relatives) go through the Data Protection Officer (DPO) process with documented consent or legal basis.
+- **Need to know.** Staff see only what their role needs. Billing does not need full clinical notes; the driver does not need diagnoses.
+- **No personal devices for patient data** unless the facility approves and secures them. No patient photos or results in staff group chats.
+- **Rosters and whiteboards** show what is needed for care, never diagnoses that other patients and visitors can read.
+- **Third-party requests** from employers, insurers, or relatives go through the DPO, with documented consent or a legal basis.
 - **Disposal:** shred paper; wipe or destroy storage media.
-- **Breach response:** suspected exposure goes to the DPO immediately. National Privacy Commission rules require notification of qualifying breaches within 72 hours of knowledge; your DPO decides whether a breach qualifies.
+- **Breach response:** a suspected exposure goes to the DPO immediately. National Privacy Commission rules require notification of qualifying breaches within 72 hours of knowledge;[[dch_npc1603]] the DPO decides whether a breach qualifies.
 
-## Field case: the denied batch
-
-**Situation.** Forty claims from one month are returned. The reason codes point to signature dates on claim documents that precede treatment dates.
-
-**Root cause.** To save time, the attending had signed forms for the whole month on the first day.
-
-**Response.** The manager stops the practice immediately, informs the Medical Director, works with the PRO on the correction process for the affected claims and redesigns the workflow: forms are signed at the end of each session or during the physician's rounds the same day, and billing checks signature dates against treatment dates before submission. A monthly audit of 20 random claims follows for six months.
+**Example.** A nurse in a unit in Taguig photographs a patient's laboratory results to send to the attending nephrologist on her personal messaging app, because the clinic computer is slow. It is quick, and it is well meant. It also puts a patient's hepatitis status on a phone that goes home, to the mall, and to the nurse's family. The manager does not discipline her. He asks the Medical Director to approve a secure channel for urgent results and has it set up within a week. Then the rule is enforced.
 
 ## Common failure modes
 
-- Billing and clinical counts kept in separate systems that never reconcile.
-- Denials written off rather than analyzed by reason.
-- Patients learning they have reached the cap only when charged.
-- Patient data in personal messaging apps.
+- **Two counts, never reconciled.** Billing and clinical session counts in separate systems.
+- **Denials written off.** Returned claims not analyzed by reason.
+- **Cap surprises.** Patients learning they have reached 156 only when charged.
+- **Patient data on personal phones.** Convenient until the phone is lost.
+- **Fixing the chart.** Changing a record to match a claim.
 
 ## Supervised practice
 

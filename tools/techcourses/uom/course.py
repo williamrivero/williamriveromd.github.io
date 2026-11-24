@@ -28,7 +28,7 @@ COURSE = {
              "competency, capacity, infection prevention, water readiness, emergencies, supplies, quality data, PhilHealth claims and "
              "privacy, budgets, continuity, freestanding and hospital operations, leadership, accounting, payroll, and benefits."),
     "h1": "Dialysis Unit <em>Operations Manager</em>",
-    "sub": ("A training track for the person who keeps a hemodialysis unit running. Learn who decides what, how to keep the evidence "
+    "sub": ("A training track for the person who keeps a hemodialysis unit running, built on Department of Health (DOH), PhilHealth, and Philippine Society of Nephrology (PSN) requirements. Learn who decides what, how to keep the evidence "
             "current, and what to do when staff, water, power, or money run short."),
     "disclaimer": ("Educational material for unit managers and supervisors. Completing it is an Academy learning record only. It does not "
                    "confer CPD units, Department of Health (DOH) or PhilHealth eligibility, or a management appointment, and it does not replace current regulations, "

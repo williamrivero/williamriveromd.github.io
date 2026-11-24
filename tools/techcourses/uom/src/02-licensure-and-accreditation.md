@@ -1,9 +1,14 @@
-# 02. Licensure, accreditation and survey readiness
+# 02. Licensure, accreditation, and survey readiness
 
-**Core** · 40 minutes study · 45 minutes supervised practice · Source review date: November 24, 2026
-**Figures:** FIG-02 (Understand) · FIG-02B (Apply) · FIG-02C (Appreciate) · **Calculator:** none
+## The big picture
 
-> **Why this matters.** Your license to operate (LTO), PhilHealth accreditation and PSN attestation are three separate permissions, renewed on different calendars by different bodies. An inspector is not looking for a perfect unit. The inspector is looking for proof that you know your own standards and can show, on demand, that you meet them. Survey readiness is not a week of panic before renewal. It is a filing system you keep every day.
+{{plain:A dialysis unit lives on three permission slips. The Department of Health (DOH) license says you may open. PhilHealth accreditation says you may be paid. Professional attestation by the Philippine Society of Nephrology (PSN) says your physicians are recognized. Each slip has its own issuer, its own paperwork, and its own expiry date. Losing any one of them hurts in a different way.}}
+
+The picture has a limit. Permission slips sound like something you file once and forget. In practice, each one is a living promise that the unit still does what it said it would do on the day it applied. The inspector is not checking whether you once had a water log. She is checking whether today's water log is complete, signed, and findable in ten minutes.
+
+That is what survey readiness means. It is not a frantic week before the inspection. It is a unit that could be inspected on any Tuesday and lose nothing but time.
+
+{{cards:Key terms for this module|License to operate (LTO)::The DOH permission to run the facility, with an approved scope of services and stations.|Center for Health Development (CHD)::The DOH regional office that inspects and licenses your unit.|Accreditation::PhilHealth's permission for the unit to file claims for covered packages.|PhilHealth Dialysis Database (PDD)::The registry each patient must be in before the outpatient hemodialysis package can be claimed.|Evidence index::One table that maps every requirement to its document, owner, location, and expiry date.|Tracer::An inspection method that follows one patient or one machine through every step of care.|Corrective and preventive action (CAPA)::A written fix that names the finding, the root cause, the correction, the system change, and the check that proves it worked.}}
 
 ## Learning objectives
 
@@ -12,24 +17,55 @@
 3. Conduct a tracer-style mock inspection that follows one patient and one machine through the unit.
 4. Write a corrective and preventive action (CAPA) that a surveyor would accept as closed.
 
-## The operating model: permission, payment and professional standing
+## Field case: the unannounced inspection
 
-**DOH license (permission to operate).** A freestanding hemodialysis clinic is licensed as a facility in its own right. A hospital dialysis unit sits inside the hospital's license under the One-Stop Shop framework. Either way, the LTO states an approved scope (service type and number of stations). Operating more stations than approved, or moving rooms without approval, is a licensing problem even if every patient does well. The DOH hemodialysis clinic assessment tool is the most practical checklist you will ever own: it is literally the inspector's form. Get the current revision from your Center for Health Development (CHD).
+**Situation.** It is a Thursday in October at a 12-station freestanding unit in Calamba, Laguna. At 10:00, two inspectors from the CHD arrive without notice. They are polite and specific. They ask for three things: the water testing records for the last six months, the current certificate of the physician on duty (POD), and evidence of the unit's last emergency drill.
 
-**PhilHealth accreditation (permission to be paid).** Accreditation lets the unit file claims for the maintenance hemodialysis package. It carries its own document set, a performance commitment and monitoring. Losing accreditation does not close the unit, but it can close the unit's cash flow within weeks.
+The manager, Mr. Dennis Ocampo, has been in the job for four months. He knows the water binder is "somewhere in the technician's room." The drill was in July, he thinks. A staff nurse quietly offers: "Sir, if we cannot find the drill report, I can just print a new one."
 
-**PDD registration (patient eligibility).** Each patient with CKD stage 5 needs PDD registration before the outpatient package can be claimed. Registration is free to the patient.
+**Before reading on, decide:**
 
-**Registry reporting.** AO 2012-0001 refers to Philippine Renal Disease Registry (PRDR) participation. DOH has since referred to this work under its CKD Program. Confirm the current portal and submission cadence with your CHD.
+- What should Mr. Ocampo say to the nurse, right now?
+- What would have let him hand over all three items in ten minutes?
+- One bacteriology result from August arrived two weeks late. How should that be shown to the inspectors?
 
-**PSN attestation (professional standing).** PSN reviews the appointment of the Dialysis Clinical Head, POD certificates where applicable and drill evidence. Its implications for licensing or payer processes should be confirmed locally.
+**Case review.**
+
+**The nurse's offer.** Mr. Ocampo says, quietly and immediately: "No. We show what we have." A report printed today and dated July is a falsified record. A missing report is a finding. A fabricated one can cost the license and expose the people who signed it.
+
+**What a ready unit does.** The manager who prepared opens the evidence index, reads the location of each item, and hands them over: water binder W1 on the shelf in the water room, POD certificate in the human resources file, drill report and attendance sheet in the safety binder, tab 3. Ten minutes, no searching.
+
+**The late result.** The August bacteriology result was received late because the courier missed a pickup. A ready unit has already opened a CAPA: the finding, the root cause (a single courier with no backup), the correction, the change (a second accredited laboratory and a pickup log), and the effectiveness check (every result received within seven days, September to November). The inspectors record it as a problem identified and under correction. That reads very differently from a problem they discovered.
+
+{{fig:uom02c}}
+
+## The operating model: permission, payment, and professional standing
+
+Each permission has a different issuer, a different file, and a different way of failing. Keep them apart in your head and in your binders.
+
+{{fig:uom02a}}
+
+**DOH license: permission to operate.** A freestanding hemodialysis clinic is licensed as a facility in its own right. A hospital dialysis unit sits inside the hospital's license. Either way, the LTO states an approved scope: the service type and the number of stations. Operating more stations than approved, or moving to a new room without approval, is a licensing problem even if every patient does well. The DOH assessment tool for hemodialysis facilities is the most practical checklist you will ever own, because it is the inspector's own form. Get the current revision from your CHD.
+
+**Example.** A unit in Davao adds three machines in the old staff lounge during a busy December, planning to "fix the paperwork in January." Every treatment there happened outside the approved scope. If a patient had been harmed in that room, the unit would have had no licensed space to point to.
+
+**PhilHealth accreditation: permission to be paid.** Accreditation lets the unit file claims for the maintenance hemodialysis package. It carries its own documents, a performance commitment, and monitoring. Losing accreditation does not close the unit. It can close the unit's cash flow within weeks.
+
+**PDD registration: patient eligibility.** Each patient with chronic kidney disease (CKD) stage 5 needs PDD registration before the outpatient package can be claimed. Registration is free to the patient. A session delivered before registration is complete may not be payable.
+
+**Registry reporting.** DOH AO 2012-0001 refers to participation in the Philippine Renal Disease Registry (PRDR).[[doh2012]] The DOH now handles this work under its CKD program. Confirm the current portal and submission schedule with your CHD.
+
+**PSN attestation: professional standing.** The PSN reviews the appointment of the Dialysis Clinical Head, POD certificates where they apply, and drill evidence.[[psn2024]] How attestation affects licensing or payer processes should be confirmed locally.
+
+{{key:Licensing decides whether you may open. Accreditation decides whether you are paid. Neither one decides whether a patient is dialyzed today.}}
 
 ## What the evidence shows
 
-Survey readiness is a management discipline more than a clinical science, so the evidence base is thin and mostly descriptive. Two well-supported ideas still apply:
+Survey readiness is a management discipline more than a clinical science. The evidence is thin and mostly descriptive, but two ideas are well supported.
 
-- **Tracer methods find system gaps that document reviews miss.** Following one patient's journey from arrival to discharge forces you to look at handoffs between people, which is where most failures sit. This is established practice in accreditation bodies worldwide, supported by quality-improvement literature rather than outcome trials.
-- **Infection prevention audits change behavior.** In the CDC Dialysis Bloodstream Infection (BSI) Prevention Collaborative, routine audits with feedback were part of a bundle associated with a 32% fall in overall BSIs and a 54% fall in access-related BSIs (Patel et al., *AJKD* 2013). Audits that are scheduled, scored and fed back are the same machinery a survey-ready unit uses every month.
+**Tracers find gaps that document reviews miss.** Following one patient from arrival to discharge forces you to look at the handoffs between people, which is where most failures sit. Accreditation bodies worldwide use tracers. The support comes from quality-improvement practice, not outcome trials.
+
+**Audits with feedback change behavior.** In the Centers for Disease Control and Prevention (CDC) Dialysis Bloodstream Infection Prevention Collaborative, routine audits with feedback were part of a bundle associated with a 32% fall in overall bloodstream infections and a 54% fall in access-related bloodstream infections.[[dch_patel2013]] It was a before-and-after study without a control group, so it supports, rather than proves, the benefit. The machinery a survey-ready unit uses every month, scheduled audits that are scored and fed back, is the same machinery that study used.
 
 ## Philippine rules that change the decision
 
@@ -38,60 +74,57 @@ Survey readiness is a management discipline more than a clinical science, so the
 | LTO | DOH via CHD | LTO certificate, assessment tool, floor plan, staff credentials, water records, equipment logs, QAPI minutes | Stations in use exceed approved scope |
 | Accreditation | PhilHealth | Accreditation certificate, performance commitment, required forms | Expired document discovered at claim rejection |
 | PDD | PhilHealth | Patient registration record | Treatments delivered before registration completed |
-| Registry | DOH CKD Program | Submission confirmation | Missed submission window |
+| Registry | DOH CKD program | Submission confirmation | Missed submission window |
 | Attestation | PSN | Signed appointment, POD certificates, drill evidence | Clinical Head appointment unsigned or expired |
 
 ## Doing it on Monday: the evidence index
 
-Create one spreadsheet (or use the course worksheet). One row per requirement.
+Create one spreadsheet, one row per requirement. Every row names the source, the evidence, where it lives, who owns it, and when it expires.
 
 | Requirement | Source and revision | Evidence | Location | Owner | Expiry | Status |
 |---|---|---|---|---|---|---|
 | Station count matches LTO | AO 2012-0001; LTO | LTO certificate, floor plan | Admin binder A1 | Administrator | Renewal date | Green |
-| Water testing on schedule | AO 2013-0003 | Monthly logs, lab results | Water binder | Water technician | Monthly | Amber |
+| Water testing on schedule | AO 2013-0003 | Monthly logs, lab results | Water binder W1 | Water technician | Monthly | Amber |
 | POD certificates | PSN | Copies of certificates | HR file | Medical Director | Per certificate | Green |
+| Emergency drill | Unit policy | Drill report, attendance, debrief | Safety binder, tab 3 | Head nurse | Quarterly | Red |
 
-Color by status: green (current), amber (due within 60 days or incomplete), red (expired or missing). Review the amber and red rows every week at your management meeting. A red row is a CAPA, not a reminder.
+Color each row by status: green for current, amber for due within 60 days or incomplete, red for expired or missing. Review amber and red rows every week at your management meeting.
+
+**Example.** In its first month, a unit in Iloilo builds an index of 64 rows. Forty-one are green, sixteen amber, seven red. The red rows include two expired staff hepatitis B titers and a fire extinguisher inspection tag dated 14 months ago. None of them were secrets. They were simply not in anyone's job. By month three, the unit has three red rows, each with a named owner and a date.
+
+{{key:A red row is a CAPA, not a reminder.}}
 
 ## Running a tracer
 
-Pick one real patient (use initials only in practice notes) and one machine. Walk the path:
+Pick one patient (use initials only in your notes) and one machine. Walk the path and, at each step, ask the staff member doing the work: "Show me where that is written."
 
-1. **Arrival:** identity check, PDD status, consent, serology status for isolation decisions.
-2. **Assessment:** pre-dialysis vital signs, weight, access check.
-3. **Treatment:** prescription on file and signed, machine release record, water release for that day, dialyzer labeling and reprocessing record if reused.
-4. **Monitoring:** intradialytic observations at the required intervals.
-5. **Completion:** post-dialysis assessment, documentation, claim-supporting signatures.
-6. **The machine:** preventive maintenance record, disinfection log, last repair and release.
+{{flow:A patient and machine tracer|Arrival::Identity check, PDD status, consent, serology status for isolation decisions.|Assessment::Pre-dialysis vital signs, weight, access check.|Treatment::Prescription on file and signed, machine release record, today's water release, dialyzer labeling and reprocessing record if reused.|Monitoring::Intradialytic observations at the required intervals.|Completion::Post-dialysis assessment, documentation, claim-supporting signatures.|The machine::Preventive maintenance record, disinfection log, last repair and release.}}
 
-At each step, ask staff, "Show me where that is written." Every "I just know" is a finding.
+Every "I just know" is a finding. So is every record that exists but lives in someone's bag or phone.
+
+**Example.** A tracer on patient R.D. at a unit in Tarlac finds that his hepatitis B surface antigen result is eight months old, although the unit's policy calls for monthly testing of susceptible patients. The nurse knew he was negative "because he always is." The tracer did not find a bad nurse. It found a monthly order that had dropped out of the template when the laboratory changed.
 
 ## Writing a CAPA a surveyor accepts
 
-A CAPA has five parts:
+A CAPA has five parts. Leave one out and it is not closed.
+
+{{fig:uom02b}}
 
 1. **Finding**, stated as fact: "Two of five water logs in October lack the reviewer's signature."
 2. **Root cause**, not blame: "The reviewer works only mornings. Afternoon logs had no assigned reviewer."
-3. **Correction** (fix the instance): "Logs reviewed and signed by the Medical Director on November 3, with a late-entry notation."
-4. **Corrective action** (fix the system): "Afternoon reviewer designated; the log form now has a mandatory reviewer field."
+3. **Correction**, which fixes this instance: "Logs reviewed and signed by the Medical Director on November 3, with a late-entry notation."
+4. **Corrective action**, which fixes the system: "Afternoon reviewer designated. The log form now has a mandatory reviewer field."
 5. **Effectiveness check**: "Audit all logs for December. Target: 100% signed. Owner: head nurse. Due: January 5."
 
-Never back-date. A late entry with today's date and a reason is honest and defensible. A back-dated signature is falsification.
-
-## Field case: the surprise inspection
-
-**Situation.** A CHD team arrives unannounced at 10:00. They ask for the water testing records for the last six months, the POD's certificate and evidence of your last emergency drill.
-
-**What goes wrong in weak units.** The manager searches three cabinets while the inspector waits. The drill report cannot be found. A staff member offers to "print a new one."
-
-**What a good manager does.** Opens the evidence index, reads the location of each item, and hands them over within ten minutes. When the inspector finds that one bacteriologic result arrived late, the manager shows the existing CAPA with its root cause and effectiveness check. The inspector notes it as identified and under correction rather than as a concealed deficiency.
+{{call:Never back-date a record or sign for someone else. A late entry dated today, with the reason, is honest and defensible. A back-dated signature is falsification. If anyone asks you to create or alter a record for an inspection, stop and tell the Medical Director and the licensee in writing.}}
 
 ## Common failure modes
 
-- Treating accreditation and licensing as one process.
-- Expiry dates kept in one person's memory.
-- Mock inspections that review documents but never interview staff.
-- CAPAs closed when the paperwork is filed rather than when the effectiveness check passes.
+- **One process in two names.** Treating licensing and accreditation as the same paperwork, so one expires while everyone watches the other.
+- **Expiry dates in one person's memory.** When that person goes on leave, so does the calendar.
+- **Mock inspections without interviews.** Reviewing binders without asking a nurse to show you how she escalates a falling blood pressure.
+- **CAPAs closed on filing.** A CAPA closes when the effectiveness check passes, not when the form is signed.
+- **Last-minute cleanup.** A unit that becomes ready the week before an inspection becomes unready the week after.
 
 ## Supervised practice
 
