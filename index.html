@@ -432,6 +432,18 @@
   @media (prefers-reduced-motion: reduce) { .rha-orb, .rha-waves { animation: none; } }
   @media (max-width: 700px) { .rha-orb { filter: blur(40px); } .rha-waves { height: 34%; bottom: 10%; } }
 </style>
+<style id="rcm-type-css">
+/* Typing animation for the hero's "without the fear." The real text stays in place (transparent while typing),
+   so the heading keeps its size (no layout shift) and screen readers and search engines read it normally. */
+.rcm-type{position:relative;display:inline-block;}
+.rcm-type-live{display:none;}
+.rcm-type.is-typing .rcm-type-ghost{color:transparent;}
+.rcm-type.is-typing .rcm-type-live{display:block;position:absolute;left:0;top:0;width:100%;white-space:normal;text-align:left;}
+.rcm-type-live::after{content:"";display:inline-block;width:.055em;height:.82em;margin-left:.05em;margin-right:-.105em;vertical-align:-.06em;
+  background:currentColor;animation:rcm-caret 1s steps(1) infinite;transition:opacity .6s;}
+.rcm-type.is-done .rcm-type-live::after{opacity:0;animation:none;}
+@keyframes rcm-caret{50%{opacity:0;}}
+</style>
 <style id="text-size-adjust">html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;}</style>
 <script type="speculationrules">{"prefetch":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"*.json"}}]},"eagerness":"moderate"}],"prerender":[{"urls":["/guides/","/drugs/","/"],"eagerness":"moderate"}]}</script>
 <link rel="preload" as="image" href="images/hero-atmos-900.webp" media="(max-width: 900px)" fetchpriority="high"><link rel="preload" as="image" href="images/hero-atmos-1600.webp" media="(min-width: 901px)" fetchpriority="high">
@@ -476,7 +488,7 @@
       <span class="rcm-eyebrow-rule"></span>
       <span class="rcm-eyebrow">A FREE LIBRARY, WRITTEN BY ONE NEPHROLOGIST</span>
     </div>
-    <h1 class="rcm-h1 reveal is-visible">Understand your kidneys,<br><em>without the fear.</em></h1>
+    <h1 class="rcm-h1 reveal is-visible">Understand your kidneys,<br><em class="rcm-type"><span class="rcm-type-ghost">without the fear.</span><span class="rcm-type-live" aria-hidden="true"></span></em></h1>
     <p class="rcm-hero-sub reveal is-visible">Renal care really matters — and it begins by understanding it.</p>
     <div class="rcm-hero-ctas reveal is-visible">
       <a href="/guides/" class="rcm-btn-light" id="hero-cta-patient">I've been diagnosed
@@ -1412,5 +1424,20 @@ const PATHWAYS = {
 })();
 </script>
 
+<script id="rcm-type-js">
+(function(){
+  var em=document.querySelector('.rcm-type'); if(!em) return;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var ghost=em.querySelector('.rcm-type-ghost'), live=em.querySelector('.rcm-type-live');
+  var text=ghost.textContent, i=0, node=document.createTextNode('');
+  live.appendChild(node); em.classList.add('is-typing');
+  function step(){
+    node.data=text.slice(0,++i);
+    if(i<text.length){ var c=text.charAt(i-1); setTimeout(step,(c===' '?140:60)+Math.random()*50); }
+    else setTimeout(function(){ em.classList.add('is-done'); }, 2200);
+  }
+  setTimeout(step,650);
+})();
+</script>
 </body>
 </html>
