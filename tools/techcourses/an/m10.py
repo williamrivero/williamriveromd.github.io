@@ -6,19 +6,23 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                 'Apply the Kidney Disease: Improving Global Outcomes (KDIGO) 2026 anemia guideline to iron, erythropoiesis-stimulating '
                 'agent (ESA) and hypoxia-inducible factor (HIF) prolyl hydroxylase inhibitor (HIF-PHI) decisions.',
                 'Interpret chronic kidney disease–mineral and bone disorder (CKD-MBD), acidosis and symptoms as trends within one plan.'],
- 'big': '{{plain:The failing kidney sends three wrong signals at once: too little erythropoietin, too much hepcidin-driven iron lockdown, '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Plan long-term care with the patient (b9). The physician on duty coordinates '
+        'new laboratory results with you; acting on them is yours.</div>\n'
+        '{{plain:The failing kidney sends three wrong signals at once: too little erythropoietin, too much hepcidin-driven iron lockdown, '
         'and broken mineral control. Treating one number without asking which signal produced it is how patients end up on high-dose ESA '
         '(erythropoiesis-stimulating agent) while iron-starved.}}\n'
         '{{cards:Key numbers|Anemia definition (KDIGO 2026)::hemoglobin (Hb) &lt;13 g/dL men; &lt;12 g/dL women|Severe iron '
         'deficiency::Ferritin &lt;45 ng/mL|ESA consideration::Non-dialysis: Hb ≤8.5–10 g/dL by symptoms; hemodialysis (HD): Hb ≤9–10 '
         'g/dL|Alkali therapy consideration (KDIGO 2024)::Serum bicarbonate &lt;18 mmol/L}}\n',
  'case': {'title': 'Hemoglobin 8.9 after pneumonia',
-          'html': '<p>At the monthly review on your unit, the head nurse flags Mr. Fajardo, 71, who has been on hemodialysis for two '
-                  'years. He spent last week in hospital with pneumonia. His hemoglobin is 8.9 g/dL, down from 10.5. Ferritin is 780 '
-                  'ng/mL, transferrin saturation 14%, and his C-reactive protein is high.</p>\n'
-                  '<p>The standing order calls for 100 mg of intravenous iron every session when transferrin saturation is below 20%, and '
-                  'the nurse has an ampoule ready. The physician on duty suggests doubling his erythropoietin dose. Mr. Fajardo tells you '
-                  'he is tired and has barely eaten since he was discharged.</p>\n',
+          'html': '<p>On your monthly visit to the dialysis center, the head nurse flags Mr. Fajardo, 71, one of your patients, who has '
+                  'been on hemodialysis for two years. He spent last week in hospital with pneumonia. His hemoglobin is 8.9 g/dL, down '
+                  'from 10.5. Ferritin is 780 ng/mL, transferrin saturation 14%, and his C-reactive protein is high.</p>\n'
+                  '<p>The unit&rsquo;s standing order, which covers every attending nephrologist&rsquo;s patients, calls for 100 mg of '
+                  'intravenous iron every session when transferrin saturation is below 20%, and the nurse has an ampoule ready. The '
+                  'physician on duty suggests doubling his erythropoietin dose. Mr. Fajardo tells you he is tired and has barely eaten '
+                  'since he was discharged.</p>\n',
           'questions': ['Is he iron deficient?',
                         'Should the nurse give the iron today, and should the erythropoietin be doubled?',
                         'What else needs checking before you call this the anemia of kidney disease?']},
@@ -33,11 +37,11 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                '(fibroblast growth factor 23), which suppresses calcitriol. Low calcitriol and later hyperphosphatemia drive parathyroid '
                'hormone up. Metabolic acidosis from reduced ammonium excretion breaks down muscle and bone.</p>\n'
                '<div class="tc-scene"><span class="tc-lab">At the monthly anemia review &middot; fictional</span><p>Nurse Cabral lists six '
-               'patients whose erythropoietin doses have doubled in three months. Four of them have a transferrin saturation below 20% '
-               'with a ferritin above 500 ng/mL. Three had infections.</p><p>You explain the lock. Inflammation raises hepcidin, hepcidin '
-               'closes the iron exit from cells, and the marrow starves while the stores look full. Higher erythropoietin doses cannot '
-               'make red cells without available iron.</p><p class="tc-scene-take"><b>What this shows.</b> Ferritin is an acute-phase '
-               'protein. Read it with transferrin saturation and C-reactive protein.</p></div>\n'
+               'of your patients whose erythropoietin doses have doubled in three months. Four of them have a transferrin saturation below '
+               '20% with a ferritin above 500 ng/mL. Three had infections.</p><p>You explain the lock. Inflammation raises hepcidin, '
+               'hepcidin closes the iron exit from cells, and the marrow starves while the stores look full. Higher erythropoietin doses '
+               'cannot make red cells without available iron.</p><p class="tc-scene-take"><b>What this shows.</b> Ferritin is an '
+               'acute-phase protein. Read it with transferrin saturation and C-reactive protein.</p></div>\n'
                '\n'
                '\n'
                '{{fig:an10_a}}\n'),
@@ -65,7 +69,7 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                'frailty and poor intake, and involve the renal dietitian at each review.</p>\n'
                '\n'
                '{{fig:an10_b}}\n'
-               '<div class="tc-scene"><span class="tc-lab">On the floor, the binder taken at the wrong time &middot; '
+               '<div class="tc-scene"><span class="tc-lab">On your monthly visit, the binder taken at the wrong time &middot; '
                'fictional</span><p>Mrs. Garcia&rsquo;s phosphate stays high despite three binder tablets a day. You ask when she takes '
                'them. &ldquo;Before breakfast, all three, so I don&rsquo;t forget.&rdquo;</p><p>A binder works only when it meets the '
                'phosphate in food. You ask her to take one with each meal, and you ask the dietitian to review her processed-food '
@@ -84,8 +88,9 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
              'settled.</p>\n'
              '<p><strong>What else.</strong> Look for blood loss: ask about black stools, check stool occult blood, and look for bleeding '
              'from the access. Check B12 and folate. Ask the renal dietitian to see him this week, because poor intake after an admission '
-             'makes everything worse. Then review the standing order itself. A rule that runs on transferrin saturation alone, with no '
-             'ferritin, no CRP, and no stop for infection, will do this again to the next patient.</p>\n'],
+             'makes everything worse. Then raise the standing order with the clinical head, because it covers every attending&rsquo;s '
+             'patients, not only yours. A rule that runs on transferrin saturation alone, with no ferritin, no CRP, and no stop for '
+             'infection, will do this again to the next patient.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Interprets anemia data with inflammation in context', False),

@@ -5,7 +5,11 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
  'objectives': ['Give and receive a closed-loop escalation using a structured format.',
                 'Document contact, decision, responsible clinician and reassessment time.',
                 'Share the minimum necessary data through privacy-compliant channels.'],
- 'big': '{{plain:A phone call is a handoff of risk. If the person who called does not leave knowing exactly what to do, by when, and what '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Stay in active management with the physician on duty and the nurse on duty '
+        '(b7). When a patient travels, moves, or changes nephrologist, provide the endorsement documents and coordinate with the receiving '
+        'unit (b10). When your patient is admitted under another nephrologist, endorse by letter or call (b12).</div>\n'
+        '{{plain:A phone call is a handoff of risk. If the person who called does not leave knowing exactly what to do, by when, and what '
         'to do if it fails, the risk was never transferred. It was only described.}}\n'
         '{{cards:Key numbers|Closed-loop elements::Action, owner, deadline, fallback, read-back|Structured handoff effect (I-PASS, '
         'before-and-after)::Medical errors down 23%; preventable adverse events down 30%}}\n',
@@ -49,6 +53,30 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
                'standard in the Joint Commission patient safety goals. The Philippine Data Privacy Act of 2012 requires proportionality: '
                'share only what the receiver needs, through channels the facility has approved.</p>\n'
                '<p class="tc-src">Sources for this module: [[an03_1]][[an03_2]][[an03_3]][[an03_4]]</p>\n'),
+              ('endorse',
+               'Endorsement',
+               'Travel, transfer, and admission: the endorsement',
+               '\n'
+               '<p>Your patients do not stay in one place. They travel for a family wedding, move to another province, change '
+               'nephrologist, or are admitted to a hospital where another nephrologist takes over. Each move is a handoff, and the PSN '
+               'guidelines name your part in it.[[an03_1]]</p>\n'
+               '<p>When a patient travels, moves residence, or changes nephrologist, you provide the documents the receiving hemodialysis '
+               'center needs, including the PSN Hemodialysis Patient&rsquo;s Endorsement Form (HPEF), and you coordinate with that center '
+               'directly. When your patient is admitted under another nephrologist, you give a proper endorsement by letter, by call, or '
+               'both.[[an03_1]]</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">By message, a Thursday evening &middot; fictional</span><p>Nurse Cabral '
+               'messages you: Mrs. Dizon is flying to Iloilo in nine days for her granddaughter&rsquo;s wedding and will dialyze there '
+               'three times. She has already booked her flight.</p><p>You call the Iloilo unit the next morning. They will accept her with '
+               'a completed endorsement form, a current abstract with her prescription and medicines, and hepatitis serologies from the '
+               'last three months. Hers are five months old. Nurse Cabral draws them on Monday, and the papers go out by Wednesday through '
+               'the unit&rsquo;s approved channel. On Saturday the Iloilo nurse texts that Mrs. Dizon has started her first session.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Ask the receiving unit what it needs before the patient leaves. A missing '
+               'test found at the door costs a session.</p></div>\n'
+               '{{flow:A safe endorsement|Ask first::Call the receiving unit and ask what it needs. Requirements differ from unit to '
+               'unit.|Write it::Complete the endorsement form and a current abstract with the prescription and medicines.|Hand it '
+               'over::Give a copy to the patient and send one to the receiving unit or nephrologist through an approved channel.|Close the '
+               'loop::Confirm the first session or the admission was received, and record who accepted the patient.}}\n'
+               '{{key:A patient who leaves without an endorsement arrives at the next unit as a stranger.}}\n'),
               ('practice',
                'Practice',
                'What the attending does',
@@ -56,10 +84,10 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
                'the response to them. State the immediate action, who performs it, the reassessment deadline and the fallback if contact '
                'is lost. Have the caller read it back. Document in the chart, not only in a messaging app. For transfers, confirm '
                'acceptance by a named receiving clinician and send the minimum data set through the approved channel.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">At handoff, 6 p.m. &middot; fictional</span><p>You find a note in the chart '
-               'from last night: &ldquo;AN aware.&rdquo; Nothing else. You ask Dr. Ilagan what you were made aware of and what you said. '
-               'Neither of you is certain.</p><p>You agree a rule with Nurse Cabral: every call ends with a chart entry that has the '
-               'instruction, the reassessment time, and the name of the person who gave it.</p><p class="tc-scene-take"><b>What this '
+               '<div class="tc-scene"><span class="tc-lab">On your monthly visit &middot; fictional</span><p>You find a note in the chart '
+               'from a night two weeks ago: &ldquo;AN aware.&rdquo; Nothing else. You ask Dr. Ilagan what you were made aware of and what '
+               'you said. Neither of you is certain.</p><p>You agree a rule with Nurse Cabral: every call ends with a chart entry that has '
+               'the instruction, the reassessment time, and the name of the person who gave it.</p><p class="tc-scene-take"><b>What this '
                'shows.</b> If the next shift cannot read the plan, the plan did not happen.</p></div>\n'
                '{{call:<ul><li>&rsquo;Team aware&rsquo; as the only documentation</li><li>Orders given by text with no chart '
                'entry</li><li>Patient leaving against advice with no capacity assessment</li><li>Instructions with no reassessment '

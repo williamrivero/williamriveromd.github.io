@@ -5,15 +5,18 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
  'objectives': ['Prepare patients and the unit for typhoons, floods, outages and outbreaks.',
                 'Triage missed treatments by clinical risk and confirm receiving capacity.',
                 'Track every deferred patient until care resumes or is formally transferred.'],
- 'big': '{{plain:A dialysis patient can survive a few days without treatment if prepared, and can die in one day if not. Preparation '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Coordinate in emergencies (b8), and provide endorsement documents and '
+        'coordinate with any receiving unit when patients are displaced (b10).</div>\n'
+        '{{plain:A dialysis patient can survive a few days without treatment if prepared, and can die in one day if not. Preparation '
         'before typhoon season decides who is safe when the roads close.}}\n'
         '{{cards:Key numbers|Emergency card contents::Prescription, access, dry weight, serologies, medicines, contacts|Pre-storm '
         'action::Extra or early sessions before forecast landfall}}\n',
  'case': {'title': 'The satellite unit that went under water',
           'html': '<p>A typhoon passed overnight. At 6 a.m., your head nurse calls: the satellite unit in the next town is flooded and '
-                  'closed, probably for a week. Its 30 patients normally dialyze across three shifts. Three of them have already missed a '
-                  'session. One of them, Mr. Bernardo, has no urine output and told the nurse on the phone that he is breathless and '
-                  'cannot lie flat.</p>\n'
+                  'closed, probably for a week. Its 30 patients, under five attending nephrologists, normally dialyze across three shifts. '
+                  'Eight of them are yours. Three of yours have already missed a session. One, Mr. Bernardo, has no urine output and told '
+                  'the nurse on the phone that he is breathless and cannot lie flat.</p>\n'
                   '<p>Your main unit can add two extra slots tomorrow morning. The roads to the hospital are partly flooded, and two '
                   'patients cannot be reached by phone.</p>\n',
           'questions': ['Who is seen first, and is that a slot decision?',
@@ -57,27 +60,29 @@ MODULE = {'image_alt': 'A dialysis patient in a raincoat, holding her documents,
                'until every patient has a disposition. During a cluster, involve infection prevention and preserve incident data.</p>\n'
                '\n'
                '{{fig:an22_a}}\n'
-               '<div class="tc-scene"><span class="tc-lab">Before typhoon season &middot; fictional</span><p>In May you check every '
-               'patient&rsquo;s emergency card. Twelve cards are missing their dry weight, and four list a unit that has closed. The head '
-               'nurse updates them during the next week&rsquo;s sessions.</p><p>You also sign a mutual-aid agreement with a unit across '
-               'the river, listing how many extra slots each unit can offer the other.</p><p class="tc-scene-take"><b>What this shows.</b> '
-               'Preparation in May decides who is safe in September.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">Before typhoon season &middot; fictional</span><p>In May you ask the head nurse '
+               'to check your patients&rsquo; emergency cards. Twelve cards are missing their dry weight, and four list a unit that has '
+               'closed. The head nurse updates them during the next week&rsquo;s sessions.</p><p>The clinical head signs a mutual-aid '
+               'agreement with a unit across the river, listing how many extra slots each can offer the other, and you make sure your '
+               'patients&rsquo; cards name that unit.</p><p class="tc-scene-take"><b>What this shows.</b> Preparation in May decides who '
+               'is safe in September.</p></div>\n'
                '{{call:<ul><li>Dyspnea or chest pain after missed sessions</li><li>Anuric patient missing ≥2 sessions</li><li>Patient '
                'unreachable after the event</li><li>Evacuation-center fever or diarrhea cluster among dialysis patients</li></ul>}}\n')],
  'debrief': ['<p><strong>First.</strong> Mr. Bernardo goes to emergency assessment now. Breathlessness and orthopnea in an anuric patient '
              'who has missed dialysis can mean pulmonary edema or dangerous potassium. That is not a decision about a slot tomorrow. '
              'Arrange transport and confirm that the hospital will accept him.</p>\n'
-             '<p><strong>The two slots.</strong> Triage the others by days since their last session, whether they still make urine, and '
-             'their potassium history. Potassium is the most immediate danger, and anuric patients after the long gap are at highest risk. '
-             'Confirm acceptance and transport for each patient you place. Give everyone waiting interim advice: the emergency '
-             'low-potassium, low-salt, low-fluid diet, their potassium binder if they have one, and the warning signs (breathlessness, '
-             'chest pain, weakness) that mean going to an emergency department instead of waiting.</p>\n'
-             '<p><strong>Every patient safe.</strong> Keep a deferred-treatment list with every one of the 30 names. Remove a name only '
-             'when that patient has been dialyzed or formally transferred. Keep calling the two who cannot be reached, and ask the '
-             'barangay health office or the family to check on them. The evidence here comes from disaster experience rather than trials, '
-             'but it is consistent: missed treatments after storms were associated with more emergency visits and admissions. After the '
-             'water recedes, review why three patients missed sessions before you knew, and schedule extra sessions before the next '
-             'forecast landfall.</p>\n'],
+             '<p><strong>The two slots.</strong> Agree with the clinical head and the other attending nephrologists that the slots go to '
+             'whoever is in most danger, not to whoever&rsquo;s doctor calls first. Triage by days since the last session, whether they '
+             'still make urine, and their potassium history. Potassium is the most immediate danger, and anuric patients after the long '
+             'gap are at highest risk. Confirm acceptance and transport for each patient you place. Give everyone waiting interim advice: '
+             'the emergency low-potassium, low-salt, low-fluid diet, their potassium binder if they have one, and the warning signs '
+             '(breathlessness, chest pain, weakness) that mean going to an emergency department instead of waiting.</p>\n'
+             '<p><strong>Every patient safe.</strong> Ask the clinical head to keep one deferred-treatment list for all 30 patients, and '
+             'make sure each of your eight has a plan on it. Remove a name only when that patient has been dialyzed or formally '
+             'transferred. Keep calling the two who cannot be reached, and ask the barangay health office or the family to check on them. '
+             'The evidence here comes from disaster experience rather than trials, but it is consistent: missed treatments after storms '
+             'were associated with more emergency visits and admissions. After the water recedes, review why three patients missed '
+             'sessions before you knew, and schedule extra sessions before the next forecast landfall.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Prioritizes by clinical risk', False),

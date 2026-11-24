@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
  'objectives': ['Triage nephritic, nephrotic and rapidly progressive presentations by tempo.',
                 'Counsel on biopsy benefit and risk with real complication rates.',
                 'Plan immunosuppression with infection prevention and response criteria.'],
- 'big': '{{plain:The glomerulus fails in two basic ways. A nephritic lesion is an inflamed, leaking capillary that lets blood through and '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Assess completely before hemodialysis is started (b2), and plan long-term care '
+        '(b9). A patient who starts dialysis without a diagnosis has skipped b2.</div>\n'
+        '{{plain:The glomerulus fails in two basic ways. A nephritic lesion is an inflamed, leaking capillary that lets blood through and '
         'loses filtration fast. A nephrotic lesion is a broken filter barrier that leaks protein while blood stays put. Tempo tells you '
         'how fast you need to act; the biopsy tells you what you are fighting.}}\n'
         '{{cards:Key numbers|Biopsy transfusion rate (meta-analysis)::About 1.6%|Biopsy angiographic intervention::About 0.3%|Plasma '

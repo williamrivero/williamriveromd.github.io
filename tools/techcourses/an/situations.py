@@ -5,7 +5,7 @@ All are fictional and were written for this series."""
 
 SITUATIONS = {
 "01": {"scenarios": [
-    ("The roster with your name on two shifts at once", "The unit&rsquo;s posted coverage list shows you as attending for the morning shift at two sites 40 kilometers apart.",
+    ("The roster with your name on two shifts at once", "The unit&rsquo;s posted coverage list shows you as the covering nephrologist for two units 40 kilometers apart during the same hours.",
      "Someone filled the roster with your name because no one else was available.",
      "Ask the medical director to correct the roster today and to name a covering nephrologist for one site, with a telephone number the physician on duty can reach.",
      "A name on a roster is a promise to the physician on duty. A promise you cannot keep is worse than an honest gap."),
@@ -19,7 +19,7 @@ SITUATIONS = {
      "A transfer arrangement that has not been tested is an assumption, not an arrangement."),
 ], "tips": [
     "Keep your credential packet in one folder, with an expiry date written on the cover for each item.",
-    "Once a quarter, run one simulated night call from the floor to an accepting hospital.",
+    "Once a quarter, ask the unit to run one simulated night call from the floor to an accepting hospital.",
     "Save the covering nephrologist&rsquo;s number in the unit&rsquo;s phone, not only in yours.",
     "If you cannot be reached for a weekend, tell the head nurse in writing who is covering."]},
 "02": {"scenarios": [
@@ -273,7 +273,7 @@ SITUATIONS = {
     "Two patients with the same symptoms means stop the shared supply.",
     "Never return blood after suspected hemolysis.",
     "Keep samples, logs, and lot numbers after any reaction.",
-    "Drill the air embolism response with the team."]},
+    "Ask that the air embolism response be drilled with the team."]},
 "16": {"scenarios": [
     ("The arm with the IV line", "A patient whose future fistula arm is marked has an intravenous line placed in that arm in the emergency room.",
      "Veins needed for access are being damaged.",

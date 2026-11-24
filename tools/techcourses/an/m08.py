@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A continuous dialysis machine with fluid bags and a moun
  'objectives': ['Audit prescribed versus delivered effluent dose and fluid balance.',
                 'Adjust drug dosing and anticoagulation to delivered therapy.',
                 'Identify when toxicology, apheresis or a stopping trial is appropriate.'],
- 'big': '{{plain:A continuous kidney replacement therapy (CRRT) prescription is a plan for 24 hours of work. Clotted filters, imaging '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Provide the dialysis prescription (b4) and stay in active management with the '
+        'team that delivers it (b7).</div>\n'
+        '{{plain:A continuous kidney replacement therapy (CRRT) prescription is a plan for 24 hours of work. Clotted filters, imaging '
         'trips and bag changes quietly steal hours, so the patient often receives far less than the order says. The attending&rsquo;s job '
         'is to measure what was delivered.}}\n'
         '{{cards:Key numbers|Delivered effluent dose (KDIGO 2012)::20–25 mL/kg/h; prescribe about 25–30|Filtration fraction '

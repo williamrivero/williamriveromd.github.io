@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
  'objectives': ['Start acute kidney replacement therapy (KRT) for indications and trajectory, not for a creatinine number.',
                 'Match modality to hemodynamics, brain risk, local capability and transfer feasibility.',
                 'Write a plan that includes daily recovery review and stopping criteria.'],
- 'big': '{{plain:Dialysis in the intensive care unit (ICU) is life support for a failing organ, like a ventilator for the lungs. It earns '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Coordinate during emergencies (b8), and endorse by letter or call when your '
+        'patient is under another nephrologist&rsquo;s care in hospital (b12).</div>\n'
+        '{{plain:Dialysis in the intensive care unit (ICU) is life support for a failing organ, like a ventilator for the lungs. It earns '
         'its risks when the kidney can no longer keep the internal environment survivable, not simply because a lab value crossed a '
         'line.}}\n'
         '{{cards:Key numbers|Standard versus Accelerated Initiation of Renal Replacement Therapy in Acute Kidney Injury trial (STARRT-AKI) '

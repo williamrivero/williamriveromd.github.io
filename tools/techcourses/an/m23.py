@@ -5,15 +5,18 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
  'objectives': ['Give behavior-specific feedback and match supervision to entrustment.',
                 'Appraise trials with absolute effects and applicability.',
                 'Design a quality improvement (QI) project with a defined denominator, baseline and balancing measure.'],
- 'big': '{{plain:An attending improves care three ways: by teaching the next clinician, by reading evidence critically, and by measuring '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Stay in active management with the physician on duty and the nurse on duty '
+        '(b7). Teaching them well is part of that duty.</div>\n'
+        '{{plain:An attending improves care three ways: by teaching the next clinician, by reading evidence critically, and by measuring '
         'whether the unit is getting better. All three depend on precise definitions.}}\n'
         '{{cards:Key numbers|number needed to treat (NNT) formula::NNT = 1 / absolute risk reduction (ARR)|FLOW example::ARR about 4.5% '
         'over 3.4 years → NNT about 22|Run chart shift rule::≥6 consecutive points on one side of the median}}\n',
  'case': {'title': 'Fewer infections, or fewer catheters?',
-          'html': '<p>At the quarterly quality meeting, the infection-control nurse presents a slide in green: &ldquo;Access infections '
-                  'down by half! 3 this quarter, 6 last quarter.&rdquo; The administrator wants to put it in the newsletter. A new '
-                  'nephrology fellow rotating through your unit, Dr. Cruz, asks you afterwards whether that proves the new catheter-care '
-                  'bundle works.</p>\n'
+          'html': '<p>At the unit&rsquo;s quarterly quality meeting, which the clinical head chairs and the attending nephrologists are '
+                  'invited to, the infection-control nurse presents a slide in green: &ldquo;Access infections down by half! 3 this '
+                  'quarter, 6 last quarter.&rdquo; The administrator wants to put it in the newsletter. A new nephrology fellow rotating '
+                  'with you, Dr. Cruz, asks you afterwards whether that proves the new catheter-care bundle works.</p>\n'
                   '<p>You look at the census. Last quarter the unit had about 2,400 catheter-days. This quarter, after many patients moved '
                   'to fistulas, it had about 1,000.</p>\n',
           'questions': ['Did infections fall?',
@@ -56,11 +59,12 @@ MODULE = {'image_alt': "An attending watches a nephrology fellow examine a patie
                'one small change, track a process and a balancing measure, and review at a fixed date.</p>\n'
                '\n'
                '{{fig:an23_c}}\n'
-               '<div class="tc-scene"><span class="tc-lab">The first test of change &middot; fictional</span><p>Your aim: reduce catheter '
-               'infections from 3.0 to below 1.5 per 1,000 catheter-days by June. Measures: the infection rate, checklist completion, and '
-               'minutes of delay to session start.</p><p>In month one, checklist completion is 60% and start times are unchanged. You '
-               'shorten the checklist from twelve items to six and test it again in month two.</p><p class="tc-scene-take"><b>What this '
-               'shows.</b> Test one small change, measure it honestly, and adjust.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">The first test of change &middot; fictional</span><p>For your own patients on '
+               'catheters, you and the head nurse set an aim: reduce catheter infections from 3.0 to below 1.5 per 1,000 catheter-days by '
+               'June. Measures: the infection rate, checklist completion, and minutes of delay to session start.</p><p>In month one, '
+               'checklist completion is 60% and start times are unchanged. You shorten the checklist from twelve items to six and test it '
+               'again in month two.</p><p class="tc-scene-take"><b>What this shows.</b> Test one small change, measure it honestly, and '
+               'adjust.</p></div>\n'
                '{{call:<ul><li>Relative risk reduction quoted without absolute effect</li><li>Rates compared with different '
                'denominators</li><li>Improvement claimed from a single data point</li><li>No balancing measure for a change that adds '
                'work</li></ul>}}\n')],

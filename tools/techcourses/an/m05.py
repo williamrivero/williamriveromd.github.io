@@ -5,7 +5,11 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
  'objectives': ['Stage acute kidney injury (AKI) from creatinine and urine-output trends and identify reversible causes in parallel.',
                 'Manage leptospirosis-associated AKI in the Philippine context.',
                 'Write a post-AKI follow-up plan with named labs, timing and owner.'],
- 'big': '{{plain:AKI is a symptom, not a diagnosis, like &rsquo;fever of the kidney.&rsquo; Your job is to treat the immediate danger, '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Coordinate with the nurses and the physician on duty in emergencies (b8), '
+        'endorse properly when your patient is admitted under another nephrologist (b12), and plan long-term care with the patient '
+        '(b9).</div>\n'
+        '{{plain:AKI is a symptom, not a diagnosis, like &rsquo;fever of the kidney.&rsquo; Your job is to treat the immediate danger, '
         'find the cause while you do it, and remember that the kidney that survives AKI carries a lasting scar.}}\n'
         '{{cards:Key numbers|Stage 1::Creatinine 1.5–1.9x baseline or ≥0.3 mg/dL rise; UO &lt;0.5 mL/kg/h for 6–12 h|Stage 2::Creatinine '
         '2.0–2.9x; UO &lt;0.5 mL/kg/h for ≥12 h|Stage 3::Creatinine ≥3x or ≥4.0 mg/dL or kidney replacement therapy (KRT); UO &lt;0.3 '

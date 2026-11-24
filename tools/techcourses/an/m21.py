@@ -5,14 +5,20 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
  'objectives': ['Reconcile delivered services with records before attesting.',
                 'Resolve mismatches through a traceable correction workflow.',
                 'Protect patient privacy and declare financial conflicts.'],
- 'big': '{{plain:A claim is a sworn statement that a service happened on a date. The attending&rsquo;s signature lends clinical '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Provide a complete clinical abstract with the prescription and current '
+        'medicines when needed (b5); comply with the documentary requirements of the Philippine Health Insurance Corporation (PhilHealth), '
+        'the Philippine Charity Sweepstakes Office (PCSO), the Department of Social Welfare and Development (DSWD), and other payers '
+        '(b11); and accept no gift or rebate from the unit (b14).</div>\n'
+        '{{plain:A claim is a sworn statement that a service happened on a date. The attending&rsquo;s signature lends clinical '
         'credibility to every line, so a single unchecked date can turn an honest unit into an inaccurate one.}}\n'
         '{{cards:Key numbers|Annual hemodialysis (HD) session limit::156 sessions (3 per week x 52 weeks)|HD package rate::PHP 6,350 per '
         'session from October 9, 2024; up to PHP 990,600 per year}}\n',
  'case': {'title': 'The claim you are asked to sign on Friday',
-          'html': '<p>On the last Friday of the month, the billing clerk brings you a stack of Philippine Health Insurance Corporation '
-                  '(PhilHealth) claim forms to sign before the 5 p.m. courier. &ldquo;They are all correct, Doctor. Just sign on the '
-                  'flags.&rdquo; You pull one at random: Mr. Lopez, 12 sessions.</p>\n'
+          'html': '<p>It is your monthly visit, on the last Friday of the month. The billing clerk hands you a stack of Philippine Health '
+                  'Insurance Corporation (PhilHealth) claim forms for all of your patients at the unit, to sign before the 5 p.m. courier. '
+                  '&ldquo;They are all correct, Doctor. Just sign on the flags.&rdquo; You pull one at random: Mr. Lopez, 12 '
+                  'sessions.</p>\n'
                   '<p>You compare it with the treatment flowsheets. On the 9th, his session was cancelled because the water system was '
                   'down, but the date is on the claim. The 16th appears twice. The clerk explains that the system bills from the schedule, '
                   'and that the server crashed on the 16th and the entries were typed again. &ldquo;It is only two sessions, Doctor, and '
@@ -65,8 +71,36 @@ MODULE = {'image_alt': 'A clipboard with a treatment flowsheet, a claim form and
                'that claim. The audit trail answers the question in two minutes.</p><p class="tc-scene-take"><b>What this shows.</b> A '
                'correction without a trail looks the same as an alteration.</p></div>\n'
                '{{call:<ul><li>Claimed date with no treatment record</li><li>Duplicate dates after system downtime</li><li>Requests to '
-               '&rsquo;adjust&rsquo; logs to match a claim</li><li>Rebate or incentive offers tied to referrals or '
-               'supplies</li></ul>}}\n')],
+               '&rsquo;adjust&rsquo; logs to match a claim</li><li>Rebate or incentive offers tied to referrals or supplies</li></ul>}}\n'),
+              ('abstract',
+               'Abstracts and claims',
+               'The abstract and the claims you sign',
+               '\n'
+               '<p>You rarely sit at the dialysis center&rsquo;s billing desk, but your name is on its paperwork. Two documents carry it '
+               'most often.</p>\n'
+               '<p><strong>The clinical abstract.</strong> When a patient needs one, you provide a complete medical abstract with the '
+               'dialysis prescription and current medicines, and the unit keeps a duplicate abstract and a medical certificate on '
+               'file.[[an21_8]] Patients ask for abstracts for PhilHealth, for travel or transfer, for other payers such as the Philippine '
+               'Charity Sweepstakes Office (PCSO) and the Department of Social Welfare and Development (DSWD), and for work or disability '
+               'papers. The PSN guidelines ask you to meet the documentary requirements of each payer.[[an21_8]] An abstract is a summary '
+               'you certify, so write it from the record and date it. Most payers and receiving units also look for the diagnosis and its '
+               'cause, the date dialysis started, the access, and recent serologies; ask the requesting office what it needs.</p>\n'
+               '<p><strong>The claims you sign.</strong> In Philippine practice, the attending nephrologist signs the PhilHealth claims '
+               'for every one of his patients at the unit, often as a stack on the monthly visit. The PSN text does not name the '
+               'signatory. It asks you to meet the payers&rsquo; documentary requirements, and it makes the unit&rsquo;s operations '
+               'manager responsible for forms being filled out properly and truthfully.[[an21_8]] Your signature still states that each '
+               'listed session happened. Sign what you have checked against the treatment record, or what the unit&rsquo;s reconciliation '
+               'has checked and shown you, and nothing else.</p>\n'
+               '<p><strong>No rebates.</strong> The guidelines are explicit: no physician accepts any gift or monetary consideration from '
+               'the dialysis center in the form of rebate fees or the like. Your professional fee is the one set in the current PSN '
+               'guidelines.[[an21_8]]</p>\n'
+               '<div class="tc-scene"><span class="tc-lab">In your clinic &middot; fictional</span><p>Mr. Lopez needs an abstract for a '
+               'disability card. His daughter brings a sample from another patient and asks you to &ldquo;just copy this and change the '
+               'name.&rdquo;</p><p>You write his from his own record instead: his diagnosis and its cause, the date he started dialysis, '
+               'his access, his current prescription and medicines, and his latest serologies. You date it, sign it, and send a duplicate '
+               'to the unit for its file.</p><p class="tc-scene-take"><b>What this shows.</b> An abstract certifies one patient&rsquo;s '
+               'facts on one date. A copied template certifies someone else&rsquo;s.</p></div>\n'
+               '{{key:Sign every claim as if you had to explain each date to an auditor, because one day you may.}}\n')],
  'debrief': ['<p><strong>Do you sign?</strong> Not this claim, and not the stack until it has been checked. Your signature states that '
              'each listed session happened on that date. A cancelled session and a duplicate are two false statements, however small, and '
              'the attending&rsquo;s name is what gives the claim its credibility.</p>\n'

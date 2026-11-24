@@ -5,7 +5,10 @@ MODULE = {'image_alt': "Overhead view of a care team's hands arranging cards aro
  'objectives': ['Defend longitudinal decisions across clinic, ward, dialysis unit and home.',
                 'Demonstrate escalation, handoff and follow-through to receipt.',
                 'Correct a claim and propose a measurable improvement.'],
- 'big': '{{plain:Real patients do not stay inside one module. The capstone joins the threads: an urgent start, a complication, a modality '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: All fourteen duties meet in one patient. The capstone asks you to show where '
+        'each one applies.</div>\n'
+        '{{plain:Real patients do not stay inside one module. The capstone joins the threads: an urgent start, a complication, a modality '
         'choice deferred by illness, and a paperwork error, all in one person over a few weeks.}}\n'
         '{{cards:Key numbers|Station and capstone pass::8/10 with all critical actions met (Academy design)}}\n'
         '\n'

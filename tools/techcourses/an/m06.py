@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A cardiac monitor, an ampule and syringe, and a nebulize
  'objectives': ['Prioritize immediately dangerous electrolyte abnormalities using electrocardiogram (ECG) and clinical context.',
                 'Run a monitored hyperkalemia protocol including hypoglycemia surveillance and rebound planning.',
                 'Plan safe hyponatremia correction with explicit limits and a rescue plan.'],
- 'big': '{{plain:Potassium kills through the heart, sodium through the brain, and acid through everything. Each emergency has a '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Coordinate with the nurses and the physician on duty during emergencies (b8). '
+        'They act at the chair; you are the person they call.</div>\n'
+        '{{plain:Potassium kills through the heart, sodium through the brain, and acid through everything. Each emergency has a '
         '&rsquo;protect, shift, remove&rsquo; logic. Each also has a delayed trap: potassium rebound, sodium overcorrection, and the acid '
         'that comes back when the cause is not treated.}}\n'
         '{{cards:Key numbers|Calcium gluconate 10%::30 mL IV over 5–10 min; repeat if ECG changes persist|Insulin-glucose::10 units '
@@ -34,8 +37,8 @@ MODULE = {'image_alt': 'A cardiac monitor, an ampule and syringe, and a nebulize
                'demyelination, especially with alcohol use, malnutrition, hypokalemia or liver disease. For acid-base problems, test '
                'whether compensation matches expectation (Winter&rsquo;s formula: expected pCO₂ = 1.5 x HCO₃⁻ + 8 ± 2), then use the '
                'albumin-corrected anion gap and delta ratio to uncover mixed disorders.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">On the floor, 7:15 a.m. &middot; fictional</span><p>Dr. Ilagan shows you two '
-               'electrocardiograms. Mrs. Cortez, potassium 6.4, has tall peaked T waves. Mr. Ocampo, potassium 7.1, has a wide QRS. '
+               '<div class="tc-scene"><span class="tc-lab">By message, 7:15 a.m. &middot; fictional</span><p>Dr. Ilagan sends you photos '
+               'of two electrocardiograms. Mrs. Cortez, potassium 6.4, has tall peaked T waves. Mr. Ocampo, potassium 7.1, has a wide QRS. '
                '&ldquo;The higher one first?&rdquo; he asks.</p><p>You explain why both need calcium now. As potassium rises, the resting '
                'membrane potential creeps toward threshold. First repolarization speeds up, which peaks the T waves. Then sodium channels '
                'inactivate and conduction slows, which widens the QRS. Calcium restores the gap; it does not lower potassium.</p><p '

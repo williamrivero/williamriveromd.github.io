@@ -5,7 +5,14 @@ MODULE = {'image_alt': 'A physician takes a phone call at a corridor window, loo
  'objectives': ['Verify registration, appointment, privileges and facility capability before accepting a dialysis panel.',
                 'Name a primary attending, a backup and an after-hours escalation route in writing.',
                 'Separate the longitudinal plan, the bedside response and the facility response in every handoff.'],
- 'big': '{{plain:An attending appointment is a promise that someone with the right authority will answer when a patient deteriorates at 2 '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: To be an attending nephrologist (AN) of a hemodialysis center (HDC), you must '
+        'be a physician licensed by the Professional Regulation Commission (PRC) trained in nephrology at a PSN-accredited or recognized '
+        'institution, practice in the area and be easily reached by the unit, and apply for affiliation with an updated Philippine Health '
+        'Insurance Corporation (PhilHealth) accreditation and a PSN or chapter endorsement (items a1&ndash;a3). You see each patient at '
+        'least once a month, preferably face to face, or by telemedicine if necessary (b6), and you are paid only the professional fee set '
+        'in PSN guidelines (b13).</div>\n'
+        '{{plain:An attending appointment is a promise that someone with the right authority will answer when a patient deteriorates at 2 '
         'a.m. The promise only holds if three separate authorities line up: the doctor&rsquo;s license, the facility&rsquo;s license and '
         'the payer&rsquo;s accreditation. Each covers something different, and a gap in any one leaves the night POD (physician on duty) '
         'holding a decision nobody owns.}}\n'

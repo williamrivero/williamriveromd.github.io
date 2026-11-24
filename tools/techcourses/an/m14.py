@@ -5,19 +5,22 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
  'objectives': ['Write a complete hemodialysis (HD) order within unit capability.',
                 'Investigate discordance between prescribed and delivered dialysis.',
                 'Interpret Kt/V, ultrafiltration rate and hemodiafiltration evidence correctly.'],
- 'big': '{{plain:Kt/V measures how many times the body&rsquo;s water was cleaned of urea in one session. It is a useful dose gauge, but it '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Provide the initial and maintenance dialysis prescription (b4), and review it '
+        'at least monthly, face to face or by telemedicine (b6).</div>\n'
+        '{{plain:Kt/V measures how many times the body&rsquo;s water was cleaned of urea in one session. It is a useful dose gauge, but it '
         'says nothing about fluid, middle molecules or how the patient feels. Adequacy means the person is doing well, not just that the '
         'number passed.}}\n'
         '{{cards:Key numbers|spKt/V (KDOQI 2015)::Target 1.4; minimum delivered 1.2 per thrice-weekly session|Ultrafiltration rate '
         'associated with harm::&gt;10–13 mL/kg/h (observational)|Comparison of high-dose hemodiafiltration (HDF) with high-flux HD trial '
         '(CONVINCE) high-dose HDF::All-cause mortality hazard ratio (HR) about 0.77 vs high-flux HD}}\n',
  'case': {'title': 'The Kt/V that fell',
-          'html': '<p>At the monthly quality meeting, your head nurse puts up Mrs. Panganiban&rsquo;s results. Her spKt/V has fallen from '
-                  '1.45 to 1.05 over two months. Her prescription has not changed. The nurse&rsquo;s notes show she cramps most sessions '
-                  'and has gone home 30 to 45 minutes early four times this month.</p>\n'
+          'html': '<p>On your monthly visit, the head nurse shows you the results of Mrs. Panganiban, one of your patients. Her spKt/V has '
+                  'fallen from 1.45 to 1.05 over two months. Her prescription has not changed. The nurse&rsquo;s notes show she cramps '
+                  'most sessions and has gone home 30 to 45 minutes early four times this month.</p>\n'
                   '<p>The night-shift notes say &ldquo;arterial pressure alarm, BFR reduced to 250&rdquo; several times a week. The '
-                  'physician on duty proposes a larger dialyzer. The administrator, who attends the meeting, asks why the unit&rsquo;s '
-                  'adequacy numbers are falling just before the PhilHealth quality review.</p>\n',
+                  'physician on duty proposes a larger dialyzer. The administrator stops by and asks why her numbers are pulling the '
+                  'unit&rsquo;s adequacy figures down just before the PhilHealth quality review.</p>\n',
           'questions': ['Did her dose fall, or did her delivery fall?',
                         'What are the four checks before anyone changes the prescription?',
                         'What will you tell the administrator?']},
@@ -30,12 +33,12 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
                'recirculation sends cleaned blood straight back into the arterial needle, or when high negative arterial pressure means '
                'the pump cannot draw the set flow. Fluid removed faster than the plasma can refill from tissues lowers blood volume. That '
                'causes cramps, hypotension and repeated organ stunning of the heart and brain.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">At the machine, the alarm that was silenced &middot; fictional</span><p>You '
-               'watch Mrs. Panganiban&rsquo;s session. Every few minutes the arterial pressure alarm sounds, and the nurse turns the blood '
-               'pump down from 350 to 250 mL/min. The machine screen still shows the prescribed four hours.</p><p>At 250 mL/min for three '
-               'and a half hours, she receives far less clearance than the order assumes. Nothing on the prescription sheet has '
-               'changed.</p><p class="tc-scene-take"><b>What this shows.</b> Kt/V falls when time or flow falls. Look at the machine, not '
-               'only at the order.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">On your monthly visit, the alarm that was silenced &middot; '
+               'fictional</span><p>You stay to watch Mrs. Panganiban&rsquo;s session. Every few minutes the arterial pressure alarm '
+               'sounds, and the nurse turns the blood pump down from 350 to 250 mL/min. The machine screen still shows the prescribed four '
+               'hours.</p><p>At 250 mL/min for three and a half hours, she receives far less clearance than the order assumes. Nothing on '
+               'the prescription sheet has changed.</p><p class="tc-scene-take"><b>What this shows.</b> Kt/V falls when time or flow '
+               'falls. Look at the machine, not only at the order.</p></div>\n'
                '\n'
                '\n'
                '{{fig:an14_a}}\n'),
@@ -60,11 +63,11 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
                'high, rather than pulling fluid harder.</p>\n'
                '\n'
                '{{fig:an14_b}}\n'
-               '<div class="tc-scene"><span class="tc-lab">At the quality meeting &middot; fictional</span><p>Nurse Cabral presents the '
-               'unit&rsquo;s adequacy: 82% of patients at or above a single-pool Kt/V of 1.2. You ask a second question: how many sessions '
-               'ended early because of cramps or low pressure? The answer is 14% of sessions last month.</p><p>You set two measures for '
-               'next quarter: Kt/V and minutes lost per session.</p><p class="tc-scene-take"><b>What this shows.</b> A dose that is not '
-               'delivered is not a dose.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">At the quality meeting &middot; fictional</span><p>Nurse Cabral shows you the '
+               'adequacy of your patients at the unit: 82% at or above a single-pool Kt/V of 1.2. You ask a second question: how many '
+               'sessions ended early because of cramps or low pressure? The answer is 14% of sessions last month.</p><p>You agree to '
+               'review two measures for your patients each month: Kt/V and minutes lost per session.</p><p class="tc-scene-take"><b>What '
+               'this shows.</b> A dose that is not delivered is not a dose.</p></div>\n'
                '{{call:<ul><li>Kt/V falling with repeated arterial pressure alarms (access dysfunction)</li><li>Interdialytic weight gain '
                'consistently &gt;4% of body weight</li><li>Repeated sessions shortened by cramps or hypotension</li><li>Pre-dialysis '
                'potassium &gt;6.0 mmol/L</li></ul>}}\n')],

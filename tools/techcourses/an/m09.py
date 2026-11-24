@@ -6,20 +6,23 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
                 'kidney failure risk.',
                 'Build layered kidney and cardiovascular protection matched to evidence.',
                 'Plan monitoring that is feasible and affordable for the patient.'],
- 'big': '{{plain:CKD progression is a slow leak driven by pressure: each surviving nephron works harder, and that overwork damages it. '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Discuss and carry out long-term medical planning with the patient (b9). The '
+        'pre-dialysis years are where that planning does the most good.</div>\n'
+        '{{plain:CKD progression is a slow leak driven by pressure: each surviving nephron works harder, and that overwork damages it. '
         'Modern therapy lowers the pressure inside the glomerulus and calms the inflammation around it, through several separate pathways '
         'that add together.}}\n'
         '{{cards:Key numbers|Kidney Failure Risk Equation (KFRE) nephrology referral threshold (KDIGO 2024)::5-year risk ≥3–5%|KFRE kidney '
         'replacement therapy (KRT) preparation threshold::2-year risk &gt;40%|DAPA-CKD / EMPA-KIDNEY::hazard ratio (HR) 0.61 / HR 0.72 for '
         'kidney progression|FLOW semaglutide::Major kidney events 18.7% vs 23.2%; HR 0.76}}\n',
  'case': {'title': 'The patient who is not on your floor yet',
-          'html': '<p>Every Thursday afternoon your dialysis center runs a pre-dialysis clinic in the consultation room beside the '
-                  'treatment floor. Mrs. Aquino, 62, has type 2 diabetes. Her estimated glomerular filtration rate (eGFR) has been about '
-                  '37 for a year, and her urine albumin-to-creatinine ratio is 850 mg/g on losartan 50 mg. Her potassium is 5.1 mmol/L and '
-                  'her blood pressure is 142/88 mm Hg.</p>\n'
-                  '<p>She watches the patients on the floor through the glass and asks, &ldquo;Doctor, how long before I am in one of '
-                  'those chairs?&rdquo; She tells you she can afford laboratory tests only every three months. Your clinic nurse whispers '
-                  'that the pharmacy across the street sells a generic sodium-glucose cotransporter 2 (SGLT2) inhibitor.</p>\n',
+          'html': '<p>Every Thursday afternoon you see pre-dialysis patients in your clinic, in a medical arts building near the hospital. '
+                  'Mrs. Aquino, 62, has type 2 diabetes. Her estimated glomerular filtration rate (eGFR) has been about 37 for a year, and '
+                  'her urine albumin-to-creatinine ratio is 850 mg/g on losartan 50 mg. Her potassium is 5.1 mmol/L and her blood pressure '
+                  'is 142/88 mm Hg.</p>\n'
+                  '<p>Her cousin is on dialysis, and she asks, &ldquo;Doctor, how long before I am in one of those chairs?&rdquo; She '
+                  'tells you she can afford laboratory tests only every three months. Your clinic nurse whispers that the pharmacy across '
+                  'the street sells a generic sodium-glucose cotransporter 2 (SGLT2) inhibitor.</p>\n',
           'questions': ['How would you answer her question with a number?',
                         'Which treatment would you add first, and why?',
                         'How do you fit a careful plan into one laboratory visit every three months?']},

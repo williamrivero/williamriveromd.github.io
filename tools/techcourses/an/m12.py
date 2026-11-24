@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
  'objectives': ['Build phenotype-driven work-ups for interstitial, tubular, vascular and inherited disease.',
                 'Recognize thrombotic microangiopathy and other time-critical referrals.',
                 'Coordinate genetic counseling and living-donor implications.'],
- 'big': '{{plain:Not all kidney disease starts in the glomerulus. The interstitium, the small vessels and the genes each leave their own '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Discuss and carry out long-term medical planning with the patient (b9), '
+        'including what the diagnosis means for the family.</div>\n'
+        '{{plain:Not all kidney disease starts in the glomerulus. The interstitium, the small vessels and the genes each leave their own '
         'fingerprint, often in the electrolytes, the blood smear or the family tree rather than in the urine protein.}}\n'
         '{{cards:Key numbers|Tolvaptan candidacy (KDIGO 2025)::Rapid progression risk, e.g. Mayo class 1C–1E|thrombotic thrombocytopenic '
         'purpura (TTP) diagnostic marker::A disintegrin and metalloproteinase with thrombospondin motifs 13 (ADAMTS13) activity '
@@ -14,10 +17,10 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
           'html': '<p>Mr. Velasco, 41, has dialyzed at your unit for eight months. He has hypertension, and his intake ultrasound showed '
                   'both kidneys enlarged and full of cysts. His mother started dialysis at 58; his grandfather &ldquo;died of the '
                   'kidneys.&rdquo;</p>\n'
-                  '<p>After his Saturday session he tells you his sister, 38, has offered him a kidney. &ldquo;Her ultrasound last year '
-                  'was normal, so she is fine, Doctor. Can you sign the referral today so we can start?&rdquo; His sister is waiting in '
-                  'the lobby. The transplant coordinator at the referral hospital has asked you to send &ldquo;everything you '
-                  'have.&rdquo;</p>\n',
+                  '<p>On your monthly visit, after his session, he tells you his sister, 38, has offered him a kidney. &ldquo;Her '
+                  'ultrasound last year was normal, so she is fine, Doctor. Can you sign the referral today so we can start?&rdquo; His '
+                  'sister is waiting in the lobby. The transplant coordinator at the referral hospital has asked you to send '
+                  '&ldquo;everything you have.&rdquo;</p>\n',
           'questions': ['What is his likely diagnosis, and how would you confirm it?',
                         'Is his sister&rsquo;s normal ultrasound enough?',
                         'What is your role, and what belongs to the transplant center?']},
@@ -32,12 +35,12 @@ MODULE = {'image_alt': 'A brother and sister sit together in a counseling room, 
                'deficiency (TTP), drugs and pregnancy. In ADPKD (autosomal dominant polycystic kidney disease), PKD1 or PKD2 mutations '
                'disturb ciliary calcium signaling; cyclic AMP driven by vasopressin promotes cyst growth. That is the rationale for '
                'tolvaptan, a vasopressin V2-receptor antagonist.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">On the floor, a blood film &middot; fictional</span><p>Mrs. Rivera, admitted '
-               'with a blood pressure of 230/130 mm Hg and acute kidney injury (AKI), is referred for urgent dialysis. Her platelets are 42,000/&micro;L. The '
-               'laboratory reports schistocytes.</p><p>You stop the plan for fresh frozen plasma that the ward has started. You ask for an '
-               'ADAMTS13 sample first and call hematology. If this is thrombotic thrombocytopenic purpura, that sample makes the '
-               'diagnosis, and plasma given first can blur it.</p><p class="tc-scene-take"><b>What this shows.</b> Low platelets with '
-               'broken red cells in AKI is a thrombotic microangiopathy until proven otherwise.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">By phone, a blood film &middot; fictional</span><p>Mrs. Rivera, admitted with a '
+               'blood pressure of 230/130 mm Hg and acute kidney injury (AKI), is referred for urgent dialysis. Her platelets are '
+               '42,000/&micro;L. The laboratory reports schistocytes.</p><p>You stop the plan for fresh frozen plasma that the ward has '
+               'started. You ask for an ADAMTS13 sample first and call hematology. If this is thrombotic thrombocytopenic purpura, that '
+               'sample makes the diagnosis, and plasma given first can blur it.</p><p class="tc-scene-take"><b>What this shows.</b> Low '
+               'platelets with broken red cells in AKI is a thrombotic microangiopathy until proven otherwise.</p></div>\n'
                '\n'
                '\n'
                '{{fig:an12_a}}\n'),

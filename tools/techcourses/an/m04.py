@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
  'objectives': ['Use teach-back to confirm understanding and document an informed choice.',
                 'Reconcile medicines across changes in kidney function and modality.',
                 'Record hold and restart criteria with a named reviewer.'],
- 'big': '{{plain:A drug dose is a contract written for one particular kidney. When kidney function changes (AKI, recovery, dialysis '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Explain every option for end-stage kidney disease, and document the informed '
+        'consent, preferably witnessed by two people (b1). Keep the current medicines ready for the clinical abstract (b5).</div>\n'
+        '{{plain:A drug dose is a contract written for one particular kidney. When kidney function changes (AKI, recovery, dialysis '
         'start), every contract must be reread. Medication errors cluster at exactly these transitions.}}\n'
         '{{cards:Key numbers|Acceptable creatinine rise after starting renin-angiotensin system (RAS) inhibitor or sodium-glucose '
         'cotransporter 2 (SGLT2) inhibitor::Up to about 30% from baseline without stopping|Metformin (KDIGO 2024)::Reduce dose at '
@@ -34,12 +37,12 @@ MODULE = {'image_alt': 'Top-down view of an older patient and a pharmacist going
                'receptor blockers) and SGLT2 (sodium-glucose cotransporter 2) inhibitors reduce intraglomerular pressure and cause an '
                'expected early creatinine rise. nonsteroidal anti-inflammatory drugs (NSAIDs) remove prostaglandin-mediated afferent '
                'dilation. Hence the &rsquo;sick day&rsquo; rule for volume-depleting illness.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">On the treatment floor &middot; fictional</span><p>Mr. Tolentino, on '
-               'hemodialysis, was given vancomycin in hospital and told to &ldquo;have a dose after dialysis.&rdquo; On Wednesday the '
-               'nurse asks whether to give it. You ask what membrane he dialyzes on. It is high-flux.</p><p>Vancomycin is small, '
-               'water-soluble, and mostly unbound, so a high-flux session removes a large share of it. You ask for a level and dose to it, '
-               'instead of guessing.</p><p class="tc-scene-take"><b>What this shows.</b> Drug exposure is dose divided by clearance. '
-               'Dialysis adds clearance that depends on the drug and the membrane.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">By phone &middot; fictional</span><p>Mr. Tolentino, on hemodialysis, was given '
+               'vancomycin in hospital and told to &ldquo;have a dose after dialysis.&rdquo; On Wednesday the nurse calls to ask whether '
+               'to give it. You ask what membrane he dialyzes on. It is high-flux.</p><p>Vancomycin is small, water-soluble, and mostly '
+               'unbound, so a high-flux session removes a large share of it. You ask for a level and dose to it, instead of '
+               'guessing.</p><p class="tc-scene-take"><b>What this shows.</b> Drug exposure is dose divided by clearance. Dialysis adds '
+               'clearance that depends on the drug and the membrane.</p></div>\n'
                '\n'
                '\n'
                '{{fig:an04_a}}\n'),

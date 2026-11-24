@@ -5,15 +5,18 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
  'objectives': ['Design goal-directed peritoneal dialysis (PD) with the patient around residual function and lifestyle.',
                 'Separate peritoneal transport assessment from clinical adequacy.',
                 'Teach home red flags and confirm 24-hour access to the PD team.'],
- 'big': '{{plain:PD uses the patient&rsquo;s own peritoneum as the dialyzer and the home as the unit. It works best when the prescription '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: The PSN hemodialysis guidelines do not cover peritoneal dialysis, but the same '
+        'duties carry over: a prescription that is yours (b4) and long-term planning with the patient (b9).</div>\n'
+        '{{plain:PD uses the patient&rsquo;s own peritoneum as the dialyzer and the home as the unit. It works best when the prescription '
         'fits the person&rsquo;s day and the remaining kidney function carries part of the load.}}\n'
         '{{cards:Key numbers|Transport test::4-hour dialysate-to-plasma creatinine (PET)|Adequacy approach (ISPD 2020)::Goal-directed; '
         'Kt/V is one input, not the target}}\n',
  'case': {'title': 'The midday exchange that never happens',
-          'html': '<p>Your dialysis center runs a small peritoneal dialysis program, and on Saturdays you review the home patients after '
-                  'the hemodialysis rounds. Ms. Herrera, 44, is a bank teller on continuous ambulatory peritoneal dialysis, four exchanges '
-                  'a day. Over three months her urine output has fallen from 800 to 250 mL a day. She is tired, her ankles are swollen, '
-                  'and she has gained 2 kilograms.</p>\n'
+          'html': '<p>You follow a few patients on peritoneal dialysis (PD) through a hospital program, and you see them in your clinic '
+                  'every month. Ms. Herrera, 44, is a bank teller on continuous ambulatory peritoneal dialysis, four exchanges a day. Over '
+                  'three months her urine output has fallen from 800 to 250 mL a day. She is tired, her ankles are swollen, and she has '
+                  'gained 2 kilograms.</p>\n'
                   '<p>The PD nurse shows you her exchange log. On workdays the midday exchange is blank. &ldquo;She says she cannot do it '
                   'in the bank restroom,&rdquo; the nurse explains. Ms. Herrera says quietly, &ldquo;Maybe I should just move to the '
                   'machine here, Doctor. I am failing at this.&rdquo;</p>\n',

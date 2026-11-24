@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
  'objectives': ['Create a patient-specific access life-plan.',
                 'Recognize and escalate access emergencies and catheter-related bloodstream infection.',
                 'Lead catheter-reduction and infection-surveillance practice.'],
- 'big': '{{plain:The vascular access is the patient&rsquo;s lifeline and also the most common route for infection. Catheters are bridges, '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Coordinate with a vascular surgeon or a trained general surgeon on access '
+        'provision and care (b3), and coordinate in emergencies (b8).</div>\n'
+        '{{plain:The vascular access is the patient&rsquo;s lifeline and also the most common route for infection. Catheters are bridges, '
         'not homes, and every catheter-day carries a small, cumulative risk.}}\n'
         '{{cards:Key numbers|LOCK IT-100 catheter-related bloodstream infection (CRBSI) rate::0.13 vs 0.46 per 1,000 catheter-days; hazard '
         'ratio (HR) 0.29|Infection surveillance metric::Bloodstream infections per 1,000 catheter-days (or per 100 patient-months)}}\n',
@@ -54,11 +57,11 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
                'prevalence and infections per 1,000 catheter-days monthly.</p>\n'
                '\n'
                '{{fig:an16_a}}\n'
-               '<div class="tc-scene"><span class="tc-lab">At the monthly infection review &middot; fictional</span><p>Your unit has 11 '
-               'patients on catheters. Five have no date for fistula surgery. Two have had their surgery postponed twice.</p><p>You write '
-               'an access life-plan for each: current access, next access, the arm to protect, the surgeon, and the date. You ask the head '
-               'nurse to bring the list to every monthly review until the column of dates is full.</p><p class="tc-scene-take"><b>What '
-               'this shows.</b> A catheter without a removal date tends to become permanent.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">At the monthly infection review &middot; fictional</span><p>Eleven of your '
+               'patients at the unit are on catheters. Five have no date for fistula surgery. Two have had their surgery postponed '
+               'twice.</p><p>You write an access life-plan for each: current access, next access, the arm to protect, the surgeon, and the '
+               'date. You ask the head nurse to bring the list to every monthly visit until the column of dates is full.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> A catheter without a removal date tends to become permanent.</p></div>\n'
                '{{call:<ul><li>Rigors or hypotension during HD with a catheter</li><li>Pulsatile bleeding or a ruptured '
                'aneurysm</li><li>Cold, painful hand after access creation (steal)</li><li>Swelling of the whole arm (central vein '
                'stenosis)</li></ul>}}\n')],
@@ -70,10 +73,12 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
              'reasons for removal. Bacteria living in the biofilm on its surface are protected from antibiotics, and a repeat infection '
              'with the same organism points straight at the catheter. Arrange a temporary access for further dialysis, and ask the access '
              'surgeon for a firm date for his fistula. Seven months on a catheter was a plan that drifted.</p>\n'
-             '<p><strong>The third infection.</strong> Count it as a rate, not a number. Calculate infections per 1,000 catheter-days and '
-             'compare them with last quarter. Then audit catheter care on every shift: hand hygiene, chlorhexidine skin preparation, and '
-             'how the hubs are handled. Record this event in surveillance. Then make sure every catheter patient on your panel has an '
-             'access life-plan with a named surgeon and a date.</p>\n'],
+             '<p><strong>The third infection.</strong> The unit&rsquo;s surveillance belongs to the clinical head and the '
+             'infection-control nurse, and the three patients may have three different attending nephrologists. Your part is to report '
+             'this event, ask for a rate rather than a count (infections per 1,000 catheter-days, compared with last quarter), and support '
+             'an audit of catheter care on every shift: hand hygiene, chlorhexidine skin preparation, and how the hubs are handled. Then '
+             'look at your own panel: every patient of yours on a catheter needs an access life-plan with a named surgeon and a '
+             'date.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Examines or describes access findings', False),

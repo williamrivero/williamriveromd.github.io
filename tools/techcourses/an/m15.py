@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
  'objectives': ['Support immediate bedside action for hypotension, hemolysis, air embolism, reactions and arrhythmia.',
                 'Distinguish individual from shared hazards and trigger a unit-level response.',
                 'Document the event, the disposition and the learning.'],
- 'big': '{{plain:Most intradialytic problems belong to one patient. A cluster belongs to the unit. When two or more patients deteriorate '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Coordinate with the nurses and the physician on duty during emergencies (b8). '
+        'Unit-wide hazards are led by the clinical head; your patients are yours.</div>\n'
+        '{{plain:Most intradialytic problems belong to one patient. A cluster belongs to the unit. When two or more patients deteriorate '
         'at once, think water, dialysate or a product batch first, because every other patient on the floor may be next.}}\n'
         '{{cards:Key numbers|Dialysate cooling::About 0.5 °C below core temperature (hypotension-prone patients)|Hemolysis rule::Do not '
         'return circuit blood}}\n',
@@ -13,8 +16,9 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
           'html': '<p>It is 10:40 on a Tuesday morning. Dr. Alonzo, the physician on duty, calls you from the floor. &ldquo;Doctor, '
                   'station 3 has chest pain and back pain, and the blood in his venous line looks dark, almost like wine. Then station 7 '
                   'said the same thing a minute later. Station 7&rsquo;s blood pressure is 80/50.&rdquo;</p>\n'
-                  '<p>Both started at 10 a.m. from the same water loop. Twelve other patients are running. The water technician changed '
-                  'the carbon tanks yesterday afternoon. Dr. Alonzo asks, &ldquo;Should I return their blood and stop?&rdquo;</p>\n',
+                  '<p>Station 3 is your patient; station 7 belongs to another attending nephrologist. Both started at 10 a.m. from the '
+                  'same water loop. Twelve other patients are running. The water technician changed the carbon tanks yesterday afternoon. '
+                  'Dr. Alonzo asks, &ldquo;Should I return their blood and stop?&rdquo;</p>\n',
           'questions': ['What is this until proven otherwise?',
                         'What do you tell Dr. Alonzo to do with the two patients, and with the other twelve?',
                         'Who must be told, and what must be kept?']},
@@ -27,7 +31,7 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
                'potassium can cause cardiac arrest, and returning the circuit blood adds to the load. Air entering the venous line travels '
                'to the right heart and pulmonary circulation, or across a patent foramen ovale to the brain. Dialyzer reactions range from '
                'early anaphylactoid responses to sterilant or membrane components to milder complement-mediated reactions.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">On the floor, warm dialysate &middot; fictional</span><p>Mr. Santos becomes '
+               '<div class="tc-scene"><span class="tc-lab">By telemedicine, warm dialysate &middot; fictional</span><p>Mr. Santos becomes '
                'hypotensive in the third hour of most sessions. His target weight was lowered last month. The dialysate is set at 37 '
                '&deg;C.</p><p>Fluid removal is outpacing refill from his tissues, and warm dialysate dilates his skin vessels when he '
                'needs them constricted. You ask for a target-weight review, a cap on his ultrafiltration rate, and dialysate cooled about '
@@ -57,11 +61,11 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
                'protocol.</p>\n'
                '\n'
                '{{fig:an15_a}}\n'
-               '<div class="tc-scene"><span class="tc-lab">The drill &middot; fictional</span><p>On a quiet Saturday afternoon you run an '
-               'air embolism drill with the floor team. The nurse clamps the venous line in 20 seconds. Turning the &ldquo;patient&rdquo; '
-               'onto the left side with the head down takes 90 seconds, because nobody knew how the chair reclined.</p><p>You repeat the '
-               'drill until it takes 30 seconds, and the chair instructions go on the wall.</p><p class="tc-scene-take"><b>What this '
-               'shows.</b> Rare emergencies are handled the way they were practiced.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">The drill &middot; fictional</span><p>On your monthly visit you sit in on the '
+               'air embolism drill the clinical head runs with the floor team. The nurse clamps the venous line in 20 seconds. Turning the '
+               '&ldquo;patient&rdquo; onto the left side with the head down takes 90 seconds, because nobody knew how the chair '
+               'reclined.</p><p>The team repeats the drill until it takes 30 seconds, and the chair instructions go on the wall.</p><p '
+               'class="tc-scene-take"><b>What this shows.</b> Rare emergencies are handled the way they were practiced.</p></div>\n'
                '{{call:<ul><li>Two or more patients with similar symptoms within minutes</li><li>Dark or cherry-red blood in the venous '
                'line</li><li>Sudden dyspnea, cough or neurologic signs after a line disconnection</li><li>Chest pain with '
                'electrocardiogram (ECG) changes during hemodialysis (HD)</li></ul>}}\n')],
@@ -71,12 +75,16 @@ MODULE = {'image_alt': 'A physician on duty walks between dialysis stations in a
              '<p><strong>The two patients.</strong> Stop both pumps, clamp the lines, and do not return the blood. It is full of potassium '
              'released from broken red cells. Put both on monitors, check potassium urgently, record an electrocardiogram, treat '
              'hyperkalemia, and transfer the hypotensive patient for monitored care.</p>\n'
-             '<p><strong>The other twelve.</strong> Hold every treatment on the same water and dialysate supply now, before anyone else '
-             'develops symptoms. Assess each patient, and check potassium in any with symptoms.</p>\n'
-             '<p><strong>Who is told, and what is kept.</strong> Call the clinical head, the biomedical and water technicians, and the '
-             'head nurse. Keep dialysate and water samples, the lines and dialyzers, the chlorine test records, and the machine logs. Do '
-             'not restart until the water has been tested and released. Notify the DOH as your unit protocol requires. Afterwards, write '
-             'the timeline and each patient&rsquo;s outcome. This is the event the morning chlorine test exists to prevent.</p>\n'],
+             '<p><strong>The other twelve.</strong> Most of them are not your patients. Tell Dr. Alonzo to follow the unit protocol now: '
+             'every treatment on the same water and dialysate supply is held before anyone else develops symptoms, and the clinical head '
+             'is called to lead. Holding them is a unit safety decision, not a prescription for another doctor&rsquo;s patients. Each '
+             'patient is assessed, potassium is checked in any with symptoms, and each attending nephrologist is told about his own '
+             'patients.</p>\n'
+             '<p><strong>Who is told, and what is kept.</strong> Make sure the clinical head, the biomedical and water technicians, and '
+             'the head nurse have been called, and offer to come in. The clinical head leads from here. Keep dialysate and water samples, '
+             'the lines and dialyzers, the chlorine test records, and the machine logs. Do not restart until the water has been tested and '
+             'released. Notify the DOH as your unit protocol requires. Afterwards, write the timeline and each patient&rsquo;s outcome. '
+             'This is the event the morning chlorine test exists to prevent.</p>\n'],
  'skills': {'title': 'Skills checklist',
             'intro': 'Complete with a preceptor, in simulation or at your own unit. Sign-off is local.',
             'items': [('Uses a closed-loop call', False),

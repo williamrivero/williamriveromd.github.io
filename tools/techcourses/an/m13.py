@@ -7,7 +7,11 @@ MODULE = {'image_alt': 'A couple walks hand in hand along a garden path toward a
                 'Time initiation by symptoms, refractory complications and trajectory rather than estimated glomerular filtration rate '
                 '(eGFR) alone.',
                 'Plan access and referrals early, and return to shared planning after an urgent start.'],
- 'big': '{{plain:Starting dialysis is less a moment than a slope. The best starts are planned months ahead, so that when symptoms arrive '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Explain every option and document consent, preferably witnessed by two people '
+        '(b1); assess completely before starting (b2); write the initial and maintenance prescription (b4); and plan long-term care '
+        '(b9).</div>\n'
+        '{{plain:Starting dialysis is less a moment than a slope. The best starts are planned months ahead, so that when symptoms arrive '
         'the patient already has an access, a chosen modality and a transplant referral in motion.}}\n'
         '{{cards:Key numbers|Initiating Dialysis Early and Late trial (IDEAL) start eGFR arms::10–14 vs 5–7 mL/min/1.73 m²; no survival '
         'difference|Preparation trigger (KDIGO 2024)::2-year Kidney Failure Risk Equation (KFRE) &gt;40%|Philippine Health Insurance '

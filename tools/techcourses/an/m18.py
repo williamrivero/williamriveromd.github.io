@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
  'objectives': ['Evaluate cloudy effluent the same day and start empiric therapy promptly.',
                 'Follow cultures and response, and decide on catheter removal.',
                 'Distinguish leaks, migration, constipation and drainage problems from infection.'],
- 'big': '{{plain:Cloudy bags mean peritonitis until proven otherwise. Every hour of delay lets infection damage the membrane the patient '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: The PSN hemodialysis guidelines do not cover peritoneal dialysis, but the same '
+        'principle applies: you stay in active management with the team that sees the patient first (b7, b8).</div>\n'
+        '{{plain:Cloudy bags mean peritonitis until proven otherwise. Every hour of delay lets infection damage the membrane the patient '
         'depends on, so the system has to make same-day assessment easy.}}\n'
         '{{cards:Key numbers|Effluent diagnostic threshold::white blood cell count (WBC) &gt;100/µL with &gt;50% neutrophils after ≥2 h '
         'dwell|Unit peritonitis rate target::≤0.40 episodes per patient-year at risk|Peritonitis-free patients::&gt;80% per '

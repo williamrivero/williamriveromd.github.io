@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A transplanted kidney in the lower right abdomen, connec
  'objectives': ['Refer suitable patients early with a complete, actionable dataset.',
                 'Explain living- and deceased-donor pathways and independent donor assessment.',
                 'Triage graft dysfunction and coordinate immunosuppression changes with the transplant team.'],
- 'big': '{{plain:For most suitable patients, a kidney transplant is the treatment with the best survival and quality of life. The '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Long-term medical planning with the patient (b9) includes a timely transplant '
+        'referral.</div>\n'
+        '{{plain:For most suitable patients, a kidney transplant is the treatment with the best survival and quality of life. The '
         'commonest reason it does not happen is a late referral, not a medical contraindication.}}\n'
         '{{cards:Key numbers|Referral timing (KDIGO 2020)::At least 6–12 months before expected dialysis; generally estimated glomerular '
         'filtration rate (eGFR) &lt;30 and declining|Transplant benefit revision::Philippine Health Insurance Corporation (PhilHealth) '

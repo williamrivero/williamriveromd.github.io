@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
  'objectives': ['Build a problem representation from creatinine trajectory, urine output and examination.',
                 'Choose targeted urine, serologic and imaging studies by syndrome.',
                 'Write a consult note that states urgency, the working diagnosis, alternatives and the owner of pending results.'],
- 'big': '{{plain:Creatinine is a lagging, indirect signal, like reading yesterday&rsquo;s bank balance to judge today&rsquo;s spending. '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Perform a complete clinical assessment before hemodialysis is started '
+        '(b2).</div>\n'
+        '{{plain:Creatinine is a lagging, indirect signal, like reading yesterday&rsquo;s bank balance to judge today&rsquo;s spending. '
         'The consultant&rsquo;s first job is to rebuild the timeline: what was kidney function before this illness, how fast is it moving, '
         'and what does the urine say about where the injury lives?}}\n'
         '{{cards:Key numbers|AKI (KDIGO 2012)::Creatinine rise ≥0.3 mg/dL in 48 h, or ≥1.5x baseline within 7 days, or urine output '
@@ -13,13 +16,13 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
         '(FENa) suggesting avid sodium retention::&lt;1% (off diuretics); fractional excretion of urea &lt;35% if on '
         'diuretics|Nephrotic-range proteinuria::&gt;3.5 g/day (UPCR &gt;3,000 mg/g)}}\n',
  'case': {'title': 'The referral that arrived by text',
-          'html': '<p>On Tuesday afternoon the head nurse at your unit, Nurse Cabral, forwards a text from a general practitioner: '
-                  '&ldquo;Pls accept for HD, creatinine 2.5, edematous.&rdquo; The patient, Mr. Reyes, 59, is already in the waiting area '
-                  'with his wife.</p>\n'
+          'html': '<p>On Tuesday afternoon you are in your clinic when Nurse Cabral, head nurse at the dialysis center where several of '
+                  'your patients dialyze, calls. A general practitioner has sent Mr. Reyes, 59, to the unit with a text: &ldquo;Pls accept '
+                  'for HD, creatinine 2.5, edematous.&rdquo; You ask her to send him and his wife to your clinic instead.</p>\n'
                   '<p>His creatinine was 1.1 mg/dL ten days ago. He has new ankle swelling, cola-colored urine, and back pain for which he '
                   'has been taking ibuprofen. His blood pressure is 158/96 mm Hg. A urine sample taken in the clinic shows red cells, and '
-                  'when you look under the microscope yourself you find dysmorphic red cells and one red-cell cast. Nurse Cabral asks, '
-                  '&ldquo;Doctor, do we cannulate him today? We have a free chair on the 4 p.m. shift.&rdquo;</p>\n',
+                  'when you look under the microscope yourself you find dysmorphic red cells and one red-cell cast. While he is with you, '
+                  'Nurse Cabral texts: &ldquo;Doctor, should we keep the 4 p.m. chair for him?&rdquo;</p>\n',
           'questions': ['Does he need dialysis today?',
                         'What does the urine tell you that the creatinine does not?',
                         'What will you write in your consult note, and who owns each pending result?']},
@@ -35,13 +38,12 @@ MODULE = {'image_alt': 'A microscope with a urine sediment slide, a specimen cup
                'effective perfusion, although contrast, early obstruction and some glomerular diseases can do the same. Cystatin C is '
                'produced by all nucleated cells and is less dependent on muscle mass. It is the better marker in sarcopenia, amputation or '
                'very high muscle mass.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">In the clinic at the dialysis center &middot; fictional</span><p>Two referrals '
-               'arrive on the same afternoon, both &ldquo;creatinine 4.0.&rdquo; Mrs. Lim, 70, has small, bright kidneys on ultrasound and '
-               'a creatinine of 3.6 a year ago. Mr. Javier, 31, has normal-sized kidneys, a creatinine of 1.0 two months ago, and red-cell '
-               'casts in his urine.</p><p>The same number describes two different diseases. For Mrs. Lim it is the next step on a long '
-               'slope; for Mr. Javier it is an emergency that a biopsy may still reverse.</p><p class="tc-scene-take"><b>What this '
-               'shows.</b> Creatinine tells you how much filtration is lost. The timeline, the kidney size, and the sediment tell you '
-               'why.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">In your clinic &middot; fictional</span><p>Two referrals arrive on the same '
+               'afternoon, both &ldquo;creatinine 4.0.&rdquo; Mrs. Lim, 70, has small, bright kidneys on ultrasound and a creatinine of '
+               '3.6 a year ago. Mr. Javier, 31, has normal-sized kidneys, a creatinine of 1.0 two months ago, and red-cell casts in his '
+               'urine.</p><p>The same number describes two different diseases. For Mrs. Lim it is the next step on a long slope; for Mr. '
+               'Javier it is an emergency that a biopsy may still reverse.</p><p class="tc-scene-take"><b>What this shows.</b> Creatinine '
+               'tells you how much filtration is lost. The timeline, the kidney size, and the sediment tell you why.</p></div>\n'
                '\n'
                '\n'
                '{{fig:an02_a}}\n'),

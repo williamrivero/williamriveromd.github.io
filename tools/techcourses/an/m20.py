@@ -5,7 +5,10 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
  'objectives': ['Elicit goals, assess decision-specific capacity and share prognosis honestly.',
                 'Build an active conservative care plan or a time-limited dialysis trial.',
                 'Document advance care planning and coordinate palliative support.'],
- 'big': '{{plain:For some older or very frail patients, dialysis adds treatment burden without adding much life. Conservative kidney '
+ 'big': '<div class="tc-keyp"><span class="tc-lab">Your duty &middot; Section 1.2, 2024 hemodialysis guidelines</span>Under the '
+        'Philippine Society of Nephrology (PSN) guidelines: Explain every option, including not starting dialysis, and document the '
+        'decision (b1); plan long-term care with the patient (b9).</div>\n'
+        '{{plain:For some older or very frail patients, dialysis adds treatment burden without adding much life. Conservative kidney '
         'management is not &rsquo;doing nothing.&rsquo; It is a different, active treatment aimed at symptoms, function and time at '
         'home.}}\n'
         '{{cards:Key numbers|Time-limited trial elements::Agreed outcomes, a review date (often 1–3 months) and a named '
@@ -29,12 +32,12 @@ MODULE = {'image_alt': 'An elderly man sits on his porch while his granddaughter
                'dialysis: diuretics, sodium bicarbonate, erythropoiesis-stimulating agent (ESA), antipruritics, dietary protein adjustment '
                'and antiemetics. In frail patients, dialysis initiation itself is often followed by functional decline: hospital stays, '
                'catheter placement and the physical cost of thrice-weekly travel.</p>\n'
-               '<div class="tc-scene"><span class="tc-lab">At home, a conservative care visit &middot; fictional</span><p>Lola Pacing, 87, '
-               'chose conservative management. Her daughter calls because she is itchy all night and has stopped eating '
-               'breakfast.</p><p>You treat each symptom with a specific step: skin care and an adjusted antipruritic for the itch, an '
-               'antiemetic before breakfast, and a review of her protein intake with the dietitian. Two weeks later she is sleeping '
-               'again.</p><p class="tc-scene-take"><b>What this shows.</b> Conservative kidney management is active treatment of symptoms, '
-               'not the absence of treatment.</p></div>\n'
+               '<div class="tc-scene"><span class="tc-lab">By telemedicine, a conservative care review &middot; fictional</span><p>Lola '
+               'Pacing, 87, chose conservative management. Her daughter sets up a video call because she is itchy all night and has '
+               'stopped eating breakfast.</p><p>You treat each symptom with a specific step: skin care and an adjusted antipruritic for '
+               'the itch, an antiemetic before breakfast, and a review of her protein intake with the dietitian. Two weeks later she is '
+               'sleeping again.</p><p class="tc-scene-take"><b>What this shows.</b> Conservative kidney management is active treatment of '
+               'symptoms, not the absence of treatment.</p></div>\n'
                '\n'
                '\n'
                '{{fig:an20_b}}\n'),
