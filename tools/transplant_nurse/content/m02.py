@@ -88,7 +88,9 @@ MODULE = {
     "case": {
         "title": "The transfusion nobody mentioned",
         "html": """
-<p>Aling Merly, 58, has been on the deceased-donor waiting list for two years. Her cPRA was 35 percent at listing. At her quarterly call she mentions, almost in passing, that she was admitted to a provincial hospital last month for heavy uterine bleeding and "received two bags of blood." The program's last serum sample on file is from four months ago. She also says she missed her mammogram because her son's motorcycle broke down.</p>
+<p><strong>Thursday, 2:15 p.m., quarterly readiness call.</strong> Aling Merly, 58, has been on the deceased-donor waiting list for two years. Her cPRA was 35 percent at listing. You go down the call script with her: any admission, transfusion, pregnancy or surgery since we last spoke?</p>
+<p>"Nothing much," she says. Then, almost in passing: "Ah, last month I was confined in the provincial hospital for heavy bleeding, the monthly kind. They gave me two bags of blood. I'm fine now."</p>
+<p>You check her file. The program's last serum sample is from four months ago. Her tracker also shows the mammogram she was due for in March is still open. She laughs that she missed it because her son's motorcycle broke down.</p>
 """,
         "acte": {
             "Assess": "Date and place of admission, number of units, current symptoms, ongoing bleeding, hemoglobin if known, and whether the bleeding cause has been evaluated (also a cancer-screening issue).",
@@ -97,6 +99,11 @@ MODULE = {
             "Escalate": "The new uterine bleeding and the missed mammogram are both cancer-screening concerns; route them to the nephrologist for work-up and possible temporary hold. Offer social work help with transport.",
         },
         "task": "Write the contact note: event, dates, notifications made, owner of the repeat sample, owner of the gynecologic and breast follow-up, and who will tell her about any change in list status.",
+        "outcome": """
+<p>The nurse in the story asked three follow-up questions before ending the call: the date, the hospital and the number of units. Then she emailed the coordinator and the histocompatibility laboratory that afternoon, flagged that the stored serum predated the transfusion, and requested the provincial records. The coordinator took ownership of the repeat sample and booked it for the following week.</p>
+<p>She also recognized that new heavy uterine bleeding in a 58-year-old is not "just bleeding". She routed it, with the overdue mammogram, to the nephrologist, who arranged a gynecologic evaluation and placed Aling Merly on temporary hold while it was done. Social work arranged a ride for the visit.</p>
+<p>Six weeks later the evaluation was reassuring, the new sample showed one new antibody, and she was reactivated with an updated antibody list. If an offer had come in the meantime, the laboratory would have been working from the old list.</p>
+""",
     },
     "second_round": ("One laboratory result in her file has a different middle name, and her cervical screening is also overdue.", "A tracker with the suspect result flagged as invalid until verified, the verification route, and separate owners for each follow-up item."),
     "evidence_out": "Readiness tracker with dated results, dispositions and named owners.",

@@ -1,7 +1,7 @@
 # Transplant Nurse subtrack · implementation notes
 
 Renal Care Academy → Nephrology Nursing → Transplant Nurse. Built 24 November 2026 from the handoff blueprint in
-`~/Documents/KT Nurse` (CLAUDE.md, SYLLABUS.md, ASSESSMENT.md, PRACTICE-AND-JOBS.md, SOURCES.md, twelve module
+`/Volumes/Storage/Renal Care Academy/KT Nurse` (CLAUDE.md, SYLLABUS.md, ASSESSMENT.md, PRACTICE-AND-JOBS.md, SOURCES.md, twelve module
 manuscripts and quiz-bank.json).
 
 ## Routes

@@ -242,3 +242,29 @@ MANUAL_REFS = {
 HUB_REFS = ["txcand2020", "lentine2017", "txrecip2009", "kotton2025", "kotton2024", "ra9173", "ra7170", "doh2010_18",
             "doh2010_19", "phic2024_35", "phic2025_11", "phic2025_12", "phic2026_26", "ra10173", "nkti_pia", "mmc2025",
             "abtc", "optn", "mn_bon", "mayo_pre", "nmc", "cno", "uhn", "swslhd"]
+
+# Hub: a fictional week on the transplant service (scenarios drawn from the modules)
+WEEK_HTML = """
+<p>Before the modules, here is what the job looks like. The week below is fictional, and so are all the people in it, but every moment comes from situations transplant nurses meet regularly. Each day points to the module that prepares you for it. Nurse Carla, Joy the recipient coordinator, and Dr. Santos the transplant nephrologist appear throughout the subtrack.</p>
+<div class="tc-sits">
+<div class="tc-sit"><h3>Monday &middot; kidney clinic</h3><dl>
+<dt>What happens</dt><dd>A truck driver with diabetic kidney disease has an estimated glomerular filtration rate (eGFR) that has fallen to 19. Nobody has mentioned transplant to him. He works on another island and can only take calls after 7 p.m.</dd>
+<dt class="tc-sit-do">What you do</dt><dd>Raise transplant with him and his wife, send a complete referral that includes his evening-only contact window, and confirm that Joy has received it. Module 1.</dd></dl></div>
+<div class="tc-sit"><h3>Tuesday &middot; by phone</h3><dl>
+<dt>What happens</dt><dd>On a routine call, a woman on the waiting list mentions that she was given two bags of blood at a provincial hospital last month.</dd>
+<dt class="tc-sit-do">What you do</dt><dd>Recognize a sensitizing event, notify the coordinator and the laboratory so a fresh sample is drawn, and name an owner for each follow-up. Module 2.</dd></dl></div>
+<div class="tc-sit"><h3>Wednesday &middot; donor intake</h3><dl>
+<dt>What happens</dt><dd>Alone with you, a potential living donor goes quiet when you ask what would happen if she said no. Then she says she cannot refuse her sister.</dd>
+<dt class="tc-sit-do">What you do</dt><dd>Tell her she may stop at any point, keep her words in the restricted donor record, and route them to the donor team the same day. Module 3.</dd></dl></div>
+<div class="tc-sit"><h3>Thursday, 2 a.m. &middot; transplant ward</h3><dl>
+<dt>What happens</dt><dd>Six hours after surgery, a recipient's urine output falls, his pulse climbs, and the drain fills with dark red blood.</dd>
+<dt class="tc-sit-do">What you do</dt><dd>Read the three trends together, hold off on extra fluid, activate the emergency response, and stay at the bedside. Module 5.</dd></dl></div>
+<div class="tc-sit"><h3>Friday &middot; transplant clinic</h3><dl>
+<dt>What happens</dt><dd>A tacrolimus level is far above the patient's usual. She took her morning dose before the blood draw, and she has a new prescription for clarithromycin from a provincial clinic.</dd>
+<dt class="tc-sit-do">What you do</dt><dd>Flag the level as not a trough, report the interaction before she starts the antibiotic, and teach the trough routine with teach-back. Module 6.</dd></dl></div>
+<div class="tc-sit"><h3>Saturday, 4 p.m. &middot; hotline</h3><dl>
+<dt>What happens</dt><dd>Five months after transplant, a recipient who stopped her antiviral prophylaxis three weeks ago calls with chills and weakness. She is passing little urine and vomited her morning medicines.</dd>
+<dt class="tc-sit-do">What you do</dt><dd>Get her location and callback number first, route her to emergency care now, and notify the on-call transplant physician. Module 8.</dd></dl></div>
+</div>
+<p>None of these moments asks the nurse to make the medical decision. Every one of them depends on the nurse noticing, asking the right question, and handing over clearly to the person who decides. That is what this subtrack trains.</p>
+"""

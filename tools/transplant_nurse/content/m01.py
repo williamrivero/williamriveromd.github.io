@@ -40,7 +40,7 @@ MODULE = {
 <li><b>Lifelong follow-up</b>Drug levels, rejection and infection surveillance, cardiovascular and cancer prevention, and eventually planning if the graft fails.</li>
 </ol>
 <p>Each station has its own owner, and the nurse touches all six. At station 1 you raise the topic. At station 2 you assemble and send. At station 3 you track dates and dispositions. At station 4 you keep contact details, transfusion history and illness reports current. At station 5 you assess and escalate. At station 6 you reconcile medicines, time samples, teach and triage. The modules that follow take each station in turn.</p>
-<div class="tc-scene"><span class="tc-lab">On the ward &middot; fictional</span><p>Mr. Lim was listed for a deceased-donor kidney last year. Tonight the coordinator, Joy, calls the ward: an offer has come in, but his phone number on file has been disconnected for three months. His daughter's number is not in the chart. By the time the family is reached through the barangay, the offer has gone to the next candidate.</p><p>Nobody in this story made a clinical error. Station 4 failed because nobody owned "keep the contact details current."</p><p class="tc-scene-take"><b>What this shows.</b> Each station needs a named owner. Readiness is a nursing task as much as a medical one.</p></div>
+<div class="tc-scene"><span class="tc-lab">On the ward &middot; fictional</span><p>Mr. Lacson was listed for a deceased-donor kidney last year. Tonight the coordinator, Joy, calls the ward: an offer has come in, but his phone number on file has been disconnected for three months. His daughter's number is not in the chart. By the time the family is reached through the barangay, the offer has gone to the next candidate.</p><p>Nobody in this story made a clinical error. Station 4 failed because nobody owned "keep the contact details current."</p><p class="tc-scene-take"><b>What this shows.</b> Each station needs a named owner. Readiness is a nursing task as much as a medical one.</p></div>
 """},
         {"id": "roles", "nav": "Who decides", "tag": "Scope", "h2": "Who does what on a transplant team",
          "html": """
@@ -94,7 +94,9 @@ MODULE = {
     "case": {
         "title": "The driver who works on another island",
         "html": """
-<p>Mang Rodel, 46, drives a delivery truck between Cebu and Bohol. He has diabetic kidney disease; his eGFR has fallen from 28 to 19 mL/min/1.73 m² over 14 months, and his albuminuria is heavy. He has no dialysis access yet. At the CKD clinic he tells you, "My doctor mentioned a transplant, but my brother is the only one who could give me a kidney and he has his own family. Besides, I can't miss work to go to Manila." His wife is with him. He has a basic phone and is reachable only after 7 p.m.</p>
+<p><strong>Tuesday, 10:20 a.m., CKD clinic.</strong> Mang Rodel, 46, drives a delivery truck between Cebu and Bohol. He has diabetic kidney disease. His eGFR has fallen from 28 to 19 mL/min/1.73 m² over 14 months, and his albuminuria is heavy. He has no dialysis access yet.</p>
+<p>His wife answers most of your questions. When you raise transplant, he shakes his head. "My doctor mentioned it. But my brother is the only one who could give me a kidney, and he has his own family. Besides, I can't miss work to go to Manila." He looks at the clock; his truck leaves for the port at noon.</p>
+<p>He has a basic phone and is reachable only after 7 p.m., when he is off the road. The chart shows no referral, no access plan, and the note "transplant: patient not interested."</p>
 """,
         "acte": {
             "Assess": "Kidney trajectory and timing (he is within the referral window now), comorbidities, his understanding of options, what matters to him (income, family), support, and practical barriers: travel, work hours, cost, phone access.",
@@ -103,6 +105,11 @@ MODULE = {
             "Escalate": "Refer to social work and the benefits office for travel, lodging and coverage questions. If he cannot reach the program, escalate to the coordinator lead rather than letting the referral lapse.",
         },
         "task": "Write the SBAR referral, the closed-loop entry (who received it, when, next action and owner, your follow-up date), and one sentence recording what matters to him.",
+        "outcome": """
+<p>Your colleague in the story, Nurse Liza, did three things before noon. She told Mang Rodel, in two minutes, that evaluation takes months, that starting now keeps a transplant before dialysis possible, and that a living donor must volunteer freely and is not the only route, because deceased donation exists too. She did not ask about his brother again.</p>
+<p>She wrote the SBAR referral with his eGFR trend, his medicines and his evening-only contact window, sent it to the program, and called Joy to confirm receipt. Joy agreed to call him after 7 p.m. on Thursday. Liza wrote that plan in the chart, with her own follow-up call set for the next Monday, and told the nephrologist that access planning should start in parallel.</p>
+<p>On Monday, Liza learned that Joy's Thursday call had not gone through; his phone was off at sea. Because the follow-up was written down, Liza noticed, and they agreed on a text-first approach that Mang Rodel had consented to. His first evaluation visit was booked for a Saturday.</p>
+""",
     },
     "second_round": ("He cannot leave work during office hours, and the program's coordinator works 8 a.m. to 5 p.m.", "A revised referral with one feasible contact route (for example, a scheduled evening call or a text-first agreement documented with consent) and a named follow-up owner."),
     "evidence_out": "Complete SBAR referral and documented closed-loop handoff.",

@@ -43,7 +43,7 @@ MODULE = {
 <li><strong>Once-daily extended-release:</strong> trough about 24 hours after the last dose, drawn just before the next one.</li>
 </ul>
 <p>A sample drawn two hours <em>after</em> the morning dose is near the peak and can read two or three times higher than the true trough. If the team reads it as a trough, they may cut a dose that was correct and expose the kidney to rejection. Your documentation is part of the test: record the actual time of the last dose, the actual collection time, and when the next dose is due. If the timing was wrong, say so on the request and in the chart, so the result is interpreted correctly.</p>
-<div class="tc-scene"><span class="tc-lab">At the laboratory window, 7:40 a.m. &middot; fictional</span><p>Your clinic draws tacrolimus levels from 7 to 9 a.m. Mrs. Navarro is in line. You ask the question you ask every recipient in that line: "Have you taken this morning's tacrolimus?" She has not. Her evening dose was at 7:30 p.m. You write both times on the request.</p><p>Behind her, Mr. Uy took his dose at 6:30 a.m. "so I wouldn't forget." You write that on his request too, and flag it: this sample will not be a trough.</p><p class="tc-scene-take"><b>What this shows.</b> One question at the laboratory window turns a number into an interpretable result.</p></div>
+<div class="tc-scene"><span class="tc-lab">At the laboratory window, 7:40 a.m. &middot; fictional</span><p>Your clinic draws tacrolimus levels from 7 to 9 a.m. Mrs. Natividad is in line. You ask the question you ask every recipient in that line: "Have you taken this morning's tacrolimus?" She has not. Her evening dose was at 7:30 p.m. You write both times on the request.</p><p>Behind her, Mr. Uy took his dose at 6:30 a.m. "so I wouldn't forget." You write that on his request too, and flag it: this sample will not be a trough.</p><p class="tc-scene-take"><b>What this shows.</b> One question at the laboratory window turns a number into an interpretable result.</p></div>
 
 <div class="tc-plain"><span class="tc-lab">Teach-back line</span>"On blood-test mornings, bring your tacrolimus with you and take it <em>after</em> the blood is drawn. Then write down when you took last night's dose."</div>
 <p><strong>Two more ways to read levels.</strong> The <em>concentration-to-dose (C/D) ratio</em> divides the trough by the total daily dose. In a German cohort of 248 recipients, patients with a low C/D ratio ("fast metabolizers," who need high doses to reach target) had lower eGFR over two years and more biopsies showing CNI toxicity and BK polyomavirus nephropathy.[[tholking2014]] <em>Intrapatient variability (IPV)</em> measures how much one person's troughs swing on an unchanged dose, usually as a coefficient of variation. High IPV is consistently associated with rejection, donor-specific antibodies and graft loss, and nonadherence is a major cause.[[shuker2015]] Both are observational markers: they flag patients for closer attention (adherence, interactions, formulation) rather than dictating a dose. The <a href="calc-tacrolimus-level-check.html">Tacrolimus Level Check</a> calculator computes timing validity, C/D ratio and IPV from your entries.</p>
@@ -77,7 +77,9 @@ MODULE = {
     "case": {
         "title": "The level drawn after breakfast",
         "html": """
-<p>Ms. Reyes, 34, is three months after a living-related transplant on twice-daily tacrolimus, mycophenolate and prednisone. Her tacrolimus result is 14.8 ng/mL, higher than her usual 7 to 8. On questioning, she took her morning tacrolimus at 7:00 a.m. with breakfast and had blood drawn at 9:30 a.m. She also shows you a new prescription from a provincial clinic for clarithromycin for a cough, which she plans to start tonight.</p>
+<p><strong>Friday, 11:30 a.m., transplant clinic.</strong> Ms. Reyes, 34, is three months after a living-related transplant. She takes twice-daily tacrolimus, mycophenolate and prednisone. Her tacrolimus result today is 14.8 ng/mL. Her usual troughs are 7 to 8.</p>
+<p>You ask about timing. She took her morning tacrolimus at 7:00 a.m. with breakfast, "because the line is long and I get hungry," and had blood drawn at 9:30 a.m. She feels fine apart from a cough.</p>
+<p>Before she leaves, she shows you a prescription from a provincial clinic: clarithromycin 500 mg twice daily for seven days, for the cough. She plans to buy it on the way home and start tonight. She also mentions, unprompted, that she and her husband "might try for a baby next year."</p>
 """,
         "acte": {
             "Assess": "Exact dose times and collection time, any symptoms of toxicity (tremor, headache), the cough (fever, sputum, breathlessness), other new medicines or supplements, and whether she is using contraception.",
@@ -86,6 +88,11 @@ MODULE = {
             "Escalate": "If the cough is accompanied by fever or breathlessness, arrange prompt assessment (Module 8). Ensure a repeat, correctly timed level is ordered and has an owner.",
         },
         "task": "Write the reconciliation note (two sources, discrepancy, interaction flag) and the teach-back record.",
+        "outcome": """
+<p>The nurse in the story wrote three times on the result: last dose 7:00 a.m., blood drawn 9:30 a.m., next dose 7:00 p.m. She flagged it to the team as "not a trough", so the dose would not be cut on a misleading number.</p>
+<p>She asked Ms. Reyes not to start the clarithromycin until the team had seen it, and called the transplant pharmacist, who explained that clarithromycin can raise tacrolimus levels sharply. Dr. Santos reviewed the cough that afternoon, chose a different antibiotic, and ordered a correctly timed level for Monday.</p>
+<p>The nurse also passed on the pregnancy plan, because mycophenolate must be changed well before conception. Ms. Reyes left with a written trough routine she had explained back in her own words: "Bring the capsules, take them after the blood is drawn."</p>
+""",
     },
     "second_round": ("The pharmacy has only a different tacrolimus formulation in stock, and her next level is due tomorrow morning.", "A two-source reconciliation, a safe routing plan to the team and pharmacist, and a timed sampling teach-back."),
     "evidence_out": "Medication reconciliation and teach-back.",

@@ -85,7 +85,7 @@ MODULE = {
     "case": {
         "title": "The whole pathway in one afternoon",
         "html": """
-<p>Use this as a self-rehearsal before your facilitated capstone. Read each station's setup above, write what you would do in the first two minutes, and identify the single action that would end the station as a critical error if missed. Then compare with the marking sheet.</p>
+<p>Use this as a self-rehearsal before your facilitated capstone. Read each station's setup above. For each, write what you would do in the first two minutes, and name the single action that would end the station as a critical error if you missed it. Then compare your notes with the marking sheet and with the example below.</p>
 """,
         "acte": {
             "Assess": "Station 1: evaluation dates and the transfusion. Station 2: identity, then vital-sign, urine and drain trends. Station 3: formulation, supply, sample timing; on the call, location and acuity. Station 4: pathway and facility contract.",
@@ -94,6 +94,10 @@ MODULE = {
             "Escalate": "Coercion concern to the donor team and ethics; identity mismatch to the verification route; instability to the emergency pathway; supply gap to team and pharmacy.",
         },
         "task": "Write a one-paragraph reflection after your capstone: one thing you did early and well, one cue you missed, and what you will do differently in your own unit.",
+        "outcome": """
+<p>One learner's rehearsal notes, before her capstone: "Station 1: ask the donor to speak alone first, before anything else. Station 2: check the wristband against the transfer report before drawing the crossmatch. Station 3: ask about vomiting and missed doses on the fever call, and get the location first. Station 4: open the live directory, not the printed checklist."</p>
+<p>On the day, she caught the identity mismatch in Station 2 within the first minute. She missed that the recipient in Station 3 had vomited that morning. Her debrief named both, and her reflection ended with one sentence: "I will ask about vomiting on every fever call."</p>
+""",
     },
     "second_round": ("Repeat a station using a variant: a different identity discrepancy, drug access issue or escalation cue.", "A revised station score and a brief reflection identifying the change in behavior."),
     "evidence_out": "Four scored stations and a learner reflection.",

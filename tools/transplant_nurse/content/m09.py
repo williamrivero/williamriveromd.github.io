@@ -59,7 +59,9 @@ MODULE = {
     "case": {
         "title": "Medicines named, refills unknown",
         "html": """
-<p>Mr. Ocampo, 63, is ready for discharge on day 7 after a living-related transplant. His wife, his main caregiver, can name every medicine and its time. When asked how they will get next month's tacrolimus, she says, "We will look for it when it runs out." They live in Tarlac and share one mobile phone with their son, who works night shifts in Manila. The first clinic visit is in four days.</p>
+<p><strong>Day 7, 10:00 a.m., discharge planning.</strong> Mr. Ocampo, 63, is ready for discharge after a living-related transplant. His wife, his main caregiver, can name every medicine and its time without looking at the list. You are impressed.</p>
+<p>Then you ask how they will get next month's tacrolimus. She looks surprised. "We will look for it when it runs out." They live in Tarlac. The nearest pharmacy they know is in town, and they have never asked whether it stocks his formulation.</p>
+<p>They share one mobile phone with their son, who works night shifts in Manila and keeps the phone during the day. The first clinic and laboratory visit is in four days.</p>
 """,
         "acte": {
             "Assess": "Days of supply in hand, the exact formulation prescribed, which pharmacies near them stock it, coverage under the post-transplant package, transport to clinic and laboratory, and how the team can reach them.",
@@ -68,6 +70,11 @@ MODULE = {
             "Escalate": "Do not complete discharge with an unresolved immunosuppressant supply gap. Escalate to the transplant team and charge nurse if no supply plan can be confirmed today.",
         },
         "task": "Write a one-page discharge plan and a teach-back record, including the refill route, backup route and the date you will recheck supply.",
+        "outcome": """
+<p>The nurse in the story did not sign the discharge until a supply route was confirmed. She called the transplant pharmacist, who confirmed that the hospital pharmacy could dispense a month's supply, and asked benefits staff to check coverage under the adult post-transplant package.</p>
+<p>She recorded the son's number with his consent and agreed a calling window with the family: after 6 p.m., when the son is home. She then asked Mrs. Ocampo to explain the refill plan back: where, when, and what to do if the pharmacy has none. On the first try, she forgot the last part; on the second, she had it.</p>
+<p>Mr. Ocampo went home that afternoon with 30 days of tacrolimus, a written plan for the next refill, and a reminder in the clinic tracker for the nurse to check his supply at the four-day visit.</p>
+""",
     },
     "second_round": ("The working caregiver cannot attend clinic visits and the patient depends on a shared phone.", "A follow-up plan with contact consent, transport and refill contingencies, and named backup contacts."),
     "evidence_out": "One-page discharge plan and teach-back.",

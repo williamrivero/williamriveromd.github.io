@@ -63,7 +63,9 @@ MODULE = {
     "case": {
         "title": "The debt that would be forgiven",
         "html": """
-<p>Jun, 29, has offered to donate to his employer's wife, who has been on hemodialysis for three years. During your private intake he says, "Sir is very generous. He said my loan for my mother's operation will be settled after this." Later the same day the recipient calls to ask why Jun's next appointment was postponed.</p>
+<p><strong>Monday, 9:00 a.m., donor clinic.</strong> Jun, 29, has offered to donate a kidney to his employer's wife, who has been on hemodialysis for three years. He came with his employer, who waits in the hallway.</p>
+<p>In the private intake room, you explain the evaluation and his right to stop at any time. You ask how he came to offer. He smiles. "Sir is very generous. He paid for my mother's operation last year. He said my loan will be settled after this." He adds that he has worked for the family for eight years and does not want to lose his job.</p>
+<p>At 3 p.m. the same day, the recipient herself calls the clinic. She wants to know why Jun's next appointment was postponed, and whether "there is a problem with the boy."</p>
 """,
         "acte": {
             "Assess": "Jun's understanding of donation, how the offer arose, the nature of the loan, his employment security if he declines, his own wishes, and any signs of ambivalence.",
@@ -72,6 +74,11 @@ MODULE = {
             "Escalate": "A promised financial benefit from an employer is a potential coercion and payment issue that the donor team and ethics committee must review before any further steps.",
         },
         "task": "Write the restricted-access donor note and the separate, minimal note of what was communicated to the recipient.",
+        "outcome": """
+<p>The nurse in the story did not react, reassure or argue during the intake. She wrote Jun's words exactly, in quotation marks, in the restricted donor record, and called the donor team lead before lunch. The team paused the evaluation and referred the case to the ethics committee.</p>
+<p>To the recipient she said only: "The evaluation schedule has changed. The donor team will contact the people involved." She did not mention the loan, the job or anything Jun had said, and she documented that call separately and briefly.</p>
+<p>The independent donor advocate met Jun alone twice. He chose to withdraw. The program told the recipient that he was "not suitable as a donor", and the recipient's team continued her deceased-donor listing.</p>
+""",
     },
     "second_round": ("Jun's aunt insists on interpreting the interview because 'his Tagalog is not good.'", "A private interview script, an interpreter plan using a qualified interpreter, and a restricted-access note."),
     "evidence_out": "Simulated donor interview and escalation note.",

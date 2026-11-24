@@ -18,7 +18,7 @@ QUAL = {
  "peritoneal-dialysis-nurse": ("Peritoneal Dialysis Nurse", [
    "Licensed nurse with dialysis nursing training, as for a hemodialysis nurse. " + NA.replace("hemodialysis rules", "hemodialysis rules for a separate PD nurse role") + " Follow your PD program&rsquo;s credentialing."]),
  "transplant-nurse": ("Kidney Transplant Nurse", [
-   "Licensed nurse (R.A. 9173). The DOH and PSN dialysis rules do not cover transplant nursing; follow your transplant center&rsquo;s credentialing."]),
+   "Licensed nurse (R.A. 9173). The Department of Health (DOH) and Philippine Society of Nephrology (PSN) dialysis rules do not cover transplant nursing; follow your transplant center&rsquo;s credentialing."]),
  "dialysis-head-nurse": ("Head Nurse", [
    "PRC-licensed nurse (R.A. 9173). <span class=q-src>PSN</span>",
    "Certificate from a structured renal dialysis nursing program of 3 months or more, where needed. <span class=q-src>PSN</span>",

@@ -80,7 +80,9 @@ MODULE = {
     "case": {
         "title": "Two missed doses and a new antibiotic",
         "html": """
-<p>Mr. Navarro, 49, is two months after a deceased-donor transplant. His creatinine at clinic is 1.9 mg/dL; his baseline over the past month has been 1.3 to 1.4. He feels well. He admits missing two evening tacrolimus doses last week when he was traveling, and a provincial doctor started him on ciprofloxacin four days ago for burning on urination. His blood pressure is 148/90 mmHg.</p>
+<p><strong>Wednesday, 8:45 a.m., transplant clinic.</strong> Mr. Navarro, 49, is two months after a deceased-donor transplant. He works as a sales agent and is cheerful and in a hurry. His creatinine today is 1.9 mg/dL. Over the past month it has been 1.3 to 1.4.</p>
+<p>"I feel great, Nurse. Can I go? I have a client at ten." You ask your questions. Last week he traveled to Davao for work and "forgot the evening tablets twice, but I took double the next morning." Four days ago a doctor there started him on ciprofloxacin for burning on urination. He is still taking it.</p>
+<p>His blood pressure is 148/90 mmHg, higher than usual. The chart shows his ureteric stent was due for removal two weeks ago; there is no record that it was removed.</p>
 """,
         "acte": {
             "Assess": "Exact dates of missed doses, current symptoms (dysuria, fever, graft tenderness), fluid intake, urine output, weight change, medicines including the antibiotic and any NSAIDs, timing of his last tacrolimus level, and whether the stent has been removed.",
@@ -89,6 +91,11 @@ MODULE = {
             "Escalate": "Arrange ordered reassessment promptly rather than at the next routine visit. If biopsy is planned, begin the pre-biopsy checklist, including antithrombotics.",
         },
         "task": "Write a trend-based SBAR and a results-tracking entry listing each ordered test, its owner and the date it will be reviewed.",
+        "outcome": """
+<p>The nurse in the story did not let him leave for his client. She explained, briefly, that a 40 percent rise needs a same-day look even when he feels well, and that doubling a dose the next morning does not undo a missed one.</p>
+<p>Her call to Dr. Santos listed everything at once: the creatinine trend, the two missed doses and the doubled one, the urinary infection and the antibiotic, the blood pressure, and the stent that was never removed. Dr. Santos ordered a urine culture, a correctly timed tacrolimus level, an ultrasound and donor-specific antibodies. The nurse wrote each test in the tracker with its owner and review date.</p>
+<p>The ultrasound showed mild swelling of the kidney around the retained stent. The stent was removed, the infection treated, and his creatinine settled to 1.5. Because of the missed doses, the team also planned a biopsy; that is where the second round begins.</p>
+""",
     },
     "second_round": ("Before the planned biopsy he mentions taking a daily aspirin his cardiologist prescribed, last taken this morning.", "A pre-biopsy checklist with the medication, last dose time, procedural contact and the documented decision owner."),
     "evidence_out": "Trend-based SBAR and biopsy safety checklist.",

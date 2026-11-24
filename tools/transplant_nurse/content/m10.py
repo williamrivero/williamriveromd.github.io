@@ -73,7 +73,9 @@ MODULE = {
     "case": {
         "title": "The old checklist and the donor who also needs follow-up",
         "html": """
-<p>Mr. Lim, 52, an adult recipient transplanted 14 months ago at another hospital, transfers his follow-up to your center. His folder contains a benefits checklist printed in 2024. His living donor, his brother, also asks to be followed at your center. A clerk asks you to "just fill in the old form so we can claim."</p>
+<p><strong>Tuesday, 2:30 p.m., transplant clinic.</strong> Mr. Lim, 52, transplanted 14 months ago at another hospital, is moving his follow-up to your center. His folder contains a benefits checklist printed in 2024, before the post-transplant packages existed.</p>
+<p>His brother, who donated the kidney, came with him and asks whether he can also be followed here. A clerk who wants to close the file before 5 p.m. asks you to "just fill in the old form so we can claim."</p>
+<p>Mr. Lim asks the question every family asks: "Will PhilHealth cover my medicines here?"</p>
 """,
         "acte": {
             "Assess": "Which pathway applies (adult post-transplant care), whether the donor's follow-up falls under the same package, the date of transplant, and what documents exist from the original facility.",
@@ -82,6 +84,11 @@ MODULE = {
             "Escalate": "Decline to complete an outdated form; route the question to the benefits supervisor with the current official documents.",
         },
         "task": "Complete a synthetic benefits-readiness worksheet: pathway, current source and date, facility verified, eligibility owner, each requirement present or missing, next action, assignee and due date.",
+        "outcome": """
+<p>The nurse in the story declined to fill in the 2024 form and explained why to the clerk without blame. With the benefits officer, she opened the official PhilHealth site, downloaded the current adult post-transplant circular and annexes, and checked the directory: the center was contracted for the adult package. She wrote the date she checked on each document.</p>
+<p>She asked the original hospital whether any procedure claim or registry task was still open, and routed the brother's donor follow-up question to benefits staff with the current documents. To Mr. Lim she said: "We are checking your coverage with the current rules. Our benefits officer will call you by Friday." She did not promise approval.</p>
+<p>By Friday, both pathways were confirmed and an open registry task at the original hospital had been closed.</p>
+""",
     },
     "second_round": ("The same facility performs transplants but cannot confirm its contract for the pediatric post-transplant package for a 15-year-old recipient.", "A two-pathway comparison using the live directory and the official annexes, with the unresolved item clearly flagged and an owner assigned."),
     "evidence_out": "Benefits audit worksheet listing required artifact, source, gap and owner.",

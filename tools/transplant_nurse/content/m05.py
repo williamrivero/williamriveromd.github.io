@@ -80,7 +80,9 @@ MODULE = {
     "case": {
         "title": "Two hours after transfer",
         "html": """
-<p>Mr. Santos, 41, received a deceased-donor kidney this afternoon. On arrival his blood pressure was 138/82 mmHg, heart rate 88, urine 220 mL/h, and the drain had 40 mL of light pink fluid. Two hours later his blood pressure is 102/64 mmHg, heart rate 112, urine output has fallen to 35 mL in the last hour, the drain has 180 mL of bright red fluid in the same period, and he reports increasing pain over the graft. His native kidneys made about 300 mL a day before surgery.</p>
+<p><strong>4:10 p.m., transplant ward.</strong> Mr. Salazar, 41, arrives from the operating room after a deceased-donor kidney transplant. His native kidneys made about 300 mL a day before surgery. On arrival his blood pressure is 138/82 mmHg, heart rate 88, urine output 220 mL in the first hour, and the drain has 40 mL of light pink fluid.</p>
+<p><strong>5:10 p.m.</strong> Blood pressure 124/76, heart rate 96, urine 140 mL, drain 70 mL, now darker.</p>
+<p><strong>6:10 p.m.</strong> Blood pressure 102/64 mmHg, heart rate 112. Urine has fallen to 35 mL in the last hour. The drain has 180 mL of bright red fluid in the same hour. He says the pain over the graft is "getting worse, not better," and the dressing is tight over a new swelling. His wife asks if this is normal after surgery.</p>
 """,
         "acte": {
             "Assess": "Airway, breathing, circulation; full set of vital signs; perfusion; catheter patency; drain volume and character over time; wound swelling; cumulative balance; latest hemoglobin.",
@@ -89,6 +91,11 @@ MODULE = {
             "Escalate": "This pattern suggests bleeding; prepare for ordered blood tests, crossmatch for transfusion, imaging and possible return to theater. Do not give additional fluid beyond orders while waiting.",
         },
         "task": "Write a timed escalation note with the trend table, the time the surgeon was called, the instructions received and the next check time.",
+        "outcome": """
+<p>The nurse in the story laid the three hourly readings side by side and saw one pattern, not three problems. She checked the catheter (no kink, no clot), then activated the emergency pathway. Her call to the surgeon opened with the trends: "Blood pressure down from 138 to 102 over two hours, pulse up from 88 to 112, urine 220 to 35 an hour, drain 40 pink to 180 bright red in the last hour, graft pain and new swelling."</p>
+<p>While waiting, she did not open the fluid wide on her own; she followed the replacement order exactly and drew the ordered blood count and crossmatch. She told his wife that the team was coming to check for bleeding, without guessing about the kidney.</p>
+<p>The surgeon arrived within ten minutes. Mr. Salazar returned to theater, where a bleeding vessel near the graft was tied off. The kidney recovered. The surgeon's comment at handover the next morning: "Your call gave me everything I needed in the first sentence."</p>
+""",
     },
     "second_round": ("After a catheter kink is corrected, urine output stays low and the pulse keeps rising; the drain is unchanged.", "A timed reassessment and escalation note covering catheter patency, perfusion, drain, cumulative balance and the ordered next checks."),
     "evidence_out": "OR-to-ward handoff and rapid-escalation simulation.",

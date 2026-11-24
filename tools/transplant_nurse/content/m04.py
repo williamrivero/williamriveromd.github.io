@@ -51,7 +51,7 @@ MODULE = {
 <div class="tc-scene"><span class="tc-lab">On the ward, 5:30 a.m. &middot; fictional</span><p>Mr. Valdez arrives with his wife and a packed bag. Joy's instructions were: nothing by mouth from midnight, take the morning blood pressure tablet with a sip of water, hold the diabetes tablet. You ask him to repeat them. He says he skipped all his tablets and "drank a little coffee at four, black only."</p><p>You do not scold him. You record exactly what he took and when, and you tell the surgical team and the anesthesiologist before he goes anywhere. Then you check his potassium and draw the crossmatch sample, labeling it at the bedside.</p><p class="tc-scene-take"><b>What this shows.</b> Read-back catches errors that a good phone call still leaves behind. Report what actually happened, not what was planned.</p></div>
 
 <p><strong>Arrival on the ward.</strong> Verify identity against the offer record, take current vital signs, weight, potassium and other ordered tests, draw the crossmatch sample with meticulous labeling, and note dialysis access and last session. Track time-sensitive samples to the laboratory.</p>
-<div class="tc-scene"><span class="tc-lab">On the ward &middot; fictional</span><p>At 9 a.m. the team tells Mrs. Santos that the crossmatch is positive and the kidney will go to another candidate. She had told her whole family she was getting a kidney today.</p><p>Because the coordinator told her at 3 a.m. that she was coming in as a <em>possible</em> recipient, she is disappointed but not betrayed. You sit with her, explain that her name stays on the list, and help her call her daughter.</p><p class="tc-scene-take"><b>What this shows.</b> Honest framing at the offer call protects trust for the next one.</p></div>
+<div class="tc-scene"><span class="tc-lab">On the ward &middot; fictional</span><p>At 9 a.m. the team tells Mrs. Samonte that the crossmatch is positive and the kidney will go to another candidate. She had told her whole family she was getting a kidney today.</p><p>Because the coordinator told her at 3 a.m. that she was coming in as a <em>possible</em> recipient, she is disappointed but not betrayed. You sit with her, explain that her name stays on the list, and help her call her daughter.</p><p class="tc-scene-take"><b>What this shows.</b> Honest framing at the offer call protects trust for the next one.</p></div>
 
 <div class="tc-stop"><span class="tc-lab">Stop and report</span>A mismatched identifier, an instruction you did not receive from the team, or an offer that cannot be verified stops the workflow. Pause, use the designated verification and escalation route, and resume only when it is resolved.</div>
 """},
@@ -65,7 +65,9 @@ MODULE = {
     "case": {
         "title": "The offer that arrived by text",
         "html": """
-<p>At 1:40 a.m. the night coordinator receives a call from Mrs. Dela Cruz, a wait-listed candidate on an island two ferry rides away. She says her cousin received a text message telling her "your kidney is ready, go to Manila now." She also mentions she has had a fever of 38.4 °C since yesterday and her last dialysis was two days ago. The program has not placed any offer to her tonight.</p>
+<p><strong>1:40 a.m., the night coordinator's line.</strong> Mrs. Dela Cruz, a wait-listed candidate, calls from an island two ferry rides away. She sounds breathless and excited. Her cousin received a text message from an unknown number: "Your kidney is ready, go to Manila now, bring 20,000 for the processing."</p>
+<p>She is already packing. Then she mentions she has had a fever of 38.4 °C since yesterday, and that she skipped her last dialysis session "to save money for the trip." Her last dialysis was two days ago.</p>
+<p>You check the program's offer log. No offer has been placed to her tonight, or to anyone on her blood group.</p>
 """,
         "acte": {
             "Assess": "Identity (two identifiers), fever severity and associated symptoms, dialysis status and potassium risk, dialysis access, and whether she has started traveling.",
@@ -74,6 +76,11 @@ MODULE = {
             "Escalate": "Fever two days after dialysis with possible missed sessions needs prompt local assessment; advise her to go to the nearest emergency department and document the advice and her plan.",
         },
         "task": "Write the call log: time, identity verification, the text message report, assessment findings, advice given, read-back, notifications made and the follow-up owner.",
+        "outcome": """
+<p>The coordinator in the story verified her identity with two identifiers, then told her plainly that the text did not come from the program, that real offers come only from the program's known numbers, and that the program never asks for money for an offer. She asked her not to travel, not to send money, and not to reply to the sender.</p>
+<p>Then she turned to the part that could actually hurt her tonight: fever, and two days since dialysis. She advised her to go to the nearest emergency department now, had her repeat the advice, and called the on-call transplant physician and the program lead about the fever and the scam message.</p>
+<p>At the local hospital her potassium was 6.3 mmol/L, and she was dialyzed that morning. The program later sent a text to all listed candidates warning about the scam.</p>
+""",
     },
     "second_round": ("A real offer is placed later in the week, but the receiving ward cannot confirm the transfer instruction before transport.", "A call log with time, read-back, the pause point, and the backup escalation contact used."),
     "evidence_out": "Simulated offer call with documented read-back.",

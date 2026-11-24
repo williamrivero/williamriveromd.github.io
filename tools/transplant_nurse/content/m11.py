@@ -25,7 +25,7 @@ Numerator: results meeting the prespecified abnormal threshold that have a docum
 Denominator: <em>all</em> results meeting the same prespecified threshold, in the defined population and period.<br>
 Exclusions: defined in advance (for example, results drawn during an inpatient stay, where a different process applies).</div>
 <p>Three details make the measure trustworthy. The <strong>threshold</strong> must be prespecified (which creatinine rise, which tacrolimus range, which viral load), or the denominator will drift. <strong>Notification is not acknowledgment</strong>: a message sent to an inbox does not count as review. And the <strong>data source</strong> and the person who extracts it must be named, so the measure can be repeated the same way every month.</p>
-<div class="tc-scene"><span class="tc-lab">At the quality meeting &middot; fictional</span><p>The first audit reports that 98 percent of abnormal results were "handled within 24 hours." Carla asks how "handled" was counted. It turns out that any result automatically sent to a physician's inbox was counted as handled.</p><p>You recount October using the agreed definition: a documented review <em>and</em> a disposition. The figure falls to 71 percent. Nobody likes the new number, but now the team knows where it actually stands.</p><p class="tc-scene-take"><b>What this shows.</b> A measure is only as honest as its definitions. Notification is not review.</p></div>
+<div class="tc-scene"><span class="tc-lab">At a partner clinic&#39;s quality meeting &middot; fictional</span><p>The first audit reports that 98 percent of abnormal results were "handled within 24 hours." Carla asks how "handled" was counted. It turns out that any result automatically sent to a physician's inbox was counted as handled.</p><p>You recount October using the agreed definition: a documented review <em>and</em> a disposition. The figure falls to 71 percent. Nobody likes the new number, but now the team knows where it actually stands.</p><p class="tc-scene-take"><b>What this shows.</b> A measure is only as honest as its definitions. Notification is not review.</p></div>
 
 <p>The <a href="calc-qapi-cqi-toolkit.html">QAPI and CQI toolkit</a> helps with run charts and aim statements.</p>
 """},
@@ -38,7 +38,7 @@ Exclusions: defined in advance (for example, results drawn during an inpatient s
 <li><b>Act</b>Adopt, adapt or abandon the change; plan the next cycle.</li>
 </ol>
 <p><strong>Balancing measures.</strong> Every change has a cost somewhere. A weekend backup reviewer may improve review times while increasing weekend workload or callback volume, or delaying other tasks. Track at least one balancing measure so that a gain in one place is not quietly paid for in another.</p>
-<div class="tc-scene"><span class="tc-lab">At the quality meeting, six weeks later &middot; fictional</span><p>For one month, a named weekend backup reviewer gets a callback script and the laboratory's after-hours number. Abnormal results reviewed and dispositioned within 24 hours rise from 71 to 93 percent.</p><p>Your balancing measure tells the rest of the story. Weekend calls to the on-call physician have doubled, and two of them were about results that were not urgent. For the next cycle, the team tightens the list of values that trigger a weekend call.</p><p class="tc-scene-take"><b>What this shows.</b> Small tests show both the gain and its cost. The next cycle fixes the cost instead of abandoning the gain.</p></div>
+<div class="tc-scene"><span class="tc-lab">At the same partner clinic, six weeks later &middot; fictional</span><p>For one month, a named weekend backup reviewer gets a callback script and the laboratory's after-hours number. Abnormal results reviewed and dispositioned within 24 hours rise from 71 to 93 percent.</p><p>Your balancing measure tells the rest of the story. Weekend calls to the on-call physician have doubled, and two of them were about results that were not urgent. For the next cycle, the team tightens the list of values that trigger a weekend call.</p><p class="tc-scene-take"><b>What this shows.</b> Small tests show both the gain and its cost. The next cycle fixes the cost instead of abandoning the gain.</p></div>
 
 <p><strong>Privacy in quality work.</strong> Audit lists and run charts used in meetings, posters or presentations must not carry identifiable information. Use counts, codes or synthetic examples.[[ra10173]]</p>
 """},
@@ -69,7 +69,9 @@ Exclusions: defined in advance (for example, results drawn during an inpatient s
     "case": {
         "title": "Abnormal results waiting for Monday",
         "html": """
-<p>An audit of your transplant clinic finds that, over three months, 46 tacrolimus levels and creatinine results met the clinic's abnormal thresholds after 5 p.m. on Fridays. Only 19 had a documented review and disposition before Monday noon. In two cases a high creatinine was not acted on until Tuesday. The single reviewing nephrologist is off on weekends; notifications go to a shared inbox.</p>
+<p><strong>The audit.</strong> Your transplant clinic asked you to review three months of results. Over that period, 46 tacrolimus levels and creatinine results met the clinic's abnormal thresholds after 5 p.m. on Fridays. Only 19 had a documented review and disposition before Monday noon.</p>
+<p>In two cases, a high creatinine was not acted on until Tuesday. One of those patients was admitted with acute rejection the following week. Nobody was negligent: the single reviewing nephrologist is off on weekends, and notifications go to a shared inbox that nobody checks on Saturdays.</p>
+<p>At the staff meeting, someone suggests a memo reminding everyone to "be more careful with results."</p>
 """,
         "acte": {
             "Assess": "Baseline: 19 of 46 (41 percent) reviewed within the interval. Map the process: who receives results, how notification happens, where it fails (no backup, inbox not monitored).",
@@ -78,6 +80,11 @@ Exclusions: defined in advance (for example, results drawn during an inpatient s
             "Escalate": "Report the two delayed high-creatinine cases through the facility's safety reporting system, as system events, for review.",
         },
         "task": "Write a one-page improvement charter: population, failure description, numerator and denominator, baseline and target, change to test, balancing measure, responsible role and review date.",
+        "outcome": """
+<p>The nurse in the story argued, politely, that a memo would not change the inbox. She presented the 19 of 46 without naming anyone, mapped where results went on a Friday night, and proposed one small test: a named weekend backup reviewer with a callback script, for one month.</p>
+<p>She reported the two delayed cases through the safety reporting system as system events, and set up the measure so that only a documented review and disposition counted, not a notification.</p>
+<p>After one month, the share of abnormal results reviewed within the interval rose from 41 percent to 88 percent. Weekend calls rose by a third, which became the balancing measure for the second round.</p>
+""",
     },
     "second_round": ("The callback intervention improves review times to 88 percent but increases weekend callback workload by a third.", "A revised charter stating the measure, the balancing measure result and the next test of change."),
     "evidence_out": "One-page improvement charter and a handover adaptation for a special population.",

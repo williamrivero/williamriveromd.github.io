@@ -71,7 +71,9 @@ MODULE = {
     "case": {
         "title": "Chills, weakness and less urine",
         "html": """
-<p>At 4 p.m. on a Saturday, Mrs. Garcia, 57, calls the transplant hotline. She is five months after a deceased-donor transplant and stopped valganciclovir prophylaxis three weeks ago. She reports chills since morning, marked weakness, and that she has passed "only a little urine" today. Her husband measured a temperature of 37.9 °C. She vomited her morning medicines. She lives 40 minutes from the nearest hospital.</p>
+<p><strong>Saturday, 4:00 p.m., transplant hotline.</strong> Mrs. Garcia, 57, calls. She is five months after a deceased-donor transplant and stopped valganciclovir prophylaxis three weeks ago, as planned.</p>
+<p>She has had chills since morning and feels "too weak to stand for long." She has passed "only a little urine" today. Her husband measured a temperature of 37.9 °C. She vomited her morning medicines, including tacrolimus, about an hour after taking them.</p>
+<p>She lives 40 minutes from the nearest hospital. Her husband can drive. Halfway through the call she says she feels dizzy and needs to sit down.</p>
 """,
         "acte": {
             "Assess": "Location and callback number first. Then breathing, confusion, dizziness or fainting, blood pressure if a home device is available, urine output, vomiting and which doses were lost, diarrhea, cough, urinary symptoms, and exposures.",
@@ -80,6 +82,11 @@ MODULE = {
             "Escalate": "Possible sepsis or CMV disease with reduced urine output and lost immunosuppressant doses: route to emergency care now. Arrange follow-up by the transplant team of ordered tests (blood cultures, CMV DNA, creatinine, tacrolimus level).",
         },
         "task": "Write the triage and routing record: time, location and callback, findings, disposition, physician notified, read-back, and the owner of pending results.",
+        "outcome": """
+<p>The nurse in the story had already taken her address and her husband's number in the first minute. When Mrs. Garcia said she felt dizzy, the nurse did not continue the full questionnaire. She told her to lie down, asked her husband to take her to the emergency department now, and had him repeat the name of the hospital.</p>
+<p>She called the on-call transplant physician, then the emergency department, so they knew a recipient with fever, low urine output and lost immunosuppressant doses was on the way. She documented the time of each call and the read-back.</p>
+<p>In the emergency department, Mrs. Garcia's blood pressure was low and her creatinine had doubled. She was admitted for intravenous fluids, cultures and a cytomegalovirus test. The test came back positive on Monday, which is where the second round begins.</p>
+""",
     },
     "second_round": ("On Monday, a CMV DNA result requires callback, but the daytime desk is closed for a holiday.", "A triage and routing record showing the backup reviewer, acknowledgment, and patient communication."),
     "evidence_out": "Fever triage and abnormal-result follow-through.",

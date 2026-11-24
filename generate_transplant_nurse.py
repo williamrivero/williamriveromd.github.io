@@ -364,6 +364,8 @@ def build_module(mid):
     c = m["case"]
     acte = "\n".join(f'    <div class="nc-acte-card"><h4>{k}</h4><div>{v}</div></div>' for k, v in c["acte"].items())
     rnd, sub = m["second_round"]
+    outcome = (f'  <div class="tc-scene tn-outcome"><span class="tc-lab">How it played out &middot; fictional</span>\n{c["outcome"].strip()}\n  </div>\n'
+               if c.get("outcome") else "")
     parts.append(f"""<section class="section" id="case">
   <div class="section-tag">Practice case &middot; synthetic</div>
   <h2>Case: {c['title']}</h2>
@@ -374,7 +376,7 @@ def build_module(mid):
   <div class="nc-acte">
 {acte}
   </div>
-  <div class="nc-task"><strong>Documentation task.</strong> {c['task']}</div>
+{outcome}  <div class="nc-task"><strong>Documentation task.</strong> {c['task']}</div>
   <div class="tn-round"><span class="tc-lab">Second round &middot; what changes</span>{rnd}<br><strong>Submit:</strong> {sub}</div>
 </section>""")
     if len(m["quiz"]) < BANK_SIZE:
@@ -512,6 +514,12 @@ def build_hub():
   </div>
 </section>
 
+<section class="section" id="week">
+  <div class="section-tag">What the work looks like</div>
+  <h2>A week on the transplant service</h2>
+{C.WEEK_HTML.strip()}
+</section>
+
 <section class="section" id="entry">
   <div class="section-tag">Before you begin</div>
   <h2>Entry preparation</h2>
@@ -606,7 +614,7 @@ def build_hub():
   <p>Desk review dated 24 November 2026. Clinical recommendations are reviewed at least annually; PhilHealth issuances, forms, contracting status and center procedures must be verified before each use. Before release, the clinical content requires review by a transplant nurse educator and a transplant nephrologist, and the Philippine benefits and regulatory content by a benefits or regulatory lead.{cites.render(src)}</p>
 </section>"""
     main = tn_expand(main, HUB)
-    nav = [("start", "Start here"), ("entry", "Entry"), ("modules", "Modules"), ("outcomes", "Competencies"), ("schedule", "Schedule"),
+    nav = [("start", "Start here"), ("week", "A week on the service"), ("entry", "Entry"), ("modules", "Modules"), ("outcomes", "Competencies"), ("schedule", "Schedule"),
            ("assessment", "Assessment"), ("worksheets", "For educators"), ("calculators", "Calculators"), ("careers", "Careers"), ("sources", "Sources")]
     related = [(PARENT, "Parent course", "Nephrology Nursing &amp; Hemodialysis", "The 17-module course this subtrack builds on."),
                (ENTRY, "Entry lesson", "Module 11: Transplantation and Special Populations", "The introductory transplant module."),
