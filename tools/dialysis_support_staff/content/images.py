@@ -213,9 +213,9 @@ FIGURES = [
         "Apply", "Shows the exact grip that prevents the most common support-staff needlestick."),
     # Module 10
     fig("DUSS10-F1", "10", "categories", "waste-categories-colors", "E", "1536 × 1152", "Health care waste categories (confirm with your facility chart)",
-        "4:3 reference grid of six bins with liners: Black - dry non-infectious (packaging, paper); Green - wet biodegradable (food scraps); Yellow - infectious (used bloodlines and dialyzers, blood-stained items); Yellow with black band - chemical and pharmaceutical (expired medicines, chemical containers per plan); Red or puncture-proof box - sharps (needles, broken vials); Orange - radioactive (rare in dialysis). Header note in amber: 'Long-standing DOH scheme; your facility's posted chart governs.'",
-        "Grid of six waste categories with the long-standing DOH colors and dialysis examples, noting that the facility chart governs.",
-        "Waste categories with the long-standing DOH color scheme and dialysis examples; always confirm against your facility chart.",
+        "4:3 reference grid of six bins with liners per DOH 2020 Table 4: Black bin, black or clear liner - non-biodegradable general waste (packaging, paper); Green - biodegradable (food scraps); Yellow - infectious (used bloodlines and dialyzers, blood-stained items); Brown - chemical and pharmaceutical (expired medicines, chemical containers per plan); Yellow puncture-proof container - sharps (needles, broken vials); Orange - radioactive (rare in dialysis). Header note in amber: 'DOH Fourth Edition, Table 4. Check your approved facility chart.'",
+        "Grid of six waste categories with the DOH 2020 colors and dialysis examples, noting that the facility chart governs.",
+        "Waste categories with the DOH 2020 color scheme (brown for chemical and pharmaceutical, yellow puncture-proof containers for sharps) and dialysis examples; confirm against your facility chart.",
         "Apply", "Gives a local, familiar reference while deferring to the facility's plan.", [("DOH", "Department of Health")]),
     fig("DUSS10-F2", "10", "route", "waste-journey", "C", L, "From the station to the authorized hauler",
         "Six cards: 1 Segregate at the source (clinical staff, right bin); 2 Close at three-quarters full and label; 3 Collect by the neck into the closed waste trolley; 4 Approved route, away from food and patient areas; 5 Locked, ventilated central storage; 6 Authorized hauler with paperwork. A red side branch: 'Never give or sell any waste.'",

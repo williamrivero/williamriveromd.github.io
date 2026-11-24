@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Why waste is sorted where it is made and never re-sorted by hand, the Philippine waste categories and how to read your facility&rsquo;s color chart, the waste a dialysis unit produces, filling, closing and labeling, moving waste on a safe route, central storage, and who may take it away.",
-    "desc": "Dialysis Unit Support Staff Module 10: health care waste segregation at the point of generation, DOH categories and color coding, dialysis-specific waste streams, three-quarters-full rule, labeling, collection routes, central storage, handover to authorized transporters, and the Philippine legal framework (RA 9003, RA 6969, Joint DENR-DOH AO 2005-02).",
+    "desc": "Dialysis Unit Support Staff Module 10: health care waste segregation at the point of generation, DOH 2020 categories and color coding, dialysis-specific waste streams, three-quarters-full rule, labeling, collection routes, central storage, handover to authorized transporters, and the Philippine legal framework (RA 9003, RA 6969, Joint DENR-DOH AO 2005-02).",
     "keywords": "health care waste segregation Philippines, DOH waste color coding yellow black green, dialysis unit waste management, infectious waste storage time, hospital waste collection route, healthcare waste handler training",
     "image_alt": "A row of clearly labeled, color-coded waste bins with pedal lids and a locked red sharps container in a dialysis unit&rsquo;s dirty utility room, an aide in utility gloves checking a bag label.",
     "objectives": [
@@ -21,16 +21,16 @@ MODULE = {
         {"id": "categories", "nav": "Categories and colors", "tag": "Philippine framework", "h2": "Waste categories and the color chart",
          "html": """
 <p>The DOH Health Care Waste Management Manual (fourth edition, 2020) is the national reference for how health facilities classify, segregate, collect, store, treat and dispose of their waste.[[doh_hcwm]] It works within the Ecological Solid Waste Management Act (RA 9003), the Toxic Substances and Hazardous and Nuclear Wastes Control Act (RA 6969), and the joint rules of the Department of Environment and Natural Resources (DENR) and DOH on health care waste.[[ra9003]][[ra6969]][[dao2005]] WHO&rsquo;s international handbook covers the same principles.[[who2014]]</p>
-<p>Philippine facilities have long used this color scheme from the DOH manuals. The fourth edition updated container specifications, and your facility may adapt details, so <strong>your facility&rsquo;s posted chart is the authority</strong>.</p>
+<p>The fourth edition&rsquo;s table of bins and liners updated the older scheme: chemical and pharmaceutical waste moved from yellow-with-black-band to <strong>brown</strong>, and sharps go in a <strong>yellow puncture-proof container</strong> with a wide mouth and a cover.[[doh_hcwm]] Some units still have older red sharps boxes or banded bins; <strong>your facility&rsquo;s posted chart is the authority</strong>.</p>
 <div class="table-wrap"><table>
-<thead><tr><th>Category</th><th>Long-standing DOH color</th><th>Examples in a dialysis unit (confirm locally)</th></tr></thead>
+<thead><tr><th>Category</th><th>DOH color (2020 manual)</th><th>Examples in a dialysis unit (confirm locally)</th></tr></thead>
 <tbody>
-<tr><td>General, non-infectious, dry (non-biodegradable)</td><td>Black</td><td>Clean packaging, wrappers, paper, uncontaminated plastic</td></tr>
-<tr><td>General, non-infectious, wet (biodegradable)</td><td>Green</td><td>Food scraps from the pantry, fruit peels</td></tr>
-<tr><td>Infectious and pathological</td><td>Yellow</td><td>Used dialyzers and bloodlines, items soaked or stained with blood, used gauze, used PPE from blood tasks</td></tr>
-<tr><td>Chemical and pharmaceutical</td><td>Yellow with black band</td><td>Expired medicines, chemical containers as the plan specifies, broken thermometers</td></tr>
-<tr><td>Sharps and pressurized containers</td><td>Red or a puncture-proof sharps container</td><td>Needles, fistula needles, lancets, broken glass from vials</td></tr>
-<tr><td>Radioactive</td><td>Orange</td><td>Rare in dialysis units</td></tr>
+<tr><td>General, non-infectious, non-biodegradable</td><td>Black bin; black or clear liner</td><td>Clean packaging, wrappers, paper, uncontaminated plastic</td></tr>
+<tr><td>General, non-infectious, biodegradable</td><td>Green</td><td>Food scraps from the pantry, fruit peels</td></tr>
+<tr><td>Infectious, pathological and anatomical</td><td>Yellow bin and liner</td><td>Used dialyzers and bloodlines, items soaked or stained with blood, used gauze, used PPE from blood tasks</td></tr>
+<tr><td>Chemical and pharmaceutical</td><td>Brown</td><td>Expired medicines, chemical containers as the plan specifies, broken thermometers</td></tr>
+<tr><td>Sharps</td><td>Yellow puncture-proof container with wide mouth and cover</td><td>Needles, fistula needles, lancets, broken glass from vials</td></tr>
+<tr><td>Radioactive</td><td>Orange liner</td><td>Rare in dialysis units</td></tr>
 </tbody></table></div>
 <p>Some items depend on the unit&rsquo;s plan, for example empty saline bags with no blood, empty concentrate jugs, and acid or bicarbonate containers. Ask your waste lead and write the answers on your unit worksheet. Do not copy color codes from other countries or from videos online.</p>
 """},
@@ -109,16 +109,16 @@ MODULE = {
             ("Pull the needle out and put it in the sharps container.", False, "Reaching in risks injury."),
             ("Leave it in the general waste.", False, "Endangers collectors."),
             ("Shake the bag to see what else is inside.", False, "Never shake waste.")], "sources": []},
-        {"stem": "Under the long-standing DOH scheme, used bloodlines usually belong in:", "options": [
+        {"stem": "Under the DOH 2020 manual, used bloodlines usually belong in:", "options": [
             ("Yellow (infectious) containers, as your facility&rsquo;s chart confirms.", True, "Blood-contaminated items are infectious."),
             ("Green (biodegradable).", False, "Not food waste."),
             ("Black (dry general).", False, "Contaminated with blood."),
             ("Orange (radioactive).", False, "Not radioactive.")], "sources": ["doh_hcwm"]},
-        {"stem": "Which color is usually used for chemical and pharmaceutical waste in the DOH scheme?", "options": [
-            ("Yellow with a black band.", True, "Long-standing DOH coding."),
-            ("Green.", False, "Biodegradable."),
-            ("Black.", False, "Dry general."),
-            ("Plain yellow.", False, "Infectious.")], "sources": ["doh_hcwm"]},
+        {"stem": "In the DOH 2020 manual, which color is used for chemical and pharmaceutical waste?", "options": [
+            ("Brown.", True, "The fourth edition moved chemical and pharmaceutical waste to brown bins."),
+            ("Green.", False, "Biodegradable general waste."),
+            ("Black.", False, "Non-biodegradable general waste."),
+            ("Orange.", False, "Radioactive waste.")], "sources": ["doh_hcwm"]},
         {"stem": "When should a waste bag be closed?", "options": [
             ("When about three-quarters full.", True, "Allows sealing without compressing."),
             ("Only when completely full.", False, "Leads to compressing and spilling."),
