@@ -7,7 +7,7 @@ COURSE = {
     "short": "Dialysis Biomedical Technician",
     "hub_slug": "dialysis-biomedical-technician",
     "label": "Study series for dialysis biomedical technicians",
-    "tag": "Renal Technician Program",
+    "tag": "Renal Technicians",
     "audience": "Biomedical equipment technicians working in or for hemodialysis centers &middot; chief technicians, head nurses, and medical directors",
     "audience_type": "Biomedical equipment technicians",
     "level": "Technical staff, college reading level",

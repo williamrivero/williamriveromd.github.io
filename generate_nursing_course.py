@@ -1027,7 +1027,7 @@ def build_module(mid):
     title = f"{m['title']}: Nephrology Nursing Module {n}"
     page = shell(
         fname, title, m["desc"], m["keywords"],
-        (f"Nursing Education &middot; Advanced module {n}" if m["neph"] == "advanced" else f"Nursing Education &middot; Module {n}"), m["title"], m["sub"],
+        (f"Nephrology Nursing &middot; Specialization &middot; Advanced module {n}" if m["neph"] == "advanced" else f"Nephrology Nursing &middot; Specialization &middot; Module {n}"), m["title"], m["sub"],
         "Registered nurses entering nephrology or hemodialysis practice &middot; nurse educators and preceptors",
         nav, pre, main, glossary_block(main, m.get("terms", [])), related_block(cards),
         jsonld_extra={"isPartOf": {"@type": "Course", "name": COURSE["title"], "url": f"{SITE}/guides/{COURSE['hub_slug']}"},
@@ -1183,7 +1183,7 @@ def build_hub():
     page = shell(
         fname, title, desc,
         "nephrology nursing course Philippines, hemodialysis nurse training, dialysis nursing self-study, renal nurse education, dialysis nurse competency, nephrology nursing syllabus",
-        "Nursing Education &middot; Course home", "Nephrology Nursing &amp; <em>Hemodialysis</em>",
+        "Nephrology Nursing &middot; Specialization &middot; Course home", "Nephrology Nursing &amp; <em>Hemodialysis</em>",
         "A twelve-module study series for registered nurses, from kidney assessment and chronic kidney disease to safe hemodialysis care. Each module includes a nursing case and a self-assessment with answer rationales.",
         "Registered nurses entering nephrology or hemodialysis practice &middot; head nurses, educators, and preceptors",
         nav, pre, main, glossary_block(main, [("Preceptor", "An experienced nurse who supervises and assesses a learner in clinical practice."),
@@ -1326,7 +1326,7 @@ def build_educator():
     page = shell(
         fname, title, desc,
         "dialysis nurse training program Philippines, hemodialysis nurse competency checklist, nephrology nursing preceptor, renal nurse training syllabus, 480 hours dialysis training",
-        "Nursing Education &middot; For educators", "Educator and <em>Preceptor</em> Resource",
+        "Nephrology Nursing &middot; Specialization &middot; For educators", "Educator and <em>Preceptor</em> Resource",
         "A proposed structure for a provider-led program built on the public modules, with practical stations and a printable competency checklist. Proposals to adapt, not regulatory requirements.",
         "Head nurses &middot; nurse educators &middot; clinical preceptors &middot; training providers &middot; medical directors",
         nav, pre, main, glossary_block(main, [("Preceptor", "An experienced nurse who supervises and assesses a learner in clinical practice."),

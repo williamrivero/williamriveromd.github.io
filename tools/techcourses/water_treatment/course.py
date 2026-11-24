@@ -7,7 +7,7 @@ COURSE = {
     "short": "Water Treatment Technician",
     "hub_slug": "water-treatment-technician",
     "label": "Study series for dialysis water treatment technicians",
-    "tag": "Renal Technician Program",
+    "tag": "Renal Technicians",
     "audience": "Dialysis water treatment technicians and trainees &middot; chief technicians, head nurses, and medical directors who supervise the water system",
     "audience_type": "Dialysis water treatment technicians",
     "level": "Allied health and technical staff, college reading level",

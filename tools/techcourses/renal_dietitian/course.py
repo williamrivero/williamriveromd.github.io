@@ -14,7 +14,7 @@ COURSE = {
     "short": "Renal Dietitian",
     "hub_slug": "renal-dietitian",
     "label": "Study series for renal dietitians",
-    "tag": "Dietitian Education",
+    "tag": "Ancillary Staff",
     "icon": "🥗",
     "no_branch": True,
     "audience": ("Registered nutritionist-dietitians entering adult kidney care &middot; renal RND preceptors, "

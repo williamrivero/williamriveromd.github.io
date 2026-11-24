@@ -12,7 +12,7 @@ COURSE = {
     "short": "PhilHealth Claims",
     "hub_slug": HUB,
     "label": "Training track for the staff who keep dialysis claims honest, complete, and on time",
-    "tag": "Claims &amp; Coverage",
+    "tag": "Administrative Staff",
     "icon": "🧾",
     "no_branch": True,
     "audience": ("PhilHealth liaisons, claims officers, and claims clerks in freestanding dialysis centers and hospital dialysis units "

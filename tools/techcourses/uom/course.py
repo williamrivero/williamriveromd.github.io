@@ -10,7 +10,7 @@ COURSE = {
     "short": "Unit Manager",
     "hub_slug": HUB,
     "label": "Training track for operations managers of freestanding and hospital hemodialysis units",
-    "tag": "Unit Operations",
+    "tag": "Administrative Staff",
     "icon": "🗂️",
     "no_branch": True,
     "audience": ("Operations managers of freestanding hemodialysis units (UOM) &middot; unit managers of hospital dialysis services (UMH) "

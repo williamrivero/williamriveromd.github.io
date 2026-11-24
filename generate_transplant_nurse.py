@@ -457,7 +457,7 @@ def build_module(mid):
             cards.append((f, "Assigned reading", N.D.READING_TITLES.get(f) or html.escape(meta[0], quote=False), why))
     title = f"{m['title']}: Transplant Nurse Module {n}"
     page = N.shell(
-        fname, title, m["desc"], m["keywords"], f"Renal Care Academy &middot; Transplant Nurse &middot; Module {n}", m["title"], m["sub"],
+        fname, title, m["desc"], m["keywords"], f"Nephrology Nursing &middot; Specialization &middot; Module {n}", m["title"], m["sub"],
         "Registered nurses in kidney transplant ward and clinic work &middot; transplant coordinators &middot; nurse educators",
         nav, bar(f"Module {n}"), main, N.glossary_block(main, m.get("terms", [])), N.related_block(cards),
         jsonld_extra={"isPartOf": {"@type": "Course", "name": "Transplant Nurse (Renal Care Academy)", "url": f"{SITE}/guides/{COURSE['hub_slug']}"},
@@ -609,7 +609,7 @@ def build_hub():
         HUB, "Transplant Nurse: Kidney Transplant Nursing Subtrack · Renal Care Academy",
         "A free Philippine-first kidney transplant nursing subtrack of the Renal Care Academy: 12 modules on referral, compatibility, living and deceased donation, perioperative care, immunosuppression, rejection, infection, follow-up, PhilHealth and quality, with cases, knowledge checks and an OSCE capstone.",
         "kidney transplant nursing course Philippines, transplant nurse training, transplant coordinator course, renal care academy, nephrology nursing transplant",
-        "Renal Care Academy &middot; Nephrology Nursing &middot; Specialty subtrack", "Transplant Nurse",
+        "Nephrology Nursing &middot; Specialization", "Transplant Nurse",
         "Twelve modules that take a registered nurse from the transplant referral to lifelong follow-up: the physiology behind every task, what the latest evidence shows, and exactly where nursing scope begins and ends.",
         "Philippine registered nurses entering kidney transplant ward or clinic work &middot; transplant coordinators &middot; educators",
         nav, bar("Subtrack home").replace(f'<span class="nc-sep">›</span><a href="{HUB}">{COURSE["title"]}</a><span class="nc-sep">›</span><span>Subtrack home</span>', f'<span class="nc-sep">›</span><span>{COURSE["title"]}</span>'),
@@ -662,7 +662,7 @@ def build_exam():
         EXAM, "End-of-Course Knowledge Check: Transplant Nurse · Renal Care Academy",
         "Twelve-question end-of-course knowledge check for the Renal Care Academy Transplant Nurse subtrack, one question drawn from each module, pass mark 10 of 12, with rationales.",
         "kidney transplant nursing quiz, transplant nurse exam, renal care academy knowledge check",
-        "Renal Care Academy &middot; Transplant Nurse", "End-of-Course Knowledge Check",
+        "Nephrology Nursing &middot; Specialization", "End-of-Course Knowledge Check",
         "One question from each of the twelve modules, drawn at random each sitting. Pass with 10 of 12.",
         "Learners who have completed the twelve Transplant Nurse modules",
         [("exam", "Knowledge check"), ("next", "Next steps")], bar("Knowledge check"), main, N.glossary_block(main, []),

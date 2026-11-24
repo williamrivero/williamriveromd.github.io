@@ -12,7 +12,7 @@ COURSE = {
     "short": "Clinical Head",
     "hub_slug": HUB,
     "label": "Training track for physician heads of hemodialysis services",
-    "tag": "Physician Leadership",
+    "tag": "Renal Care Physicians",
     "icon": "🏛️",
     "no_branch": True,
     "audience": ("Physician heads of adult maintenance hemodialysis units &middot; nephrologists preparing to take an appointment &middot; "

@@ -11,7 +11,7 @@ COURSE = {
     "short": "Records Officer",
     "hub_slug": HUB,
     "label": "Training track for the records officers of hemodialysis units",
-    "tag": "Health Information",
+    "tag": "Ancillary Staff",
     "icon": "🗂️",
     "no_branch": True,
     "audience": ("Designated medical records officers, custodians, and deputies in standalone and hospital-based hemodialysis units "

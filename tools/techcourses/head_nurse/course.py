@@ -11,7 +11,7 @@ COURSE = {
     "short": "Head Nurse",
     "hub_slug": "dialysis-head-nurse",
     "label": "Study series for dialysis head nurses",
-    "tag": "Nursing Leadership",
+    "tag": "Nephrology Nursing &middot; Role",
     "icon": "🩺",
     "no_branch": True,
     "audience": "Head nurses and charge nurses in hemodialysis units &middot; senior dialysis nurses preparing to lead &middot; medical directors and nursing administrators who orient them",

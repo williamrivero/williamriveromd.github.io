@@ -12,7 +12,7 @@ COURSE = {
     "short": "Attending Nephrologist",
     "hub_slug": HUB,
     "label": "Training track for attending nephrologists in adult practice",
-    "tag": "Physician Practice",
+    "tag": "Renal Care Physicians",
     "icon": "🩺",
     "no_branch": True,
     "audience": ("Practicing nephrologists &middot; senior nephrology fellows &middot; internists who share longitudinal kidney care "

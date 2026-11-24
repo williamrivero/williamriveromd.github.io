@@ -11,7 +11,7 @@ COURSE = {
     "short": "Dialysis Technician",
     "hub_slug": "hemodialysis-technician",
     "label": "Study series for dialysis technicians",
-    "tag": "Renal Technician Program",
+    "tag": "Renal Technicians",
     "audience": "Entry-level dialysis technicians and trainees &middot; preceptors, head nurses, and training providers",
     "audience_type": "Dialysis technicians",
     "level": "Entry-level allied health, college reading level",

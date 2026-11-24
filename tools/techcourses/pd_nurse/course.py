@@ -11,7 +11,7 @@ COURSE = {
     "short": "PD Nurse",
     "hub_slug": HUB,
     "label": "Nephrology Nursing specialty subtrack for peritoneal dialysis",
-    "tag": "Nursing Specialty",
+    "tag": "Nephrology Nursing &middot; Specialization",
     "icon": "💧",
     "no_branch": True,
     "audience": ("Philippine-licensed registered nurses entering adult peritoneal dialysis practice &middot; PD nurse educators and preceptors"),

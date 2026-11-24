@@ -11,7 +11,7 @@ COURSE = {
     "short": "Physician on Duty",
     "hub_slug": "physician-on-duty",
     "label": "Study series for physicians on duty",
-    "tag": "Physician Education",
+    "tag": "Renal Care Physicians",
     "icon": "🩺",
     "no_branch": True,
     "audience": "Physicians who cover hemodialysis shifts &middot; attending nephrologists, medical directors, and head nurses who orient them",
