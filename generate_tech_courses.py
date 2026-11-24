@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 
@@ -1390,6 +1390,7 @@ TRACK_ICONS = {
     "hemodialysis-technician": '<path d="M12 3s5 5.6 5 9.5a5 5 0 0 1-10 0C7 8.6 12 3 12 3z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/>',
     "water-treatment-technician": '<path d="M3 7h18"/><path d="M5 7v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7"/><path d="M8 11h8M8 15h5"/><path d="M12 3v4"/>',
     "dialysis-clinical-head": '<path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/><path d="M12 8v3M10.5 9.5h3"/>',
+    "dialysis-unit-manager": '<rect x="4" y="4" width="16" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M8 11h8M8 15h5"/>',
     "peritoneal-dialysis-nurse": '<path d="M12 3s5 5.6 5 9.5a5 5 0 0 1-10 0C7 8.6 12 3 12 3z"/><path d="M8 20h8"/>',
     "philhealth-claims": '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v3h6V3"/><path d="M8.5 13l2.5 2.5 4.5-5"/>',
     "renal-dietitian": '<path d="M7 3v8a3 3 0 0 0 6 0V3"/><path d="M10 3v18"/><path d="M17 3c-1.7 1.2-2.5 3.2-2.5 6 0 2 1 3 2.5 3v9"/>',
@@ -1484,7 +1485,7 @@ def build_academy():
     n_nurse = int(re.match(r"(\d+)", A["nursing"][5]).group(1))
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
     short = {"hemodialysis-technician": "Dialysis Technician", "water-treatment-technician": "Water Treatment Technician",
-             "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head", "philhealth-claims": "PhilHealth Claims"}
+             "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head", "philhealth-claims": "PhilHealth Claims", "dialysis-unit-manager": "Unit Manager"}
     hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]
     pg = shell(_Academy, fname, "Renal Care Academy: Training for Dialysis and Nephrology Staff", desc, A["keywords"],

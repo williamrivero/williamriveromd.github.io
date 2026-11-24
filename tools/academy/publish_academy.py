@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[2]
 GUIDES, ACADEMY = ROOT / "guides", ROOT / "academy"
 SITE = "https://renalcarematters.com"
 LANDING = "renal-care-academy.html"
-PREFIXES = ("nephrology-nursing", "hemodialysis-technician", "water-treatment-technician", "dialysis-biomedical-technician", "physician-on-duty", "renal-dietitian", "dialysis-clinical-head", "peritoneal-dialysis-nurse", "philhealth-claims")
+PREFIXES = ("nephrology-nursing", "hemodialysis-technician", "water-treatment-technician", "dialysis-biomedical-technician", "physician-on-duty", "renal-dietitian", "dialysis-clinical-head", "peritoneal-dialysis-nurse", "philhealth-claims", "dialysis-unit-manager")
 DRY = "--dry-run" in sys.argv
 
 
