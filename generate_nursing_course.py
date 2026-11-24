@@ -1465,6 +1465,10 @@ def main():
     if not args.check:
         r = subprocess.run([sys.executable, str(ROOT / "tools" / "academy" / "publish_academy.py")], cwd=ROOT, capture_output=True, text=True)
         print((r.stdout or r.stderr).strip())
+        # keep the Transplant Nurse subtrack entry links (Module 11 section, specialty card on the hub)
+        if (ROOT / "generate_transplant_nurse.py").exists():
+            r = subprocess.run([sys.executable, "-c", "import generate_transplant_nurse as T; print('transplant-nurse entry links:', T.wire_parent())"], cwd=ROOT, capture_output=True, text=True)
+            print((r.stdout or r.stderr).strip()[-300:])
 
 
 if __name__ == "__main__":

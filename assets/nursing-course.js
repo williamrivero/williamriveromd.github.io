@@ -59,6 +59,12 @@
     function drawSet() {
       var previous = questions.slice();
       var pick = shuffle(bank.slice()).slice(0, drawN);
+      if (form.hasAttribute('data-stratify')) {
+        /* one question per data-group, groups in random order */
+        var groups = {}, keys = [];
+        bank.forEach(function (q) { var g = q.getAttribute('data-group') || ''; if (!groups[g]) { groups[g] = []; keys.push(g); } groups[g].push(q); });
+        pick = shuffle(keys.map(function (g) { return groups[g][rand(groups[g].length)]; })).slice(0, drawN);
+      }
       // a new set should not repeat the previous set exactly
       if (previous.length && bank.length > drawN &&
           pick.every(function (q) { return previous.indexOf(q) !== -1; })) {
@@ -134,6 +140,17 @@
       p.textContent = ' Read the rationale under every option, including the ones you did not choose. ' +
         'This score records self-study only; practice competencies are observed and signed off by a preceptor.';
       result.appendChild(strong); result.appendChild(p);
+      var passMark = parseInt(form.getAttribute('data-pass'), 10);
+      if (passMark) {
+        var line = document.createElement('span');
+        line.className = 'nc-verdict-line';
+        var passed = score >= passMark;
+        line.textContent = passed
+          ? 'Passed (' + score + ' of ' + total + '; pass mark ' + passMark + '). Your self-study is complete. Simulation and workplace competency are assessed separately.'
+          : 'Not yet passed (' + score + ' of ' + total + '; pass mark ' + passMark + '). Review the modules for the questions you missed, then try a new set.';
+        result.classList.add(passed ? 'nc-result-pass' : 'nc-result-fail');
+        result.appendChild(line);
+      }
       submit.hidden = true; retry.hidden = false;
       result.focus();
       if (remember && remember.checked) {

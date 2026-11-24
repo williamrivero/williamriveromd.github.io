@@ -1596,6 +1596,9 @@ def main():
     if not args.check:
         r = subprocess.run([sys.executable, str(ROOT / "tools" / "academy" / "publish_academy.py")], cwd=ROOT, capture_output=True, text=True)
         print((r.stdout or r.stderr).strip())
+        if (ROOT / "generate_transplant_nurse.py").exists():   # keep the Transplant Nurse entry links
+            r2 = subprocess.run([sys.executable, "-c", "import generate_transplant_nurse as T; print('transplant-nurse entry links:', T.wire_parent())"], cwd=ROOT, capture_output=True, text=True)
+            print((r2.stdout or r2.stderr).strip()[-300:])
 
 
 if __name__ == "__main__":
