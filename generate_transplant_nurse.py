@@ -730,8 +730,7 @@ def wire_parent():
     m11, hub, landing = entry_blocks()
     done = []
     for fname, block, anchor in ((ENTRY, m11, '<section class="section" id="case">'),
-                                 (PARENT, hub, '<section class="section" id="progression">'),
-                                 ("index.html", landing, '    <a class="tc-branch" href="hemodialysis-technician.html">')):
+                                 (PARENT, hub, '<section class="section" id="progression">')):
         p = ACADEMY / fname
         if not p.exists():
             err(f"parent page missing: academy/{fname}")
@@ -746,14 +745,16 @@ def wire_parent():
             s = s.replace('<a class="nav-pill" href="#case">', '<a class="nav-pill" href="#transplant-nurse">Transplant Nurse subtrack</a>\n<a class="nav-pill" href="#case">', 1)
         if fname == PARENT and 'href="#specialty"' not in s:
             s = s.replace('<a class="nav-pill" href="#progression">', '<a class="nav-pill" href="#specialty">Specialty subtracks</a>\n<a class="nav-pill" href="#progression">', 1)
-        if fname == "index.html" and 'href="transplant-nurse.html"><span class="acad-track-ico"' not in s:
-            nav_anchor = '    <a class="acad-track" href="hemodialysis-technician.html">'
-            track = ('    <a class="acad-track" href="transplant-nurse.html"><span class="acad-track-ico"><svg viewBox="0 0 24 24" aria-hidden="true">'
-                     '<path d="M12 21c-4-2.5-6-6-6-10a6 6 0 0 1 12 0c0 4-2 7.5-6 10z"/><path d="M12 8v6M9 11h6"/></svg></span>'
-                     '<span class="acad-track-t"><strong>Transplant Nurse</strong><small>12 modules</small></span></a>\n')
-            s = s.replace(nav_anchor, track + nav_anchor, 1)
         p.write_text(s, encoding="utf-8")
         done.append(fname)
+    # Academy landing page: Transplant Nurse shown as a subtrack nested under the Nephrology Nursing card
+    spec = importlib.util.spec_from_file_location("tn_landing", ROOT / "tools" / "transplant_nurse" / "landing.py")
+    L = importlib.util.module_from_spec(spec); spec.loader.exec_module(L)
+    r = L.wire(ACADEMY / "index.html")
+    if r == "ok":
+        done.append("index.html")
+    else:
+        err(f"academy/index.html: {r}")
     return done
 
 

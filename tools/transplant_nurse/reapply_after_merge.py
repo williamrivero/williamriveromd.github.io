@@ -20,7 +20,6 @@ pages = {
         ('<a class="nav-pill" href="#case">', '<a class="nav-pill" href="#transplant-nurse">Transplant Nurse subtrack</a>\n')),
     "academy/nephrology-nursing.html": (['<section class="section" id="progression">'],
         ('<a class="nav-pill" href="#progression">', '<a class="nav-pill" href="#specialty">Specialty subtracks</a>\n')),
-    "academy/index.html": (['    <a class="tc-branch" href="hemodialysis-technician.html">', '    <a class="tc-branch" href="dialysis-technician.html">'], None),
 }
 for rel, (anchors, pill) in pages.items():
     mine = show(rel)
@@ -45,6 +44,10 @@ for rel, (anchors, pill) in pages.items():
             out.append(f"WARN {rel}: nav track link not placed")
     p.write_text(s, encoding="utf-8")
     out.append(f"ok {rel} (anchor: {a.strip()[:60]})")
+import importlib.util
+spec = importlib.util.spec_from_file_location("tn_landing", root / "tools/transplant_nurse/landing.py")
+L = importlib.util.module_from_spec(spec); spec.loader.exec_module(L)
+out.append("academy/index.html: " + L.wire(root / "academy/index.html"))
 # generator hooks
 HOOK = {"generate_nursing_course.py": ("r", "        "), "generate_tech_courses.py": ("r2", "        ")}
 for rel, (var, ind) in HOOK.items():
