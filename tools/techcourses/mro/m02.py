@@ -44,6 +44,9 @@ MODULE = {
 <p>Two renewal dates on that list catch units out more than any others. A standing order signed in January is out of date by April. A consent signed last year needs renewal this year. Neither one announces itself. Build a calendar of renewal dates for every patient, and look ahead two weeks every Monday.</p>
 <p>The laboratory section is not only clinical. The Philippine Health Insurance Corporation (PhilHealth) sets a minimum standard of care for the hemodialysis package that names scheduled laboratory tests, including serum albumin every three months and a hepatitis profile every six months as indicated.[[mro_ph2024ts]] A missing quarterly albumin is therefore a clinical gap, a quality gap, and a claims-evidence gap at the same time.</p>
 {{key:Keep a renewal calendar for standing orders and consents. An order that expires quietly is an order the nurse may still be following on Monday.}}
+{{scene:The consent that ran out|<p>Mrs. Natividad Ocampo signed her hemodialysis consent on October 3 last year. On October 10 this year, her chart still holds only that form. No one noticed, because nothing about her treatment changed.</p>
+<p>The records officer&rsquo;s renewal calendar flags it two weeks ahead. The charge nurse brings the new form to her Monday session, the attending physician explains it again, and Mrs. Ocampo signs. The audit three months later finds every consent current.</p>
+<p class="tc-scene-take">Renewal dates do not announce themselves. A calendar is the only reliable reminder.</p>}}
 """),
         ("layers", "Three layers", "Authorized, delivered, safe", """
 {{fig:mro02_layers}}
@@ -61,12 +64,18 @@ MODULE = {
 <p>PhilHealth&rsquo;s minimum standard allows up to 32 dialyzers per patient per calendar year, each reusable up to five times.[[mro_ph2024ts]] Every reuse must link to the right patient and show the reprocessing date, the germicide used and its contact time, the residual-germicide test, and a performance test such as fiber bundle volume.</p>
 <p>Now picture what happens if the link breaks. A reprocessed dialyzer carries traces of one person&rsquo;s blood. Used on a different patient, it is a bloodborne-infection event, with hepatitis B, hepatitis C, and HIV among the risks. The reprocessing log is the only record that ties each dialyzer to exactly one person. That is why the records officer treats it as an <strong>identity</strong> record as much as a technical one.</p>
 {{key:Order proves authorized. Run sheet proves delivered. Technical logs prove safe. A chart that holds only the first two cannot prove the third.}}
+{{scene:The dialyzer with two owners|<p>During a weekly check, a technician notices that dialyzer D-117-03 appears in the reprocessing log under two patients with similar surnames, Mr. Dante Cruz and Mr. Danilo Cruz, on consecutive days.</p>
+<p>He stops reprocessing it and tells the technical supervisor, who traces both run sheets. One entry was a transcription error: the dialyzer had always been Mr. Dante Cruz&rsquo;s. The supervisor corrects the log through the technical correction process and asks the nephrologist to review whether any clinical action is needed. The records officer adds both patients&rsquo; full middle names to the reprocessing labels.</p>
+<p class="tc-scene-take">The reprocessing log is an identity record. A name error there is a safety event, not a typo.</p>}}
 """),
         ("trace", "Tracing a session", "Following one session through every record", """
 <p>The best way to learn the three layers is to trace a single session from start to finish. Pick any session from last week and follow it.</p>
 {{flow:Tracing one session|Schedule::Was the patient booked for this date and shift?|Standing order::Was a current, signed order in force on that date?|Run sheet::Is it signed, complete, and filed to the right patient and session?|Dialyzer log::Does the dialyzer number and reuse count on the run sheet match a reprocessing entry for this patient, dated before the session?|Water log::Was water quality tested and recorded for that day, as the technical procedure requires?|Machine record::Was the machine at that station in service and maintained?|Claim::If the session was claimed, does the claim match the run sheet?}}
 <p>Most traces end cleanly. The ones that do not teach you where your unit&rsquo;s weak points are. A common pattern is a run sheet that lists a dialyzer number with no matching reprocessing entry, because the technician logged it at the end of a busy shift and forgot. Another is a machine number on the run sheet that does not exist in the maintenance record, because a machine was swapped mid-week and no one updated the station board.</p>
 <p>Tracing is not an accusation. You are checking that the records agree, not that anyone did something wrong. When they disagree, the clinical or technical owner explains, and the explanation goes into the record.</p>
+{{scene:A trace that found a machine|<p>Tracing one random session from last Wednesday, the records officer finds that the run sheet lists machine M-09 at station 9. The maintenance record shows M-09 was sent out for repair on Monday.</p>
+<p>The charge nurse explains: M-12 was moved to station 9 on Monday, but the station board still said M-09. The run sheets for that week are corrected by their authors, the board is fixed, and the technical supervisor adds &ldquo;update the station board&rdquo; to the machine-swap checklist.</p>
+<p class="tc-scene-take">The trace did not find a wrong treatment. It found a habit that would eventually have hidden one.</p>}}
 """),
         ("deficiency", "Deficiencies", "Four states, one owner each", """
 <p>When you audit a chart, mark every expected item as one of four states.</p>
@@ -92,6 +101,9 @@ MODULE = {
 <tr><td>A document filed to the wrong patient</td><td>Someone may act on it</td></tr>
 </tbody></table></div>
 {{call:Anything that could affect the next treatment goes to the charge nurse and the clinical team before that session, not to the weekly deficiency round. Never fill a clinical field yourself, even when the value seems obvious from another document. When in doubt about clinical risk, ask the attending nephrologist and follow your unit&rsquo;s protocol.}}
+{{scene:Not applicable, or not found?|<p>An audit sheet comes back from a relief clerk with 14 items marked &ldquo;N/A&rdquo; across ten charts, including three advance-directive sections.</p>
+<p>The records officer checks the written applicability rule. Advance-directive status is required for every patient: either a directive or a documented statement that none exists. The three charts had neither. She reclassifies them as deficient, assigns them to the attending physician, and adds one line to the audit instructions: &ldquo;N/A only where the written rule says so.&rdquo;</p>
+<p class="tc-scene-take">&ldquo;Not applicable&rdquo; without a rule behind it hides the very gaps an audit is meant to find.</p>}}
 """),
         ("habits", "Floor habits", "Usual office habits that change here", """
 <p>Many records habits come from hospital wards or general clinics. Some of them do not fit a dialysis unit.</p>

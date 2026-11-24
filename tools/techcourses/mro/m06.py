@@ -45,6 +45,9 @@ MODULE = {
 <tr><td>Co-payment</td><td>No co-payment for services in the circular&rsquo;s tables; a professional-fee co-payment of up to &#8369;450 for listed additional services, itemized on Annex A[[mro_ph2024ts]]</td></tr>
 </tbody></table></div>
 <p>Rates and forms change, and they changed twice in 2024 alone. Attach the circular revision to the <strong>service date</strong> in your ledger, not the filing date. A session given before a rate change is paid at the old rate even if the claim is filed after it. Confirm current rules with your claims lead, and record each change in your source register (Module 1).</p>
+{{scene:The October filing|<p>A unit files September sessions in mid-October. The clerk uses the new form version released on October 1, which asks for a field the September form did not have.</p>
+<p>The records officer checks the advisory: the new form applies to sessions from its effective date, not to filings after it. The September claims are refiled on the version in force on their service dates, and the source register gets a note: &ldquo;Forms follow the service date.&rdquo;</p>
+<p class="tc-scene-take">Rates and forms change on a date. The date that matters is the day of treatment.</p>}}
 """),
         ("proofs", "Three proofs", "Eligibility, delivery, documentation", """
 {{fig:mro06_proofs}}
@@ -62,6 +65,9 @@ MODULE = {
 {{call:A session canceled before treatment goes on exception with the documented cancellation. It is never claimed, whatever the staging list says. If you are told to claim it anyway, write down who asked and escalate to the facility head.}}
 <h3>Duplicates</h3>
 <p>Duplicates usually come from honest causes: a batch resent after a network error, a service staged twice by two staff members, or a corrected claim filed without retiring the original. Before any batch goes out, check every row against every sent and accepted batch for the same patient, date, and service. Claiming one session twice, even by accident, is a payment the unit will have to explain and return.</p>
+{{scene:Registered, scheduled, not treated|<p>Mr. Gregorio Santos is registered in the PhilHealth Dialysis Database and booked for Friday morning. On Friday his daughter calls: he was admitted to hospital overnight. The schedule still shows him, and the staging list picks up the session.</p>
+<p>The records officer checks the three proofs. Eligibility: yes. Delivery: no run sheet, because no treatment happened. The session is removed from the batch with the daughter&rsquo;s call documented.</p>
+<p class="tc-scene-take">Eligibility and a booking are two of three legs. Without the run sheet, the stool falls.</p>}}
 """),
         ("ledger", "The ledger", "The session ledger and corrections", """
 <p>For each patient, per calendar year, keep a session ledger.</p>
@@ -81,6 +87,9 @@ MODULE = {
 <p>For a return to hospital, log the reason, fix the underlying document through its owner, keep both the original submission and the corrected one, and mark the item corrected only when the amended document and the new acknowledgment are both traceable. Never resubmit an unchanged batch under a new identifier. That is not a correction; it is a second claim for the same service.</p>
 {{key:Eligibility is not delivery, and delivery is not documentation. Prove each, then check for duplicates.}}
 <p>Claims staff take the packet from here. The Academy&rsquo;s <a href="philhealth-claims.html">PhilHealth Liaison, Claims Officer and Clerk track</a> covers filing, returns, and denials in depth.</p>
+{{scene:The family told in October|<p>Mrs. Adoracion Villafuerte needed extra sessions in June and July for fluid overload. On October 5 her ledger shows 138 sessions used, and the projection puts her cap in the third week of November.</p>
+<p>The records officer tells the claims lead, who tells the social worker, who meets the family. They apply for assistance from the local government and a charity program, and when the cap arrives, the remaining sessions are covered.</p>
+<p class="tc-scene-take">The same number on December 15 would have been a crisis. On October 5, it was a plan.</p>}}
 """),
     ],
     "debrief": ["""

@@ -36,6 +36,9 @@ MODULE = {
 </tbody></table></div>
 <p>The records officer never signs, never stamps a pre-signed form, and never adds a clinical statement the physician did not make. &ldquo;Fit to travel,&rdquo; &ldquo;stable,&rdquo; &ldquo;unable to work,&rdquo; and &ldquo;no contraindication&rdquo; are clinical judgments. If the template has a blank for them, it stays blank on the draft for the physician to fill.</p>
 {{call:No pre-signed blank certificates, ever, not even &ldquo;for emergencies while the doctor is away.&rdquo; A signature belongs to a reviewed document. If a certificate is urgent and the physician is unavailable, ask the covering physician on the unit&rsquo;s escalation list.}}
+{{scene:The certificate in the drawer|<p>A new records officer finds a folder of blank certificate forms, each already signed and stamped by a physician who left the unit last year, &ldquo;for emergencies.&rdquo;</p>
+<p>She gives the folder to the unit manager, who has the forms destroyed with a witness and a disposition record, and writes to the former physician to explain. The unit&rsquo;s procedure now names a covering physician for urgent certificates.</p>
+<p class="tc-scene-take">A signature belongs to a document someone reviewed. Pre-signed blanks belong to no one.</p>}}
 """),
         ("requests", "Common requests", "What each request usually needs", """
 <div class="table-wrap"><table>
@@ -48,6 +51,9 @@ MODULE = {
 <tr><td>Transplant referral</td><td>A full clinical summary assembled with the clinical team</td><td>Missing access history and transfusion records</td></tr>
 </tbody></table></div>
 <p>An employer letter is a common scope trap. The employer needs to know that the patient dialyzes on Monday, Wednesday, and Friday mornings and cannot work those hours. The employer does not need the hepatitis status or the cause of kidney failure. The physician decides what goes in; your draft should not offer more than the purpose requires.</p>
+{{scene:What the employer needed|<p>Mr. Reynaldo Pascua&rsquo;s employer asks for &ldquo;a medical certificate&rdquo; to justify his absences. The draft template includes diagnosis, cause of kidney failure, hepatitis status, and medications.</p>
+<p>The records officer prepares a draft limited to his dialysis schedule and the physician&rsquo;s statement on working hours, and leaves the rest for the physician to decide. The physician signs it as drafted. Mr. Pascua keeps his job, and his hepatitis status stays private.</p>
+<p class="tc-scene-take">Scope is set by purpose. An employer needs to plan around a schedule, not to know a diagnosis.</p>}}
 """),
         ("dates", "Getting dates right", "Vintage, serologies, and the request log", """
 <h3>Dialysis vintage</h3>
@@ -61,6 +67,9 @@ MODULE = {
 <p>Keep a log of every request: date received, requester and authority, purpose, document type, who prepared the draft, the physician, date signed, date released, channel, and copy retained. Turnaround time, from complete request to release, is a service measure worth tracking, because a certificate that arrives after the flight is no help to anyone.</p>
 <p>Follow the facility&rsquo;s posted fee policy. Route any dispute about releasing records needed for continuity of care to the unit manager rather than withholding a document as leverage. A patient who owes the unit money still needs her transfer orders.</p>
 {{key:Attach a source sheet to every draft. The physician can verify it in minutes, and every fact on the certificate can be traced back to a page in the chart.}}
+{{scene:Five years, not two|<p>Mrs. Corazon Gatdula needs a clinical abstract for a transplant work-up. The unit&rsquo;s template pulls her &ldquo;dialysis start&rdquo; from her first session at this unit, two years ago.</p>
+<p>The records officer checks the referral packet: first-ever hemodialysis five years earlier, at a hospital in Quezon City. She corrects the source sheet, the physician signs the corrected vintage, and the transplant program receives an accurate history.</p>
+<p class="tc-scene-take">Three missing years would have been three years of her history erased from the decision.</p>}}
 """),
     ],
     "debrief": ["""

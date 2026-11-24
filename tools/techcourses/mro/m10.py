@@ -45,6 +45,9 @@ MODULE = {
 <p>You may read about other countries&rsquo; rules. The United States federal dialysis rule, for example, keeps records six years from discharge.[[dch_cfr494]] That is a comparison only. It is not a Philippine rule, and it cannot shorten a Philippine one.</p>
 {{formula:<strong>Eligibility date</strong> = trigger date + retention period.<br>Last treatment June 30, 2019 + 7 years = disposition review from June 30, 2026.}}
 <p>The toolkit&rsquo;s retention calculator does this arithmetic, including the longer-schedule and hold checks.</p>
+{{scene:The chart that never expires|<p>Mr. Ambrosio Velasco has dialyzed with the unit for eleven years. His chart fills two boxes, and a staff member asks whether the first box can be shredded because it is &ldquo;more than ten years old.&rdquo;</p>
+<p>The records officer explains that the clock has not started: the trigger is his last treatment, and he is still a patient. The first box is scanned, the scans are indexed and checked page by page, and the paper is kept until the schedule says otherwise.</p>
+<p class="tc-scene-take">Age is not the trigger. The last treatment is.</p>}}
 """),
         ("holds", "Holds", "Holds override schedules", """
 {{fig:mro10_clock}}
@@ -60,6 +63,9 @@ MODULE = {
 <p>When a hold arrives, confirm its scope in writing with counsel or the facility head: which patients, which record types, which dates. Then suspend disposition of every affected copy. That includes the paper chart, the scanned images, the electronic record, claims attachments, registry extracts, emailed copies, and backups. IT must be told about backups, because a backup tape rotated on schedule can destroy the one copy a court needs.</p>
 <p>Record the acknowledgment of the hold. Review open holds periodically. Release a hold only in writing. When a hold ends, recheck the schedule, any other holds, and approvals before anything proceeds. The end of one hold does not make a chart eligible if another hold or a longer schedule still applies.</p>
 {{call:Never destroy a record because the box is full. Eligibility comes from the schedule, permission comes from the approver, and holds come first. If a manager asks you to clear a shelf, the answer is a list of what is eligible, not a shredder.}}
+{{scene:The tape on rotation|<p>A PhilHealth audit letter arrives covering claims for 2023. The records officer places a hold on the affected charts and tells IT in writing. IT had planned to overwrite the 2023 backup tapes the following week as part of routine rotation.</p>
+<p>The tapes are set aside and labeled with the hold number. When the auditors later ask for an electronic record that had been edited after the claim, the backup is the only copy showing the version filed.</p>
+<p class="tc-scene-take">A hold on paper alone would have lost the one copy that mattered.</p>}}
 """),
         ("destroy", "Destruction", "Lawful, documented destruction", """
 <p>Destroy only records that are eligible, unheld, and approved in writing. Use a secure method: cross-cut shredding or pulping for paper; certified wiping or physical destruction for electronic media. Throwing charts into the regular trash, selling them as scrap paper, or burning them in the back lot are all breaches waiting to happen. Paper sold as scrap does not stay private; it can turn up as packaging anywhere.</p>
@@ -75,6 +81,9 @@ MODULE = {
 <tr><td>Owner and method</td><td>Records officer; cross-cut shredding with witness</td></tr>
 </tbody></table></div>
 {{key:Every copy counts. A chart shredded on paper but still sitting in a scanned folder, a claims attachment, and last year&rsquo;s backup has not been disposed of; it has been partly destroyed.}}
+{{scene:The disposition record that saved a complaint|<p>Two years after a batch of eligible charts was destroyed, a former patient&rsquo;s relative complains that the unit &ldquo;lost&rdquo; the records.</p>
+<p>The records officer retrieves the signed disposition record: the chart number, the schedule and trigger date, the approval, the cross-cut shredding, the witness, and the date. The complaint is closed.</p>
+<p class="tc-scene-take">The disposition record is the proof that destruction was a decision, not an accident.</p>}}
 """),
     ],
     "debrief": ["""

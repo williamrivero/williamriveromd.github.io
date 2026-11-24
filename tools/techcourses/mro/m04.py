@@ -41,6 +41,9 @@ MODULE = {
 <p>Before accepting any scan, check it page by page: legible, the page count matching the paper source, the right way up, signatures present, and the patient matching on every page. A two-page run sheet scanned as one page is not &ldquo;mostly captured.&rdquo; Incomplete or poor scans go to a rescan queue, never to the chart with a sticky note promising to fix them later.</p>
 <h3>Paper originals</h3>
 <p>For each document class, the records manual should say whether the paper original or the electronic image is the authoritative copy. Write it down; do not leave staff to guess. If paper is kept, track it like any valuable object: checked out, returned, transferred, or disposed of only with a record of who, when, and why. A folder that leaves the records room without a check-out entry is a custody break, even if it comes back the same afternoon.</p>
+{{scene:Page two of two|<p>A scanned run sheet for Mrs. Lydia Panganiban looks complete: one page, signed, legible. The paper original, still in the tray, has a second page with the nurse&rsquo;s note about a hypotensive episode and the saline given.</p>
+<p>The clerk rejects the scan and rescans both pages. A month later, when the attending physician reviews why Mrs. Panganiban&rsquo;s dry weight was changed, the note is there.</p>
+<p class="tc-scene-take">A page count check takes three seconds and catches the one page that explains everything else.</p>}}
 """),
         ("two", "Two corrections", "Indexing correction or clinical correction", """
 {{fig:mro04_corrections}}
@@ -62,6 +65,9 @@ MODULE = {
 <h3>On paper</h3>
 <p>On a paper record, correct with a single line through the error, leaving the original legible. Write the correction nearby with initials, date, and time. No correction fluid, no overwriting, no torn-out or rewritten pages, no pasted labels covering the original.</p>
 {{call:Never clean up a chart before an inspection by removing, rewriting, or backdating entries. An honest deficiency is a finding the unit can fix. An altered record is misconduct, and it makes every other page in the chart suspect.}}
+{{scene:Same patient, wrong session|<p>A records officer finds a potassium bath order dated November 12 filed under Mr. Edwin Salonga&rsquo;s November 10 session. She relinks it to November 12 through the indexing workflow, and the system records the original link, the new one, the reason, and her name.</p>
+<p>She then asks the charge nurse whether anyone read the order on November 10. No one had; the nurse on that day followed the standing order. Nothing clinical needs to change, and that answer goes into the correction note.</p>
+<p class="tc-scene-take">An indexing correction is yours to make. Whether it mattered clinically is a question for the clinical team.</p>}}
 """),
         ("copy", "Copied text", "Copy and paste in the electronic record", """
 <p>Electronic health records (EHRs) make it easy to copy yesterday&rsquo;s note forward. For a patient who dialyzes three times a week, the temptation is strong: much of today really is the same as Monday.</p>
@@ -69,6 +75,9 @@ MODULE = {
 <p>Records staff are well placed to notice one pattern: the same pre-dialysis weight and blood pressure on several consecutive run sheets. Real patients do not weigh exactly 61.0 kg with a blood pressure of 140/80 on six sessions in a row. The pattern calls for clinical review. It is not proof of error, because some patients really are stable and some machines round values. Route it to the Dialysis Clinical Head with the sessions listed, without accusation, and let the clinical team explain.</p>
 <p>The same discipline applies to coded fields. Module 5 covers diagnosis codes from the International Classification of Diseases, 10th Revision (ICD-10), and how to question a note rather than correct it.</p>
 {{key:After any correction, ask whether the document already traveled: to a claim, a registry extract, a released copy, or a transfer packet. If it did, those copies need correcting too.}}
+{{scene:Six sessions at 61.0|<p>Reviewing run sheets for Mr. Florencio Abad, the records officer sees the same pre-dialysis weight, 61.0 kg, and blood pressure, 130/80, on six sessions in a row.</p>
+<p>She lists the dates and sends them to the Dialysis Clinical Head with a neutral note: &ldquo;Identical values on six consecutive sessions, for review.&rdquo; The review finds the scale at station 3 had stopped updating its display, and a nurse had been copying the screen. The scale is replaced, and the clinical team rechecks Mr. Abad&rsquo;s actual weight trend.</p>
+<p class="tc-scene-take">The pattern was not anyone&rsquo;s dishonesty. It was a broken scale, found because someone looked at the record.</p>}}
 """),
         ("why", "Why it matters", "What a correction trail protects", """
 <p>It can feel fussy to preserve the original of a simple mistake. Consider who relies on the trail.</p>

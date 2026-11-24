@@ -34,6 +34,9 @@ MODULE = {
 <p>In an analysis of 76 patient-safety reports tied to electronic health record downtime, 46% said downtime procedures were either not followed or not in place, and only 27.6% described a procedure carried out successfully. Patient identification and communication of clinical information were the main hazards.[[mro_larsen2018]] In a two-hospital study, laboratory results were delayed by an average of 62% during downtime, and the paper downtime records were themselves incomplete.[[mro_larsen2019]] Downtime is also common: one hospital logged 204 events over four and a half years, 96% of them unplanned.[[mro_fang2025]]</p>
 <p>These studies come from hospitals, and safety reports capture only what someone chose to report, so the true picture may be worse. The same hazards apply to a dialysis unit, where every patient is treated on a fixed schedule: sheets with no identifiers, sessions entered twice, and values filled in from memory days later.</p>
 <p>At national scale, the 2023 ransomware attack on the Philippine Health Insurance Corporation (PhilHealth) forced the payer itself into manual operations.[[mro_ph2023medusa]] If the payer can go dark, so can any dialysis unit.</p>
+{{scene:Four hours at a Saturday unit|<p>A power fluctuation knocks out the server at a Saturday unit for four hours. The nurses switch to paper without trouble; they drilled it two months earlier.</p>
+<p>What goes wrong is smaller: one laboratory result arrives by phone, is written on a sticky note, and is found three days later on a monitor. The patient&rsquo;s potassium was high. Nothing happened, but the next drill adds a rule: phoned results go on the downtime results log, with two identifiers, before anything else.</p>
+<p class="tc-scene-take">Downtime research says procedures fail, not people. The fix is a better procedure.</p>}}
 """),
         ("during", "Before and during", "Readiness and downtime documentation", """
 <h3>Before</h3>
@@ -58,6 +61,9 @@ MODULE = {
 <tr><td>Sharing one emergency password</td><td>The approved, logged emergency-access procedure</td></tr>
 </tbody></table></div>
 {{call:A shared emergency password to speed up recovery destroys attribution. Use the approved, logged emergency-access procedure, and report any pressure to do otherwise. If an outage affects a patient&rsquo;s treatment, the clinical decisions belong to the charge nurse and the attending nephrologist, per unit protocol.}}
+{{scene:The kit that saved an hour|<p>When the electronic record fails at 5:50 a.m. on a Monday, the charge nurse opens the downtime kit at each station. Inside are numbered run sheets, a patient list printed the previous evening, and current standing orders.</p>
+<p>The first patients are connected by 6:10 a.m. on paper. A unit across the province without a kit spends its first hour phoning physicians for prescriptions.</p>
+<p class="tc-scene-take">A kit is checked on a quiet day so that it works on a loud one.</p>}}
 """),
         ("after", "After recovery", "Three lists, one truth", """
 {{fig:mro12_lists}}
@@ -75,6 +81,9 @@ MODULE = {
 <p>The last row of the table is the easiest to miss. A patient who was scheduled, has no paper sheet, and has no electronic entry may have been sent home, sent to the emergency room, or treated on a sheet that was lost. Only the clinical team can say which. The pre-numbered downtime IDs are what make a lost sheet visible: a gap in the sequence is a question.</p>
 <p>A two-person reconciliation, one reading and one checking, is a strong local control. Close the event with a short report: duration, encounters affected, counts, open exceptions, and lessons for the next drill. Sessions captured on paper are claimable only after they are authenticated and back-entered.</p>
 {{key:Downtime paper is a parallel record. Reconcile it; do not just file it.}}
+{{scene:The sequence with a gap|<p>After an outage, sheets DT-101 to DT-118 come back, except DT-109. The records officer asks the charge nurse about DT-109.</p>
+<p>It was issued to Mr. Celso Agbayani, whose session was stopped after 40 minutes when he became short of breath and was sent to the emergency room. The nurse had sent the sheet with him. The emergency room returns it, and the session is recorded as started and stopped, with the reason.</p>
+<p class="tc-scene-take">Pre-numbered sheets turned a missing page into a question someone could answer.</p>}}
 """),
     ],
     "debrief": ["""

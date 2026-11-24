@@ -40,6 +40,9 @@ MODULE = {
 <h3>Two steps for every code</h3>
 <p>Verify every code in two steps. First, look up the term in the alphabetic index. Second, <strong>confirm the code in the tabular list</strong>, reading its inclusion and exclusion notes, any &ldquo;use additional code&rdquo; instructions, and the level of specificity required. The index points you to a neighborhood; the tabular list tells you whether you are at the right address. Record the source note, the service date, the classification and version, and who verified it.</p>
 {{fig:mro05_code}}
+{{scene:The patient who stopped dialysis|<p>Mr. Wilfredo Cajucom started dialysis after a severe infection. His intake note said &ldquo;CKD5?&rdquo;; his signed discharge abstract said &ldquo;AKI.&rdquo; The records officer coded nothing until the physician answered her query: &ldquo;AKI, monitor for recovery.&rdquo;</p>
+<p>Six weeks later his urine output returned and dialysis was stopped. His record, registry entry, and PhilHealth claims all said AKI, so nothing had to be unwound.</p>
+<p class="tc-scene-take">A treatment pattern suggested chronic kidney failure. The physician knew better, and the query let the record say so.</p>}}
 """),
         ("fields", "Fields and versions", "Diagnosis, procedure, and which classification", """
 <p>Diagnosis codes and procedure codes answer different questions, and they live in different fields.</p>
@@ -55,6 +58,9 @@ MODULE = {
 <p>Claims follow the code lists in PhilHealth&rsquo;s own issuances, not the newest edition of the classification. When the Department of Health (DOH) updated ICD-10 for statistics in 2016, PhilHealth told providers to keep using the codes in its case-rate circulars until it issued a new instruction.[[mro_ph2017icd]]</p>
 <p>ICD-11 took effect globally on January 1, 2022, and the World Health Organization allows countries to keep ICD-10 during transition.[[mro_who_icd11]] DOH Administrative Order 2025-0021, dated October 14, 2025, sets ICD-11 implementation guidelines and covers DOH offices, PhilHealth, local governments, and public and private facilities.[[mro_doh2025icd11]] Its claims switch-over and dual-coding dates are not confirmed in this course.</p>
 <p>So the rule for now is simple. Wait for PhilHealth&rsquo;s written instruction, through your claims lead, before changing any code on a claim. Meanwhile, record the classification and version on every coded record, so that when the switch comes, every code can be traced to the classification it was assigned in.</p>
+{{scene:The swapped fields|<p>A batch of claims comes back rejected. On every one, the clerk had typed N18.5 into the procedure field and 90935 into the diagnosis field, after a change to the claims software rearranged the screen.</p>
+<p>The records officer shows the clerk the difference: one code says what the patient has, the other what was done. The claims lead asks the vendor to label the fields clearly, and the batch is corrected and resubmitted with both original and corrected copies kept.</p>
+<p class="tc-scene-take">Diagnosis and procedure codes answer different questions. A screen change does not change which is which.</p>}}
 """),
         ("query", "Queries", "Asking without leading", """
 <p>When documentation is unclear, conflicting, or incomplete, ask the responsible physician in writing, in the chart&rsquo;s query workflow. A good query has four features.</p>
@@ -74,6 +80,9 @@ MODULE = {
 <p>Keep the query, the physician&rsquo;s response, and the final code together in the record. An unanswered query stays pending. It never defaults to the coder&rsquo;s guess, and it never expires into a code.</p>
 <p>Why does leading matter so much? Because a physician answering a leading query is no longer giving an independent clinical opinion. They are agreeing with yours. If an auditor later sees a query that names the answer and mentions the claim, the code that followed looks like a code chosen for payment, whatever the truth.</p>
 {{key:Code only what an authenticated note says. Ask; do not lead. Never mention money in a query.}}
+{{scene:The query that changed nothing, and everything|<p>A query asks Dr. Salvador Ilagan to clarify Mrs. Josefina Mercado&rsquo;s diagnosis: &ldquo;AKI / CKD (stage __) / both / other / unable to determine.&rdquo; He writes back: &ldquo;Both. CKD stage 4 at baseline, AKI on CKD this admission.&rdquo;</p>
+<p>That answer was not among the guesses anyone in the office had made. It changed her code, her registry status, and the plan to recheck her kidney function in three months.</p>
+<p class="tc-scene-take">Offering &ldquo;both&rdquo; and &ldquo;other&rdquo; is not politeness. It is how the record gets the answer no one expected.</p>}}
 """),
         ("pressure", "Under pressure", "When someone wants the code changed", """
 <p>Pressure to change a code rarely sounds like fraud. It sounds like common sense, deadlines, and kindness to the patient.</p>

@@ -39,6 +39,9 @@ MODULE = {
 <h3>Verify the destination</h3>
 <p>Confirm the receiving facility and its secure channel through a trusted directory or the facility&rsquo;s switchboard, not the contact details in the request. A request that arrives from an unfamiliar address may be genuine; busy units do use personal accounts. It may also be mistyped, or not genuine at all. In either case, a hepatitis result sent to the wrong address is a breach (Module 8). Send only through the approved channel.</p>
 {{fig:mro14_transfer}}
+{{scene:The packet that went to the wrong Laguna|<p>A transfer request names &ldquo;Laguna Medical Center.&rdquo; The clerk searches online and finds two hospitals with similar names in two different towns.</p>
+<p>The records officer calls the patient&rsquo;s daughter, confirms the town, finds the hospital&rsquo;s switchboard in the unit directory, and confirms the receiving nurse and secure email. The packet goes to the right hospital the first time.</p>
+<p class="tc-scene-take">A name is not an address. Verify the receiver before you send.</p>}}
 """),
         ("close", "Closing", "Close on receipt, then update four places", """
 <p>Record what was sent, when, by whom, and through which channel. Obtain the receiver&rsquo;s acknowledgment. List any item still to follow, with its owner and a due time. An urgent gap, one the receiving team needs for the first session, goes to your clinical team immediately, before dispatch.</p>
@@ -46,6 +49,9 @@ MODULE = {
 <p>The ledger point is worth telling the receiving unit. If Mr. Reyes has used 140 of his 156 Philippine Health Insurance Corporation (PhilHealth) sessions this year, the new unit needs to know that coverage runs out in about five weeks, not next November.</p>
 <p>For transient dialysis, the same logic applies over a shorter horizon. The receiving unit&rsquo;s checklist usually sets the scope, and the physician-signed certification follows Module 9. When the patient returns, ask for the treatment records from the transient unit and file them, because those sessions are part of the patient&rsquo;s history and may count toward the annual cap.</p>
 {{key:Dispatch is not delivery. A transfer closes on confirmed receipt.}}
+{{scene:Received, but not the hepatitis result|<p>The receiving unit acknowledges a transfer packet for Mr. Alfredo Tolentino. Checking the acknowledgment against the manifest, the records officer sees that they list every item except the hepatitis serology.</p>
+<p>She calls. The page had printed blank on their side. She resends it, gets a second acknowledgment naming it, and closes the transfer. Their first session for him was the next morning.</p>
+<p class="tc-scene-take">An acknowledgment is only as good as its match to the manifest.</p>}}
 """),
         ("abroad", "Abroad", "What other countries do, and how to use it", """
 <p>Other countries have thought hard about records custody, and their practices are worth knowing. They are also easy to misuse.</p>
@@ -59,6 +65,9 @@ MODULE = {
 <tr><td>Singapore</td><td>The renal registry operates under national registry legislation with defined events.[[mro_nrdo]]</td></tr>
 </tbody></table></div>
 <p>A Philippine unit may adopt a process control from abroad, such as a one-working-day internal target for sending transfer records, through its own approved policy, labeled clearly as a local standard. It never becomes a legal deadline by being copied. And no foreign rule can shorten a Philippine one: the United States six-year retention rule does not let a Philippine unit discard an outpatient chart before the Department of Health&rsquo;s seven years.</p>
+{{scene:&ldquo;By law, within one day&rdquo;|<p>A receiving unit&rsquo;s nurse insists that records &ldquo;must by law&rdquo; arrive within one working day, citing a document she read online.</p>
+<p>The records officer recognizes the United States federal dialysis rule. She sends the packet that afternoon anyway, because the patient dialyzes tomorrow, and mentions politely that the one-day target is good practice her unit follows as a local standard, not a Philippine legal deadline.</p>
+<p class="tc-scene-take">A good idea from abroad is worth adopting. It is still not Philippine law.</p>}}
 """),
     ],
     "debrief": ["""

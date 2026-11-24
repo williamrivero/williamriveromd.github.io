@@ -47,6 +47,9 @@ MODULE = {
 </ul>
 <p>Record every alias and previous identifier you find, with its source. An alias written in the chart today saves the next records officer from creating a duplicate next year.</p>
 {{fig:mro03_duplicates}}
+{{scene:Chair 7|<p>A nurse calls the records room: &ldquo;Please send up the lab results for chair 7.&rdquo; On the morning shift, chair 7 is Mr. Isidro Gomez. On the afternoon shift, it is Mrs. Remedios Gomez, no relation.</p>
+<p>The records officer asks for the patient&rsquo;s full name and date of birth before sending anything. It is the afternoon patient. The morning patient&rsquo;s potassium, which was high, stays in the right chart.</p>
+<p class="tc-scene-take">A chair is where a patient sits today. Two identifiers are who the patient is.</p>}}
 """),
         ("evidence", "The evidence", "How duplicates and wrong-patient errors really happen", """
 <p>It is tempting to assume that duplicate records come from complicated system failures. The evidence says they mostly come from ordinary typing.</p>
@@ -61,6 +64,9 @@ MODULE = {
 <p>Other controls look more promising. In a large emergency-department cohort, showing the patient&rsquo;s photograph in the record banner was associated with fewer wrong-patient orders (adjusted odds ratio 0.57).[[mro_salmasian2020]] The study was observational, so it suggests benefit but does not prove it; units that adopted photographs may also have differed in other ways. A photograph is also personal information. Under the Data Privacy Act, it needs a documented lawful basis and a consent process before you start taking pictures at intake.</p>
 <p>Closer to home, nursing teams in hemodialysis clinics name patient-identification errors as their main gap against the international patient-safety goals.[[mro_lima2023]] In other words, the people who work chairside already know this is where things go wrong.</p>
 {{key:Verify identity at the point of action. Search before you create. Neither step takes more than a minute, and either can prevent a wrong-patient error that takes weeks to unwind.}}
+{{scene:Ma. and Maria|<p>The monthly duplicate report pairs &ldquo;Ma. Theresa Bautista&rdquo; and &ldquo;Maria Theresa Bautista,&rdquo; with the same date of birth. One chart was made at intake in 2023, the other at a readmission in 2025.</p>
+<p>The second reviewer confirms they are one person using the PhilHealth Identification Number on both, and the charts are merged through the controlled workflow. The unit adds a line to its naming convention: &ldquo;Write Maria in full; never Ma.&rdquo;</p>
+<p class="tc-scene-take">Most duplicates come from ordinary spelling, as the research predicts. The fix is equally ordinary.</p>}}
 """),
         ("types", "Three kinds of error", "Duplicate, misfile, overlay", """
 <p>Identity errors come in three kinds, and they are not equally dangerous.</p>
@@ -72,6 +78,9 @@ MODULE = {
 <tr><td>Overlay</td><td>Two people now share one chart</td><td>Both patients&rsquo; care is built on mixed facts</td><td>Hard: every entry since the overlay must be sorted, author by author</td></tr>
 </tbody></table></div>
 <p>An overlay usually starts with a confident merge. Someone sees two charts for &ldquo;Rodel Santos&rdquo; with the same birth year, decides they must be the same man, and combines them. If they are two men, both now share one chart. That is why the rule below is so strict.</p>
+{{scene:The overlay that took a month|<p>A clerk at another unit merged two charts for &ldquo;Rodel Santos, born 1968,&rdquo; believing they were one man. They were two: one in Bulacan, one in Pampanga. For three weeks, both men&rsquo;s results, orders, and allergies sat in one record.</p>
+<p>Unwinding it took the records officer, two physicians, and both men&rsquo;s nurses most of a month, entry by entry. One man&rsquo;s penicillin allergy had briefly appeared in the other&rsquo;s chart.</p>
+<p class="tc-scene-take">A duplicate hides half a history. An overlay mixes two. That is why a merge always waits for verification.</p>}}
 """),
         ("resolve", "Resolving", "Suspected duplicate or misfile", """
 {{flow:Safe resolution|Stop::Halt further routing of the contested document.|Quarantine::Place it in a protected exception queue, filed to neither chart.|Notify::Tell health information management (HIM) and the clinical owner.|Verify independently::Use a trusted directory number, not the number printed on the suspicious document.|Resolve through the controlled workflow::Merge or reassign only with authorization, preserving both original identifiers.|Check downstream::Claims, registry rows, the dialyzer log, and any released copies.}}
@@ -79,6 +88,9 @@ MODULE = {
 <p><strong>Verify independently.</strong> If a document might be wrong, the contact details printed on it might be wrong too. A fax with a mistyped name may also carry a mistyped return number. In rare cases a request is deliberately false. Look up the sender in your own verified directory, or call the facility&rsquo;s main switchboard, and ask for the records office. Ask them to read <em>you</em> the identifiers. Do not read your candidates&rsquo; details to them.</p>
 <p><strong>Check downstream.</strong> A document filed to the wrong chart may already have traveled. List every place it could have gone: a claim batch, a registry extract, a released copy, a transfer packet, the station assignment board. Each one needs the same correction.</p>
 {{call:Never merge on a likely match. &ldquo;Probably the same person&rdquo; is the exact belief that produces an overlay, which is far harder to undo than a duplicate. If either candidate is scheduled today, alert the charge nurse now, so identity is checked at the bedside while you resolve the record. When the contested document carries a clinically important result, such as a reactive hepatitis test, the attending nephrologist needs to know too.}}
+{{scene:The number on the letterhead|<p>A referral arrives on a hospital letterhead with a phone number for &ldquo;verification.&rdquo; The records officer calls the hospital&rsquo;s switchboard instead, from her own directory, and asks for the records office.</p>
+<p>The records office has never heard of the patient. The letterhead number reaches a mobile phone. The referral is quarantined, reported to the data protection officer, and not filed to any chart.</p>
+<p class="tc-scene-take">The contact details on a doubtful document are part of the doubt.</p>}}
 """),
     ],
     "debrief": ["""

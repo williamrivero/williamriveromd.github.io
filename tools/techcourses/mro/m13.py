@@ -39,6 +39,9 @@ MODULE = {
 </ul>
 <h3>On inspection day</h3>
 <p>Verify the inspector&rsquo;s identity and authority before showing anything, as you would any other requester (Module 8). Follow the facility&rsquo;s disclosure procedure. Show what is requested; do not volunteer whole charts when a sample page will do. Log exactly what was shown or copied, to whom, and when. If an inspector asks for something you cannot find, say so and write it down. A gap honestly acknowledged is a finding. A document produced overnight is a different problem (Module 4).</p>
+{{scene:The inspector&rsquo;s first request|<p>An inspector&rsquo;s first request is: &ldquo;Show me the last quarter&rsquo;s standing-order renewals for five patients I choose.&rdquo;</p>
+<p>The records officer opens the evidence index, finds the row with its location and last-verified date, and retrieves the five charts in four minutes. The inspector moves on to the next item.</p>
+<p class="tc-scene-take">Readiness is measured in minutes, on the day, for the item the inspector chooses.</p>}}
 """),
         ("define", "Define first", "Define before you count", """
 <div class="table-wrap"><table>
@@ -52,6 +55,9 @@ MODULE = {
 <p>Write the period, the selection method, and any exclusions <strong>first</strong>, before you look at a single chart. If you decide what counts after seeing the results, you will, without meaning to, define the metric in the way that looks best.</p>
 <p>Items that are legitimately not applicable are excluded from the denominator under a written rule. They are not counted as failures, and they are not quietly dropped. A session canceled before treatment has no run sheet to sign; it is excluded from authentication timeliness by rule, and the rule says so.</p>
 <p>PhilHealth&rsquo;s quality-standards circular for maintenance hemodialysis is a useful source of documentation items to audit.[[dch_philhealth2024q]]</p>
+{{scene:The rate that rose by itself|<p>A unit&rsquo;s chart completeness rose from 72% to 91% in one month, and the manager wants to celebrate. The records officer compares the two audit sheets and finds that the second month excluded &ldquo;patients who started this month&rdquo; from the denominator. New patients are the ones most likely to have incomplete charts.</p>
+<p>Recomputed with the original definition, the second month was 76%. Still better, but not a celebration.</p>
+<p class="tc-scene-take">Write the definition before counting, or the definition will drift toward good news.</p>}}
 """),
         ("uncertainty", "Uncertainty", "Report the interval with the rate", """
 {{fig:mro13_loop}}
@@ -71,6 +77,9 @@ MODULE = {
 {{flow:Closing the loop|Verify the cause::Ask the people involved; do not assume.|Choose an intervention::Small, specific, testable.|Name an owner and a due date::Someone who can make it happen.|Measure again::Same definition, same sampling, a fixed time later.|Report both results::With numerators, denominators, and intervals.}}
 <p>Store metrics as aggregates. Keep the patient-level worksheets protected; they contain personal information and are not needed once the rate is computed and checked.</p>
 {{key:Same definition, same sampling, before and after, or the comparison means nothing.}}
+{{scene:Twenty, then sixty|<p>After a weekend handover queue for unsigned run sheets is introduced, the records officer resamples. Before: 16 of 20 signed on time, 80% (95% confidence interval 58% to 92%). After: 57 of 62, 92% (about 82% to 96%).</p>
+<p>The intervals still overlap, so the improvement is likely but not yet proven. The Saturday-afternoon late signatures have disappeared, which fits the cause the charge nurse described. The manager reports both numbers to the owner, with their intervals and the same definition, and the audit is repeated the following month.</p>
+<p class="tc-scene-take">A larger sample and the same definition turned a guess into a measured, honestly qualified result.</p>}}
 """),
     ],
     "debrief": ["""

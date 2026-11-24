@@ -41,6 +41,9 @@ MODULE = {
 <p>The DOH assessment tool calls for registration in the Philippine Renal Disease Registry (PRDR) in support of the Renal Disease Control Program (REDCOP), coordinated with PSN.[[dch_doh_rao_tool]] The PhilHealth Dialysis Database (PDD) is PhilHealth&rsquo;s eligibility database for the hemodialysis package.[[mro_ph2016pdd]] They differ in purpose, owner, fields, and timing. Reporting to one does not satisfy the other.</p>
 <p>For each destination, write down the population it covers, its event definitions, its required fields, who may submit, the channel, the signatory, the cadence, and how acknowledgment arrives. Confirm them with the receiving authority, because registry definitions change and a field that meant one thing last year may mean another now.</p>
 {{fig:mro07_registry}}
+{{scene:Reported once, counted nowhere|<p>A unit proudly reports that every patient is &ldquo;registered.&rdquo; On inspection, every patient is in the PhilHealth Dialysis Database, and none of the year&rsquo;s new starts appear in the Philippine Renal Disease Registry.</p>
+<p>The clerk had assumed one submission covered both. The records officer builds two extracts, each to its own specification, and adds both destinations to the event ledger.</p>
+<p class="tc-scene-take">Two databases, two purposes, two rulebooks. One list does not serve both.</p>}}
 """),
         ("quality", "Data quality", "Registries inherit the chart&rsquo;s gaps", """
 <p>How accurate are registry forms? The best-known validation study comes from the United States. Investigators compared the national end-stage renal disease (ESRD) Medical Evidence Report, the form filed when a patient starts dialysis, against the clinical records of 1,005 new dialysis patients.</p>
@@ -56,6 +59,9 @@ MODULE = {
 <tr><td>Modality change</td><td>The first treatment on the new modality</td><td>The order and the first treatment record</td></tr>
 <tr><td>Transfer-out, transplant, recovery, death</td><td>The event date</td><td>The documented event</td></tr>
 </tbody></table></div>
+{{scene:The diabetes that was missing|<p>A registry form for Mr. Teodoro Navarro, completed from his referral letter, lists hypertension as his only condition. His chart shows type 2 diabetes for twelve years, heart failure, and a below-knee amputation.</p>
+<p>The records officer redoes the form from the authenticated chart and problem list. The corrected entry now describes a patient at much higher risk than the first form suggested.</p>
+<p class="tc-scene-take">The form was not false. It was incomplete in exactly the way the research predicts: conditions left out, not made up.</p>}}
 """),
         ("ledger", "The ledger", "Build, balance, and close", """
 <p>From the master patient index and the authenticated charts, keep one row per event with these columns: patient identifier, event, event date, source document, destination, deduplication key, field validation, batch, status, rejection reason, correction, and acknowledgment.</p>
@@ -65,6 +71,9 @@ MODULE = {
 <p>A rejected row closes only when corrected, source-backed data are resubmitted and accepted, with both receipts kept. Export only the fields the destination requires, through the approved channel. A registry does not need a patient&rsquo;s full chart, and sending more than it needs is a privacy problem (Module 8).</p>
 {{key:A sent file is not a closed cycle. Keep the acknowledgment, and chase every row that lacks one.}}
 <p>The toolkit&rsquo;s batch reconciliation calculator does the balance for you.</p>
+{{scene:Twelve sent, ten heard from|<p>A batch of 12 registry rows returns an acknowledgment for 10. The balance check shows two rows with no disposition.</p>
+<p>The records officer calls the receiving office. One row was held because a date field was blank; the other had been silently dropped as a duplicate of a row sent the month before. She corrects the first, documents the second as withdrawn, and the batch balances.</p>
+<p class="tc-scene-take">Without the balance check, the blank date would have stayed blank for a year.</p>}}
 """),
     ],
     "debrief": ["""

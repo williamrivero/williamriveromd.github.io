@@ -48,12 +48,18 @@ MODULE = {
 <li>Anything unfamiliar, or anything that makes you uneasy</li>
 </ul>
 <p>Urgency is not authority. A caller who is upset, in a hurry, or claims to be a doctor still passes the same five checks. Pressure to skip them is itself a reason to slow down.</p>
+{{scene:The right person, the wrong channel|<p>Mrs. Nenita Robles asks for her latest laboratory results to be sent to her son, a nurse in Saudi Arabia, so he can review them. She signs an authorization at the counter and writes his personal email address.</p>
+<p>The identity, authority, purpose, and scope checks all pass. The channel needs care: the unit does not send records to personal email addresses. The records officer gives Mrs. Robles a sealed copy at the counter, logs the release with her authorization, and explains that she can share it with her son herself, or that he can request it through the unit&rsquo;s secure channel with her written consent.</p>
+<p class="tc-scene-take">Passing four checks is not passing five. The channel is part of the release.</p>}}
 """),
         ("rights", "Patient rights", "Access and correction are rights", """
 <p>Patients may ask for copies of their own records, and they may ask that errors be corrected. These are rights, not favors, and they should be handled promptly and without making the patient explain why they want to see their own chart.</p>
 <p>These requests also catch real mistakes. In a survey of 22,889 patients who read their visit notes, 21.1% reported a perceived mistake, and 42.3% of those judged it serious.[[mro_bell2020]] The survey measured what patients <em>perceived</em>; not every reported mistake was confirmed. But it shows that patients who read their records are an error-detection system the unit gets for free.</p>
 {{flow:A correction request|Log it::Date, patient, what they say is wrong.|Verify identity::The same two identifiers as any release.|Route to the author::Through the clinical correction workflow (Module 4).|Track it::The author agrees and corrects, or disagrees and documents why.|Tell the patient::The outcome, in writing.|Keep the request::With the record, so a reader sees that the entry was disputed.}}
 <p>Never delete or overwrite a disputed entry yourself, even when the patient is plainly right about a simple fact such as a misspelled name. A spelling correction to an identifier goes through the identity workflow (Module 3). A clinical correction goes to its author.</p>
+{{scene:The allergy that was not hers|<p>Reading a copy of her chart, Mrs. Liwayway Dimagiba notices &ldquo;allergic to sulfa&rdquo; on her problem list. She has never had a sulfa allergy; her sister has.</p>
+<p>The records officer logs the request and routes it to the attending physician, who confirms the error, corrects the problem list through the clinical workflow, and notes the patient&rsquo;s report. Mrs. Dimagiba receives a written answer, and her disputed-entry request stays with the record.</p>
+<p class="tc-scene-take">A patient reading her own chart caught what no audit had.</p>}}
 """),
         ("breach", "A possible breach", "The first hour", """
 {{fig:mro08_hour}}
@@ -65,6 +71,9 @@ MODULE = {
 <p>Seventy-two hours sounds like a long time. It is not, once you subtract a weekend, the time to find out what was in the email, the time to reach the facility head, and the time to draft a notice. Every hour lost at the front line is taken from the people who must decide.</p>
 {{call:Do not wait for proof of harm. The 72-hour clock runs from the organization&rsquo;s knowledge, so an hour lost at the front line is an hour taken from the controller. When unsure whether something is a breach, report it and let the DPO decide.}}
 <p>The toolkit&rsquo;s 72-hour clock calculator shows the deadline from the moment of awareness.</p>
+{{scene:The logbook on the jeepney|<p>A nurse realizes at 7:30 p.m. that she left the unit&rsquo;s patient contact logbook on a jeepney on her way home. She messages the records officer at 7:40 p.m.</p>
+<p>The records officer calls the data protection officer at 7:50 p.m., writes down what the logbook contained, and notes the time of discovery. By the next morning the controller&rsquo;s breach team has met. The 72 hours run from when the organization knew, so every hour the report had waited until morning would have come off the time the team has to decide.</p>
+<p class="tc-scene-take">The fastest part of a breach response is the first message. Make it.</p>}}
 """),
         ("culture", "A reporting culture", "Making it safe to report", """
 <p>Ms. Bautista walked to your desk ten minutes after she made her mistake. That is the best possible outcome of a bad moment, and it happened because she was not afraid to tell you.</p>

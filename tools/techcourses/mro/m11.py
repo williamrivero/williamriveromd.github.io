@@ -41,6 +41,9 @@ MODULE = {
 <h3>The monthly access review</h3>
 <p>Monthly, or as local policy says, the records officer reviews the user list with IT and the unit manager. Is everyone still employed? Is each role still accurate? Are any accounts dormant? Remove access <strong>promptly at departure</strong>, on the last working day, and document it. A nurse who moves to another unit in the same company changes role; her old access goes too.</p>
 {{call:&ldquo;Just use my password while I&rsquo;m on leave&rdquo; is a security incident, not a favor. Decline politely and report it. The fix is a properly authorized temporary account, not a borrowed one.}}
+{{scene:The account of a nurse who left|<p>Nurse Maricel Domingo moves to a hospital in Manila on a Friday. Her account is disabled that afternoon as part of the offboarding checklist.</p>
+<p>On Monday a request arrives from the new hospital asking for a patient&rsquo;s records &ldquo;that Nurse Domingo will need.&rdquo; Because her old access is gone, the request has to come through the release procedure, with the patient&rsquo;s authorization, as it should.</p>
+<p class="tc-scene-take">Access belongs to a role in this unit, not to a person wherever she goes next.</p>}}
 """),
         ("trail", "The audit trail", "Reading the audit trail", """
 {{fig:mro11_audit}}
@@ -57,11 +60,17 @@ MODULE = {
 <h3>Devices and backups</h3>
 <p>Downloads to personal phones, laptops, or flash drives multiply the places a breach can happen. A photo of a run sheet sent through a messaging app to &ldquo;check something at home&rdquo; is a copy of health data on a device the unit does not control. Use facility-approved storage and transmission only.</p>
 <p>IT owns backups, but records staff have a part to play. During a tested recovery, confirm that restored records <strong>and their audit metadata</strong> come back intact: the entries, their authors, their timestamps, and the trail of corrections. A backup that restores the text but loses who wrote it has lost the record&rsquo;s value as evidence. A backup that has never been restored is a hope, not a control.</p>
+{{scene:The curious claims clerk|<p>The monthly audit-trail review shows a claims clerk opening the psychiatric consultation note of a patient who is her neighbor. She had no claim pending for him.</p>
+<p>The records officer sends the extract to the data protection officer and the unit manager without speaking to the clerk. Their review confirms access without a work reason. The clerk is counseled, her access is narrowed to billing data, and the patient is informed as the controller decides.</p>
+<p class="tc-scene-take">The trail only works if someone reads it, and only stays fair if someone else decides what it means.</p>}}
 """),
         ("national", "The national picture", "Why clean data matter beyond the unit", """
 <p>Department of Health and Philippine Health Insurance Corporation (PhilHealth) Joint Administrative Order (JAO) 2021-0002 mandates national health data standards for interoperability, and data submitted to the national health data repository must conform to them.[[mro_jao2021]] PhilHealth is also moving providers toward certified electronic medical records (EMRs) and real-time submission. Its primary-care clinics under the Yaman ng Kalusugan Program (YAKAP) had to move to PhilHealth-certified EMR providers by July 1, 2026.[[mro_ph2025emr]]</p>
 <p>That is not yet a dialysis rule, but it shows the direction. Clean identifiers, coded fields, and audit-ready records will increasingly be checked by machines, not only by inspectors. A unit whose records are tidy today will find that transition far easier.</p>
 {{key:Attribution is the whole point of an audit trail. Shared accounts erase it, dormant accounts invite misuse, and an unread trail protects no one.}}
+{{scene:The coded field that paid off|<p>A unit has recorded the cause of kidney failure as a coded field for every patient since 2022, instead of free text such as &ldquo;DM?&rdquo; or &ldquo;HPN/DM.&rdquo;</p>
+<p>When the unit moves to a certified electronic record in 2026, those fields transfer automatically and pass the new system&rsquo;s validation checks. A neighboring unit with free-text causes spends three weeks recoding by hand.</p>
+<p class="tc-scene-take">Clean data today is the migration you do not have to do later.</p>}}
 """),
     ],
     "debrief": ["""

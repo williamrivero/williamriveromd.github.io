@@ -41,6 +41,9 @@ MODULE = {
 </tbody></table></div>
 <p>The PSN hemodialysis guidelines describe the records officer&rsquo;s duties as coding, custody, registry coordination, completeness for the DOH, and carrying out the records manual. They recommend training in the International Classification of Diseases, 10th Revision (ICD-10), basic records management, and hospital health information management (HIM).[[psn2024]] That is strong professional guidance. It is not law, and the next section explains why that difference matters.</p>
 {{key:You keep the record. You never author the clinical facts inside it. When you catch yourself about to &ldquo;just fix&rdquo; a clinical value, stop and route it.}}
+{{scene:The obvious weight|<p>Ms. Cristina Lim, two months into the job, notices that Tuesday&rsquo;s run sheet for Mr. Herminio Valdez has no post-dialysis weight. The machine log on the same clipboard shows 58.9 kg. It would take her five seconds to write it in.</p>
+<p>She does not. She clips a note to the sheet for the nurse who ran the session, Mr. Jerome Tan, and enters it in the deficiency log. Mr. Tan checks his own notes, finds he weighed the patient after the machine log was printed, and writes 58.6 kg as a dated late entry.</p>
+<p class="tc-scene-take">The obvious value was wrong by 300 grams. Only the author knew the right one.</p>}}
 """),
         ("rulebooks", "Four rulebooks", "Read every rule for issuer, scope, and date", """
 {{fig:mro01_referees}}
@@ -66,6 +69,9 @@ MODULE = {
 <p>The facility&rsquo;s standard operating procedure (SOP) translates the four rulebooks into local steps. SOPs age. When an SOP and a newer issuance disagree, the issuance wins. Do not quietly follow either one. Log the gap, tell your supervisor, and raise it for revision, so that everyone in the unit follows the same version.</p>
 <p>Keep a <strong>source register</strong>: one row per rule, with its issuer, number, title, scope, effective date, the SOP that carries it out, its owner, and the date you will next check whether it has changed. It is a plain table, and it is the single most useful document you will build this year.</p>
 {{key:Before you act on any rule, say its issuer, scope, and effective date out loud. If you cannot, you are not ready to act on it.}}
+{{scene:Two rates, one afternoon|<p>In March 2025 a PhilHealth reviewer returns two claims from the same patient. One session was on September 30, 2024; the other on October 9, 2024. The clerk had billed both at the new rate because both were filed in October.</p>
+<p>The records officer opens the source register, finds the rate change recorded with its effective date of October 9, 2024, and shows the clerk that the September session falls under the earlier rate. The corrected claim goes back the same week.</p>
+<p class="tc-scene-take">The service date decides which rule applies. A register with effective dates turns a dispute into a lookup.</p>}}
 """),
         ("rolefile", "The role file", "What an inspector expects to see", """
 <p>The DOH assessment tool for hemodialysis clinics, as posted, lists three items about the records officer: a designated MRO, a notarized employment contract that reflects MRO duties, and a medical-records-management training certificate for facilities with more than 20 stations.[[dch_doh_rao_tool]]</p>
@@ -73,6 +79,9 @@ MODULE = {
 {{flow:A complete role file|Designation memo::Signed by the facility head, current, naming you and your deputy.|Contract::Notarized, with your records duties written into it.|Training evidence::The records-management certificate where required, plus ICD-10 and health information management training as PSN recommends.|Records manual::Approved, signed, with its revision date.|Source register::Each rule with issuer, scope, effective date, owner, and next review.|Decision map::Who decides coding, claims, privacy, and destruction, each with an alternate.}}
 <p>Why a deputy? Because records work does not stop when you are on leave, sick, or at a seminar. If no one else is authorized to release a transfer packet, a patient may arrive at the receiving unit without orders. The deputy needs the same training, the same access, and a copy of the same decision map.</p>
 <p>A role file is not a one-time project. Check it at least yearly and whenever you, your deputy, the facility head, or a governing issuance changes. An inspector who finds a memo naming someone who left two years ago will reasonably ask what else has not been updated.</p>
+{{scene:The 16-station unit|<p>A 16-station unit in Pampanga prepares for its licensing visit. The owner has read online that records requirements &ldquo;start at 20 stations&rdquo; and has never designated anyone.</p>
+<p>The new administrator reads the assessment tool line by line, sees that the 20-station threshold sits on the training certificate, and asks the facility head to sign a designation naming the senior clerk and a deputy the following Monday. She calls the regional office to ask whether the certificate applies to them, and files the answer with the name of the person she spoke to.</p>
+<p class="tc-scene-take">A threshold attached to one item is easy to stretch over the whole list. Read which line it belongs to.</p>}}
 """),
         ("routing", "Who decides", "Log, preserve, and route", """
 <p>Every records decision belongs to someone. Your job is to know who, and to route the question to them quickly, with the facts, without deciding it yourself.</p>
@@ -98,6 +107,9 @@ MODULE = {
 <tr><td>Everything else</td><td>The owner, through the deficiency log</td><td>By the due date you set</td></tr>
 </tbody></table></div>
 {{call:When a records problem could affect the next treatment, escalate to the clinical team before that session. When it could affect a person&rsquo;s privacy, escalate to the DPO within the hour of discovery. Local protocol sets the exact times, but when you are unsure, ask the attending nephrologist about clinical risk and the DPO about privacy. Asking early is never the mistake.}}
+{{scene:Friday at 4:45 p.m.|<p>At 4:45 p.m. on a Friday, the records officer finds three problems in one stack: a laboratory page in the wrong chart for a patient who dialyzes Saturday at 6 a.m., a claim missing its Annex A, and an email to the wrong address from Thursday.</p>
+<p>She sorts them by what they could affect. The misfiled page goes to the charge nurse before she leaves, because Saturday&rsquo;s session is first. The email goes to the data protection officer the same hour. The claim waits for Monday, logged with an owner.</p>
+<p class="tc-scene-take">Three problems, three clocks. The order comes from what each one could harm, not from which one is easiest.</p>}}
 """),
         ("week", "Your first week", "A first-week plan", """
 <p>A new records officer usually inherits a mix of good systems and loose ends. Use the first week to find out which is which before you change anything.</p>
