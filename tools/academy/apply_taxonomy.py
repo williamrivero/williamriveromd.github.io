@@ -55,6 +55,7 @@ TRACKS = {
     "transplant-nurse": ("nursing", "spec", "Kidney Transplant Nurse", "Kidney Transplant <em>Nurse</em>",
                          ["Transplant Nurse"], [("Transplant Nurse Module", "Kidney Transplant Nurse Module")]),
     "dialysis-head-nurse": ("nursing", "role", "Head Nurse", "Head <em>Nurse</em>", ["Dialysis Head Nurse"], []),
+    "special-dialysis-nurse-roles": ("nursing", "role", "Special Dialysis Nurse Roles", "Special Dialysis <em>Nurse Roles</em>", [], []),
     "dialysis-charge-nurse": ("nursing", "role", "Charge Nurse", "Charge <em>Nurse</em>", ["Dialysis Charge Nurse"], []),
     "dialysis-clinical-head": ("physicians", None, "Dialysis Clinical Head", "Dialysis <em>Clinical Head</em>", [], []),
     "attending-nephrologist": ("physicians", None, "Attending Nephrologist", "Attending <em>Nephrologist</em>", [], []),

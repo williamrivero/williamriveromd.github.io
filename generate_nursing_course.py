@@ -164,7 +164,8 @@ def build_refs():
         link = (f' <a href="https://doi.org/{doi}">https://doi.org/{doi}</a>' if doi
                 else f' <a href="https://pubmed.ncbi.nlm.nih.gov/{pmid}/">https://pubmed.ncbi.nlm.nih.gov/{pmid}/</a>')
         tail = ", ".join(x for x in [f"{vol}{iss}", pages] if x)
-        refs[key] = f"{authors} ({r['year']}). {html.escape(title, quote=False)}{"" if title[-1:] in "?!" else "."} <em>{journal}</em>, {tail}.{link}"
+        end = "" if title[-1:] in "?!" else "."
+        refs[key] = f"{authors} ({r['year']}). {html.escape(title, quote=False)}{end} <em>{journal}</em>, {tail}.{link}"
     return refs
 
 

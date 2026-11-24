@@ -25,6 +25,10 @@ QUAL = {
    "Current BLS/ACLS from a DOH-accredited provider. <span class=q-src>PSN</span>",
    "At least 2 years&rsquo; experience as a dialysis nurse. <span class=q-src>PSN</span>",
    "DOH AO 2012-0001 does not define the head nurse role separately."]),
+ "special-dialysis-nurse-roles": ("Special Dialysis Nurse Roles (portfolio nurse)", [
+   "A hemodialysis nurse who meets the hemodialysis nurse requirements: PRC license (R.A. 9173), dialysis nursing training certificate, current BLS, ACLS where assigned. <span class=q-src>DOH, PSN</span>",
+   "The DOH and PSN rules name facility duties (patient education, transplant linkage, registry and records, QAPI) but do not define any of the twelve portfolios as a separate post; the employer assigns the portfolio in writing.",
+   "Portfolio work is added to safe licensed staffing: DOH sets no more than 1 nurse to 4 stations; PSN describes 1:4 patients, or 1:6 with a nursing assistant."]),
  "charge-nurse": ("Charge Nurse", [
    "Not defined in the DOH or PSN rules. In practice, a dialysis nurse who meets the hemodialysis nurse requirements, with current ACLS, designated by the head nurse for the shift."]),
  "dialysis-charge-nurse": ("Charge Nurse", [

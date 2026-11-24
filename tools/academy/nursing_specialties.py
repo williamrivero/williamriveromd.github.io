@@ -13,6 +13,14 @@ CARDS = [
                  "goal-directed monitoring, peritonitis, urgent problems, teaching, transitions and quality, with five skills stations. "
                  "Entry lesson: Module 10."),
     },
+    {
+        "href": "special-dialysis-nurse-roles.html",
+        "meta": "By Role &middot; 14 modules &middot; about 111 hours",
+        "title": "Special Dialysis Nurse Roles",
+        "desc": ("For the nurse handed a portfolio: vascular access, infection prevention, educator and preceptor, patient education, "
+                 "quality, safety and emergencies, care coordination, anemia, transplant liaison, records and PhilHealth, water and "
+                 "equipment, and adequacy, with worked scenarios and a capstone."),
+    },
 ]
 
 

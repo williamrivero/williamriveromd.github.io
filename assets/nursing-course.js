@@ -109,11 +109,12 @@
         if (first) first.focus();
         return;
       }
-      var score = 0;
+      var score = 0, critMissed = 0;
       questions.forEach(function (q) {
         var chosen = q.querySelector('input:checked');
         var right = chosen.getAttribute('data-correct') === '1';
         if (right) score++;
+        else if (q.getAttribute('data-critical') === '1') critMissed++;
         q.classList.add('nc-checked');
         Array.prototype.forEach.call(q.querySelectorAll('.nc-opt'), function (opt) {
           var inp = opt.querySelector('input');
@@ -145,6 +146,11 @@
         var line = document.createElement('span');
         line.className = 'nc-verdict-line';
         var passed = score >= passMark;
+        if (form.hasAttribute('data-critical-pass') && critMissed > 0) {
+          passed = false;
+          line.textContent = 'Not yet passed (' + score + ' of ' + total + '), because ' + critMissed + (critMissed === 1 ? ' safety-critical question was' : ' safety-critical questions were') +
+            ' missed. A safety-critical answer must be right even when the total is high. Review that module, then try a new set.';
+        } else
         line.textContent = passed
           ? 'Passed (' + score + ' of ' + total + '; pass mark ' + passMark + '). Your self-study is complete. Simulation and workplace competency are assessed separately.'
           : 'Not yet passed (' + score + ' of ' + total + '; pass mark ' + passMark + '). Review the modules for the questions you missed, then try a new set.';
