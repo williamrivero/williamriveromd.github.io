@@ -417,22 +417,26 @@
 
   /* ── Hero: subtle ambient motion (soft drifting light + slow flow lines) ── */
   .rcm-hero-anim { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
-  .rha-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .22; mix-blend-mode: screen; will-change: transform; }
-  .rha-orb--teal { width: 46vmax; height: 46vmax; left: -10vmax; top: 8%; background: radial-gradient(circle, #2BB3B8 0%, rgba(43,179,184,0) 68%); animation: rhaDriftA 34s ease-in-out infinite alternate; }
-  .rha-orb--gold { width: 34vmax; height: 34vmax; right: -8vmax; top: 34%; background: radial-gradient(circle, #F2B44E 0%, rgba(242,180,78,0) 66%); opacity: .14; animation: rhaDriftB 41s ease-in-out infinite alternate; }
-  .rha-orb--blue { width: 40vmax; height: 40vmax; left: 32%; bottom: -18vmax; background: radial-gradient(circle, #5B8BD9 0%, rgba(91,139,217,0) 66%); opacity: .18; animation: rhaDriftC 47s ease-in-out infinite alternate; }
-  .rha-waves { position: absolute; left: 0; bottom: 6%; width: 200%; height: 46%; opacity: .5; animation: rhaFlow 60s linear infinite; }
-  .rha-waves path { fill: none; stroke: rgba(143,211,214,.10); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
-  .rha-waves path:nth-child(2) { stroke: rgba(242,180,78,.07); }
-  .rha-waves path:nth-child(3) { stroke: rgba(234,240,250,.06); }
-  @keyframes rhaDriftA { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(14vw,-6vh,0) scale(1.12); } }
-  @keyframes rhaDriftB { 0% { transform: translate3d(0,0,0) scale(1.05); } 100% { transform: translate3d(-12vw,8vh,0) scale(.92); } }
-  @keyframes rhaDriftC { 0% { transform: translate3d(0,0,0) scale(.95); } 100% { transform: translate3d(-10vw,-10vh,0) scale(1.1); } }
+  .rha-orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .40; mix-blend-mode: screen; will-change: transform; }
+  .rha-orb--teal { width: 46vmax; height: 46vmax; left: -10vmax; top: 8%; background: radial-gradient(circle, #2BB3B8 0%, rgba(43,179,184,0) 68%); animation: rhaDriftA 16s ease-in-out infinite alternate; }
+  .rha-orb--gold { width: 34vmax; height: 34vmax; right: -8vmax; top: 34%; background: radial-gradient(circle, #F2B44E 0%, rgba(242,180,78,0) 66%); opacity: .30; animation: rhaDriftB 19s ease-in-out infinite alternate; }
+  .rha-orb--blue { width: 40vmax; height: 40vmax; left: 32%; bottom: -18vmax; background: radial-gradient(circle, #5B8BD9 0%, rgba(91,139,217,0) 66%); opacity: .34; animation: rhaDriftC 22s ease-in-out infinite alternate; }
+  .rha-waves { position: absolute; left: 0; bottom: 6%; width: 200%; height: 46%; opacity: .9; animation: rhaFlow 26s linear infinite; }
+  .rha-waves path { fill: none; stroke: rgba(143,211,214,.30); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+  .rha-waves path:nth-child(2) { stroke: rgba(242,180,78,.22); }
+  .rha-waves path:nth-child(3) { stroke: rgba(234,240,250,.18); }
+  @keyframes rhaDriftA { 0% { transform: translate3d(0,0,0) scale(1); } 100% { transform: translate3d(30vw,-10vh,0) scale(1.25); } }
+  @keyframes rhaDriftB { 0% { transform: translate3d(0,0,0) scale(1.1); } 100% { transform: translate3d(-28vw,12vh,0) scale(.85); } }
+  @keyframes rhaDriftC { 0% { transform: translate3d(0,0,0) scale(.9); } 100% { transform: translate3d(-24vw,-16vh,0) scale(1.2); } }
   @keyframes rhaFlow { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
   @media (prefers-reduced-motion: reduce) { .rha-orb, .rha-waves { animation: none; } }
   @media (max-width: 700px) { .rha-orb { filter: blur(40px); } .rha-waves { height: 34%; bottom: 10%; } }
 </style>
 <style id="rcm-type-css">
+/* soft navy halo behind the subtitle so the brighter drifting orbs never pull it under 4.5:1 */
+.rcm-hero-sub{position:relative;isolation:isolate;}
+.rcm-hero-sub::before{content:"";position:absolute;z-index:-1;inset:-1.2em -3.5em;pointer-events:none;
+  background:radial-gradient(farthest-side,rgba(10,20,42,.6) 0%,rgba(10,20,42,.55) 62%,rgba(10,20,42,0) 100%);}
 /* Typing animation for the hero's "without the fear." The real text stays in place (transparent while typing),
    so the heading keeps its size (no layout shift) and screen readers and search engines read it normally. */
 .rcm-type{position:relative;display:inline-block;}
