@@ -10,7 +10,7 @@ FIGS = {
                       "Kidney failure changes four systems at once: the heart and vessels, the blood, the bones, and the defenses against "
                       "infection. Each strains the others."),
     "pod04_uremicheart": ("physician-on-duty-04-uremic-heart.webp",
-                          "Side-by-side drawings. On the left, a normal heart with a thin left ventricle wall and a smooth, elastic artery. On the "
+                          "Side-by-side drawings. On the left, a normal heart with a normal left ventricle wall and a smooth, elastic artery. On the "
                           "right, a heart with a thick, stiff left ventricle and an artery with white calcium deposits in its wall. Arrows point "
                           "to the heart from six labeled inputs: extra fluid, high blood pressure, anemia, fistula flow, calcification, and "
                           "inflammation.",

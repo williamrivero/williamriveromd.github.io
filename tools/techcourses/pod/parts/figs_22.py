@@ -28,10 +28,10 @@ FIGS = {
                         "The five-step foot check at the chair: look, between the toes, pulses, sensation, and footwear. Shoes and socks "
                         "come off for every check."),
     "pod22_footflags": ("physician-on-duty-22-foot-red-flags.webp",
-                        "Four realistic close-up photographs: a round ulcer under the ball of the foot with a callused rim; a dusky blue "
-                        "toe; red, swollen skin spreading up from a toe wound; and a thick callus with dark blood beneath it.",
-                        "Foot findings that need the attending nephrologist the same day: an ulcer, a dusky or black toe, spreading redness, "
-                        "and bleeding under a callus, which often hides an ulcer."),
+                        "Four realistic close-up photographs: a round ulcer under the ball of the foot with a callused rim; a toe "
+                        "with a dry black tip; red, swollen skin spreading up from a toe wound; and a thick callus with dark blood beneath it.",
+                        "Foot findings that need the attending nephrologist the same day: an ulcer, a black toe, spreading redness, "
+                        "and bleeding under a callus, which often hides an ulcer. A cold, pale, or newly blue foot or toe needs a call now."),
     "pod22_stomach": ("physician-on-duty-22-slow-stomach-dialysis-meal.webp",
                       "A stomach still full of food two hours after a meal, with a clock beside it. An insulin syringe icon shows insulin "
                       "already acting in the blood. Nearby a dialyzer draws glucose out of the blood. A falling arrow shows blood glucose "
