@@ -89,6 +89,22 @@ def patch_guide(path: Path, published: datetime, dry_run: bool) -> str:
     text = path.read_text(encoding="utf-8")
     original = text
 
+    existing = re.search(r'<meta property="article:published_time" content="(\d{4}-\d{2}-\d{2})', text)
+    if existing:
+        # The stamp is immutable, but a regenerated page (course generators carry the
+        # stamp over) gets a fresh JSON-LD block from patch_last_reviewed.py with the
+        # "YYYY-01-01" placeholder. Re-align that placeholder to the existing stamp.
+        pub_date = existing.group(1)
+        text = re.sub(
+            r'("datePublished":\s*")\d{4}-01-01(")',
+            lambda m: m.group(1) + pub_date + m.group(2),
+            text,
+        )
+        if text == original:
+            return "unchanged (already stamped)"
+        if not dry_run:
+            path.write_text(text, encoding="utf-8")
+        return f"✓ realigned datePublished {pub_date}"
     if 'article:published_time' in text:
         return "unchanged (already stamped)"
 
