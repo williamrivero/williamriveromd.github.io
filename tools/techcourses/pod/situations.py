@@ -121,3 +121,210 @@ _mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
 for _k, _v in _mo.SITUATIONS.items():
     SITUATIONS.setdefault(_k, _v)
 # <<< module 15
+
+# >>> module 03
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_03", _Pa(__file__).resolve().parent / "parts" / "situations_03.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 03
+
+# >>> module 04
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_04", _Pa(__file__).resolve().parent / "parts" / "situations_04.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 04
+
+# >>> module 06
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_06", _Pa(__file__).resolve().parent / "parts" / "situations_06.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 06
+
+# >>> module 07
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_07", _Pa(__file__).resolve().parent / "parts" / "situations_07.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 07
+
+# >>> module 08
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_08", _Pa(__file__).resolve().parent / "parts" / "situations_08.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 08
+
+# >>> module 12
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_12", _Pa(__file__).resolve().parent / "parts" / "situations_12.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 12
+
+# >>> module 14
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_14", _Pa(__file__).resolve().parent / "parts" / "situations_14.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 14
+
+# >>> module 17
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_17", _Pa(__file__).resolve().parent / "parts" / "situations_17.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 17
+
+# >>> module 18
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_18", _Pa(__file__).resolve().parent / "parts" / "situations_18.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 18
+
+# >>> module 19
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_19", _Pa(__file__).resolve().parent / "parts" / "situations_19.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 19
+
+# >>> module 20
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_20", _Pa(__file__).resolve().parent / "parts" / "situations_20.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 20
+
+# >>> module 21
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_21", _Pa(__file__).resolve().parent / "parts" / "situations_21.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 21
+
+# >>> module 22
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_22", _Pa(__file__).resolve().parent / "parts" / "situations_22.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 22
+
+# >>> module 23
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_23", _Pa(__file__).resolve().parent / "parts" / "situations_23.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 23
+
+# >>> module 24
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_24", _Pa(__file__).resolve().parent / "parts" / "situations_24.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 24
+
+# >>> module 25
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_25", _Pa(__file__).resolve().parent / "parts" / "situations_25.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 25
+
+# >>> module 26
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_26", _Pa(__file__).resolve().parent / "parts" / "situations_26.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 26
+
+# >>> module 27
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_27", _Pa(__file__).resolve().parent / "parts" / "situations_27.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 27
+
+# >>> module 28
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_28", _Pa(__file__).resolve().parent / "parts" / "situations_28.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 28
+
+# >>> module 29
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_29", _Pa(__file__).resolve().parent / "parts" / "situations_29.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 29
+
+# >>> module 30
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_30", _Pa(__file__).resolve().parent / "parts" / "situations_30.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 30
+
+# >>> module 31
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_31", _Pa(__file__).resolve().parent / "parts" / "situations_31.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 31
+
+# >>> module 32
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_situations_32", _Pa(__file__).resolve().parent / "parts" / "situations_32.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.SITUATIONS.items():
+    SITUATIONS.setdefault(_k, _v)
+# <<< module 32

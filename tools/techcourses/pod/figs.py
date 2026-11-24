@@ -89,3 +89,210 @@ _mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
 for _k, _v in _mo.FIGS.items():
     FIGS.setdefault(_k, _v)
 # <<< module 15
+
+# >>> module 03
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_03", _Pa(__file__).resolve().parent / "parts" / "figs_03.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 03
+
+# >>> module 04
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_04", _Pa(__file__).resolve().parent / "parts" / "figs_04.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 04
+
+# >>> module 06
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_06", _Pa(__file__).resolve().parent / "parts" / "figs_06.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 06
+
+# >>> module 07
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_07", _Pa(__file__).resolve().parent / "parts" / "figs_07.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 07
+
+# >>> module 08
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_08", _Pa(__file__).resolve().parent / "parts" / "figs_08.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 08
+
+# >>> module 12
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_12", _Pa(__file__).resolve().parent / "parts" / "figs_12.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 12
+
+# >>> module 14
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_14", _Pa(__file__).resolve().parent / "parts" / "figs_14.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 14
+
+# >>> module 17
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_17", _Pa(__file__).resolve().parent / "parts" / "figs_17.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 17
+
+# >>> module 18
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_18", _Pa(__file__).resolve().parent / "parts" / "figs_18.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 18
+
+# >>> module 19
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_19", _Pa(__file__).resolve().parent / "parts" / "figs_19.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 19
+
+# >>> module 20
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_20", _Pa(__file__).resolve().parent / "parts" / "figs_20.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 20
+
+# >>> module 21
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_21", _Pa(__file__).resolve().parent / "parts" / "figs_21.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 21
+
+# >>> module 22
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_22", _Pa(__file__).resolve().parent / "parts" / "figs_22.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 22
+
+# >>> module 23
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_23", _Pa(__file__).resolve().parent / "parts" / "figs_23.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 23
+
+# >>> module 24
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_24", _Pa(__file__).resolve().parent / "parts" / "figs_24.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 24
+
+# >>> module 25
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_25", _Pa(__file__).resolve().parent / "parts" / "figs_25.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 25
+
+# >>> module 26
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_26", _Pa(__file__).resolve().parent / "parts" / "figs_26.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 26
+
+# >>> module 27
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_27", _Pa(__file__).resolve().parent / "parts" / "figs_27.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 27
+
+# >>> module 28
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_28", _Pa(__file__).resolve().parent / "parts" / "figs_28.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 28
+
+# >>> module 29
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_29", _Pa(__file__).resolve().parent / "parts" / "figs_29.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 29
+
+# >>> module 30
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_30", _Pa(__file__).resolve().parent / "parts" / "figs_30.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 30
+
+# >>> module 31
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_31", _Pa(__file__).resolve().parent / "parts" / "figs_31.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 31
+
+# >>> module 32
+import importlib.util as _iu
+from pathlib import Path as _Pa
+_sp = _iu.spec_from_file_location("pod_figs_32", _Pa(__file__).resolve().parent / "parts" / "figs_32.py")
+_mo = _iu.module_from_spec(_sp); _sp.loader.exec_module(_mo)
+for _k, _v in _mo.FIGS.items():
+    FIGS.setdefault(_k, _v)
+# <<< module 32
