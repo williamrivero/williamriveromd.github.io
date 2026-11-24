@@ -46,7 +46,7 @@ FIGS = {
                     "A simplified audit-trail table with three highlighted rows: access to a relative's record, a bulk export at 2 a.m., and activity on the account of a staff member who has resigned.",
                     "Who looked, when, and why. Individual accounts make the audit trail meaningful."),
     "mro12_lists": (_P + "12-three-lists.webp",
-                    "A nurse writing on a numbered paper downtime sheet at a dialysis station, and below, three columns labeled schedule, paper sheets, and electronic record feeding a reconciliation table with four outcomes.",
+                    "A nurse writing on a serial-numbered paper downtime sheet at a dialysis station, and below, three columns labeled schedule, paper sheets, and electronic record feeding a reconciliation table with four outcomes.",
                     "Three lists, one truth. Downtime paper is a parallel record that must be reconciled, not just filed."),
     "mro13_loop": (_P + "13-quality-loop.webp",
                    "A circular loop of define, sample, measure, act, and re-measure, with a center card comparing 16 of 20 and 48 of 60, both 80 percent, with a narrower confidence interval for the larger sample.",
