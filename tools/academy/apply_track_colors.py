@@ -35,8 +35,7 @@ CSS = """<style id="academy-track-colors">
 .acad-track[data-family] .acad-track-ico{background:var(--fam);}
 .acad-track.acad-subtrack[data-family]{border-left-color:var(--fam);}
 .acad-track[data-family]:hover{background:#fff;box-shadow:inset 0 3px 0 var(--fam),0 8px 22px rgba(18,58,54,.14);}
-.acad-tracks.acad-cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;align-items:start;}
-@media (min-width:901px){.acad-tracks.acad-cols{width:min(1180px,calc(100vw - 152px));margin-left:calc(50% - min(590px,50vw - 76px));}}
+.acad-tracks.acad-cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:start;}
 .acad-col{display:flex;flex-direction:column;gap:8px;min-width:0;}
 .acad-col[data-family="nursing"]{--fam:#1a6b72;}
 .acad-col[data-family="physicians"]{--fam:#1f3864;}
@@ -46,11 +45,12 @@ CSS = """<style id="academy-track-colors">
 .acad-col-h{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin:0 0 2px;padding:0 2px 6px;
   border-bottom:3px solid var(--fam);font:700 .74rem/1.2 Inter,system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#17312e;}
 .acad-col-h small{font-weight:600;letter-spacing:0;color:#3d635e;}
-.acad-cols .acad-track{padding:10px 11px;gap:9px;}
-.acad-cols .acad-track-ico{flex-basis:30px;height:30px;}
-.acad-cols .acad-track-t strong{font-size:.86rem;}
-@media (max-width:1180px){.acad-cols .acad-track-ico{display:none;}}
-.acad-cols .acad-track-t strong{overflow-wrap:break-word;hyphens:manual;}
+.acad-col{gap:6px;}
+.acad-col-h{font-size:.68rem;letter-spacing:.05em;}
+.acad-cols .acad-track{padding:8px 9px;gap:0;border-radius:10px;}
+.acad-cols .acad-track-ico{display:none;}
+.acad-cols .acad-track-t strong{font-size:.8rem;line-height:1.25;overflow-wrap:break-word;hyphens:manual;}
+.acad-cols .acad-track-t small{font-size:.7rem;}
 @media (max-width:900px){.acad-tracks.acad-cols{grid-template-columns:1fr;gap:16px;}
   .acad-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.acad-col-h{grid-column:1/-1;}}
 html[data-theme="dark"] .acad-track[data-family]{background:color-mix(in srgb,var(--fam) 16%,transparent);box-shadow:inset 0 3px 0 var(--fam);}
