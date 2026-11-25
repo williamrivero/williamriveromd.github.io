@@ -2472,6 +2472,13 @@ class Ctx:
     def __init__(self, data_dir: Path, today: dt.date):
         self.data_dir, self.today = data_dir, today
         self.generics = load_json(data_dir / "generics.json", {}) or {}
+        # Explicitly requested reference monographs absent from the current registry crawl.
+        # These never create registrations or count as PH products.
+        self.additional_monographs = load_json(data_dir / "additional_monographs.json", {}) or {}
+        for slug, item in self.additional_monographs.items():
+            if slug not in self.generics and item.get("enabled") is True and safe_url(item.get("source_url")):
+                self.generics[slug] = {"name": item["name"], "ingredients": item["ingredients"],
+                                      "products": 0, "categories": item.get("categories", [])}
         self.related_guides = load_json(data_dir / "related_guides.json", {}) or {}   # tools/drugdb/build_related_guides.py
         self.products = load_registry(data_dir)
         self.by_slug: dict[str, list] = defaultdict(list)
@@ -2968,6 +2975,11 @@ def product_sort_key(p):
 
 
 def render_products(slug, g, products, today, also: str = "") -> str:
+    if not products:
+        return ('<section class="section" id="products"><div class="section-tag">Philippine products</div>'
+                '<h2>Philippine registration verification</h2><p class="dd-lead">No matching current registration '
+                'records were found in this dataset. This does not establish that the medicine is unregistered.</p>'
+                f'<p><a class="dd-btn" href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">Verify on PH FDA portal {EXT_ICON}</a></p></section>')
     rows, classes = [], {}
     for p in sorted(products, key=product_sort_key):
         c = classify(p)
@@ -3982,6 +3994,9 @@ def index_entry(slug: str, g: dict, ctx: Ctx, label=None, renal=None) -> tuple[d
     ph = ph_categories(products, g)
     lm = (_lab(label) or {}).get("label") if isinstance((_lab(label) or {}).get("label"), dict) else {}
     brands = brand_list(products, name)
+    addition = ctx.additional_monographs.get(slug, {})
+    if addition.get("enabled") is True:
+        brands = list(dict.fromkeys(brands + addition.get("search_brands", [])))
     ub = ws(lm.get("brand_name"))
     if ub and (_brand_key(ub) in {_brand_key(b) for b in brands} or _brand_key(ub) == _brand_key(name)):
         ub = ""
@@ -4366,6 +4381,10 @@ def drug_class_html(slug: str, name: str, cat: str, ctx: "Ctx") -> str:
            f'<a href="category/{esc(cs)}.html">{esc(cat)}</a>. Neither a US label nor EU product information is '
            'published for it, so this page shows its Philippine registration. For prescribing details, use the '
            'Philippine package insert (linked in the products table where the FDA has published one).</p>']
+    if ctx.additional_monographs.get(slug, {}).get("enabled") is True and not ctx.by_slug.get(slug):
+        out = [f'<p><strong>{esc(name)}</strong> is included as a referenced clinical monograph in the '
+               f'<a href="category/{esc(cs)}.html">{esc(cat)}</a> group. See References for the US label and '
+               'clinical literature; current Philippine registration details are unconfirmed.</p>']
     if labeled:
         show = labeled[:12]
         out.append('<p class="dd-peer-h"><strong>Same or related class, with full prescribing information:</strong></p>'
@@ -4481,7 +4500,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     if uc.get("epc"):
         cls_line.append(f'{esc("; ".join(uc["epc"]))}{" (" + esc("; ".join(uc["moa"])) + ")" if uc.get("moa") else ""} '
                         '<span class="dd-src">US FDA class</span>')
-    if ph:
+    if ph and not (ctx.additional_monographs.get(slug, {}).get("enabled") is True and not products):
         cls_line.append(f'{esc("; ".join(ph[:2]))}{"; and others" if len(ph) > 2 else ""} <span class="dd-src">PH FDA category</span>')
     if len(ingredients) > 1:
         cls_line.append("Fixed-dose combination.")
@@ -4489,6 +4508,11 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
 
     # ── boxed warning + label attribution (top of page)
     top = []
+    addition = ctx.additional_monographs.get(slug, {})
+    if addition.get("enabled") is True and safe_url(addition.get("source_url")):
+        top.append('<div class="dd-placeholder" role="note"><strong>Philippine brand reference.</strong> '
+                   + esc(addition.get("note", "")) + ' <a href="' + esc(addition["source_url"])
+                   + '" target="_blank" rel="noopener">Department of Health source</a>.</div>')
     bw = label_html(label, "boxed_warning")
     if bw:
         top.append(f'<div class="dd-boxed-alert" role="alert" id="boxed-warning"><div class="dd-boxed-h">Boxed warning '
@@ -4504,7 +4528,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         top.append(eu_r.attribution(eu))
     elif eu_r.has_links(ctx.intl(slug)):
         top.append(eu_r.links_html(ctx.intl(slug)))
-    else:
+    elif addition.get("enabled") is not True:
         top.append('<div class="dd-placeholder">US label not yet available for this generic. Check the Philippine package insert '
                    '(linked in the products table where the FDA has published one).</div>')
 
@@ -4765,7 +4789,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         <div class="hero-tag">Drug Database · Clinicians</div>
         <h1>{esc(name)}</h1>
         {aka_html}
-        {render_brand_line(brands_ranked)}
+        {('<p class="dd-brands"><strong>DOH-listed brand:</strong> ' + esc(", ".join(addition.get("search_brands", []))) + '; current registration details unconfirmed.</p>') if not products and addition.get("enabled") is True else render_brand_line(brands_ranked)}
         {alias_banner(slug, ctx)}
         {pn_partof(slug, ctx)}
         {f'<p class="dd-usbrand">US brand (reference label): <strong>{esc(us_brand)}</strong>; not a Philippine-registered brand.</p>' if us_brand else ''}
@@ -5656,7 +5680,7 @@ def main():
         if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", slug):
             print(f"  ! skipping unsafe slug {slug!r}", file=sys.stderr)
             continue
-        if not ctx.by_slug.get(slug):
+        if not ctx.by_slug.get(slug) and not (ctx.additional_monographs.get(slug, {}).get("enabled") is True):
             stats["no-products"] += 1
             continue
         if only is not None and slug not in only:

@@ -182,3 +182,16 @@ names both accepted). Only authorized human medicines. The originator (EMA flags
 earliest Commission decision) is preferred, then the SmPC whose pharmaceutical form matches the PH route and form.
 A product-information PDF holding several SmPCs is split and the matching one used. Review lists:
 `data/drugs/labels-eu/_changes.json` (added/changed/removed) and `_missing.json`.
+
+## Explicitly requested reference monographs outside the registry crawl
+
+`additional_monographs.json` records narrowly scoped, user-requested clinical references.
+These entries never create FDA registrations or increase the Philippine product count.
+On 25 November 2026, Dr. Rivero explicitly requested metolazone/Metoz (Dega). DOH's
+[medicine-price information flipchart](https://doh.gov.ph/wp-content/uploads/2023/08/Sa-gamot-na-abot-kaya-sakit-makakaya-A4-Flipchart-v8.pdf),
+row 38, lists Metoz 5 mg tablets (Dega). Live FDA portal searches for `metolazone`,
+`metoz` and `Dega` did not return an exact matching drug-registration record; the
+metolazone response contained a VAT-exempt 5 mg tablet entry only. The page therefore
+identifies the brand reference while explicitly leaving current registration details
+unconfirmed. No registration number, expiry date or US/Metoz formulation equivalence
+has been inferred. Searchable brand terms come from the documented DOH source.
