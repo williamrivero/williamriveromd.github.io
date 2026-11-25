@@ -152,3 +152,6 @@ MODULES = []
 for _id, _slug, _title, _sub in _ROWS:
     MODULES.append({"id": _id, "slug": _slug, "title": _title, "sub": _sub + ".", "part": _BLOCKS[_block(int(_id))],
                     "card_img": f"{HUB}-{_id}-card.webp", "hero_brief": _HB + _title})
+
+# Module 8 images were replaced Nov 26 2026; new file names bypass the 30-day image cache.
+MODULES[7]["hero_file"] = f"{HUB}-08-dialysis-catheters-and-central-veins-vignette-hero-v2"

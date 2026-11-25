@@ -46,7 +46,7 @@ FIGS = {
     'vs07_b': ('vascular-surgeon-07-fistula-versus-graft-card.webp',
         'Table comparing fistula and graft for time to use, primary failure, maintenance, infection and timing of hand ischemia.',
         'Fistula or graft. A graft is a reasoned first choice when early use is needed or conventional anatomy is unfavorable (UKKA 2025, statement 3.4, grade 1C).'),
-    'vs08_a': ('vascular-surgeon-08-central-veins-and-catheter-sites.webp',
+    'vs08_a': ('vascular-surgeon-08-central-veins-and-catheter-sites-v2.webp',
         'Schematic of the central veins showing a tunneled catheter from the right upper chest over the clavicle into the right internal jugular vein and down to the right atrium, the avoided subclavian route, and stenosis sites.',
         'Where a catheter goes, and what it can cost. The UK Kidney Association (UKKA) favors the right internal jugular vein and avoiding the subclavian route, because injured central veins drain future arm access.'),
     'vs08_b': ('vascular-surgeon-08-stop-troubleshooting.webp',
