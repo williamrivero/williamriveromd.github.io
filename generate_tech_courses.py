@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs", "rtc", "otpt"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs", "rtc", "otpt", "duo"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 
@@ -1456,6 +1456,7 @@ TRACK_ICONS = {
     "dialysis-head-nurse": '<path d="M8 3h8v4a4 4 0 0 1-8 0z"/><path d="M12 11v3"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M10.5 5h3M12 3.5v3"/>',
     "dialysis-charge-nurse": '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v3h6V3"/><path d="M8 11h8M8 15h5"/><circle cx="17" cy="16" r="1.5"/>',
     "dialyzer-reprocessing-technician": '<rect x="9" y="2" width="6" height="20" rx="2"/><path d="M11 6v12M13 6v12"/><path d="M4 9a8 8 0 0 1 4-4M20 15a8 8 0 0 1-4 4"/><path d="M4 5v4h4M20 19v-4h-4"/>',
+    "dialysis-unit-owner": '<path d="M3 21h18"/><path d="M4 10h16"/><path d="M12 3l8 5H4z"/><path d="M6 10v9M10 10v9M14 10v9M18 10v9"/>',
     "dialysis-biomedical-technician": '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
 }
 

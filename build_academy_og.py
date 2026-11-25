@@ -66,6 +66,8 @@ TRACKS = {
                                        "12 modules · skills checklists · final exam"),
     "dialysis-unit-manager": ("academy/dialysis-unit-manager.html", "administrative", "Unit Operations Manager/Unit Manager",
                               "UNIT MANAGEMENT", "19 modules · freestanding and hospital paths"),
+    "dialysis-unit-owner": ("academy/dialysis-unit-owner.html", "administrative", "Dialysis Unit Owner",
+                            "GOVERNANCE AND STEWARDSHIP", "24 modules · 8 owner calculators · capstone"),
     "philhealth-claims": ("academy/philhealth-claims.html", "administrative", "PhilHealth Liaison/Claims Officer",
                           "CLAIMS", "10 modules + practicum · 5 calculators"),
     "medical-records-officer": ("academy/medical-records-officer.html", "ancillary", "Medical Records Officer/Custodian",

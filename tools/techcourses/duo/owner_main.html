@@ -1,0 +1,100 @@
+<main class="container dch-calc">
+
+<nav class="toc" aria-label="Calculators">
+<a href="#c1">1 Break-even</a><a href="#c2">2 Cost per treatment</a><a href="#c3">3 Safe capacity</a><a href="#c4">4 Staffing FTE</a><a href="#c5">5 Cash and runway</a><a href="#c6">6 Loan and DSCR</a><a href="#c7">7 Payback and NPV</a><a href="#c8">8 Patient share</a>
+</nav>
+
+<div class="disclaimer"><strong>Read this first.</strong> Every default value on this page is synthetic, invented for teaching. It is not a tariff, a market price, or a benchmark. Replace each value with your own ledger, contracts, and the current PhilHealth circular. These tools do arithmetic, not decisions: a result never overrides a clinical or technical hold, a staffing rule, or the attending nephrologist. Nothing you enter leaves this page.</div>
+
+<section class="calc" id="c1"><h2>1. Contribution margin and break-even volume</h2>
+<p class="why">Contribution per session = net facility revenue per session &minus; variable cost per session. Break-even sessions per month = fixed cost &divide; contribution. If contribution is zero or negative, no volume breaks even, and the calculator says so instead of giving a number (Course Modules 7 and 16).</p>
+<div class="grid">
+<label>Fixed cost per month (pesos)<input id="c1_fx" type="number" min="0" value="630000" placeholder="e.g. 630000"></label>
+<label>Net facility revenue per session (pesos)<input id="c1_rev" type="number" min="0" value="6000" placeholder="e.g. 6000"></label>
+<label>Variable cost per session (pesos)<input id="c1_var" type="number" min="0" value="3900" placeholder="e.g. 3900"></label>
+<label>Sessions you expect per month (optional)<input id="c1_vol" type="number" min="0" value="400" placeholder="e.g. 400"></label>
+</div><button data-run="c1">Calculate</button><div class="out" id="c1_out" aria-live="polite"></div></section>
+
+<section class="calc" id="c2"><h2>2. Cost per treatment across volumes, with a step cost</h2>
+<p class="why">Fixed cost spreads over more sessions as volume rises, so cost per treatment falls, until a step (a new nurse team, a third shift) adds fixed cost at once. Test the step before you promise the volume (Course Module 16).</p>
+<div class="grid">
+<label>Fixed cost per month (pesos)<input id="c2_fx" type="number" min="0" value="920000" placeholder="e.g. 920000"></label>
+<label>Variable cost per session (pesos)<input id="c2_var" type="number" min="0" value="2100" placeholder="e.g. 2100"></label>
+<label>Volumes to compare (comma-separated)<input id="c2_vols" type="text" value="250, 350, 400, 450" placeholder="e.g. 250, 350, 400"></label>
+<label>Step starts above (sessions per month)<input id="c2_step" type="number" min="0" value="400" placeholder="e.g. 400"></label>
+<label>Added fixed cost at the step (pesos per month)<input id="c2_sc" type="number" min="0" value="210000" placeholder="e.g. 210000"></label>
+</div><button data-run="c2">Calculate</button><div class="out" id="c2_out" aria-live="polite"></div></section>
+
+<section class="calc" id="c3"><h2>3. Physical capacity versus safely staffed capacity</h2>
+<p class="why">Weekly station-sessions = usable stations &times; shifts per day &times; operating days. The safe number is the smaller of that and what your cleared staff can cover. Patients supported = safe station-sessions &divide; sessions each patient needs per week. Never plan from physical capacity alone (Course Module 8).</p>
+<div class="grid">
+<label>Stations installed<input id="c3_st" type="number" min="0" value="12" placeholder="e.g. 12"></label>
+<label>Stations out of service or reserved<input id="c3_oos" type="number" min="0" value="1" placeholder="e.g. 1"></label>
+<label>Shifts per day<input id="c3_sh" type="number" min="1" value="3" placeholder="e.g. 3"></label>
+<label>Operating days per week<input id="c3_d" type="number" min="1" max="7" value="6" placeholder="e.g. 6"></label>
+<label>Stations your cleared staff can cover per shift<input id="c3_ss" type="number" min="0" value="9" placeholder="e.g. 9"></label>
+<label>Sessions per patient per week<input id="c3_pw" type="number" min="1" value="3" placeholder="e.g. 3"></label>
+<label>Current census (patients)<input id="c3_cen" type="number" min="0" value="50" placeholder="e.g. 50"></label>
+</div><button data-run="c3">Calculate</button><div class="out" id="c3_out" aria-live="polite"></div></section>
+
+<section class="calc" id="c4"><h2>4. Staffing: full-time equivalents with a relief factor</h2>
+<p class="why">FTE = posts per shift &times; shifts per week &times; hours per shift &divide; contracted hours per week. The relief factor adds cover for leave, training, and sickness. The ratio of patients to staff comes from your licensing rule and your clinical head, not from this tool (Course Module 10).</p>
+<div class="grid">
+<label>Posts to fill per shift (one role)<input id="c4_p" type="number" min="0" value="3" placeholder="e.g. 3"></label>
+<label>Shifts per week<input id="c4_s" type="number" min="0" value="18" placeholder="e.g. 18"></label>
+<label>Hours per shift<input id="c4_h" type="number" min="0" value="6" placeholder="e.g. 6"></label>
+<label>Contracted hours per week per person<input id="c4_c" type="number" min="1" value="48" placeholder="e.g. 48"></label>
+<label>Relief factor (%)<input id="c4_r" type="number" min="0" value="15" placeholder="e.g. 15"></label>
+<label>Monthly cost per FTE, all-in (pesos)<input id="c4_cost" type="number" min="0" value="38000" placeholder="e.g. 38000"></label>
+<label>Sessions per month<input id="c4_sess" type="number" min="0" value="600" placeholder="e.g. 600"></label>
+</div><button data-run="c4">Calculate</button><div class="out" id="c4_out" aria-live="polite"></div></section>
+
+<section class="calc" id="c5"><h2>5. Cash tied in receivables, days sales outstanding, and runway</h2>
+<p class="why">A profitable unit can still run out of cash. Cash tied up = daily net revenue &times; days to collect. Days sales outstanding (DSO) = receivables &divide; daily net revenue. Runway = cash on hand &divide; weekly cash costs (Course Module 17).</p>
+<div class="grid">
+<label>Net revenue per month (pesos)<input id="c5_rev" type="number" min="0" value="2540000" placeholder="e.g. 2540000"></label>
+<label>Receivables today (pesos)<input id="c5_ar" type="number" min="0" value="6350000" placeholder="e.g. 6350000"></label>
+<label>Average days to collect<input id="c5_days" type="number" min="0" value="75" placeholder="e.g. 75"></label>
+<label>Cash on hand (pesos)<input id="c5_cash" type="number" min="0" value="3000000" placeholder="e.g. 3000000"></label>
+<label>Cash costs per month, including payroll and debt (pesos)<input id="c5_cost" type="number" min="0" value="2200000" placeholder="e.g. 2200000"></label>
+</div><button data-run="c5">Calculate</button><div class="out" id="c5_out" aria-live="polite"></div></section>
+
+<section class="calc" id="c6"><h2>6. Loan payment and debt service coverage ratio</h2>
+<p class="why">Level monthly payment on an amortizing loan, and the debt service coverage ratio (DSCR) = annual cash available for debt service &divide; annual debt payments. Lenders often look for a cushion above 1; confirm your lender&rsquo;s covenant (Course Module 7).</p>
+<div class="grid">
+<label>Principal (pesos)<input id="c6_p" type="number" min="0" value="12000000" placeholder="e.g. 12000000"></label>
+<label>Annual interest rate (%)<input id="c6_r" type="number" min="0" value="9" placeholder="e.g. 9"></label>
+<label>Term (years)<input id="c6_y" type="number" min="0" value="7" placeholder="e.g. 7"></label>
+<label>Annual cash available for debt service (pesos)<input id="c6_cf" type="number" min="0" value="3200000" placeholder="e.g. 3200000"></label>
+</div><button data-run="c6">Calculate</button><div class="out" id="c6_out" aria-live="polite"></div></section>
+
+<section class="calc" id="c7"><h2>7. Capital project: simple payback and net present value</h2>
+<p class="why">Payback = capital cost &divide; yearly net cash. Net present value (NPV) discounts each year&rsquo;s cash back to today. A positive NPV at an honest discount rate is a better test than payback alone. Use it for a new water system, extra stations, or a generator (Course Modules 7 and 11).</p>
+<div class="grid">
+<label>Capital cost today (pesos)<input id="c7_c" type="number" min="0" value="4500000" placeholder="e.g. 4500000"></label>
+<label>Net cash per year from the project (pesos)<input id="c7_a" type="number" value="1200000" placeholder="e.g. 1200000"></label>
+<label>Useful life (years)<input id="c7_y" type="number" min="1" value="7" placeholder="e.g. 7"></label>
+<label>Discount rate (%)<input id="c7_d" type="number" min="0" value="10" placeholder="e.g. 10"></label>
+<label>Salvage value at the end (pesos)<input id="c7_s" type="number" min="0" value="0" placeholder="e.g. 0"></label>
+</div><button data-run="c7">Calculate</button><div class="out" id="c7_out" aria-live="polite"></div></section>
+
+<section class="calc" id="c8"><h2>8. What the patient pays in a year</h2>
+<p class="why">Under PhilHealth Circular 2024-0023 the package (default 6,350 pesos per session, facility and professional fees included, up to 156 sessions a year) covers the minimum standard of care with no co-payment. A patient pays only for optional additional or premium services beyond that minimum, explained in advance, with an additional professional fee capped at 450 pesos, and for sessions beyond the yearly limit. Confirm the current circular before quoting a patient (Course Modules 14 and 16).</p>
+<div class="grid">
+<label>PhilHealth package per session (pesos)<input id="c8_pk" type="number" min="0" value="6350" placeholder="e.g. 6350"></label>
+<label>Sessions per week<input id="c8_pw" type="number" min="0" value="3" placeholder="e.g. 3"></label>
+<label>Weeks in the year<input id="c8_wk" type="number" min="0" value="52" placeholder="e.g. 52"></label>
+<label>Yearly session limit<input id="c8_lim" type="number" min="0" value="156" placeholder="e.g. 156"></label>
+<label>Sessions with an additional service the patient chose<input id="c8_an" type="number" min="0" value="4" placeholder="e.g. 4"></label>
+<label>Additional or premium service charge per such session (pesos)<input id="c8_ac" type="number" min="0" value="0" placeholder="e.g. 0"></label>
+<label>Additional professional fee per such session (pesos, cap 450)<input id="c8_pf" type="number" min="0" value="450" placeholder="e.g. 450"></label>
+<label>Self-pay charge per session beyond the limit (pesos)<input id="c8_sp" type="number" min="0" value="6350" placeholder="e.g. 6350"></label>
+<label>Other confirmed support per session beyond the limit (pesos)<input id="c8_os" type="number" min="0" value="0" placeholder="e.g. 0"></label>
+</div><button data-run="c8">Calculate</button><div class="out" id="c8_out" aria-live="polite"></div></section>
+
+<details class="mdc-acc" id="evidence"><summary>Formula, sources &amp; limitations</summary>
+<p>The formulas are standard managerial-accounting and finance arithmetic: contribution margin, break-even, the level-payment loan formula, discounted cash flow, and days sales outstanding. They describe money; they do not show that any spending level is safe. Staffing and capacity limits come from the Department of Health (DOH) licensing rules, the Philippine Society of Nephrology (PSN) guidelines, and your clinical and technical heads. The PhilHealth defaults follow PhilHealth Circular No. 2024-0023, the hemodialysis benefits agreement form, and PhilHealth&rsquo;s October 2024 release (6,350 pesos per session, inclusive of facility and professional fees; up to 156 sessions per calendar year; no co-payment for the minimum standard of care; additional professional fees capped at 450 pesos), checked November 25, 2026. Payer rules change: confirm the current circular before you rely on a figure.</p>
+</details>
+
+<div class="disclaimer"><strong>Important:</strong> These tools do arithmetic, not decisions. They do not replace your unit&rsquo;s approved policies, current regulations, your accountant, your lender, or the clinicians and technicians who own clinical and technical decisions. Reviewed November 25, 2026.</div>
+</main>
