@@ -760,6 +760,60 @@ def _strip(s):
     return re.sub(re.escape(MARK[0]) + r".*?" + re.escape(MARK[1]) + r"\n?", "", s, flags=re.S)
 
 
+LMARK = ("<!-- DNA-ROW-START -->", "<!-- DNA-ROW-END -->")
+NUM = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen",
+       "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two",
+       "twenty-three", "twenty-four", "twenty-five"]
+
+
+def wire_landing_content(s):
+    """Landing-page prose and tables for this subtrack (idempotent): the nursing track paragraph, the subtrack count in
+    words (kept equal to the stat chip), and one row each in the qualifications, onboarding and career-move tables."""
+    s = re.sub(re.escape(LMARK[0]) + r".*?" + re.escape(LMARK[1]) + r"\n?", "", s, flags=re.S)
+    old_p = "and Special Dialysis Nurse Roles, for the nurse who holds a portfolio.</p>"
+    new_p = ("and Special Dialysis Nurse Roles, for the nurse who holds a portfolio. Beside them sits the "
+             "<a href=\"dialysis-nurse-assistant.html\">Dialysis Nurse Assistant / Patient Care Assistant (PCA)</a> subtrack, for the "
+             "supervised support worker who weighs, observes, prepares and reports on the nurse&rsquo;s delegation; it is a support role, "
+             "not a nursing specialty.</p>")
+    if "dialysis-nurse-assistant.html\">Dialysis Nurse Assistant / Patient Care Assistant (PCA)</a> subtrack" not in s:
+        s = s.replace(old_p, new_p, 1)
+    m = re.search(r'acad-stat"><b>(\d+)</b> subtracks', s)
+    if m and int(m.group(1)) < len(NUM):
+        n = int(m.group(1))
+        for w in NUM[n - 3:n]:
+            s = re.sub(rf"\b(Five tracks and|with) {w} subtracks", rf"\1 {NUM[n]} subtracks", s)
+    rows = {
+        '<tr><td><a href="dialysis-charge-nurse.html">Charge Nurse</a></td>':
+            f'{LMARK[0]}<tr><td><a href="{HUB}">Dialysis Nurse Assistant / PCA</a></td><td><ul class="acad-qual">'
+            + "".join(f"<li>{x}</li>" for x in _qual_items()) + f'</ul></td></tr>{LMARK[1]}\n',
+        '<tr><td>Head nurse, new or promoted</td>':
+            f'{LMARK[0]}<tr><td>Dialysis nurse assistant or patient care assistant</td><td><a href="{HUB}">Dialysis Nurse Assistant / PCA</a></td>'
+            f'<td>Modules 1, 4, 5, and 7: role and delegation, infection prevention, weights and observations, the access</td>'
+            f'<td>Practical BLS; observed sign-off on each delegated task; six capstone stations; end-of-course knowledge check</td></tr>{LMARK[1]}\n',
+        '<tr><td>Head nurse</td><td>Unit operations manager or unit manager</td>':
+            f'{LMARK[0]}<tr><td>Dialysis nurse assistant who passes the nursing board</td><td>Hemodialysis staff nurse</td>'
+            f'<td><a href="nephrology-nursing.html">Hemodialysis Nurse</a>, from Module 1; the assistant modules do not count toward it</td></tr>{LMARK[1]}\n',
+    }
+    for anchor, row in rows.items():
+        i = s.find(anchor)
+        if i < 0:
+            err(f"academy/index.html: table anchor not found: {anchor[:60]}")
+            continue
+        if anchor.startswith('<tr><td><a href="dialysis-charge-nurse.html">'):   # after the Charge Nurse row
+            j = s.find("</tr>", i) + len("</tr>")
+            j = s.find("\n", j) + 1
+            s = s[:j] + row + s[j:]
+        else:                                                                     # before the anchor row
+            s = s[:i] + row + s[i:]
+    return s
+
+
+def _qual_items():
+    spec = importlib.util.spec_from_file_location("acad_qual_dna", ROOT / "tools" / "academy" / "qualifications.py")
+    q = importlib.util.module_from_spec(spec); spec.loader.exec_module(q)
+    return q.QUAL[COURSE["hub_slug"]][1]
+
+
 def wire_parent():
     """Idempotently link the subtrack from the parent hub (role card via tools/academy/nursing_specialties.py, rendered by
     generate_transplant_nurse.wire_parent()), from Nephrology Nursing Module 9, and from the Academy landing page
@@ -813,6 +867,7 @@ def wire_parent():
                 if a >= 0:
                     e = s.find("\n", s.find("</a>", a)) + 1
                     s = s[:e] + nav + s[e:]
+                s = wire_landing_content(s)
                 idx.write_text(s, encoding="utf-8")
                 done.append("index.html")
             else:
