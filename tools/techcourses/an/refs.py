@@ -327,3 +327,11 @@ REFS = {'an01_1': 'Philippine Society of Nephrology. (2024). <em>Hemodialysis gu
            'L. M., Rajan, D. K., Roberts, C., Vachharajani, T. J., Valentini, R. P., &amp; National Kidney Foundation. (2020). KDOQI clinical practice '
            'guideline for vascular access: 2019 update. <em>American Journal of Kidney Diseases</em>, <em>75</em>(4 Suppl 2), S1&ndash;S164. <a '
            'href="https://doi.org/10.1053/j.ajkd.2019.12.001">https://doi.org/10.1053/j.ajkd.2019.12.001</a>'}
+
+# Verified references added during the November 2026 voice/teaching-standard rewrite live in newrefs_mNN.py files
+# (one per module, each defining NEW_REFS = {key: apa_html}); they are merged here.
+import importlib.util as _iu
+from pathlib import Path as _NP
+for _f in sorted(_NP(__file__).resolve().parent.glob("newrefs_m*.py")):
+    _sp = _iu.spec_from_file_location(_f.stem, _f); _md = _iu.module_from_spec(_sp); _sp.loader.exec_module(_md)
+    REFS.update(getattr(_md, "NEW_REFS", {}))
