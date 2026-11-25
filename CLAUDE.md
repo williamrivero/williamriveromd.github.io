@@ -1002,7 +1002,10 @@ header, nav strip, floating buttons or rail. Academy CSS is px-based, so zoom is
 **Hero tiles color-coded by track family (Nov 25 2026, Dr. Rivero):** `tools/academy/apply_track_colors.py` (run by
 `publish_academy.py`) tags each landing hero tile `data-family` (nursing teal, physicians navy, technicians orange,
 ancillary green, administrative purple: the share-card palette), read from the landing page's own Tracks section h3s;
-untracked nursing subtracks fall back to nursing. Adds `<style id="academy-track-colors">` and a legend under the tiles.
+untracked nursing subtracks fall back to nursing. Adds `<style id="academy-track-colors">` and regroups the tiles
+into one column per family (`.acad-cols` > `.acad-col` with a heading and count; Dr. Rivero: "5 columns, each column a
+track"); on screens ≥ 901px the tile area widens past the text column (up to 1180px, leaving 76px each side for the side
+rail); ≤ 900px the families stack, tiles two to a row. Long "A/B" titles get `<wbr>` after the slash.
 **Share card counts (Nov 25 2026):** the landing share card's stats line (images/og/academy/academy-index.jpg) is read from
 the landing page's stat chips by `build_academy_og.py` (`landing_stats()`); after adding a track or modules, rebuild it:
 `python3 build_academy_og.py --art images/academy/og-art --only academy-index`. The blank tablet in that art carries a QR code to

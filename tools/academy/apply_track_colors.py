@@ -5,7 +5,8 @@ ancillary|administrative", read from the landing page's own Tracks section (the 
 cards under each), so a new track picks up its family's color without editing this file. Tiles the section does not
 list (the nursing subtracks: peritoneal dialysis, transplant, nurse assistant, ...) fall back to FALLBACK, then to
 nursing. Colors are the share-card palette in build_academy_og.py (GROUP), with lighter tints in Dim/Dark.
-A legend line under the tiles names the five families. Runs after every publish (publish_academy.py).
+The tiles are regrouped into one column per family (Dr. Rivero, Nov 25 2026: "5 columns, each column a track"),
+each headed by the family name; on tablets and phones the families stack, tiles two to a row. Runs after every publish (publish_academy.py).
 
     python3 tools/academy/apply_track_colors.py
 """
@@ -14,12 +15,12 @@ from pathlib import Path
 
 PAGE = Path(__file__).resolve().parents[2] / "academy" / "index.html"
 
-FAMILIES = [  # key, heading word to match in the Tracks section, legend label
+FAMILIES = [  # key, heading word to match in the Tracks section, column heading
     ("nursing", "nursing", "Nursing"),
     ("physicians", "physician", "Physicians"),
     ("technicians", "technician", "Technicians"),
     ("ancillary", "ancillary", "Ancillary staff"),
-    ("administrative", "administrative", "Administrative staff"),
+    ("administrative", "administrative", "Administrative"),
 ]
 FALLBACK = {"peritoneal-dialysis-nurse.html": "nursing", "transplant-nurse.html": "nursing",
             "dialysis-nurse-assistant.html": "nursing", "special-dialysis-nurse-roles.html": "nursing"}
@@ -34,23 +35,34 @@ CSS = """<style id="academy-track-colors">
 .acad-track[data-family] .acad-track-ico{background:var(--fam);}
 .acad-track.acad-subtrack[data-family]{border-left-color:var(--fam);}
 .acad-track[data-family]:hover{background:#fff;box-shadow:inset 0 3px 0 var(--fam),0 8px 22px rgba(18,58,54,.14);}
-.acad-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0 0;font-size:.8rem;color:#3d635e;}
-.acad-legend span{display:inline-flex;align-items:center;gap:6px;}
-.acad-legend i{width:10px;height:10px;border-radius:3px;background:var(--fam);display:inline-block;}
-.acad-legend [data-family="nursing"]{--fam:#1a6b72;}
-.acad-legend [data-family="physicians"]{--fam:#1f3864;}
-.acad-legend [data-family="technicians"]{--fam:#c55a11;}
-.acad-legend [data-family="ancillary"]{--fam:#2e6b3e;}
-.acad-legend [data-family="administrative"]{--fam:#4b3280;}
+.acad-tracks.acad-cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;align-items:start;}
+@media (min-width:901px){.acad-tracks.acad-cols{width:min(1180px,calc(100vw - 152px));margin-left:calc(50% - min(590px,50vw - 76px));}}
+.acad-col{display:flex;flex-direction:column;gap:8px;min-width:0;}
+.acad-col[data-family="nursing"]{--fam:#1a6b72;}
+.acad-col[data-family="physicians"]{--fam:#1f3864;}
+.acad-col[data-family="technicians"]{--fam:#c55a11;}
+.acad-col[data-family="ancillary"]{--fam:#2e6b3e;}
+.acad-col[data-family="administrative"]{--fam:#4b3280;}
+.acad-col-h{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin:0 0 2px;padding:0 2px 6px;
+  border-bottom:3px solid var(--fam);font:700 .74rem/1.2 Inter,system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#17312e;}
+.acad-col-h small{font-weight:600;letter-spacing:0;color:#3d635e;}
+.acad-cols .acad-track{padding:10px 11px;gap:9px;}
+.acad-cols .acad-track-ico{flex-basis:30px;height:30px;}
+.acad-cols .acad-track-t strong{font-size:.86rem;}
+@media (max-width:1180px){.acad-cols .acad-track-ico{display:none;}}
+.acad-cols .acad-track-t strong{overflow-wrap:break-word;hyphens:manual;}
+@media (max-width:900px){.acad-tracks.acad-cols{grid-template-columns:1fr;gap:16px;}
+  .acad-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.acad-col-h{grid-column:1/-1;}}
 html[data-theme="dark"] .acad-track[data-family]{background:color-mix(in srgb,var(--fam) 16%,transparent);box-shadow:inset 0 3px 0 var(--fam);}
 html[data-theme="dark"] .acad-track[data-family]:hover{background:color-mix(in srgb,var(--fam) 26%,transparent);box-shadow:inset 0 3px 0 var(--fam);}
-html[data-theme="dark"] .acad-track[data-family="nursing"],html[data-theme="dark"] .acad-legend [data-family="nursing"]{--fam:#3fb0a9;}
-html[data-theme="dark"] .acad-track[data-family="physicians"],html[data-theme="dark"] .acad-legend [data-family="physicians"]{--fam:#7d9be0;}
-html[data-theme="dark"] .acad-track[data-family="technicians"],html[data-theme="dark"] .acad-legend [data-family="technicians"]{--fam:#f08a4b;}
-html[data-theme="dark"] .acad-track[data-family="ancillary"],html[data-theme="dark"] .acad-legend [data-family="ancillary"]{--fam:#5fbf7a;}
-html[data-theme="dark"] .acad-track[data-family="administrative"],html[data-theme="dark"] .acad-legend [data-family="administrative"]{--fam:#a48bdc;}
+html[data-theme="dark"] [data-family="nursing"]{--fam:#3fb0a9;}
+html[data-theme="dark"] [data-family="physicians"]{--fam:#7d9be0;}
+html[data-theme="dark"] [data-family="technicians"]{--fam:#f08a4b;}
+html[data-theme="dark"] [data-family="ancillary"]{--fam:#5fbf7a;}
+html[data-theme="dark"] [data-family="administrative"]{--fam:#a48bdc;}
 html[data-theme="dark"] .acad-track[data-family] .acad-track-ico{background:color-mix(in srgb,var(--fam) 55%,#0b1a24);}
-html[data-theme="dark"] .acad-legend{color:rgba(232,246,241,.78);}
+html[data-theme="dark"] .acad-col-h{color:#eef7f4;}
+html[data-theme="dark"] .acad-col-h small{color:rgba(232,246,241,.74);}
 </style>"""
 
 STYLE_RE = re.compile(r'\n?<style id="academy-track-colors">.*?</style>', re.S)
@@ -82,11 +94,22 @@ def apply(s):
         return a if not f else a[:-1] + f' data-family="{f}">'
 
     s = re.sub(r'<a class="acad-track[^"]*"[^>]*>', tag, s)
-    used = [k for k, _, _ in FAMILIES if f'data-family="{k}"' in s]
-    legend = ('\n    <div class="acad-legend" aria-label="Track families">'
-              + "".join(f'<span data-family="{k}"><i></i>{lab}</span>' for k, _, lab in FAMILIES if k in used)
-              + "</div>")
-    s = re.sub(r'(<nav class="acad-tracks"[^>]*>.*?</nav>)', lambda m: m.group(1) + legend, s, count=1, flags=re.S)
+    # let long "A/B" titles break at the slash in narrow columns
+    s = re.sub(r'(<span class="acad-track-t"><strong>)(.*?)(</strong>)',
+               lambda m: m.group(1) + re.sub(r"/(?!<wbr>)", "/<wbr>", m.group(2)) + m.group(3), s)
+    def columns(m):
+        tiles = re.findall(r'<a class="acad-track[^"]*"[^>]*>.*?</a>', m.group(2), re.S)
+        cols = []
+        for k, _, lab in FAMILIES:
+            mine = [t for t in tiles if f'data-family="{k}"' in t]
+            if mine:
+                cols.append(f'      <div class="acad-col" data-family="{k}"><div class="acad-col-h">{lab}<small>{len(mine)}</small></div>\n'
+                            + "\n".join("        " + t for t in mine) + "\n      </div>")
+        rest = [t for t in tiles if "data-family=" not in t]   # untagged tiles keep their place at the end
+        body = "\n".join(cols + ["      " + t for t in rest])
+        return f'<nav class="acad-tracks acad-cols"{m.group(1)}>\n{body}\n    </nav>'
+
+    s = re.sub(r'<nav class="acad-tracks[^"]*"([^>]*)>(.*?)</nav>', columns, s, count=1, flags=re.S)
     return s.replace("</head>", CSS + "\n</head>", 1)
 
 
