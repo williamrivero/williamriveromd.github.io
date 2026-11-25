@@ -11,6 +11,11 @@ Usage:
     python3 generate_rg_thumbs.py --dry-run     # preview without writing
     python3 generate_rg_thumbs.py --force       # overwrite existing thumbs
     python3 generate_rg_thumbs.py --guide understanding-ckd.html
+
+Renal Care Academy pages (academy/*.html) are covered too. Their source image is
+the page's own circular hero (images/<stem>-vignette-hero.webp), else its og:image;
+trainer, final-exam and educator pages, and any module with no image of its own,
+borrow the course home's image so every Related Guides card gets a thumbnail.
 """
 
 import re
@@ -19,6 +24,7 @@ from pathlib import Path
 from PIL import Image
 
 GUIDES_DIR = Path(__file__).parent / 'guides'
+ACADEMY_DIR = Path(__file__).parent / 'academy'
 IMAGES_DIR = Path(__file__).parent / 'images'
 THUMB_W, THUMB_H = 220, 160
 QUALITY = 82
@@ -27,6 +33,8 @@ OG_RE = re.compile(r'og:image.*?content="[^"]*/images/([^"]+)"')
 
 
 def get_og_image(guide_path: Path) -> Path | None:
+    if not guide_path.exists():
+        return None
     text = guide_path.read_text(encoding='utf-8', errors='ignore')
     m = OG_RE.search(text)
     if not m:
@@ -40,6 +48,33 @@ def get_og_image(guide_path: Path) -> Path | None:
             return webp_path
     if img_path.exists():
         return img_path
+    return None
+
+
+# pages with no hero or og:image file of their own: borrow a topic image
+SOURCE_OVERRIDES = {
+    'dialyzer-reprocessing-technician': 'dialyzer-reprocessing-reuse-hero.webp',
+    'calc-reprocessing-technician-toolkit': 'dialyzer-reprocessing-reuse-hero.webp',
+    'plant-forward-renal-diet': 'plant-forward-renal-diet-01-filipino-plate.webp',  # og PNG is missing
+}
+
+ACADEMY_SUFFIX_RE = re.compile(r'-(?:trainer|final-exam|educator|\d\d-.+)$')
+
+
+def get_academy_image(page: Path, depth: int = 0) -> Path | None:
+    """Hero image for an academy page, falling back to its course home."""
+    stem = page.stem
+    if stem in SOURCE_OVERRIDES and (IMAGES_DIR / SOURCE_OVERRIDES[stem]).exists():
+        return IMAGES_DIR / SOURCE_OVERRIDES[stem]
+    for name in (f'{stem}-vignette-hero.webp', f'{stem}-vignette-hero.png'):
+        if (IMAGES_DIR / name).exists():
+            return IMAGES_DIR / name
+    src = get_og_image(page)
+    if src:
+        return src
+    hub = ACADEMY_SUFFIX_RE.sub('', stem)
+    if hub != stem and depth == 0:
+        return get_academy_image(page.with_name(hub + '.html'), 1)
     return None
 
 
@@ -80,7 +115,11 @@ def main():
         elif a.startswith('--guide='):
             single = a.split('=', 1)[1]
 
-    files = [GUIDES_DIR / single] if single else sorted(GUIDES_DIR.glob('*.html'))
+    if single:
+        files = [GUIDES_DIR / single] if (GUIDES_DIR / single).exists() else [ACADEMY_DIR / single]
+    else:
+        files = sorted(GUIDES_DIR.glob('*.html')) + sorted(
+            f for f in ACADEMY_DIR.glob('*.html') if ' ' not in f.name and f.name != 'index.html')
 
     generated, skipped, missing = [], [], []
     for guide in files:
@@ -95,7 +134,12 @@ def main():
             skipped.append(guide.name)
             continue
 
-        src = get_og_image(guide)
+        if guide.parent == ACADEMY_DIR:
+            src = get_academy_image(guide)
+        elif guide.stem in SOURCE_OVERRIDES and (IMAGES_DIR / SOURCE_OVERRIDES[guide.stem]).exists():
+            src = IMAGES_DIR / SOURCE_OVERRIDES[guide.stem]
+        else:
+            src = get_og_image(guide)
         if not src:
             missing.append(guide.name)
             continue

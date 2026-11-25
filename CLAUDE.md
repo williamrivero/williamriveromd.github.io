@@ -987,6 +987,10 @@ pipeline, then `tools/academy/publish_academy.py` moves them to academy/. Never 
 chips, one button per track, training words and study icons drifting behind), built by `academy_hero()` in
 `generate_tech_courses.py` (`ACADEMY_HERO_CSS` / `ACADEMY_HERO_JS`, passed to `shell(hero_html=...)`). Track counts come
 from the course data; a new track needs an icon in `TRACK_ICONS` and a short name in `build_academy()`.
+**Related Guides thumbnails (Nov 25 2026):** every card in an academy page's Related Guides block shows a thumbnail
+(`images/<linked-stem>-rg-thumb.webp`). After adding a course or module, run `python3 generate_rg_thumbs.py` (covers
+academy/*.html: own vignette hero, else og:image, else the course home's image; per-page fixes in `SOURCE_OVERRIDES`)
+and then `python3 patch_rg_card_thumbs.py` (adds the thumbs to existing cards; the generators pick them up on rebuild).
 
 ## Drug database (`/drugs/`, Nov 2026)
 

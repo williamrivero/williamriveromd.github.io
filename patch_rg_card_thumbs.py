@@ -16,6 +16,9 @@ Usage:
     python3 patch_rg_card_thumbs.py               # apply to all guides
     python3 patch_rg_card_thumbs.py --dry-run     # preview
     python3 patch_rg_card_thumbs.py --guide understanding-ckd.html
+
+Also patches academy/*.html (links there point at sibling academy pages or
+../guides/...; the thumbnail is looked up by the linked page's file stem).
 """
 
 import re
@@ -23,6 +26,7 @@ import sys
 from pathlib import Path
 
 GUIDES_DIR = Path(__file__).parent / 'guides'
+ACADEMY_DIR = Path(__file__).parent / 'academy'
 IMAGES_DIR = Path(__file__).parent / 'images'
 
 # Matches the opening <a> tag of a related-card (single or multi-line)
@@ -65,7 +69,7 @@ def patch_card(match_open: re.Match, after_open: str) -> tuple[str, str, bool]:
     img_src = f'../images/{thumb.name}'
     img_tag = (
         f'\n          <img class="related-card-thumb" src="{img_src}"'
-        f' alt="" loading="lazy" decoding="async">'
+        f' alt="" loading="lazy" decoding="async" width="220" height="160">'
     )
     return new_open, img_tag, True
 
@@ -119,7 +123,12 @@ def main():
         elif a.startswith('--guide='):
             single = a.split('=', 1)[1]
 
-    files = [GUIDES_DIR / single] if single else sorted(GUIDES_DIR.glob('*.html'))
+    # guides plus the Renal Care Academy pages (academy/*.html)
+    if single:
+        files = [GUIDES_DIR / single] if (GUIDES_DIR / single).exists() else [ACADEMY_DIR / single]
+    else:
+        files = sorted(GUIDES_DIR.glob('*.html')) + sorted(
+            f for f in ACADEMY_DIR.glob('*.html') if ' ' not in f.name)
 
     patched, unchanged = [], []
     for fp in files:
