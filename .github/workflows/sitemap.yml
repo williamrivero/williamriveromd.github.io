@@ -50,9 +50,12 @@ jobs:
       - name: Appearance themes (Auto / Light / Dim / Dark bootstrap + Dim CSS)
         run: python3 patch_theme_modes.py
 
+      - name: Schola (Academy app) offline file list
+        run: python3 tools/academy/build_schola.py
+
       - name: Commit if changed
         run: |
-          if git diff --quiet -- sitemap.xml guides/search-index.json && git diff --quiet -- '*.html' && git diff --quiet -- assets/ && [ -z "$(git ls-files --others --exclude-standard assets/)" ]; then
+          if git diff --quiet -- sitemap.xml guides/search-index.json && git diff --quiet -- '*.html' && git diff --quiet -- assets/ academy/schola-offline.json && [ -z "$(git ls-files --others --exclude-standard assets/)" ]; then
             echo "sitemap.xml and search-index.json already in sync — nothing to commit."
             exit 0
           fi
@@ -60,5 +63,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add sitemap.xml guides/search-index.json 'guides/*.html' guides/calc-app.webmanifest guides/calc-sw.js guides/calc-offline-manifest.json assets/
           git add -A -- '*.html'
-          git commit -m "Regenerate sitemap.xml, search index, Calculo app and theme files [skip ci]"
+          git add academy/schola-offline.json academy/schola-sw.js academy/schola.webmanifest
+          git commit -m "Regenerate sitemap.xml, search index, Calculo and Schola app files, theme files [skip ci]"
           git push

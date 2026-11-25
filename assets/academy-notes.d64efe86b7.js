@@ -244,7 +244,8 @@
       var nearBottom = last.bottom - vt > vh * 0.62;
       bar.classList.toggle('rcn-dock-top', nearBottom);
       bar.style.left = Math.max(vl + 8, vl + vw / 2 - bw / 2) + 'px';
-      bar.style.top = (nearBottom ? vt + 12 : vt + vh - bh - 18) + 'px';
+      var ab = document.querySelector('.sch-appbar'), abh = ab ? ab.offsetHeight : 0;   // Schola app bar
+      bar.style.top = (nearBottom ? vt + 12 : vt + vh - bh - 18 - abh) + 'px';
       return;
     }
     var x = Math.max(8, Math.min(window.innerWidth - bw - 8, rect.left + rect.width / 2 - bw / 2));

@@ -87,9 +87,11 @@ def main():
         spec = importlib.util.spec_from_file_location("apply_track_colors", Path(__file__).with_name("apply_track_colors.py"))
         C = importlib.util.module_from_spec(spec); spec.loader.exec_module(C); C.main()   # hero tiles by track family
         spec = importlib.util.spec_from_file_location("apply_notes", Path(__file__).with_name("apply_notes.py"))
-        N = importlib.util.module_from_spec(spec); spec.loader.exec_module(N); N.main()   # highlights & notes
+        N = importlib.util.module_from_spec(spec); spec.loader.exec_module(N); N.main()   # highlights, notes, bookmarks + Schola scripts
         spec = importlib.util.spec_from_file_location("strip_symptom_widget", Path(__file__).with_name("strip_symptom_widget.py"))
         W = importlib.util.module_from_spec(spec); spec.loader.exec_module(W); W.main()   # no Symptom Checker in the Academy
+        spec = importlib.util.spec_from_file_location("build_schola", Path(__file__).with_name("build_schola.py"))
+        S2 = importlib.util.module_from_spec(spec); spec.loader.exec_module(S2); S2.main()  # Schola app: offline file list
 
 
 if __name__ == "__main__":
