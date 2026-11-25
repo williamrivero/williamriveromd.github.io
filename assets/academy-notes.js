@@ -1,8 +1,12 @@
-/* Renal Care Academy: Highlights & Notes (Nov 2026).
+/* Renal Care Academy: Highlights & Notes, Bookmarks and Resume (Nov 2026).
    Learners select text in a module to highlight it or attach a note. Everything is stored in
    this browser's localStorage only: no account, no network requests, works offline. A "My notes"
    drawer lists the notes on the page, links to other modules that have notes, and exports them
    (Markdown, print / save as PDF, JSON backup and restore).
+   Bookmarks: a ribbon button on every section heading; bookmarks are listed in the same drawer.
+   Resume: the reading position is saved as you scroll (as a text anchor, so it survives layout
+   changes); reopening a module offers "Pick up where you left off", and the Academy landing page
+   and track hubs offer "Continue" for the last module read.
 
    Source file: edit assets/academy-notes.js, then run tools/academy/apply_notes.py, which writes
    the fingerprinted copy (assets/academy-notes.<hash>.js) and points the Academy pages at it.
@@ -33,17 +37,16 @@
     var h = document.querySelector('.hero h1') || document.querySelector('h1');
     return (h ? h.textContent : document.title).replace(/\s+/g, ' ').trim();
   }
-  function load() {
-    try {
-      var d = JSON.parse(localStorage.getItem(KEY) || 'null');
-      return d && Array.isArray(d.notes) ? d.notes : [];
-    } catch (e) { return []; }
+  function loadRec() {
+    try { return JSON.parse(localStorage.getItem(KEY) || 'null') || {}; } catch (e) { return {}; }
   }
+  function load() { var d = loadRec(); return Array.isArray(d.notes) ? d.notes : []; }
   var notes = load();
+  var marks = Array.isArray(loadRec().bm) ? loadRec().bm : [];   // bookmarks: [{id, title, at}]
   function save() {
     try {
-      if (!notes.length) localStorage.removeItem(KEY);
-      else localStorage.setItem(KEY, JSON.stringify({ v: 1, title: pageTitle(), url: location.pathname, notes: notes }));
+      if (!notes.length && !marks.length) localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, JSON.stringify({ v: 1, title: pageTitle(), url: location.pathname, notes: notes, bm: marks }));
       return true;
     } catch (e) {
       toast('Could not save: this browser’s storage is full or blocked.');
@@ -376,8 +379,9 @@
   var drawer = el('aside', 'rcn-ui rcn-drawer no-print');
   drawer.setAttribute('aria-label', 'My notes');
   drawer.innerHTML =
-    '<div class="rcn-dh"><div><div class="rcn-dt">My notes</div><div class="rcn-ds">Saved on this device and browser only</div></div>' +
+    '<div class="rcn-dh"><div><div class="rcn-dt">My notes &amp; bookmarks</div><div class="rcn-ds">Saved on this device and browser only</div></div>' +
     '<button type="button" class="rcn-x" aria-label="Close my notes">×</button></div>' +
+    '<div class="rcn-bms"></div>' +
     '<div class="rcn-list" tabindex="-1"></div>' +
     '<div class="rcn-other"></div>' +
     '<div class="rcn-actions">' +
@@ -385,9 +389,10 @@
     '<button type="button" data-act="print">Print / PDF</button>' +
     '<button type="button" data-act="backup">Back up all</button>' +
     '<button type="button" data-act="restore">Restore</button>' +
-    '<button type="button" data-act="clear" class="rcn-danger">Delete this page’s notes</button>' +
+    '<button type="button" data-act="clear" class="rcn-danger">Delete this page\u2019s notes &amp; bookmarks</button>' +
     '</div><input type="file" accept="application/json,.json" class="rcn-file" hidden>';
   document.body.appendChild(drawer);
+  var bmList = drawer.querySelector('.rcn-bms');
   var list = drawer.querySelector('.rcn-list'), other = drawer.querySelector('.rcn-other'), fileIn = drawer.querySelector('.rcn-file');
 
   function ordered() {
@@ -402,8 +407,9 @@
   function renderList() {
     if (!drawer.classList.contains('rcn-show')) return;
     var items = ordered(), html = '', last = null;
+    renderBookmarks();
     if (!items.length) {
-      html = '<p class="rcn-empty">No highlights yet. Select any text in this module, then pick a color or tap <b>Note</b>.</p>';
+      html = '<div class="rcn-sec">Highlights &amp; notes</div><p class="rcn-empty">No highlights yet. Select any text in this module, then pick a color or tap <b>Note</b>.</p>';
     }
     items.forEach(function (n) {
       var sec = n.section || '';
@@ -420,7 +426,7 @@
     list.innerHTML = html;
     var pages = otherPages();
     other.innerHTML = pages.length
-      ? '<div class="rcn-sec">Your notes in other modules</div>' + pages.map(function (p) {
+      ? '<div class="rcn-sec">Your notes &amp; bookmarks in other modules</div>' + pages.map(function (p) {
           return '<a href="' + esc(p.url) + '">' + esc(p.title) + ' <span>' + p.count + '</span></a>';
         }).join('')
       : '';
@@ -432,7 +438,8 @@
         var k = localStorage.key(i);
         if (k.indexOf(PREFIX) !== 0 || k === KEY) continue;
         var d = JSON.parse(localStorage.getItem(k) || 'null');
-        if (d && d.notes && d.notes.length) out.push({ url: d.url || k.slice(PREFIX.length), title: d.title || k.slice(PREFIX.length), count: d.notes.length });
+        var cnt = d ? (d.notes || []).length + (d.bm || []).length : 0;
+        if (cnt) out.push({ url: d.url || k.slice(PREFIX.length), title: d.title || k.slice(PREFIX.length), count: cnt });
       }
     } catch (e) {}
     return out.sort(function (a, b) { return a.url < b.url ? -1 : 1; });
@@ -533,11 +540,15 @@
           var have = {}, merged = cur && cur.notes ? cur.notes.slice() : [];
           merged.forEach(function (n) { have[n.id] = 1; });
           pages[k].notes.forEach(function (n) { if (n && n.id && n.quote && !have[n.id]) { merged.push(n); added++; } });
-          localStorage.setItem(k, JSON.stringify({ v: 1, title: pages[k].title || (cur && cur.title), url: pages[k].url || (cur && cur.url), notes: merged }));
+          var bms = cur && cur.bm ? cur.bm.slice() : [], hb = {};
+          bms.forEach(function (b) { hb[b.id] = 1; });
+          (pages[k].bm || []).forEach(function (b) { if (b && b.id && !hb[b.id]) { bms.push(b); added++; } });
+          localStorage.setItem(k, JSON.stringify({ v: 1, title: pages[k].title || (cur && cur.title), url: pages[k].url || (cur && cur.url), notes: merged, bm: bms }));
         });
         Array.prototype.forEach.call(ROOT.querySelectorAll('mark.rcn-hl'), function (m) { unwrap(m.getAttribute('data-rcn')); });
         notes = load();
-        restoreAll(); refreshCount(); renderList();
+        marks = loadRec().bm || [];
+        restoreAll(); syncRibbons(); refreshCount(); renderList();
         toast(added ? 'Restored ' + added + ' note' + (added === 1 ? '' : 's') + '.' : 'Nothing new to restore.');
       } catch (e) { toast('That file is not a Renal Care Academy notes backup.'); }
     };
@@ -552,19 +563,19 @@
     else if (act === 'backup') backup();
     else if (act === 'restore') fileIn.click();
     else if (act === 'clear') {
-      if (!notes.length) return;
-      if (!confirmInline(b, 'Tap again to delete all ' + notes.length)) return;
+      if (!notes.length && !marks.length) return;
+      if (!confirmInline(b, 'Tap again to delete all ' + (notes.length + marks.length))) return;
       notes.slice().forEach(function (n) { unwrap(n.id); });
-      notes = []; save(); refreshCount(); renderList();
+      notes = []; marks = []; save(); syncRibbons(); refreshCount(); renderList();
       toast('Deleted this page’s notes.');
     }
   });
   fileIn.addEventListener('change', function () { if (fileIn.files[0]) restore(fileIn.files[0]); fileIn.value = ''; });
 
   /* Floating "My notes" button: top of the left-hand stack (above Print and Download) */
-  var fab = el('button', 'rcn-ui rcn-fab no-print', ICON_PEN + '<span class="rcn-tip">My notes</span><span class="rcn-count" hidden></span>');
+  var fab = el('button', 'rcn-ui rcn-fab no-print', ICON_PEN + '<span class="rcn-tip">My notes &amp; bookmarks</span><span class="rcn-count" hidden></span>');
   fab.type = 'button';
-  fab.setAttribute('aria-label', 'My notes and highlights');
+  fab.setAttribute('aria-label', 'My notes, highlights and bookmarks');
   fab.addEventListener('click', function () { drawer.classList.contains('rcn-show') ? closeDrawer() : openDrawer(); });
   document.body.appendChild(fab);
   function placeFab() {
@@ -580,9 +591,185 @@
   window.addEventListener('load', placeFab);
   function refreshCount() {
     var c = fab.querySelector('.rcn-count');
-    c.textContent = notes.length > 99 ? '99+' : String(notes.length);
-    c.hidden = !notes.length;
+    var n = notes.length + marks.length;
+    c.textContent = n > 99 ? '99+' : String(n);
+    c.hidden = !n;
   }
+
+
+  /* ── Bookmarks: a ribbon on every section heading ────────────────────── */
+  var ICON_BM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+  function headingOf(s) { return s.querySelector(':scope > h2, :scope > h3'); }
+  function headingText(h) {
+    var en = h.querySelector('[data-lang="en"]');
+    return (en || h).textContent.replace(/\s+/g, ' ').trim();
+  }
+  var sections = Array.prototype.filter.call(ROOT.querySelectorAll('section[id]'), headingOf);
+  function isMarked(id) { for (var i = 0; i < marks.length; i++) if (marks[i].id === id) return true; return false; }
+  sections.forEach(function (s) {
+    var b = el('button', 'rcn-ui rcn-rib no-print', ICON_BM);
+    b.type = 'button';
+    b.setAttribute('data-sec', s.id);
+    headingOf(s).appendChild(b);
+  });
+  function syncRibbons() {
+    Array.prototype.forEach.call(ROOT.querySelectorAll('.rcn-rib'), function (b) {
+      var on = isMarked(b.getAttribute('data-sec'));
+      b.classList.toggle('rcn-on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('aria-label', on ? 'Remove bookmark' : 'Bookmark this section');
+      b.title = on ? 'Remove bookmark' : 'Bookmark this section';
+    });
+  }
+  ROOT.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.rcn-rib');
+    if (!b) return;
+    e.preventDefault();
+    var id = b.getAttribute('data-sec'), s = document.getElementById(id);
+    if (isMarked(id)) {
+      marks = marks.filter(function (m) { return m.id !== id; });
+      toast('Bookmark removed.');
+    } else {
+      marks.push({ id: id, title: headingText(headingOf(s)), at: new Date().toISOString() });
+      toast('Bookmarked. Find it under the orange pen button.');
+    }
+    save(); syncRibbons(); refreshCount(); renderList();
+  });
+  function renderBookmarks() {
+    var order = {};
+    sections.forEach(function (s, i) { order[s.id] = i; });
+    var bms = marks.slice().sort(function (a, b) { return (order[a.id] || 0) - (order[b.id] || 0); });
+    bmList.innerHTML = '<div class="rcn-sec">Bookmarks</div>' + (bms.length ? bms.map(function (m) {
+      var gone = !document.getElementById(m.id);
+      return '<div class="rcn-bm" data-sec="' + esc(m.id) + '">' + ICON_BM +
+        '<button type="button" class="rcn-bm-go"' + (gone ? ' disabled' : '') + '>' + esc(m.title) + '</button>' +
+        '<button type="button" class="rcn-bm-x" aria-label="Remove bookmark">×</button></div>';
+    }).join('') : '<p class="rcn-empty">Tap the ribbon next to any section title to bookmark it.</p>');
+  }
+  bmList.addEventListener('click', function (e) {
+    var row = e.target.closest('.rcn-bm');
+    if (!row) return;
+    var id = row.getAttribute('data-sec');
+    if (e.target.closest('.rcn-bm-x')) {
+      marks = marks.filter(function (m) { return m.id !== id; });
+      save(); syncRibbons(); refreshCount(); renderList();
+      return;
+    }
+    var s = document.getElementById(id);
+    if (!s) return;
+    if (coarse) closeDrawer();
+    scrollToEl(headingOf(s) || s);
+  });
+  syncRibbons();
+
+  /* ── Resume where you left off ────────────────────────────────────────── */
+  var POS_KEY = 'rcm-pos:' + PAGE, LAST_KEY = 'rcm-last';
+  var FILE = PAGE.split('/').pop();
+  var isModule = /-\d{2}-/.test(FILE);
+  var isHub = !isModule && !/final-exam|trainer/.test(FILE);
+  function topOffset() {
+    var off = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('.site-header, .nav-strip, .audience-tabs'), function (e) {
+      var cs = getComputedStyle(e), r = e.getBoundingClientRect();
+      if ((cs.position === 'sticky' || cs.position === 'fixed') && r.bottom > 0 && r.top < 200) off = Math.max(off, r.bottom);
+    });
+    return off + 14;
+  }
+  function scrollToEl(target, smooth) {
+    function go(b) { window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - topOffset(), behavior: b }); }
+    go(smooth === false ? 'auto' : 'smooth');
+    setTimeout(function () { go('auto'); }, 800);   // images above may finish loading and shift the page
+  }
+  var BLOCKS = 'p, li, h2, h3, h4, figure, table, blockquote, .tc-card, .tc-sit';
+  function readingAnchor() {
+    var line = topOffset() + 8, els = ROOT.querySelectorAll(BLOCKS), pick = null;
+    for (var i = 0; i < els.length; i++) {
+      var r = els[i].getBoundingClientRect();
+      if (r.height && r.bottom > line && /\S/.test(els[i].textContent)) { pick = els[i]; break; }
+    }
+    if (!pick) return null;
+    buildIndex();
+    var off = pointToOffset(pick, 0);
+    var sec = pick.closest('section[id]');
+    var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    return {
+      quote: idx.text.slice(off, off + 60), prefix: idx.text.slice(Math.max(0, off - CTX), off), pos: off,
+      sec: sec && headingOf(sec) ? headingText(headingOf(sec)) : '',
+      pct: Math.min(100, Math.round(window.pageYOffset / max * 100)), at: new Date().toISOString()
+    };
+  }
+  function elementAt(offset) {
+    for (var i = 0; i < idx.nodes.length; i++) {
+      if (idx.starts[i] + idx.nodes[i].data.length > offset) {
+        var e = idx.nodes[i].parentNode;
+        return (e.closest && e.closest(BLOCKS)) || e;
+      }
+    }
+    return null;
+  }
+  function resumeTo(p) {
+    buildIndex();
+    var at = locate({ quote: p.quote, prefix: p.prefix, suffix: '', pos: p.pos });
+    var target = at >= 0 ? elementAt(at) : null;
+    if (target) scrollToEl(target, false);
+    else window.scrollTo(0, Math.round(p.pct / 100 * (document.documentElement.scrollHeight - window.innerHeight)));
+  }
+  function readJSON(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  var userScrolled = false, posTimer;
+  function savePos() {
+    if (!userScrolled) return;
+    var a = readingAnchor();
+    if (!a) return;
+    try {
+      localStorage.setItem(POS_KEY, JSON.stringify(a));
+      if (isModule) localStorage.setItem(LAST_KEY, JSON.stringify({ url: location.pathname, title: pageTitle(), sec: a.sec, pct: a.pct, at: a.at }));
+    } catch (e) {}
+  }
+  ['wheel', 'touchmove', 'keydown', 'mousedown'].forEach(function (ev) {
+    window.addEventListener(ev, function () { userScrolled = true; }, { passive: true });
+  });
+  window.addEventListener('scroll', function () { clearTimeout(posTimer); posTimer = setTimeout(savePos, 800); }, { passive: true });
+  window.addEventListener('pagehide', savePos);
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') savePos(); });
+
+  var resumeBar = el('div', 'rcn-ui rcn-resume no-print');
+  resumeBar.setAttribute('role', 'region');
+  resumeBar.setAttribute('aria-label', 'Resume reading');
+  document.body.appendChild(resumeBar);
+  function showResume(html, onGo, label) {
+    resumeBar.innerHTML = '<div class="rcn-rs-txt">' + html + '</div>' +
+      '<button type="button" class="rcn-rs-go">' + (label || 'Resume') + '</button>' +
+      '<button type="button" class="rcn-x rcn-rs-x" aria-label="Dismiss">×</button>';
+    resumeBar.classList.add('rcn-show');
+    resumeBar.querySelector('.rcn-rs-go').addEventListener('click', function () { resumeBar.classList.remove('rcn-show'); onGo(); });
+    resumeBar.querySelector('.rcn-rs-x').addEventListener('click', function () { resumeBar.classList.remove('rcn-show'); });
+    var start = window.pageYOffset;
+    window.addEventListener('scroll', function hide() {
+      if (Math.abs(window.pageYOffset - start) > window.innerHeight * 1.5) {
+        resumeBar.classList.remove('rcn-show');
+        window.removeEventListener('scroll', hide);
+      }
+    }, { passive: true });
+  }
+  (function offerResume() {
+    var saved = readJSON(POS_KEY);
+    if (location.hash === '#rcm-resume') {
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      if (saved) setTimeout(function () { resumeTo(saved); }, 300);
+      return;
+    }
+    if (isModule && saved && !location.hash && saved.pct >= 5 && saved.pct < 97 && window.pageYOffset < 200) {
+      showResume('<b>Pick up where you left off?</b><span>' + (saved.sec ? esc(saved.sec) + ' · ' : '') + saved.pct + '% through</span>',
+        function () { resumeTo(saved); });
+      return;
+    }
+    var last = readJSON(LAST_KEY);
+    if (isHub && last && last.url && last.url !== location.pathname && last.pct < 97 &&
+        Date.now() - new Date(last.at).getTime() < 60 * 864e5) {
+      showResume('<b>Continue: ' + esc(last.title) + '</b><span>' + (last.sec ? esc(last.sec) + ' · ' : '') + last.pct + '% through</span>',
+        function () { location.href = last.url + '#rcm-resume'; }, 'Continue');
+    }
+  })();
 
   /* ── Styles ──────────────────────────────────────────────────────────── */
   var css = '' +
@@ -637,6 +824,22 @@
     '.rcn-tip{position:absolute;left:54px;background:rgba(31,56,100,.92);color:#fff;font-size:12px;font-weight:500;white-space:nowrap;padding:5px 10px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .15s}' +
     '.rcn-fab:hover .rcn-tip{opacity:1}' +
     '.rcn-count{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;border-radius:9px;background:#1F3864;border:2px solid #fff;color:#fff;font:700 10px/14px Inter,system-ui,sans-serif;text-align:center;padding:0 3px;box-sizing:border-box}' +
+    '.rcn-rib{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;width:30px;height:30px;margin-left:8px;border:0;border-radius:8px;background:none;color:#8a96a8;cursor:pointer;opacity:.6;transition:opacity .15s,color .15s}' +
+    '.rcn-rib svg{width:18px;height:18px}h2:hover .rcn-rib,h3:hover .rcn-rib,.rcn-rib:focus-visible{opacity:1}' +
+    '.rcn-rib.rcn-on{opacity:1;color:#C55A11}.rcn-rib.rcn-on svg{fill:#C55A11}' +
+    '@media (pointer:coarse){.rcn-rib{width:38px;height:38px;opacity:.85}}' +
+    '.rcn-bms{padding:0 16px}.rcn-bm{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed rgba(31,56,100,.15)}' +
+    '.rcn-bm>svg{width:16px;height:16px;flex:none;color:#C55A11;fill:#C55A11}' +
+    '.rcn-bm-go{flex:1;text-align:left;border:0;background:none;padding:2px 0;color:#1F3864;font-weight:600}.rcn-bm-go:disabled{opacity:.6}' +
+    '.rcn-bm-x{border:0;background:none;color:#6b7686;font-size:20px;line-height:1;padding:0 4px}' +
+    '.rcn-resume{position:fixed;z-index:100000;left:50%;bottom:22px;transform:translate(-50%,24px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:12px;background:#1F3864;color:#fff;border-radius:14px;padding:10px 10px 10px 16px;box-shadow:0 12px 36px rgba(15,30,46,.35);width:max-content;max-width:min(94vw,560px);transition:opacity .2s,transform .2s}' +
+    '.rcn-resume.rcn-show{opacity:1;transform:translate(-50%,0);pointer-events:auto}' +
+    '.rcn-rs-txt{display:flex;flex-direction:column;min-width:0}.rcn-rs-txt b{font-weight:700}.rcn-rs-txt span{font-size:12.5px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
+    '.rcn-rs-go{border:0;background:#C55A11;color:#fff;border-radius:10px;padding:9px 16px;font-weight:700;flex:none}' +
+    '.rcn-resume .rcn-x{color:#fff;opacity:.85}' +
+    '@media (pointer:coarse){.rcn-rs-go{padding:12px 18px;font-size:16px}}' +
+    'html[data-theme="dark"] .rcn-bm-go{color:#e2b95f}html[data-theme="dark"] .rcn-resume{background:#0f1826;border:1px solid rgba(255,255,255,.14)}' +
+    '@media print{.rcn-rib{display:none!important}}' +
     '.rcn-toast{position:fixed;z-index:100003;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#1F3864;color:#fff;padding:10px 16px;border-radius:10px;box-shadow:0 10px 30px rgba(15,30,46,.3);transition:opacity .2s,transform .2s;max-width:min(92vw,460px);text-align:center}' +
     '.rcn-toast.rcn-show{opacity:1;transform:translate(-50%,0)}' +
     '@media (pointer:coarse){.rcn-toast{bottom:auto;top:calc(env(safe-area-inset-top,0px) + 16px);transform:translate(-50%,-20px)}}' +
