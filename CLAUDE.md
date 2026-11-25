@@ -1004,7 +1004,7 @@ header, nav strip, floating buttons or rail. Academy CSS is px-based, so zoom is
 ancillary green, administrative purple: the share-card palette), read from the landing page's own Tracks section h3s;
 untracked nursing subtracks fall back to nursing. Adds `<style id="academy-track-colors">` and regroups the tiles
 into one column per family (`.acad-cols` > `.acad-col` with a heading and count; Dr. Rivero: "5 columns, each column a
-track"); the columns stay inside the hero text width (Dr. Rivero chose "fit within text width": compact type; each tile's icon sits as a faint watermark at the lower right, opacity .16 light / .2 dark; on desktop the five columns are capped at 660 px with smaller tile type; the hero container is 1040 px, so its text starts about 40 px outside the body text margins, like guides/index);
+track"); the columns stay inside the hero text width (Dr. Rivero chose "fit within text width": compact type; each tile's icon sits as a faint watermark at the lower right, opacity .16 light / .2 dark; on desktop the five columns fill the hero width in equal fractions, with tile type (clamp + cqi) and the watermark icon (30% of the tile) sized relative to the column width, not fixed px; the hero container is 1040 px, so its text starts about 40 px outside the body text margins, like guides/index);
 ≤ 900px the families stack, tiles two to a row. Long "A/B" titles get `<wbr>` after the slash.
 **Share card counts (Nov 25 2026):** the landing share card's stats line (images/og/academy/academy-index.jpg) is read from
 the landing page's stat chips by `build_academy_og.py` (`landing_stats()`); after adding a track or modules, rebuild it:
