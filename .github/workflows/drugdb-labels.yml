@@ -59,6 +59,8 @@ jobs:
         run: |
           python3 tools/drugdb/fetch_fda_labels.py --generics-file "$GENERICS_FILE" \
             --source "$SOURCE" --prefer "$PREFER" $FORCE ${ONLY:+--only $ONLY --explain 12}
+      - name: Refresh reviewed DailyMed reference labels
+        run: python3 tools/drugdb/fetch_dailymed_pins.py
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"

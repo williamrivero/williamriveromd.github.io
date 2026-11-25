@@ -112,11 +112,11 @@ def attribution(eu) -> str:
     mah = f" Marketing authorization holder: {esc(src['mah'])}." if src.get("mah") else ""
     if not EU_VERBATIM:
         return (f'<div class="dd-attrib"><strong>Prescribing information:</strong> {attribution_text(eu)}'
-                f'{" (" + links + ")" if links else ""}.{mah} This generic has no US FDA label. '
+                f'{" (" + links + ")" if links else ""}.{mah} No US FDA label text has been matched to this entry. '
                 '<strong>Philippine-approved indications and doses may differ: check the PH package insert.</strong></div>')
     return (f'<div class="dd-attrib dd-attrib-eu"><strong>Label text on this page:</strong> {attribution_text(eu)}, '
             f'reproduced with acknowledgment of the source{" (" + links + ")" if links else ""}.{mah} '
-            'Text is quoted verbatim, in the original British spelling. This generic has no US FDA label. '
+            'Text is quoted verbatim, in the original British spelling. No US FDA label text has been matched to this entry. '
             '<strong>Philippine-approved indications and doses may differ: check the PH package insert.</strong></div>')
 
 
@@ -168,6 +168,6 @@ def links_html(intl) -> str:
                      '<span class="dd-sub">(external search; text not reproduced)</span></li>')
     note = ("Links only. These regulators' terms do not clearly permit reproducing the documents, so no text is shown "
             "here." if ls else "External search; text not reproduced.")
-    return ('<div class="dd-placeholder dd-pi-links"><strong>Prescribing information</strong> (no US FDA label or EU SmPC '
+    return ('<div class="dd-placeholder dd-pi-links"><strong>Prescribing information</strong> (no matched US FDA label or EU SmPC '
             'for this generic):<ul class="dd-uselist">' + "".join(items) + f'</ul><p class="dd-note">{note} Check the '
             "Philippine package insert in the products table.</p></div>")

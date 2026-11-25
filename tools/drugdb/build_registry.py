@@ -41,6 +41,10 @@ def base_ingredient(part):
     if not words: return ""
     if words[0] not in LEADING_ACTIVE:
         while len(words) > 1 and words[-1] in SALT_WORDS:
+            # These nitrate esters identify distinct active ingredients, not
+            # interchangeable salts of a common isosorbide ingredient.
+            if words[0] == "isosorbide" and words[-1] in {"mononitrate", "dinitrate"}:
+                break
             words.pop()
     return " ".join(words).strip("-' ")
 

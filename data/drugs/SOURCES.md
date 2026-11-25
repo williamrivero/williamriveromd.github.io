@@ -195,3 +195,28 @@ metolazone response contained a VAT-exempt 5 mg tablet entry only. The page ther
 identifies the brand reference while explicitly leaving current registration details
 unconfirmed. No registration number, expiry date or US/Metoz formulation equivalence
 has been inferred. Searchable brand terms come from the documented DOH source.
+
+## Source-checked monograph coverage and reference labels (25 November 2026)
+
+Approved `summary/` files support both narrative evidence (each paragraph has source IDs)
+and study tables. Narrative paragraphs render only with at least one absolute HTTP(S) source
+link. Summaries marked pending never render. Descriptive `special_populations.renal` notes
+are shown separately from dosing schedules; no renal doses are inferred from them.
+
+`tools/drugdb/dailymed_pins.json` contains seven explicitly verified, formulation-specific
+US reference SPL selections. `fetch_dailymed_pins.py` checks identity/application and
+required indication, dosage, contraindication and warning sections, retains separate legacy
+WARNINGS/PRECAUTIONS, and refreshes them after the weekly openFDA fetch. These are US
+reference labels, not confirmation of Philippine-product equivalence. Albumin is the 25%
+reference, NPH is distinguished from rapid insulin, and insulin mixtures keep their ratios.
+Sodium valproate is not divalproex: the inappropriate empty match is removed and blocked.
+
+`registry_issues.json` preserves raw registration fields while flagging ambiguous headings.
+Isosorbide mononitrate and dinitrate are distinct actives; normalization now preserves them.
+The existing combined isosorbide product list still needs a controlled registry rebuild and
+remains visibly flagged. Three malformed generic headings are excluded from indexing.
+
+Source citations and historical/regional/formulation limitations are recorded in each
+monograph. Isoxsuprine's cited DailyMed entry is expressly unapproved labeling, and historical
+US references are dated. Neither the source publication nor the approved summary status
+establishes a current Philippine indication or an unsupported dialysis schedule.

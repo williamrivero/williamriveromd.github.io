@@ -3696,7 +3696,7 @@ def intl_attrib_line(isrc: dict) -> str:
     if not isrc:
         return ""
     return (f'<p class="dd-note dd-intl-src"><strong>Source:</strong> {esc(isrc["agency"])} product information'
-            + (f' ({esc(isrc["date"])})' if isrc["date"] else "") + ". This generic has no US FDA label.</p>")
+            + (f' ({esc(isrc["date"])})' if isrc["date"] else "") + ". No US FDA label text has been matched to this entry.</p>")
 
 
 def render_kidney_section(label, renal, intl=None, eu=None) -> str:
@@ -3741,12 +3741,12 @@ def render_kidney_section(label, renal, intl=None, eu=None) -> str:
     elif eu and not _lab(label) and eu_r.renal_html(eu):
         out.append(f'<div class="dd-kidney-label">{eu_r.renal_html(eu)}</div><p class="dd-note dd-intl-src">Source: '
                    f'{eu_r.attribution_text(eu)}, reproduced with acknowledgment of the source (verbatim). '
-                   'This generic has no US FDA label.</p>')
+                   'No US FDA label text has been matched to this entry.</p>')
     elif eu and not _lab(label):
         out.append('<p class="dd-note">The EU SmPC (EMA) for this generic has no separate kidney-specific text. See '
                    '<a href="#smpc-4-2">SmPC 4.2</a> and <a href="#smpc-5-2">5.2</a> below, and the Philippine package insert.</p>')
     else:
-        out.append('<p class="dd-note">No kidney-specific text is available from the US label for this generic yet. '
+        out.append('<p class="dd-note">No kidney-specific excerpt from a matched US label is displayed here. '
                    'Check the Philippine package insert in the products table.</p>')
     out.append('<p class="dd-kidney-pending">Kidney-specific guidance from renalcarematters.com: in preparation.</p>')
     return "\n".join(out) + "\n</section>\n"
@@ -4378,8 +4378,8 @@ def drug_class_html(slug: str, name: str, cat: str, ctx: "Ctx") -> str:
     labeled = sorted((p for p in peers if p[2]),   # closest class wording first
                      key=lambda p: (-len(p[3] & mine) / len(p[3] | mine), p[1].lower()))
     out = [f'<p>The FDA Philippines registry lists <strong>{esc(name)}</strong> under '
-           f'<a href="category/{esc(cs)}.html">{esc(cat)}</a>. Neither a US label nor EU product information is '
-           'published for it, so this page shows its Philippine registration. For prescribing details, use the '
+           f'<a href="category/{esc(cs)}.html">{esc(cat)}</a>. No US label or EU product information has been '
+           'matched to this entry. Referenced summaries may appear below. For prescribing details, use the '
            'Philippine package insert (linked in the products table where the FDA has published one).</p>']
     if ctx.additional_monographs.get(slug, {}).get("enabled") is True and not ctx.by_slug.get(slug):
         out = [f'<p><strong>{esc(name)}</strong> is included as a referenced clinical monograph in the '
@@ -4508,6 +4508,11 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
 
     # ── boxed warning + label attribution (top of page)
     top = []
+    registry_issue = (load_json(ctx.data_dir / "registry_issues.json", {}).get("entries") or {}).get(slug, {})
+    if registry_issue.get("note"):
+        top.append('<div class="dd-placeholder" role="note"><strong>Registry entry needs verification.</strong> '
+                   + esc(registry_issue["note"]) + ' Raw registration fields are retained for traceability; '
+                   'do not infer a medicine or dosing regimen from this heading.</div>')
     addition = ctx.additional_monographs.get(slug, {})
     if addition.get("enabled") is True and safe_url(addition.get("source_url")):
         top.append('<div class="dd-placeholder" role="note"><strong>Philippine brand reference.</strong> '
@@ -4529,7 +4534,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     elif eu_r.has_links(ctx.intl(slug)):
         top.append(eu_r.links_html(ctx.intl(slug)))
     elif addition.get("enabled") is not True:
-        top.append('<div class="dd-placeholder">US label not yet available for this generic. Check the Philippine package insert '
+        top.append('<div class="dd-placeholder">US label text has not been matched to this entry. Check the Philippine package insert '
                    '(linked in the products table where the FDA has published one).</div>')
 
     S = []
@@ -4551,7 +4556,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     if not use and ov.get("uses"):
         use = ('<ul class="dd-uselist">' + "".join(f"<li>{esc(u)}</li>" for u in ov["uses"] if ws(u)) + f"</ul>{OURS_CHIP}"
                + (f'<p class="dd-note">{esc(ov["uses_note"])}</p>' if ws(ov.get("uses_note")) else
-                  '<p class="dd-note">Summarized from published literature (see References); no US or EU label is available. '
+                  '<p class="dd-note">Referenced clinical overview (see References); no US or EU label text is displayed for this entry. '
                   'Philippine-approved indications are in the package insert.</p>'))
         use_title = "Use"
     S.append(sec("use", use_title, use, "Use"))
@@ -4572,11 +4577,40 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     if comp_html and not renal_approved(renal):
         ks = ks.replace('<p class="dd-kidney-pending">', '<p class="dd-note">Kidney dosing for each component (single-agent) '
                         'is shown under <a href="#component-info">Component information</a>.</p>\n<p class="dd-kidney-pending">', 1)
+    # Reviewed descriptive kidney notes are separate from an approved dosing schedule.
+    renal_notes = (summ.get("special_populations") or {}).get("renal", []) if summ_ok else []
+    if renal_notes:
+        note_html = '<h3>Referenced kidney considerations</h3><ul class="dd-uselist">' + "".join(
+            f'<li>{esc(x)}</li>' for x in renal_notes if isinstance(x, str) and ws(x)) + '</ul>'
+        ks = ks.replace('</section>', note_html + '</section>', 1)
     S.append(("kidney-dosing", "Kidney dosing", ks))
     nx = ctx.nx(slug)
     if nx:
         S.append(sec("kidney-injury", "Kidney injury risk", render_nephrotox(nx, ctx, len(ingredients) > 1)))
     # 4a. Reviewed evidence table (Nov 25 2026): study-by-study findings, each row cited; not a dosing source
+    # Reviewed narrative evidence: retain the existing table schema below.
+    if summ_ok and isinstance(summ.get("evidence"), list):
+        source_by_id = {r.get("id"): r for r in summ.get("sources", []) if isinstance(r, dict)}
+        evidence_html = []
+        for block in summ["evidence"]:
+            if not isinstance(block, dict):
+                continue
+            paragraphs = []
+            for para in block.get("paragraphs", []):
+                if not isinstance(para, dict) or not ws(para.get("text")):
+                    continue
+                cites = []
+                for source_id in para.get("source_ids", []):
+                    r = source_by_id.get(source_id, {})
+                    url = safe_url(r.get("url"))
+                    if url and url.startswith(("https://", "http://")):
+                        cites.append(f'<a href="{esc(url)}" rel="noopener" target="_blank">{esc(r.get("short") or source_id)}</a>')
+                if cites:
+                    paragraphs.append(f'<p>{esc(para["text"])} <span class="dd-src">[{"; ".join(cites)}]</span></p>')
+            if paragraphs:
+                evidence_html.append((f'<h3>{esc(block.get("title"))}</h3>' if ws(block.get("title")) else "") + "".join(paragraphs))
+        if evidence_html:
+            S.append(sec("evidence", "Clinical evidence and practical considerations", "".join(evidence_html) + OURS_CHIP, "Clinical evidence"))
     ev = summ.get("evidence") if summ_ok and isinstance(summ.get("evidence"), dict) else {}
     ev_rows = [r for r in ev.get("rows") or [] if isinstance(r, dict) and ws(r.get("study"))]
     if ev_rows:
@@ -4756,7 +4790,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     canonical = f"{SITE}/drugs/{slug}"
     # a high-confidence variant spelling consolidates to the main page (canonical + noindex; dropped from the sitemap)
     head_canon = f"{SITE}/drugs/{alias['main']}" if alias and alias["high"] else canonical
-    robots = "noindex, follow" if alias and alias["high"] else "index, follow"
+    robots = "noindex, follow" if (alias and alias["high"]) or registry_issue.get("noindex") else "index, follow"
     rxstat = "https://schema.org/PrescriptionOnly" if classes == {"Rx"} else ("https://schema.org/OTC" if classes and "Rx" not in classes else None)
     drug = {"@type": "Drug", "@id": canonical + "#drug", "name": name, "nonProprietaryName": name, "url": canonical}
     if cat:
