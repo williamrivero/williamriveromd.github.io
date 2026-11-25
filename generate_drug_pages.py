@@ -4443,7 +4443,33 @@ def component_section(slug: str, ingredients: list[str], ctx: Ctx) -> tuple[str,
     return html_, linked, strips
 
 
+def registry_hub_page(slug, g, ctx):
+    """Historical mixed headings select exact ingredients; never a Drug/dosing page."""
+    item = ctx.additional_monographs[slug]
+    links = []
+    for target in item.get("targets", []):
+        dest = target.get("slug")
+        if dest in ctx.generics and re.fullmatch(r"[a-z0-9-]+", dest or ""):
+            links.append(f'<li><a href="{esc(dest)}.html">{esc(target.get("label") or ctx.generics[dest]["name"])}</a></li>')
+    canonical = f"{SITE}/drugs/{slug}"
+    title = g["name"]
+    source = safe_url(item.get("source_url"))
+    body = (head(title, item.get("note", ""), canonical,
+                 json.dumps({"@context":"https://schema.org","@type":"CollectionPage","name":title,"url":canonical}),
+                 "__HASH__", robots="noindex, follow") + '<body class="physician-mode single-mode dd-mono">' + header(False)
+            + '<main class="container"><section class="dd-sec"><div class="dd-crumb"><a href="/drugs/">Drug Index</a></div>'
+            + f'<h1>{esc(title)}</h1><p class="dd-note">{esc(item.get("reference_label") or "Historical registry heading")}</p>'
+            + f'<p>{esc(item.get("note", ""))}</p><h2>{esc(item.get("heading") or "Select the exact ingredient")}</h2>'
+            + '<ul class="dd-uselist">' + "".join(links) + '</ul>'
+            + (f'<p><a href="{esc(source)}" target="_blank" rel="noopener">{esc(item.get("source_label") or "Source")}</a></p>' if source else "")
+            + '</section></main>' + FOOTER + FLOAT)
+    entry, extra = index_entry(slug, g, ctx)
+    return body, entry, extra
+
+
 def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
+    if ctx.additional_monographs.get(slug, {}).get("kind") == "registry_hub":
+        return registry_hub_page(slug, g, ctx)
     products = list(ctx.by_slug.get(slug, []))
     for v in ctx.variants_of.get(slug) or []:       # main page lists products registered under variant spellings
         if ctx.aliases[v]["high"]:
@@ -4515,9 +4541,10 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                    'do not infer a medicine or dosing regimen from this heading.</div>')
     addition = ctx.additional_monographs.get(slug, {})
     if addition.get("enabled") is True and safe_url(addition.get("source_url")):
-        top.append('<div class="dd-placeholder" role="note"><strong>Philippine brand reference.</strong> '
+        top.append('<div class="dd-placeholder" role="note"><strong>'
+                   + esc(addition.get("reference_label") or "Philippine brand reference") + '.</strong> '
                    + esc(addition.get("note", "")) + ' <a href="' + esc(addition["source_url"])
-                   + '" target="_blank" rel="noopener">Department of Health source</a>.</div>')
+                   + '" target="_blank" rel="noopener">' + esc(addition.get("source_label") or "Department of Health source") + '</a>.</div>')
     bw = label_html(label, "boxed_warning")
     if bw:
         top.append(f'<div class="dd-boxed-alert" role="alert" id="boxed-warning"><div class="dd-boxed-h">Boxed warning '

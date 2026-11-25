@@ -213,10 +213,26 @@ Sodium valproate is not divalproex: the inappropriate empty match is removed and
 
 `registry_issues.json` preserves raw registration fields while flagging ambiguous headings.
 Isosorbide mononitrate and dinitrate are distinct actives; normalization now preserves them.
-The existing combined isosorbide product list still needs a controlled registry rebuild and
-remains visibly flagged. Three malformed generic headings are excluded from indexing.
+The former combined isosorbide product list has now been split by exact registered ingredient:
+33 mononitrate and 26 dinitrate rows. The historical URL is a noindex ingredient-selection hub. Three malformed generic headings are excluded from indexing.
 
 Source citations and historical/regional/formulation limitations are recorded in each
 monograph. Isoxsuprine's cited DailyMed entry is expressly unapproved labeling, and historical
 US references are dated. Neither the source publication nor the approved summary status
 establishes a current Philippine indication or an unsupported dialysis schedule.
+
+## Nitrate identity and next monograph batch (25 November 2026)
+
+The scoped isosorbide repair preserves all 59 original registration numbers, names, strengths,
+forms, dates and other raw fields; only normalized ingredient/slug assignments change. The
+mononitrate canonical page includes 41 products (33 reassigned, seven existing 5-mononitrate
+and one existing spelling variant). Dinitrate remains a separate 26-product group. Immediate-
+release, extended-release, sublingual and IV regimens are not transferred across formulations.
+`repair_isosorbide_registry.py` can reproduce a proposal from the original baseline and rejects
+unknown names or repeated application. Alias overrides preserve the mononitrate canonical.
+
+The broad bupivacaine-in-dextrose heading is a medium-confidence related entry, not a
+consolidated 8% dextrose synonym: its raw records include 7% dextrose and an ambiguous
+strength. US spinal 0.75%/8.25% comparator labeling is distinguished from Philippine
+0.5% products; no milliliter dose schedule is transferred. New regional summaries cite primary
+clinical studies and explicitly state evidence and kidney-prescribing limitations.
