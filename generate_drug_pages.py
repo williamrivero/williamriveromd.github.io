@@ -461,6 +461,20 @@ body.dd-mono .nav-strip.dd-pills { display: none; }
 .dd-kidney-inline { margin: 6px 0 10px; padding: 12px 16px; }
 .dd-kidney-table tr.dd-kgroup th { background: #1a6b72; color: #fff; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; width: auto; padding: 7px 14px; }
 ul.dd-uselist { margin: 4px 0 8px 20px; padding: 0; }
+/* reviewed-text citations and the evidence table (Nov 25 2026) */
+sup.dd-cite { font-size: .72em; line-height: 0; margin-left: 1px; white-space: nowrap; }
+sup.dd-cite a { text-decoration: none; font-weight: 700; color: var(--teal); }
+ol.dd-refs li[id] { scroll-margin-top: 90px; }
+.dd-evtable td { vertical-align: top; font-size: .9rem; line-height: 1.5; }
+.dd-evtable td:first-child { min-width: 9em; }
+@media (max-width: 760px) {
+  .dd-evtable thead { display: none; }
+  .dd-evtable, .dd-evtable tbody, .dd-evtable tr, .dd-evtable td { display: block; width: 100%; }
+  .dd-evtable tr { border: 1px solid var(--border); border-radius: 10px; margin: 0 0 12px; padding: 4px 12px 8px; }
+  .dd-evtable td { border: 0; padding: 6px 0; }
+  .dd-evtable td:not(:first-child)::before { content: attr(data-th); display: block; font-size: .72rem; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+}
 ul.dd-uselist li { margin: 3px 0; font-size: 15px; color: var(--text-mid); }
 .dd-src-ours { color: #0e4a50; border-color: rgba(14,74,80,.35); background: #e1f5f0; }
 .dd-boxed-alert { border: 2px solid #b91c1c; background: #fff5f5; border-radius: 12px; padding: 14px 18px; margin: 4px 0 14px; }
@@ -3729,13 +3743,52 @@ def render_kidney_section(label, renal, intl=None, eu=None) -> str:
 CLINICAL_ORDER = [
     "component-info",
     "use", "drug-class", "contraindications",
-    "dosing-adult", "kidney-dosing", "kidney-injury", "pn-kidney-notes", "dosing-hepatic", "dosing-pediatric", "dosing-older",
+    "dosing-adult", "kidney-dosing", "kidney-injury", "evidence", "pn-kidney-notes", "dosing-hepatic", "dosing-pediatric", "dosing-older",
     "administration", "dosage-forms",
     "warnings", "interactions", "adverse-reactions", "monitoring",
     "pregnancy", "breastfeeding", "overdose",
     "mechanism", "pharmacodynamics", "pharmacokinetics",
     "formulary", "related-guides", "references",
 ]
+
+
+CITE_RE = re.compile(r"\[\[([A-Za-z0-9_-]+(?:\s*,\s*[A-Za-z0-9_-]+)*)\]\]")
+
+
+def resolve_cites(S, slug, srcs):
+    """Turn [[ID]] markers in reviewed text into numbered links to that source in References (Nov 25 2026).
+    Pages without markers are returned untouched (byte-identical, so their content hash and date are kept);
+    only on a page with markers do the cited reference items get id="ref-src-<ID>" anchors."""
+    if not any("[[" in h for _, _, h in S):
+        return S
+    refs = next((h for sid, _, h in S if sid == "references"), "")
+    m = re.search(r'<ol class="dd-refs">(.*?)</ol>', refs, flags=re.S)
+    lis = re.findall(r"<li>(.*?)</li>", m.group(1), flags=re.S) if m else []
+    num, anchor = {}, {}          # source id -> reference number; reference number -> anchor id
+    for r in srcs:
+        if isinstance(r, dict) and ws(r.get("id")) and ws(r.get("citation")):
+            key = esc(r["citation"])[:80]
+            for i, li in enumerate(lis, 1):
+                if key in li:
+                    num.setdefault(ws(r["id"]), i)
+                    anchor.setdefault(i, ws(r["id"]))
+                    break
+
+    def sub(mm):
+        ids = [x.strip() for x in mm.group(1).split(",")]
+        missing = [x for x in ids if x not in num]
+        if missing:
+            raise SystemExit(f"{slug}: citation id(s) {missing} not in the approved sources")
+        return ('<sup class="dd-cite">' + ",".join(f'<a href="#ref-src-{anchor[num[x]]}">{num[x]}</a>' for x in ids) + "</sup>")
+    out = []
+    for sid, nav, h in S:
+        h = CITE_RE.sub(sub, h) if "[[" in h else h
+        if sid == "references" and anchor:
+            k = iter(range(1, len(lis) + 1))
+            h = re.sub(r"<li>", lambda _m: (lambda i: f'<li id="ref-src-{anchor[i]}">' if i in anchor else "<li>")(next(k)),
+                       h, count=len(lis))
+        out.append((sid, nav, h))
+    return out
 
 
 def sec(sid: str, title: str, body: str, nav: str = "") -> tuple[str, str, str] | None:
@@ -4473,8 +4526,9 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     use_title = "Use: Labeled indications"
     if not use and ov.get("uses"):
         use = ('<ul class="dd-uselist">' + "".join(f"<li>{esc(u)}</li>" for u in ov["uses"] if ws(u)) + f"</ul>{OURS_CHIP}"
-               + '<p class="dd-note">Summarized from published literature (see References); no US or EU label is available. '
-               'Philippine-approved indications are in the package insert.</p>')
+               + (f'<p class="dd-note">{esc(ov["uses_note"])}</p>' if ws(ov.get("uses_note")) else
+                  '<p class="dd-note">Summarized from published literature (see References); no US or EU label is available. '
+                  'Philippine-approved indications are in the package insert.</p>'))
         use_title = "Use"
     S.append(sec("use", use_title, use, "Use"))
     # 3. Dosing: Adult
@@ -4483,7 +4537,8 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     if dose:
         adult = ('<ul class="dd-uselist">' + "".join(
             f'<li>{"<strong>" + esc(d.get("indication")) + ":</strong> " if ws(d.get("indication")) else ""}{esc(d.get("dose"))}</li>'
-            for d in dose) + f"</ul>{OURS_CHIP}")
+            for d in dose) + f"</ul>{OURS_CHIP}"
+                 + (f'<p class="dd-note">{esc(summ["dose_note"])}</p>' if ws(summ.get("dose_note")) else ""))
     adult += label_split(label, ("dosage_and_administration",), "2", "Dosage and administration (US label)",
                          aid="label-dosage-and-administration")
     adult += eu_r.section(eu, "4.2")
@@ -4497,14 +4552,37 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     nx = ctx.nx(slug)
     if nx:
         S.append(sec("kidney-injury", "Kidney injury risk", render_nephrotox(nx, ctx, len(ingredients) > 1)))
+    # 4a. Reviewed evidence table (Nov 25 2026): study-by-study findings, each row cited; not a dosing source
+    ev = summ.get("evidence") if summ_ok and isinstance(summ.get("evidence"), dict) else {}
+    ev_rows = [r for r in ev.get("rows") or [] if isinstance(r, dict) and ws(r.get("study"))]
+    if ev_rows:
+        cols = (("study", "Study"), ("design", "Design and population"), ("intervention", "Treatment and duration"),
+                ("findings", "Main findings"), ("limitations", "Limitations"))
+        eh = (f'<p>{esc(ev["intro"])}</p>' if ws(ev.get("intro")) else "")
+        eh += ('<div class="table-wrap"><table class="drug-table dd-evtable"><thead><tr>'
+               + "".join(f"<th>{c}</th>" for _, c in cols) + "</tr></thead><tbody>"
+               + "".join("<tr>" + "".join(f'<td data-th="{c}">{"<strong>" if k == "study" else ""}{esc(r.get(k) or "")}'
+                                          f'{"</strong>" if k == "study" else ""}</td>' for k, c in cols) + "</tr>"
+                         for r in ev_rows) + "</tbody></table></div>")
+        if ev.get("notes"):
+            eh += ('<h3>How to read this evidence</h3><ul class="dd-uselist">'
+                   + "".join(f"<li>{esc(x)}</li>" for x in ev["notes"] if ws(x)) + "</ul>")
+        S.append(sec("evidence", ws(ev.get("title")) or "Clinical evidence", eh + OURS_CHIP, ws(ev.get("nav")) or "Evidence"))
     # 4b. Parenteral nutrition brand kidney notes (data/drugs/pn-notes, approved only)
     pnn = pn_notes_for(slug, ctx)
     if pnn:
         S.append(("pn-kidney-notes", "PN kidney notes", render_pn_notes(pnn)))
+    # Reviewed special-population notes for drugs with no US/EU label (Nov 25 2026): fill a section only when the
+    # label/SmPC leaves it empty, so label text always wins.
+    _spp = summ.get("special_populations") if summ_ok and isinstance(summ.get("special_populations"), dict) else {}
+
+    def spp(k):
+        xs = [x for x in (_spp.get(k) or []) if ws(x)]
+        return ('<ul class="dd-uselist">' + "".join(f"<li>{esc(x)}</li>" for x in xs) + f"</ul>{OURS_CHIP}") if xs else ""
     # 5. Hepatic
     hep = hepatic_text(label)
     S.append(sec("dosing-hepatic", "Dosing: Hepatic impairment",
-                 (f"{hep}{LABEL_CHIP}" if hep else eu_r.subsection(eu, "hepatic", "Hepatic impairment")), "Hepatic"))
+                 (f"{hep}{LABEL_CHIP}" if hep else (eu_r.subsection(eu, "hepatic", "Hepatic impairment") or spp("hepatic"))), "Hepatic"))
     # 6. Pediatric
     ped = ""
     if renal_approved(renal) and isinstance(renal.get("pediatric"), dict):
@@ -4519,10 +4597,11 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
                    + OURS_CHIP)
     ped += acc("Pediatric use (US label)", label_html(label, "pediatric_use"), open_=not ped)
     ped += eu_r.subsection(eu, "pediatric", "Pediatric population")
+    ped = ped or spp("pediatric")
     S.append(sec("dosing-pediatric", "Dosing: Pediatric", ped, "Pediatric"))
     # 7. Older adult
     S.append(sec("dosing-older", "Dosing: Older adult", acc("Geriatric use (US label)", label_html(label, "geriatric_use"), open_=True)
-                 or eu_r.subsection(eu, "elderly", "Older adults"), "Older adult"))
+                 or eu_r.subsection(eu, "elderly", "Older adults") or spp("older"), "Older adult"))
     # 8. Dosage forms
     forms = available_forms(products)
     df = ""
@@ -4592,10 +4671,10 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     S.append(sec("interactions", "Drug interactions", di if ("dd-acc" in di or "dd-labgroup" in di or ki) else "", "Interactions"))
     # 14. Pregnancy; Breastfeeding
     S.append(sec("pregnancy", "Pregnancy considerations", acc("Pregnancy (US label)", label_html(label, "pregnancy", "teratogenic_effects"), open_=True)
-                 or eu_r.section(eu, "4.6"), "Pregnancy"))
+                 or eu_r.section(eu, "4.6") or spp("pregnancy"), "Pregnancy"))
     S.append(sec("breastfeeding", "Breastfeeding considerations", acc("Lactation (US label)", label_html(label, "lactation", "nursing_mothers"), open_=True)
                  or ('<p class="dd-note">Breastfeeding is covered in <a href="#smpc-4-6">SmPC 4.6 Fertility, pregnancy and lactation</a>, '
-                     'under Pregnancy considerations above.</p>' if eu_r.section(eu, "4.6") else ""), "Breastfeeding"))
+                     'under Pregnancy considerations above.</p>' if eu_r.section(eu, "4.6") else spp("breastfeeding")), "Breastfeeding"))
     # 15. Monitoring
     mon = []
     if renal_approved(renal) and ws(renal.get("monitoring")):
@@ -4607,7 +4686,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     S.append(sec("monitoring", "Monitoring parameters", (f'<ul class="dd-uselist">{"".join(mon)}</ul>{OURS_CHIP}' if mon else ""), "Monitoring"))
     # 16. Mechanism; Pharmacokinetics
     moa = label_html(label, "mechanism_of_action")
-    S.append(sec("overdose", "Overdose", eu_r.section(eu, "4.9"), "Overdose"))
+    S.append(sec("overdose", "Overdose", eu_r.section(eu, "4.9") or spp("overdose"), "Overdose"))
     mech = f"{moa}{LABEL_CHIP}" if moa else eu_r.section(eu, "5.1")
     if not mech and ws(ov.get("mechanism")):
         mech = (f'<p>{esc(ov["mechanism"])}</p>' + (f'<p><strong>Class:</strong> {esc(ov["class"])}</p>' if ws(ov.get("class")) else "")
@@ -4638,6 +4717,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx, ctx.intl(slug), pnn), "References"))
 
     S = [x for x in S if x]
+    S = resolve_cites(S, slug, list((summ or {}).get("sources") or []) + list((renal or {}).get("sources") or []))
     # Clinical reading order (Dr. Rivero, Nov 17 2026): what it is for → who must not get it → how much (adult, then
     # kidney, liver, children, older adults) → how to give it and what is available → what to watch for → special
     # situations → background pharmacology → formulary, related reading, references.

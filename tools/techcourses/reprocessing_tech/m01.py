@@ -33,7 +33,7 @@ MODULE = {
 <tr><td>Dialysis technician</td><td>The operator&rsquo;s work, plus machine preparation and other duties the facility assigns</td><td>Cannulation, medicines, or changing a prescription unless separately authorized by law and the facility</td></tr>
 <tr><td>Biomedical technician</td><td>Installs, calibrates, maintains and repairs the reprocessor and water system within service authorization</td><td>Releasing a patient&rsquo;s dialyzer</td></tr>
 </tbody></table></div>
-<p>Being enrolled under Nephrology Nursing does not make anyone a nurse. The track sits there because the reuse room is part of the nursing service that the head nurse and medical director supervise.</p>
+<p>The track sits in the Renal Technicians track of the Academy, beside the Dialysis, Water Treatment and Biomedical Equipment Technician tracks. The reuse room still works under the medical director and alongside the nursing service, and completing a technician track gives no nursing or clinical scope.</p>
 {{key:Knowing how to reprocess is shared. Being allowed to release a dialyzer is granted, one person at a time, by the facility.}}
 """),
         ("who-decides", "Who decides", "Who decides what", """
@@ -132,12 +132,12 @@ MODULE = {
         ("What does the DOH licensing order list among dialysis technician duties?",
          ["Prescribing dialyzer size", "Daily reprocessor calibration, reprocessing, acceptance testing, labeling, records and storage", "Cannulation", "Ordering laboratory tests"], 1,
          "AO 2012-0001 lists the reuse-room tasks among technician duties."),
-        ("Why is the reprocessing track placed under Nephrology Nursing in the Academy?",
-         ["Because only nurses may reprocess",
-          "Because finishing it confers nursing registration",
-          "Because the reuse room is part of the nursing service the head nurse and medical director supervise",
-          "Because nurses must release dialyzers"], 2,
-         "Placement tells learners where to find the track. It confers no nursing scope."),
+        ("Which statement about this track&rsquo;s place in the Academy is correct?",
+         ["Completing it confers nursing registration",
+          "It allows the holder to release dialyzers anywhere",
+          "It is a technician track; the reuse room works under the medical director and alongside the nursing service",
+          "It replaces the Dialysis Technician track"], 2,
+         "Placement tells learners where to find the track. It confers no nursing or clinical scope."),
         ("You are asked to photograph a dialyzer label to send to a colleague on a personal phone. What do you do?",
          ["Send it, since it is for work", "Decline; share patient information only through the unit&rsquo;s approved channels", "Crop the name and send it", "Send it to a group chat"], 1,
          "Labels carry patient identity and sometimes infection status. Use approved channels only."),
