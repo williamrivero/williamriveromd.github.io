@@ -33,7 +33,7 @@ GROUP = {  # accent colors from the locked site palette
 # slug: (page, group, title, tag line under group, stats line)
 TRACKS = {
     "academy-index": ("academy/index.html", "academy", "Training for the people who deliver kidney care",
-                      "5 TRACKS · 15 SUBTRACKS · 215 MODULES", "Self-study · onboarding · a new role · free"),
+                      None, "Self-study · onboarding · a new role · free"),   # tag line: live counts, see landing_stats()
     "nephrology-nursing": ("academy/nephrology-nursing.html", "nursing", "Hemodialysis Nurse",
                            "BY SPECIALIZATION", "16 core + 1 advanced module · two paths"),
     "transplant-nurse": ("academy/transplant-nurse.html", "nursing", "Kidney Transplant Nurse",
@@ -113,8 +113,42 @@ def placeholder():
     d.text((855, 315), "GPT art zone", font=font("semi", 30), fill=hexrgb("#6c8f89"), anchor="mm")
     return im
 
+# Cards whose art holds a blank screen get a QR code on it (Dr. Rivero, Nov 25 2026): the screen box in the final
+# 1200 x 630 card (measured on the fitted art) and the URL it opens. Only for that art; new art needs a new box.
+QR_SCREENS = {"academy-index": ((757, 446, 896, 548), SITE + "academy/")}
+
+def draw_qr(im, box, url):
+    import qrcode
+    q = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, border=2, box_size=1)
+    q.add_data(url); q.make(fit=True)
+    m = q.get_matrix()                      # includes the 2-module quiet zone
+    x0, y0, x1, y1 = box
+    side = min(x1 - x0, y1 - y0) - 4
+    px = max(2, side // len(m))             # whole pixels per module: crisp edges survive JPEG
+    size = px * len(m)
+    cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
+    left, top = cx - size // 2, cy - size // 2
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((left - 2, top - 2, left + size + 1, top + size + 1), 5, fill=(255, 255, 255))
+    for r, row in enumerate(m):
+        for c, on in enumerate(row):
+            if on:
+                d.rectangle((left + c * px, top + r * px, left + (c + 1) * px - 1, top + (r + 1) * px - 1), fill=(10, 30, 30))
+
+def landing_stats(page="academy/index.html"):
+    """Track / subtrack / module counts read from the landing page's stat chips (written by the generator from the
+    course data), so the share card never drifts from the page: "5 TRACKS · 18 SUBTRACKS · 256 MODULES"."""
+    s = open(page, encoding="utf-8").read()
+    got = {w: n for n, w in re.findall(r'<span class="acad-stat"><b>([\d,]+)</b>\s*(tracks|subtracks|modules)</span>', s)}
+    missing = [w for w in ("tracks", "subtracks", "modules") if w not in got]
+    if missing:
+        sys.exit(f"landing stat chips not found for: {', '.join(missing)} ({page})")
+    return " · ".join(f"{got[w]} {w.upper()}" for w in ("tracks", "subtracks", "modules"))
+
 def compose(slug, art_path=None):
     page, grp, title, tag, stats = TRACKS[slug]
+    if tag is None:
+        tag = landing_stats(page)
     accent, gname = GROUP[grp]
     base = fit_art(art_path) if art_path else placeholder()
     # legibility veil: solid mint on the left, fading out by 62% width
@@ -149,12 +183,14 @@ def compose(slug, art_path=None):
     d.text((X, H - 74), "renalcarematters.com/academy", font=font("semi", 19), fill=hexrgb("#1A6B72"))
     d.text((X, H - 50), "Free · no account · English", font=font("reg", 16), fill=hexrgb("#3d635e"))
     d.rectangle((0, H - 10, W, H), fill=ac)
+    if slug in QR_SCREENS and art_path:
+        draw_qr(im, *QR_SCREENS[slug])
     return im
 
 def save(im, slug):
     os.makedirs(OUT, exist_ok=True)
     dst = f"{OUT}/{slug}.jpg"
-    for q in (88, 84, 80, 76, 72, 68):
+    for q in (92, 88, 84, 80, 76, 72, 68):
         buf = io.BytesIO(); im.save(buf, "JPEG", quality=q, optimize=True, progressive=True)
         if buf.tell() <= LIMIT: break
     open(dst, "wb").write(buf.getvalue())
