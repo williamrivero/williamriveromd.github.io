@@ -2,7 +2,7 @@
 """Vascular Surgeon, Module 8: Dialysis catheters and central veins. Written for this track from published sources (v2.0 blueprint)."""
 
 MODULE = {
-    "image_alt": "A procedure room with ultrasound and fluoroscopy, a surgeon checking a guidewire position on the screen while a nurse monitors the patient.",
+    "image_alt": "A translucent anatomical torso in a dialysis unit showing a tunneled dialysis catheter exiting the right upper chest, tunneling over the clavicle into the right internal jugular vein, and ending in the right atrium.",
     "objectives": [
         "Explain how a dialysis catheter injures central veins and why biofilm makes catheter infections hard to clear.",
         "Choose a catheter site that protects future access, using the UK Kidney Association (UKKA) 2025 graded statements.",
