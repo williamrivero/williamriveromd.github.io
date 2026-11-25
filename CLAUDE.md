@@ -1006,6 +1006,7 @@ untracked nursing subtracks fall back to nursing. Adds `<style id="academy-track
 into one column per family (`.acad-cols` > `.acad-col` with a heading and count; Dr. Rivero: "5 columns, each column a
 track"); the columns stay inside the hero text width (Dr. Rivero chose "fit within text width": compact type; each tile's icon sits as a faint watermark at the lower right, opacity .16 light / .2 dark; on desktop the five columns fill the hero width in equal fractions, with tile type (clamp + cqi) and the watermark icon (30% of the tile) sized relative to the column width, not fixed px; the hero container is 1040 px, so its text starts about 40 px outside the body text margins, like guides/index);
 ≤ 900px the families stack, tiles two to a row. Long "A/B" titles get `<wbr>` after the slash.
+**Hero subtitle (Nov 25 2026, Dr. Rivero):** "Free, structured training built around every role in kidney care", a `<p class="hero-tagline">` right after the h1, inserted by the same patcher (`TAGLINE` in `apply_track_colors.py`; edit it there). `assets/share-buttons.js` anchors its icon row after a `.hero-tagline` that directly follows the h1, so Share sits below the subtitle.
 **Share card counts (Nov 25 2026):** the landing share card's stats line (images/og/academy/academy-index.jpg) is read from
 the landing page's stat chips by `build_academy_og.py` (`landing_stats()`); after adding a track or modules, rebuild it:
 `python3 build_academy_og.py --art images/academy/og-art --only academy-index`. The blank tablet in that art carries a QR code to

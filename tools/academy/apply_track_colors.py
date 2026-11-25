@@ -26,6 +26,9 @@ FALLBACK = {"peritoneal-dialysis-nurse.html": "nursing", "transplant-nurse.html"
             "dialysis-nurse-assistant.html": "nursing", "special-dialysis-nurse-roles.html": "nursing"}
 
 CSS = """<style id="academy-track-colors">
+.acad-hero .hero-tagline{margin:-2px 0 12px;font-family:Inter,Manrope,system-ui,sans-serif;font-size:clamp(1.05rem,1.9vw,1.4rem);font-weight:600;line-height:1.3;letter-spacing:-.005em;color:#1a5953;max-width:760px;}
+html[data-theme="dark"] .acad-hero .hero-tagline{color:#a9e3d6;}
+@media print{.acad-hero .hero-tagline{color:#000 !important;}}
 /* Hero tiles color-coded by track family (same palette as the Academy share cards). */
 .acad-track[data-family]{--fam:#1a6b72;background:color-mix(in srgb,var(--fam) 7%,#fff);box-shadow:inset 0 3px 0 var(--fam);}
 .acad-track[data-family="physicians"]{--fam:#1f3864;}
@@ -93,8 +96,15 @@ def families_from_page(s):
     return out
 
 
+TAGLINE = "Free, structured training built around every role in kidney care"   # Dr. Rivero, Nov 25 2026
+TAGLINE_RE = re.compile(r'\n?\s*<p class="hero-tagline">.*?</p>', re.S)
+
+
 def apply(s):
     s = STYLE_RE.sub("", s)
+    s = TAGLINE_RE.sub("", s)
+    s = s.replace('<h1>Renal Care <em>Academy</em></h1>',
+                  '<h1>Renal Care <em>Academy</em></h1>\n    <p class="hero-tagline">' + TAGLINE + '</p>', 1)
     s = LEGEND_RE.sub("", s)
     fam = {**FALLBACK, **families_from_page(s)}
 
