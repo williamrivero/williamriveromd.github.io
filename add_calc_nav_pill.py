@@ -34,6 +34,7 @@ OVERRIDES = {
     # Renal Care Academy toolkits point back to their track home
     'calc-dialysis-clinical-head-toolkit.html': '../academy/dialysis-clinical-head.html',
     'calc-medical-records-officer-toolkit.html': '../academy/medical-records-officer.html',
+    'calc-transplant-coordinator-toolkit.html': '../academy/transplant-coordinator.html',
 }
 
 

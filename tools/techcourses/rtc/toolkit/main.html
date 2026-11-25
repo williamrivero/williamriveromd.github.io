@@ -1,0 +1,83 @@
+<main class="container dch-calc">
+
+<nav class="toc" aria-label="Calculators">
+<a href="#tool-1">1 Four-gate readiness</a><a href="#tool-2">2 Barrier aging</a><a href="#tool-3">3 Pre-authorization timer</a><a href="#tool-4">4 Claim filing window</a><a href="#tool-5">5 Out-of-pocket gap</a><a href="#tool-6">6 Medicine runway</a><a href="#tool-7">7 Donor follow-up planner</a>
+</nav>
+
+<section class="calc" id="tool-1"><h2>1. Four-gate readiness board</h2>
+<p class="why">Readiness means all four gates (medical, legal, ethical, insurance) are closed for both the recipient and the living donor by the people who own them. This board only displays what you enter; the gate owners close the gates (Modules 1 and 14).</p>
+<div class="grid">
+<label>Recipient &middot; medical<select id="t1_rm"><option value="closed">Closed</option><option value="pending">Pending</option><option value="open" selected>Open</option></select></label>
+<label>Recipient &middot; legal<select id="t1_rl"><option value="closed" selected>Closed</option><option value="pending">Pending</option><option value="open">Open</option></select></label>
+<label>Recipient &middot; ethical<select id="t1_re"><option value="closed" selected>Closed</option><option value="pending">Pending</option><option value="open">Open</option><option value="na">Not applicable</option></select></label>
+<label>Recipient &middot; insurance<select id="t1_ri"><option value="closed" selected>Closed</option><option value="pending">Pending</option><option value="open">Open</option></select></label>
+<label>Donor &middot; medical<select id="t1_dm"><option value="closed" selected>Closed</option><option value="pending">Pending</option><option value="open">Open</option><option value="na">No living donor</option></select></label>
+<label>Donor &middot; legal<select id="t1_dl"><option value="closed" selected>Closed</option><option value="pending">Pending</option><option value="open">Open</option><option value="na">No living donor</option></select></label>
+<label>Donor &middot; ethical (HTEC and conditions)<select id="t1_de"><option value="closed">Closed</option><option value="pending" selected>Pending</option><option value="open">Open</option><option value="na">No living donor</option></select></label>
+<label>Donor &middot; insurance and charges<select id="t1_di"><option value="closed" selected>Closed</option><option value="pending">Pending</option><option value="open">Open</option><option value="na">No living donor</option></select></label>
+</div><button data-run="t1">Show readiness</button><div class="out" id="t1_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-2"><h2>2. Barrier register aging</h2>
+<p class="why">A barrier row closes only on evidence from the service that owns it. This tool turns the dates on an open row into days open, days to or past the due date, and an escalation tier (Modules 1 and 19).</p>
+<div class="grid">
+<label>Date the barrier was opened<input id="t2_open" type="date"></label>
+<label>Due date<input id="t2_due" type="date"></label>
+<label>Today (blank = this device&rsquo;s date)<input id="t2_now" type="date"></label>
+<label>&ldquo;Due soon&rdquo; warning, days before due<input id="t2_warn" type="number" min="0" value="3" placeholder="e.g. 3"></label>
+</div><button data-run="t2">Calculate</button><div class="out" id="t2_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-3"><h2>3. Pre-authorization validity timer</h2>
+<p class="why">Under PhilHealth&rsquo;s kidney transplant package (PC 2024-0035; Revision 1, PC 2026-0019, published November 21, 2026), an approved pre-authorization is valid for 180 calendar days. For deceased donors the request is due within two working days after the procedure. Confirm the circular in force for your case (Module 10).</p>
+<div class="grid">
+<label>Pre-authorization approval date<input id="t3_appr" type="date"></label>
+<label>Planned surgery date<input id="t3_surg" type="date"></label>
+<label>Validity, calendar days<input id="t3_days" type="number" min="1" value="180" placeholder="e.g. 180"></label>
+<label>Today (blank = this device&rsquo;s date)<input id="t3_now" type="date"></label>
+</div><button data-run="t3">Calculate</button><div class="out" id="t3_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-4"><h2>4. Claim filing window</h2>
+<p class="why">The contracted facility files the kidney transplant claim within 60 days after discharge; late filing is a stated ground for denial. Enter the discharge date to see the deadline and the days left (Module 11).</p>
+<div class="grid">
+<label>Discharge date<input id="t4_dis" type="date"></label>
+<label>Filing window, days<input id="t4_win" type="number" min="1" value="60" placeholder="e.g. 60"></label>
+<label>Today (blank = this device&rsquo;s date)<input id="t4_now" type="date"></label>
+</div><button data-run="t4">Calculate</button><div class="out" id="t4_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-5"><h2>5. Out-of-pocket gap estimator</h2>
+<p class="why">Estimated gap = facility estimate &minus; package rate &minus; assistance confirmed in writing. Package rates are those listed in PC 2024-0035 and unchanged in PC 2026-0019. The package rate is not the bill; the result is an estimate. Donation-related care is never charged to the donor (Modules 10 and 11).</p>
+<div class="grid">
+<label>Facility&rsquo;s written estimate (pesos)<input id="t5_est" type="number" min="0" value="1200000" placeholder="e.g. 1200000"></label>
+<label>Package code<select id="t5_code">
+<option value="993000">Z025A1 &middot; living, basiliximab or eATG, laparoscopic donor &middot; 993,000</option>
+<option value="865000">Z025A2 &middot; living, basiliximab or eATG, open &middot; 865,000</option>
+<option value="1045000">Z025B1 &middot; living, rATG, laparoscopic donor &middot; 1,045,000</option>
+<option value="918000">Z025B2 &middot; living, rATG, open &middot; 918,000</option>
+<option value="2093000">Z026A1 &middot; deceased, basiliximab or eATG, machine perfusion &middot; 2,093,000</option>
+<option value="1583000">Z026A2 &middot; deceased, basiliximab or eATG, cold storage &middot; 1,583,000</option>
+<option value="2146000">Z026B1 &middot; deceased, rATG, machine perfusion &middot; 2,146,000</option>
+<option value="1636000">Z026B2 &middot; deceased, rATG, cold storage &middot; 1,636,000</option>
+</select></label>
+<label>Assistance confirmed in writing (pesos)<input id="t5_conf" type="number" min="0" value="100000" placeholder="e.g. 100000"></label>
+<label>Assistance promised but not yet confirmed (pesos)<input id="t5_prom" type="number" min="0" value="50000" placeholder="e.g. 50000"></label>
+</div><button data-run="t5">Estimate</button><div class="out" id="t5_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-6"><h2>6. Medicine supply runway</h2>
+<p class="why">Days of supply = tablets on hand &divide; tablets per day. The refill must start before the run-out date minus the pharmacy&rsquo;s lead time, counted in working days and around closures. The team decides doses; this tool only counts (Module 15).</p>
+<div class="grid">
+<label>Tablets on hand<input id="t6_on" type="number" min="0" value="40" placeholder="e.g. 40"></label>
+<label>Tablets per day (as prescribed)<input id="t6_pd" type="number" min="0" step="0.5" value="4" placeholder="e.g. 4"></label>
+<label>Refill lead time, working days<input id="t6_lead" type="number" min="0" value="5" placeholder="e.g. 5"></label>
+<label>Extra closure days ahead (holidays)<input id="t6_hol" type="number" min="0" value="0" placeholder="e.g. 4"></label>
+<label>Count date (blank = today)<input id="t6_now" type="date"></label>
+</div><button data-run="t6">Calculate</button><div class="out" id="t6_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-7"><h2>7. Living donor follow-up planner</h2>
+<p class="why">An example schedule from the donation date: 6 months, 1 year, 2 years, then yearly. KDIGO 2017 and DOH AO 2021-0059 support lifelong donor follow-up; the 6-month, 1-year, and 2-year points mirror United States reporting and are shown for comparison. Align every date with your program&rsquo;s protocol (Modules 7 and 17).</p>
+<div class="grid">
+<label>Donation date<input id="t7_don" type="date"></label>
+<label>Years to list<input id="t7_years" type="number" min="1" max="40" value="10" placeholder="e.g. 10"></label>
+<label>Today (blank = this device&rsquo;s date)<input id="t7_now" type="date"></label>
+</div><button data-run="t7">Plan</button><div class="out" id="t7_out" aria-live="polite"></div></section>
+
+<div class="disclaimer"><strong>Important:</strong> These tools do arithmetic and display, not decisions. Medical, ethical, legal, and benefit decisions belong to the transplant team, the ethics committee, the surgeon, and PhilHealth under the current issuances. Use no patient names or identifiers; nothing you enter is stored or sent. Rules and rates change: confirm the circular in force for each case. Reviewed November 25, 2026.</div>
+</main>

@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs", "rtc"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 
@@ -1207,14 +1207,15 @@ def build_exam(course, built):
       <div class="nc-opt-row"><input type="radio" name="q{qi}" id="{oid}" value="{'abcd'[oi]}" data-correct="{1 if correct else 0}" aria-describedby="{oid}-fb"><label for="{oid}">{text}</label></div>
       <div id="{oid}-fb"><span class="nc-verdict"></span>{rat}</div>
     </div>""")
-        qh.append(f"""  <fieldset class="nc-q" data-q="{qi}">
+        grp = f' data-group="m{d["id"]}"' if C.get("exam_stratify") else ""
+        qh.append(f"""  <fieldset class="nc-q" data-q="{qi}"{grp}>
     <legend><span class="nc-qn">Question {qi}</span>{q['stem']}</legend>
 {chr(10).join(opts)}
   </fieldset>""")
     main = f"""<section class="section" id="about">
   <div class="section-tag">Before you begin</div>
   <h2>How this examination works</h2>
-  <p>This examination covers the whole {C['title']} series. Each sitting draws <strong>{draw} questions at random</strong> from a bank of {len(bank)}, in random order, with the answer choices shuffled. Choose the single best answer for each question, then select <strong>Check answers</strong>.</p>
+  <p>This examination covers the whole {C['title']} series. Each sitting draws <strong>{draw} questions at random</strong> from a bank of {len(bank)}{", one from each module" if C.get("exam_stratify") else ""}, in random order, with the answer choices shuffled. Choose the single best answer for each question, then select <strong>Check answers</strong>.</p>
   <div class="tc-cards">
     <div class="tc-card"><b>When to take it</b>After you have finished every module and reviewed the questions you missed.</div>
     <div class="tc-card"><b>How to take it</b>In one sitting, without notes. Allow about one minute per question.</div>
@@ -1233,7 +1234,7 @@ def build_exam(course, built):
 <section class="section" id="quiz">
   <div class="section-tag">Examination</div>
   <h2>End-of-course examination</h2>
-  <form class="nc-quiz" id="nc-quiz" data-module="exam" data-draw="{draw}" novalidate>
+  <form class="nc-quiz" id="nc-quiz" data-module="exam" data-draw="{draw}"{' data-stratify="1" data-pass="' + str(passmark) + '"' if C.get("exam_stratify") else ""} novalidate>
 {chr(10).join(qh)}
     <label class="nc-remember"><input type="checkbox" id="nc-remember"><span>Remember my result on this device (optional). Stored only in this browser; untick to erase it.</span></label>
     <div class="nc-actions">
@@ -1546,7 +1547,7 @@ def build_academy():
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
     short = {"hemodialysis-technician": "Dialysis Technician", "water-treatment-technician": "Water Treatment Technician",
              "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head", "philhealth-claims": "PhilHealth Claims", "dialysis-unit-manager": "Unit Manager",
-             "attending-nephrologist": "Attending Nephrologist", "medical-records-officer": "Medical Records Officer", "dialysis-head-nurse": "Head Nurse", "dialysis-charge-nurse": "Charge Nurse", "dialyzer-reprocessing-technician": "Reprocessing Technician", "vascular-surgeon": "Vascular Surgeon"}
+             "attending-nephrologist": "Attending Nephrologist", "medical-records-officer": "Medical Records Officer", "dialysis-head-nurse": "Head Nurse", "dialysis-charge-nurse": "Charge Nurse", "dialyzer-reprocessing-technician": "Reprocessing Technician", "vascular-surgeon": "Vascular Surgeon", "transplant-coordinator": "Transplant Coordinator"}
     hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]
     pg = shell(_Academy, fname, "Renal Care Academy: Training for Dialysis and Nephrology Staff", desc, A["keywords"],

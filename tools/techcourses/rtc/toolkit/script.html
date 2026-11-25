@@ -1,0 +1,110 @@
+<script>
+/* ===== RTC-CALC-CORE (pure functions; tested by tools/test_rtc_calcs.cjs) ===== */
+var RTC = (function () {
+  function n(x) { var v = parseFloat(x); return isFinite(v) ? v : NaN; }
+  function addDays(d, k) { var r = new Date(d.getTime()); r.setDate(r.getDate() + k); return r; }
+  function addMonths(d, m) { var r = new Date(d.getTime()); var day = r.getDate(); r.setDate(1); r.setMonth(r.getMonth() + m); var last = new Date(r.getFullYear(), r.getMonth() + 1, 0).getDate(); r.setDate(Math.min(day, last)); return r; }
+  function days(a, b) { return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000); }
+  function addWorkingDays(d, k) { var r = new Date(d.getTime()), c = 0; while (c < k) { r.setDate(r.getDate() - 1); var w = r.getDay(); if (w !== 0 && w !== 6) c++; } return r; }
+  function gates(map) {
+    var open = [], pending = [], closed = 0, total = 0;
+    Object.keys(map).forEach(function (k) { var v = map[k]; if (v === "na") return; total++; if (v === "closed") closed++; else if (v === "pending") pending.push(k); else open.push(k); });
+    return { ready: open.length === 0 && pending.length === 0 && total > 0, open: open, pending: pending, closed: closed, total: total };
+  }
+  function aging(opened, due, today, warn) {
+    var o = days(opened, today), toDue = days(today, due), tier;
+    if (toDue < 0) tier = -toDue > 7 ? "escalate" : "overdue"; else if (toDue <= warn) tier = "due soon"; else tier = "on time";
+    return { daysOpen: o, daysToDue: toDue, tier: tier };
+  }
+  function validity(approved, surgery, validDays, today) {
+    var expiry = addDays(approved, validDays);
+    return { expiry: expiry, daysLeft: today ? days(today, expiry) : NaN, surgeryOk: surgery ? surgery <= expiry : null, surgeryMargin: surgery ? days(surgery, expiry) : NaN };
+  }
+  function filing(discharge, windowDays, today) { var dl = addDays(discharge, windowDays); return { deadline: dl, daysLeft: days(today, dl) }; }
+  function gap(estimate, rate, confirmed, promised) { var g = estimate - rate - confirmed; return { gap: Math.max(0, g), surplus: g < 0 ? -g : 0, ifPromised: Math.max(0, g - promised) }; }
+  function runway(onHand, perDay, leadWorking, closures, today) {
+    if (!(perDay > 0)) return null;
+    var d = Math.floor(onHand / perDay), runOut = addDays(today, d), latest = addDays(addWorkingDays(runOut, leadWorking), -closures);
+    return { days: d, runOut: runOut, latestRefill: latest, actNow: latest <= today };
+  }
+  function donorPlan(donation, years) { var out = [{ label: "6 months", date: addMonths(donation, 6) }]; for (var y = 1; y <= years; y++) out.push({ label: y === 1 ? "1 year" : y + " years", date: addMonths(donation, 12 * y) }); return out; }
+  return { n: n, addDays: addDays, addMonths: addMonths, days: days, addWorkingDays: addWorkingDays, gates: gates, aging: aging, validity: validity, filing: filing, gap: gap, runway: runway, donorPlan: donorPlan };
+})();
+if (typeof module !== "undefined") module.exports = RTC;
+/* ===== END RTC-CALC-CORE ===== */
+(function () {
+  if (typeof document === "undefined") return;
+  function $(id) { return document.getElementById(id); }
+  function D(id) { var v = $(id).value; if (!v) return null; var p = v.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function today(id) { return D(id) || (function () { var t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); })(); }
+  function f(d) { return d ? d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", weekday: "short" }) : "&mdash;"; }
+  function peso(x) { return "&#8369;" + Math.round(x).toLocaleString("en-US"); }
+  function flag(cls, t) { return '<span class="flag ' + cls + '">' + t + "</span>"; }
+  var LABEL = { t1_rm: "Recipient medical", t1_rl: "Recipient legal", t1_re: "Recipient ethical", t1_ri: "Recipient insurance", t1_dm: "Donor medical", t1_dl: "Donor legal", t1_de: "Donor ethical", t1_di: "Donor insurance and charges" };
+  var run = {
+    t1: function () {
+      var m = {}; Object.keys(LABEL).forEach(function (k) { m[k] = $(k).value; });
+      var r = RTC.gates(m);
+      var h = r.ready ? flag("f-ok", "All gates closed") + " Ready to present at the huddle. The authorized lead still makes the go, hold, or stop decision."
+                      : flag("f-stop", "Not ready") + " " + r.closed + " of " + r.total + " gates closed.";
+      if (r.open.length) h += "<br><b>Open:</b> " + r.open.map(function (k) { return LABEL[k]; }).join("; ") + ".";
+      if (r.pending.length) h += "<br><b>Pending:</b> " + r.pending.map(function (k) { return LABEL[k]; }).join("; ") + ".";
+      return h + '<div class="note">Each open or pending gate needs an owner, a due date, and the evidence that will close it.</div>';
+    },
+    t2: function () {
+      var o = D("t2_open"), d = D("t2_due"); if (!o || !d) return "Enter the open date and the due date.";
+      var r = RTC.aging(o, d, today("t2_now"), RTC.n($("t2_warn").value) || 0);
+      var cls = { "on time": "f-ok", "due soon": "f-warn", "overdue": "f-stop", "escalate": "f-stop" }[r.tier];
+      return flag(cls, r.tier) + " Open for <b>" + r.daysOpen + "</b> days. " + (r.daysToDue >= 0 ? "Due in <b>" + r.daysToDue + "</b> days." : "<b>" + (-r.daysToDue) + "</b> days past due.") +
+        (r.tier === "escalate" ? '<div class="note">More than a week overdue: escalate to the named escalation contact with an SBAR.</div>' : "");
+    },
+    t3: function () {
+      var a = D("t3_appr"); if (!a) return "Enter the approval date.";
+      var r = RTC.validity(a, D("t3_surg"), RTC.n($("t3_days").value) || 180, today("t3_now"));
+      var h = "Valid until <b>" + f(r.expiry) + "</b> (" + (r.daysLeft >= 0 ? r.daysLeft + " days left today" : (-r.daysLeft) + " days ago") + ").";
+      if (r.surgeryOk === true) h += "<br>" + flag("f-ok", "Surgery inside validity") + " " + r.surgeryMargin + " days of margin.";
+      if (r.surgeryOk === false) h += "<br>" + flag("f-stop", "Surgery after expiry") + " Flag to the Z Benefits lead and the surgeon now; ask what the circular allows.";
+      return h;
+    },
+    t4: function () {
+      var d = D("t4_dis"); if (!d) return "Enter the discharge date.";
+      var r = RTC.filing(d, RTC.n($("t4_win").value) || 60, today("t4_now"));
+      var cls = r.daysLeft < 0 ? "f-stop" : (r.daysLeft <= 14 ? "f-warn" : "f-ok");
+      return "File by <b>" + f(r.deadline) + "</b>. " + flag(cls, r.daysLeft < 0 ? (-r.daysLeft) + " days late" : r.daysLeft + " days left") +
+        '<div class="note">Check the packet weekly from discharge: registry entry, essential-services checklist, consistent identifiers.</div>';
+    },
+    t5: function () {
+      var r = RTC.gap(RTC.n($("t5_est").value) || 0, RTC.n($("t5_code").value) || 0, RTC.n($("t5_conf").value) || 0, RTC.n($("t5_prom").value) || 0);
+      return "Estimated gap with confirmed assistance: <b>" + peso(r.gap) + "</b>" + (r.surplus ? " (estimate below package plus assistance by " + peso(r.surplus) + ")" : "") +
+        ".<br>If promised assistance is later confirmed: " + peso(r.ifPromised) + "." +
+        '<div class="note">An estimate, not a bill. Count promised money only when the letter arrives. The donor is not charged for donation-related care (DOH AO 2021-0059).</div>';
+    },
+    t6: function () {
+      var r = RTC.runway(RTC.n($("t6_on").value) || 0, RTC.n($("t6_pd").value), RTC.n($("t6_lead").value) || 0, RTC.n($("t6_hol").value) || 0, today("t6_now"));
+      if (!r) return "Enter tablets per day.";
+      return "<b>" + r.days + "</b> days of supply; runs out on <b>" + f(r.runOut) + "</b>.<br>Start the refill by <b>" + f(r.latestRefill) + "</b>. " +
+        (r.actNow ? flag("f-stop", "Request the refill now") : flag("f-ok", "On track")) + '<div class="note">Never stretch, skip, or switch brands; supply problems go to the team.</div>';
+    },
+    t7: function () {
+      var d = D("t7_don"); if (!d) return "Enter the donation date.";
+      var now = today("t7_now"), rows = RTC.donorPlan(d, Math.min(40, Math.max(1, RTC.n($("t7_years").value) || 10)));
+      var next = null;
+      var t = "<table><thead><tr><th>Visit</th><th>Date</th><th>Status</th></tr></thead><tbody>" + rows.map(function (x) {
+        var s = x.date < now ? "past" : (next ? "upcoming" : "next"); if (s === "next") next = x;
+        return "<tr><td>" + x.label + "</td><td>" + f(x.date) + "</td><td>" + s + "</td></tr>"; }).join("") + "</tbody></table>";
+      return (next ? "Next check: <b>" + next.label + "</b>, " + f(next.date) + "." : "") + t +
+        '<div class="note">Typical checks: blood pressure, weight, kidney function, urine albumin. Example schedule only; follow your program&rsquo;s protocol. Recall the donor privately, never through the recipient.</div>';
+    }
+  };
+  function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  var t0 = new Date();
+  if (!$("t2_open").value) $("t2_open").value = iso(RTC.addDays(t0, -17));
+  if (!$("t2_due").value) $("t2_due").value = iso(RTC.addDays(t0, -3));
+  if (!$("t3_appr").value) $("t3_appr").value = "2026-03-01";
+  if (!$("t3_surg").value) $("t3_surg").value = "2026-09-15";
+  if (!$("t4_dis").value) $("t4_dis").value = "2026-07-01";
+  if (!$("t7_don").value) $("t7_don").value = "2025-12-10";
+  document.querySelectorAll("button[data-run]").forEach(function (b) { b.addEventListener("click", function () { var id = b.getAttribute("data-run"); try { $(id + "_out").innerHTML = run[id](); } catch (e) { $(id + "_out").textContent = "Check the inputs."; } }); });
+  Object.keys(run).forEach(function (k) { try { $(k + "_out").innerHTML = run[k](); } catch (e) {} });
+})();
+</script>

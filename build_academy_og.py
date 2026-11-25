@@ -70,6 +70,8 @@ TRACKS = {
                           "CLAIMS", "10 modules + practicum · 5 calculators"),
     "medical-records-officer": ("academy/medical-records-officer.html", "ancillary", "Medical Records Officer/Custodian",
                                 "RECORDS", "14 modules · capstone · calculator toolkit"),
+    "transplant-coordinator": ("academy/transplant-coordinator.html", "ancillary", "Renal Transplant Coordinator",
+                               "TRANSPLANT COORDINATION", "20 modules · two learner paths · seven-tool toolkit"),
 }
 
 FONT_DIRS = ["/usr/share/fonts/opentype/inter", os.path.expanduser("~/Library/Fonts"), "/Library/Fonts",
