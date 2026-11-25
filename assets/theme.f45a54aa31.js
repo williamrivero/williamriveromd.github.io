@@ -1,4 +1,4 @@
-/* theme.js — Auto / Light / Dim / Dark appearance for renalcarematters.com
+/* theme.js — Auto / Light / Dim / Dark / E-paper appearance for renalcarematters.com
  *
  * Source file. Pages load the fingerprinted copy (theme.<hash>.js) written by
  * patch_theme_modes.py, which also inlines the pre-paint bootstrap in <head>.
@@ -6,19 +6,20 @@
  *   Light → no data-theme (or data-theme="light")
  *   Dim   → html[data-theme="dark"][data-shade="dim"]   (+ theme-dim.<hash>.css)
  *   Dark  → html[data-theme="dark"]
+ *   E-paper → html[data-shade="epaper"], light base (+ theme-epaper.<hash>.css); manual only, Auto never picks it
  *   Auto  → system dark setting wins; otherwise by local time of day:
  *           Light 06:00–17:59 · Dim 18:00–21:59 · Dark 22:00–05:59
  *
  * The existing dark toggle button on every page (#darkToggle and variants)
- * now cycles Auto → Light → Dim → Dark. The legacy 'wgmr-dark' key is kept in
+ * now cycles Auto → Light → Dim → Dark → E-paper. The legacy 'wgmr-dark' key is kept in
  * sync so older per-page scripts agree with the resolved theme.
  * Never move the bootstrap to the bottom of the page (flash + CLS).
  */
 (function () {
   'use strict';
   var KEY = 'wgmr-theme-mode';
-  var MODES = ['auto', 'light', 'dim', 'dark'];
-  var NAMES = { auto: 'Auto', light: 'Light', dim: 'Dim', dark: 'Dark' };
+  var MODES = ['auto', 'light', 'dim', 'dark', 'epaper'];
+  var NAMES = { auto: 'Auto', light: 'Light', dim: 'Dim', dark: 'Dark', epaper: 'E-paper' };
   var TOGGLES = '#darkToggle,#darkToggleF,#darkToggle2,#floatDarkBtn,#dark-toggle,[onclick*="toggleDark"]';
   var d = document.documentElement;
 
@@ -26,6 +27,7 @@
     light: '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
     dim: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none" opacity=".55"/>',
     dark: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
+    epaper: '<rect x="5" y="2.5" width="14" height="19" rx="2"/><line x1="8.5" y1="7.5" x2="15.5" y2="7.5"/><line x1="8.5" y1="11" x2="15.5" y2="11"/><line x1="8.5" y1="14.5" x2="13" y2="14.5"/>',
     auto: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none" opacity=".25"/><path d="M9 16l3-8 3 8M10.1 13.4h3.8"/>'
   };
 
@@ -60,16 +62,28 @@
     document.head.appendChild(l);
   }
 
+  function ensureEpaperCss() {
+    if (document.getElementById('rc-epaper-css') || !window.__RC_EPAPER_CSS) return;
+    var l = document.createElement('link');
+    l.id = 'rc-epaper-css';
+    l.rel = 'stylesheet';
+    l.href = window.__RC_EPAPER_CSS;
+    document.head.appendChild(l);
+  }
+  function isDark(t) { return t === 'dim' || t === 'dark'; }
+
   function inSync(t) {
     var dark = d.getAttribute('data-theme') === 'dark';
-    var dim = d.getAttribute('data-shade') === 'dim';
-    return (t === 'light') ? (!dark && !dim) : (dark && dim === (t === 'dim'));
+    var shade = d.getAttribute('data-shade') || '';
+    if (t === 'light') return !dark && !shade;
+    if (t === 'epaper') return !dark && shade === 'epaper';
+    return dark && (shade === 'dim') === (t === 'dim');
   }
 
   function setAttrs(t, m) {
-    if (t === 'light') {
+    if (!isDark(t)) {
       if (d.getAttribute('data-theme') === 'dark') d.setAttribute('data-theme', 'light');
-      d.removeAttribute('data-shade');
+      if (t === 'epaper') d.setAttribute('data-shade', 'epaper'); else d.removeAttribute('data-shade');
     } else {
       d.setAttribute('data-theme', 'dark');
       if (t === 'dim') d.setAttribute('data-shade', 'dim'); else d.removeAttribute('data-shade');
@@ -79,13 +93,13 @@
 
   function updateUi(m, t) {
     var label = m === 'auto' ? 'Auto · ' + NAMES[t] : NAMES[m];
-    var tip = 'Appearance: ' + label + '. Tap to change (Auto → Light → Dim → Dark).';
+    var tip = 'Appearance: ' + label + '. Tap to change (Auto → Light → Dim → Dark → E-paper).';
     var btns = document.querySelectorAll(TOGGLES);
     for (var i = 0; i < btns.length; i++) {
       var b = btns[i];
       b.setAttribute('title', tip);
       b.setAttribute('aria-label', tip);
-      b.classList.toggle('active', t !== 'light');
+      b.classList.toggle('active', isDark(t));
       var svg = b.querySelector('svg');
       if (svg) svg.innerHTML = ICONS[m === 'auto' ? 'auto' : t];
       var span = b.querySelector('.float-tooltip,[id^="darkLabel"]');
@@ -99,14 +113,15 @@
   function apply() {
     var m = getMode(), t = resolve(m);
     if (t === 'dim') ensureDimCss();
+    if (t === 'epaper') ensureEpaperCss();
     // Let page-specific dark handlers run their side effects (icons, charts,
     // body classes) — then enforce the resolved attributes on top.
     if (typeof window.applyDark === 'function') {
-      try { window.applyDark(t !== 'light'); } catch (e) {}
+      try { window.applyDark(isDark(t)); } catch (e) {}
     }
     setAttrs(t, m);
-    ls('wgmr-dark', t === 'light' ? '0' : '1');
-    ls('wgmr-dk', t === 'light' ? '0' : '1');
+    ls('wgmr-dark', isDark(t) ? '1' : '0');
+    ls('wgmr-dk', isDark(t) ? '1' : '0');
     updateUi(m, t);
     if (window.__rcLast && typeof window.rcRender === 'function') {
       try { window.rcRender(window.__rcLast); } catch (e) {}

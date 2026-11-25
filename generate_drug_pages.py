@@ -2767,6 +2767,7 @@ var CORE_PAGES=['/drugs/','/drugs/offline','/drugs/supplements/','/drugs/interac
 var DATA_URLS=__DATA__;
 var ASSET_URLS=__ASSETS__;
 var MAX_PAGES=300,MAX_ASSETS=400;
+var RC_THEME=null;/*rc-theme*/   // filled by patch_theme_modes.py: current theme bootstrap for saved pages
 
 function pageKey(u){u=new URL(u,self.location.origin);var p=u.pathname;
   if(/\/index\.html$/.test(p))p=p.slice(0,-10);else if(/\.html$/.test(p))p=p.slice(0,-5);return u.origin+p;}
@@ -2810,6 +2811,15 @@ function fresh(hit){
   return hit.clone().text().then(function(t){
     var u=t.replace(/\/drugs\/drugdb\.[0-9a-f]{6,}\.css/g,SHELL_URLS[0]).replace(/\/drugs\/drugdb\.[0-9a-f]{6,}\.js/g,SHELL_URLS[1])
            .replace(/,\s*viewport-fit=cover/g,'');
+    // Appearance themes: saved copies may predate the theme bootstrap or point at pruned theme files
+    // (theme.<hash>.js, theme-dim.<hash>.css). Swap in the current bootstrap, keeping the page's own Dim groups.
+    if(RC_THEME){
+      var m=u.match(/data-dimg','([^']*)'/),g=m?m[1]:(/rel="canonical" href="[^"]*\/drugs\/supplements\//.test(u)?'6':'0 1 2 3');
+      var b=RC_THEME.boot.split('__G__').join(g);
+      if(u.indexOf('<!-- rc-theme-boot -->')>=0)u=u.replace(/<!-- rc-theme-boot -->[\s\S]*?<!-- \/rc-theme-boot -->\n?/,function(){return b;});
+      else if(u.indexOf(RC_THEME.legacy)>=0)u=u.split(RC_THEME.legacy).join('').replace(/<head[^>]*>\n?/i,function(x){return x+b;});
+      else u=u.replace(/<head[^>]*>\n?/i,function(x){return x+b;});
+    }
     if(u===t)return hit;
     var h=new Headers(hit.headers);h.delete('content-length');
     return new Response(u,{status:hit.status,statusText:hit.statusText,headers:h});

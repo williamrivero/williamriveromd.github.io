@@ -113,6 +113,25 @@ def patch(path: Path, block: str, dry: bool, groups: dict) -> str:
     return status
 
 
+SW_PATH = REPO / "drugs" / "sw.js"
+SW_RE = re.compile(r"var RC_THEME=.*?;/\*rc-theme\*/")
+
+
+def patch_sw(block: str, dry: bool) -> str:
+    """Give the Dosis worker the current bootstrap (Dim groups left as __G__) so it can refresh pages saved
+    for offline use before the themes existed or before a theme file was renamed (Nov 25 2026)."""
+    if not SW_PATH.exists():
+        return "no sw.js"
+    js = SW_PATH.read_text(encoding="utf-8")
+    if not SW_RE.search(js):
+        return "sw.js has no RC_THEME marker (regenerate drug pages)"
+    payload = json.dumps({"boot": block, "legacy": LEGACY}, ensure_ascii=False).replace("</", "<\\/")
+    new = SW_RE.sub(lambda _: "var RC_THEME=" + payload + ";/*rc-theme*/", js, count=1)
+    if new != js and not dry:
+        SW_PATH.write_text(new, encoding="utf-8")
+    return "updated" if new != js else "unchanged"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
@@ -136,6 +155,8 @@ def main():
         if st == "no-head":
             print(f"  ! no <head>: {p.relative_to(REPO)}")
     print(("DRY RUN — " if args.dry_run else "") + ", ".join(f"{k}: {v}" for k, v in sorted(tally.items())))
+    if not args.page:
+        print("drugs/sw.js: " + patch_sw(block, args.dry_run))
     print(f"theme.js → {js}\ntheme-dim.css → {css}\ntheme-epaper.css → {ep}")
 
 

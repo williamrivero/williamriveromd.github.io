@@ -1121,6 +1121,12 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   `drugdb-eu-labels` with `gh workflow run`, which starts `drugdb-pages` (a push made with the workflow token does not
   trigger other workflows, so the labels never reached the pages before). Their own crons (EU 05:17, pages 07:41 Manila)
   are fallbacks; all three need `actions: write`. The hero `.dd-sched` line says "every Monday morning, Philippine time" and "Next update" is computed in the browser (next Sunday 17:47 UTC). If a cron changes, update both.
+- **Saved pages keep the current themes** (Nov 25 2026): `drugs/sw.js` carries `var RC_THEME=...;/*rc-theme*/`, which
+  the generator writes as null and `patch_theme_modes.py` fills (current bootstrap with `__G__`, plus the legacy
+  `wgmr-dark` one-liner). The worker's `fresh()` swaps each saved page's theme block for the current one (keeping its
+  `data-dimg` groups; default `0 1 2 3`, supplements `6`), so pages saved before the themes, or pointing at a pruned
+  theme-dim / theme file, get Auto/Light/Dim/Dark/E-paper without a re-download. Always run `patch_theme_modes.py`
+  after the drug generator (CI does).
 - **Saved pages stay on the current layout** (Nov 23 2026): the offline manifest hash ignores asset names, so a saved
   page kept the drugdb.<hash>.css/js it was saved with (devices that downloaded Dosis before Nov 20 still showed the
   rolled-back foldable layout offline or on slow networks). The worker's `fresh()` rewrites every saved copy it serves to
