@@ -1,0 +1,43 @@
+/* theme-epaper.css — E-paper appearance for renalcarematters.com (Nov 25 2026, Dr. Rivero).
+ *
+ * Source file; pages load the fingerprinted copy (theme-epaper.<hash>.css) written by
+ * patch_theme_modes.py. Active only on html[data-shade="epaper"] (a light theme: no data-theme="dark").
+ * Colored e-paper look (Dr. Rivero, Nov 25 2026): soft, muted color like a color e-ink screen (Kaleido),
+ * crisp contrast, no motion, flat surfaces. Kind to color e-ink readers (Kobo, Boox, PocketBook), strong
+ * sunlight and readers who find bright color and animation distracting. Hand-written, page-family neutral:
+ * one saturation + contrast filter covers every token set (guides, calculators, Academy, Dosis, homepage).
+ */
+html[data-shade="epaper"] {
+  filter: saturate(0.6) contrast(1.1);
+  background: #fff;
+  color-scheme: light;
+}
+html[data-shade="epaper"] body { background: #fff; }
+
+/* E-ink refreshes slowly and ghosts: finish every animation and transition at once.
+   (Durations go to ~0 rather than "animation: none", so content that animates into view still ends visible.) */
+html[data-shade="epaper"] *,
+html[data-shade="epaper"] *::before,
+html[data-shade="epaper"] *::after {
+  animation-duration: 0.001s !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+  text-shadow: none !important;
+}
+
+/* Frosted glass and blur turn to gray mud on e-ink. */
+html[data-shade="epaper"] * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+
+/* Body text in true black; links stay identifiable even where muted color is hard to tell apart. */
+html[data-shade="epaper"] main p,
+html[data-shade="epaper"] main li,
+html[data-shade="epaper"] main td,
+html[data-shade="epaper"] main dd { color: #000; }
+html[data-shade="epaper"] main a:not([class]) { text-decoration: underline; text-underline-offset: 2px; }
+
+@media print {
+  html[data-shade="epaper"] { filter: none; }
+}

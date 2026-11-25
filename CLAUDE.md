@@ -859,7 +859,7 @@ Guides also expose `--text-mid`, `--text-muted`, `--text-faint`, `--red`, `--red
 
 Dark mode is `html[data-theme="dark"]` (guides, calculators, Academy, Dosis). The homepage (`index.html`) has no dark-mode CSS.
 
-### Appearance themes: Auto / Light / Dim / Dark (Nov 2026, lock-in)
+### Appearance themes: Auto / Light / Dim / Dark / E-paper (Nov 2026, lock-in)
 
 The dark toggle button on every page cycles **Auto → Light → Dim → Dark**
 (choice stored in `localStorage['wgmr-theme-mode']`; default `auto`).
@@ -869,6 +869,14 @@ The dark toggle button on every page cycles **Auto → Light → Dim → Dark**
 | Light | no `data-theme` (or `data-theme="light"`) |
 | Dim | `data-theme="dark" data-shade="dim"` + `/assets/theme-dim.<hash>.css` |
 | Dark | `data-theme="dark"` |
+
+**E-paper** (Nov 25 2026, Dr. Rivero): fifth step of the cycle (Auto → Light → Dim → Dark → E-paper), manual only
+(Auto never picks it). A light theme (no `data-theme="dark"`) with `data-shade="epaper"` plus the hand-written
+`assets/theme-epaper.css` (fingerprinted by `patch_theme_modes.py`, loaded pre-paint by the bootstrap like Dim): COLORED
+e-paper (Dr. Rivero: "make it colored e-paper"), one `saturate(0.6) contrast(1.1)` filter on `<html>` (muted color like a
+color e-ink screen; covers every page family's tokens), animations and transitions finished at once
+(durations ~0, not `animation:none`, so fade-ins still end visible), no text-shadow or backdrop blur, black body text,
+underlined plain links. For color e-ink readers, glare and motion-sensitive readers. The legacy `wgmr-dark` key reads 0.
 
 **Auto:** the system dark setting wins (→ Dark); otherwise local clock — Light
 06:00–17:59, Dim 18:00–21:59, Dark 22:00–05:59. Web pages cannot read the
