@@ -182,7 +182,7 @@
 
     // 1) Compact icon row under each hero byline (dual heroes get one each).
     var anchors = document.querySelectorAll('.hero-meta');
-    if (!anchors.length) { var h1 = document.querySelector('h1'); if (h1) anchors = [h1]; }
+    if (!anchors.length) { var h1 = document.querySelector('h1'); if (h1) { var tl = h1.nextElementSibling; anchors = [tl && tl.classList.contains('hero-tagline') ? tl : h1]; } }
     Array.prototype.forEach.call(anchors, function (a) {
       var bar = document.createElement('div');
       bar.className = 'rcm-share'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Share this guide');
