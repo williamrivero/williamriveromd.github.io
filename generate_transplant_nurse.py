@@ -716,16 +716,17 @@ def entry_blocks():
 </section>
 {ENTRY_MARK[1]}
 """
+    _tn_card = tile(f'    <a class="nc-mod" href="{HUB}">',
+                    f'      <span class="nc-mod-top"><span class="nc-mod-step">Specialty</span><span>12 modules &middot; about {COURSE["core_hours"]} hours</span></span>\n'
+                    '      <span class="nc-mod-title">Transplant Nurse</span>\n'
+                    '      <span class="nc-mod-desc">Kidney transplant ward and clinic nursing, from referral and compatibility to immunosuppression, rejection and infection surveillance, PhilHealth benefits and a simulation capstone. Entry lesson: Module 11.</span>',
+                    HUB[:-5])
     hub = f"""{ENTRY_MARK[0]}
 <section class="section" id="specialty">
   <div class="section-tag">Specialty subtracks</div>
   <h2>Go deeper after the core</h2>
   <div class="nc-modgrid">
-{_other_specialty_cards()}    <a class="nc-mod" href="{HUB}">
-      <span class="nc-mod-top"><span class="nc-mod-step">Specialty</span><span>12 modules &middot; about {COURSE['core_hours']} hours</span></span>
-      <span class="nc-mod-title">Transplant Nurse</span>
-      <span class="nc-mod-desc">Kidney transplant ward and clinic nursing, from referral and compatibility to immunosuppression, rejection and infection surveillance, PhilHealth benefits and a simulation capstone. Entry lesson: Module 11.</span>
-    </a>
+{_other_specialty_cards()}{_tn_card}
   </div>
 </section>
 {ENTRY_MARK[1]}

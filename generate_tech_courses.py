@@ -1656,6 +1656,9 @@ def main():
         if (ROOT / "generate_special_dialysis_nurse_roles.py").exists():   # keep the Special Dialysis Nurse Roles landing links
             r3 = subprocess.run([sys.executable, "-c", "import generate_special_dialysis_nurse_roles as S; print('special-dialysis-nurse-roles links:', S.wire_parent())"], cwd=ROOT, capture_output=True, text=True)
             print((r3.stdout or r3.stderr).strip()[-300:])
+        if (ROOT / "generate_dialysis_nurse_assistant.py").exists():   # keep the Dialysis Nurse Assistant / PCA landing links
+            r4 = subprocess.run([sys.executable, "-c", "import generate_dialysis_nurse_assistant as D; print('dialysis-nurse-assistant links:', D.wire_parent())"], cwd=ROOT, capture_output=True, text=True)
+            print((r4.stdout or r4.stderr).strip()[-300:])
 
 
 if __name__ == "__main__":

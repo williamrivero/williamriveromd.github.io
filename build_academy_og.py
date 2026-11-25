@@ -44,6 +44,8 @@ TRACKS = {
                             "BY ROLE", "13 modules · staffing, safety, and the roster"),
     "dialysis-charge-nurse": ("academy/dialysis-charge-nurse.html", "nursing", "Charge Nurse",
                               "BY ROLE", "18 modules · the shift, chair by chair"),
+    "dialysis-nurse-assistant": ("academy/dialysis-nurse-assistant.html", "nursing", "Dialysis Nurse Assistant / PCA",
+                                 "BY ROLE · SUPERVISED SUPPORT", "12 modules · worked scenarios · assistant toolkit"),
     "physician-on-duty": ("academy/physician-on-duty.html", "physicians", "Physician-on-Duty",
                           "SHIFT COVERAGE", "First-shift modules open · three tiers"),
     "attending-nephrologist": ("academy/attending-nephrologist.html", "physicians", "Attending Nephrologist",

@@ -66,6 +66,11 @@ QUAL = {
  "medical-records-officer": ("Medical Records Officer/Custodian", [
    "A designated staff member who keeps the records and serves as the Philippine Renal Disease Registry (PRDR) coordinator. <span class=q-src>DOH</span>",
    "Training in the International Classification of Diseases, 10th Revision (ICD-10), basic records management, and hospital health information management as required by DOH. <span class=q-src>PSN</span>"]),
+ "dialysis-nurse-assistant": ("Dialysis Nurse Assistant / Patient Care Assistant (PCA)", [
+   "PSN describes nursing assistants as BS Nursing graduates awaiting registration, BS Nursing undergraduates who completed at least second year, or BS Midwifery graduates, working under supervision. <span class=q-src>PSN</span>",
+   "Not a registered nurse and not counted as one; a nursing degree without PRC registration does not authorize nursing practice. <span class=q-src>DOH, PSN</span>",
+   "No national assistant license or TESDA equivalence; scope is the employer&rsquo;s written job description plus the tasks signed off under RN supervision.",
+   "Ratio: DOH sets no more than 1 nurse to 4 stations; PSN discusses 1:6 patients when an assistant is present. Confirm with DOH licensing before relying on any exception. <span class=q-src>DOH, PSN</span>"]),
  "dialysis-unit-support-staff": ("Dialysis Unit Support Staff (orderly, environmental services aide)", [
    NA + " PSN groups housekeeping with the other nonmedical staff and expects written unit policies on infection control, waste, emergencies, and the environment. <span class=q-src>PSN</span>",
    "Your scope is your employer&rsquo;s written task list plus the tasks you have been trained and signed off on. <span class=q-src>DOH, PSN</span>"]),

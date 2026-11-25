@@ -21,6 +21,15 @@ CARDS = [
                  "quality, safety and emergencies, care coordination, anemia, transplant liaison, records and PhilHealth, water and "
                  "equipment, and adequacy, with worked scenarios and a capstone."),
     },
+    {
+        "href": "dialysis-nurse-assistant.html",
+        "step": "By Role",
+        "meta": "Supervised support &middot; 12 modules &middot; 120 hours",
+        "title": "Dialysis Nurse Assistant / PCA",
+        "desc": ("For the supervised assistant who works on your delegation: role and delegation, observations and weights with tare, "
+                 "access protection, emergencies, safe departure, cleaning, records and specimens, with an assistant toolkit. "
+                 "Not an RN specialty and not a technician equivalency."),
+    },
 ]
 
 
@@ -30,6 +39,6 @@ def cards_html():
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from tile_img import tile
     return "".join(
-        tile(f"""    <a class="nc-mod" href="{c['href']}">""", f"""      <span class="nc-mod-top"><span class="nc-mod-step">Specialty</span><span>{c['meta']}</span></span>
+        tile(f"""    <a class="nc-mod" href="{c['href']}">""", f"""      <span class="nc-mod-top"><span class="nc-mod-step">{c.get('step', 'Specialty')}</span><span>{c['meta']}</span></span>
       <span class="nc-mod-title">{c['title']}</span>
       <span class="nc-mod-desc">{c['desc']}</span>""", c['href'].split('#')[0][:-5]) + "\n" for c in CARDS)

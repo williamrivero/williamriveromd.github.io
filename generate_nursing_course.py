@@ -68,6 +68,8 @@ for _id, _slug, _title, _short, _neph, _hd in MODULES:
     # optional expansion file mNN_x.py: extra objectives, sections (inserted after a named
     # section), quiz items, glossary terms, review flags, and PubMed references
     for _xf in sorted(CONTENT.glob(f"m{_id}_x*.py")):   # mNN_x.py, mNN_x2.py, ...
+        if " " in _xf.name:   # iCloud duplicates ("m16_x 2.py") are gitignored copies, never content
+            continue
         _x = load(_xf.stem)
         m["objectives"] = m["objectives"] + list(getattr(_x, "OBJECTIVES", []))
         for _sec in getattr(_x, "EXTRA", []):
@@ -88,6 +90,8 @@ for _id, _slug, _title, _short, _neph, _hd in MODULES:
     # optional competency file mNN_c.py: COMPETENCIES (thread, statement, level, evidence) and MILESTONE
     m["competencies"], m["milestone"] = [], ""
     for _cf in sorted(CONTENT.glob(f"m{_id}_c*.py")):   # mNN_c.py, mNN_c2.py, ... (later files add competencies)
+        if " " in _cf.name:   # skip iCloud duplicates
+            continue
         _c = load(_cf.stem)
         m["competencies"] += list(getattr(_c, "COMPETENCIES", []))
         m["milestone"] = m["milestone"] or getattr(_c, "MILESTONE", "")

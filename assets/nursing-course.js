@@ -3,7 +3,7 @@
    the browser. Loaded with `defer` on the course hub and module pages. */
 (function () {
   'use strict';
-  var KEY = 'rcm-nursing-progress';
+  var KEY = (document.documentElement && document.documentElement.getAttribute('data-nc-store')) || 'rcm-nursing-progress';  /* per-course key via <html data-nc-store> */
 
   function readStore() {
     try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; }
