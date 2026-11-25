@@ -86,6 +86,8 @@ def main():
         S = importlib.util.module_from_spec(spec); spec.loader.exec_module(S); S.main()   # larger reading type
         spec = importlib.util.spec_from_file_location("apply_track_colors", Path(__file__).with_name("apply_track_colors.py"))
         C = importlib.util.module_from_spec(spec); spec.loader.exec_module(C); C.main()   # hero tiles by track family
+        spec = importlib.util.spec_from_file_location("apply_notes", Path(__file__).with_name("apply_notes.py"))
+        N = importlib.util.module_from_spec(spec); spec.loader.exec_module(N); N.main()   # highlights & notes
 
 
 if __name__ == "__main__":
