@@ -5547,13 +5547,18 @@ def fill_assets(text: str) -> str:
 KEEP_DATES = False   # --keep-dates: presentation-only rebuild keeps each page's "Last updated" date
 
 
+# Header links added after pages were fingerprinted; excluded from the hash so a nav change keeps every date.
+HASH_NAV_ADDED = '<a href="/academy/">ACADEMY</a>'
+
+
 def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: bool) -> str:
     """Fill hash/date placeholders. Keeps the previous date when content is unchanged.
     Returns 'new' | 'changed' | 'same'."""
     legacy = (template.replace("__DRUGDB_CSS__", f"/drugs/drugdb.css?v={ASSET_VERSION}")
               .replace("__DRUGDB_JS__", f"/drugs/drugdb.js?v={ASSET_VERSION}"))
     hashed = (legacy.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
-              .replace(APP_ICON_TAG, LEGACY_ICON_TAG))
+              .replace(APP_ICON_TAG, LEGACY_ICON_TAG)
+              .replace(HASH_NAV_ADDED, ""))   # nav links added later are chrome, not content
     template = fill_assets(template)
     css_url = drugdb_assets()["css_url"]
     js_url = drugdb_assets()["js_url"]
