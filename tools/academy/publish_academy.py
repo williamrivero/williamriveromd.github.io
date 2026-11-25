@@ -82,6 +82,8 @@ def main():
         import importlib.util
         spec = importlib.util.spec_from_file_location("apply_taxonomy", Path(__file__).with_name("apply_taxonomy.py"))
         T = importlib.util.module_from_spec(spec); spec.loader.exec_module(T); T.main()
+        spec = importlib.util.spec_from_file_location("apply_type_scale", Path(__file__).with_name("apply_type_scale.py"))
+        S = importlib.util.module_from_spec(spec); spec.loader.exec_module(S); S.main()   # larger reading type
 
 
 if __name__ == "__main__":
