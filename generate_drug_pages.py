@@ -2605,7 +2605,8 @@ class Ctx:
 # Page chrome
 # ═════════════════════════════════════════════════════════════════════════════
 NAV = [("CALCULATORS", "/guides/calculators.html"), ("PHYSIOLOGY", "/guides/kidney-physiology.html"),
-       ("ATLAS", "/guides/nephrology-atlas.html"), ("GUIDES", "/guides/"), ("DRUGS", "/drugs/"), ("ABOUT", "/about.html")]
+       ("ATLAS", "/guides/nephrology-atlas.html"), ("GUIDES", "/guides/"), ("DRUGS", "/drugs/"),
+       ("ACADEMY", "/academy/"), ("ABOUT", "/about.html")]
 
 
 def header(current_drugs: bool) -> str:
