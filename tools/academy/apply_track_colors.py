@@ -47,8 +47,10 @@ CSS = """<style id="academy-track-colors">
 .acad-col-h small{font-weight:600;letter-spacing:0;color:#3d635e;}
 .acad-col{gap:6px;}
 .acad-col-h{font-size:.68rem;letter-spacing:.05em;}
-.acad-cols .acad-track{padding:8px 9px;gap:0;border-radius:10px;}
-.acad-cols .acad-track-ico{display:none;}
+.acad-cols .acad-track{padding:8px 9px;gap:0;border-radius:10px;position:relative;overflow:hidden;}
+.acad-cols .acad-track-t{position:relative;z-index:1;}
+.acad-cols .acad-track[data-family] .acad-track-ico{position:absolute;right:-8px;bottom:-10px;width:52px;height:52px;margin:0;padding:0;background:none;box-shadow:none;border-radius:0;color:var(--fam);opacity:.16;pointer-events:none;z-index:0;}
+.acad-cols .acad-track[data-family] .acad-track-ico svg{width:100%;height:100%;stroke:currentColor;stroke-width:1.6;fill:none;}
 .acad-cols .acad-track-t strong{font-size:.8rem;line-height:1.25;overflow-wrap:break-word;hyphens:manual;}
 .acad-cols .acad-track-t small{font-size:.7rem;}
 @media (max-width:900px){.acad-tracks.acad-cols{grid-template-columns:1fr;gap:16px;}
@@ -61,6 +63,7 @@ html[data-theme="dark"] [data-family="technicians"]{--fam:#f08a4b;}
 html[data-theme="dark"] [data-family="ancillary"]{--fam:#5fbf7a;}
 html[data-theme="dark"] [data-family="administrative"]{--fam:#a48bdc;}
 html[data-theme="dark"] .acad-track[data-family] .acad-track-ico{background:color-mix(in srgb,var(--fam) 55%,#0b1a24);}
+html[data-theme="dark"] .acad-cols .acad-track[data-family] .acad-track-ico{background:none;color:color-mix(in srgb,var(--fam) 60%,#fff);opacity:.2;}
 html[data-theme="dark"] .acad-col-h{color:#eef7f4;}
 html[data-theme="dark"] .acad-col-h small{color:rgba(232,246,241,.74);}
 </style>"""
