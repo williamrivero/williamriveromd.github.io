@@ -15,7 +15,8 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / "Documents/Nephrology Nursing/Module images"
 MAN = []
-for _m in ("image-prompts-manifest.json", "image-prompts-addendum-manifest.json", "image-prompts-addendum2-manifest.json"):
+for _m in ("image-prompts-manifest.json", "image-prompts-addendum-manifest.json", "image-prompts-addendum2-manifest.json",
+           "image-prompts-addendum3-manifest.json"):
     _p = ROOT / "docs/nursing-course" / _m
     if _p.exists():
         MAN += json.loads(_p.read_text(encoding="utf-8"))
@@ -29,7 +30,7 @@ for f in MAN:
     if not png.exists():
         missing.append(name); continue
     for p in (png, webp):
-        if p.exists():
+        if p.exists() and p.resolve() != (ROOT / "images" / p.name).resolve():
             shutil.copy2(p, ROOT / "images" / p.name)
     if f["id"] == "H-0" or f["id"].endswith("-H0") or "hero" in f["placement"].lower():
         continue  # heroes: the generator shows images/<slug>-vignette-hero.png automatically

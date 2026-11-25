@@ -545,7 +545,9 @@ def shell(fname, title, desc, keywords, hero_tag, h1, sub, audience, nav, pre_ma
     # share image: this page's hero (patch_og_images.py writes the <=300 KB JPEG into images/og/),
     # else the Module 12 team picture for the hub and educator page, else the dialysis category image
     team = f"{COURSE['hub_slug']}-12-philippine-practice-quality-capstone-vignette-hero"
-    for cand in (f"images/og/{slug}-vignette-hero.jpg", f"images/{slug}-vignette-hero.png",
+    # a dedicated 1200 x 630 share card (images/og/<slug>-og.jpg, HDN image plan, Nov 26 2026) wins over the
+    # square hero, which Facebook, LinkedIn and X crop to 1.91:1
+    for cand in (f"images/og/{slug}-og.jpg", f"images/og/{slug}-vignette-hero.jpg", f"images/{slug}-vignette-hero.png",
                  f"images/og/{team}.jpg", f"images/{team}.png", "images/hero-cat-dialysis.webp"):
         if (ROOT / cand).exists():
             og_img = f"{SITE}/{cand}"
@@ -554,6 +556,9 @@ def shell(fname, title, desc, keywords, hero_tag, h1, sub, audience, nav, pre_ma
     if og_img:
         og_tags = (f'\n<meta property="og:image" content="{og_img}">\n<meta property="og:image:alt" content="{html.escape(title)}">'
                    f'\n<meta name="twitter:image" content="{og_img}">')
+        if og_img.endswith("-og.jpg"):
+            og_tags += ('\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">'
+                        '\n<meta property="og:image:type" content="image/jpeg">')
     ld = {
         "@context": "https://schema.org", "@type": "MedicalWebPage", "name": title, "url": url,
         "author": {"@type": "Physician", "name": "William Gregory M. Rivero, MD, FPCP, DPSN", "url": SITE + "/"},
