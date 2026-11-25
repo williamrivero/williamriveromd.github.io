@@ -58,11 +58,20 @@
     }
     function drawSet() {
       var previous = questions.slice();
-      var pick = shuffle(bank.slice()).slice(0, drawN);
+      function pickSet() {
+        if (!form.hasAttribute('data-stratify')) return shuffle(bank.slice()).slice(0, drawN);
+        /* stratified exam: an even share from each data-group (module), groups in random order */
+        var groups = {}, keys = [];
+        bank.forEach(function (q) { var g = q.getAttribute('data-group') || ''; if (!groups[g]) { groups[g] = []; keys.push(g); } groups[g].push(q); });
+        var per = Math.max(1, Math.ceil(drawN / keys.length)), out = [];
+        shuffle(keys).forEach(function (g) { out = out.concat(shuffle(groups[g].slice()).slice(0, per)); });
+        return shuffle(out.slice(0, Math.max(drawN, 0))).slice(0, drawN);
+      }
+      var pick = pickSet();
       // a new set should not repeat the previous set exactly
       if (previous.length && bank.length > drawN &&
           pick.every(function (q) { return previous.indexOf(q) !== -1; })) {
-        pick = shuffle(bank.slice()).slice(0, drawN);
+        pick = pickSet();
       }
       var anchor = form.querySelector('.nc-remember');
       bank.forEach(function (q) {

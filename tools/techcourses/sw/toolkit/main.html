@@ -1,0 +1,64 @@
+<main class="container dch-calc">
+
+<nav class="toc" aria-label="Calculators">
+<a href="#tool-1">1 Access cost and gap</a><a href="#tool-2">2 Household spending share</a><a href="#tool-3">3 PhilHealth session balance</a><a href="#tool-4">4 Referral aging</a><a href="#tool-5">5 Workload and coverage</a><a href="#tool-6">6 Quality measure rate</a>
+</nav>
+
+<section class="calc" id="tool-1"><h2>1. Treatment access cost and gap</h2>
+<p class="why">Counts what it costs a household to attend treatment beyond the treatment itself: fares both ways, a companion, food or other costs per visit, and one-time costs. Only <b>confirmed</b> support is subtracted; pending requests are not money yet (Modules 8 and 9). Gross = visits &times; (fare out + fare back + companion + other) + one-time. Gap = gross &minus; confirmed support.</p>
+<div class="grid">
+<label>Visits in the period (whole number)<input id="t1_v" type="number" min="0" step="1" value="6" placeholder="e.g. 13"></label>
+<label>Fare out per visit, PHP<input id="t1_fo" type="number" min="0" step="0.01" value="120"></label>
+<label>Fare back per visit, PHP<input id="t1_back" type="number" min="0" step="0.01" value="120"></label>
+<label>Companion&rsquo;s fares per visit, PHP<input id="t1_esc" type="number" min="0" step="0.01" value="0"></label>
+<label>Other per visit (food, lost wages), PHP<input id="t1_oth" type="number" min="0" step="0.01" value="30"></label>
+<label>One-time costs in the period, PHP<input id="t1_one" type="number" min="0" step="0.01" value="300"></label>
+<label>Confirmed support, PHP<input id="t1_sup" type="number" min="0" step="0.01" value="1000"></label>
+</div><button data-run="t1">Calculate</button><div class="out" id="t1_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-2"><h2>2. Household health-spending share</h2>
+<p class="why">Out-of-pocket health spending as a share of total household spending (or income) in the same period. The United Nations Sustainable Development Goal indicator 3.8.2 counts households above <b>10%</b> and above <b>25%</b>. These marks describe financial hardship across populations; they are not eligibility rules for any Philippine program (Module 9).</p>
+<div class="grid">
+<label>Out-of-pocket health spending, PHP<input id="t2_h" type="number" min="0" step="0.01" value="4000"></label>
+<label>Total household spending or income, PHP<input id="t2_t" type="number" min="0" step="0.01" value="25000"></label>
+</div><button data-run="t2">Calculate</button><div class="out" id="t2_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-3"><h2>3. PhilHealth hemodialysis session balance</h2>
+<p class="why">PhilHealth Circular 2024-0023, as explained in its official Tamang Sagot, covers up to 156 hemodialysis sessions a year. This tool counts the sessions left and estimates when they run out at the current schedule, so the gap is planned weeks ahead. Confirm the circular in force and how the year is counted with your claims officer (Module 7).</p>
+<div class="grid">
+<label>Covered sessions in the year<input id="t3_cap" type="number" min="0" step="1" value="156"></label>
+<label>Sessions used so far (whole number)<input id="t3_used" type="number" min="0" step="1" value="120"></label>
+<label>Sessions per week<input id="t3_pw" type="number" min="0" step="1" value="3"></label>
+<label>Count date (blank = today)<input id="t3_now" type="date"></label>
+</div><button data-run="t3">Calculate</button><div class="out" id="t3_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-4"><h2>4. Referral and follow-up aging</h2>
+<p class="why">A referral is open until the outcome reaches the person. This tool turns the date sent and the agreed due date into days open, days to or past due, and a tier: on track, due soon, overdue, or escalate (more than 7 days past due) (Modules 6 and 17).</p>
+<div class="grid">
+<label>Date sent<input id="t4_open" type="date"></label>
+<label>Due date for an outcome<input id="t4_due" type="date"></label>
+<label>Today (blank = this device&rsquo;s date)<input id="t4_now" type="date"></label>
+<label>&ldquo;Due soon&rdquo; warning, days before due<input id="t4_warn" type="number" min="0" step="1" value="3"></label>
+</div><button data-run="t4">Calculate</button><div class="out" id="t4_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-5"><h2>5. Workload and coverage</h2>
+<p class="why">Estimates the weekly hours a caseload generates and compares them with the hours available. Demand = (routine episodes &times; minutes + complex episodes &times; minutes) &divide; 60 + fixed hours. No social worker staffing ratio was identified in the reviewed Philippine dialysis documents; this is planning arithmetic, not a staffing rule (Modules 3 and 19).</p>
+<div class="grid">
+<label>Routine episodes per week<input id="t5_re" type="number" min="0" step="1" value="8"></label>
+<label>Minutes per routine episode<input id="t5_rm" type="number" min="0" step="1" value="45"></label>
+<label>Complex episodes per week<input id="t5_ce" type="number" min="0" step="1" value="2"></label>
+<label>Minutes per complex episode<input id="t5_cm" type="number" min="0" step="1" value="120"></label>
+<label>Fixed hours (conferences, records, travel)<input id="t5_fx" type="number" min="0" step="0.25" value="5"></label>
+<label>Hours available for this service<input id="t5_av" type="number" min="0" step="0.25" value="12"></label>
+<label>Productive hours per full-time equivalent<input id="t5_fte" type="number" min="0" step="0.5" value="30"></label>
+</div><button data-run="t5">Calculate</button><div class="out" id="t5_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-6"><h2>6. Quality measure rate</h2>
+<p class="why">Rate = numerator &divide; denominator &times; 100, for a defined period. The numerator cannot exceed the denominator, and 0 over 0 is <b>not calculable</b>, not 0%. Write down what the measure cannot show (Module 19).</p>
+<div class="grid">
+<label>Numerator (cases meeting the measure)<input id="t6_n" type="number" min="0" step="1" value="10"></label>
+<label>Denominator (eligible cases)<input id="t6_d" type="number" min="0" step="1" value="12"></label>
+</div><button data-run="t6">Calculate</button><div class="out" id="t6_out" aria-live="polite"></div></section>
+
+<div class="disclaimer"><strong>Important:</strong> These tools do arithmetic and display, not decisions. Benefits belong to PhilHealth, assistance decisions to the receiving agencies, clinical decisions to the attending nephrologist, and staffing to management. Use no patient names or identifiers; nothing you enter is stored or sent. For depression screening, use the site&rsquo;s <a href="calc-phq9.html">PHQ-9 calculator</a>; a score is never a diagnosis. Reviewed November 25, 2026.</div>
+</main>

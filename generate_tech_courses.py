@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs", "rtc", "otpt", "duo"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs", "rtc", "otpt", "duo", "sw"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 
@@ -1215,7 +1215,7 @@ def build_exam(course, built):
     main = f"""<section class="section" id="about">
   <div class="section-tag">Before you begin</div>
   <h2>How this examination works</h2>
-  <p>This examination covers the whole {C['title']} series. Each sitting draws <strong>{draw} questions at random</strong> from a bank of {len(bank)}{", one from each module" if C.get("exam_stratify") else ""}, in random order, with the answer choices shuffled. Choose the single best answer for each question, then select <strong>Check answers</strong>.</p>
+  <p>This examination covers the whole {C['title']} series. Each sitting draws <strong>{draw} questions at random</strong> from a bank of {len(bank)}{(", " + ("one" if draw <= len(course.mods) else ("two" if draw == 2 * len(course.mods) else str(-(-draw // len(course.mods))))) + " from each module") if C.get("exam_stratify") else ""}, in random order, with the answer choices shuffled. Choose the single best answer for each question, then select <strong>Check answers</strong>.</p>
   <div class="tc-cards">
     <div class="tc-card"><b>When to take it</b>After you have finished every module and reviewed the questions you missed.</div>
     <div class="tc-card"><b>How to take it</b>In one sitting, without notes. Allow about one minute per question.</div>
@@ -1442,6 +1442,7 @@ ACADEMY_HERO_JS = r"""
 """
 
 TRACK_ICONS = {
+    "social-worker": '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
     "occupational-physical-therapist": '<circle cx="12" cy="4.5" r="2"/><path d="M12 7v6l-3 7"/><path d="M12 13l3 7"/><path d="M8 10h8"/>',
     "nephrology-nursing": '<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/><path d="M12 9v5"/><path d="M9.5 11.5h5"/>',
     "hemodialysis-technician": '<path d="M12 3s5 5.6 5 9.5a5 5 0 0 1-10 0C7 8.6 12 3 12 3z"/><path d="M9.5 13.5a2.5 2.5 0 0 0 2.5 2.5"/>',
@@ -1549,7 +1550,7 @@ def build_academy():
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
     short = {"hemodialysis-technician": "Dialysis Technician", "water-treatment-technician": "Water Treatment Technician",
              "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head", "philhealth-claims": "PhilHealth Claims", "dialysis-unit-manager": "Unit Manager",
-             "attending-nephrologist": "Attending Nephrologist", "medical-records-officer": "Medical Records Officer", "dialysis-head-nurse": "Head Nurse", "dialysis-charge-nurse": "Charge Nurse", "dialyzer-reprocessing-technician": "Reprocessing Technician", "vascular-surgeon": "Vascular Surgeon", "transplant-coordinator": "Transplant Coordinator", "occupational-physical-therapist": "OT/PT"}
+             "attending-nephrologist": "Attending Nephrologist", "medical-records-officer": "Medical Records Officer", "dialysis-head-nurse": "Head Nurse", "dialysis-charge-nurse": "Charge Nurse", "dialyzer-reprocessing-technician": "Reprocessing Technician", "vascular-surgeon": "Vascular Surgeon", "transplant-coordinator": "Transplant Coordinator", "social-worker": "Social Worker", "occupational-physical-therapist": "OT/PT"}
     hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]
     pg = shell(_Academy, fname, "Renal Care Academy: Training for Dialysis and Nephrology Staff", desc, A["keywords"],

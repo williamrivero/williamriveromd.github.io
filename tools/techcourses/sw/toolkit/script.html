@@ -1,0 +1,117 @@
+<script>
+/* ===== SW-CALC-CORE (pure functions; tested by tools/test_sw_calcs.cjs) ===== */
+var SW = (function () {
+  function n(x) { if (x === null || x === undefined || String(x).trim() === "") return NaN; var v = Number(x); return isFinite(v) ? v : NaN; }
+  function req(v, label, integer) {
+    if (typeof v !== "number" || !isFinite(v) || v < 0 || (integer && Math.floor(v) !== v)) {
+      throw new RangeError(label + " must be a " + (integer ? "whole number" : "number") + " of 0 or more");
+    }
+    return v;
+  }
+  function addDays(d, k) { var r = new Date(d.getTime()); r.setDate(r.getDate() + k); return r; }
+  function days(a, b) { return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000); }
+  function accessCost(o) {
+    req(o.visits, "Visits", true);
+    ["outward", "back", "escort", "other", "oneTime", "confirmed"].forEach(function (k) { req(o[k], k, false); });
+    var gross = o.visits * (o.outward + o.back + o.escort + o.other) + o.oneTime;
+    return { gross: gross, gap: Math.max(0, gross - o.confirmed), excess: Math.max(0, o.confirmed - gross) };
+  }
+  function spendShare(health, total) {
+    req(health, "Health spending", false); req(total, "Total spending", false);
+    if (total === 0) return null;
+    if (health > total) throw new RangeError("Health spending cannot exceed total spending");
+    var s = 100 * health / total;
+    return { share: s, over10: s > 10, over25: s > 25 };
+  }
+  function sessions(cap, used, perWeek, asOf) {
+    req(cap, "Covered sessions", true); req(used, "Sessions used", true); req(perWeek, "Sessions per week", true);
+    var left = Math.max(0, cap - used);
+    if (perWeek === 0) return { left: left, weeks: null, runOut: null };
+    var weeks = left / perWeek;
+    return { left: left, weeks: weeks, runOut: addDays(asOf, Math.floor(weeks * 7)) };
+  }
+  function aging(opened, due, today, warn) {
+    req(warn, "Warning days", true);
+    var o = days(opened, today), toDue = days(today, due), tier;
+    if (toDue < 0) tier = -toDue > 7 ? "escalate" : "overdue"; else if (toDue <= warn) tier = "due soon"; else tier = "on track";
+    return { daysOpen: o, daysToDue: toDue, tier: tier };
+  }
+  function workload(classes, fixed, available, perFte) {
+    req(fixed, "Fixed hours", false); req(available, "Available hours", false); req(perFte, "Productive hours per FTE", false);
+    if (perFte === 0) throw new RangeError("Productive hours per FTE must be more than 0");
+    var demand = classes.reduce(function (s, c) { return s + req(c.episodes, "Episodes", true) * req(c.minutes, "Minutes", false) / 60; }, 0) + fixed;
+    return { demand: demand, balance: available - demand, fte: demand / perFte };
+  }
+  function rate(num, den) {
+    req(num, "Numerator", true); req(den, "Denominator", true);
+    if (num > den) throw new RangeError("The numerator cannot exceed the denominator");
+    return den === 0 ? null : 100 * num / den;
+  }
+  return { n: n, req: req, addDays: addDays, days: days, accessCost: accessCost, spendShare: spendShare, sessions: sessions, aging: aging, workload: workload, rate: rate };
+})();
+if (typeof module !== "undefined") module.exports = SW;
+/* ===== END SW-CALC-CORE ===== */
+(function () {
+  if (typeof document === "undefined") return;
+  function $(id) { return document.getElementById(id); }
+  function v(id) { return SW.n($(id).value); }
+  function D(id) { var x = $(id).value; if (!x) return null; var p = x.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function today(id) { return D(id) || (function () { var t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); })(); }
+  function f(d) { return d ? d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", weekday: "short" }) : "&mdash;"; }
+  function peso(x) { return "&#8369;" + x.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function h2(x) { return x.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function flag(cls, t) { return '<span class="flag ' + cls + '">' + t + "</span>"; }
+  var run = {
+    t1: function () {
+      var r = SW.accessCost({ visits: v("t1_v"), outward: v("t1_fo"), back: v("t1_back"), escort: v("t1_esc"), other: v("t1_oth"), oneTime: v("t1_one"), confirmed: v("t1_sup") });
+      return "Gross access cost: <b>" + peso(r.gross) + "</b>.<br>Gap after confirmed support: <b>" + peso(r.gap) + "</b>" +
+        (r.excess ? " (confirmed support exceeds the estimate by " + peso(r.excess) + ")" : "") + "." +
+        '<div class="note">An estimate from your assumptions, not a bill or an entitlement. Do not subtract pending requests until they are decided.</div>';
+    },
+    t2: function () {
+      var r = SW.spendShare(v("t2_h"), v("t2_t"));
+      if (r === null) return "Not calculable: total spending is 0.";
+      var cls = r.over25 ? "f-stop" : (r.over10 ? "f-warn" : "f-ok");
+      var lab = r.over25 ? "Above 25%" : (r.over10 ? "Above 10%, not above 25%" : "Not above 10%");
+      return "Health spending share: <b>" + r.share.toFixed(1) + "%</b>. " + flag(cls, lab) +
+        '<div class="note">SDG 3.8.2 marks describe hardship in populations; they are not eligibility rules. Ask what the household is giving up to pay.</div>';
+    },
+    t3: function () {
+      var asOf = today("t3_now"), r = SW.sessions(v("t3_cap"), v("t3_used"), v("t3_pw"), asOf);
+      if (r.weeks === null) return "<b>" + r.left + "</b> sessions left. Enter sessions per week to estimate the run-out date.";
+      var cls = r.weeks <= 8 ? "f-stop" : (r.weeks <= 16 ? "f-warn" : "f-ok");
+      return "<b>" + r.left + "</b> sessions left; about <b>" + r.weeks.toFixed(1) + "</b> weeks at this schedule.<br>Estimated to run out around <b>" + f(r.runOut) + "</b>. " +
+        flag(cls, r.weeks <= 8 ? "Plan the gap now" : (r.weeks <= 16 ? "Start planning" : "On track")) +
+        '<div class="note">Extra sessions (after an admission, or a fourth weekly session) use the balance faster. Confirm the count and post-limit charges with the claims officer.</div>';
+    },
+    t4: function () {
+      var o = D("t4_open"), d = D("t4_due"); if (!o || !d) return "Enter the date sent and the due date.";
+      var r = SW.aging(o, d, today("t4_now"), v("t4_warn"));
+      var cls = { "on track": "f-ok", "due soon": "f-warn", "overdue": "f-stop", "escalate": "f-stop" }[r.tier];
+      return flag(cls, r.tier) + " Open for <b>" + r.daysOpen + "</b> days. " + (r.daysToDue >= 0 ? "Due in <b>" + r.daysToDue + "</b> days." : "<b>" + (-r.daysToDue) + "</b> days past due.") +
+        (r.tier === "escalate" ? '<div class="note">More than a week overdue: call the receiving service today and escalate to your supervisor.</div>' : "");
+    },
+    t5: function () {
+      var r = SW.workload([{ episodes: v("t5_re"), minutes: v("t5_rm") }, { episodes: v("t5_ce"), minutes: v("t5_cm") }], v("t5_fx"), v("t5_av"), v("t5_fte"));
+      var cls = r.balance < 0 ? "f-stop" : "f-ok";
+      return "Demand: <b>" + h2(r.demand) + "</b> hours a week. Balance: " + flag(cls, (r.balance < 0 ? "&minus;" : "+") + h2(Math.abs(r.balance)) + " hours") +
+        "<br>Demand equals <b>" + h2(r.fte) + "</b> full-time equivalent." +
+        '<div class="note">A shortfall is a fact to report in writing, with what is waiting and the risk. It does not prescribe a staffing level.</div>';
+    },
+    t6: function () {
+      var r = SW.rate(v("t6_n"), v("t6_d"));
+      return r === null ? "Not calculable: the denominator is 0." : "Rate: <b>" + r.toFixed(1) + "%</b>." +
+        '<div class="note">State the period, the data source, and what this measure cannot show.</div>';
+    }
+  };
+  function iso(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  if (!$("t3_now").value) $("t3_now").value = "2026-09-30";
+  if (!$("t4_open").value) $("t4_open").value = "2026-03-03";
+  if (!$("t4_due").value) $("t4_due").value = "2026-03-13";
+  if (!$("t4_now").value) $("t4_now").value = "2026-03-20";
+  document.querySelectorAll("button[data-run]").forEach(function (b) {
+    b.addEventListener("click", function () { var id = b.getAttribute("data-run"); try { $(id + "_out").innerHTML = run[id](); } catch (e) { $(id + "_out").textContent = "Check the inputs: " + (e && e.message ? e.message : "a value is missing or invalid") + "."; } });
+  });
+  Object.keys(run).forEach(function (k) { try { $(k + "_out").innerHTML = run[k](); } catch (e) {} });
+})();
+</script>

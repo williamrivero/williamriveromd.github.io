@@ -74,6 +74,8 @@ TRACKS = {
                                 "RECORDS", "14 modules · capstone · calculator toolkit"),
     "transplant-coordinator": ("academy/transplant-coordinator.html", "ancillary", "Renal Transplant Coordinator",
                                "TRANSPLANT COORDINATION", "20 modules · two learner paths · seven-tool toolkit"),
+    "social-worker": ("academy/social-worker.html", "ancillary", "Renal Social Worker",
+                      "RENAL SOCIAL WORK", "20 modules · two learner paths · six-tool toolkit"),
     "occupational-physical-therapist": ("academy/occupational-physical-therapist.html", "ancillary", "Occupational and Physical Therapist",
                                         "RENAL REHABILITATION", "20 modules · OT and PT pathways · six-tool toolkit"),
 }

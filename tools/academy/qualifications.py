@@ -76,6 +76,10 @@ QUAL = {
    "Not a registered nurse and not counted as one; a nursing degree without PRC registration does not authorize nursing practice. <span class=q-src>DOH, PSN</span>",
    "No national assistant license or TESDA equivalence; scope is the employer&rsquo;s written job description plus the tasks signed off under RN supervision.",
    "Ratio: DOH sets no more than 1 nurse to 4 stations; PSN discusses 1:6 patients when an assistant is present. Confirm with DOH licensing before relying on any exception. <span class=q-src>DOH, PSN</span>"]),
+ "social-worker": ("Renal Social Worker", [
+   "Must be a registered social worker: a recognized social work degree and current PRC registration under Republic Act No. 4373 as amended by Republic Act No. 10847. <span class=q-src>RA 4373, RA 10847</span>",
+   "No social worker post, staffing ratio, or renal specialty certificate was identified in the reviewed DOH dialysis licensing order or the PSN 2024 hemodialysis guidelines; confirm the current licensing checklist and your employer&rsquo;s requirements. <span class=q-src>DOH, PSN</span>",
+   "Navigators and assistants may support navigation under supervision but may not sign professional social work assessments. Completing this track grants no license or credential."]),
  "occupational-physical-therapist": ("Occupational and Physical Therapist", [
    "Physical therapists: PRC-registered under RA 5680; treatment requires a physician&rsquo;s prescription (Sec. 12). <span class=q-src>RA 5680</span>",
    "Occupational therapists: PRC-registered under RA 11241, a separate profession with its own scope; works on referral. <span class=q-src>RA 11241</span>",
