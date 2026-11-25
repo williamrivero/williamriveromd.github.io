@@ -193,8 +193,17 @@ def save(im, slug):
     for q in (92, 88, 84, 80, 76, 72, 68):
         buf = io.BytesIO(); im.save(buf, "JPEG", quality=q, optimize=True, progressive=True)
         if buf.tell() <= LIMIT: break
-    open(dst, "wb").write(buf.getvalue())
-    return dst, buf.tell()
+    data = buf.getvalue()
+    open(dst, "wb").write(data)          # stable name, kept for links already shared
+    # Fingerprinted copy for og:image: /images/* is cached for 30 days, so a card rebuilt under the same name
+    # kept showing the old picture on Facebook (Nov 25 2026). A new name per content is fetched fresh.
+    import hashlib
+    fp = f"{OUT}/{slug}.{hashlib.sha1(data).hexdigest()[:10]}.jpg"
+    for old in glob.glob(f"{OUT}/{slug}.*.jpg"):
+        if old != fp and re.fullmatch(rf"{re.escape(slug)}\.[0-9a-f]{{10}}\.jpg", os.path.basename(old)):
+            os.remove(old)
+    open(fp, "wb").write(data)
+    return fp, buf.tell()
 
 def patch(slug, dst):
     page = TRACKS[slug][0]
