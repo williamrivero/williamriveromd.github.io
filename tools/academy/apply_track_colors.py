@@ -53,7 +53,9 @@ CSS = """<style id="academy-track-colors">
 .acad-cols .acad-track[data-family] .acad-track-ico svg{width:100%;height:100%;stroke:currentColor;stroke-width:1.6;fill:none;}
 .acad-cols .acad-track-t strong{font-size:.8rem;line-height:1.25;overflow-wrap:break-word;hyphens:manual;}
 .acad-cols .acad-track-t small{font-size:.7rem;}
-@media (min-width:901px){.acad-tracks.acad-cols{max-width:660px;gap:8px;}
+@media (min-width:901px){.hero.acad-hero > .container{max-width:1040px;}
+  .acad-hero .hero-sub{max-width:760px;}
+  .acad-tracks.acad-cols{max-width:660px;gap:8px;}
   .acad-col-h{font-size:.6rem;letter-spacing:.04em;}
   .acad-cols .acad-track{padding:7px 8px;}
   .acad-cols .acad-track-t strong{font-size:.72rem;line-height:1.22;}
