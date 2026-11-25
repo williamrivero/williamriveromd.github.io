@@ -1125,7 +1125,8 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   {title, nav, intro, rows: [{study, design, intervention, findings, limitations}], notes: [text]} (section `evidence`,
   after the kidney sections; stacked cards under 760 px). Any page-only text may cite sources as `[[ID]]` or `[[ID,ID]]`
   (ids from the file's `sources`); `resolve_cites()` turns them into numbered links to References and stops the build on
-  an unknown id. Never put `[[ID]]` in `key_interactions` or in kidney bands/hd/pd/crrt/short (the interaction checker and
+  an unknown id. It touches nothing on a page without markers (only cited reference items get `id="ref-src-<ID>"`):
+  any markup added to every page changes every content hash, and CI then re-dates ~2,300 pages (happened Nov 25 2026). Never put `[[ID]]` in `key_interactions` or in kidney bands/hd/pd/crrt/short (the interaction checker and
   Med Scheduler reuse those): write "(PH insert)" there. Dose statements come only from the insert; clinical
   interpretation is labeled as such. Changing `DRUG_CSS` renames `drugdb.<hash>.css`: rebuild with `--keep-dates` (or
   repoint the old name) so pages never point at a pruned file, and avoid new `html[data-theme="dark"]` rules there unless

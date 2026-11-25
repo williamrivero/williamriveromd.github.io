@@ -464,7 +464,7 @@ ul.dd-uselist { margin: 4px 0 8px 20px; padding: 0; }
 /* reviewed-text citations and the evidence table (Nov 25 2026) */
 sup.dd-cite { font-size: .72em; line-height: 0; margin-left: 1px; white-space: nowrap; }
 sup.dd-cite a { text-decoration: none; font-weight: 700; color: var(--teal); }
-.dd-refid { position: relative; top: -90px; }
+ol.dd-refs li[id] { scroll-margin-top: 90px; }
 .dd-evtable td { vertical-align: top; font-size: .9rem; line-height: 1.5; }
 .dd-evtable td:first-child { min-width: 9em; }
 @media (max-width: 760px) {
@@ -3755,25 +3755,39 @@ CLINICAL_ORDER = [
 CITE_RE = re.compile(r"\[\[([A-Za-z0-9_-]+(?:\s*,\s*[A-Za-z0-9_-]+)*)\]\]")
 
 
-def resolve_cites(S, slug):
-    """Turn [[ID]] markers in reviewed text into numbered links to that source in References (Nov 25 2026)."""
+def resolve_cites(S, slug, srcs):
+    """Turn [[ID]] markers in reviewed text into numbered links to that source in References (Nov 25 2026).
+    Pages without markers are returned untouched (byte-identical, so their content hash and date are kept);
+    only on a page with markers do the cited reference items get id="ref-src-<ID>" anchors."""
+    if not any("[[" in h for _, _, h in S):
+        return S
     refs = next((h for sid, _, h in S if sid == "references"), "")
     m = re.search(r'<ol class="dd-refs">(.*?)</ol>', refs, flags=re.S)
-    num = {}
-    if m:
-        for i, li in enumerate(re.findall(r"<li>(.*?)</li>", m.group(1), flags=re.S), 1):
-            for rid in re.findall(r'id="ref-src-([^"]+)"', li):
-                num.setdefault(rid, i)
+    lis = re.findall(r"<li>(.*?)</li>", m.group(1), flags=re.S) if m else []
+    num, anchor = {}, {}          # source id -> reference number; reference number -> anchor id
+    for r in srcs:
+        if isinstance(r, dict) and ws(r.get("id")) and ws(r.get("citation")):
+            key = esc(r["citation"])[:80]
+            for i, li in enumerate(lis, 1):
+                if key in li:
+                    num.setdefault(ws(r["id"]), i)
+                    anchor.setdefault(i, ws(r["id"]))
+                    break
 
     def sub(mm):
         ids = [x.strip() for x in mm.group(1).split(",")]
         missing = [x for x in ids if x not in num]
         if missing:
             raise SystemExit(f"{slug}: citation id(s) {missing} not in the approved sources")
-        return ('<sup class="dd-cite">' + ",".join(f'<a href="#ref-src-{x}">{num[x]}</a>' for x in ids) + "</sup>")
+        return ('<sup class="dd-cite">' + ",".join(f'<a href="#ref-src-{anchor[num[x]]}">{num[x]}</a>' for x in ids) + "</sup>")
     out = []
     for sid, nav, h in S:
-        out.append((sid, nav, CITE_RE.sub(sub, h) if "[[" in h else h))
+        h = CITE_RE.sub(sub, h) if "[[" in h else h
+        if sid == "references" and anchor:
+            k = iter(range(1, len(lis) + 1))
+            h = re.sub(r"<li>", lambda _m: (lambda i: f'<li id="ref-src-{anchor[i]}">' if i in anchor else "<li>")(next(k)),
+                       h, count=len(lis))
+        out.append((sid, nav, h))
     return out
 
 
@@ -3872,9 +3886,8 @@ def references_html(slug, label, renal, summ, ctx: Ctx, intl=None, pn_notes_=Non
                 doi, url = ws(r.get("doi")), safe_url(r.get("url"))
                 link = f"https://doi.org/{doi}" if doi else url
                 t = esc(r.get("citation") or r.get("title") or "")
-                anchor = f'<span class="dd-refid" id="ref-src-{esc(r["id"])}"></span>' if ws(r.get("id")) else ""
                 if t or link:
-                    items.append(anchor + t + (f' <a href="{esc(link)}" rel="noopener" target="_blank">{esc(link)}</a>' if link else ""))
+                    items.append(t + (f' <a href="{esc(link)}" rel="noopener" target="_blank">{esc(link)}</a>' if link else ""))
             elif ws(r):
                 items.append(esc(r))
     reviewed = []
@@ -4704,7 +4717,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
     S.append(sec("references", "References", references_html(slug, label, renal, summ, ctx, ctx.intl(slug), pnn), "References"))
 
     S = [x for x in S if x]
-    S = resolve_cites(S, slug)
+    S = resolve_cites(S, slug, list((summ or {}).get("sources") or []) + list((renal or {}).get("sources") or []))
     # Clinical reading order (Dr. Rivero, Nov 17 2026): what it is for → who must not get it → how much (adult, then
     # kidney, liver, children, older adults) → how to give it and what is available → what to watch for → special
     # situations → background pharmacology → formulary, related reading, references.
