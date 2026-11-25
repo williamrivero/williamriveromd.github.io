@@ -391,6 +391,7 @@
     '<button type="button" data-act="backup">Back up all</button>' +
     '<button type="button" data-act="restore">Restore</button>' +
     '<button type="button" data-act="clear" class="rcn-danger">Delete this page\u2019s notes &amp; bookmarks</button>' +
+    '<button type="button" data-act="forgetpos" class="rcn-danger">Forget where I left off</button>' +
     '</div><input type="file" accept="application/json,.json" class="rcn-file" hidden>';
   document.body.appendChild(drawer);
   var bmList = drawer.querySelector('.rcn-bms');
@@ -563,6 +564,18 @@
     else if (act === 'print') { if (!notes.length) return toast('No notes on this page yet.'); printNotes(); }
     else if (act === 'backup') backup();
     else if (act === 'restore') fileIn.click();
+    else if (act === 'forgetpos') {
+      if (!confirmInline(b, 'Tap again to forget every module')) return;
+      try {
+        for (var i = localStorage.length - 1; i >= 0; i--) {
+          var k = localStorage.key(i);
+          if (k && (k.indexOf('rcm-pos:') === 0 || k === 'rcm-last')) localStorage.removeItem(k);
+        }
+      } catch (e) {}
+      userScrolled = false;
+      resumeBar.classList.remove('rcn-show');
+      toast('Reading positions forgotten in every module. Notes and bookmarks are kept.');
+    }
     else if (act === 'clear') {
       if (!notes.length && !marks.length) return;
       if (!confirmInline(b, 'Tap again to delete all ' + (notes.length + marks.length))) return;
@@ -737,13 +750,16 @@
   resumeBar.setAttribute('role', 'region');
   resumeBar.setAttribute('aria-label', 'Resume reading');
   document.body.appendChild(resumeBar);
-  function showResume(html, onGo, label) {
+  function showResume(html, onGo, label, onDismiss) {
     resumeBar.innerHTML = '<div class="rcn-rs-txt">' + html + '</div>' +
       '<button type="button" class="rcn-rs-go">' + (label || 'Resume') + '</button>' +
       '<button type="button" class="rcn-x rcn-rs-x" aria-label="Dismiss">×</button>';
     resumeBar.classList.add('rcn-show');
     resumeBar.querySelector('.rcn-rs-go').addEventListener('click', function () { resumeBar.classList.remove('rcn-show'); onGo(); });
-    resumeBar.querySelector('.rcn-rs-x').addEventListener('click', function () { resumeBar.classList.remove('rcn-show'); });
+    resumeBar.querySelector('.rcn-rs-x').addEventListener('click', function () {
+      resumeBar.classList.remove('rcn-show');
+      if (onDismiss) onDismiss();          // dismissed: do not offer this spot again until the learner reads further
+    });
     var start = window.pageYOffset;
     window.addEventListener('scroll', function hide() {
       if (Math.abs(window.pageYOffset - start) > window.innerHeight * 1.5) {
@@ -759,16 +775,22 @@
       if (saved) setTimeout(function () { resumeTo(saved); }, 300);
       return;
     }
-    if (isModule && saved && !location.hash && saved.pct >= 5 && saved.pct < 97 && window.pageYOffset < 200) {
+    if (isModule && saved && !saved.dismissed && !location.hash && saved.pct >= 5 && saved.pct < 97 && window.pageYOffset < 200) {
       showResume('<b>Pick up where you left off?</b><span>' + (saved.sec ? esc(saved.sec) + ' · ' : '') + saved.pct + '% through</span>',
-        function () { resumeTo(saved); });
+        function () { resumeTo(saved); }, null, function () {
+          saved.dismissed = true;
+          try { localStorage.setItem(POS_KEY, JSON.stringify(saved)); } catch (e) {}
+        });
       return;
     }
     var last = readJSON(LAST_KEY);
-    if (isHub && last && last.url && last.url !== location.pathname && last.pct < 97 &&
+    if (isHub && last && !last.dismissed && last.url && last.url !== location.pathname && last.pct < 97 &&
         Date.now() - new Date(last.at).getTime() < 60 * 864e5) {
       showResume('<b>Continue: ' + esc(last.title) + '</b><span>' + (last.sec ? esc(last.sec) + ' · ' : '') + last.pct + '% through</span>',
-        function () { location.href = last.url + '#rcm-resume'; }, 'Continue');
+        function () { location.href = last.url + '#rcm-resume'; }, 'Continue', function () {
+          last.dismissed = true;
+          try { localStorage.setItem(LAST_KEY, JSON.stringify(last)); } catch (e) {}
+        });
     }
   })();
 
