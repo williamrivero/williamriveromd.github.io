@@ -1118,6 +1118,18 @@ A MIMS/Lexi-style drug reference for clinicians, generated — never hand-edit `
   References. Only PubMed-verified reviews/trials, worded at the evidence level, never a dose, never contradicting a
   regulatory restriction already cited on the page (e.g. trimetazidine: EMA 2012 add-on only). Approved under
   delegated sign-off and logged in `revision_log`. First batch: trimetazidine, doxofylline, fusidic acid.
+- **Local-insert monographs, evidence tables, numbered citations** (Nov 25 2026; first: elobixibat, from the Philippine
+  Goofice insert): for a drug with no US or EU label, an approved `summary/<slug>.json` may also carry `overview.uses_note`
+  and `dose_note` (replace the "summarized from literature" line), `special_populations` {hepatic, pediatric, older,
+  pregnancy, breastfeeding, overdose: [text]} (each fills its section only when no label/SmPC text does), and `evidence`
+  {title, nav, intro, rows: [{study, design, intervention, findings, limitations}], notes: [text]} (section `evidence`,
+  after the kidney sections; stacked cards under 760 px). Any page-only text may cite sources as `[[ID]]` or `[[ID,ID]]`
+  (ids from the file's `sources`); `resolve_cites()` turns them into numbered links to References and stops the build on
+  an unknown id. Never put `[[ID]]` in `key_interactions` or in kidney bands/hd/pd/crrt/short (the interaction checker and
+  Med Scheduler reuse those): write "(PH insert)" there. Dose statements come only from the insert; clinical
+  interpretation is labeled as such. Changing `DRUG_CSS` renames `drugdb.<hash>.css`: rebuild with `--keep-dates` (or
+  repoint the old name) so pages never point at a pruned file, and avoid new `html[data-theme="dark"]` rules there unless
+  needed (they regenerate the site-wide Dim CSS).
 - **INN/BAN to US names for label matching** (Nov 23 2026): `INN_TO_USAN` in `tools/drugdb/fetch_fda_labels.py` also maps
   same-molecule names (ursodeoxycholic acid -> ursodiol, calcipotriol -> calcipotriene, desferrioxamine -> deferoxamine,
   valproate semisodium -> divalproex sodium, recombinant human erythropoietin alfa -> epoetin alfa, ...), brand-as-generic
