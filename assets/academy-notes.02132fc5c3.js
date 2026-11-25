@@ -386,8 +386,9 @@
     '<div class="rcn-list" tabindex="-1"></div>' +
     '<div class="rcn-other"></div>' +
     '<div class="rcn-actions">' +
-    '<button type="button" data-act="md">Export (.md)</button>' +
-    '<button type="button" data-act="print">Print / PDF</button>' +
+    '<button type="button" data-act="printpage" class="rcn-primary">Print this module</button>' +
+    '<button type="button" data-act="md">Export notes (.md)</button>' +
+    '<button type="button" data-act="print">Print my notes</button>' +
     '<button type="button" data-act="backup">Back up all</button>' +
     '<button type="button" data-act="restore">Restore</button>' +
     '<button type="button" data-act="clear" class="rcn-danger">Delete this page\u2019s notes &amp; bookmarks</button>' +
@@ -560,6 +561,7 @@
     var b = e.target.closest('[data-act]');
     if (!b) return;
     var act = b.getAttribute('data-act');
+    if (act === 'printpage') { closeDrawer(); setTimeout(function () { window.print(); }, 250); return; }
     if (act === 'md') { if (!notes.length) return toast('No notes on this page yet.'); download('my-notes-' + slug() + '.md', 'text/markdown', toMarkdown()); }
     else if (act === 'print') { if (!notes.length) return toast('No notes on this page yet.'); printNotes(); }
     else if (act === 'backup') backup();
@@ -841,6 +843,9 @@
     '.rcn-other a span{background:#1A6B72;color:#fff;border-radius:9px;padding:0 7px;font-size:11px;align-self:center}' +
     '.rcn-actions{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px 16px;border-top:1px solid rgba(31,56,100,.12)}' +
     '.rcn-actions button{border:1px solid rgba(31,56,100,.22);background:#fff;color:#1F3864;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600}' +
+    '.rcn-actions .rcn-primary{background:#1F3864;color:#fff;border-color:#1F3864}' +
+    'html[data-theme="dark"] .rcn-actions .rcn-primary{background:#26467c;color:#fff;border-color:#26467c}' +
+    '.print-btn{display:none!important}' +          /* Print moved into the My notes drawer (Dr. Rivero, Nov 25 2026) */
     '.rcn-actions .rcn-danger{color:#C00000;border-color:rgba(192,0,0,.3)}' +
     '.rcn-fab{position:fixed;left:24px;bottom:136px;z-index:9998;width:44px;height:44px;border-radius:50%;border:0;background:#C55A11;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:transform .2s,box-shadow .2s}' +
     '.rcn-fab:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,.35)}.rcn-fab svg{width:19px;height:19px}' +
