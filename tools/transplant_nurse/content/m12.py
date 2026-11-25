@@ -50,6 +50,22 @@ MODULE = {
 <div class="tc-scene"><span class="tc-lab">At the debrief &middot; fictional</span><p>After Station 3, the facilitator tells a learner: "You reconciled the two tacrolimus products and caught the refill gap: that was your best early action. You missed that the patient had vomited this morning, which mattered for the fever call. In your own unit, find out who answers the after-hours line and save that number before your next shift."</p><p>The learner leaves with three specific things, not a score alone.</p><p class="tc-scene-take"><b>What this shows.</b> A good debrief names one thing done well, one missed cue, and one concrete next step in the learner's own workplace.</p></div>
 
 """},
+        {"id": "walkthrough", "nav": "A worked run", "tag": "Preparation", "h2": "A worked run of Station 2, minute by minute",
+         "html": """
+<p>Learners often ask what a passing performance looks like. Here is one run of Station 2, with what the learner said and did, and how each step maps to the marking sheet. Use it to prepare, not to memorize. The facilitator will change the details.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Minute</th><th>What happens</th><th>What the strong learner does</th><th>Behavior scored</th></tr></thead>
+<tbody>
+<tr><td>0 to 2</td><td>The phone rings: the coordinator reports an offer for "Mr. R. Santiago"</td><td>Confirms the caller and the program channel; asks for two identifiers and checks them against the record</td><td>Verifies call identity</td></tr>
+<tr><td>2 to 4</td><td>The transfer report gives a birth date that differs by one year from the chart</td><td>Says aloud, "I'm stopping here; the birth date does not match." Does not proceed. Calls the coordinator on the known number and documents the discrepancy</td><td>Stops for the discrepancy and secures an authorized correction</td></tr>
+<tr><td>4 to 7</td><td>The facilitator supplies a corrected, authorized record; the patient goes to surgery; the OR team arrives</td><td>Asks for the structured handoff: procedure, intraoperative events, urine on the table, pressors, targets, escalation parameters</td><td>Receives the postoperative handoff</td></tr>
+<tr><td>7 to 12</td><td>Hourly readings: pressure falls from 132/80 to 100/62, pulse rises from 86 to 114, urine falls from 160 to 40 mL, drain fills with bright red fluid</td><td>Reads all the numbers together; checks the catheter quickly; names bleeding as the likely problem; does not give extra fluid beyond the order on her own</td><td>Recognizes adverse vital-sign, urine and drainage trends</td></tr>
+<tr><td>12 to 15</td><td>The patient reports worsening graft pain</td><td>Activates the emergency pathway; gives an SBAR report with the trends; stays at the bedside with repeated vital signs</td><td>Activates the emergency pathway and reports findings</td></tr>
+</tbody></table></div>
+<p><strong>What separates a pass from a near miss.</strong> Most learners who fail Station 2 do not fail on knowledge. They fail on two habits. Some keep going after the mismatched birth date, telling themselves it is probably a typing error. That is a critical error, because a mismatch is a stop until an authorized person resolves it. Others see the falling urine first and reach for more fluid, because the fluid protocol says to replace the last hour's output. They miss that the rising pulse and the bloody drain change the meaning of the urine.</p>
+<p><strong>The SBAR the facilitator wants to hear.</strong> "Situation: Mr. Santiago, six hours after a deceased-donor transplant, is showing signs of bleeding. Background: pressure was 132/80 on arrival, no intraoperative problems reported. Assessment: pressure now 100/62, pulse 114, urine down to 40 mL an hour, drain 180 mL of bright red blood in the last hour, worsening graft pain. Catheter checked and patent. Recommendation: I need the surgeon at the bedside now; I have activated the emergency response; what do you want me to prepare?" It takes under a minute, and every number in it supports the request.</p>
+<div class="tc-keyp"><span class="tc-lab">Remember</span>The capstone tests habits more than facts: stop at a mismatch, read the numbers together, and escalate early with a clear report. Practice those three until they are automatic.</div>
+"""},
         {"id": "records", "nav": "Three records", "tag": "Governance", "h2": "Self-study, simulation and competency are different things",
          "html": """
 <div class="table-wrap"><table>

@@ -18,6 +18,23 @@ MODULE = {
 <p>The calendar is a guide, not a guarantee. A recipient with a heavily treated rejection at month 10 may be back in the high-risk season. And immunosuppression blunts the body's alarm system: fever may be low or absent, white cell counts may not rise, and a serious infection can look like mild fatigue.</p>
 <div class="tc-plain"><span class="tc-lab">In plain words</span>Do not wait for a high fever. In a recipient, "I feel unusually weak and I am passing less urine" can be the whole story of a serious infection.</div>
 """},
+        {"id": "signs", "nav": "Quiet signs", "tag": "Physiology", "h2": "Why infection looks different after transplant",
+         "html": """
+<p>Fever, redness, swelling and pain are not the infection itself. They are the body's inflammatory response to it. Immunosuppressive drugs are designed to quiet that response. So the drugs that protect the graft also hide the warning signs of infection, and a recipient can be seriously ill with surprisingly little to show for it.</p>
+<p><strong>The net state of immunosuppression.</strong> Infection risk depends on the sum of everything that weakens defenses at a given time: the drug doses, recent rejection treatment, low white cell or lymphocyte counts, diabetes, poor nutrition, an indwelling catheter or stent, an open wound, and viral infections such as cytomegalovirus that themselves suppress immunity. Two recipients on the same tablets can carry very different risk. Ask about all of it, not only the medicine list.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Usual sign</th><th>How it can change after transplant</th><th>What to look for instead</th></tr></thead>
+<tbody>
+<tr><td>Fever</td><td>Steroids lower it; a recipient may have a serious infection at 37.6 °C</td><td>Chills, sweats, feeling "not right," a new fast heart rate</td></tr>
+<tr><td>Raised white cell count</td><td>Mycophenolate and other drugs may keep it normal or low</td><td>Trends, other laboratory clues, the whole clinical picture</td></tr>
+<tr><td>Localized pain and redness</td><td>Less inflammation means less pain, even with pyelonephritis or a wound infection</td><td>Mild graft tenderness, wound drainage, a subtle change in the skin</td></tr>
+<tr><td>Cough and sputum in pneumonia</td><td>Some infections, such as Pneumocystis, cause little sputum</td><td>Breathlessness on walking, a falling oxygen saturation</td></tr>
+<tr><td>Confusion</td><td>May be the first or only sign in an older recipient</td><td>Any change in behavior reported by the family</td></tr>
+</tbody></table></div>
+<p><strong>The adrenal question.</strong> A recipient taking prednisone every day has an adrenal gland that has learned to rest. In a severe infection the body cannot make the extra cortisol it needs, and the blood pressure may fall more than expected. Whether to give additional steroid is a decision for the team. Your part is to tell every new team caring for the patient that he takes long-term steroids, and never to let a steroid dose be omitted because the patient is "nil by mouth."</p>
+<div class="tc-keyp"><span class="tc-lab">Remember</span>In a transplant recipient, mild signs do not mean mild illness. Take vague symptoms seriously, and judge by the whole picture, including trends, not by the thermometer alone.</div>
+<div class="tc-scene"><span class="tc-lab">In the transplant clinic &middot; fictional</span><p>Mr. Lim, 58, nine weeks after transplant, comes for a routine visit. He has "just a little cough" and his temperature is 37.4 °C. But walking from the elevator to the clinic left him breathless, and his oxygen saturation at rest is 93 percent, falling to 88 percent after a short walk in the corridor.</p><p>You recognize that breathlessness on exertion with a low-grade temperature, in the first months, is a pattern that needs prompt assessment. You report it to Dr. Santos at once rather than adding it to the end-of-clinic list. Mr. Lim is admitted that afternoon for investigation.</p><p class="tc-scene-take"><b>What this shows.</b> A walking oxygen saturation found what the thermometer missed. Look for function, not only fever.</p></div>
+"""},
         {"id": "cmv", "nav": "CMV", "tag": "Evidence", "h2": "Cytomegalovirus: risk, prevention and monitoring",
          "html": """
 <p>CMV is a herpesvirus most adults carry silently. After transplant it can reactivate in a seropositive recipient (R+) or be transmitted from a seropositive donor (D+). Without prevention, it causes fever, low white cells, hepatitis, colitis, pneumonitis, and it is linked to rejection and poorer graft survival. Risk depends on serostatus and on the intensity of immunosuppression: donor-positive, recipient-negative (D+/R−) recipients are at highest risk; R+ recipients are intermediate; D−/R− recipients are at low risk.</p>
@@ -51,6 +68,20 @@ MODULE = {
 </ul>
 <div class="tc-scene"><span class="tc-lab">By phone, after a typhoon &middot; fictional</span><p>Three days after floodwater rose through his barangay in Malabon, Mr. Ramos calls. He waded through knee-deep water to rescue his neighbor's children. Now he has fever, severe calf pain and red eyes, and he is passing less urine.</p><p>You recognize a possible leptospirosis exposure in an immunosuppressed recipient with falling urine. You do not suggest waiting to see. You direct him to the emergency department now, call ahead to the transplant team, and record his exposure history so the emergency staff hear it from the start.</p><p class="tc-scene-take"><b>What this shows.</b> Local exposures change the differential. Ask about floodwater, mosquitoes and sick contacts on every fever call.</p></div>
 """},
+        {"id": "urinary", "nav": "Urinary infection", "tag": "Practice", "h2": "The commonest infection: urine, stents and the graft",
+         "html": """
+<p>Urinary tract infection is the most frequent bacterial infection after kidney transplant. The reasons are anatomical as much as immunological. The new ureter joins the bladder over a temporary stent; the urinary catheter stays in for days; the stent remains for weeks; and immunosuppression weakens the bladder's own defenses. A Cochrane review found that stented patients had more urinary infections unless prophylactic cotrimoxazole was given.[[wilson2013]]</p>
+<p><strong>When infection reaches the graft.</strong> An infection that climbs to the transplanted kidney (graft pyelonephritis) inflames it and can cause acute kidney injury. Because the graft sits just under the skin of the lower abdomen, tenderness over it is a useful sign, but immunosuppression may make it mild. Fever, chills, graft tenderness and a creatinine rise together suggest graft pyelonephritis, and the patient usually needs same-day assessment and intravenous treatment as ordered.</p>
+<p><strong>Getting the specimen right.</strong> A contaminated sample leads to the wrong antibiotic, or to treatment the patient did not need.</p>
+<ul>
+<li>Collect a clean midstream sample, or a sample from the catheter's sampling port, never from the drainage bag.</li>
+<li>Send it before the first antibiotic dose whenever the order allows, because treatment can sterilize the culture.</li>
+<li>Label the date, time and collection method, and note whether a stent is still in place.</li>
+<li>Track the result until a clinician has reviewed the culture and its sensitivities.</li>
+</ul>
+<p><strong>Antibiotics and the immunosuppressants.</strong> Some antibiotics change tacrolimus levels; clarithromycin and erythromycin can raise them sharply (Module 6). Trimethoprim, in cotrimoxazole, blocks the tubule's secretion of creatinine and of potassium, so creatinine and potassium may rise without any true loss of filtration, although true kidney injury must still be excluded. When a new antibiotic is started, check it against the patient's medicine list and report possible interactions to the prescriber and pharmacist.</p>
+<div class="tc-scene"><span class="tc-lab">By phone &middot; fictional</span><p>Six weeks after transplant, Mrs. Cortez calls. She has burning on passing urine and has felt feverish since last night. She still has her stent; the removal is booked for next week. A local clinic has offered to start "clarithromycin for the infection."</p><p>You ask about chills, graft tenderness and urine output, and arrange same-day assessment at the transplant clinic, according to your protocol. You explain that clarithromycin can push her tacrolimus level dangerously high and that the transplant team will choose an antibiotic that suits her medicines. You tell Dr. Santos and note that the stent is still in place.</p><p class="tc-scene-take"><b>What this shows.</b> A urinary infection in a recipient is not routine. The stent, the graft and the drug interactions all change the plan.</p></div>
+"""},
         {"id": "triage", "nav": "Fever calls", "tag": "Practice", "h2": "The fever or illness call",
          "html": """
 <p>Use a structured approach so that nothing important is missed and the disposition is clear.</p>
@@ -66,6 +97,22 @@ MODULE = {
 <div class="tc-scene"><span class="tc-lab">By phone, 10:40 p.m. &middot; fictional</span><p>A woman calls about her husband, who had a transplant five months ago. He has fever and "is talking strangely." Then the line drops.</p><p>Because you asked for her location and a callback number in the first 20 seconds, you can call back. You reach her on the second try and direct her to the nearest emergency department immediately. You notify the transplant team and the receiving hospital, and you document the advice and her read-back.</p><p class="tc-scene-take"><b>What this shows.</b> Location and callback number come first. In an emergency call, they are the only details you cannot get later.</p></div>
 
 <p>Vomiting and diarrhea deserve special mention: they cause dehydration and AKI, may prevent absorption of immunosuppressants, and diarrhea can paradoxically <em>raise</em> tacrolimus levels. These patients often need same-day assessment.</p>
+"""},
+        {"id": "elsewhere", "nav": "Admitted elsewhere", "tag": "Practice", "h2": "When a recipient is admitted to another ward or hospital",
+         "html": """
+<p>Many recipients are admitted with an infection to a general medical ward, or to a hospital nearer home that rarely cares for transplant patients. The infection may be treated well while the transplant is put at risk. A few predictable errors account for most of the harm.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Common error</th><th>Why it is dangerous</th><th>What the nurse does</th></tr></thead>
+<tbody>
+<tr><td>Immunosuppressants stopped or delayed because the patient is "nil by mouth" or not on the formulary</td><td>Missed doses invite rejection; omitted steroids risk adrenal crisis</td><td>Ask the team for an explicit plan for each drug; never omit silently; get the program's advice</td></tr>
+<tr><td>A new drug that interacts with tacrolimus</td><td>Levels rise or fall sharply within days</td><td>Check every new drug against the list; ask the pharmacist; request a level when advised</td></tr>
+<tr><td>NSAIDs for pain or fever</td><td>Reduce blood flow to the graft</td><td>Flag the transplant status; ask for an alternative</td></tr>
+<tr><td>Contrast or other kidney-toxic tests without preparation</td><td>Adds kidney injury on top of illness</td><td>Make sure the team knows the patient has a single kidney with treated function</td></tr>
+<tr><td>The transplant program not told</td><td>Decisions are made without the people who know the patient</td><td>Notify the program on admission and on major changes; give the ward the program's contact number</td></tr>
+</tbody></table></div>
+<p>Changes to immunosuppression during an infection, such as reducing or holding mycophenolate, are sometimes appropriate. They are decisions for the transplant team, made with the treating team, not by the ward on its own and not by the nurse.</p>
+<p><strong>Isolation and hand hygiene.</strong> Recipients do not usually need special isolation for their own protection, but they need strict hand hygiene from everyone who touches them, and they should not share a room with a patient who has a transmissible infection, such as influenza or chickenpox, when this can be avoided. Follow your hospital's infection prevention policy.</p>
+<div class="tc-scene"><span class="tc-lab">At a provincial hospital &middot; fictional</span><p>Mang Danilo, two years after transplant, is admitted to a provincial hospital with pneumonia. On the second day his daughter calls the transplant clinic: the ward has not given his tacrolimus or prednisone since admission because "the pharmacy does not stock them" and he is too breathless to swallow.</p><p>You take the ward's direct number and call the nurse in charge. You give her the program's contact for the admitting physician, explain that the steroid in particular must not be stopped abruptly, and tell Dr. Santos, who speaks with the admitting physician within the hour. They agree a plan for each drug, and the family brings his own supply in the meantime.</p><p class="tc-scene-take"><b>What this shows.</b> An infection treated well can still cost a graft if the immunosuppressants stop. Connect the treating team to the transplant program early.</p></div>
 """},
     ],
     "case": {

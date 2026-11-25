@@ -38,6 +38,25 @@ MODULE = {
 
 <p><strong>Vaccinate before, not after.</strong> Vaccines work better before immunosuppression, and live vaccines are generally avoided after transplant. Guidance recommends completing inactivated vaccines at least two weeks and live vaccines at least four weeks before transplant whenever possible.[[danziger2019]] A candidate on the active list should have an up-to-date vaccine record.</p>
 """},
+        {"id": "contra", "nav": "Not now or not ever", "tag": "Decision points", "h2": "Not now, or not ever: what stops or delays a transplant",
+         "html": """
+<p>Patients and families hear evaluation results as a verdict: accepted or rejected. The reality has more shades. Most problems found during evaluation lead to a <em>deferral</em> (fix this, then we will look again), not a final decline. Knowing the difference lets you explain the result honestly and help the patient work on what can change.</p>
+<p>The logic is the same as in the evaluation table above. A finding stops or delays transplant when surgery or immunosuppression would make it dangerous, or when the transplant would probably not help the person live longer or better.[[txcand2020]] The program decides. You help the patient understand which kind of finding he has.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Finding</th><th>Why it matters physiologically</th><th>Usual direction</th><th>What the nurse can help with</th></tr></thead>
+<tbody>
+<tr><td>Active infection</td><td>Immunosuppression would let it spread</td><td>Defer until treated</td><td>Track treatment start and end; report fevers</td></tr>
+<tr><td>Cancer, recent or active</td><td>Immune surveillance is weakened after transplant</td><td>Defer for a waiting period set by cancer type, or decline if active</td><td>Keep oncology records and dates in the file</td></tr>
+<tr><td>Severe heart disease</td><td>Surgery and fluid shifts may cause infarction or heart failure</td><td>Defer for treatment, or decline if uncorrectable</td><td>Track cardiology referrals and procedures</td></tr>
+<tr><td>Smoking</td><td>Damages vessels and wound healing; raises cancer and heart risk</td><td>Programs ask for cessation</td><td>Offer support; record a quit date</td></tr>
+<tr><td>Excess weight</td><td>Wound complications, technical difficulty, metabolic risk</td><td>Program policy varies; often a weight goal</td><td>Refer to the dietitian and prehabilitation; record weights</td></tr>
+<tr><td>Poor dental health</td><td>Mouth infections can seed the blood under immunosuppression</td><td>Defer until cleared</td><td>Book dental review early; it is often the last item done</td></tr>
+<tr><td>Ongoing substance use, or repeated nonadherence</td><td>Lifelong medicines and follow-up are not yet safe</td><td>Defer with a plan and support</td><td>Explore barriers; connect to support; document progress</td></tr>
+<tr><td>Very limited life expectancy from another illness</td><td>Risks of surgery may outweigh years gained</td><td>Decline, with a plan for other kidney failure care</td><td>Make sure dialysis or conservative care planning continues</td></tr>
+</tbody></table></div>
+<p><strong>Say "not yet" when it is not yet.</strong> A patient told he has been "rejected" for transplant may stop trying. A patient told "the team wants your dental treatment done and your weight down by eight kilos, then they will review you again" has a task and a reason to do it. Use the program's exact wording, and ask the coordinator if you are unsure which it is.</p>
+<div class="tc-scene"><span class="tc-lab">In the transplant clinic &middot; fictional</span><p>Mr. Esguerra, 55, leaves the committee feedback visit and tells you in the corridor, "They rejected me. It's my weight." He is angry and close to tears.</p><p>You check the letter with him. It says "deferred," with a weight goal and a review in six months. You read it aloud slowly, show him the words "review in six months," and book him with the dietitian and the prehabilitation program before he leaves.</p><p class="tc-scene-take"><b>What this shows.</b> "Deferred" and "declined" are different futures. Make sure the patient knows which one he has.</p></div>
+"""},
         {"id": "immunology", "nav": "Compatibility", "tag": "Physiology", "h2": "Blood groups, HLA, antibodies and the crossmatch",
          "html": """
 <p><strong>ABO blood group.</strong> The same A and B sugar antigens that decide transfusion compatibility also coat the inner lining of the kidney's blood vessels. A recipient's natural anti-A or anti-B antibodies would attack an incompatible kidney within minutes, so ABO compatibility follows transfusion rules. Some centers perform ABO-incompatible transplants after removing antibodies, a specialized protocol.</p>
@@ -75,6 +94,23 @@ MODULE = {
 <div class="tc-scene"><span class="tc-lab">By phone &middot; fictional</span><p>Mang Berto has missed two cardiology appointments. The tracker shows him in red. On the phone, he admits he lost his job as a security guard and cannot pay the tricycle and bus fare to the center.</p><p>You document the barrier and refer him to the social worker, who finds a hospital charity fund to help with his fares. You also ask the coordinator whether his echocardiogram can be done at the provincial hospital and sent. He is back on track within a month.</p><p class="tc-scene-take"><b>What this shows.</b> "Missed appointment" is a finding to investigate, not a verdict on the patient.</p></div>
 
 <p><strong>Report changes that affect safety.</strong> New infection, hospitalization, a new cancer concern, major weight change, or loss of contact for weeks may require the team to place a candidate on hold. You report; the program decides the status and communicates it.</p>
+"""},
+        {"id": "waiting", "nav": "Staying ready", "tag": "Practice", "h2": "While the candidate waits: staying well and staying ready",
+         "html": """
+<p>A candidate may wait months for a living-donor work-up to finish, or years for a deceased-donor kidney. The waiting time is not empty. What happens during it decides whether the candidate is still fit, still sensitized at the same level, and still reachable when the call comes.</p>
+<p><strong>Why some candidates wait longer.</strong> Two things lengthen the wait, and both come from the immunology above. First, blood group. A group O candidate can receive only a group O kidney, while group O kidneys can be given to recipients of other groups. Group O candidates therefore compete for a narrower supply. Second, sensitization. A candidate with a high cPRA is compatible with only a small share of donors, so suitable offers are rare. Neither is the patient's fault, and both are worth explaining so that a long wait is not taken as neglect.</p>
+<p><strong>When the willing donor is incompatible.</strong> A relative may volunteer and then turn out to be ABO-incompatible, or to have a positive crossmatch. Some programs offer desensitization or ABO-incompatible protocols. Others use paired exchange, in which two incompatible pairs swap donors so that each recipient gets a compatible kidney. Availability depends entirely on the program. Your part is to make sure the patient hears the options from the team, not to promise any of them.</p>
+<h3>Keeping the candidate well</h3>
+<div class="tc-cards">
+<div class="tc-card"><b>Anemia without transfusion</b>Anemia is treated, where possible, with iron and erythropoiesis-stimulating agents rather than blood, because every transfusion can raise antibodies. Flag listed status on every admission.</div>
+<div class="tc-card"><b>Dialysis and nutrition</b>Missed sessions, fluid overload and falling albumin all erode fitness. Report a candidate whose dialysis attendance or weight is slipping.</div>
+<div class="tc-card"><b>Strength</b>Frailty can worsen while waiting. Walking programs and prehabilitation keep muscle and confidence up.</div>
+<div class="tc-card"><b>Mood</b>Long waits wear people down. Ask how the patient is coping, and refer to social work or mental health support when hope is fading.</div>
+<div class="tc-card"><b>Screening dates</b>Cancer screens, cardiac tests and serology expire. The tracker shows what is due next.</div>
+<div class="tc-card"><b>Contact details</b>A new phone number, a move to another province or a long trip abroad must reach the program the same week.</div>
+</div>
+<p><strong>The readiness call.</strong> Many programs contact listed candidates on a schedule to update their status. Use the same short script every time, so nothing is skipped: any admission, transfusion, pregnancy, surgery or infection; any new diagnosis or medicine; any change in phone, address or companion; any planned travel; how dialysis is going; how the patient is feeling about the wait. Record the answers with the date, and act on any yes.</p>
+<div class="tc-scene"><span class="tc-lab">By phone &middot; fictional</span><p>On his quarterly call, Mr. Ramos, listed for 18 months, says everything is fine. When you reach the question about travel, he mentions that he is leaving next week to work on a construction site in Saudi Arabia for a year, "to save for the transplant."</p><p>You do not tell him what to decide. You explain that if a kidney is offered while he is abroad, he will not be able to come in time, and that the program needs to know so it can discuss his listing status with him. You notify Joy that afternoon, and she arranges a call with Dr. Santos before he leaves.</p><p class="tc-scene-take"><b>What this shows.</b> A candidate's plans are part of his readiness. The scripted question about travel caught a change that would have made him unreachable.</p></div>
 """},
         {"id": "evidence", "nav": "Evidence", "tag": "Certainty", "h2": "What is established, and what is not",
          "html": """
