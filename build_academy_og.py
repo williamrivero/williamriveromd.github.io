@@ -72,6 +72,8 @@ TRACKS = {
                                 "RECORDS", "14 modules · capstone · calculator toolkit"),
     "transplant-coordinator": ("academy/transplant-coordinator.html", "ancillary", "Renal Transplant Coordinator",
                                "TRANSPLANT COORDINATION", "20 modules · two learner paths · seven-tool toolkit"),
+    "occupational-physical-therapist": ("academy/occupational-physical-therapist.html", "ancillary", "Occupational and Physical Therapist",
+                                        "RENAL REHABILITATION", "20 modules · OT and PT pathways · six-tool toolkit"),
 }
 
 FONT_DIRS = ["/usr/share/fonts/opentype/inter", os.path.expanduser("~/Library/Fonts"), "/Library/Fonts",

@@ -1,0 +1,105 @@
+<script>
+/* ===== OTPT-CALC-CORE (pure functions; tested by tools/test_otpt_calcs.cjs) ===== */
+var OTPT = (function () {
+  function n(x) { var v = parseFloat(x); return isFinite(v) ? v : NaN; }
+  function sixMW(sex, age, ht, wt, dist) {
+    var pred = sex === "f" ? (2.11 * ht) - (2.29 * wt) - (5.78 * age) + 667 : (7.57 * ht) - (5.02 * age) - (1.76 * wt) - 309;
+    return { pred: pred, pct: pred > 0 ? dist / pred * 100 : NaN, outside: age < 40 || age > 80 };
+  }
+  function sppbBalance(sbs, semi, tan) {
+    if (!(sbs >= 10)) return 0;
+    if (!(semi >= 10)) return 1;
+    if (tan >= 10) return 4;
+    if (tan >= 3) return 3;
+    return 2;
+  }
+  function sppbGait(t) { if (!(t > 0)) return 0; if (t < 4.82) return 4; if (t <= 6.20) return 3; if (t <= 8.70) return 2; return 1; }
+  function sppbChair(t) { if (!(t > 0) || t > 60) return 0; if (t <= 11.19) return 4; if (t <= 13.69) return 3; if (t <= 16.69) return 2; return 1; }
+  function sppb(sbs, semi, tan, walk, chair) {
+    var b = sppbBalance(sbs, semi, tan), g = sppbGait(walk), c = sppbChair(chair);
+    return { balance: b, gait: g, chair: c, total: b + g + c };
+  }
+  function speed(len, t) { return t > 0 ? len / t : NaN; }
+  function stsChange(type, b, f) {
+    var d = f - b, better = type === "sts60" ? d > 0 : d < 0;
+    return { diff: d, pct: b > 0 ? d / b * 100 : NaN, better: better, same: d === 0 };
+  }
+  function weekly(ms, mm, ls, lm) { var mod = ms * mm, light = ls * lm; return { moderate: mod, light: light, toAim: Math.max(0, 150 - mod), pctAim: mod / 150 * 100 }; }
+  function screen(o) {
+    var reasons = [];
+    if (o.red) return { decision: "stop", reasons: ["red-flag symptom"] };
+    if (o.newSym) reasons.push("new or worse symptom");
+    if (isFinite(o.sbp) && isFinite(o.lo) && o.sbp < o.lo) reasons.push("sitting systolic below the unit lower limit");
+    if (isFinite(o.sbp) && isFinite(o.hi) && o.sbp > o.hi) reasons.push("sitting systolic above the unit upper limit");
+    if (isFinite(o.sbp) && isFinite(o.sbps) && isFinite(o.drop) && (o.sbp - o.sbps) >= o.drop) reasons.push("fall on standing at or beyond the unit flag");
+    var missing = !(isFinite(o.lo) && isFinite(o.hi));
+    return { decision: reasons.length ? "review" : "within", reasons: reasons, missingLimits: missing };
+  }
+  return { n: n, sixMW: sixMW, sppb: sppb, sppbBalance: sppbBalance, sppbGait: sppbGait, sppbChair: sppbChair, speed: speed, stsChange: stsChange, weekly: weekly, screen: screen };
+})();
+if (typeof module !== "undefined") module.exports = OTPT;
+/* ===== END OTPT-CALC-CORE ===== */
+(function () {
+  if (typeof document === "undefined") return;
+  function $(id) { return document.getElementById(id); }
+  function v(id) { return OTPT.n($(id).value); }
+  function flag(cls, t) { return '<span class="flag ' + cls + '">' + t + "</span>"; }
+  function r1(x) { return (Math.round(x * 10) / 10).toFixed(1); }
+  function r2(x) { return (Math.round(x * 100) / 100).toFixed(2); }
+  var run = {
+    t1: function () {
+      var age = v("t1_age"), ht = v("t1_ht"), wt = v("t1_wt"), d = v("t1_d");
+      if (!(age > 0 && ht > 0 && wt > 0 && d >= 0)) return "Enter age, height, weight and distance.";
+      var r = OTPT.sixMW($("t1_sex").value, age, ht, wt, d);
+      if (!(r.pred > 0)) return "The equation gives no usable prediction for these inputs.";
+      var h = "Predicted <b>" + Math.round(r.pred) + " m</b>; walked " + Math.round(d) + " m = <b>" + Math.round(r.pct) + "% of predicted</b>.";
+      if (r.outside) h += "<br>" + flag("f-warn", "Outside 40 to 80 years") + " The equations were derived in adults aged 40 to 80; interpret with extra caution.";
+      return h + '<div class="note">Healthy-adult reference, not a Filipino or dialysis norm. Record rests, aids, course length and dialysis timing; compare with the person&rsquo;s own baseline.</div>';
+    },
+    t2: function () {
+      var r = OTPT.sppb(v("t2_sbs"), v("t2_semi"), v("t2_tan"), v("t2_walk"), v("t2_chair"));
+      return "Balance <b>" + r.balance + "</b> + gait <b>" + r.gait + "</b> + chair stands <b>" + r.chair + "</b> = <b>SPPB " + r.total + " of 12</b>." +
+        '<div class="note">Gait points: under 4.82 s = 4; 4.82 to 6.20 = 3; 6.21 to 8.70 = 2; over 8.70 = 1; unable = 0. Chair points: 11.19 s or less = 4; 11.20 to 13.69 = 3; 13.70 to 16.69 = 2; 16.70 to 60 = 1; unable or over 60 = 0. Balance: side-by-side and semi-tandem 10 s each, tandem 10 s = 4, 3 to 9.99 s = 3, under 3 s = 2.</div>';
+    },
+    t3: function () {
+      var len = v("t3_len"), b = OTPT.speed(len, v("t3_b")), f = OTPT.speed(len, v("t3_f"));
+      if (!isFinite(b)) return "Enter the course length and a baseline time.";
+      var h = "Baseline gait speed <b>" + r2(b) + " m/s</b>.";
+      if (isFinite(f)) { var d = f - b; h += " Follow-up <b>" + r2(f) + " m/s</b>; change " + (d >= 0 ? "+" : "") + r2(d) + " m/s " + (d > 0 ? flag("f-ok", "faster") : d < 0 ? flag("f-warn", "slower") : ""); }
+      var tb = v("t3_tb"), tf = v("t3_tf");
+      if (isFinite(tb)) { h += "<br>TUG baseline <b>" + r1(tb) + " s</b>"; if (isFinite(tf)) h += ", follow-up <b>" + r1(tf) + " s</b> (" + (tf - tb <= 0 ? "" : "+") + r1(tf - tb) + " s)"; h += "."; }
+      return h + '<div class="note">Same course, same start (standing or run-in), same aid, same point in the dialysis week. Associations with survival are observational.</div>';
+    },
+    t4: function () {
+      var t = $("t4_type").value, b = v("t4_b"), f = v("t4_f"), m = v("t4_m");
+      if (!(isFinite(b) && isFinite(f))) return "Enter baseline and follow-up.";
+      var r = OTPT.stsChange(t, b, f), unit = t === "sts60" ? " repetitions" : " s";
+      var h = "Change <b>" + (r.diff > 0 ? "+" : "") + r1(r.diff) + unit + "</b> (" + (r.pct > 0 ? "+" : "") + Math.round(r.pct) + "%) " +
+        (r.same ? flag("f-warn", "no change") : r.better ? flag("f-ok", "improved") : flag("f-warn", "worse"));
+      if (isFinite(m) && m > 0) h += " over " + m + " months.";
+      return h + '<div class="note">Context: DiaTT reported a between-group STS60 difference of 3.85 repetitions after 12 months. A small change in one person may be test-to-test variation; repeat under the same conditions before concluding.</div>';
+    },
+    t5: function () {
+      var r = OTPT.weekly(v("t5_ms") || 0, v("t5_mm") || 0, v("t5_ls") || 0, v("t5_lm") || 0);
+      var h = "Moderate minutes: <b>" + r.moderate + "</b> (" + Math.round(r.pctAim) + "% of 150). Light minutes: <b>" + r.light + "</b>.";
+      h += r.toAim > 0 ? "<br>" + r.toAim + " moderate minutes short of 150 this week." : "<br>" + flag("f-ok", "150-minute aim reached");
+      var p = v("t5_prev");
+      if (isFinite(p) && p > 0) h += "<br>Change from last week: " + (r.moderate - p >= 0 ? "+" : "") + (r.moderate - p) + " minutes.";
+      return h + '<div class="note">The aim is adjusted to tolerance and frailty. Progress time before intensity; drop back after illness or missed sessions (Module 9).</div>';
+    },
+    t6: function () {
+      var o = { red: $("t6_red").value === "yes", newSym: $("t6_new").value === "yes", sbp: v("t6_sbp"), sbps: v("t6_sbps"), lo: v("t6_lo"), hi: v("t6_hi"), drop: v("t6_drop") };
+      var r = OTPT.screen(o), hrs = v("t6_hrs");
+      var h;
+      if (r.decision === "stop") h = flag("f-stop", "Stop and call") + " Red-flag symptom recorded. Stop, keep the person safe, summon help per the facility pathway, and stay.";
+      else if (r.decision === "review") h = flag("f-warn", "Outside the unit sheet or new symptom") + " " + r.reasons.join("; ") + ". Adapt or defer, and tell the nurse; ask for review.";
+      else h = flag("f-ok", "Within the limits entered") + " No red flag or new symptom recorded. You may proceed if your clinical judgment agrees.";
+      if (r.missingLimits && r.decision !== "stop") h += "<br>" + flag("f-warn", "No unit limits entered") + " Get the physician&rsquo;s parameters before relying on any comparison.";
+      if (isFinite(hrs) && hrs < 4) h += "<br>Less than 4 hours since the end of dialysis: check symptoms and pressure on standing before any standing task.";
+      return h + '<div class="note">Log line: red flag ' + (o.red ? "yes" : "no") + "; new symptom " + (o.newSym ? "yes" : "no") + "; SBP sitting " + (isFinite(o.sbp) ? o.sbp : "&mdash;") + ", standing " + (isFinite(o.sbps) ? o.sbps : "&mdash;") + "; unit limits " + (isFinite(o.lo) ? o.lo : "&mdash;") + " to " + (isFinite(o.hi) ? o.hi : "&mdash;") + ". Record the decision, the nurse informed and who authorizes any restart.</div>";
+    }
+  };
+  document.querySelectorAll("button[data-run]").forEach(function (b) { b.addEventListener("click", function () { var id = b.getAttribute("data-run"); try { $(id + "_out").innerHTML = run[id](); } catch (e) { $(id + "_out").textContent = "Check the inputs."; } }); });
+  Object.keys(run).forEach(function (k) { try { $(k + "_out").innerHTML = run[k](); } catch (e) {} });
+})();
+</script>

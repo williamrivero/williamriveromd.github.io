@@ -1014,6 +1014,7 @@ the landing page's stat chips by `build_academy_og.py` (`landing_stats()`); afte
 (`images/<linked-stem>-rg-thumb.webp`). After adding a course or module, run `python3 generate_rg_thumbs.py` (covers
 academy/*.html: own vignette hero, else og:image, else the course home's image; per-page fixes in `SOURCE_OVERRIDES`)
 and then `python3 patch_rg_card_thumbs.py` (adds the thumbs to existing cards; the generators pick them up on rebuild).
+**Occupational and Physical Therapist track (Nov 25 2026):** Ancillary Staff subtrack, package `tools/techcourses/otpt/` (content mNN.py, banks quizbank.py = handoff JSON + quiz_new.py, situations.py, figs.py, refs.py). Rebuild: `python3 generate_tech_courses.py --course otpt --patch`, then `python3 tools/techcourses/otpt/expand_acronyms.py` (first-use acronym pass; the generator's auto_expand misses first uses in objectives, quiz stems and link titles) and, only if the landing card changes, `python3 tools/techcourses/otpt/wire_landing.py` (idempotent OTPT markers in academy/index.html). Toolkit: `python3 tools/techcourses/otpt/build_toolkit.py` builds guides/calc-renal-rehabilitation-toolkit.html (core tested by `node tools/test_otpt_calcs.cjs`). The track sets no universal exercise-clearance numbers: parameters come from the physician and the unit sheet. Images (75, audited) come from /Volumes/Storage/Renal Care Academy/OT-PT/images; share cards are images/og/<slug>-og.jpg.
 
 ## Drug database (`/drugs/`, Nov 2026)
 

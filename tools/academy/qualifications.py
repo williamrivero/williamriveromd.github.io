@@ -76,6 +76,10 @@ QUAL = {
    "Not a registered nurse and not counted as one; a nursing degree without PRC registration does not authorize nursing practice. <span class=q-src>DOH, PSN</span>",
    "No national assistant license or TESDA equivalence; scope is the employer&rsquo;s written job description plus the tasks signed off under RN supervision.",
    "Ratio: DOH sets no more than 1 nurse to 4 stations; PSN discusses 1:6 patients when an assistant is present. Confirm with DOH licensing before relying on any exception. <span class=q-src>DOH, PSN</span>"]),
+ "occupational-physical-therapist": ("Occupational and Physical Therapist", [
+   "Physical therapists: PRC-registered under RA 5680; treatment requires a physician&rsquo;s prescription (Sec. 12). <span class=q-src>RA 5680</span>",
+   "Occupational therapists: PRC-registered under RA 11241, a separate profession with its own scope; works on referral. <span class=q-src>RA 11241</span>",
+   "The DOH and PSN dialysis rules list no renal OT or PT position, staffing ratio or renal therapist certificate; scope is the license, the referral and employer privileges. <span class=q-src>DOH, PSN</span>"]),
  "dialysis-unit-support-staff": ("Dialysis Unit Support Staff (orderly, environmental services aide)", [
    NA + " PSN groups housekeeping with the other nonmedical staff and expects written unit policies on infection control, waste, emergencies, and the environment. <span class=q-src>PSN</span>",
    "Your scope is your employer&rsquo;s written task list plus the tasks you have been trained and signed off on. <span class=q-src>DOH, PSN</span>"]),

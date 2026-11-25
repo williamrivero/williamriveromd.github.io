@@ -72,6 +72,8 @@ TRACKS = {
     "renal-dietitian": ("ancillary", None, "Renal Dietitian", "Renal <em>Dietitian</em>", [], []),
     "medical-records-officer": ("ancillary", None, "Medical Records Officer/Custodian", "Medical Records <em>Officer/Custodian</em>",
                                 ["Medical Records Officer and Custodian"], [("Records Officer Module", "Medical Records Officer Module")]),
+    "occupational-physical-therapist": ("ancillary", None, "Occupational and Physical Therapist", "Occupational and Physical <em>Therapist</em>",
+                                        [], [("OT/PT Module", "Occupational and Physical Therapist Module")]),
     "dialysis-unit-support-staff": ("ancillary", None, "Dialysis Unit Support Staff", "Dialysis Unit <em>Support Staff</em>",
                                     [], [("Dialysis Support Staff Module", "Dialysis Unit Support Staff Module")]),
     "dialysis-unit-manager": ("administrative", None, "Unit Operations Manager/Unit Manager", "Unit Operations Manager/<em>Unit Manager</em>",
