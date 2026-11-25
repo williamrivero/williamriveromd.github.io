@@ -999,6 +999,10 @@ from the course data; a new track needs an icon in `TRACK_ICONS` and a short nam
 after every publish) puts `<style id="academy-type">` last in each academy page's head: CSS zoom 1.125 on main, the
 pre-main callouts, glossary, references and related guides (1.09 on phones; hero subtitle/meta 1.12/1.08), page title h1 46 px (31 px on phones), not on the
 header, nav strip, floating buttons or rail. Academy CSS is px-based, so zoom is the one-rule scale; adjust it there.
+**Hero tiles color-coded by track family (Nov 25 2026, Dr. Rivero):** `tools/academy/apply_track_colors.py` (run by
+`publish_academy.py`) tags each landing hero tile `data-family` (nursing teal, physicians navy, technicians orange,
+ancillary green, administrative purple: the share-card palette), read from the landing page's own Tracks section h3s;
+untracked nursing subtracks fall back to nursing. Adds `<style id="academy-track-colors">` and a legend under the tiles.
 **Share card counts (Nov 25 2026):** the landing share card's stats line (images/og/academy/academy-index.jpg) is read from
 the landing page's stat chips by `build_academy_og.py` (`landing_stats()`); after adding a track or modules, rebuild it:
 `python3 build_academy_og.py --art images/academy/og-art --only academy-index`. The blank tablet in that art carries a QR code to
