@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Dialyzer Reprocessing Technician: a Nephrology Nursing subtrack, in the POD/PD package schema.
+"""Dialyzer Reprocessing Technician: a Renal Technicians track (specialist branch), in the POD/PD package schema.
 Blueprint: /Volumes/Storage/Renal Care Academy/Reprocessing Technician/REPROCESSING_TECHNICIAN_BLUEPRINT_v1.0.md
 (supersedes the v0.1 handoff package of November 25, 2026). One canonical proficiency (RCM-DIALYZER-REPROCESSING)
 shared with the Dialysis Technician and Biomedical Equipment Technician tracks. Every case, name and identifier is fictional.
@@ -12,8 +12,8 @@ COURSE = {
     "title": "Dialyzer Reprocessing Technician",
     "short": "Reprocessing Technician",
     "hub_slug": HUB,
-    "label": "Nephrology Nursing subtrack for the dialyzer reuse room",
-    "tag": "Nephrology Nursing &middot; Role subtrack",
+    "label": "Renal technician track for the dialyzer reuse room",
+    "tag": "Renal Technicians &middot; Reuse room",
     "icon": "♻️",
     "no_branch": True,
     "audience": ("Reprocessing operators and dialysis technicians in Philippine hemodialysis units &middot; biomedical technicians who service reprocessors &middot; "
@@ -41,11 +41,9 @@ COURSE = {
                    "validated procedure, never from this page. The medical director decides who is eligible for reuse; the nurse decides whether a dialyzer is used "
                    "on a patient. Every case, name and identifier is fictional. Pending clinical review."),
     "branch_img": f"{HUB}-card.webp",
-    "branch_role": "Role subtrack &middot; technicians",
+    "branch_role": "Specialist branch &middot; reuse room",
     "branch_blurb": ("For the reuse room: the dialyzer, the rules, infection and chemical safety, water, identity, cleaning, testing, storage and handoff, "
                      "equipment faults, and quality. Shared with the Dialysis Technician and Biomedical tracks."),
-    "parent": ("nephrology-nursing.html", "Nephrology Nursing",
-               "The parent course. The reuse room is part of the nursing service that the head nurse and medical director supervise."),
     "academy_meta": "12 modules &middot; 480 planned hours &middot; a six-tool training toolkit",
     "hero_alt": "A Filipino reprocessing technician in a face shield and gown checking the label of a hollow-fiber dialyzer at a clean reprocessing station.",
     "start_h2": "The room behind the dialysis floor",
