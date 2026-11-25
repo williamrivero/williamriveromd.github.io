@@ -135,13 +135,26 @@
   }
 
   /* ── landing panel ────────────────────────────────────────────────────── */
-  var panel = null, card = null, notice = '';
+  var panel = null, card = null, notice = '', scrim = null, tab = null;
+  function openDrawer() {
+    if (!panel) return;
+    panel.classList.add('sch-open'); scrim.classList.add('sch-open');
+    panel.setAttribute('aria-hidden', 'false'); tab.setAttribute('aria-expanded', 'true');
+    var b = panel.querySelector('.sch-close'); if (b) b.focus({ preventScroll: true });
+  }
+  function closeDrawer() {
+    if (!panel) return;
+    panel.classList.remove('sch-open'); scrim.classList.remove('sch-open');
+    panel.setAttribute('aria-hidden', 'true'); tab.setAttribute('aria-expanded', 'false');
+    if (location.hash === '#schola') try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  }
   function progressUI(host) {
     var p = host.querySelector('.sch-prog');
     return function (done, total, n, count) {
       p.hidden = false;
       var pct = total ? Math.round(done / total * 100) : 100;
       p.querySelector('.sch-bar i').style.width = pct + '%';
+      if (tab) tab.querySelector('span').textContent = count && done < total ? 'Saving ' + pct + '%' : 'Schola';
       p.querySelector('.sch-ptxt').textContent = count ? 'Saving ' + n + ' of ' + count + ' files · ' + mb(done) + ' of ' + mb(total) : 'Checking saved files…';
     };
   }
@@ -150,9 +163,11 @@
     host.querySelector('.sch-msg').textContent = '';
     Array.prototype.forEach.call(host.querySelectorAll('button'), function (b) { b.disabled = true; });
     download(ids, progressUI(host)).then(function () {
+      if (tab) tab.querySelector('span').textContent = 'Schola';
       notice = label + ' saved. It works without signal now.';
       renderAll();
     }, function (e) {
+      if (tab) tab.querySelector('span').textContent = 'Schola';
       notice = e && e.message && e.message !== 'busy' ? e.message : 'A download is already running.';
       renderAll();
     });
@@ -257,13 +272,29 @@
     var main = document.querySelector('main.container') || document.querySelector('main');
     if (!main || !hasCache) return;
     if (isLanding) {
-      panel = el('section', 'sch-panel no-print');
+      /* Left drawer, opened by a tab on the left edge (Dr. Rivero: not the first thing you see when scrolling) */
+      panel = el('aside', 'sch-panel sch-drawer no-print');
       panel.id = 'schola';
       panel.setAttribute('aria-label', 'Schola, the Academy app');
+      panel.setAttribute('aria-hidden', 'true');
       panel.innerHTML = '<div class="sch-head">' + ICON + '<div><h2>Schola: the Academy as an app</h2>' +
-        '<p>Install it on your phone, tablet or computer, and save tracks to study where there is no signal.</p></div></div><div class="sch-body"></div>';
-      main.insertBefore(panel, main.firstChild);
+        '<p>Install it on your phone, tablet or computer, and save tracks to study where there is no signal.</p></div>' +
+        '<button type="button" class="sch-close" aria-label="Close">\u00d7</button></div><div class="sch-body"></div>';
+      scrim = el('div', 'sch-scrim no-print');
+      tab = el('button', 'sch-tab no-print', ICON.replace('width="44" height="44"', 'width="26" height="26"') + '<span>Schola</span>');
+      tab.type = 'button';
+      tab.setAttribute('aria-label', 'Open Schola: study tools, install the app, save tracks offline');
+      tab.setAttribute('aria-controls', 'schola');
+      document.body.appendChild(scrim);
+      document.body.appendChild(panel);
+      document.body.appendChild(tab);
       panel.addEventListener('click', onClick);
+      panel.querySelector('.sch-close').addEventListener('click', closeDrawer);
+      scrim.addEventListener('click', closeDrawer);
+      tab.addEventListener('click', function () { panel.classList.contains('sch-open') ? closeDrawer() : openDrawer(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel.classList.contains('sch-open')) closeDrawer(); });
+      window.addEventListener('hashchange', function () { if (location.hash === '#schola') openDrawer(); });
+      if (location.hash === '#schola') setTimeout(openDrawer, 300);
     } else if (isHub) {
       card = el('div', 'sch-card no-print');
       card.innerHTML = '<div class="sch-cicon">' + ICON + '</div><div class="sch-body"></div>';
@@ -298,6 +329,19 @@
   var css = '' +
     '.sch-panel,.sch-card{font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#1b2430;border:1px solid rgba(31,56,100,.16);border-radius:16px;background:#fff;box-shadow:0 6px 22px rgba(15,30,46,.07)}' +
     '.sch-panel{padding:20px 22px;margin:8px 0 28px}' +
+    '.sch-drawer{position:fixed;z-index:100001;top:0;left:0;bottom:0;margin:0;width:min(460px,94vw);border-radius:0 16px 16px 0;overflow-y:auto;overscroll-behavior:contain;' +
+      'transform:translateX(-105%);visibility:hidden;transition:transform .22s ease,visibility 0s linear .22s;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}' +
+    '.sch-drawer.sch-open{transform:none;visibility:visible;transition:transform .22s ease}' +
+    '.sch-drawer .sch-head{position:sticky;top:-20px;background:inherit;padding:20px 0 12px;margin:-20px 0 12px;z-index:1}' +
+    '.sch-close{margin-left:auto;align-self:flex-start;border:0;background:none;font-size:28px;line-height:1;color:#5a6677;cursor:pointer;padding:0 4px}' +
+    '.sch-scrim{position:fixed;inset:0;z-index:100000;background:rgba(10,18,32,.45);opacity:0;pointer-events:none;transition:opacity .2s}.sch-scrim.sch-open{opacity:1;pointer-events:auto}' +
+    '.sch-tab{position:fixed;z-index:9996;left:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;' +
+      'padding:12px 7px;border:0;border-radius:0 12px 12px 0;background:#1F3864;color:#fff;cursor:pointer;box-shadow:4px 6px 20px rgba(15,30,46,.25)}' +
+    '.sch-tab img{border-radius:6px}.sch-tab span{writing-mode:vertical-rl;transform:rotate(180deg);font:700 13px Inter,system-ui,sans-serif;letter-spacing:.04em}' +
+    '.sch-tab:hover{background:#26467c}' +
+    '@media (max-width:640px){.sch-tab{top:auto;left:24px;bottom:calc(196px + env(safe-area-inset-bottom,0px));transform:none;width:44px;height:44px;padding:0;border-radius:50%;justify-content:center}' +
+      '.sch-tab span{display:none}.sch-tab img{width:30px;height:30px;border-radius:8px}html.sch-app .sch-tab{margin-bottom:calc(60px + env(safe-area-inset-bottom,0px))}}' +
+    'html[data-theme="dark"] .sch-close{color:#a9b4c2}html[data-theme="dark"] .sch-tab{background:#26467c}' +
     '.sch-head{display:flex;gap:14px;align-items:center;margin-bottom:12px}.sch-head img,.sch-cicon img{border-radius:11px;flex:none}' +
     '.sch-head h2{font:800 21px/1.2 Inter,Manrope,system-ui,sans-serif;color:#1F3864;margin:0 0 3px}.sch-head p{margin:0;color:#4a5568;font-size:15px}' +
     '.sch-tools{background:#f5f8fb;border-radius:12px;padding:12px 16px;margin:4px 0 14px}.sch-tools h3{font:800 15px Inter,system-ui,sans-serif;color:#1F3864;margin:0 0 8px}' +
@@ -336,7 +380,7 @@
     'html[data-theme="dark"] .sch-mini{background:#0f1826;color:#e6ebf2;border-color:rgba(255,255,255,.2)}html[data-theme="dark"] .sch-ios{background:#0f1826}' +
     'html[data-theme="dark"] .sch-msg,html[data-theme="dark"] .sch-card a{color:#6cc3c9}html[data-theme="dark"] .sch-saved,html[data-theme="dark"] .sch-ok{color:#7fd19a}' +
     'html[data-theme="dark"] .sch-tracks li{border-color:rgba(255,255,255,.1)}html[data-theme="dark"] .sch-bar{background:#2a3648}' +
-    '@media print{.sch-panel,.sch-card,.sch-appbar{display:none!important}}';
+    '@media print{.sch-panel,.sch-card,.sch-appbar,.sch-tab,.sch-scrim{display:none!important}}';
   var st = document.createElement('style');
   st.id = 'schola-css';
   st.textContent = css;
