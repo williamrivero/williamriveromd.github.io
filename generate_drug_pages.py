@@ -2896,17 +2896,19 @@ def offline_manifest(out_dir: Path) -> dict:
         rows.append([path, (m.group(1) if m else hashlib.sha1(raw).hexdigest())[:10], len(raw)])
 
     for f in sorted(out_dir.glob("*.html")):
-        if f.stem not in ("index", "offline"):
+        if re.fullmatch(r"[a-z0-9][a-z0-9-]*", f.stem) and f.stem not in ("index", "offline"):
             add(f"/drugs/{f.stem}", f)
     for sub in ("category", "supplements"):
         for f in sorted((out_dir / sub).glob("*.html")):
+            if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", f.stem):
+                continue
             add(f"/drugs/{sub}/" if f.stem == "index" else f"/drugs/{sub}/{f.stem}", f)
     for dj in ("interactions.json", "med-scheduler.json"):
         if (out_dir / dj).exists():
             add(f"/drugs/{dj}", out_dir / dj)
     sdata = REPO / "data" / "drugs" / "supplements"
     for f in sorted(sdata.glob("*.json")):
-        if not f.name.startswith("_"):
+        if re.fullmatch(r"[a-z0-9][a-z0-9-]*", f.stem):
             add(f"/data/drugs/supplements/{f.name}", f)
     h = hashlib.sha1(json.dumps(rows, separators=(",", ":")).encode("utf-8")).hexdigest()[:12]
     return {"v": 3, "h": h, "pages": rows}
@@ -5785,7 +5787,7 @@ def main():
         keep = {e["s"] for e in entries} | {"index", "offline", "interactions", "med-scheduler"}
         for d, kp in ((out_dir, keep), (cdir, cat_keep)):
             for f in d.glob("*.html"):
-                if f.stem in kp:
+                if f.stem in kp or not re.fullmatch(r"[a-z0-9][a-z0-9-]*", f.stem):
                     continue
                 with open(f, encoding="utf-8") as fh:
                     if f'content="{GENERATOR_TAG}"' in fh.read(2048):

@@ -702,6 +702,13 @@ class DPD:
             return []
         codes = set.intersection(*(self.by_word.get(w, set()) for w in words))
         hits = [c for c in codes if matches(ingredients, self.ings[c])]
+        # Ingredient-only water matching cannot distinguish a bacteriostatic product.
+        # An unspecified/sterile WFI query must not inherit that named formulation.
+        plain_wfi = (len(ingredients) == 1 and
+                     re.sub(r"\s+", " ", ingredients[0].strip().lower()) in
+                     {"water for injection", "sterile water for injection"})
+        if plain_wfi:
+            hits = [c for c in hits if "bacteriostatic" not in self.drugs[c]["brand"].lower()]
         top = max(routes, key=routes.get) if routes else None
 
         def rgrp(c):
@@ -922,7 +929,8 @@ def probe_national(drugs: list[str]) -> int:
                         except Exception:
                             continue
                         for mm in list(re.finditer(r"location\.(?:search|hash)|getParam|\$location|searchParams|nombre", js))[:6]:
-                            print(f"   js {src}: …{re.sub(r'\s+', ' ', js[max(0, mm.start() - 120):mm.end() + 160])}…")
+                            excerpt = re.sub(r"\s+", " ", js[max(0, mm.start() - 120):mm.end() + 160])
+                            print(f"   js {src}: …{excerpt}…")
                 if pat == pats[0] or det == 0:
                     print("   forms:", forms, "inputs:", inputs)
                     i = body.lower().find(q.lower())

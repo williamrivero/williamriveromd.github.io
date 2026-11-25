@@ -236,3 +236,27 @@ consolidated 8% dextrose synonym: its raw records include 7% dextrose and an amb
 strength. US spinal 0.75%/8.25% comparator labeling is distinguished from Philippine
 0.5% products; no milliliter dose schedule is transferred. New regional summaries cite primary
 clinical studies and explicitly state evidence and kidney-prescribing limitations.
+
+## Formulation-sensitive monograph batch (25 November 2026)
+
+Ten additional summaries cite primary clinical studies, the dated US reference labels and
+NICE adult IV-fluid guidance. Rabies-vaccine routes remain product-specific; equine tetanus
+antitoxin is not human TIG; L-asparaginase records do not establish native/PEG/source-species
+equivalence. Dequalinium vaginal-tablet evidence is separated from oral/throat products, and
+the negative six-month amorolfine trial is retained. No unsupported renal schedule is added.
+
+Water for injection is a diluent: plain IV administration can cause hemolysis. Cached product
+rows do not establish preservative content; the bacteriostatic-water US-label mismatch remains
+blocked. Standard D5LR reference labeling is distinguished from added-potassium products and
+from inconsistent raw Philippine quantities. Adult and pediatric maintenance formulations are
+not assigned one generic composition or rate. Four registry notices preserve raw fields while
+flagging these gaps, a truncated multivitamin heading and first-aid kits; the kit page is noindex.
+
+The offline manifest and stale-page cleanup accept only valid generated filename stems.
+Local duplicate copy files (including HTML and supplement JSON copies with spaces) are
+skipped before opening; legitimate generated pages and supplement shards remain included.
+This prevents local backup/sync copies from entering offline downloads or blocking a build.
+
+Plain/sterile water-for-injection national-reference searches exclude products explicitly named
+bacteriostatic before choosing links. The mismatched Health Canada bacteriostatic link has
+been removed; the sterile-water reference remains, without asserting Philippine equivalence.
