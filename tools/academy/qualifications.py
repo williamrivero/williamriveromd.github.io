@@ -44,6 +44,11 @@ QUAL = {
  "attending-nephrologist": ("Attending Nephrologist", [
    "PRC-licensed, with nephrology training from a PSN-accredited or recognized institution. <span class=q-src>PSN</span>",
    "Practices in the area and is easily reached by the HDC; submits CV, updated PhilHealth accreditation, PRC license, and PSN or chapter endorsement. <span class=q-src>PSN</span>"]),
+ "vascular-surgeon": ("Vascular Surgeon", [
+   "PRC-licensed physician with surgical training; specialty credentials verified by the hospital that appoints the surgeon. No Department of Health (DOH) or Philippine Society of Nephrology (PSN) rule defines a separate vascular surgeon post for a dialysis unit. <span class=q-src>DOH, PSN</span>",
+   "PSN 2024 &sect;1.2 b3 asks the attending nephrologist to coordinate access with a vascular surgeon or trained general surgeon; it does not credential the surgeon. <span class=q-src>PSN</span>",
+   "Privileges for each open, catheter and endovascular procedure come from the operating hospital&rsquo;s credentialing committee; trainees work under documented supervision.",
+   "PATACSI lists accredited TCVS training programs, including a post-residency vascular pathway; confirm board routes with the relevant board. Completing this track grants no privileges or certification."]),
  "physician-on-duty": ("Physician-on-Duty", [
    "PRC-licensed, in order of preference: nephrologist (board-certified, then board-eligible); internist or pediatrician with at least 3 months&rsquo; HDC experience; nephrology fellow or qualifying resident; general or family practitioner with at least 6 months&rsquo; experience. <span class=q-src>DOH, PSN</span>",
    "Current ACLS from a DOH-accredited provider, and a PSN-conducted or accredited post-graduate course for PODs. <span class=q-src>DOH, PSN</span>",

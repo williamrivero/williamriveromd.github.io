@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 
@@ -567,7 +567,7 @@ def shell(course, fname, title, desc, keywords, hero_tag, h1, sub, audience, nav
     pub = published(fname)
     pub_meta = f'\n<meta property="article:published_time" content="{pub}">' if pub else ""
     og_img = None
-    for cand in (f"images/og/{slug}-vignette-hero.jpg", f"images/{slug}-vignette-hero.png",
+    for cand in (f"images/og/{slug}-og.jpg", f"images/og/{slug}-vignette-hero.jpg", f"images/{slug}-vignette-hero.png",
                  f"images/og/{course.hub}-vignette-hero.jpg", f"images/{course.hub}-vignette-hero.png",
                  "images/hero-cat-dialysis.webp"):
         if (ROOT / cand).exists():
@@ -577,6 +577,9 @@ def shell(course, fname, title, desc, keywords, hero_tag, h1, sub, audience, nav
     if og_img:
         og_tags = (f'\n<meta property="og:image" content="{og_img}">\n<meta property="og:image:alt" content="{html.escape(title)}">'
                    f'\n<meta name="twitter:image" content="{og_img}">')
+        if og_img.endswith("-og.jpg"):      # dedicated 1200 x 630 share card (images/og/<slug>-og.jpg)
+            og_tags += ('\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">'
+                        '\n<meta property="og:image:type" content="image/jpeg">')
     ld = {
         "@context": "https://schema.org", "@type": "MedicalWebPage", "name": title, "url": url,
         "author": {"@type": "Physician", "name": "William Gregory M. Rivero, MD, FPCP, DPSN", "url": SITE + "/"},
@@ -1543,7 +1546,7 @@ def build_academy():
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
     short = {"hemodialysis-technician": "Dialysis Technician", "water-treatment-technician": "Water Treatment Technician",
              "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head", "philhealth-claims": "PhilHealth Claims", "dialysis-unit-manager": "Unit Manager",
-             "attending-nephrologist": "Attending Nephrologist", "medical-records-officer": "Medical Records Officer", "dialysis-head-nurse": "Head Nurse", "dialysis-charge-nurse": "Charge Nurse", "dialyzer-reprocessing-technician": "Reprocessing Technician"}
+             "attending-nephrologist": "Attending Nephrologist", "medical-records-officer": "Medical Records Officer", "dialysis-head-nurse": "Head Nurse", "dialysis-charge-nurse": "Charge Nurse", "dialyzer-reprocessing-technician": "Reprocessing Technician", "vascular-surgeon": "Vascular Surgeon"}
     hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]
     pg = shell(_Academy, fname, "Renal Care Academy: Training for Dialysis and Nephrology Staff", desc, A["keywords"],

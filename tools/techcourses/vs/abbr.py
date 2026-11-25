@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+"""Abbreviations new to the Academy from the Vascular Surgeon track (token -> (expansion, plain note)).
+Only tokens not already defined elsewhere in the Academy are listed."""
+
+ABBR = {
+    "ESVS": ("European Society for Vascular Surgery", ""),
+    "SVS": ("Society for Vascular Surgery", ""),
+    "DBI": ("digital&ndash;brachial index", "the finger pressure divided by the arm pressure"),
+    "HAIDI": ("hemodialysis access-induced distal ischemia", ""),
+    "DRIL": ("distal revascularization and interval ligation", ""),
+    "PAI": ("proximalization of arterial inflow", ""),
+    "RUDI": ("revision using distal inflow", ""),
+    "PICC": ("peripherally inserted central catheter", ""),
+    "CIED": ("cardiac implantable electronic device", "a pacemaker or implantable defibrillator"),
+    "PTA": ("percutaneous transluminal angioplasty", ""),
+    "DCB": ("drug-coated balloon", ""),
+    "RCT": ("randomized controlled trial", ""),
+    "TCVS": ("thoracic and cardiovascular surgery", ""),
+    "PATACSI": ("Philippine Association of Thoracic and Cardiovascular Surgery, Inc.", ""),
+    "ACGME": ("Accreditation Council for Graduate Medical Education", ""),
+    "ABS": ("American Board of Surgery", ""),
+    "DOAC": ("direct oral anticoagulant", ""),
+    "INR": ("international normalized ratio", ""),
+    "ePTFE": ("expanded polytetrafluoroethylene", "the usual synthetic graft material"),
+    "MDT": ("multidisciplinary team", ""),
+    "NHSN": ("National Healthcare Safety Network", ""),
+    "HeRO": ("Hemodialysis Reliable Outflow", "a graft joined to a catheter that ends in the right atrium"),
+    "SVC": ("superior vena cava", ""),
+    "DOPPS": ("Dialysis Outcomes and Practice Patterns Study", ""),
+    "HFM": ("Hemodialysis Fistula Maturation", "a prospective US cohort study"),
+    "endoAVF": ("endovascular arteriovenous fistula", ""),
+    "NEAT": ("Novel Endovascular Access Trial", ""),
+    "FAVOURED": ("Fish Oils and Aspirin in Vascular Access Outcomes in Renal Disease trial", ""),
+    "DAC": ("Dialysis Access Consortium", ""),
+}

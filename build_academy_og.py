@@ -50,6 +50,8 @@ TRACKS = {
                           "SHIFT COVERAGE", "First-shift modules open · three tiers"),
     "attending-nephrologist": ("academy/attending-nephrologist.html", "physicians", "Attending Nephrologist",
                                "CONSULTANT", "24 modules · calculators in every module"),
+    "vascular-surgeon": ("academy/vascular-surgeon.html", "physicians", "Vascular Surgeon",
+                         "ACCESS SURGERY", "20 modules · referral to rescue"),
     "dialysis-clinical-head": ("academy/dialysis-clinical-head.html", "physicians", "Dialysis Clinical Head",
                                "SERVICE LEADERSHIP", "14 modules · governance to the first 90 days"),
     "renal-dietitian": ("academy/renal-dietitian.html", "ancillary", "Renal Dietitian",

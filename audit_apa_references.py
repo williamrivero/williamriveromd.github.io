@@ -87,6 +87,14 @@ def check_apa(cite):
                  bool(re.search(r'^\s*[A-Z][\w\-]*(?:\s+[\w\-]+){0,6}\s+(?:Writing Committee|Trial Group|Study Group|Investigators|Collaborators|Work Group)\.\s*\(\s*(19|20)\d{2}', cite)),
         'PAGES': bool(re.search(r'\b\d+[–-]\d+\b|e\d{4,}', cite)),
     }
+    # APA 7 undated web source: "(n.d.)" plus a retrieval date counts as the date element.
+    if not flags['YEAR'] and re.search(r'\(n\.d\.\)', cite) and \
+            re.search(r'Retrieved\s+[A-Z][a-z]+\s+\d{1,2},\s+(19|20)\d{2}', cite):
+        flags['YEAR'] = True
+    # APA 7 organizational (group) author, e.g. "Philippine Health Insurance Corporation. (2024)."
+    # or "American Board of Surgery. (n.d.).": 2+ capitalized words, then ". (" and a date.
+    if not flags['AUTH'] and re.match(r'\s*(?:[A-Z][\w&\-]*,?\s+)(?:(?:of|for|and|the|on|in|&|[A-Z][\w&\-.]*),?\s+){0,12}[A-Z][\w&\-.]*\.\s*\((?:(?:19|20)\d{2}|n\.d\.)', cite):
+        flags['AUTH'] = True
     # Pass = italics + (DOI or URL) + year + at least one Author, X. block.
     flags['PASS'] = flags['ITAL'] and (flags['DOI'] or flags['URL']) and \
                     flags['YEAR'] and flags['AUTH']
