@@ -25,4 +25,7 @@ ABBR = {
     "RTH": ("return to hospital", "A claim PhilHealth sends back to the facility for correction or completion."),
     "LTO": ("License to Operate", "The Department of Health license a facility needs to operate."),
     "ICD-10": ("International Classification of Diseases, 10th Revision", "The diagnosis code set PhilHealth uses, with Philippine modifications."),
+    "HMO": ("health maintenance organization", "A private health plan that pays accredited providers for its members&rsquo; care under a contract."),
+    "LOA": ("letter of authorization", "The HMO&rsquo;s written approval, with a code, validity dates, and an approved amount, issued before a service is billed to it."),
+    "BIR": ("Bureau of Internal Revenue", "The government agency that collects taxes, including tax withheld from payments to providers."),
 }
