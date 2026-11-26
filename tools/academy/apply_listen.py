@@ -31,7 +31,7 @@ NAME = "academy-listen"
 SOURCES = [ASSETS / "vendor" / "easy-speech.iife.js", ASSETS / "academy-listen.js"]
 
 # Pilot first (Dr. Rivero previews before rollout). Set to None to cover every module page.
-PILOT = {"dialysis-charge-nurse-01-taking-charge.html"}
+PILOT = None   # rolled out to every module (Dr. Rivero, Nov 26 2026)
 
 TAG_RE = re.compile(r'\n?<script src="[^"]*assets/' + NAME + r'\.[0-9a-f]{10}\.js" defer></script>')
 MODULE_RE = re.compile(r"-\d\d-")

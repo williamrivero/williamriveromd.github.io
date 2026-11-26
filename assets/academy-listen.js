@@ -163,14 +163,13 @@
       var vs = all.filter(function (v) { return /^en([-_]|$)/i.test(v.lang); });
       var score = function (v) { var t = tier(v); return (t === "Premium" ? 8 : t === "Enhanced" ? 6 : /natural|neural|siri|google/i.test(v.name) ? 4 : 0) + (/en[-_](US|PH)/i.test(v.lang) ? 2 : 0) + (v.localService ? 1 : 0); };
       vs.sort(function (a, b) { return score(b) - score(a) || a.name.localeCompare(b.name); });
-      // Dr. Rivero (Nov 26 2026): of the device voices, offer only Samantha and Karen (any quality); the rest sound poor.
-      // A device that has neither (most Android phones) keeps its single best English voice, so it still has a
-      // no-download option next to the natural voices.
-      var KEEP = /^(samantha|karen)\b/i, kept = vs.filter(function (v) { return KEEP.test(v.name); });
-      kept.sort(function (a, b) { return (/^samantha/i.test(a.name) ? 0 : 1) - (/^samantha/i.test(b.name) ? 0 : 1) || score(b) - score(a); });
-      vs = kept.length ? kept : vs.slice(0, 1);
+      // Dr. Rivero (Nov 26 2026): the menu offers only the two natural voices. The device's single best English
+      // voice is kept as a hidden fallback: used when the learner declines the download, the download fails, or
+      // the browser cannot run the natural voice.
+      vs = vs.slice(0, 1);
       var saved = ls(K_VOICE);
       if (saved && saved.indexOf("piper:") === 0 && naturalVoice(saved.slice(6))) natural = saved.slice(6);
+      else if (canNatural() && !ls(K_NO_DL)) natural = NATURAL[0].key;            // default: Lessac
       voice = vs.filter(function (v) { return v.voiceURI === saved || v.name === saved; })[0] || vs[0] || null;
       return vs;
     });
@@ -214,6 +213,8 @@
     phonemizeBase: JSD + "@diffusionstudio/piper-wasm@1.0.0/build/piper_phonemize"
   };
   var WORKER_URL = "__PIPER_WORKER__";
+  var K_NO_DL = "rcm-tts-no-download";            // the learner declined the download: device voice until they pick one
+  function canNatural() { return !!(window.Worker && window.WebAssembly && window.caches && WORKER_URL.indexOf("__") !== 0); }
   var K_NATURAL_OK = "rcm-tts-natural-ok";        // set once a natural voice has finished downloading
   var natural = null, worker = null, workerKey = null, workerReady = null, wid = 0, waits = {}, cache = {};
   var aud = null, audKey = null, raf = 0;
@@ -309,6 +310,10 @@
   }
   function useDevice(msg) {
     natural = null; ls(K_VOICE, voice ? voice.voiceURI : null);
+    if (voiceSel && voice && !voiceSel.querySelector('option[value="' + CSS.escape(voice.voiceURI) + '"]')) {
+      var o = document.createElement("option"); o.value = voice.voiceURI; o.textContent = "Built-in voice (no download)";
+      voiceSel.appendChild(o);
+    }
     if (voiceSel) voiceSel.value = voice ? voice.voiceURI : "";
     if (msg) status(msg);
   }
@@ -350,6 +355,8 @@
       error: function (e) { if (my !== token) return; if (e && /interrupted|canceled/.test(e.error || "")) return; part++; speakNext(); }
     }).catch(function () {});
   }
+  var askedDl = false;
+  var DL_MSG = "The natural voice is a free, one-time download of about 90 MB. After that it also works without a signal. Use Wi-Fi if you can.\n\nDownload it now?\n(Cancel uses your device's built-in voice for now.)";
   function play() {
     if (natural) unlockAudio();
     init().then(function () {
@@ -359,6 +366,11 @@
         aud.playbackRate = rate;
         aud.play().then(function () { mediaState(); }).catch(function () {});
         return;
+      }
+      if (natural && !ls(K_NATURAL_OK) && !askedDl) {
+        askedDl = true;
+        if (!window.confirm(DL_MSG)) { ls(K_NO_DL, "1"); useDevice("Using your device's built-in voice. Pick Lessac or Ryan in the voice menu any time to download it."); }
+        else ls(K_NO_DL, null);
       }
       playing = true; setUI(); keepAwake(true);
       if (natural) {
@@ -451,11 +463,11 @@
         var val = voiceSel.value, was = playing;
         if (val.indexOf("piper:") === 0) {
           var key = val.slice(6);
-          if (!ls(K_NATURAL_OK) && !window.confirm("The natural voice is a free, one-time download of about 90 MB. After that it also works without a signal. Use Wi-Fi if you can.\n\nDownload it now?")) {
+          if (!ls(K_NATURAL_OK) && !window.confirm(DL_MSG.replace(/\n\(Cancel.*$/, ""))) {
             voiceSel.value = natural ? "piper:" + natural : (voice ? voice.voiceURI : ""); return;
           }
           if (was) stop(true);
-          natural = key; ls(K_VOICE, val); unlockAudio();
+          natural = key; askedDl = true; ls(K_NO_DL, null); ls(K_VOICE, val); unlockAudio();
           status("Downloading natural voice…");
           startEngine(key).then(function () { status(was ? "Reading aloud" : "Natural voice ready. Tap play."); if (was) play(); },
             function () { useDevice("The natural voice could not download. Check the connection and try again."); });
@@ -471,8 +483,8 @@
       init().then(function (vs) {
         var g1 = document.createElement("optgroup"), g2 = document.createElement("optgroup");
         g1.label = ls(K_NATURAL_OK) ? "Natural voices (downloaded)" : "Natural voices (free, one-time download)";
-        g2.label = "This device's voices";
-        if (window.Worker && window.WebAssembly && window.caches && WORKER_URL.indexOf("__") !== 0) {
+        g2.label = "This device's voice";
+        if (canNatural()) {
           NATURAL.forEach(function (n) {
             var o = document.createElement("option"); o.value = "piper:" + n.key; o.textContent = n.label;
             if (natural === n.key) o.selected = true;
@@ -480,9 +492,9 @@
           });
           voiceSel.appendChild(g1);
         }
-        (vs || []).forEach(function (v) {
+        if (!g1.children.length || !natural) (vs || []).forEach(function (v) {
           var o = document.createElement("option"); o.value = v.voiceURI;
-          o.textContent = voiceLabel(v);
+          o.textContent = g1.children.length ? "Built-in voice (no download)" : voiceLabel(v);
           if (!natural && voice && v.voiceURI === voice.voiceURI) o.selected = true;
           g2.appendChild(o);
         });
@@ -521,14 +533,34 @@
       saved = null;
       play();
     });
-    anchor.parentNode.insertBefore(launch, anchor.nextSibling);
+    var row = document.createElement("div");
+    row.className = "rcm-tts-row no-print";
+    row.appendChild(launch);
+    anchor.parentNode.insertBefore(row, anchor.nextSibling);
+    if (saved && saved.i > 0) {                                     // a saved place: also offer a fresh start
+      var again = document.createElement("button");
+      again.type = "button";
+      again.className = "rcm-tts-ui rcm-tts-again no-print";
+      again.innerHTML = IC.prev + '<span>Start from the beginning</span>';
+      again.setAttribute("aria-label", "Listen to this module from the beginning");
+      again.addEventListener("click", function () {
+        saved = null; try { localStorage.removeItem(K_POS); } catch (e) {}
+        openPlayer(); idx = 0; part = 0; play();
+        again.remove();
+        launch.querySelector("span").textContent = "Listen to this module";
+      });
+      row.appendChild(again);
+    }
   }
 
   var css = document.createElement("style");
   css.id = "rcm-tts-css";
   css.textContent = [
-    ".rcm-tts-launch{display:inline-flex;align-items:center;gap:9px;margin:14px 0 4px;padding:12px 20px 12px 16px;min-height:48px;border-radius:999px;border:2px solid #1F3864;background:#1F3864;color:#fff;font:700 16px/1.1 Inter,Manrope,system-ui,sans-serif;cursor:pointer;box-shadow:0 6px 16px -8px rgba(20,40,75,.55)}",
-    ".rcm-tts-launch svg{width:22px;height:22px}.rcm-tts-launch:hover{background:#16294a}",
+    ".rcm-tts-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0 4px}.rcm-tts-launch{display:inline-flex;align-items:center;gap:7px;margin:0;padding:7px 14px 7px 11px;min-height:38px;border-radius:999px;border:2px solid #1F3864;background:#1F3864;color:#fff;font:700 14px/1.1 Inter,Manrope,system-ui,sans-serif;cursor:pointer;box-shadow:0 6px 16px -8px rgba(20,40,75,.55)}",
+    ".rcm-tts-launch svg{width:17px;height:17px}.rcm-tts-launch:hover{background:#16294a}",
+    ".rcm-tts-again{display:inline-flex;align-items:center;gap:6px;margin:0;padding:6px 13px 6px 10px;min-height:38px;border-radius:999px;border:2px solid #1F3864;background:transparent;color:#1F3864;font:700 13.5px/1.1 Inter,Manrope,system-ui,sans-serif;cursor:pointer}",
+    ".rcm-tts-again svg{width:15px;height:15px}.rcm-tts-again:hover{background:rgba(31,56,100,.08)}.rcm-tts-again:focus-visible{outline:3px solid #f0a81e;outline-offset:2px}",
+    "html[data-theme='dark'] .rcm-tts-again{border-color:#f0a81e;color:#f3c46a}",
     ".rcm-tts-launch:focus-visible,.rcm-tts-b:focus-visible,.rcm-tts-voice:focus-visible{outline:3px solid #f0a81e;outline-offset:2px}",
     ".rcm-tts-bar{position:fixed;z-index:100002;left:50%;bottom:16px;transform:translateX(-50%);width:min(640px,calc(100% - 150px));background:#13233f;color:#fff;border-radius:18px;padding:10px 12px;box-shadow:0 14px 40px -10px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14);font-family:Inter,Manrope,system-ui,sans-serif}",
     ".rcm-tts-bar[hidden]{display:none}",
