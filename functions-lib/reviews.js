@@ -70,16 +70,15 @@ export function authorized(request, env) {
 }
 
 export async function turnstileOk(request, env, token) {
-  if (!env.TURNSTILE_SECRET) return true;                 // not set up yet: rely on the other filters
-  if (!token || typeof token !== "string") return false;
+  // Returns { ok, codes }. codes are Turnstile's own error codes, sent back so a failure can be diagnosed.
+  if (!env.TURNSTILE_SECRET) return { ok: true, codes: [] };     // not set up yet: rely on the other filters
+  if (!token || typeof token !== "string") return { ok: false, codes: ["missing-token"] };
   const form = new FormData();
-  form.append("secret", env.TURNSTILE_SECRET);
+  form.append("secret", String(env.TURNSTILE_SECRET).trim());
   form.append("response", token);
-  const ip = request.headers.get("cf-connecting-ip");
-  if (ip) form.append("remoteip", ip);
   try {
     const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: form });
     const j = await r.json();
-    return !!j.success;
-  } catch (e) { return false; }
+    return { ok: !!j.success, codes: Array.isArray(j["error-codes"]) ? j["error-codes"].slice(0, 4) : [] };
+  } catch (e) { return { ok: false, codes: ["verify-unreachable"] }; }
 }

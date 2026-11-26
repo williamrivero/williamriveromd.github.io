@@ -52,7 +52,8 @@ export async function onRequestPost({ request, env }) {
   const feats = (Array.isArray(body.features) ? body.features : []).filter((f) => FEATURES.includes(f));
   const features = [...new Set(feats)].slice(0, 3).join(",");
   if (/https?:\/\/|www\./i.test(comment + " " + name + " " + improve)) return json({ error: "links" }, 400);
-  if (!(await turnstileOk(request, env, body.turnstile))) return json({ error: "human_check" }, 403);
+  const ts = await turnstileOk(request, env, body.turnstile);
+  if (!ts.ok) return json({ error: "human_check", codes: ts.codes }, 403);
   const iph = await hashIp(request, env);
   const recent = await d.prepare("SELECT COUNT(*) AS n FROM reviews WHERE iph=? AND created > datetime('now','-1 day')").bind(iph).first();
   if (recent && recent.n >= 3) return json({ error: "limit" }, 429);

@@ -383,7 +383,7 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
     window.rcmTsReady = function () {
       tsWidget = window.turnstile.render("#ts", {
         sitekey: key, size: "flexible", theme: document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light",
-        callback: function (t) { tsToken = t; }, "expired-callback": function () { tsToken = null; }, "error-callback": function () { tsToken = null; }
+        callback: function (t) { tsToken = t; }, "expired-callback": function () { tsToken = null; }, "error-callback": function () { tsToken = null; }, "refresh-expired": "auto"
       });
     };
     var s = document.createElement("script");
@@ -412,6 +412,11 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
     human_check: "Please complete the quick human check above the button.",
     not_configured: "The review form opens soon. Thank you for your patience."
   };
+  function currentToken() {
+    // Read the widget's live token at submit time (it refreshes itself before it expires).
+    try { if (tsWidget != null && window.turnstile) { var t = window.turnstile.getResponse(tsWidget); if (t) return t; } } catch (x) {}
+    return tsToken;
+  }
   var form = document.getElementById("rv-form"), msg = document.getElementById("msg"), btn = document.getElementById("submit");
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -426,7 +431,7 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
       features: Array.prototype.map.call(feats.querySelectorAll("input:checked"), function (b) { return b.value; }),
       improve: document.getElementById("improve").value, comment: document.getElementById("comment").value,
       name: document.getElementById("name").value, role: role.value,
-      website: document.getElementById("website").value, elapsed: Date.now() - started, turnstile: tsToken, page: ref
+      website: document.getElementById("website").value, elapsed: Date.now() - started, turnstile: currentToken(), page: ref
     };
     btn.disabled = true; btn.textContent = "Sending…";
     fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) })
@@ -440,6 +445,7 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
           return;
         }
         msg.className = "msg err"; msg.textContent = ERR[res.j.error] || "Something went wrong. Please try again in a moment.";
+        if (res.j.error === "human_check" && res.j.codes && res.j.codes.length) msg.textContent += " (code: " + res.j.codes.join(", ") + ")";
         btn.disabled = false; btn.textContent = "Submit rating";
         if (tsWidget != null && window.turnstile) { window.turnstile.reset(tsWidget); tsToken = null; }
       })
