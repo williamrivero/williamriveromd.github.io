@@ -88,6 +88,8 @@ def main():
         C = importlib.util.module_from_spec(spec); spec.loader.exec_module(C); C.main()   # hero tiles by track family
         spec = importlib.util.spec_from_file_location("apply_notes", Path(__file__).with_name("apply_notes.py"))
         N = importlib.util.module_from_spec(spec); spec.loader.exec_module(N); N.main()   # highlights, notes, bookmarks + Schola scripts
+        spec = importlib.util.spec_from_file_location("apply_listen", Path(__file__).with_name("apply_listen.py"))
+        L = importlib.util.module_from_spec(spec); spec.loader.exec_module(L); L.main()   # Listen player (read aloud)
         spec = importlib.util.spec_from_file_location("strip_symptom_widget", Path(__file__).with_name("strip_symptom_widget.py"))
         W = importlib.util.module_from_spec(spec); spec.loader.exec_module(W); W.main()   # no Symptom Checker in the Academy
         spec = importlib.util.spec_from_file_location("patch_site_nav", Path(__file__).resolve().parents[2] / "patch_site_nav.py")
