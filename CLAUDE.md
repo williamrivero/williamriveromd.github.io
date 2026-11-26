@@ -1034,8 +1034,10 @@ and then `python3 patch_rg_card_thumbs.py` (adds the thumbs to existing cards; t
 `terms.html` (hand-written): copyright in Dr. Rivero's own name (William Gregory M. Rivero, MD); PDF handouts under
 CC BY-NC-ND 4.0; guides, Academy, calculators and Drug Index free for individual and clinic use, copying elsewhere needs
 written permission; contact address assembled in JS. `patch_footer_attribution.py` (guides/ and academy/) writes the credit
-line with a "Terms of use" link (`STD`); the homepage, About and Review footers link it by hand. Drug pages are not linked yet
-(their footer comes from `generate_drug_pages.py`; changing it needs a `--keep-dates` rebuild).
+line with a "Terms of use" link (`STD`); the homepage, About and Review footers link it by hand. Drug, drug-class and
+supplement pages get it from `TERMS_LINK` in `generate_drug_pages.py` (excluded from the content hash, so it never re-dates
+a page); the 445 static supplement brand pages the file budget no longer rebuilds were patched in place. `finalize()` reads the
+first 32 KB for the old date (it read 4 KB, and the theme bootstrap pushed the date past it, re-dating every page).
 
 ## Site reviews (`/review`, Nov 26 2026)
 
