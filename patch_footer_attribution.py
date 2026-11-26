@@ -22,7 +22,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 YEAR = "2026"
 SKIP = {"index.html", "calculators.html"}
-STD = f'<p class="rcm-attrib">© {YEAR} <a href="https://renalcarematters.com">renalcarematters.com</a></p>'
+# Nov 26 2026 (Dr. Rivero): the credit line also links the Terms of use page (/terms).
+STD = (f'<p class="rcm-attrib">© {YEAR} <a href="https://renalcarematters.com">renalcarematters.com</a>'
+       ' · <a href="/terms">Terms of use</a></p>')
 FOOTER = re.compile(r'(<footer class="guide-footer"[^>]*>)(.*?)(</footer>)', re.S)
 DISCLAIMER = re.compile(r"educational|not a substitute|medical advice|decision support|distributed freely|"
                         r"emergency|professional[- ]use|planning use|not a dosing|clinical judg", re.I)
@@ -69,7 +71,8 @@ def main():
     ap.add_argument("--guide")
     a = ap.parse_args()
     files = [ROOT / "guides" / a.guide] if a.guide else sorted(
-        p for p in (ROOT / "guides").glob("*.html") if p.name not in SKIP)
+        [p for p in (ROOT / "guides").glob("*.html") if p.name not in SKIP]
+        + list((ROOT / "academy").glob("*.html")))
     n = 0
     for p in files:
         t = p.read_text(encoding="utf-8")

@@ -1029,6 +1029,14 @@ and then `python3 patch_rg_card_thumbs.py` (adds the thumbs to existing cards; t
 **No Symptom Checker in the Academy (Nov 25 2026, Dr. Rivero):** the floating Symptom Checker is a patient tool, so `tools/academy/strip_symptom_widget.py` (run by `publish_academy.py`) removes its script tag from every academy page after each publish (the shared patch pipeline adds it while the pages are still in guides/). Never add it back to academy pages.
 **Occupational and Physical Therapist track (Nov 25 2026):** Ancillary Staff subtrack, package `tools/techcourses/otpt/` (content mNN.py, banks quizbank.py = handoff JSON + quiz_new.py, situations.py, figs.py, refs.py). Rebuild: `python3 generate_tech_courses.py --course otpt --patch`, then `python3 tools/techcourses/otpt/expand_acronyms.py` (first-use acronym pass; the generator's auto_expand misses first uses in objectives, quiz stems and link titles) and, only if the landing card changes, `python3 tools/techcourses/otpt/wire_landing.py` (idempotent OTPT markers in academy/index.html). Toolkit: `python3 tools/techcourses/otpt/build_toolkit.py` builds guides/calc-renal-rehabilitation-toolkit.html (core tested by `node tools/test_otpt_calcs.cjs`). The track sets no universal exercise-clearance numbers: parameters come from the physician and the unit sheet. Images (75, audited) come from /Volumes/Storage/Renal Care Academy/OT-PT/images; share cards are images/og/<slug>-og.jpg.
 
+## Terms of use (`/terms`, Nov 26 2026)
+
+`terms.html` (hand-written): copyright in Dr. Rivero's own name (William Gregory M. Rivero, MD); PDF handouts under
+CC BY-NC-ND 4.0; guides, Academy, calculators and Drug Index free for individual and clinic use, copying elsewhere needs
+written permission; contact address assembled in JS. `patch_footer_attribution.py` (guides/ and academy/) writes the credit
+line with a "Terms of use" link (`STD`); the homepage, About and Review footers link it by hand. Drug pages are not linked yet
+(their footer comes from `generate_drug_pages.py`; changing it needs a `--keep-dates` rebuild).
+
 ## Site reviews (`/review`, Nov 26 2026)
 
 Visitor ratings for the site, stored privately on Cloudflare (Dr. Rivero: "Your Cloudflare"; stars public, comments after
