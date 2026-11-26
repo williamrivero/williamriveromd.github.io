@@ -84,17 +84,16 @@
     ".rcm-nav .rcm-nav-btn:focus-visible{outline:2px solid #e3c26a;outline-offset:1px}",
     ".rcm-nav .rcm-nav-btn svg{width:24px;height:24px;display:block}",
     ".rcm-nav .rcm-nav-btn .rcm-x{display:none}",
-    ".rcm-nav .rcm-beacon{position:relative;display:block;width:24px;height:24px;flex:0 0 24px}",
+    ".rcm-nav .rcm-beacon{--bc:236,208,138;position:relative;display:block;width:24px;height:24px;flex:0 0 24px}",
+    ".rcm-nav.rcm-open .rcm-beacon{--bc:255,106,61}",
     ".rcm-nav .rcm-beacon b{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;",
-    "background:#ecd08a;box-shadow:0 0 0 2px rgba(236,208,138,.18),0 0 10px rgba(236,208,138,.55)}",
+    "background:rgb(var(--bc));box-shadow:0 0 0 2px rgba(var(--bc),.18),0 0 10px rgba(var(--bc),.55);transition:background .2s,box-shadow .2s}",
     ".rcm-nav .rcm-beacon i{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;",
-    "border:1.5px solid rgba(236,208,138,.75);opacity:0;animation:rcmBeacon 2.8s cubic-bezier(.15,.55,.35,1) infinite}",
+    "border:1.5px solid rgba(var(--bc),.75);opacity:0;animation:rcmBeacon 2.8s cubic-bezier(.15,.55,.35,1) infinite}",
     ".rcm-nav .rcm-beacon i+i{animation-delay:1.4s}",
     "@keyframes rcmBeacon{0%{transform:scale(1);opacity:.8}75%{opacity:.08}100%{transform:scale(2.7);opacity:0}}",
     ".rcm-nav.rcm-open .rcm-nav-btn,.rcm-nav.rcm-open>.header-lang{position:relative;z-index:3}",
     ".rcm-nav.rcm-open .rcm-nav-cur{z-index:3}",
-    ".rcm-nav.rcm-open .rcm-nav-btn .rcm-bars{display:none}",
-    ".rcm-nav.rcm-open .rcm-nav-btn .rcm-x{display:block}",
     // current section: small gold pill, centered
     ".rcm-nav .rcm-nav-cur{display:inline-flex;align-items:center;gap:6px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);",
     "padding:5px 11px 5px 9px;border-radius:999px;border:1px solid rgba(227,194,106,.42);background:rgba(227,194,106,.1);",
@@ -160,9 +159,10 @@
   btn.className = "rcm-nav-btn";
   btn.setAttribute("aria-expanded", "false");
   btn.setAttribute("aria-controls", "rcm-nav-panel");
-  // Beacon (Dr. Rivero, Nov 26 2026): a gold dot with two slow rings pulsing out, in place of the bars
+  // Beacon (Dr. Rivero, Nov 26 2026): a gold dot with two slow rings pulsing out, in place of the bars;
+  // while the menu is open it stays, recolored red-orange, beside the word Close (no X)
   btn.innerHTML = '<span class="rcm-bars rcm-beacon" aria-hidden="true"><i></i><i></i><b></b></span>' +
-    '<svg class="rcm-x" ' + SVG + '><path d="M6 6l12 12M18 6L6 18"/></svg><span>Menu</span>';
+    '<span>Menu</span>';
 
   // a div, not <nav>: some pages style every nav element (e.g. the About page's legacy fixed bar)
   var panel = document.createElement("div");
