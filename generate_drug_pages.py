@@ -2695,6 +2695,10 @@ def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="inde
 """
 
 
+# Nov 26 2026 (Dr. Rivero): footer links the Terms of use page. Added after pages were fingerprinted, so it is
+# excluded from the content hash (like HASH_NAV_ADDED): adding it keeps every page's "Last updated" date.
+TERMS_LINK = ' &middot; <a href="/terms">Terms of use</a>'
+
 FOOTER = f"""
 <footer class="guide-footer">
 <div class="footer-inner">
@@ -2702,7 +2706,7 @@ FOOTER = f"""
 (<a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">verification.fda.gov.ph</a>). US prescribing information:
 US FDA-approved labeling via DailyMed and openFDA (public domain). renalcarematters.com does not sell medicines and is not
 affiliated with the Philippine FDA, the US FDA, or any pharmacy.</p>
-<p>&copy; {dt.date.today().year} W Rivero, MD, FPCP, DPSN &middot; <a href="https://renalcarematters.com">renalcarematters.com</a></p>
+<p>&copy; {dt.date.today().year} W Rivero, MD, FPCP, DPSN &middot; <a href="https://renalcarematters.com">renalcarematters.com</a>{TERMS_LINK}</p>
 </div>
 </footer>
 """
@@ -5670,7 +5674,8 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
               .replace("__DRUGDB_JS__", f"/drugs/drugdb.js?v={ASSET_VERSION}"))
     hashed = (legacy_header_for_hash(legacy).replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
               .replace(APP_ICON_TAG, LEGACY_ICON_TAG)
-              .replace(HASH_NAV_ADDED, ""))   # nav links added later are chrome, not content
+              .replace(HASH_NAV_ADDED, "")    # nav links added later are chrome, not content
+              .replace(TERMS_LINK, ""))       # footer Terms link: chrome, not content
     template = fill_assets(template)
     css_url = drugdb_assets()["css_url"]
     js_url = drugdb_assets()["js_url"]
@@ -5678,7 +5683,7 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
     when, state = today, "new"
     if path.exists():
         with open(path, encoding="utf-8") as fh:
-            headtxt = fh.read(4096)
+            headtxt = fh.read(32768)   # Nov 26 2026: the theme bootstrap in <head> pushed the date past 4 KB, re-dating pages
         m, d = _HASH_RE.search(headtxt), _ISO_RE.search(headtxt)
         if m and m.group(1) == h and not force_date:
             # same content: rewrite only when the app tags or asset versions are missing, keeping the old date
@@ -5692,7 +5697,8 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
                 if body_txt is None:
                     body_txt = path.read_text(encoding="utf-8")
                 return u in body_txt
-            if APP_HEAD in headtxt and APP_ICON_TAG in headtxt and _has(css_url) and _has(js_url):
+            if (APP_HEAD in headtxt and APP_ICON_TAG in headtxt and _has(css_url) and _has(js_url)
+                    and (TERMS_LINK not in template or _has(TERMS_LINK))):
                 return "same"
             if d:
                 when = dt.date.fromisoformat(d.group(1))
