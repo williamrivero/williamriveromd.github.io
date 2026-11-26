@@ -487,6 +487,8 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
         r'(<span id="stat-calculators-inline">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
     new_root_text, rn6 = re.subn(
         r'(<span id="stat-calculators-inline2">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
+    new_root_text = re.sub(  # hero card "eGFR · KFRE · N tools"
+        r'(<span id="stat-calculators-card">)\d+(</span>)', rf'\g<1>{calc_count}\g<2>', new_root_text)
     new_root_text, rn8 = re.subn(
         r'\d+( physician-written guides and )\d+( interactive tools)',
         rf'{guide_count}\g<1>{calc_count}\g<2>', new_root_text)

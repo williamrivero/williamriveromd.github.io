@@ -38,6 +38,9 @@ jobs:
       - name: Regenerate sitemap.xml
         run: python3 generate_sitemap.py
 
+      - name: Guide/calculator counts (homepage, guides index, calculators index) + Latest guides strip
+        run: python3 generate_latest_guides.py
+
       - name: Rebuild the guides search index
         run: python3 generate_search_index.py
 
@@ -66,6 +69,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add sitemap.xml guides/search-index.json 'guides/*.html' guides/calc-app.webmanifest guides/calc-sw.js guides/calc-offline-manifest.json assets/
           git add -A -- '*.html'
+          git add latest_guides.json
           git add academy/schola-offline.json academy/schola-sw.js academy/schola.webmanifest
           git commit -m "Regenerate sitemap.xml, search index, Calculo and Schola app files, theme files [skip ci]"
           git push
