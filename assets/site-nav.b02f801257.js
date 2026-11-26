@@ -84,6 +84,13 @@
     ".rcm-nav .rcm-nav-btn:focus-visible{outline:2px solid #e3c26a;outline-offset:1px}",
     ".rcm-nav .rcm-nav-btn svg{width:24px;height:24px;display:block}",
     ".rcm-nav .rcm-nav-btn .rcm-x{display:none}",
+    ".rcm-nav .rcm-beacon{position:relative;display:block;width:24px;height:24px;flex:0 0 24px}",
+    ".rcm-nav .rcm-beacon b{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;",
+    "background:#ecd08a;box-shadow:0 0 0 2px rgba(236,208,138,.18),0 0 10px rgba(236,208,138,.55)}",
+    ".rcm-nav .rcm-beacon i{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;",
+    "border:1.5px solid rgba(236,208,138,.75);opacity:0;animation:rcmBeacon 2.8s cubic-bezier(.15,.55,.35,1) infinite}",
+    ".rcm-nav .rcm-beacon i+i{animation-delay:1.4s}",
+    "@keyframes rcmBeacon{0%{transform:scale(1);opacity:.8}75%{opacity:.08}100%{transform:scale(2.7);opacity:0}}",
     ".rcm-nav.rcm-open .rcm-nav-btn,.rcm-nav.rcm-open>.header-lang{position:relative;z-index:3}",
     ".rcm-nav.rcm-open .rcm-nav-cur{z-index:3}",
     ".rcm-nav.rcm-open .rcm-nav-btn .rcm-bars{display:none}",
@@ -134,7 +141,9 @@
     "font:700 9.5px/1 " + F + ";letter-spacing:.1em;text-transform:uppercase;color:#ecd08a}",
     ".rcm-nav-panel a.rsn-card:not(.rsn-wide)[aria-current]:after{content:'';width:7px;height:7px;border-radius:50%;background:#ecd08a;top:12px;right:12px}",
     "}",
-    "@media (prefers-reduced-motion:reduce){.rcm-nav-panel,.rcm-nav-panel a.rsn-card,.rcm-nav-scrim{animation:none!important;transition:none!important}}",
+    "@media (prefers-reduced-motion:reduce){.rcm-nav-panel,.rcm-nav-panel a.rsn-card,.rcm-nav-scrim{animation:none!important;transition:none!important}",
+    ".rcm-nav .rcm-beacon i{animation:none!important;opacity:.45;transform:scale(2)}.rcm-nav .rcm-beacon i+i{display:none}}",
+    "html[data-shade=epaper] .rcm-nav .rcm-beacon i{animation:none!important;opacity:.45;transform:scale(2)}html[data-shade=epaper] .rcm-nav .rcm-beacon i+i{display:none}",
     "html[data-shade=epaper] .rcm-nav-panel,html[data-shade=epaper] .rcm-nav-panel a.rsn-card,html[data-shade=epaper] .rcm-nav-scrim{animation:none!important;backdrop-filter:none!important}",
     "@media print{.rcm-nav-btn,.rcm-nav-cur,.rcm-nav-panel,.rcm-nav-scrim{display:none!important}}"
   ].join("");
@@ -151,7 +160,8 @@
   btn.className = "rcm-nav-btn";
   btn.setAttribute("aria-expanded", "false");
   btn.setAttribute("aria-controls", "rcm-nav-panel");
-  btn.innerHTML = '<svg class="rcm-bars" ' + SVG + '><path d="M4 7h16M4 12h11M4 17h16"/></svg>' +
+  // Beacon (Dr. Rivero, Nov 26 2026): a gold dot with two slow rings pulsing out, in place of the bars
+  btn.innerHTML = '<span class="rcm-bars rcm-beacon" aria-hidden="true"><i></i><i></i><b></b></span>' +
     '<svg class="rcm-x" ' + SVG + '><path d="M6 6l12 12M18 6L6 18"/></svg><span>Menu</span>';
 
   // a div, not <nav>: some pages style every nav element (e.g. the About page's legacy fixed bar)
