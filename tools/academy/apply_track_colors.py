@@ -77,6 +77,12 @@ html[data-theme="dark"] .acad-track[data-family] .acad-track-ico{background:colo
 html[data-theme="dark"] .acad-cols .acad-track[data-family] .acad-track-ico{background:none;color:color-mix(in srgb,var(--fam) 60%,#fff);opacity:.2;}
 html[data-theme="dark"] .acad-col-h{color:#eef7f4;}
 html[data-theme="dark"] .acad-col-h small{color:rgba(232,246,241,.74);}
+/* Calmer tiles (Nov 26 2026, Dr. Rivero: "visually glaring ... it's the lines"): no colored top bar or left
+   bar, one soft hairline in the family tint; the column heading rule is thinner and softer.
+   Selector specificity beats the light and dark rules above, so no new dark-mode rule is needed. */
+.acad-tracks.acad-cols .acad-track[data-family]{box-shadow:none;border:1px solid color-mix(in srgb,var(--fam) 22%,transparent);border-left-width:1px;}
+.acad-tracks.acad-cols .acad-track[data-family]:hover{box-shadow:0 6px 18px rgba(18,58,54,.10);border-color:color-mix(in srgb,var(--fam) 45%,transparent);}
+.acad-tracks.acad-cols .acad-col-h{border-bottom:1.5px solid color-mix(in srgb,var(--fam) 55%,transparent);}
 </style>"""
 
 STYLE_RE = re.compile(r'\n?<style id="academy-track-colors">.*?</style>', re.S)
