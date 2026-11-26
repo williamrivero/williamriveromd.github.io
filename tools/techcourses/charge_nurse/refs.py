@@ -30,3 +30,11 @@ REFS = {
     'cn_doh_shortage2022': 'ABS-CBN News. (2022, September 29). <em>Philippines lacks 106,000 nurses, DOH says</em>. Retrieved November 24, 2026, from https://news.abs-cbn.com/news/09/29/22/philippines-lacks-106000-nurses-doh-says',
     'cn_philstar2026': 'The Philippine Star. (2026, November 8). Editorial: A continuing shortage. <em>The Philippine Star</em>. Retrieved November 24, 2026, from https://www.philstar.com/opinion/2026/11/08/2568575/editorial-continuing-shortage',
 }
+
+# Verified references added during the November 2026 teaching-standard pass live in newrefs_mNN.py files
+# (one per module, each defining NEW_REFS = {key: apa_html}); they are merged here.
+import importlib.util as _iu
+from pathlib import Path as _NP
+for _f in sorted(_NP(__file__).resolve().parent.glob("newrefs_m*.py")):
+    _sp = _iu.spec_from_file_location(_f.stem, _f); _md = _iu.module_from_spec(_sp); _sp.loader.exec_module(_md)
+    REFS.update(getattr(_md, "NEW_REFS", {}))

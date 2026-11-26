@@ -269,3 +269,11 @@ WEEK_HTML = """
 </div>
 <p>None of these moments asks the nurse to make the medical decision. Every one of them depends on the nurse noticing, asking the right question, and handing over clearly to the person who decides. That is what this subtrack trains.</p>
 """
+
+# Verified references added during the November 2026 teaching-standard pass live in newrefs_mNN.py files
+# (one per module, each defining NEW_REFS = {key: apa_html}); they are merged into MANUAL_REFS here.
+import importlib.util as _iu
+from pathlib import Path as _NP
+for _f in sorted(_NP(__file__).resolve().parent.glob("newrefs_m*.py")):
+    _sp = _iu.spec_from_file_location(_f.stem, _f); _md = _iu.module_from_spec(_sp); _sp.loader.exec_module(_md)
+    MANUAL_REFS.update(getattr(_md, "NEW_REFS", {}))

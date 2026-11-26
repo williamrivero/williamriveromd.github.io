@@ -12,6 +12,7 @@ MODULE = {
     ],
     "big": """
 {{plain:Handing a patient a diet sheet is like handing someone a map in a language they do not read. Teach-back is asking them to point to where they are going.}}
+<p>The picture has a limit. A map in the wrong language fails the same way for everyone. Understanding fails differently in each patient: one cannot read small print, one is too tired after a session to take anything in, one understands the rule but cannot afford the food it requires. Teach-back finds which of these it is, and only then can the teaching be changed to fit.</p>
 <p>Teaching is not finished until the patient can say or show what to do, in their own words. Teach-back finds the gap between what we said and what they understood, and it puts the burden of clarity on the teacher, not the learner.</p>
 {{cards:Key terms for this module|Teach-back::Asking the patient to explain or show what they will do, to check your teaching.|Health literacy::The ability to find, understand, and use health information.|Treatment burden::The work dialysis asks of a patient and family: travel, time, cost, diet, medicines.|Transfer summary::The written information that travels with a patient to another unit or hospital.|Peritoneal dialysis (PD)::Dialysis using the lining of the abdomen, done at home.|Goals of care::What matters most to a patient, used to guide treatment choices.}}
 """,
@@ -39,7 +40,7 @@ MODULE = {
 <p>Hemodialysis nurses also meet patients on peritoneal dialysis and kidney transplant recipients, at the unit or on the phone. Some findings need the specialist team the same day.</p>
 {{fig:cn16_redflags}}
 <ul>
-<li><strong>Peritoneal dialysis:</strong> cloudy drained fluid or abdominal pain may be peritonitis. Call the PD team the same day. The International Society for Peritoneal Dialysis (ISPD) 2022 update recommends that a program&rsquo;s overall peritonitis rate be no more than 0.40 episodes per patient-year at risk; every episode counts.[[cn_li2022]]</li>
+<li><strong>Peritoneal dialysis:</strong> cloudy drained fluid or abdominal pain may be peritonitis. Call the PD team the same day. The International Society for Peritoneal Dialysis (ISPD) 2022 update recommends that a program&rsquo;s overall peritonitis rate be no more than 0.40 episodes per patient-year at risk (graded 1C in ISPD&rsquo;s own system); every episode counts.[[cn_li2022]]</li>
 <li><strong>Kidney transplant:</strong> fever, less urine, or missed anti-rejection medicines need the transplant team today.</li>
 </ul>
 """),

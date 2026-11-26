@@ -12,6 +12,7 @@ MODULE = {
     ],
     "big": """
 {{plain:A patient on dialysis has a deadline measured in days, not weeks. A typhoon that closes a unit for three days can be life-threatening for someone whose kidneys do nothing.}}
+<p>The picture has a limit. A deadline sounds fixed, but the danger builds unevenly. Potassium and fluid accumulate between sessions, faster in patients who eat more potassium, gain more weight, or have no urine left, so some patients reach danger in two days and others tolerate four. That is why a downtime plan ranks patients by their own numbers, not by the schedule.</p>
 <p>The head nurse prepares the unit before the typhoon season (Head Nurse Module 12): the contact tree, the generator, the downtime forms, the partner units. The charge nurse leads on the day the lights go out, for patients with chronic kidney disease (CKD) who cannot simply skip a session. That day rarely matches the plan exactly, so she needs the principles, not only the checklist.</p>
 {{cards:Key terms for this module|Downtime::A period when power, water, or the electronic record is not available.|Hand-cranking::Returning blood manually when a machine stops, per the machine&rsquo;s instructions.|Downtime board::A paper list of every patient, their status, and the plan.|Late entry::A record written after the event, labeled late and dated with the true event time.|Contact tree::The order in which staff and patients are called.}}
 """,

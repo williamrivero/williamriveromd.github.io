@@ -15,7 +15,8 @@ MODULE = {
         {"id": "model", "nav": "Mental model", "tag": "Intuition", "h2": "Every system is perfectly designed for the results it gets",
          "html": """
 <p>If abnormal results regularly sit unread from Friday evening to Monday morning, that is not a series of individual lapses. It is what the system was built to produce: a single reviewer, no backup, notifications that go to an empty inbox. Blaming the nurse who was off duty will not change Monday's pile. Changing the system will.</p>
-<p>Quality improvement is the discipline of making that change visible and testable. You define what "good" looks like as a number, measure where you are, try one change on a small scale, measure again, and check that you have not broken something else. The analogy of a "perfectly designed" system is a provocation, of course: no one designs failure on purpose. But treating failure as a property of the system, rather than of a person, is what makes it fixable.</p>
+<p>Quality improvement is the discipline of making that change visible and testable. You define what "good" looks like as a number, measure where you are, try one change on a small scale, measure again, and check that you have not broken something else.</p>
+<p>The picture has a limit. No one designs failure on purpose, and people still make choices inside a system. But in transplant care the failures that hurt patients are rarely one person's slip. A creatinine that rises on Friday and is first read on Monday has given a rejection or a drug toxicity three days to injure the graft, whoever was on duty. Treating failure as a property of the system, rather than of a person, is what makes it fixable.</p>
 """},
         {"id": "measure", "nav": "Measuring a process", "tag": "Method", "h2": "A measure you can trust",
          "html": """
@@ -25,6 +26,7 @@ Numerator: results meeting the prespecified abnormal threshold that have a docum
 Denominator: <em>all</em> results meeting the same prespecified threshold, in the defined population and period.<br>
 Exclusions: defined in advance (for example, results drawn during an inpatient stay, where a different process applies).</div>
 <p>Three details make the measure trustworthy. The <strong>threshold</strong> must be prespecified (which creatinine rise, which tacrolimus range, which viral load), or the denominator will drift. <strong>Notification is not acknowledgment</strong>: a message sent to an inbox does not count as review. And the <strong>data source</strong> and the person who extracts it must be named, so the measure can be repeated the same way every month.</p>
+<p><strong>Know what the measure stands for.</strong> Review time is a process measure. It stands in for the outcome you actually care about, fewer grafts injured because a result waited, which is too rare to count month by month in one clinic. Like a tacrolimus trough, it is a surrogate: useful because it plausibly predicts the outcome, but not proof that patients did better.</p>
 <div class="tc-scene"><span class="tc-lab">At a partner clinic&#39;s quality meeting &middot; fictional</span><p>The first audit reports that 98 percent of abnormal results were "handled within 24 hours." Carla asks how "handled" was counted. It turns out that any result automatically sent to a physician's inbox was counted as handled.</p><p>You recount October using the agreed definition: a documented review <em>and</em> a disposition. The figure falls to 71 percent. Nobody likes the new number, but now the team knows where it actually stands.</p><p class="tc-scene-take"><b>What this shows.</b> A measure is only as honest as its definitions. Notification is not review.</p></div>
 
 <p>The <a href="calc-qapi-cqi-toolkit.html">QAPI and CQI toolkit</a> helps with run charts and aim statements.</p>
@@ -81,11 +83,11 @@ Exclusions: defined in advance (for example, results drawn during an inpatient s
         {"id": "special", "nav": "Special populations", "tag": "Practice", "h2": "Adolescents, frail older adults and pregnancy",
          "html": """
 <p><strong>Adolescents and young adults.</strong> Nonadherence peaks in these years, and early transfer to adult care is associated with higher graft failure.[[foster2011]] Assess self-management skills, the caregiver's role, confidentiality and consent rules for minors, school and work schedules, and readiness for adult services. Hand over with a joint visit or a named contact, not just a letter.</p>
-<p><strong>Frail older adults.</strong> Frailty predicts complications and death after transplant independent of age.[[mcadams2015]] Assess mobility and falls, vision and hearing, cognition, medication complexity and caregiver strain. Simplify schedules with the team, use pill organizers, and plan early mobilization and rehabilitation. The <a href="calc-frailty-assessment.html">Frailty Assessment</a> calculator supports a structured screen.</p>
-<p><strong>Pregnancy after transplant.</strong> Fertility often returns within months of a successful transplant, sometimes before a patient expects it. A meta-analysis of 6,712 pregnancies in kidney recipients found a live-birth rate of 72.9 percent, with high rates of preeclampsia (21.5 percent), cesarean delivery (62.6 percent) and preterm delivery (43.1 percent).[[shah2019]] The KDIGO recipient guideline advises planning pregnancy after a period of stable graft function, typically at least a year.[[txrecip2009]] Mycophenolate must be replaced with a pregnancy-compatible regimen <em>before</em> conception, under the team's direction (Module 6). Ask about pregnancy plans and contraception at every review, and route a possible pregnancy to the team the same day.</p>
+<p><strong>Frail older adults.</strong> Frailty measured at transplant is associated with death independent of age. In one prospective cohort of 537 recipients, five-year survival was 91.5 percent in nonfrail, 86.0 percent in intermediately frail and 77.5 percent in frail recipients, and frailty carried about 2.2 times the risk of death after adjustment.[[mcadams2015]] This is observational and single-center; it identifies risk, not a proven fix. Assess mobility and falls, vision and hearing, cognition, medication complexity and caregiver strain. Simplify schedules with the team, use pill organizers, and plan early mobilization and rehabilitation. The <a href="calc-frailty-assessment.html">Frailty Assessment</a> calculator supports a structured screen.</p>
+<p><strong>Pregnancy after transplant.</strong> Fertility often returns within months of a successful transplant, sometimes before a patient expects it. A meta-analysis of 6,712 pregnancies in 4,174 kidney recipients, drawn from 87 mostly observational studies, found a live-birth rate of 72.9 percent, with high rates of preeclampsia (21.5 percent), cesarean delivery (62.6 percent) and preterm delivery (43.1 percent).[[shah2019]] The 2009 KDIGO recipient guideline suggests waiting at least a year after transplant and attempting pregnancy only when kidney function is stable with proteinuria below 1 g/day (2C). It recommends stopping mycophenolate or replacing it with azathioprine before pregnancy is attempted (1A), one of its strongest grades, because mycophenolate causes birth defects.[[txrecip2009]] That switch happens <em>before</em> conception, under the team's direction (Module 6). Ask about pregnancy plans and contraception at every review, and route a possible pregnancy to the team the same day.</p>
 <div class="tc-scene"><span class="tc-lab">By phone &middot; fictional</span><p>Jessa, 27, had her transplant ten months ago. She calls to say her period is three weeks late and a home test is positive. She is still taking mycophenolate.</p><p>You do not tell her to stop the tablet on her own, and you do not leave it for her next visit. You tell her the transplant team needs to speak with her today, call the transplant nephrologist at once, and stay on the line until a same-day appointment is booked. You document the call, the plan and her read-back.</p><p class="tc-scene-take"><b>What this shows.</b> A possible pregnancy on mycophenolate is a same-day call to the team. The regimen change is theirs to direct.</p></div>
 
-<p><strong>Pregnancy after donation.</strong> Women who have donated a kidney have a higher risk of gestational hypertension or preeclampsia than matched nondonors (11 versus 5 percent) and need antenatal care that knows their donor history.[[garg2015]]</p>
+<p><strong>Pregnancy after donation.</strong> Women who have donated a kidney have a higher risk of gestational hypertension or preeclampsia than matched nondonors. In a retrospective Ontario cohort, it occurred in 15 of 131 donor pregnancies (11 percent) versus 38 of 788 nondonor pregnancies (5 percent), with no difference in preterm birth or low birth weight. They need antenatal care that knows their donor history.[[garg2015]]</p>
 """},
     ],
     "case": {
@@ -177,8 +179,8 @@ Exclusions: defined in advance (for example, results drawn during an inpatient s
                      ("100 percent.", False, "Not all pregnancies resulted in live birth."),
                      ("Pregnancy is impossible after transplant.", False, "False.")],
          "sources": ["shah2019"]},
-        {"stem": "Which complication was most common in pregnancies after kidney transplant in the meta-analysis?",
-         "options": [("Preterm delivery (about 43 percent).", True, "Preeclampsia was about 21.5 percent."),
+        {"stem": "Among the options below, which complication was most common in pregnancies after kidney transplant in the meta-analysis?",
+         "options": [("Preterm delivery (about 43 percent).", True, "Preeclampsia was about 21.5 percent. Cesarean delivery, at 62.6 percent, is a procedure rather than a complication."),
                      ("Ectopic pregnancy (about 50 percent).", False, "About 2.4 percent."),
                      ("Maternal death in most cases.", False, "Not reported as common."),
                      ("Twin pregnancy.", False, "Not a reported outcome.")],
@@ -190,13 +192,13 @@ Exclusions: defined in advance (for example, results drawn during an inpatient s
                      ("She doubles the dose.", False, "Wrong.")],
          "sources": ["txrecip2009"]},
         {"stem": "What does KDIGO suggest about timing of pregnancy after transplant?",
-         "options": [("Plan pregnancy after a period of stable graft function, typically at least a year.", True, "Reduces risk to mother, graft and baby."),
+         "options": [("Plan pregnancy after a period of stable graft function, typically at least a year.", True, "KDIGO suggests waiting at least a year, with stable function and proteinuria below 1 g/day (2C)."),
                      ("Conceive as soon as possible after surgery.", False, "Not advised."),
                      ("Never become pregnant.", False, "Pregnancy is possible with planning."),
                      ("Timing does not matter.", False, "It does.")],
          "sources": ["txrecip2009"]},
-        {"stem": "Which factor most strongly predicts complications in an older recipient?",
-         "options": [("Frailty, independent of chronologic age.", True, "Frailty reflects physiologic reserve."),
+        {"stem": "Which factor was associated with death after kidney transplant regardless of age?",
+         "options": [("Frailty, independent of chronologic age.", True, "Frailty reflects physiologic reserve; frail recipients had about 2.2 times the adjusted risk of death in an observational cohort."),
                      ("Birth month.", False, "Irrelevant."),
                      ("Blood type.", False, "Not a frailty measure."),
                      ("Hair color.", False, "Irrelevant.")],

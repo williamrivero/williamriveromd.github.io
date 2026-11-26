@@ -12,7 +12,8 @@ MODULE = {
         "Write a clear inpatient handoff and a discharge plan.",
     ],
     "big": """
-{{plain:A critically ill patient is a house on fire. The body burns its own muscle to supply amino acids for repair and immunity, whatever you feed it. Feeding cannot stop the fire, but it can stop the house from being burned to the frame. A kidney diet built for a quiet house, low in protein, is the wrong plan during a fire. The analogy has a limit: feeding too much, too fast, in the first days can also do harm, so the plan rises in steps.}}
+{{plain:A critically ill patient is a house on fire. The body burns its own muscle to supply amino acids for repair and immunity, whatever you feed it. Feeding cannot stop the fire, but it can stop the house from being burned to the frame. A kidney diet built for a quiet house, low in protein, is the wrong plan during a fire.}}
+<p>The picture has a limit. A fire burns at one speed; critical illness moves in phases. In the first days the body makes much of its own glucose and handles extra fuel poorly, so pushing full feeds too early can cause overfeeding, high blood glucose, and refeeding shifts, while protein needs stay high and rise further when kidney replacement therapy removes amino acids. Your work in this module is to match protein to the illness and the type of KRT, build feeding up in steps, and check every day what was actually delivered.</p>
 {{cards:Key terms for this module|Acute kidney injury (AKI)::A fall in kidney function over hours to days, measured by rising creatinine or falling urine output.|Kidney replacement therapy (KRT)::Dialysis in any form: intermittent HD, prolonged intermittent, or continuous.|Continuous kidney replacement therapy (CKRT)::Dialysis run 24 hours a day in the intensive care unit (ICU); also called CRRT.|Catabolism::Breakdown of body tissue, mainly muscle, for fuel and amino acids.|Refeeding syndrome::Dangerous shifts of phosphate, potassium, and magnesium into cells when feeding restarts after starvation.|Enteral nutrition::Feeding into the gut, by mouth or tube.|Parenteral nutrition::Feeding into a vein.}}
 {{flow:Order of work at the bedside|Before illness::Usual weight and intake; days without food.|Now::Illness severity, fluid status, KRT type.|Risk::Refeeding risk; swallowing; gut function.|Targets::Weight basis, protein range, energy.|Route::Mouth, tube, or vein.|Delivery::Prescribed versus delivered, every day.}}
 """,
@@ -31,7 +32,7 @@ MODULE = {
 """),
         ("targets", "Targets", "Choose the weight, then the range", """
 <p><strong>The weight.</strong> Fluid given during resuscitation can add many kilograms. Calculating from the swollen weight overfeeds; calculating from an ideal weight may underfeed a large patient. Use the most recent dry or usual weight before illness when you can find it, from the family, clinic records, or the last dialysis chart, and write down where it came from. For obesity, follow your hospital&rsquo;s adjusted-weight method and say so.</p>
-<p><strong>The protein range.</strong> ESPEN gives starting ranges by setting. They are expert-based reference values, not doses proven in trials, so adjust them to tolerance and to the team&rsquo;s plan.[[espen2024]]</p>
+<p><strong>The protein range.</strong> ESPEN gives starting ranges by setting. They are expert-based reference values that ESPEN rates at its weakest grade of recommendation (grade 0), not doses proven in trials, so adjust them to tolerance and to the team&rsquo;s plan.[[espen2024]]</p>
 <div class="table-wrap"><table>
 <thead><tr><th>Setting</th><th>Protein (g/kg/day)</th></tr></thead>
 <tbody>

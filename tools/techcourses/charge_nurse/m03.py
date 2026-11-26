@@ -13,6 +13,7 @@ MODULE = {
     "big": """
 {{plain:Loading a jeepney is not only counting passengers. A jeepney with twelve adults is not the same as one with eight adults, three sacks of rice, and a crate of chickens. The driver who counts only heads gets stuck on the first hill.}}
 <p>An assignment that counts only patients makes the same mistake. Four patients with mature fistulas and steady pressures take less nursing than two patients with new catheters, one of whom drops her pressure every session. The work is in the needs, and the needs change during the shift.</p>
+<p>The picture has a limit. A jeepney&rsquo;s load is fixed once it leaves the terminal; a patient&rsquo;s needs are not. Pressure falls in the second hour, a needle fails, a nurse is pulled to the ward, and the load on each nurse changes while the chairs stay the same. Your work in this module is to assign by need and competence at 6:00, plan the breaks, and rebuild the assignment when the needs change.</p>
 {{cards:Key terms for this module|Acuity::How much nursing attention a patient is likely to need today.|Competence::A skill a nurse has performed correctly while a qualified person observed and signed.|Orientee::A nurse in orientation who works under a named resource nurse.|Resource nurse::The experienced nurse an orientee calls for help.|Break cover::The nurse who watches another nurse&rsquo;s patients during her break.|Load::The total nursing need assigned to one nurse.}}
 """,
     "case": {"title": "&ldquo;Four each, like always&rdquo;", "html": """

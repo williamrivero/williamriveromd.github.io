@@ -12,6 +12,7 @@ MODULE = {
     ],
     "big": """
 {{plain:In a relay race, most races are lost not by slow runners but by dropped batons in the exchange zone. The outgoing runner does not let go until the incoming runner has a firm grip.}}
+<p>The picture has a limit. A baton is one object, and a grip can be seen. A shift handoff passes many items at once, some of them pending, such as a repeat potassium or a callback from the physician, and the grip happens in someone else&rsquo;s head. The usual failure is not a dropped item but an item each nurse believes the other owns. A spoken synthesis by the receiver is the only way to see the grip.</p>
 <p>A handoff moves responsibility, not just information. The outgoing charge nurse is still responsible until the incoming nurse has confirmed what she now owns. &ldquo;I told her&rdquo; is not the same as &ldquo;she took it.&rdquo;</p>
 {{cards:Key terms for this module|I-PASS::A handoff structure: Illness severity, Patient summary, Action list, Situation awareness and contingency, Synthesis by receiver.|SBAR::A way to call for help: Situation, Background, Assessment, Recommendation.|Read-back::Repeating an order aloud to confirm it.|Synthesis::The receiver summarizing what she now owns.|Contingency::&ldquo;If this happens, do that.&rdquo;}}
 """,
@@ -41,7 +42,7 @@ MODULE = {
 <p>The action list and the synthesis are the two parts most often skipped, and the two that would have saved Mr. Santos&rsquo;s repeat potassium.</p>
 """),
         ("sbar", "SBAR calls", "SBAR for calling the physician", """
-<p>SBAR is a four-part way to call: Situation, Background, Assessment, Recommendation or request. A systematic review found it associated with better communication and patient safety, with evidence of moderate quality.[[muller2018]] End every call with a read-back: &ldquo;So you want a repeat potassium after the session, and a call if it is above 6.0. I will do that.&rdquo;</p>
+<p>SBAR is a four-part way to call: Situation, Background, Assessment, Recommendation or request. A systematic review found moderate evidence that SBAR improves patient safety, especially for phone calls, but most of the studies were before-and-after designs and high-quality trials are lacking.[[muller2018]] End every call with a read-back: &ldquo;So you want a repeat potassium after the session, and a call if it is above 6.0. I will do that.&rdquo;</p>
 {{scene:The call that asked for nothing|<p>A staff nurse calls the physician on duty: &ldquo;Doc, Bed 5&rsquo;s pressure is a bit low.&rdquo; The physician asks three questions to find out what she wants. The charge nurse coaches her to call back with SBAR: &ldquo;Bed 5, Mrs. Ong, 72. Pressure fell from 140 to 96 at hour two; she&rsquo;s yawning. Fluid removal stopped, she&rsquo;s flat, saline given; now 104. I think the fluid goal is too high for today. I&rsquo;m asking whether to stop removal for the rest of the session.&rdquo; The physician answers in ten seconds.</p>}}
 """),
         ("bedside", "Bedside handover", "Bedside handover", """

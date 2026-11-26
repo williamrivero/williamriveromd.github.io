@@ -12,6 +12,7 @@ MODULE = {
     ],
     "big": """
 {{plain:Watching a hundred cooking videos does not make someone a cook. A cook is someone who has made the dish while a chef watched, corrected, and finally stepped back.}}
+<p>The picture has a limit. A cook who fails ruins a dish, and the chef can taste it afterward. A nurse who fails at a catheter connection can give a patient a bloodstream infection that shows up days later, far from the moment of the error. Competence on a dialysis floor therefore has to be confirmed by watching the task done correctly, before the nurse does it alone, not inferred from results.</p>
 <p>On a hemodialysis (HD) floor, exposure is having seen or done something. Competence is having done it correctly while someone qualified watched and signed. A charge nurse who assigns by exposure (&ldquo;she has seen catheter connections&rdquo;) instead of competence leaves a learner alone with a high-risk task. Coaching is how exposure becomes competence, one observed task at a time.</p>
 {{cards:Key terms for this module|Delegation::Assigning a task to another person while keeping accountability for the patient.|Five rights::Right task, circumstance, person, communication, and supervision.|Feedback::Information about a specific act, given to help the next one.|Coaching::Watching, asking, letting the learner act, stepping in only for safety, and debriefing.|CUS::&ldquo;I&rsquo;m Concerned, I&rsquo;m Uncomfortable, this is a Safety issue.&rdquo;|Hiya and pakikisama::Filipino values of shame or embarrassment, and of smooth relationships.}}
 """,

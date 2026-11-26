@@ -13,6 +13,7 @@ MODULE = {
     ],
     "big": """
 {{plain:A water refilling station sells water you can drink. A dialysis water room makes water that touches your blood across a thin membrane, more than a hundred liters each session. The standard is not &ldquo;drinkable&rdquo;; it is &ldquo;safe in the bloodstream.&rdquo;}}
+<p>The picture has a limit. Drinking water passes through the gut and the liver, which screen out much of what is in it. Dialysis water bypasses both: across the dialyzer membrane, small toxins such as chloramine and fluoride diffuse straight into the blood, and bacterial fragments can cross or trigger inflammation. That is why a contaminant harmless in a glass can hurt a patient within hours.</p>
 <p>The treatment chain removes particles, hardness, chlorine and chloramine, dissolved ions, and microbes in turn. Each stage protects the next. If one fails, the next may be overwhelmed, and a contaminant can reach the patient within one shift.[[hn_iso2024]] The charge nurse does not run the water room. She makes sure nobody connects a patient to water that has not been released.</p>
 {{cards:Key terms for this module|Carbon tank::Removes chlorine and chloramine.|Reverse osmosis (RO)::A membrane that removes most dissolved ions and many microbes.|Distribution loop::The pipes that carry treated water to the machines.|Endotoxin::Fragments of bacteria that can cause fever and inflammation.|Conductivity alarm::A machine alarm that the dialysate mix may be wrong.|Release::The authorized technical lead&rsquo;s signed statement that water or a machine is fit to use.}}
 """,
@@ -24,7 +25,7 @@ MODULE = {
                   "Who can restart the unit, and on what basis?"]},
     "sections": [
         ("chain", "The chain", "The treatment chain and what fails", """
-<p>Carbon removes chlorine and chloramine. When carbon is exhausted or bypassed, chloramine reaches the patient and damages red cells, causing hemolysis.[[ward1996]] Aluminum and fluoride in dialysis water have caused fatal outbreaks in the past.[[tipple1991]] Bacteria and endotoxins grow in stagnant pipes and can cause fever and chills during dialysis.</p>
+<p>Carbon removes chlorine and chloramine. When carbon is exhausted or bypassed, chloramine reaches the patient and damages red cells, causing hemolysis.[[ward1996]] In one United States unit, chloramine-contaminated dialysate made patients ill.[[tipple1991]] In another, fluoride released from a poorly monitored deionizer caused fatal ventricular fibrillation in three patients.[[cn_arnow1994]] Bacteria and endotoxins grow in stagnant pipes and can cause fever and chills during dialysis.</p>
 {{fig:cn11_chain}}
 """),
         ("log", "Reading the log", "Reading the water log", """
