@@ -1126,6 +1126,19 @@ var EasySpeech = (function () {
   }
   function visible(el) { return el.getClientRects().length > 0 && !el.closest(".lang-hidden,[hidden],[aria-hidden='true']"); }
   var EXCL = "button,svg,sup,script,style,.nc-cite,.rcn-bm,.rcm-tts-ui,[aria-hidden='true'],.lang-hidden,input,select,textarea";
+  // A box's own words: its text nodes and inline children, without nested blocks (those are read on their own).
+  // A box label such as "In plain words" is followed by a pause.
+  function boxText(el) {
+    var direct = false;
+    for (var n = el.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.nodeValue.trim()) { direct = true; break; }
+    if (!direct) return "";
+    var c = el.cloneNode(true);
+    c.querySelectorAll(EXCL + ",div,p,ul,ol,li,table,figure,h1,h2,h3,h4,h5,h6,dl,blockquote,details").forEach(function (n) { n.remove(); });
+    var lead = c.firstElementChild;                                  // a bold term at the start ("Incentive" + its definition)
+    if (lead && /^(B|STRONG)$/.test(lead.tagName) && !(c.firstChild.nodeType === 3 && c.firstChild.nodeValue.trim())) lead.classList.add("tc-lab");
+    c.querySelectorAll(".tc-lab").forEach(function (n) { if (!/[.:!?]\s*$/.test(n.textContent)) n.appendChild(document.createTextNode(". ")); else n.appendChild(document.createTextNode(" ")); });
+    return (c.textContent || "").replace(/\s+/g, " ").trim();
+  }
   function cleanText(el) {
     var c = el.cloneNode(true);
     c.querySelectorAll(EXCL).forEach(function (n) { n.remove(); });
@@ -1162,7 +1175,7 @@ var EasySpeech = (function () {
       .filter(Boolean).join(". ");
   }
   function chunks(text) {                                         // sentences, at most ~220 characters each
-    var out = [], parts = text.split(/(?<=[.!?:;])\s+(?=["(]?[A-Z0-9])/);
+    var out = [], parts = text.split(/(?<=[.!?:;])(?<!\b(?:Mr|Mrs|Ms|Dr|Sr|Jr|St|Sta|Sto|Engr|Atty|Prof|vs|No|Fig|e\.g|i\.e|approx)\.)\s+(?=["(]?[A-Z0-9])/);
     parts.forEach(function (p) {
       while (p.length > 240) {
         var cut = p.lastIndexOf(", ", 220); if (cut < 80) cut = p.lastIndexOf(" ", 220); if (cut < 40) cut = 220;
@@ -1188,9 +1201,15 @@ var EasySpeech = (function () {
       var h2 = sec.querySelector("h2");
       sections.push({ el: sec, title: h2 ? cleanText(h2) : "", first: items.length });
       var si = sections.length - 1;
-      sec.querySelectorAll(BLOCK).forEach(function (el) {
+      sec.querySelectorAll(BLOCK + ",div").forEach(function (el) {
         if (!visible(el) || el.closest("form,fieldset,.nc-nextprev,.calc-cards-wrap,.section-tag,.nc-cite,.rcm-tts-ui")) return;
         var tag = el.tagName, text;
+        if (tag === "DIV") {                                         // boxes ("In plain words", key points, cards) keep text in the div itself
+          if (el.closest(LEAF + ",figcaption,tr,.nc-rat") || !boxText(el)) return;
+          text = speakable(boxText(el));
+          if (text.length > 1) items.push({ el: el, sec: si, parts: chunks(text) });
+          return;
+        }
         if (tag === "TR") text = tableRowText(el);
         else if (tag === "FIGCAPTION") { var d = el.querySelector(".fig-desc"); text = d ? cleanText(d) : cleanText(el); if (text) text = "Figure. " + text; }
         else {
@@ -1259,13 +1278,13 @@ var EasySpeech = (function () {
     return ready;
   }
 
-  function mark() {
+  function mark(jump) {                                            // jump: Play / Resume pressed, so go to the place now
     document.querySelectorAll(".rcm-tts-cur").forEach(function (n) { n.classList.remove("rcm-tts-cur"); });
     var it = items[idx]; if (!it || !it.el) return;
     it.el.classList.add("rcm-tts-cur");
-    if (Date.now() - lastUserScroll > 6000) {
+    if (jump || Date.now() - lastUserScroll > 6000) {
       var r = it.el.getBoundingClientRect(), vh = innerHeight;
-      if (r.top < 70 || r.bottom > vh - 130) it.el.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+      if (jump || r.top < 70 || r.bottom > vh - 130) it.el.scrollIntoView({ block: "center", behavior: jump || reduceMotion ? "auto" : "smooth" });
     }
     var s = sections[it.sec];
     if (secEl) secEl.textContent = it.sec < 0 ? "Introduction" : (s ? "Section " + (it.sec + 1) + " of " + sections.length + ": " + s.title : "");
@@ -1461,6 +1480,7 @@ var EasySpeech = (function () {
   var DL_MSG = "The natural voice is a free, one-time download of about 90 MB. After that it also works without a signal. Use Wi-Fi if you can.\n\nDownload it now?\n(Cancel uses your device's built-in voice for now.)";
   function play() {
     if (natural) unlockAudio();
+    if (items.length && items[idx]) { lastUserScroll = 0; mark(true); hlSentence(); }   // show the place at once, before the voice is ready
     init().then(function () {
       if (!items.length) build();
       if (natural && aud && audKey === idx + ":" + part && aud.src !== SILENT && aud.currentTime > 0 && !aud.ended) {
@@ -1525,7 +1545,7 @@ var EasySpeech = (function () {
   function setUI() {
     if (!playBtn) return;
     playBtn.innerHTML = playing ? IC.pause : IC.play;
-    playBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
+    playBtn.setAttribute("aria-label", playing ? "Pause" : "Play"); playBtn.setAttribute("data-tip", playing ? "Pause" : "Play");
     playBtn.setAttribute("aria-pressed", playing ? "true" : "false");
     status(playing ? "Reading aloud" : "Paused");
     document.body.classList.toggle("rcm-tts-playing", playing);
@@ -1536,7 +1556,7 @@ var EasySpeech = (function () {
     figBtn.innerHTML = on ? IC.fig : IC.figOff;
     figBtn.setAttribute("aria-pressed", on ? "true" : "false");
     figBtn.setAttribute("aria-label", on ? "Pause to show figures: on" : "Pause to show figures: off");
-    figBtn.title = on ? "Pauses 10 seconds to show each figure. Tap to turn off." : "Figures are not shown. Tap to pause 10 seconds for each figure.";
+    figBtn.setAttribute("data-tip", on ? "Figures: pause 10 s to show each" : "Figures: not shown");
   }
   function rateLabel() { return (rate === 1 ? "1" : String(rate)) + "×"; }
 
@@ -1549,18 +1569,24 @@ var EasySpeech = (function () {
       ui.innerHTML =
         '<div class="rcm-tts-info"><span class="rcm-tts-status" aria-live="polite">Paused</span><span class="rcm-tts-sec"></span></div>' +
         '<div class="rcm-tts-ctrls">' +
-          '<button type="button" class="rcm-tts-b" data-a="prev" aria-label="Previous section">' + IC.prev + '</button>' +
-          '<button type="button" class="rcm-tts-b rcm-tts-play" data-a="play" aria-label="Play" aria-pressed="false">' + IC.play + '</button>' +
-          '<button type="button" class="rcm-tts-b" data-a="next" aria-label="Next section">' + IC.next + '</button>' +
-          '<button type="button" class="rcm-tts-b rcm-tts-rate" data-a="rate" aria-label="Reading speed">' + rateLabel() + '</button>' +
+          '<button type="button" class="rcm-tts-b" data-a="prev" data-tip="Previous section" aria-label="Previous section">' + IC.prev + '</button>' +
+          '<button type="button" class="rcm-tts-b rcm-tts-play" data-a="play" data-tip="Play" aria-label="Play" aria-pressed="false">' + IC.play + '</button>' +
+          '<button type="button" class="rcm-tts-b" data-a="next" data-tip="Next section" aria-label="Next section">' + IC.next + '</button>' +
+          '<button type="button" class="rcm-tts-b rcm-tts-rate" data-a="rate" data-tip="Reading speed" aria-label="Reading speed">' + rateLabel() + '</button>' +
           '<button type="button" class="rcm-tts-b rcm-tts-fig" data-a="figs"></button>' +
-          '<label class="rcm-tts-vl"><span class="rcm-tts-sr">Voice</span><select class="rcm-tts-voice" aria-label="Voice"></select></label>' +
-          '<button type="button" class="rcm-tts-b rcm-tts-x" data-a="close" aria-label="Stop and close the player">' + IC.close + '</button>' +
+          '<label class="rcm-tts-vl" data-tip="Voice"><span class="rcm-tts-sr">Voice</span><select class="rcm-tts-voice" aria-label="Voice"></select></label>' +
+          '<button type="button" class="rcm-tts-b rcm-tts-x" data-a="close" data-tip="Stop and close" aria-label="Stop and close the player">' + IC.close + '</button>' +
         '</div>';
       document.body.appendChild(ui);
       statusEl = ui.querySelector(".rcm-tts-status"); secEl = ui.querySelector(".rcm-tts-sec");
       playBtn = ui.querySelector(".rcm-tts-play"); rateBtn = ui.querySelector(".rcm-tts-rate"); voiceSel = ui.querySelector(".rcm-tts-voice");
       figBtn = ui.querySelector(".rcm-tts-fig"); setFigBtn();
+      ui.addEventListener("pointerdown", function (e) {               // touch screens have no hover: show the tip for a moment
+        if (e.pointerType === "mouse") return;
+        var t = e.target.closest("[data-tip]"); if (!t) return;
+        ui.querySelectorAll(".rcm-tip-on").forEach(function (n) { n.classList.remove("rcm-tip-on"); });
+        t.classList.add("rcm-tip-on"); clearTimeout(t._tip); t._tip = setTimeout(function () { t.classList.remove("rcm-tip-on"); }, 1600);
+      });
       ui.addEventListener("click", function (e) {
         var b = e.target.closest("button[data-a]"); if (!b) return;
         var a = b.getAttribute("data-a");
@@ -1681,9 +1707,9 @@ var EasySpeech = (function () {
     ".rcm-tts-again svg{width:15px;height:15px}.rcm-tts-again:hover{background:rgba(31,56,100,.08)}.rcm-tts-again:focus-visible{outline:3px solid #f0a81e;outline-offset:2px}",
     "html[data-theme='dark'] .rcm-tts-again{border-color:#f0a81e;color:#f3c46a}",
     ".rcm-tts-launch:focus-visible,.rcm-tts-b:focus-visible,.rcm-tts-voice:focus-visible{outline:3px solid #f0a81e;outline-offset:2px}",
-    ".rcm-tts-bar{position:fixed;z-index:100002;left:50%;bottom:16px;transform:translateX(-50%);width:min(500px,calc(100% - 150px));background:#13233f;color:#fff;border-radius:14px;padding:6px 8px;box-shadow:0 14px 40px -10px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14);font-family:Inter,Manrope,system-ui,sans-serif}",
+    ".rcm-tts-bar{position:fixed;z-index:100002;left:50%;bottom:16px;transform:translateX(-50%);width:fit-content;max-width:calc(100% - 150px);background:#13233f;color:#fff;border-radius:14px;padding:6px 8px;box-shadow:0 14px 40px -10px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.14);font-family:Inter,Manrope,system-ui,sans-serif}",
     ".rcm-tts-bar[hidden]{display:none}",
-    ".rcm-tts-info{display:flex;gap:8px;align-items:baseline;min-width:0;padding:0 2px 5px}",
+    ".rcm-tts-info{display:flex;gap:8px;align-items:baseline;width:0;min-width:100%;padding:0 2px 5px}",
     ".rcm-tts-status{font:800 10.5px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#f3c46a;flex:none}",
     ".rcm-tts-sec{font-size:12.5px;color:#e6edf8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}",
     ".rcm-tts-ctrls{display:flex;align-items:center;gap:6px}",
@@ -1692,8 +1718,13 @@ var EasySpeech = (function () {
     ".rcm-tts-play{width:46px;height:46px;border-radius:50%;background:#f0a81e;border-color:#f0a81e;color:#13233f}.rcm-tts-play:hover{background:#ffc04a}",
     ".rcm-tts-play svg{width:24px;height:24px}",
     ".rcm-tts-x{margin-left:auto}",
+    "[data-tip]{position:relative}",
+    ".rcm-tts-bar [data-tip]::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;background:#0b1527;color:#fff;font:600 12px/1.2 Inter,sans-serif;padding:6px 9px;border-radius:7px;box-shadow:0 6px 16px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .12s;z-index:2}",
+    ".rcm-tts-ctrls>[data-tip]:first-child::after{left:0;transform:none}.rcm-tts-ctrls>[data-tip]:last-child::after{left:auto;right:0;transform:none}",
+    "@media (hover:hover){.rcm-tts-bar [data-tip]:hover::after{opacity:1}}",
+    ".rcm-tts-bar [data-tip]:focus-visible::after,.rcm-tts-bar .rcm-tip-on::after{opacity:1}",
     ".rcm-tts-fig[aria-pressed='true']{border-color:#f0a81e;color:#f3c46a}",
-    ".rcm-tts-vl{flex:1;min-width:0}.rcm-tts-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}",
+    ".rcm-tts-vl{flex:none;width:150px;min-width:0;position:relative}.rcm-tts-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}",
     ".rcm-tts-voice{width:100%;min-width:0;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:#1d3157;color:#fff;font:600 13px Inter,sans-serif;padding:0 6px}",
     ".rcm-tts-cur{background:#fff8dc !important;box-shadow:0 0 0 6px #fff8dc;border-radius:4px;color:#1e2a38 !important}",
     "::highlight(rcm-tts-sent){background-color:#ffe38f;color:#1e2a38}",
@@ -1702,9 +1733,9 @@ var EasySpeech = (function () {
     "html[data-theme='dark'] .rcm-tts-launch{background:#f0a81e;border-color:#f0a81e;color:#13233f}",
     "body.rcm-tts-on{padding-bottom:96px}",
     "body.rcm-tts-on .rcn-toast,body.rcm-tts-on .rcn-resume{display:none !important}",
-    "@media (max-width:640px){.rcm-tts-bar{width:calc(100% - 12px);bottom:6px;padding:5px 6px}",
+    "@media (max-width:640px){.rcm-tts-bar{width:calc(100% - 12px);max-width:none;bottom:6px;padding:5px 6px}",
     "  .rcm-tts-ctrls{gap:4px}.rcm-tts-b{width:38px;height:38px}.rcm-tts-play{width:44px;height:44px}",
-    "  .rcm-tts-voice{height:38px;font-size:12px;padding:0 4px}",
+    "  .rcm-tts-vl{flex:1 1 0;width:auto}.rcm-tts-voice{height:38px;font-size:12px;padding:0 4px}",
     "  body.rcm-tts-on{padding-bottom:92px}",
     "  body.rcm-tts-on .float-controls,body.rcm-tts-on .float-controls-left,body.rcm-tts-on .scroll-top-btn,body.rcm-tts-on .rcn-fab,body.rcm-tts-on .print-btn{translate:0 -86px !important}}",
     "@media print{.rcm-tts-ui{display:none !important}.rcm-tts-cur{background:none !important;box-shadow:none !important}}"
