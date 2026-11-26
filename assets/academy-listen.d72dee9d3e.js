@@ -1192,6 +1192,16 @@ var EasySpeech = (function () {
     var h1 = document.querySelector(".hero h1, h1");
     if (h1) items.push({ el: h1, sec: -1, parts: chunks(speakable(cleanText(h1))) });
     var main = document.querySelector("main");
+    // Boxes between the title and the first section (the course note at the top of every module) are read as part of the introduction.
+    document.querySelectorAll(".alert, .intro-callout, .callout").forEach(function (box) {
+      if (main.contains(box) || box.closest("header,nav,footer,.hero,.rcm-tts-ui") || !visible(box) ||
+          !(box.compareDocumentPosition(main) & Node.DOCUMENT_POSITION_FOLLOWING)) return;
+      box.querySelectorAll("h3,h4,p,li").forEach(function (el) {
+        if (!visible(el) || el.querySelector("p,li")) return;
+        var t = speakable(cleanText(el));
+        if (t.length > 1) items.push({ el: el, sec: -1, parts: chunks(t) });
+      });
+    });
     main.querySelectorAll("section.section").forEach(function (sec) {
       if (SKIP_SECTIONS[sec.id] || !visible(sec)) {
         if (sec.id === "quiz") items.push({ el: sec.querySelector("h2") || sec, sec: sections.length - 1, note: 1,
@@ -1239,6 +1249,8 @@ var EasySpeech = (function () {
       });
     });
     if (!items.some(function (it) { return it.note; })) items.push({ el: null, sec: sections.length - 1, note: 1, parts: ["End of module."] });
+    if (slides) items = items.filter(function (it) { return it.fig; }).map(function (it) {   // only the pictures, each with its description
+      it.parts = it.parts.filter(function (p) { return p !== FIG_SAY; }); return it; });
   }
 
   /* ---------- player state ---------- */
@@ -1287,6 +1299,7 @@ var EasySpeech = (function () {
       if (jump || r.top < 70 || r.bottom > vh - 130) it.el.scrollIntoView({ block: "center", behavior: jump || reduceMotion ? "auto" : "smooth" });
     }
     var s = sections[it.sec];
+    if (slides) { if (secEl) secEl.textContent = "Figure slideshow: " + (idx + 1) + " of " + items.length; return; }
     if (secEl) secEl.textContent = it.sec < 0 ? "Introduction" : (s ? "Section " + (it.sec + 1) + " of " + sections.length + ": " + s.title : "");
   }
   var HL = window.CSS && CSS.highlights && window.Highlight ? CSS.highlights : null;
@@ -1295,7 +1308,8 @@ var EasySpeech = (function () {
     var it = items[idx], sp = it && it.spans && it.spans[part];
     hl("rcm-tts-sent", sp ? rangeOf(it.map, sp.a, sp.b) : null);
   }
-  function save() { ls(K_POS, JSON.stringify({ i: idx, t: Date.now() })); }
+  var slides = false;                                               // Figure slideshow mode (Dr. Rivero, Nov 27 2026)
+  function save() { if (slides) return; ls(K_POS, JSON.stringify({ i: idx, t: Date.now() })); }
 
 
   /* ---------- Natural voice (Piper, on device) ---------- */
@@ -1327,7 +1341,7 @@ var EasySpeech = (function () {
     if (!aud) {
       aud = new Audio(); aud.preload = "auto"; aud.setAttribute("playsinline", "");
       try { aud.preservesPitch = true; aud.webkitPreservesPitch = true; } catch (e) {}
-      aud.addEventListener("ended", function () { if (!natural || !playing || aud.src === SILENT) return; cancelAnimationFrame(raf); part++; speakNext(); });
+      aud.addEventListener("ended", function () { if (!natural || !playing || aud.src === SILENT) return; cancelAnimationFrame(raf); fails = 0; part++; speakNext(); });
     }
     return aud;
   }
@@ -1394,6 +1408,14 @@ var EasySpeech = (function () {
       if (a[0] < idx - 1) { cache[k].then(function (u) { URL.revokeObjectURL(u); }, function () {}); delete cache[k]; }
     });
   }
+  // Dr. Rivero (Nov 27 2026, Android): when the voice fails silently, skipping sentence after sentence races through the
+  // text and only the 10 s figure pauses take time (a silent "slideshow"). Three failed sentences in a row stop the player.
+  var fails = 0;
+  function failed() {
+    if (++fails < 3) return false;
+    fails = 0; stop(true); status("The voice stopped. Tap play to try again.");
+    return true;
+  }
   function speakNatural(my) {
     var it = items[idx];
     status("Reading aloud");
@@ -1406,6 +1428,7 @@ var EasySpeech = (function () {
       prefetch();
     }, function () {
       if (my !== token) return;
+      if (failed()) return;
       part++; speakNext();                          // skip a sentence that would not synthesize
     });
     if (!cache[nextPos(idx, part, 1) ? nextPos(idx, part, 1).join(":") : ""]) prefetch();
@@ -1463,22 +1486,29 @@ var EasySpeech = (function () {
     if (!playing) return;
     var it = items[idx];
     if (!it) { finish(); return; }
-    if (it.fig && it.parts[part] === FIG_SAY && (document.hidden || !figsOn())) part++;   // screen off: no one can see it, so skip the pause
+    if (it.fig && it.parts[part] === FIG_SAY && (document.hidden || !(slides || figsOn()))) part++;   // screen off: no one can see it, so skip the pause
     if (part >= it.parts.length) {
-      if (it.fig && figShown !== idx && !document.hidden && figsOn()) { figShown = idx; showFigure(it.fig, my); return; }
+      if (it.fig && figShown !== idx && !document.hidden && (slides || figsOn())) { figShown = idx; showFigure(it.fig, my); return; }
       figShown = -1; idx++; part = 0; save(); speakNext(); return;
     }
     if (part === 0) mark();
     hlSentence();
     if (natural) { speakNatural(my); return; }
-    ES.speak({ text: it.parts[part], voice: voice || undefined, rate: rate, pitch: 1, volume: 1, force: true,
-      end: function () { if (my !== token) return; part++; speakNext(); },
-      error: function (e) { if (my !== token) return; if (e && /interrupted|canceled/.test(e.error || "")) return; part++; speakNext(); }
+    var t0 = Date.now(), txt = it.parts[part];
+    ES.speak({ text: txt, voice: voice || undefined, rate: rate, pitch: 1, volume: 1, force: true,
+      end: function () {
+        if (my !== token) return;
+        if (txt.length > 30 && Date.now() - t0 < 150) { if (failed()) return; }   // "ended" at once: nothing was spoken
+        else fails = 0;
+        part++; speakNext();
+      },
+      error: function (e) { if (my !== token) return; if (e && /interrupted|canceled/.test(e.error || "")) return; if (failed()) return; part++; speakNext(); }
     }).catch(function () {});
   }
   var askedDl = false;
   var DL_MSG = "The natural voice is a free, one-time download of about 90 MB. After that it also works without a signal. Use Wi-Fi if you can.\n\nDownload it now?\n(Cancel uses your device's built-in voice for now.)";
   function play() {
+    fails = 0;
     if (natural) unlockAudio();
     if (items.length && items[idx]) { lastUserScroll = 0; mark(true); hlSentence(); }   // show the place at once, before the voice is ready
     init().then(function () {
@@ -1512,8 +1542,17 @@ var EasySpeech = (function () {
     if (aud && aud.src !== SILENT) { try { aud.pause(); } catch (e) {} }        // natural voice keeps its place
     keepAwake(false); setUI(); mediaState(); if (keep) save();
   }
-  function finish() { stop(false); idx = 0; part = 0; ls(K_POS, null); mark(); status("Finished. Tap play to listen again."); }
+  function finish() {
+    stop(false); idx = 0; part = 0;
+    if (slides) { mark(); status("Slideshow finished. Tap play to watch again."); return; }
+    ls(K_POS, null); mark(); status("Finished. Tap play to listen again.");
+  }
   function jumpSection(d) {
+    if (slides) {
+      idx = Math.max(0, Math.min(items.length - 1, idx + d)); part = 0; figShown = -1; audKey = null;
+      if (playing) restart(); else mark(true);
+      return;
+    }
     var cur = items[idx] ? items[idx].sec : -1, target = Math.max(-1, Math.min(sections.length - 1, cur + d));
     if (d < 0 && items[idx] && sections[cur] && idx > sections[cur].first + 1) target = cur;   // back = start of this section first
     idx = target < 0 ? 0 : sections[target].first; part = 0; save();
@@ -1648,7 +1687,11 @@ var EasySpeech = (function () {
       });
     }
     ui.hidden = false;
+    ui.classList.toggle("rcm-slides", slides);
+    ui.querySelector('[data-a="prev"]').setAttribute("data-tip", slides ? "Previous figure" : "Previous section");
+    ui.querySelector('[data-a="next"]').setAttribute("data-tip", slides ? "Next figure" : "Next section");
     document.body.classList.add("rcm-tts-on");
+    figShown = -1;
     build();
     playBtn.focus({ preventScroll: true });
   }
@@ -1673,6 +1716,7 @@ var EasySpeech = (function () {
     launch.innerHTML = IC.head + '<span>' + (saved && saved.i > 0 ? "Resume listening" : "Listen to this module") + '</span>';
     launch.setAttribute("aria-label", (saved && saved.i > 0 ? "Resume listening to" : "Listen to") + " this module, read aloud by your device");
     launch.addEventListener("click", function () {
+      if (slides) { stop(true); slides = false; }
       openPlayer();
       if (saved && saved.i > 0 && saved.i < items.length) { idx = saved.i; part = 0; } else { idx = 0; part = 0; }
       saved = null;
@@ -1690,11 +1734,26 @@ var EasySpeech = (function () {
       again.setAttribute("aria-label", "Listen to this module from the beginning");
       again.addEventListener("click", function () {
         saved = null; try { localStorage.removeItem(K_POS); } catch (e) {}
+        if (slides) { stop(true); slides = false; }
         openPlayer(); idx = 0; part = 0; play();
         again.remove();
         launch.querySelector("span").textContent = "Listen to this module";
       });
       row.appendChild(again);
+    }
+    var nfig = [].filter.call(document.querySelectorAll("main section.section figure"), function (f) {
+      return f.querySelector("img") && f.querySelector("figcaption") && visible(f); }).length;
+    if (nfig) {                                                      // Figure slideshow: each picture, its description, 10 s
+      var show = document.createElement("button");
+      show.type = "button";
+      show.className = "rcm-tts-ui rcm-tts-again rcm-tts-show no-print";
+      show.innerHTML = IC.fig + '<span>Figure slideshow (' + nfig + ')</span>';
+      show.setAttribute("aria-label", "Figure slideshow: show each of the " + nfig + " figures for 10 seconds and read its description");
+      show.addEventListener("click", function () {
+        if (!slides) stop(true);
+        slides = true; openPlayer(); idx = 0; part = 0; play();
+      });
+      row.appendChild(show);
     }
   }
 
@@ -1718,6 +1777,7 @@ var EasySpeech = (function () {
     ".rcm-tts-play{width:46px;height:46px;border-radius:50%;background:#f0a81e;border-color:#f0a81e;color:#13233f}.rcm-tts-play:hover{background:#ffc04a}",
     ".rcm-tts-play svg{width:24px;height:24px}",
     ".rcm-tts-x{margin-left:auto}",
+    ".rcm-slides .rcm-tts-fig{display:none}",
     "[data-tip]{position:relative}",
     ".rcm-tts-bar [data-tip]::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;background:#0b1527;color:#fff;font:600 12px/1.2 Inter,sans-serif;padding:6px 9px;border-radius:7px;box-shadow:0 6px 16px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .12s;z-index:2}",
     ".rcm-tts-ctrls>[data-tip]:first-child::after{left:0;transform:none}.rcm-tts-ctrls>[data-tip]:last-child::after{left:auto;right:0;transform:none}",
