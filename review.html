@@ -32,7 +32,7 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@500;600;700;800&amp;display=swap"></noscript>
 <style>
   :root {
-    --navy: #1F3864; --navy-2: #16294a; --teal: #1A6B72; --gold: #d4af4f; --star: #f0a81e;
+    --navy: #1F3864; --navy-2: #16294a; --teal: #1A6B72; --gold: #d4af4f; --star: #fbbf24; --star-edge: #d39a06;
     --bg: #f4f6f9; --card: #ffffff; --text: #1e2a38; --text-mid: #3d4a5c; --muted: #5b6678;
     --border: #dde3ec; --soft: #eef2f7; --ok: #2E6B3E; --err: #b42318;
     --learn: #1A6B72; --tools: #C55A11; --train: #4B3280;
@@ -60,6 +60,8 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
   .rv-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(236,208,138,.45); background: rgba(236,208,138,.1); color: #ecd08a; font: 700 11.5px/1 Inter, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
   .rv-hero h1 { font: 800 clamp(30px, 5vw, 46px)/1.1 Inter, sans-serif; letter-spacing: -.02em; margin: 16px auto 10px; max-width: 760px; }
   .rv-hero p { margin: 0 auto; max-width: 620px; color: rgba(255,255,255,.82); font-size: 17px; }
+  /* E-paper turns main text black; keep the hero subtitle light on the navy band. */
+  html[data-shade="epaper"] .rv-hero p { color: rgba(255,255,255,.9); }
 
   .rv-wrap { max-width: 1040px; margin: -44px auto 0; padding: 0 16px 56px; position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: start; }
   @media (max-width: 860px) { .rv-wrap { grid-template-columns: 1fr; } }
@@ -95,7 +97,10 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
   .stars-in { display: inline-flex; gap: 4px; }
   .stars-in button { border: 0; background: transparent; padding: 3px; cursor: pointer; border-radius: 8px; line-height: 0; color: #c4ccd8; -webkit-tap-highlight-color: transparent; }
   html[data-theme="dark"] .stars-in button { color: #3a4a64; }
-  .stars-in button.on { color: var(--star); }
+  .stars-in button.on { color: var(--star) !important; } /* selected stars stay yellow in every theme (dark/dim set the unselected color) */
+  .stars-in button.on svg path { stroke: var(--star-edge); stroke-width: .9; stroke-linejoin: round; }
+  /* E-paper mutes color by 40%; start from a stronger yellow so stars still read yellow. */
+  html[data-shade="epaper"] { --star: #ffcc00; --star-edge: #c99500; }
   .stars-in button:focus-visible { outline: 2px solid var(--teal); outline-offset: 1px; }
   .stars-in.big svg { width: 40px; height: 40px; }
   .stars-in.small svg { width: 26px; height: 26px; }
@@ -276,7 +281,7 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
     var h = '<span class="stars-static" aria-hidden="true">';
     for (var i = 1; i <= 5; i++) {
       var fill = Math.max(0, Math.min(1, v - (i - 1)));
-      h += '<svg viewBox="0 0 24 24"><defs><linearGradient id="g' + i + '_' + String(v).replace(".", "") + '"><stop offset="' + (fill * 100) + '%" stop-color="#f0a81e"/><stop offset="' + (fill * 100) + '%" stop-color="#c4ccd8"/></linearGradient></defs><path fill="url(#g' + i + '_' + String(v).replace(".", "") + ')" d="M12 2.6l2.84 6.06 6.66.73-4.96 4.5 1.37 6.56L12 17.18l-5.91 3.27 1.37-6.56-4.96-4.5 6.66-.73z"/></svg>';
+      h += '<svg viewBox="0 0 24 24"><defs><linearGradient id="g' + i + '_' + String(v).replace(".", "") + '"><stop offset="' + (fill * 100) + '%" stop-color="' + STARC + '"/><stop offset="' + (fill * 100) + '%" stop-color="#c4ccd8"/></linearGradient></defs><path fill="url(#g' + i + '_' + String(v).replace(".", "") + ')" d="M12 2.6l2.84 6.06 6.66.73-4.96 4.5 1.37 6.56L12 17.18l-5.91 3.27 1.37-6.56-4.96-4.5 6.66-.73z"/></svg>';
     }
     return h + "</span>";
   }
@@ -379,6 +384,7 @@ if(t==='epaper'){d.setAttribute('data-shade','epaper');if(document.readyState===
     }
   }
 
+  var STARC = getComputedStyle(document.documentElement).getPropertyValue("--star").trim() || "#fbbf24";
   function loadTurnstile(key) {
     window.rcmTsReady = function () {
       tsWidget = window.turnstile.render("#ts", {
