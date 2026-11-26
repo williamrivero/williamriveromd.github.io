@@ -16,7 +16,7 @@ from collections import Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "_site")
-LIMIT = 20000
+LIMIT = 100000
 
 # Folders the site never serves (build sources, prompts, notes, tests).
 EXCLUDE_DIRS = ("tools/", "image-prompts/", "blueprints/", "wgmr-image-prompts/", "work/", "tmp/",
