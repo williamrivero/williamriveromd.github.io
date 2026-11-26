@@ -1095,6 +1095,7 @@ var EasySpeech = (function () {
   if (!ES || !("speechSynthesis" in window) || !document.querySelector("main")) return;
 
   var PATH = location.pathname.replace(/\.html$/, "");
+  var K_FIGS = "rcm-tts-figs", figBtn = null;   // "0" = do not pause for figures (default: pause)
   var K_POS = "rcm-tts:" + PATH, K_RATE = "rcm-tts-rate", K_VOICE = "rcm-tts-voice";
   var RATES = [0.8, 1, 1.15, 1.3, 1.5, 1.75, 2];
   var SKIP_SECTIONS = { quiz: 1, reading: 1 };
@@ -1198,7 +1199,12 @@ var EasySpeech = (function () {
         }
         if (tag === "TR" || tag === "FIGCAPTION") {                 // composite text: paragraph highlight only
           text = speakable(text || "");
-          if (text.length > 1) items.push({ el: el, sec: si, parts: chunks(text) });
+          if (text.length > 1) {
+            var it2 = { el: el, sec: si, parts: chunks(text) };
+            var fimg = tag === "FIGCAPTION" && el.closest("figure") && el.closest("figure").querySelector("img");
+            if (fimg) { it2.fig = fimg; it2.parts.push(FIG_SAY); }       // Dr. Rivero (Nov 26 2026): show each figure for 10 s
+            items.push(it2);
+          }
           return;
         }
         var m = textMap(el);
@@ -1411,7 +1417,22 @@ var EasySpeech = (function () {
       navigator.mediaSession.setActionHandler("nexttrack", function () { jumpSection(1); });
     } catch (e) {}
   }
+  /* ---------- figures: after the description, open the image for 10 s, close it, read on ---------- */
+  var FIG_SAY = "Pausing for ten seconds to show the image.", FIG_MS = 10000, figTimer = 0, figOpen = false, figShown = -1;
+  function closeFig() {
+    clearTimeout(figTimer); figTimer = 0;
+    if (!figOpen) return; figOpen = false;
+    var lb = document.getElementById("img-lb");
+    if (lb && lb.classList.contains("open")) { lb.classList.remove("open"); document.body.style.overflow = ""; }
+  }
+  function showFigure(img, my) {
+    status("Showing the figure");
+    try { img.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) {}
+    setTimeout(function () { if (my === token && playing) { figOpen = true; img.click(); } }, 400);   // the image lightbox opens on a tap
+    figTimer = setTimeout(function () { closeFig(); if (my !== token || !playing) return; status("Reading aloud"); idx++; part = 0; save(); speakNext(); }, FIG_MS);
+  }
   function cancelAll() {
+    closeFig();
     try { ES.cancel(); } catch (e) {}
     cancelAnimationFrame(raf);
     if (aud && aud.src !== SILENT) { try { aud.pause(); } catch (e) {} }
@@ -1423,7 +1444,11 @@ var EasySpeech = (function () {
     if (!playing) return;
     var it = items[idx];
     if (!it) { finish(); return; }
-    if (part >= it.parts.length) { idx++; part = 0; save(); speakNext(); return; }
+    if (it.fig && it.parts[part] === FIG_SAY && (document.hidden || !figsOn())) part++;   // screen off: no one can see it, so skip the pause
+    if (part >= it.parts.length) {
+      if (it.fig && figShown !== idx && !document.hidden && figsOn()) { figShown = idx; showFigure(it.fig, my); return; }
+      figShown = -1; idx++; part = 0; save(); speakNext(); return;
+    }
     if (part === 0) mark();
     hlSentence();
     if (natural) { speakNatural(my); return; }
@@ -1461,6 +1486,7 @@ var EasySpeech = (function () {
   }
   function stop(keep) {
     playing = false; token++;
+    closeFig();
     try { ES.cancel(); } catch (e) {}
     cancelAnimationFrame(raf);
     if (aud && aud.src !== SILENT) { try { aud.pause(); } catch (e) {} }        // natural voice keeps its place
@@ -1491,6 +1517,8 @@ var EasySpeech = (function () {
     prev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM19 5.5v13L9 12z" fill="currentColor"/></svg>',
     next: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM5 5.5v13L15 12z" fill="currentColor"/></svg>',
     close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
+    fig: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="10" r="1.8" fill="currentColor"/><path d="M5 17l4.5-4.5 3 3 2.5-2.5L19 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    figOff: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2" opacity=".55"/><path d="M4 4l16 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
     head: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="13" width="4.5" height="7" rx="1.6" fill="currentColor"/><rect x="16.5" y="13" width="4.5" height="7" rx="1.6" fill="currentColor"/></svg>'
   };
   function status(t) { if (statusEl) statusEl.textContent = t; }
@@ -1501,6 +1529,14 @@ var EasySpeech = (function () {
     playBtn.setAttribute("aria-pressed", playing ? "true" : "false");
     status(playing ? "Reading aloud" : "Paused");
     document.body.classList.toggle("rcm-tts-playing", playing);
+  }
+  function figsOn() { return ls(K_FIGS) !== "0"; }
+  function setFigBtn() {
+    if (!figBtn) return; var on = figsOn();
+    figBtn.innerHTML = on ? IC.fig : IC.figOff;
+    figBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    figBtn.setAttribute("aria-label", on ? "Pause to show figures: on" : "Pause to show figures: off");
+    figBtn.title = on ? "Pauses 10 seconds to show each figure. Tap to turn off." : "Figures are not shown. Tap to pause 10 seconds for each figure.";
   }
   function rateLabel() { return (rate === 1 ? "1" : String(rate)) + "×"; }
 
@@ -1517,18 +1553,24 @@ var EasySpeech = (function () {
           '<button type="button" class="rcm-tts-b rcm-tts-play" data-a="play" aria-label="Play" aria-pressed="false">' + IC.play + '</button>' +
           '<button type="button" class="rcm-tts-b" data-a="next" aria-label="Next section">' + IC.next + '</button>' +
           '<button type="button" class="rcm-tts-b rcm-tts-rate" data-a="rate" aria-label="Reading speed">' + rateLabel() + '</button>' +
+          '<button type="button" class="rcm-tts-b rcm-tts-fig" data-a="figs"></button>' +
           '<label class="rcm-tts-vl"><span class="rcm-tts-sr">Voice</span><select class="rcm-tts-voice" aria-label="Voice"></select></label>' +
           '<button type="button" class="rcm-tts-b rcm-tts-x" data-a="close" aria-label="Stop and close the player">' + IC.close + '</button>' +
         '</div>';
       document.body.appendChild(ui);
       statusEl = ui.querySelector(".rcm-tts-status"); secEl = ui.querySelector(".rcm-tts-sec");
       playBtn = ui.querySelector(".rcm-tts-play"); rateBtn = ui.querySelector(".rcm-tts-rate"); voiceSel = ui.querySelector(".rcm-tts-voice");
+      figBtn = ui.querySelector(".rcm-tts-fig"); setFigBtn();
       ui.addEventListener("click", function (e) {
         var b = e.target.closest("button[data-a]"); if (!b) return;
         var a = b.getAttribute("data-a");
         if (a === "play") { if (playing) stop(true); else play(); }
         else if (a === "prev") jumpSection(-1);
         else if (a === "next") jumpSection(1);
+        else if (a === "figs") {
+          var on = !figsOn(); ls(K_FIGS, on ? null : "0"); setFigBtn();
+          if (!on && figTimer) { closeFig(); status("Reading aloud"); idx++; part = 0; save(); restart(); }   // turned off mid-figure: read on
+        }
         else if (a === "rate") {
           rate = RATES[(RATES.indexOf(rate) + 1) % RATES.length] || 1; ls(K_RATE, String(rate)); rateBtn.textContent = rateLabel();
           rateBtn.setAttribute("aria-label", "Reading speed " + rateLabel());
@@ -1650,6 +1692,7 @@ var EasySpeech = (function () {
     ".rcm-tts-play{width:46px;height:46px;border-radius:50%;background:#f0a81e;border-color:#f0a81e;color:#13233f}.rcm-tts-play:hover{background:#ffc04a}",
     ".rcm-tts-play svg{width:24px;height:24px}",
     ".rcm-tts-x{margin-left:auto}",
+    ".rcm-tts-fig[aria-pressed='true']{border-color:#f0a81e;color:#f3c46a}",
     ".rcm-tts-vl{flex:1;min-width:0}.rcm-tts-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}",
     ".rcm-tts-voice{width:100%;min-width:0;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:#1d3157;color:#fff;font:600 13px Inter,sans-serif;padding:0 6px}",
     ".rcm-tts-cur{background:#fff8dc !important;box-shadow:0 0 0 6px #fff8dc;border-radius:4px;color:#1e2a38 !important}",
