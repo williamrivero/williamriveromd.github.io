@@ -21,7 +21,7 @@
 
   var PHONE = "(max-width: 640px)";
   // Icon tiles in category colors (Dr. Rivero chose this style, Nov 26 2026). Groups (Dr. Rivero): Orient · Learn ·
-  // Consult (calculators, drugs) · Train, then About on its own. Colors: Learn teal, Consult orange, Train purple; Orient/About gold.
+  // Consult (calculators, drugs) · Train · Connect (About, Review). Colors: Learn teal, Consult orange, Train purple; Orient/About gold.
   var ITEMS = {
     home:        { label: "Home",        hint: "Renal Care Matters",       icon: '<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>' },
     guides:      { label: "Guides",      hint: "For patients and clinicians", icon: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6M9 11h6"/>' },
@@ -30,7 +30,8 @@
     calculators: { label: "Calculators", hint: "Clinical calculators",     icon: '<rect x="5" y="2.8" width="14" height="18.4" rx="2.2"/><path d="M8.5 6.8h7"/><path d="M8.6 11h.01M12 11h.01M15.4 11h.01M8.6 14.4h.01M12 14.4h.01M15.4 14.4h.01M8.6 17.8h.01M12 17.8h.01M15.4 17.8h.01" stroke-width="2.6"/>' },
     drugs:       { label: "Drugs",       hint: "Drug Index",               icon: '<path d="M10.4 3.9a5 5 0 0 1 7.1 7.1l-6.9 6.9a5 5 0 0 1-7.1-7.1z"/><path d="m7 7.3 6.9 6.9"/>' },
     academy:     { label: "Academy",     hint: "Training for every role in kidney care", icon: '<path d="m2.5 9 9.5-4.8L21.5 9 12 13.8z"/><path d="M6.5 11.2v4.6c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-4.6"/><path d="M21.5 9v5.5"/>' },
-    about:       { label: "About",       hint: "Clinics, schedules and appointments", icon: '<circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>' }
+    about:       { label: "About",       hint: "Clinics, schedules and appointments", icon: '<circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>' },
+    review:      { label: "Review",      hint: "Rate the site",           icon: '<path d="M12 3.2l2.6 5.5 6 .7-4.5 4.1 1.2 6L12 16.6l-5.3 2.9 1.2-6-4.5-4.1 6-.7z"/>' }
   };
   // wide = full-width row card; others pair up two per row
   var GROUPS = [
@@ -38,7 +39,7 @@
     { id: "learn", title: "Learn", items: [["guides", 1], ["physiology", 0], ["atlas", 0]] },
     { id: "tools", title: "Consult", items: [["calculators", 0], ["drugs", 0]] },
     { id: "train", title: "Train", items: [["academy", 1]] },
-    { id: "base",  title: null,    items: [["about", 1]] }
+    { id: "connect", title: "Connect", items: [["about", 0], ["review", 0]] }
   ];
 
   function keyOf(href) {
@@ -52,6 +53,7 @@
     if (/^\/drugs(\/|$)/.test(p)) return "drugs";
     if (/^\/academy(\/|$)/.test(p)) return "academy";
     if (/^\/about$/.test(p)) return "about";
+    if (/^\/review(-admin)?$/.test(p)) return "review";
     if (p === "/" || p === "/index") return "home";
     return null;
   }
@@ -67,6 +69,7 @@
     hrefs[k] = a.getAttribute("href");
     if (a.classList.contains("is-current")) currentKey = k;
   });
+  if (!hrefs.review) hrefs.review = "/review.html";   // not in the desktop row; menu only
   if (!currentKey) currentKey = keyOf(location.href);
 
   var F = "Inter,system-ui,-apple-system,'Segoe UI',sans-serif";
@@ -110,41 +113,76 @@
     ".rcm-nav.rcm-open .rcm-nav-scrim{display:block;position:fixed;inset:0;z-index:1;background:rgba(6,12,24,.5);",
     "-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);animation:rcmFade .2s ease}",
     "@keyframes rcmFade{from{opacity:0}to{opacity:1}}",
-    ".rcm-nav-panel .rsn-g{--g:#ecd08a}",
-    ".rcm-nav-panel .rsn-g[data-g=learn]{--g:#5ec2c6}",
-    ".rcm-nav-panel .rsn-g[data-g=tools]{--g:#f2a36b}",
-    ".rcm-nav-panel .rsn-g[data-g=train]{--g:#b9a3e3}",
-    ".rcm-nav-panel .rsn-g+.rsn-g{margin-top:12px}",
-    ".rcm-nav-panel .rsn-gt{display:flex;align-items:center;gap:10px;margin:2px 4px 8px;color:var(--g);",
+    "}",
+    ".rsn-host .rsn-g{--g:#ecd08a}",
+    ".rsn-host .rsn-g[data-g=learn]{--g:#5ec2c6}",
+    ".rsn-host .rsn-g[data-g=tools]{--g:#f2a36b}",
+    ".rsn-host .rsn-g[data-g=train]{--g:#b9a3e3}",
+    ".rsn-host .rsn-g[data-g=connect]{--g:#ecd08a}",
+    ".rsn-host .rsn-g+.rsn-g{margin-top:12px}",
+    ".rsn-host .rsn-gt{display:flex;align-items:center;gap:10px;margin:2px 4px 8px;color:var(--g);",
     "font:800 11px/1 " + F + ";letter-spacing:.18em;text-transform:uppercase}",
-    ".rcm-nav-panel .rsn-gt:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--g) 45%,transparent),transparent)}",
-    ".rcm-nav-panel .rsn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}",
-    ".rcm-nav-panel a.rsn-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:9px;padding:12px;",
+    ".rsn-host .rsn-gt:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--g) 45%,transparent),transparent)}",
+    ".rsn-host .rsn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}",
+    ".rsn-host a.rsn-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:9px;padding:12px;",
     "border-radius:14px;text-decoration:none;color:#fff;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);",
     "-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,transform .15s;",
     "animation:rcmCardIn .28s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 28ms)}",
     "@keyframes rcmCardIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}",
-    ".rcm-nav-panel a.rsn-card.rsn-wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:12px}",
-    ".rcm-nav-panel a.rsn-card:hover{background:rgba(255,255,255,.09);border-color:color-mix(in srgb,var(--g) 40%,transparent)}",
-    ".rcm-nav-panel a.rsn-card:active{transform:scale(.98)}",
-    ".rcm-nav-panel a.rsn-card:focus-visible{outline:2px solid var(--g);outline-offset:2px}",
-    ".rcm-nav-panel .rsn-ic{flex:0 0 auto;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;color:var(--g);",
+    ".rsn-host a.rsn-card.rsn-wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:12px}",
+    ".rsn-host a.rsn-card:hover{background:rgba(255,255,255,.09);border-color:color-mix(in srgb,var(--g) 40%,transparent)}",
+    ".rsn-host a.rsn-card:active{transform:scale(.98)}",
+    ".rsn-host a.rsn-card:focus-visible{outline:2px solid var(--g);outline-offset:2px}",
+    ".rsn-host .rsn-ic{flex:0 0 auto;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;color:var(--g);",
     "background:color-mix(in srgb,var(--g) 17%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--g) 30%,transparent)}",
-    ".rcm-nav-panel .rsn-ic svg{width:21px;height:21px}",
-    ".rcm-nav-panel .rsn-tx{display:flex;flex-direction:column;gap:3px;min-width:0}",
-    ".rcm-nav-panel .rsn-nl{font:700 15.5px/1.2 " + F + ";letter-spacing:.005em}",
-    ".rcm-nav-panel .rsn-nh{font:500 12.5px/1.35 Manrope," + F + ";color:rgba(255,255,255,.74)}",
-    ".rcm-nav-panel a.rsn-card[aria-current]{background:linear-gradient(135deg,rgba(227,194,106,.16),rgba(227,194,106,.05));border-color:rgba(227,194,106,.6)}",
-    ".rcm-nav-panel a.rsn-card[aria-current] .rsn-nl{color:#ecd08a}",
-    ".rcm-nav-panel a.rsn-card[aria-current]:after{content:'You are here';position:absolute;top:10px;right:10px;",
+    ".rsn-host .rsn-ic svg{width:21px;height:21px}",
+    ".rsn-host .rsn-tx{display:flex;flex-direction:column;gap:3px;min-width:0}",
+    ".rsn-host .rsn-nl{font:700 15.5px/1.2 " + F + ";letter-spacing:.005em}",
+    ".rsn-host .rsn-nh{font:500 12.5px/1.35 Manrope," + F + ";color:rgba(255,255,255,.74)}",
+    ".rsn-host a.rsn-card[aria-current]{background:linear-gradient(135deg,rgba(227,194,106,.16),rgba(227,194,106,.05));border-color:rgba(227,194,106,.6)}",
+    ".rsn-host a.rsn-card[aria-current] .rsn-nl{color:#ecd08a}",
+    ".rsn-host a.rsn-card[aria-current]:after{content:'You are here';position:absolute;top:10px;right:10px;",
     "font:700 9.5px/1 " + F + ";letter-spacing:.1em;text-transform:uppercase;color:#ecd08a}",
-    ".rcm-nav-panel a.rsn-card:not(.rsn-wide)[aria-current]:after{content:'';width:7px;height:7px;border-radius:50%;background:#ecd08a;top:12px;right:12px}",
+    ".rsn-host a.rsn-card:not(.rsn-wide)[aria-current]:after{content:'';width:7px;height:7px;border-radius:50%;background:#ecd08a;top:12px;right:12px}",
+    ".rsn-host .rsn-tracks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}",
+    ".rsn-host a.rsn-trk{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:11px;text-decoration:none;color:#fff;",
+    "font:600 13px/1.25 " + F + ";background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:background .15s}",
+    ".rsn-host a.rsn-trk:hover{background:rgba(255,255,255,.09)}",
+    ".rsn-host a.rsn-trk:focus-visible{outline:2px solid var(--g);outline-offset:2px}",
+    ".rsn-host a.rsn-trk i{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--t)}",
+    // Desktop / tablet (wider than 640 px): category bar with dropdowns (Dr. Rivero, Nov 26 2026)
+    ".rcm-dnav{display:none}",
+    "@keyframes rcmDpIn{from{opacity:0;margin-top:-6px}to{opacity:1;margin-top:0}}",
+    "@media (min-width: 641px){",
+    ".site-header .header-nav.rcm-d{overflow:visible!important;gap:4px!important}",
+    ".site-header .header-nav.rcm-d>a{display:none!important}",
+    ".rcm-dnav{display:flex;align-items:center;gap:4px}",
+    ".rcm-dg{position:relative}",
+    ".rcm-dt{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 11px;margin:0;border:0;border-radius:10px;background:transparent;",
+    "color:rgba(255,255,255,.78);font:600 .78rem/1 " + F + ";letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:color .15s,background .15s}",
+    ".rcm-dt svg{width:14px;height:14px;transition:transform .2s;opacity:.8}",
+    ".rcm-dt:hover,.rcm-dg.open .rcm-dt{color:#fff;background:rgba(255,255,255,.09)}",
+    ".rcm-dg.open .rcm-dt svg{transform:rotate(180deg)}",
+    ".rcm-dg.cur .rcm-dt{color:#e3c26a}",
+    ".rcm-dt:focus-visible{outline:2px solid #e3c26a;outline-offset:1px}",
+    ".rcm-dp{display:none;position:absolute;top:calc(100% + 9px);left:50%;transform:translateX(calc(-50% + var(--dx,0px)));width:min(400px,calc(100vw - 24px));",
+    "padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.1);z-index:20;text-align:left;",
+    "background:radial-gradient(120% 70% at 0% 0%,rgba(94,194,198,.16),transparent 60%),radial-gradient(90% 60% at 100% 100%,rgba(185,163,227,.13),transparent 60%),linear-gradient(170deg,#21406f 0%,#1b3561 50%,#162c52 100%);",
+    "box-shadow:0 24px 50px rgba(3,10,25,.45)}",
+    ".rcm-dp:before{content:'';position:absolute;left:0;right:0;top:-12px;height:12px}",
+    ".rcm-dg.open .rcm-dp{display:block;animation:rcmDpIn .18s cubic-bezier(.2,.8,.2,1)}",
+    ".rcm-dp .rsn-gt{margin-top:2px}",
+    // the dropdowns live inside .header-nav, whose link styles (uppercase, nowrap, small type) must not leak in
+    ".site-header .header-nav .rcm-dp a{text-transform:none!important;letter-spacing:normal!important;white-space:normal!important;font-size:14px;line-height:1.3;opacity:1}",
+    ".site-header .header-nav .rcm-dp a.rsn-trk{font:600 13px/1.25 " + F + "!important;color:#fff!important}",
+    ".site-header .header-nav .rcm-dp a.rsn-card{color:#fff!important}",
+    ".site-header .header-nav .rcm-dp a.rsn-card[aria-current] .rsn-nl{color:#ecd08a}",
     "}",
-    "@media (prefers-reduced-motion:reduce){.rcm-nav-panel,.rcm-nav-panel a.rsn-card,.rcm-nav-scrim{animation:none!important;transition:none!important}",
+    "@media (prefers-reduced-motion:reduce){.rcm-nav-panel,.rsn-host a.rsn-card,.rcm-nav-scrim,.rcm-dg.open .rcm-dp{animation:none!important;transition:none!important}",
     ".rcm-nav .rcm-beacon i{animation:none!important;opacity:.45;transform:scale(2)}.rcm-nav .rcm-beacon i+i{display:none}}",
     "html[data-shade=epaper] .rcm-nav .rcm-beacon i{animation:none!important;opacity:.45;transform:scale(2)}html[data-shade=epaper] .rcm-nav .rcm-beacon i+i{display:none}",
-    "html[data-shade=epaper] .rcm-nav-panel,html[data-shade=epaper] .rcm-nav-panel a.rsn-card,html[data-shade=epaper] .rcm-nav-scrim{animation:none!important;backdrop-filter:none!important}",
-    "@media print{.rcm-nav-btn,.rcm-nav-cur,.rcm-nav-panel,.rcm-nav-scrim{display:none!important}}"
+    "html[data-shade=epaper] .rcm-nav-panel,html[data-shade=epaper] .rsn-host a.rsn-card,html[data-shade=epaper] .rcm-nav-scrim,html[data-shade=epaper] .rcm-dp{animation:none!important;backdrop-filter:none!important}",
+    "@media print{.rcm-nav-btn,.rcm-nav-cur,.rcm-nav-panel,.rcm-nav-scrim,.rcm-dnav{display:none!important}}"
   ].join("");
   if (!document.getElementById("rcm-site-nav-css")) {
     var st = document.createElement("style");
@@ -170,14 +208,18 @@
   panel.id = "rcm-nav-panel";
   panel.setAttribute("role", "navigation");
   panel.setAttribute("aria-label", "Site menu");
+  // Academy tracks (anchors on the Academy landing page), listed under Train in both menus
+  var TRACKS = [["track-nursing", "Nephrology Nursing", "#5ec2c6"], ["track-physicians", "Renal Care Physicians", "#8fb0e8"],
+    ["renal-technician-program", "Renal Technicians", "#f2a36b"], ["track-ancillary", "Ancillary Staff", "#7fd39a"],
+    ["track-administrative", "Administrative Staff", "#b9a3e3"]];
   var n = 0;
-  GROUPS.forEach(function (g) {
+  function buildGroup(g, withTitle) {
     var items = g.items.filter(function (it) { return it[0] === "home" || hrefs[it[0]]; });
-    if (!items.length) return;
+    if (!items.length) return null;
     var box = document.createElement("div");
     box.className = "rsn-g";
     box.setAttribute("data-g", g.id);
-    if (g.title) {
+    if (g.title && withTitle) {
       var t = document.createElement("div");
       t.className = "rsn-gt";
       t.textContent = g.title;
@@ -199,8 +241,24 @@
       grid.appendChild(a);
     });
     box.appendChild(grid);
-    panel.appendChild(box);
-  });
+    if (g.id === "train") {
+      var tl = document.createElement("div");
+      tl.className = "rsn-tracks";
+      TRACKS.forEach(function (tr) {
+        var a = document.createElement("a");
+        a.className = "rsn-trk";
+        a.href = "/academy/#" + tr[0];
+        a.style.setProperty("--t", tr[2]);
+        a.innerHTML = "<i></i><span></span>";
+        a.lastChild.textContent = tr[1];
+        tl.appendChild(a);
+      });
+      box.appendChild(tl);
+    }
+    return box;
+  }
+  panel.classList.add("rsn-host");
+  GROUPS.forEach(function (g) { var box = buildGroup(g, true); if (box) panel.appendChild(box); });
 
   var scrim = document.createElement("div");
   scrim.className = "rcm-nav-scrim";
@@ -220,6 +278,79 @@
   header.classList.add("rcm-nav");
   if (getComputedStyle(header).position === "static") header.style.position = "relative";
 
+  /* ---------- desktop / tablet: category bar with dropdowns ---------- */
+  var CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>';
+  var dnav = document.createElement("div");
+  dnav.className = "rcm-dnav";
+  var dgroups = [], closeTimer = null, hoverOpenedAt = 0, hoverable = !!(window.matchMedia && window.matchMedia("(hover: hover)").matches);
+  GROUPS.forEach(function (g, gi) {
+    if (g.title === "Orient") return;                 // the HOME brand link covers Orient on wide screens
+    n = 0;                                             // card entrance stagger restarts in each dropdown
+    var body = buildGroup(g, false);
+    if (!body) return;
+    var wrap = document.createElement("div");
+    wrap.className = "rcm-dg";
+    var keys = g.items.map(function (it) { return it[0]; });
+    if (currentKey && keys.indexOf(currentKey) >= 0) wrap.classList.add("cur");
+    var t = document.createElement("button");
+    t.type = "button";
+    t.className = "rcm-dt";
+    t.setAttribute("aria-expanded", "false");
+    t.setAttribute("aria-controls", "rcm-dp-" + gi);
+    t.innerHTML = "<span></span>" + CHEV;
+    t.firstChild.textContent = g.title;
+    var dp = document.createElement("div");
+    dp.className = "rcm-dp rsn-host";
+    dp.id = "rcm-dp-" + gi;
+    dp.setAttribute("role", "navigation");
+    dp.setAttribute("aria-label", g.title);
+    dp.appendChild(body);
+    wrap.appendChild(t);
+    wrap.appendChild(dp);
+    dnav.appendChild(wrap);
+    dgroups.push(wrap);
+    t.addEventListener("click", function () {
+      // a click right after the hover opened it keeps it open (otherwise hover + click would toggle it shut)
+      if (wrap.classList.contains("open") && Date.now() - hoverOpenedAt < 600) return;
+      openD(wrap.classList.contains("open") ? null : wrap);
+    });
+    if (hoverable) {
+      wrap.addEventListener("mouseenter", function () {
+        clearTimeout(closeTimer);
+        if (!wrap.classList.contains("open")) { hoverOpenedAt = Date.now(); openD(wrap); }
+      });
+      wrap.addEventListener("mouseleave", function () { clearTimeout(closeTimer); closeTimer = setTimeout(function () { openD(null); }, 220); });
+    }
+    wrap.addEventListener("focusout", function (e) { if (!wrap.contains(e.relatedTarget)) { if (wrap.classList.contains("open")) openD(null); } });
+  });
+  var dZ = null;
+  function openD(w) {
+    dgroups.forEach(function (x) {
+      var on = x === w;
+      x.classList.toggle("open", on);
+      x.querySelector(".rcm-dt").setAttribute("aria-expanded", on ? "true" : "false");
+    });
+    if (w) {
+      if (dZ === null) { dZ = header.style.zIndex; header.style.zIndex = "100010"; }
+      var dp = w.querySelector(".rcm-dp");
+      dp.style.setProperty("--dx", "0px");
+      var r = dp.getBoundingClientRect(), vw = document.documentElement.clientWidth, dx = 0;
+      if (r.right > vw - 12) dx = vw - 12 - r.right;
+      if (r.left + dx < 12) dx = 12 - r.left;
+      dp.style.setProperty("--dx", Math.round(dx) + "px");
+    } else if (dZ !== null) { header.style.zIndex = dZ || ""; dZ = null; }
+  }
+  if (dgroups.length) {
+    nav.appendChild(dnav);
+    nav.classList.add("rcm-d");
+    document.addEventListener("click", function (e) { if (!dnav.contains(e.target)) openD(null); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      var open = dnav.querySelector(".rcm-dg.open");
+      if (open) { openD(null); open.querySelector(".rcm-dt").focus({ preventScroll: true }); }
+    });
+  }
+
   var savedZ = null;
   function setOpen(open, focusBtn) {
     if (open === header.classList.contains("rcm-open")) return;
@@ -228,7 +359,7 @@
     btn.lastChild.textContent = open ? "Close" : "Menu";
     if (open) {
       savedZ = header.style.zIndex;
-      header.style.zIndex = "10000";   // above the floating buttons (up to 9999)
+      header.style.zIndex = "100010";   // above floating buttons, the side rail and Academy notes tips (up to 100003)
       var first = panel.querySelector("a");
       if (first) first.focus({ preventScroll: true });
     } else {
@@ -244,7 +375,7 @@
   });
   var mq = window.matchMedia ? window.matchMedia(PHONE) : null;
   if (mq) {
-    var onChange = function () { if (!mq.matches) setOpen(false); };
+    var onChange = function () { if (!mq.matches) setOpen(false); else openD(null); };
     if (mq.addEventListener) mq.addEventListener("change", onChange); else if (mq.addListener) mq.addListener(onChange);
   }
   window.addEventListener("pageshow", function () { setOpen(false); });

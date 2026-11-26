@@ -779,6 +779,12 @@ These are the load-bearing layout conventions every guide must follow. All of th
    - `<nav class="header-nav">` — **must be a direct child** of `.site-header`; `margin-left:auto` flushes it to the right. Links, in this order (Nov 26 2026, Dr. Rivero): **GUIDES · PHYSIOLOGY · ATLAS · CALCULATORS · DRUGS · ACADEMY · ABOUT**, with the current page rendered gold + non-clickable (`.is-current`).
    - **`patch_site_nav.py` owns the order and the phone menu** (run by the sitemap workflow on every push and by `publish_academy.py`; `--check` exits 1 when stale). It reorders every header-nav in the root, guides/, academy/ and drugs/ (keeping each page's hrefs and is-current, adding any missing standard link) and puts one synchronous `<script src="/assets/site-nav.<hash>.js"></script>` right after `</nav>`. Edit `assets/site-nav.js`, never the hashed copy; `_headers` caches it immutable. `generate_drug_pages.py` imports `NAV_ORDER` / `script_tag()` from it and hashes the header in its pre-Nov-26 form (`legacy_header_for_hash`), so nav changes never re-date drug pages.
    - **Phone menu (≤ 640 px):** the script hides the brand and the row and shows a "Menu" button top left (its icon is a gold beacon dot with two slow pulsing rings, still for reduced motion and E-paper; while the menu is open the same beacon turns red-orange beside the word "Close", no X) (the current section as a gold pill in the center, or the language chips on guides). It opens a dropdown of icon-tile cards in groups **Orient** (Home) · **Learn** (Guides, Physiology, Atlas; teal) · **Consult** (Calculators, Drugs; orange) · **Train** (Academy; purple), then **About** on its own with no group label (gold), the current page outlined in gold ("You are here"). Classes `rcm-nav*` on the header, `rsn-*` inside the panel (the homepage already uses `rcm-card`). The panel is a `div role="navigation"`, not `<nav>`, because some pages style every `nav` element. If the script fails to load, the row stays.
+   - **Desktop / tablet (> 640 px, Nov 26 2026, Dr. Rivero):** the same script hides the row's links and puts a category
+     bar inside `.header-nav`: HOME (brand) · LEARN ▾ · CONSULT ▾ · TRAIN ▾ · CONNECT ▾, each a dropdown of the same
+     icon-tile cards (`.rcm-dg` / `.rcm-dt` / `.rcm-dp`, shared `rsn-*` tile styles under `.rsn-host`). Hover or click opens
+     (a click right after a hover-open keeps it open), Esc / outside click closes, keyboard accessible, clamped to the
+     viewport. Train lists Academy plus the five track anchors on /academy/ (`TRACKS` in the script). Connect holds
+     About and **Review** (/review, menu only; not in the plain row). The current category is gold.
    - ⚠️ Do NOT wrap `.header-nav` in another `<div>` — that breaks the auto-margin push. Run `patch_relocate_toggles.py` if a guide was built before the convention, or use the same patcher idiom for fresh guides.
 2. **Floating toggle widgets** (every guide).
    - Bottom-right `.float-controls`: dark/light toggle (44 px circle, white in light theme, charcoal in dark).
@@ -1022,6 +1028,24 @@ and then `python3 patch_rg_card_thumbs.py` (adds the thumbs to existing cards; t
 **Print moved off the floating stack (Nov 25 2026, Dr. Rivero):** `academy-notes.js` hides the floating `.print-btn` on every academy page; printing is **Print this module** (first button in the My notes & bookmarks drawer, next to Print my notes) and **Print** in the Schola app bar (the installed app has no browser menu, so it needs its own print button). The bottom-left of an academy page now holds only the notes pen (plus the Schola button on the landing page on phones).
 **No Symptom Checker in the Academy (Nov 25 2026, Dr. Rivero):** the floating Symptom Checker is a patient tool, so `tools/academy/strip_symptom_widget.py` (run by `publish_academy.py`) removes its script tag from every academy page after each publish (the shared patch pipeline adds it while the pages are still in guides/). Never add it back to academy pages.
 **Occupational and Physical Therapist track (Nov 25 2026):** Ancillary Staff subtrack, package `tools/techcourses/otpt/` (content mNN.py, banks quizbank.py = handoff JSON + quiz_new.py, situations.py, figs.py, refs.py). Rebuild: `python3 generate_tech_courses.py --course otpt --patch`, then `python3 tools/techcourses/otpt/expand_acronyms.py` (first-use acronym pass; the generator's auto_expand misses first uses in objectives, quiz stems and link titles) and, only if the landing card changes, `python3 tools/techcourses/otpt/wire_landing.py` (idempotent OTPT markers in academy/index.html). Toolkit: `python3 tools/techcourses/otpt/build_toolkit.py` builds guides/calc-renal-rehabilitation-toolkit.html (core tested by `node tools/test_otpt_calcs.cjs`). The track sets no universal exercise-clearance numbers: parameters come from the physician and the unit sheet. Images (75, audited) come from /Volumes/Storage/Renal Care Academy/OT-PT/images; share cards are images/og/<slug>-og.jpg.
+
+## Site reviews (`/review`, Nov 26 2026)
+
+Visitor ratings for the site, stored privately on Cloudflare (Dr. Rivero: "Your Cloudflare"; stars public, comments after
+approval; then every rating validated first). **Pages Functions** in `functions/api/reviews.js` (GET public summary, POST
+submit) and `functions/api/reviews/admin.js` (queue + approve / rating_only / reject / delete, bulk), shared code in
+`functions-lib/reviews.js` (outside `functions/` so it is not a route). `tools/deploy/cf_build.py` excludes both folders
+from `_site`. Cloudflare settings on the Pages project: D1 binding `REVIEWS_DB` (table created on first request),
+secret `REVIEWS_ADMIN_TOKEN` (admin key; also salts the hashed connection code), Turnstile `TURNSTILE_SITE_KEY` +
+secret `TURNSTILE_SECRET` (enforced once the secret is set). Without `REVIEWS_DB` the page says "opens soon".
+Every submission starts `pending`; only `approved` / `rating_only` count toward averages; comments show only when
+`approved`; "What should we improve?" is private (admin only). Form: overall stars (required); optional aspects Ease of use,
+Design, Readability, Navigation, Content quality, Usefulness (worded "Clinical usefulness" for clinician / staff /
+student), Learning value (only for those roles or when Academy is picked); "What do you like most?" (up to 3, incl.
+"It's free"); role list includes "Dialysis staff or trainee". Abuse limits: honeypot, minimum time on page, no links,
+3 per hashed connection per day, Turnstile. Admin page `/review-admin` (noindex; key kept in sessionStorage) flags
+"same connection" and "burst" (within 10 min). Dates shown American style; admin times in Manila time. Local test:
+`npx wrangler pages dev <site dir> --d1 REVIEWS_DB=local --binding REVIEWS_ADMIN_TOKEN=test` with `functions/` beside it.
 
 ## Drug database (`/drugs/`, Nov 2026)
 

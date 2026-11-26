@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Review queue · Renal Care Matters</title>
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<style>
+  :root { --navy:#1F3864; --teal:#1A6B72; --bg:#f4f6f9; --card:#fff; --text:#1e2a38; --muted:#5b6678; --border:#dde3ec; --soft:#eef2f7; --star:#f0a81e; --ok:#2E6B3E; --err:#b42318; --amber:#9a5b00; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:400 15px/1.5 Manrope, Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { background:var(--navy); color:#fff; padding:14px 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; position:sticky; top:0; z-index:5; }
+  header h1 { font:800 17px/1 Inter, sans-serif; margin:0; flex:1; }
+  header a { color:#ecd08a; font-size:13px; }
+  main { max-width:980px; margin:0 auto; padding:16px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:14px; }
+  input[type=password] { width:100%; max-width:420px; padding:11px 12px; font-size:16px; border:1.5px solid var(--border); border-radius:10px; }
+  button { font:700 14px/1 Inter, sans-serif; border-radius:10px; border:1.5px solid var(--border); background:#fff; color:var(--text); padding:10px 13px; cursor:pointer; }
+  button.primary { background:var(--navy); border-color:var(--navy); color:#fff; }
+  button.ok { background:var(--ok); border-color:var(--ok); color:#fff; }
+  button.warn { color:var(--amber); }
+  button.danger { color:var(--err); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .tabs button.on { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .bulk { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .bulk .count { color:var(--muted); font-size:13px; margin-right:auto; }
+  .item { display:grid; grid-template-columns:28px 1fr; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:10px; }
+  .item.flag { border-color:#f0b35a; box-shadow:inset 4px 0 0 #f0b35a; }
+  .item input[type=checkbox] { width:20px; height:20px; margin-top:2px; }
+  .top { display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; }
+  .stars { color:var(--star); font-size:18px; letter-spacing:1px; }
+  .meta { color:var(--muted); font-size:12.5px; }
+  .chip { display:inline-block; padding:2px 8px; border-radius:99px; font:700 11px/1.6 Inter, sans-serif; background:var(--soft); color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .chip.warn { background:#fff1dc; color:var(--amber); }
+  .chip.st-approved { background:#e3f2e7; color:var(--ok); }
+  .chip.st-rejected { background:#fde7e5; color:var(--err); }
+  .asp { font-size:13px; color:var(--muted); margin-top:6px; }
+  .txt { margin:8px 0 0; white-space:pre-line; }
+  .txt.priv { background:#f2f8f3; border-left:3px solid var(--ok); padding:8px 10px; border-radius:6px; }
+  .txt.pub { background:#fff8ea; border-left:3px solid var(--star); padding:8px 10px; border-radius:6px; }
+  .lbl { font:700 11px Inter, sans-serif; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); display:block; margin-bottom:3px; }
+  .acts { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .msg { padding:10px 12px; border-radius:10px; background:var(--soft); margin-bottom:12px; display:none; }
+  .msg.show { display:block; }
+  .msg.err { background:#fde7e5; color:var(--err); }
+  .empty { color:var(--muted); padding:20px; text-align:center; }
+</style>
+</head>
+<body>
+<header><h1>Review queue</h1><a href="/review">View the public page</a></header>
+<main>
+  <div class="card" id="login">
+    <p><b>Sign in with your review key.</b> This is the REVIEWS_ADMIN_TOKEN you set in Cloudflare. It stays in this browser tab only and is cleared when you close it.</p>
+    <form id="login-form"><input type="password" id="token" autocomplete="current-password" placeholder="Review key" required> <button class="primary" type="submit">Open queue</button></form>
+  </div>
+  <div id="app" hidden>
+    <div class="msg" id="msg"></div>
+    <div class="tabs" id="tabs">
+      <button data-s="pending" class="on">Pending</button>
+      <button data-s="approved">Approved</button>
+      <button data-s="rating_only">Rating only</button>
+      <button data-s="rejected">Rejected</button>
+      <button data-s="all">All</button>
+    </div>
+    <div class="bulk">
+      <span class="count" id="count"></span>
+      <button id="sel-clean">Select unflagged without comments</button>
+      <button id="sel-none">Clear selection</button>
+      <button class="ok" data-bulk="approve">Approve selected</button>
+      <button class="warn" data-bulk="rating_only">Rating only</button>
+      <button class="danger" data-bulk="reject">Reject selected</button>
+    </div>
+    <div id="list"></div>
+    <p class="meta">Approve: the rating counts and any public comment is shown. Rating only: the rating counts, the comment stays hidden. Reject: nothing counts or shows. Flags: "same connection" means other submissions came from the same scrambled connection code; "burst" means they came within 10 minutes of each other.</p>
+  </div>
+</main>
+<script>
+(function () {
+  "use strict";
+  var API = "/api/reviews/admin", status = "pending", items = [];
+  var ASP = { a_ease: "Ease", a_design: "Design", a_read: "Readability", a_nav: "Navigation", a_content: "Content", a_useful: "Usefulness", a_learn: "Learning value" };
+  var FEAT = { guides: "Guides", calculators: "Calculators", drugs: "Drug Index", scheduler: "Med Scheduler", interactions: "Interaction checker", academy: "Academy", atlas: "Atlas", physiology: "Physiology", languages: "Languages", offline: "Offline apps", free: "It's free", other: "Other" };
+  var ROLE = { patient: "Patient", family: "Family/caregiver", clinician: "Clinician", staff: "Dialysis staff/trainee", student: "Student", other: "Other" };
+  function token() { try { return sessionStorage.getItem("rcm-rv-key") || ""; } catch (e) { return ""; } }
+  function when(c) {    // stored as UTC "YYYY-MM-DD HH:MM:SS"; shown in Manila time, American style
+    try { return new Date(String(c).replace(" ", "T") + "Z").toLocaleString("en-US", { timeZone: "Asia/Manila", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }) + " (Manila)"; }
+    catch (e) { return c; }
+  }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function stars(n) { var s = ""; for (var i = 1; i <= 5; i++) s += i <= n ? "★" : "☆"; return s; }
+  function say(t, err) { var m = document.getElementById("msg"); m.textContent = t; m.className = "msg show" + (err ? " err" : ""); }
+  function api(method, body, qs) {
+    return fetch(API + (qs || ""), { method: method, headers: { authorization: "Bearer " + token(), "content-type": "application/json" }, body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; }); });
+  }
+  function load() {
+    api("GET", null, "?status=" + status).then(function (res) {
+      if (res.status === 401) { try { sessionStorage.removeItem("rcm-rv-key"); } catch (e) {} document.getElementById("app").hidden = true; document.getElementById("login").hidden = false; say("That key didn't work.", true); document.getElementById("msg").style.display = "block"; return; }
+      if (res.status === 503) { document.getElementById("login").hidden = true; document.getElementById("app").hidden = false; say("The review database isn't connected yet. Finish the Cloudflare setup steps.", true); return; }
+      document.getElementById("login").hidden = true; document.getElementById("app").hidden = false;
+      items = res.j.items || [];
+      var c = res.j.counts || {};
+      document.getElementById("count").textContent = "Pending " + (c.pending || 0) + " · Approved " + (c.approved || 0) + " · Rating only " + (c.rating_only || 0) + " · Rejected " + (c.rejected || 0);
+      render();
+    });
+  }
+  function render() {
+    var L = document.getElementById("list");
+    if (!items.length) { L.innerHTML = '<div class="empty">Nothing here.</div>'; return; }
+    L.innerHTML = items.map(function (it) {
+      var flagged = it.same_conn > 0;
+      var chips = '<span class="chip st-' + esc(it.status) + '">' + esc(it.status.replace("_", " ")) + "</span>";
+      if (it.same_conn) chips += ' <span class="chip warn">Same connection ×' + it.same_conn + "</span>";
+      if (it.burst) chips += ' <span class="chip warn">Burst ×' + it.burst + "</span>";
+      var asp = Object.keys(ASP).filter(function (k) { return it[k]; }).map(function (k) { return ASP[k] + " " + it[k]; }).join(" · ");
+      var feats = (it.features || "").split(",").filter(Boolean).map(function (f) { return FEAT[f] || f; }).join(", ");
+      return '<div class="item' + (flagged ? " flag" : "") + '"><input type="checkbox" data-id="' + it.id + '" data-plain="' + (!it.comment && !flagged ? 1 : 0) + '" aria-label="Select review ' + it.id + '"><div>' +
+        '<div class="top"><span class="stars" aria-label="' + it.stars + ' stars">' + stars(it.stars) + "</span>" + chips + "</div>" +
+        '<div class="meta">#' + it.id + " · " + esc(when(it.created)) + (it.role ? " · " + esc(ROLE[it.role] || it.role) : "") + (it.name ? " · " + esc(it.name) : "") + (it.page ? " · from " + esc(it.page) : "") + "</div>" +
+        (asp ? '<div class="asp">' + esc(asp) + "</div>" : "") + (feats ? '<div class="asp">Likes most: ' + esc(feats) + "</div>" : "") +
+        (it.improve ? '<div class="txt priv"><span class="lbl">Private: what to improve</span>' + esc(it.improve) + "</div>" : "") +
+        (it.comment ? '<div class="txt pub"><span class="lbl">Public comment (shown only if approved)</span>' + esc(it.comment) + "</div>" : "") +
+        '<div class="acts"><button class="ok" data-act="approve" data-id="' + it.id + '">Approve</button>' +
+        (it.comment ? '<button class="warn" data-act="rating_only" data-id="' + it.id + '">Rating only</button>' : "") +
+        '<button class="danger" data-act="reject" data-id="' + it.id + '">Reject</button>' +
+        '<button data-act="delete" data-id="' + it.id + '">Delete</button></div></div></div>';
+    }).join("");
+  }
+  function act(action, ids) {
+    if (!ids.length) { say("Select at least one review."); return; }
+    if (action === "delete" && !confirm("Delete this review permanently?")) return;
+    api("POST", { action: action, ids: ids }).then(function (res) {
+      if (res.j.ok) { say("Updated " + res.j.updated + (res.j.updated === 1 ? " review." : " reviews.")); load(); }
+      else say("Couldn't update. Please try again.", true);
+    });
+  }
+  document.getElementById("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    try { sessionStorage.setItem("rcm-rv-key", document.getElementById("token").value.trim()); } catch (x) {}
+    load();
+  });
+  document.getElementById("tabs").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    status = b.dataset.s;
+    Array.prototype.forEach.call(this.children, function (x) { x.classList.toggle("on", x === b); });
+    load();
+  });
+  document.getElementById("list").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-act]"); if (b) act(b.dataset.act, [+b.dataset.id]);
+  });
+  document.querySelector(".bulk").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var boxes = document.querySelectorAll("#list input[type=checkbox]");
+    if (b.id === "sel-clean") Array.prototype.forEach.call(boxes, function (x) { x.checked = x.dataset.plain === "1"; });
+    else if (b.id === "sel-none") Array.prototype.forEach.call(boxes, function (x) { x.checked = false; });
+    else if (b.dataset.bulk) act(b.dataset.bulk, Array.prototype.filter.call(boxes, function (x) { return x.checked; }).map(function (x) { return +x.dataset.id; }));
+  });
+  if (token()) load();
+})();
+</script>
+</body>
+</html>

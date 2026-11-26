@@ -20,7 +20,8 @@ LIMIT = 20000
 
 # Folders the site never serves (build sources, prompts, notes, tests).
 EXCLUDE_DIRS = ("tools/", "image-prompts/", "blueprints/", "wgmr-image-prompts/", "work/", "tmp/",
-                "scripts-qa/", "scripts_i18n/", "tests/", "olmocr/", "docs/", ".github/", ".claude/")
+                "scripts-qa/", "scripts_i18n/", "tests/", "olmocr/", "docs/", ".github/", ".claude/",
+                "functions/", "functions-lib/")   # Pages Functions source (compiled by Cloudflare, never served as files)
 # data/ holds generator inputs; only these subfolders are read by pages in the browser.
 DATA_SERVED = ("data/drugs/supplements/", "data/allocation-calculators/")
 EXCLUDE_EXT = (".py", ".pyc", ".md", ".sh", ".cjs", ".log", ".command")
