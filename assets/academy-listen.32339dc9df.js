@@ -1221,10 +1221,23 @@ var EasySpeech = (function () {
   var lastUserScroll = 0, ui = null, statusEl, secEl, playBtn, rateBtn, voiceSel;
   ["wheel", "touchmove", "keydown"].forEach(function (ev) { window.addEventListener(ev, function (e) { if (ev !== "keydown" || /Arrow|Page|Home|End|Space/.test(e.code || "")) lastUserScroll = Date.now(); }, { passive: true }); });
 
+  // Apple puts the voice quality in the voiceURI (com.apple.voice.premium.en-US.Ava); names are often just "Ava".
+  function tier(v) {
+    var k = (v.voiceURI || "") + " " + v.name;
+    return /premium/i.test(k) ? "Premium" : /enhanced/i.test(k) ? "Enhanced" : "";
+  }
+  var REGION = { US: "US", GB: "UK", AU: "Australia", IN: "India", IE: "Ireland", ZA: "South Africa", PH: "Philippines",
+    NZ: "New Zealand", SG: "Singapore", CA: "Canada", "GB-SCT": "Scotland" };
+  function voiceLabel(v) {
+    var name = v.name.replace(/\s*\((?:premium|enhanced|compact)\)\s*/ig, " ").replace(/\s+/g, " ").trim();
+    var m = /^en[-_]([A-Za-z-]+)/.exec(v.lang || ""), reg = m ? (REGION[m[1].toUpperCase()] || m[1].toUpperCase()) : "";
+    var t = tier(v);
+    return name + (t ? " \u00b7 " + t : "") + (reg && name.indexOf(reg) < 0 ? " (" + reg + ")" : "");
+  }
   function init() {
     if (!ready) ready = ES.init({ maxTimeout: 5000, interval: 250, quiet: true }).catch(function () { return false; }).then(function () {
       var vs = (ES.voices() || []).filter(function (v) { return /^en([-_]|$)/i.test(v.lang); });
-      var score = function (v) { return (/natural|neural|premium|enhanced|siri|google/i.test(v.name) ? 4 : 0) + (/en[-_](US|PH)/i.test(v.lang) ? 2 : 0) + (v.localService ? 1 : 0); };
+      var score = function (v) { var t = tier(v); return (t === "Premium" ? 8 : t === "Enhanced" ? 6 : /natural|neural|siri|google/i.test(v.name) ? 4 : 0) + (/en[-_](US|PH)/i.test(v.lang) ? 2 : 0) + (v.localService ? 1 : 0); };
       vs.sort(function (a, b) { return score(b) - score(a) || a.name.localeCompare(b.name); });
       var saved = ls(K_VOICE);
       voice = vs.filter(function (v) { return v.voiceURI === saved || v.name === saved; })[0] || vs[0] || null;
@@ -1359,7 +1372,7 @@ var EasySpeech = (function () {
       init().then(function (vs) {
         (vs || []).forEach(function (v) {
           var o = document.createElement("option"); o.value = v.voiceURI;
-          o.textContent = v.name.replace(/\s*\(.*?\)\s*/g, " ").trim() + (/[-_]PH/i.test(v.lang) ? " (Philippines)" : "");
+          o.textContent = voiceLabel(v);
           if (voice && v.voiceURI === voice.voiceURI) o.selected = true;
           voiceSel.appendChild(o);
         });
