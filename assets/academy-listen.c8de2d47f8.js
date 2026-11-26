@@ -1240,6 +1240,12 @@ var EasySpeech = (function () {
       var vs = all.filter(function (v) { return /^en([-_]|$)/i.test(v.lang); });
       var score = function (v) { var t = tier(v); return (t === "Premium" ? 8 : t === "Enhanced" ? 6 : /natural|neural|siri|google/i.test(v.name) ? 4 : 0) + (/en[-_](US|PH)/i.test(v.lang) ? 2 : 0) + (v.localService ? 1 : 0); };
       vs.sort(function (a, b) { return score(b) - score(a) || a.name.localeCompare(b.name); });
+      // Dr. Rivero (Nov 26 2026): of the device voices, offer only Samantha and Karen (any quality); the rest sound poor.
+      // A device that has neither (most Android phones) keeps its single best English voice, so it still has a
+      // no-download option next to the natural voices.
+      var KEEP = /^(samantha|karen)\b/i, kept = vs.filter(function (v) { return KEEP.test(v.name); });
+      kept.sort(function (a, b) { return (/^samantha/i.test(a.name) ? 0 : 1) - (/^samantha/i.test(b.name) ? 0 : 1) || score(b) - score(a); });
+      vs = kept.length ? kept : vs.slice(0, 1);
       var saved = ls(K_VOICE);
       if (saved && saved.indexOf("piper:") === 0 && naturalVoice(saved.slice(6))) natural = saved.slice(6);
       voice = vs.filter(function (v) { return v.voiceURI === saved || v.name === saved; })[0] || vs[0] || null;
