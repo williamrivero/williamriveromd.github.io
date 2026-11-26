@@ -6,6 +6,9 @@ driving. Free: no server, no audio files, works offline in Schola.
   assets/vendor/easy-speech.iife.js   easy-speech 2.4.0 (MIT, Jan Küster), cross-browser speechSynthesis wrapper,
                                       vendored unmodified (license: assets/vendor/easy-speech.LICENSE.txt)
   assets/academy-listen.js            the player (edit this)
+  assets/academy-piper-worker.js      optional "Natural voice": Piper TTS (MIT) on the device, in a Web Worker; the
+                                      voice model downloads once from Hugging Face, ONNX Runtime Web and the espeak-ng
+                                      phonemizer from jsDelivr (exact npm copies), so the site itself gains one file
 
 This patcher:
   1. concatenates the two into a fingerprinted assets/academy-listen.<hash>.js (older copies pruned; _headers caches
@@ -34,8 +37,23 @@ TAG_RE = re.compile(r'\n?<script src="[^"]*assets/' + NAME + r'\.[0-9a-f]{10}\.j
 MODULE_RE = re.compile(r"-\d\d-")
 
 
+WORKER = "academy-piper-worker"
+
+
+def fingerprint_worker(dry):
+    data = (ASSETS / (WORKER + ".js")).read_bytes()
+    out = f"{WORKER}.{hashlib.sha256(data).hexdigest()[:10]}.js"
+    if not dry:
+        (ASSETS / out).write_bytes(data)
+        for old in ASSETS.glob(WORKER + ".*.js"):
+            if old.name != out and re.fullmatch(re.escape(WORKER) + r"\.[0-9a-f]{10}\.js", old.name):
+                old.unlink()
+    return out
+
+
 def bundle(dry):
-    data = b"\n;\n".join(p.read_bytes() for p in SOURCES)
+    worker = fingerprint_worker(dry)
+    data = b"\n;\n".join(p.read_bytes() for p in SOURCES).replace(b"__PIPER_WORKER__", ("/assets/" + worker).encode())
     out = f"{NAME}.{hashlib.sha256(data).hexdigest()[:10]}.js"
     if not dry:
         (ASSETS / out).write_bytes(data)

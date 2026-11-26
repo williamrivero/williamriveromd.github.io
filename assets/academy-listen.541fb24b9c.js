@@ -1236,10 +1236,12 @@ var EasySpeech = (function () {
   }
   function init() {
     if (!ready) ready = ES.init({ maxTimeout: 5000, interval: 250, quiet: true }).catch(function () { return false; }).then(function () {
-      var vs = (ES.voices() || []).filter(function (v) { return /^en([-_]|$)/i.test(v.lang); });
+      var all = []; try { all = ES.voices() || []; } catch (e) {}
+      var vs = all.filter(function (v) { return /^en([-_]|$)/i.test(v.lang); });
       var score = function (v) { var t = tier(v); return (t === "Premium" ? 8 : t === "Enhanced" ? 6 : /natural|neural|siri|google/i.test(v.name) ? 4 : 0) + (/en[-_](US|PH)/i.test(v.lang) ? 2 : 0) + (v.localService ? 1 : 0); };
       vs.sort(function (a, b) { return score(b) - score(a) || a.name.localeCompare(b.name); });
       var saved = ls(K_VOICE);
+      if (saved && saved.indexOf("piper:") === 0 && naturalVoice(saved.slice(6))) natural = saved.slice(6);
       voice = vs.filter(function (v) { return v.voiceURI === saved || v.name === saved; })[0] || vs[0] || null;
       return vs;
     });
@@ -1261,19 +1263,149 @@ var EasySpeech = (function () {
   function hl(name, range) { if (!HL) return; if (range) HL.set(name, new Highlight(range)); else HL.delete(name); }
   function hlSentence() {
     var it = items[idx], sp = it && it.spans && it.spans[part];
-    hl("rcm-tts-word", null);
     hl("rcm-tts-sent", sp ? rangeOf(it.map, sp.a, sp.b) : null);
   }
-  function hlWord(ci) {
-    var it = items[idx], sp = it && it.spans && it.spans[part];
-    if (!sp || !sp.same || typeof ci !== "number") return;
-    var str = it.map.str, a = sp.a + ci;
-    while (a < sp.b && /\s/.test(str[a])) a++;
-    var b = a; while (b < sp.b && !/\s/.test(str[b])) b++;
-    while (b > a && /[,.;:!?)"']/.test(str[b - 1])) b--;
-    hl("rcm-tts-word", rangeOf(it.map, a, b));
-  }
   function save() { ls(K_POS, JSON.stringify({ i: idx, t: Date.now() })); }
+
+
+  /* ---------- Natural voice (Piper, on device) ---------- */
+  // The voice model downloads once from Hugging Face (rhasspy/piper-voices, MIT) and is kept in Cache Storage; the
+  // engine (ONNX Runtime Web) and the espeak-ng phonemizer come from jsDelivr (exact npm copies). Synthesis runs in a
+  // Web Worker (assets/academy-piper-worker.js); audio plays through an <audio> element, which also gives lock-screen
+  // controls through the Media Session API.
+  var HF = "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/";
+  var JSD = "https://cdn.jsdelivr.net/npm/";
+  var NATURAL = [
+    { key: "lessac", label: "Natural voice · Lessac (US, female)", model: HF + "lessac/medium/en_US-lessac-medium.onnx" },
+    { key: "ryan", label: "Natural voice · Ryan (US, male)", model: HF + "ryan/medium/en_US-ryan-medium.onnx" }
+  ];
+  var PCFG = window.RCM_PIPER_CFG || {
+    ortUrl: JSD + "onnxruntime-web@1.18.0/dist/ort.wasm.min.js",
+    ortWasmBase: JSD + "onnxruntime-web@1.18.0/dist/",
+    phonemizeBase: JSD + "@diffusionstudio/piper-wasm@1.0.0/build/piper_phonemize"
+  };
+  var WORKER_URL = "/assets/academy-piper-worker.2e7618a4e8.js";
+  var K_NATURAL_OK = "rcm-tts-natural-ok";        // set once a natural voice has finished downloading
+  var natural = null, worker = null, workerKey = null, workerReady = null, wid = 0, waits = {}, cache = {};
+  var aud = null, audKey = null, raf = 0;
+  var SILENT = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=";
+
+  function naturalVoice(key) { return NATURAL.filter(function (n) { return n.key === key; })[0] || null; }
+  function audioEl() {
+    if (!aud) {
+      aud = new Audio(); aud.preload = "auto"; aud.setAttribute("playsinline", "");
+      try { aud.preservesPitch = true; aud.webkitPreservesPitch = true; } catch (e) {}
+      aud.addEventListener("ended", function () { if (!natural || !playing || aud.src === SILENT) return; cancelAnimationFrame(raf); part++; speakNext(); });
+    }
+    return aud;
+  }
+  function unlockAudio() {                         // must run inside the tap: iOS only lets a tapped element play later
+    var a = audioEl();
+    if (!a.src || a.src === SILENT) { a.src = SILENT; a.play().catch(function () {}); }
+  }
+  function startEngine(key) {
+    var nv = naturalVoice(key);
+    if (!nv) return Promise.reject(new Error("unknown voice"));
+    if (worker && workerKey === key && workerReady) return workerReady;
+    if (worker) { worker.terminate(); worker = null; }
+    cache = {}; waits = {};
+    workerKey = key;
+    worker = new Worker(WORKER_URL);
+    workerReady = new Promise(function (resolve, reject) {
+      worker.onmessage = function (e) {
+        var m = e.data || {};
+        if (m.type === "progress") {
+          if (m.label === "preparing") status("Preparing the natural voice…");
+          else if (m.label === "voice" && m.total) status("Downloading natural voice… " + Math.round(100 * m.loaded / m.total) + "% (one time only)");
+        } else if (m.type === "ready") { ls(K_NATURAL_OK, "1"); resolve(); }
+        else if (m.type === "audio") { var w = waits[m.id]; if (w) { delete waits[m.id]; w.ok(m); } }
+        else if (m.type === "error") {
+          if (m.stage === "init") reject(new Error(m.message));
+          else { var w2 = waits[m.id]; if (w2) { delete waits[m.id]; w2.fail(new Error(m.message)); } }
+        }
+      };
+      worker.onerror = function (e) { reject(new Error(e.message || "worker failed")); };
+      worker.postMessage({ type: "init", cfg: { ortUrl: PCFG.ortUrl, ortWasmBase: PCFG.ortWasmBase, phonemizeBase: PCFG.phonemizeBase,
+        model: (PCFG.voices && PCFG.voices[key] || nv.model), config: (PCFG.voices && PCFG.voices[key + ".json"]) || nv.model + ".json" } });
+    });
+    workerReady.catch(function () { if (worker) worker.terminate(); worker = null; workerReady = null; workerKey = null; });
+    return workerReady;
+  }
+  function wav(pcm, rate) {                         // Float32 PCM -> 16-bit mono WAV blob
+    var n = pcm.length, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf), o = 44;
+    function str(at, t) { for (var i = 0; i < t.length; i++) v.setUint8(at + i, t.charCodeAt(i)); }
+    str(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); str(8, "WAVE"); str(12, "fmt "); v.setUint32(16, 16, true);
+    v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true);
+    v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, "data"); v.setUint32(40, n * 2, true);
+    for (var i = 0; i < n; i++, o += 2) { var x = Math.max(-1, Math.min(1, pcm[i])); v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff, true); }
+    return new Blob([buf], { type: "audio/wav" });
+  }
+  function synthAt(i, p) {                         // promise of an object URL for sentence p of item i (cached)
+    var k = i + ":" + p;
+    if (cache[k]) return cache[k];
+    var it = items[i]; if (!it || !it.parts[p]) return Promise.reject(new Error("nothing to read"));
+    var id = ++wid;
+    cache[k] = new Promise(function (ok, fail) {
+      waits[id] = { ok: function (m) { ok(URL.createObjectURL(wav(m.pcm, m.rate))); }, fail: fail };
+      worker.postMessage({ type: "synth", id: id, text: it.parts[p] });
+    });
+    return cache[k];
+  }
+  function nextPos(i, p, n) {                      // the n-th sentence after (i, p)
+    while (n-- > 0) { p++; while (items[i] && p >= items[i].parts.length) { i++; p = 0; } }
+    return items[i] ? [i, p] : null;
+  }
+  function prefetch() {
+    for (var n = 1; n <= 3; n++) { var q = nextPos(idx, part, n); if (q) synthAt(q[0], q[1]).catch(function () {}); }
+    Object.keys(cache).forEach(function (k) {         // free sentences already read
+      var a = k.split(":").map(Number);
+      if (a[0] < idx - 1) { cache[k].then(function (u) { URL.revokeObjectURL(u); }, function () {}); delete cache[k]; }
+    });
+  }
+  function speakNatural(my) {
+    var it = items[idx];
+    status("Reading aloud");
+    var key = idx + ":" + part;
+    synthAt(idx, part).then(function (url) {
+      if (my !== token || !playing) return;
+      var a = audioEl();
+      a.src = url; audKey = key; a.playbackRate = rate;
+      a.play().then(function () { mediaState(); }).catch(function () { stop(true); status("Tap play to continue."); });
+      prefetch();
+    }, function () {
+      if (my !== token) return;
+      part++; speakNext();                          // skip a sentence that would not synthesize
+    });
+    if (!cache[nextPos(idx, part, 1) ? nextPos(idx, part, 1).join(":") : ""]) prefetch();
+  }
+  function useDevice(msg) {
+    natural = null; ls(K_VOICE, voice ? voice.voiceURI : null);
+    if (voiceSel) voiceSel.value = voice ? voice.voiceURI : "";
+    if (msg) status(msg);
+  }
+  function mediaState() {
+    if (!("mediaSession" in navigator)) return;
+    try {
+      var h1 = document.querySelector(".hero h1, h1");
+      navigator.mediaSession.metadata = new MediaMetadata({ title: h1 ? cleanText(h1) : document.title, artist: "Renal Care Academy",
+        album: secEl ? secEl.textContent : "" });
+      navigator.mediaSession.playbackState = playing ? "playing" : "paused";
+    } catch (e) {}
+  }
+  if ("mediaSession" in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler("play", function () { if (!playing) play(); });
+      navigator.mediaSession.setActionHandler("pause", function () { if (playing) stop(true); });
+      navigator.mediaSession.setActionHandler("previoustrack", function () { jumpSection(-1); });
+      navigator.mediaSession.setActionHandler("nexttrack", function () { jumpSection(1); });
+    } catch (e) {}
+  }
+  function cancelAll() {
+    try { ES.cancel(); } catch (e) {}
+    cancelAnimationFrame(raf);
+    if (aud && aud.src !== SILENT) { try { aud.pause(); } catch (e) {} }
+  }
+  function restart() { token++; cancelAll(); audKey = null; setTimeout(speakNext, 60); }
 
   function speakNext() {
     var my = ++token;
@@ -1283,25 +1415,46 @@ var EasySpeech = (function () {
     if (part >= it.parts.length) { idx++; part = 0; save(); speakNext(); return; }
     if (part === 0) mark();
     hlSentence();
+    if (natural) { speakNatural(my); return; }
     ES.speak({ text: it.parts[part], voice: voice || undefined, rate: rate, pitch: 1, volume: 1, force: true,
-      boundary: function (e) { if (my === token && e && (e.name === "word" || !e.name)) hlWord(e.charIndex); },
       end: function () { if (my !== token) return; part++; speakNext(); },
       error: function (e) { if (my !== token) return; if (e && /interrupted|canceled/.test(e.error || "")) return; part++; speakNext(); }
     }).catch(function () {});
   }
   function play() {
+    if (natural) unlockAudio();
     init().then(function () {
       if (!items.length) build();
-      playing = true; setUI(); keepAwake(true); speakNext();
+      if (natural && aud && audKey === idx + ":" + part && aud.src !== SILENT && aud.currentTime > 0 && !aud.ended) {
+        playing = true; setUI(); keepAwake(true);                  // natural voice resumes mid-sentence
+        aud.playbackRate = rate;
+        aud.play().then(function () { mediaState(); }).catch(function () {});
+        return;
+      }
+      playing = true; setUI(); keepAwake(true);
+      if (natural) {
+        status(ls(K_NATURAL_OK) ? "Loading the natural voice…" : "Downloading natural voice…");
+        startEngine(natural).then(function () { if (playing) speakNext(); }, function () {
+          useDevice("The natural voice could not load here, so your device's voice is reading.");
+          if (playing) speakNext();
+        });
+      } else speakNext();
     });
   }
-  function stop(keep) { hl("rcm-tts-word", null); playing = false; token++; try { ES.cancel(); } catch (e) {} keepAwake(false); setUI(); if (keep) save(); }
+  function stop(keep) {
+    playing = false; token++;
+    try { ES.cancel(); } catch (e) {}
+    cancelAnimationFrame(raf);
+    if (aud && aud.src !== SILENT) { try { aud.pause(); } catch (e) {} }        // natural voice keeps its place
+    keepAwake(false); setUI(); mediaState(); if (keep) save();
+  }
   function finish() { stop(false); idx = 0; part = 0; ls(K_POS, null); mark(); status("Finished. Tap play to listen again."); }
   function jumpSection(d) {
     var cur = items[idx] ? items[idx].sec : -1, target = Math.max(-1, Math.min(sections.length - 1, cur + d));
     if (d < 0 && items[idx] && sections[cur] && idx > sections[cur].first + 1) target = cur;   // back = start of this section first
     idx = target < 0 ? 0 : sections[target].first; part = 0; save();
-    if (playing) { token++; try { ES.cancel(); } catch (e) {} setTimeout(speakNext, 60); } else mark();
+    audKey = null;
+    if (playing) restart(); else mark();
   }
   function keepAwake(on) {
     if (!("wakeLock" in navigator)) return;
@@ -1361,22 +1514,51 @@ var EasySpeech = (function () {
         else if (a === "rate") {
           rate = RATES[(RATES.indexOf(rate) + 1) % RATES.length] || 1; ls(K_RATE, String(rate)); rateBtn.textContent = rateLabel();
           rateBtn.setAttribute("aria-label", "Reading speed " + rateLabel());
-          if (playing) { token++; try { ES.cancel(); } catch (x) {} setTimeout(speakNext, 60); }
+          if (natural) { if (aud) aud.playbackRate = rate; }
+          else if (playing) restart();
         } else if (a === "close") closePlayer();
       });
       voiceSel.addEventListener("change", function () {
-        var vs = ES.voices() || []; voice = vs.filter(function (v) { return v.voiceURI === voiceSel.value; })[0] || voice;
+        var val = voiceSel.value, was = playing;
+        if (val.indexOf("piper:") === 0) {
+          var key = val.slice(6);
+          if (!ls(K_NATURAL_OK) && !window.confirm("The natural voice is a free, one-time download of about 90 MB. After that it also works without a signal. Use Wi-Fi if you can.\n\nDownload it now?")) {
+            voiceSel.value = natural ? "piper:" + natural : (voice ? voice.voiceURI : ""); return;
+          }
+          if (was) stop(true);
+          natural = key; ls(K_VOICE, val); unlockAudio();
+          status("Downloading natural voice…");
+          startEngine(key).then(function () { status(was ? "Reading aloud" : "Natural voice ready. Tap play."); if (was) play(); },
+            function () { useDevice("The natural voice could not download. Check the connection and try again."); });
+          return;
+        }
+        var vs = []; try { vs = ES.voices() || []; } catch (x) {}
+        voice = vs.filter(function (v) { return v.voiceURI === val; })[0] || voice;
+        var fromNatural = !!natural; natural = null;
         if (voice) ls(K_VOICE, voice.voiceURI);
-        if (playing) { token++; try { ES.cancel(); } catch (x) {} setTimeout(speakNext, 60); }
+        if (fromNatural && aud) { try { aud.pause(); } catch (x) {} audKey = null; }
+        if (playing) restart();
       });
       init().then(function (vs) {
+        var g1 = document.createElement("optgroup"), g2 = document.createElement("optgroup");
+        g1.label = ls(K_NATURAL_OK) ? "Natural voices (downloaded)" : "Natural voices (free, one-time download)";
+        g2.label = "This device's voices";
+        if (window.Worker && window.WebAssembly && window.caches && WORKER_URL.indexOf("__") !== 0) {
+          NATURAL.forEach(function (n) {
+            var o = document.createElement("option"); o.value = "piper:" + n.key; o.textContent = n.label;
+            if (natural === n.key) o.selected = true;
+            g1.appendChild(o);
+          });
+          voiceSel.appendChild(g1);
+        }
         (vs || []).forEach(function (v) {
           var o = document.createElement("option"); o.value = v.voiceURI;
           o.textContent = voiceLabel(v);
-          if (voice && v.voiceURI === voice.voiceURI) o.selected = true;
-          voiceSel.appendChild(o);
+          if (!natural && voice && v.voiceURI === voice.voiceURI) o.selected = true;
+          g2.appendChild(o);
         });
-        if (!vs || !vs.length) { status("This device has no English voice installed."); voiceSel.disabled = true; }
+        if (g2.children.length) voiceSel.appendChild(g2);
+        if ((!vs || !vs.length) && !g1.children.length) { status("This device has no English voice installed."); voiceSel.disabled = true; }
       });
     }
     ui.hidden = false;
@@ -1385,9 +1567,9 @@ var EasySpeech = (function () {
     playBtn.focus({ preventScroll: true });
   }
   function closePlayer() {
-    stop(true);
+    stop(true); audKey = null;
     document.querySelectorAll(".rcm-tts-cur").forEach(function (n) { n.classList.remove("rcm-tts-cur"); });
-    hl("rcm-tts-sent", null); hl("rcm-tts-word", null);
+    hl("rcm-tts-sent", null);
     if (ui) ui.hidden = true;
     document.body.classList.remove("rcm-tts-on");
     if (launch) launch.focus({ preventScroll: true });
@@ -1434,10 +1616,8 @@ var EasySpeech = (function () {
     ".rcm-tts-voice{width:100%;min-width:0;height:52px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:#1d3157;color:#fff;font:600 15px Inter,sans-serif;padding:0 10px}",
     ".rcm-tts-cur{background:#fff8dc !important;box-shadow:0 0 0 6px #fff8dc;border-radius:4px;color:#1e2a38 !important}",
     "::highlight(rcm-tts-sent){background-color:#ffe38f;color:#1e2a38}",
-    "::highlight(rcm-tts-word){background-color:#f0a81e;color:#111}",
     "html[data-theme='dark'] .rcm-tts-cur{background:#2b2717 !important;box-shadow:0 0 0 6px #2b2717;color:#fff6dc !important}",
     "html[data-theme='dark'] ::highlight(rcm-tts-sent){background-color:#6b5414;color:#fff}",
-    "html[data-theme='dark'] ::highlight(rcm-tts-word){background-color:#f0a81e;color:#111}",
     "html[data-theme='dark'] .rcm-tts-launch{background:#f0a81e;border-color:#f0a81e;color:#13233f}",
     "body.rcm-tts-on{padding-bottom:140px}",
     "body.rcm-tts-on .rcn-toast,body.rcm-tts-on .rcn-resume{display:none !important}",
