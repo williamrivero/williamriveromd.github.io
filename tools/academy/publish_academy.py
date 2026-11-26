@@ -90,6 +90,8 @@ def main():
         N = importlib.util.module_from_spec(spec); spec.loader.exec_module(N); N.main()   # highlights, notes, bookmarks + Schola scripts
         spec = importlib.util.spec_from_file_location("strip_symptom_widget", Path(__file__).with_name("strip_symptom_widget.py"))
         W = importlib.util.module_from_spec(spec); spec.loader.exec_module(W); W.main()   # no Symptom Checker in the Academy
+        spec = importlib.util.spec_from_file_location("patch_site_nav", Path(__file__).resolve().parents[2] / "patch_site_nav.py")
+        NV = importlib.util.module_from_spec(spec); spec.loader.exec_module(NV); sys.argv = sys.argv[:1]; NV.main()  # nav order + phone menu
         spec = importlib.util.spec_from_file_location("build_schola", Path(__file__).with_name("build_schola.py"))
         S2 = importlib.util.module_from_spec(spec); spec.loader.exec_module(S2); S2.main()  # Schola app: offline file list
 

@@ -2625,16 +2625,31 @@ class Ctx:
 # ═════════════════════════════════════════════════════════════════════════════
 # Page chrome
 # ═════════════════════════════════════════════════════════════════════════════
-NAV = [("CALCULATORS", "/guides/calculators.html"), ("PHYSIOLOGY", "/guides/kidney-physiology.html"),
-       ("ATLAS", "/guides/nephrology-atlas.html"), ("GUIDES", "/guides/"), ("DRUGS", "/drugs/"),
-       ("ACADEMY", "/academy/"), ("ABOUT", "/about.html")]
+import patch_site_nav as _site_nav   # site-wide nav order + phone menu script (Nov 26 2026)
+
+NAV = [(label, href) for _k, label, href in _site_nav.NAV_ORDER]
+# Order the pages were fingerprinted with; finalize() hashes the header in this form so a nav change
+# (order, phone-menu script) never re-dates a page.
+LEGACY_NAV = [("CALCULATORS", "/guides/calculators.html"), ("PHYSIOLOGY", "/guides/kidney-physiology.html"),
+              ("ATLAS", "/guides/nephrology-atlas.html"), ("GUIDES", "/guides/"), ("DRUGS", "/drugs/"),
+              ("ACADEMY", "/academy/"), ("ABOUT", "/about.html")]
+
+
+def _header(nav, current_drugs: bool, tail: str = "") -> str:
+    links = "".join(f'<a href="{u}" class="is-current" aria-current="page">{t}</a>' if (t == "DRUGS" and current_drugs)
+                    else f'<a href="{u}">{t}</a>' for t, u in nav)
+    return ('<header class="site-header">\n  <a href="https://renalcarematters.com" class="brand">HOME</a>\n'
+            f'  <nav class="header-nav" aria-label="Site">{links}</nav>{tail}\n</header>\n')
 
 
 def header(current_drugs: bool) -> str:
-    links = "".join(f'<a href="{u}" class="is-current" aria-current="page">{t}</a>' if (t == "DRUGS" and current_drugs)
-                    else f'<a href="{u}">{t}</a>' for t, u in NAV)
-    return ('<header class="site-header">\n  <a href="https://renalcarematters.com" class="brand">HOME</a>\n'
-            f'  <nav class="header-nav" aria-label="Site">{links}</nav>\n</header>\n')
+    return _header(NAV, current_drugs, _site_nav.script_tag())
+
+
+def legacy_header_for_hash(text: str) -> str:
+    for cur in (True, False):
+        text = text.replace(header(cur), _header(LEGACY_NAV, cur))
+    return text
 
 
 def head(title, desc, canonical, jsonld, content_hash, keywords="", robots="index, follow") -> str:
@@ -5653,7 +5668,7 @@ def finalize(path: Path, template: str, today: dt.date, dry: bool, force_date: b
     Returns 'new' | 'changed' | 'same'."""
     legacy = (template.replace("__DRUGDB_CSS__", f"/drugs/drugdb.css?v={ASSET_VERSION}")
               .replace("__DRUGDB_JS__", f"/drugs/drugdb.js?v={ASSET_VERSION}"))
-    hashed = (legacy.replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
+    hashed = (legacy_header_for_hash(legacy).replace(APP_HEAD, "").replace(f"?v={ASSET_VERSION}", f"?v={HASH_ASSET_VERSION}")
               .replace(APP_ICON_TAG, LEGACY_ICON_TAG)
               .replace(HASH_NAV_ADDED, ""))   # nav links added later are chrome, not content
     template = fill_assets(template)
