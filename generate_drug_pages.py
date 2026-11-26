@@ -2465,6 +2465,13 @@ def load_registry(data_dir: Path) -> list[dict]:
         if isinstance(o, dict) and ws(o.get("brand_name")) and (not cur or cur.lower().strip(" .") in _NO_BRAND):
             p["brand_name"] = ws(o["brand_name"])
             p["brand_note"] = ws(o.get("note")) or "Brand per distributor; the FDA record lists no brand."
+    # lapsed registrations kept at Dr. Rivero's request while renewal is pending; added only while the crawl lacks them
+    pend = load_json(data_dir / "pending_renewals.json", {}) or {}
+    pend = pend.get("items", {}) if isinstance(pend, dict) else {}
+    have = {ws(p.get("registration_number")).upper() for p in products}
+    for reg, rec in sorted(pend.items()):
+        if isinstance(rec, dict) and ws(reg).upper() not in have and ws(rec.get("generic_slug")):
+            products.append(dict(rec, pending_renewal=True))
     return [p for p in products if not ws(p.get("registration_number")).upper().startswith("VR-")]
 
 
@@ -3049,7 +3056,8 @@ def render_products(slug, g, products, today, also: str = "") -> str:
             f'<td data-label="Distributor"><div>{"".join(dist_bits) or "—"}</div></td>'
             f'<td data-label="Reg. no." class="dd-reg"><div>{esc(ws(p.get("registration_number")))}</div></td>'
             f'<td data-label="Valid until" data-sort="{exp.isoformat() if exp else ""}"><div>{esc(us_date_str(p.get("expiry_date"), True)) or "—"}'
-            + ('<span class="dd-sub dd-past">Past listed date</span>' if past else "") + "</div></td>"
+            + (f'<span class="dd-sub dd-past">{esc(ws(p.get("renewal_note")) or "Pending FDA license renewal")}</span>' if p.get("pending_renewal")
+               else '<span class="dd-sub dd-past">Past listed date</span>' if past else "") + "</div></td>"
             f'<td data-label="Package insert"><div>{pi_html}</div></td></tr>')
     opts = "".join(f'<option value="{esc(c)}">{esc(CLASS_LABEL.get(c, c))} ({n})</option>'
                    for c, n in sorted(classes.items(), key=lambda kv: -kv[1]) if c)
