@@ -21,7 +21,7 @@
 
   var PHONE = "(max-width: 640px)";
   // Icon tiles in category colors (Dr. Rivero chose this style, Nov 26 2026). Groups (Dr. Rivero): Orient · Learn ·
-  // Tools · Train · Consult. Colors: Learn teal, Tools orange, Train purple; Orient and Consult gold.
+  // Consult (calculators, drugs) · Train, then About on its own. Colors: Learn teal, Consult orange, Train purple; Orient/About gold.
   var ITEMS = {
     home:        { label: "Home",        hint: "Renal Care Matters",       icon: '<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>' },
     guides:      { label: "Guides",      hint: "For patients and clinicians", icon: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6M9 11h6"/>' },
@@ -36,9 +36,9 @@
   var GROUPS = [
     { id: "base",  title: "Orient",  items: [["home", 1]] },
     { id: "learn", title: "Learn", items: [["guides", 1], ["physiology", 0], ["atlas", 0]] },
-    { id: "tools", title: "Tools", items: [["calculators", 0], ["drugs", 0]] },
+    { id: "tools", title: "Consult", items: [["calculators", 0], ["drugs", 0]] },
     { id: "train", title: "Train", items: [["academy", 1]] },
-    { id: "base",  title: "Consult", items: [["about", 1]] }
+    { id: "base",  title: null,    items: [["about", 1]] }
   ];
 
   function keyOf(href) {
