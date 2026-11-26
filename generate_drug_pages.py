@@ -4881,7 +4881,7 @@ def page_for(slug: str, g: dict, ctx: Ctx) -> tuple[str, dict, dict]:
         <div class="hero-tag">Drug Database · Clinicians</div>
         <h1>{esc(name)}</h1>
         {aka_html}
-        {('<p class="dd-brands"><strong>DOH-listed brand:</strong> ' + esc(", ".join(addition.get("search_brands", []))) + '; current registration details unconfirmed.</p>') if not products and addition.get("enabled") is True else render_brand_line(brands_ranked)}
+        {('<p class="dd-brands"><strong>' + esc(addition.get("brand_line_label") or "DOH-listed brand") + ':</strong> ' + esc(", ".join(addition.get("search_brands", []))) + '; ' + esc(addition.get("brand_line_suffix") or "current registration details unconfirmed") + '.</p>') if not products and addition.get("enabled") is True else render_brand_line(brands_ranked)}
         {alias_banner(slug, ctx)}
         {pn_partof(slug, ctx)}
         {f'<p class="dd-usbrand">US brand (reference label): <strong>{esc(us_brand)}</strong>; not a Philippine-registered brand.</p>' if us_brand else ''}
