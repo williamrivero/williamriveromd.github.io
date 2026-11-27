@@ -1,0 +1,109 @@
+{
+  "id": "nn13-filter-at-three",
+  "page": "nephrology-nursing-13-convective-therapies-crrt-hdf.html",
+  "title": "The filter at 3 a.m.",
+  "decisions": 5,
+  "note": "Fictional patient. Values are illustrative; every rate and target comes from the prescriber&rsquo;s order and the unit&rsquo;s CRRT protocol.",
+  "labels": { "time": "Time", "tmp": "TMP / pressure drop", "citrate": "Citrate", "calcium": "Calcium infusion", "balance": "Hourly balance", "circuit": "Circuit" },
+  "monitorOrder": ["time", "bp", "hr", "spo2", "tmp", "citrate", "calcium", "balance", "circuit"],
+  "monitor": { "time": "Wed 00:00", "bp": "108/62", "hr": 98, "spo2": 96, "tmp": "Rising for 4 h", "citrate": "Running", "calcium": "Running", "balance": "—", "circuit": "Hour 31", "rhythm": "normal", "rhythmLabel": "Sinus rhythm", "alarm": ["tmp"] },
+  "intro": "<p>You are the ICU nurse caring for Mr. Edgar Villanueva, 61, with septic shock and acute kidney injury, on continuous venovenous hemodiafiltration (CVVHDF) with regional citrate anticoagulation through a right femoral catheter. His order is a patient total balance of 100 mL negative per hour. At midnight you notice that the transmembrane pressure and the pressure drop across the filter have been climbing for four hours.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "A rising trend:",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Check that the citrate and calcium infusions are running and connected, look at the filter and air trap for dark streaks, report the trend, and prepare for a planned circuit change with blood return.",
+          "feedback": "<p>A transmembrane pressure or pressure drop climbing over hours predicts clotting long before the circuit stops. That gives you time for a controlled change that returns the blood, instead of losing the circuit.</p>",
+          "vitals": { "circuit": "Trend reported; change planned" }, "next": "n2" },
+        { "grade": "poor", "text": "Wait for the machine to alarm before doing anything.",
+          "feedback": "<p>A rising trend is a warning you can act on. A clotted circuit is a loss you can only record.</p>",
+          "then": "<p>You report the trend at 01:00.</p>",
+          "vitals": { "circuit": "Trend reported late" }, "next": "n2" },
+        { "grade": "ok", "text": "Increase the blood flow to push through the clot.",
+          "feedback": "<p>Blood flow changes follow the order and protocol. Check the anticoagulation and report the trend first.</p>",
+          "then": "<p>You check the infusions, report the trend, and plan a change.</p>",
+          "vitals": { "circuit": "Trend reported; change planned" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "time": "Wed 01:40", "bp": "92/54", "hr": 108, "calcium": "BAG EMPTY", "rhythmLabel": "Sinus tachycardia; QT prolonged", "alarm": ["calcium"] },
+      "short": "Tingling fingers:",
+      "scene": "<p>At 01:40 Mr. Villanueva, now waking more, says his fingers and lips are tingling. His pressure has fallen to 92/54 and the monitor shows a longer QT interval.</p>",
+      "prompt": "What do you check first?",
+      "choices": [
+        { "grade": "best", "text": "The calcium infusion: running, connected, not empty. It is empty. Replace it per protocol, report at once, and send a patient ionized calcium as ordered.",
+          "feedback": "<p>On citrate, the calcium bag is as important as the citrate bag. Tingling, spasm, falling pressure, and a long QT point to low ionized calcium, and a calcium bag that ran dry unnoticed is a common cause.</p>",
+          "vitals": { "calcium": "Replaced 01:45; iCa sent", "bp": "104/60", "hr": 100 }, "next": "n3" },
+        { "grade": "harmful", "text": "Increase the citrate rate, since the filter is clotting.",
+          "feedback": "<p>More citrate binds more calcium and makes his low calcium worse. Never adjust citrate without knowing the patient&rsquo;s ionized calcium.</p>",
+          "then": "<p>You stop and check the calcium infusion: the bag is empty. You replace it per protocol and report.</p>",
+          "vitals": { "calcium": "Replaced 01:50; iCa sent", "bp": "100/58", "hr": 104 }, "next": "n3" },
+        { "grade": "poor", "text": "Give a fluid bolus for the low pressure.",
+          "feedback": "<p>The cause is likely the calcium, not volume. Check the calcium infusion first.</p>",
+          "then": "<p>You check: the calcium bag is empty. You replace it and report.</p>",
+          "vitals": { "calcium": "Replaced 01:50; iCa sent", "bp": "102/60", "hr": 104 }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "Wed 03:00", "circuit": "CLOTTED; return pressure very high", "tmp": "Max", "alarm": ["circuit"] },
+      "short": "3 a.m.:",
+      "scene": "<p>Before the planned change could be made, the circuit clots at 03:00. The return pressure is very high and the filter is dark.</p>",
+      "prompt": "Is the blood returned?",
+      "choices": [
+        { "grade": "best", "text": "No: follow the protocol for a clotted circuit, which forbids returning blood that could push clot toward him; document the estimated blood lost and report it.",
+          "feedback": "<p>Returning blood through a clotted circuit can send clot into the patient. The loss is recorded and reported; in an anemic ICU patient it matters.</p>",
+          "vitals": { "circuit": "Discarded; ~200 mL lost (est.)" }, "next": "n4" },
+        { "grade": "harmful", "text": "Yes: force the blood return so he does not lose it.",
+          "feedback": "<p>Forcing a return through clot risks embolizing clot into the patient. Follow the protocol.</p>",
+          "then": "<p>You stop, discard the circuit per protocol, and record the estimated loss.</p>",
+          "vitals": { "circuit": "Discarded; ~200 mL lost (est.)" }, "next": "n4" },
+        { "grade": "ok", "text": "Ask the physician first before doing anything.",
+          "feedback": "<p>Reporting is right, but know your protocol: blood is not returned from a clotted circuit.</p>",
+          "vitals": { "circuit": "Discarded; ~200 mL lost (est.)" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "Wed 05:00", "circuit": "New circuit since 04:10", "balance": "Machine net removal 200 mL" },
+      "short": "The hourly balance:",
+      "scene": "<p>In the 04:00&ndash;05:00 hour on the new circuit, the machine removed 200 mL net. His intake was 260 mL (infusions, feed, flushes) and his output 30 mL (urine and drain). The order is 100 mL negative per hour.</p>",
+      "prompt": "What was his patient total balance?",
+      "choices": [
+        { "grade": "best", "text": "260 &minus; 30 &minus; 200 = 30 mL positive: 130 mL short of the goal. Adjust or call as the order and protocol allow, and document which number you changed.",
+          "feedback": "<p>The machine balances only its own bags. Patient total balance is everything in minus everything out, including the machine&rsquo;s net removal.</p>",
+          "vitals": { "balance": "+30 mL (goal &minus;100)", "alarm": ["balance"] }, "next": "n5" },
+        { "grade": "poor", "text": "200 mL negative: the machine removed 200 mL.",
+          "feedback": "<p>That is the machine&rsquo;s number. The machine knows nothing about the infusions, the feed, or the urine bag.</p>",
+          "vitals": { "balance": "+30 mL (goal &minus;100)", "alarm": ["balance"] }, "next": "n5" },
+        { "grade": "ok", "text": "About even; close enough.",
+          "feedback": "<p>He was 30 mL positive, 130 mL away from the goal in one hour. Over a day that becomes liters.</p>",
+          "vitals": { "balance": "+30 mL (goal &minus;100)", "alarm": ["balance"] }, "next": "n5" }
+      ]
+    },
+    "n5": {
+      "vitals": { "time": "Wed 06:00", "balance": "Back on goal" },
+      "short": "A new antibiotic:",
+      "scene": "<p>At 06:00 a new antibiotic is ordered, and the physician also plans to raise the effluent rate. His temperature reads 36.8 &deg;C.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Ask the pharmacist or prescriber whether the antibiotic dose has been adjusted for continuous therapy at the new effluent rate, and note the downtime from the clotted circuit; remember a normal temperature can hide fever on CRRT.",
+          "feedback": "<p>Continuous therapy removes many antibiotics. Under-dosing in sepsis is as dangerous as overdosing. Cooled blood can mask fever, so look for other signs of infection.</p>",
+          "next": "end" },
+        { "grade": "poor", "text": "Give it as written; dosing is the doctor&rsquo;s job.",
+          "feedback": "<p>Dosing is the prescriber&rsquo;s, but asking whether it accounts for CRRT is part of safe administration.</p>",
+          "next": "end" },
+        { "grade": "ok", "text": "Give it, and mention his normal temperature as a sign he is improving.",
+          "feedback": "<p>On CRRT, a normal temperature may be the circuit cooling him. Look at the white count, lactate, and pressures, and ask about the dose.</p>",
+          "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "vitals": { "time": "Wed 07:00", "bp": "112/66", "hr": 94, "rhythmLabel": "Sinus rhythm" },
+      "title": "Handover",
+      "text": "<p>At handover you report the clotted circuit and estimated blood loss, the empty calcium bag and its correction, the ionized calcium result, the cumulative balance against the goal, and the antibiotic dose check. The unit adds &ldquo;calcium bag level&rdquo; to the hourly CRRT checks.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Act on the trend:</b> rising TMP or pressure drop means plan a change before the circuit clots.</li><li><b>On citrate, never let the calcium bag run dry.</b> Tingling, hypotension, and a long QT: check the calcium first.</li><li><b>No blood return from a clotted circuit;</b> record the loss.</li><li><b>The machine balances its bags; you balance the patient.</b></li><li><b>Ask about drug dosing on CRRT;</b> fever may be hidden.</li></ul><p>See <a href=\"#crrt-anticoag\">Anticoagulation</a>, <a href=\"#crrt-fluid\">Fluid balance</a>, <a href=\"#crrt-circuit\">The circuit</a> and <a href=\"#crrt-complications\">Complications</a>.</p>"
+}

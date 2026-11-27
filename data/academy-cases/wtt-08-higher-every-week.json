@@ -1,0 +1,107 @@
+{
+  "id": "wtt08-higher-every-week",
+  "page": "water-treatment-technician-08-daily-monitoring-logs-trends.html",
+  "title": "Higher every week",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Water log",
+  "note": "Fictional unit. Values are illustrative; your system&rsquo;s written baselines, action points, and the chief technician come first.",
+  "labels": { "ro": "RO product conductivity", "rej": "Percent rejection", "weekend": "Weekend entries", "culture": "Monthly cultures", "release": "Release" },
+  "monitorOrder": ["ro", "rej", "weekend", "culture", "release"],
+  "monitor": { "ro": "12 → 15 → 18 µS/cm (3 weeks)", "rej": "98.4% → 97.5%", "weekend": "—", "culture": "—", "release": "—", "alarm": ["ro"] },
+  "intro": "<p>You are the water technician. On Monday morning you read back over the log. The reverse osmosis product conductivity has risen each week for three weeks, from 12 to 18 &micro;S/cm, and percent rejection has slipped from 98.4% to 97.5%. Both are still inside the unit&rsquo;s action points.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "The trend:",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Report it today to the chief technician: &ldquo;Within limits, but higher every week for three weeks.&rdquo;",
+          "feedback": "<p>Most failures arrive slowly. Report direction, not only position. Falling rejection can mean membrane damage, scaling, or a leaking seal, and reporting now is the difference between a planned cleaning and a cancelled shift.</p>",
+          "vitals": { "ro": "Reported; membrane check planned" }, "next": "n2" },
+        { "grade": "poor", "text": "Sign the log; everything is within limits.",
+          "feedback": "<p>Within limits is position. A month of steady rise is direction, and direction is the warning.</p>",
+          "then": "<p>On reflection you report the trend that afternoon.</p>",
+          "vitals": { "ro": "Reported; membrane check planned" }, "next": "n2" },
+        { "grade": "ok", "text": "Watch it one more week before saying anything.",
+          "feedback": "<p>Three weeks is already a trend. Report it now; watching continues.</p>",
+          "then": "<p>You report it the same day.</p>",
+          "vitals": { "ro": "Reported; membrane check planned" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "weekend": "Sat and Sun identical in every column", "alarm": ["weekend"] },
+      "short": "The weekend entries:",
+      "scene": "<p>The relief technician&rsquo;s Saturday and Sunday entries are identical in every column, to the decimal point.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Report it as a gap: the readings may have been copied or a gauge may be stuck. Check the gauges today, leave the entries as written, and raise it at the weekly review without blame.",
+          "feedback": "<p>Identical readings day after day mean copied entries or a stuck gauge. Either way the record cannot show what the water was like. Never rewrite another person&rsquo;s entries.</p>",
+          "vitals": { "weekend": "Reported; gauges checked (one stuck)" }, "next": "n3" },
+        { "grade": "harmful", "text": "Replace them with estimates based on Friday and Monday.",
+          "feedback": "<p>Writing numbers nobody saw is falsifying the log. Report the gap; do not fill it.</p>",
+          "then": "<p>You leave the entries, report the gap, and check the gauges: one is stuck.</p>",
+          "vitals": { "weekend": "Reported; gauges checked (one stuck)" }, "next": "n3" },
+        { "grade": "poor", "text": "It was a quiet weekend; the water probably didn&rsquo;t change.",
+          "feedback": "<p>Real readings vary a little every day. Identical numbers are a warning sign, not reassurance.</p>",
+          "then": "<p>You check the gauges: the product flow gauge is stuck. You report it.</p>",
+          "vitals": { "weekend": "Reported; gauges checked (one stuck)" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "culture": "Rising 3 months running; still under limit", "alarm": ["culture"] },
+      "short": "The cultures:",
+      "scene": "<p>The monthly loop culture results have risen for three months in a row, still under the action level.</p>",
+      "prompt": "What does it mean, and what do you do?",
+      "choices": [
+        { "grade": "best", "text": "Biofilm may be forming; report the trend to the chief technician and medical director so disinfection can be brought forward.",
+          "feedback": "<p>Bacterial counts rising month to month but under the limit suggest biofilm. Disinfection may be due sooner than the schedule says. Waiting for the limit means waiting until the biofilm is established.</p>",
+          "vitals": { "culture": "Reported; disinfection brought forward" }, "next": "n4" },
+        { "grade": "poor", "text": "Nothing; the results pass.",
+          "feedback": "<p>Passing is position; three months of rise is direction. Biofilm is far harder to remove once it is established.</p>",
+          "vitals": { "culture": "Reported; disinfection brought forward" }, "next": "n4" },
+        { "grade": "ok", "text": "Resample next week to make sure.",
+          "feedback": "<p>A resample helps, but report the trend now so disinfection can be planned.</p>",
+          "vitals": { "culture": "Reported; disinfection brought forward" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "release": "Round complete 05:50; nurse asking" },
+      "short": "Release:",
+      "scene": "<p>At 05:50 your morning round is complete and every reading today is within limits. The charge nurse passes the water room door: &ldquo;Can we start?&rdquo;</p>",
+      "prompt": "What do you say and do?",
+      "choices": [
+        { "grade": "best", "text": "&ldquo;Water checks complete and within limits; system released,&rdquo; then sign the release in the log.",
+          "feedback": "<p>Release is the last step of the round. Say it in words and sign it. The nurse should never have to guess whether the water is ready.</p>",
+          "vitals": { "release": "Released verbally and signed 05:50" }, "next": "n5" },
+        { "grade": "ok", "text": "&ldquo;Should be fine.&rdquo;",
+          "feedback": "<p>&ldquo;Should be&rdquo; is a guess. State that the checks are complete and within limits, and sign.</p>",
+          "vitals": { "release": "Released verbally and signed 05:52" }, "next": "n5" },
+        { "grade": "poor", "text": "Nod and go back to the log.",
+          "feedback": "<p>A nod is not a release. Say it and sign it.</p>",
+          "vitals": { "release": "Released verbally and signed 05:55" }, "next": "n5" }
+      ]
+    },
+    "n5": {
+      "short": "Preventing the next one:",
+      "prompt": "What do you propose to the chief technician?",
+      "choices": [
+        { "grade": "best", "text": "Print each reading&rsquo;s baseline, normal range, and action point at the top of its log column; add a signed weekly second review; and chart the main readings monthly for the quality meeting.",
+          "feedback": "<p>The person who writes the same column every morning stops seeing a slow change. A second reader sees the whole week, and a chart shows the month. A number is easier to judge beside its reference.</p>",
+          "next": "end" },
+        { "grade": "poor", "text": "Remind the relief technician to be more careful.",
+          "feedback": "<p>A reminder fixes one person for a week. Baselines on the sheet and a second reviewer fix the system.</p>",
+          "next": "end" },
+        { "grade": "ok", "text": "Buy a digital logger.",
+          "feedback": "<p>It may help, but someone still has to read the record and act. Add baselines, action points, and a review routine.</p>",
+          "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "Next month",
+      "text": "<p>The membrane was cleaned and its rejection recovered to 98.3%. The stuck gauge was replaced. Disinfection was brought forward and the next cultures fell. The log sheets now carry baselines and action points, and the weekly review is signed by the chief technician.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Report direction, not only position.</b> &ldquo;Within limits but rising&rdquo; is a complete report.</li><li><b>Identical readings mean copying or a stuck gauge.</b> Report the gap; never fill it.</li><li><b>Rising cultures under the limit</b> suggest biofilm.</li><li><b>Release in words and in writing.</b></li><li><b>Baselines on the sheet and a second reviewer</b> catch slow failures.</li></ul><p>See <a href=\"#checks\">What each check proves</a>, <a href=\"#trends\">Reading trends</a> and <a href=\"#review\">Weekly and monthly review</a>.</p>"
+}
