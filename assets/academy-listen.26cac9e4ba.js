@@ -1125,7 +1125,7 @@ var EasySpeech = (function () {
     return s.replace(/\s+([,.;:!?])/g, "$1").replace(/\s+/g, " ").trim();
   }
   function visible(el) { return el.getClientRects().length > 0 && !el.closest(".lang-hidden,[hidden],[aria-hidden='true']"); }
-  var EXCL = "button,svg,sup,script,style,.nc-cite,.rcn-bm,.rcm-tts-ui,[aria-hidden='true'],.lang-hidden,input,select,textarea";
+  var EXCL = "button,svg,sup,script,style,.nc-cite,.rcn-bm,.rcm-tts-ui,.rcm-sk-ui,[aria-hidden='true'],.lang-hidden,input,select,textarea";
   // A box's own words: its text nodes and inline children, without nested blocks (those are read on their own).
   // A box label such as "In plain words" is followed by a pause.
   function boxText(el) {
@@ -1214,7 +1214,7 @@ var EasySpeech = (function () {
       sections.push({ el: sec, title: h2 ? cleanText(h2) : "", first: items.length });
       var si = sections.length - 1;
       sec.querySelectorAll(BLOCK + ",div").forEach(function (el) {
-        if (!visible(el) || el.closest("form,fieldset,.nc-nextprev,.calc-cards-wrap,.section-tag,.nc-cite,.rcm-tts-ui")) return;
+        if (!visible(el) || el.closest("form,fieldset,.nc-nextprev,.calc-cards-wrap,.section-tag,.nc-cite,.rcm-tts-ui,.rcm-sk-ui")) return;
         var tag = el.tagName, text;
         if (tag === "DIV") {                                         // boxes ("In plain words", key points, cards) keep text in the div itself
           if (el.closest(LEAF + ",figcaption,tr,.nc-rat") || !boxText(el)) return;

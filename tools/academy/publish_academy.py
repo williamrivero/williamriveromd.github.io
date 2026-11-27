@@ -102,6 +102,8 @@ def main():
         CA = importlib.util.module_from_spec(spec); spec.loader.exec_module(CA); CA.main()   # interactive branching cases
         spec = importlib.util.spec_from_file_location("apply_review", Path(__file__).with_name("apply_review.py"))
         RV = importlib.util.module_from_spec(spec); spec.loader.exec_module(RV); RV.main()   # spaced-repetition review deck
+        spec = importlib.util.spec_from_file_location("apply_skills", Path(__file__).with_name("apply_skills.py"))
+        SK = importlib.util.module_from_spec(spec); spec.loader.exec_module(SK); SK.main([])   # preceptor sign-off on the learner's device
         spec = importlib.util.spec_from_file_location("apply_updates", Path(__file__).with_name("apply_updates.py"))
         UP = importlib.util.module_from_spec(spec); spec.loader.exec_module(UP); UP.main([])   # "Updated since you read it" flags
         spec = importlib.util.spec_from_file_location("apply_tools", Path(__file__).with_name("apply_tools.py"))

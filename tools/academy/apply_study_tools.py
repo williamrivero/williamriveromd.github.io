@@ -23,6 +23,12 @@ CARDS = [
     ("Interactive cases",
      "Some modules have an <strong>Interactive case</strong>: a shift you work through one decision at a time while a bedside "
      "monitor responds. Each choice explains why it is, or is not, the best move. Your best score stays on this device."),
+    ("Preceptor sign-off on your phone",
+     "Every skills checklist can be completed on your phone. Hand it to your preceptor, who taps "
+     "<strong>Preceptor: start sign-off</strong>, enters their initials and the date, and taps a rating for each step. "
+     "Each tap is stamped with those initials and that date. Once every critical step passes, the preceptor signs the "
+     "checklist off. You can then print the record or share it as text. The module and its trainer page show the same record. "
+     "It is saved on this device only. Your unit&rsquo;s competency form is the authority."),
     ("Listen to a module",
      "Tap <strong>Listen to this module</strong> under the module title. A player opens at the bottom of the screen and reads "
      "the module aloud, highlighting the sentence it is reading. Use the buttons to go to the previous or next "
