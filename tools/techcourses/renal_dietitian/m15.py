@@ -36,6 +36,7 @@ MODULE = {
 {{cards:Making advice usable|Use the patient&rsquo;s language::Tagalog, Cebuano, Kapampangan, or other; use an interpreter or a family member the patient chooses.|Use objects, not numbers::A teaspoon, a matchbox-size piece of fish, a marked cup of rice.|Show, do not only tell::Measure the patis together; read a label together.|Keep it short::Two or three points per visit, written in large print or as pictures.|Involve the cook::The person who cooks often needs the teaching more than the patient.}}
 <p>Numbers are hard for many people. &ldquo;Less than 2,000 mg of sodium&rdquo; means little to most patients. &ldquo;One level teaspoon of salt for the whole day, from everything&rdquo; is clearer. &ldquo;Two matchbox pieces of fish at lunch&rdquo; is clearer than &ldquo;20 g of protein.&rdquo;</p>
 <p><strong>Example from practice.</strong> You tell Mang Danilo, 72, to use &ldquo;one level teaspoon of patis for the whole pot,&rdquo; and he nods. Then you ask him to show you how much he will use, and he pours a heaped tablespoon, three times the amount. You explain again with a real teaspoon and level it with a knife. You mark the line on the cap of his patis bottle and ask him to show you again. This time it is right. The first explanation was not clear; teach-back showed it before he went home.</p>
+{{fig:rd15_fig_teach_back_patis_teaspoon}}
 """),
         ("recipe", "Recipe arithmetic", "Calculate a household recipe", """
 <p>Patients eat dishes, not nutrients. To estimate the sodium, potassium, or protein in a dish:</p>

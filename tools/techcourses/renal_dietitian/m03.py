@@ -63,6 +63,7 @@ MODULE = {
 <p><strong>The PES statement.</strong> A nutrition diagnosis links a nutrition problem to a cause the dietitian can influence, with evidence. &ldquo;Hemodialysis&rdquo; and &ldquo;low albumin&rdquo; are not etiologies you can treat; &ldquo;pain on chewing&rdquo; and &ldquo;misses lunch on dialysis days&rdquo; are. Then write a plan that another person could carry out: one intervention the patient chose, one measure, one date, and who is responsible.[[doh_ncp2019]]</p>
 {{stop:Intake falling together with unintentional weight loss, or weight loss with new weakness or infection, is not a routine finding. Report it to the nephrologist and nurse the same day, with the numbers, even while you start the nutrition plan.}}
 <p><strong>Example from practice.</strong> Ms. Ignacio, 52, on peritoneal dialysis, has lost 4% of her body weight in three months. A weak note says: &ldquo;Malnutrition related to PD.&rdquo; A useful one says: &ldquo;Inadequate protein intake related to early fullness from the 2-liter daytime dwell, as evidenced by a 3-day intake of 0.7 g/kg/day against a prescription of 1.0 to 1.2 and a 4% weight loss in 3 months.&rdquo; The cause can be changed, by meal timing around drains and a question to the PD team about the dwell. The evidence can be measured again. The plan follows: five small meals with protein first, a reweigh and a repeat record in four weeks, and a message to the PD nurse.</p>
+{{fig:rd03_fig_pew_vs_glim_criteria}}
 """),
     ],
     "debrief": ["""

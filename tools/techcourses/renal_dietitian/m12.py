@@ -51,6 +51,7 @@ MODULE = {
 </tbody></table></div>
 <p>Teach the family too, because they shop and cook. Use teach-back: ask the patient to tell you which dishes he will choose at the party.</p>
 <p><strong>Example from practice.</strong> Mr. Domingo&rsquo;s homecoming party starts at noon. By 3 p.m. the lechon, the pancit, and the leche flan have been on the table for three hours. Using teach-back, ask him what he will eat. A good answer: &ldquo;Freshly served pancit and lechon at noon, cooked fish instead of kinilaw, leche flan only if the eggs were cooked firm. Nothing left out after two o&rsquo;clock. Bottled water, no street ice.&rdquo; His sister repeats the same plan for the leftovers: into the refrigerator within two hours.[[fda_foodsafety]]</p>
+{{fig:rd12_fig_transplant_food_safety_swaps}}
 """),
         ("drugs", "Food and medicines", "Foods, herbs, and tacrolimus", """
 <p>Tacrolimus is broken down by an enzyme, CYP3A4, in the gut and liver. Grapefruit juice blocks this enzyme, so tacrolimus levels can rise and cause toxicity. Pomelo, a close relative of grapefruit and common in the Philippines, contains similar compounds. Evidence for pomelo comes mainly from laboratory and animal studies, including one in rats in which pomelo juice raised tacrolimus levels, and from reviews of food interactions.[[egashira2012]][[tolou2025]] That is weaker evidence than for grapefruit, but the mechanism is the same, so most programs advise avoiding both.</p>

@@ -51,6 +51,7 @@ MODULE = {
 <p>Protein helps muscle most when spread across meals and paired with movement. Even simple activity, such as standing from a chair ten times or a short daily walk, works with the diet. Ask a physical therapist to help if one is available.</p>
 {{stop:New confusion, severe breathlessness, chest pain, vomiting with inability to keep food down, or a sudden fall in alertness is an acute change, not progression of frailty. Call the physician or follow the urgent pathway.}}
 <p><strong>Example from practice.</strong> Mrs. Samonte, 76, 50 kg, has G4 CKD. Her SARC-F score is 6 of 10, and a score of 4 or more suggests sarcopenia. She needs her arms to rise from a chair. She eats about 0.6 g/kg of protein because a doctor years ago told her to. With her nephrologist you raise it toward 0.8 to 1.0 g/kg, about 40 to 50 g, following KDIGO&rsquo;s advice for frail patients.[[kdigo_ckd2024]] The protein is spread across three meals at about 15 g each, and she stands from a chair ten times twice a day. Her function is measured again in six weeks.</p>
+{{fig:rd13_fig_frailty_screen_protein_up}}
 """),
         ("special", "Special groups", "Stones, polycystic kidneys, children, and pregnancy", """
 <p><strong>Kidney stones.</strong> Advice depends on the type of stone and the urine tests, so ask for the stone analysis and any 24-hour urine results first. The American Urological Association (AUA) guideline advises fluid enough to make at least 2.5 liters of urine a day for stone formers, limiting sodium, and, for calcium stones, normal dietary calcium of about 1,000 to 1,200 mg a day rather than restriction, because dietary calcium binds oxalate in the gut. Oxalate-rich foods are limited only when urine oxalate is high, and animal protein is limited for some stone types.[[aua2014]] A high fluid goal must fit the rest of the patient&rsquo;s health; it may be unsafe in heart failure, low serum sodium, or advanced CKD.</p>
@@ -58,6 +59,7 @@ MODULE = {
 <p><strong>Children and pregnancy.</strong> Adult targets in this course do not apply. Children need growth-based assessment by a pediatric renal team. Pregnancy in a woman with CKD or on dialysis needs joint care by nephrology, obstetrics, and a dietitian experienced in both. Recognize them and refer.</p>
 {{key:When a case falls outside adult kidney care, the safest action is a clear, prompt referral, not an adapted adult plan.}}
 <p><strong>Example from practice.</strong> Mr. Gonzaga, 44, has calcium oxalate stones and an eGFR of 75. He stopped milk and cheese because &ldquo;calcium makes stones.&rdquo; His 24-hour urine volume is 1.4 liters. The AUA guideline points the other way: drink enough to make at least 2.5 liters of urine a day, eat a normal 1,000 to 1,200 mg of dietary calcium so that it binds oxalate in the gut, and limit sodium.[[aua2014]] You bring back a glass of milk with meals, set a fluid target he can track by the color of his urine, and cut back on instant noodles. His second urine collection will show whether it worked.</p>
+{{fig:rd13_fig_stones_adpkd_children_pregnancy}}
 """),
     ],
     "debrief": ["""

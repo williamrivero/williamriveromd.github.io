@@ -30,6 +30,7 @@ MODULE = {
 {{key:Every patient starting dialysis needs a new nutrition prescription in the first weeks. A pre-dialysis protein restriction that nobody lifts is one of the most common causes of wasting in the first year.}}
 <p>Phosphorus rises with protein, which is why many patients and some staff resist raising it. Module 7 showed how to add protein while keeping phosphorus down: fresh sources, egg whites, no additives, and binders taken with meals. Potassium and fluid advice now depend on urine output, the dialysis schedule, and the monthly results, not on the old list.</p>
 <p><strong>Example from practice.</strong> Mrs. Ventura, 52 kg, started hemodialysis last week after two years on a 0.6 g/kg plan, about 31 g a day. Her new target is 1.0 to 1.2 g/kg/day, or 52 to 62 g.[[kdoqi2020]] That is 21 to 31 g more each day, about three to four meat exchanges. She is nervous: &ldquo;They told me protein ruins the kidneys.&rdquo; Tell her plainly that the reason for the old limit ended when dialysis began, and that the new risk is losing muscle. Then plan the extra grams as food she likes: one egg at breakfast, another piece of fish at lunch, and tokwa in the evening.</p>
+{{fig:rd09_fig_dialysis_start_protein_step_up}}
 """),
         ("week", "The dialysis week", "Look at the whole week, not one day", """
 <p>Ask for two recalls: one dialysis day and one non-dialysis day. They often look like two different patients. On dialysis days, early transport, the session itself, and tiredness afterward can wipe out one or two meals. In the Philippines, many patients dialyze twice a week, so the gap is three or four days, and potassium, phosphorus, and fluid build up for longer.</p>
@@ -50,6 +51,7 @@ MODULE = {
 <p><strong>Twice-weekly and incremental dialysis.</strong> Some patients start with fewer sessions while they still pass useful urine. Their potassium and fluid allowances depend on that urine. Ask about urine output at every visit, because when it falls, the diet must tighten and the nephrologist may add sessions.</p>
 {{stop:Report to the nephrologist the same day: post-dialysis weight falling with poor intake, new difficulty eating or swallowing, vomiting or diarrhea lasting more than a day, or a patient who has stopped eating after a hospital stay.}}
 <p><strong>Example from practice.</strong> Mr. Abad, 58 kg, has been on hemodialysis for a year and eats about 46 g of protein a day, 0.8 g/kg, below his target of 58 to 70 g. Counseling has helped a little. You add one serving a day of a renal oral supplement during dialysis. The product you choose gives about 400 kcal and 18 g of protein per serving (check the label of the brand you use), which brings him to about 64 g. Review intake and weight in two to four weeks, and continue the trial for at least three months if he tolerates it.[[kdoqi2020]] IDPN would be discussed only if oral and tube feeding could not close the gap.</p>
+{{fig:rd09_fig_oral_supplement_idpn_evidence}}
 """),
     ],
     "debrief": ["""
