@@ -1,0 +1,113 @@
+{
+  "id": "hn13-two-calls-before-six",
+  "page": "dialysis-head-nurse-13-scheduling-and-attendance.html",
+  "title": "Two calls before six",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Shift staffing board",
+  "note": "Fictional unit and staff. Your unit&rsquo;s staffing rules, nursing administration, and the physician on duty come first.",
+  "labels": { "time": "Time", "stations": "Stations booked", "nurses": "Nurses signed off", "need": "Nurses needed", "acls": "ACLS cover", "waiting": "Patients waiting" },
+  "monitorOrder": ["time", "stations", "nurses", "need", "acls", "waiting"],
+  "monitor": { "time": "Sat 05:05", "stations": "16", "nurses": "4 rostered", "need": "4 (16 ÷ 4)", "acls": "Ms. Dela Cruz", "waiting": "—" },
+  "intro": "<p>You are the head nurse of a sixteen-station unit. It is Saturday, 05:05. Four nurses signed off to work alone are rostered for the morning shift, which opens at 6:00. Ms. Liza Dela Cruz holds the only current Advanced Cardiovascular Life Support (ACLS) certificate on the shift. You are not assigned patients today.</p><p>Your phone buzzes twice. Mr. Ramil Ocampo texts that he has a fever. Then Ms. Joy Bautista texts that her child is sick and she cannot come.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "vitals": { "nurses": "2 signed off", "alarm": ["nurses"] },
+      "short": "The two texts:",
+      "prompt": "What do you do first?",
+      "choices": [
+        { "grade": "best", "text": "Log both calls with the time and reason given, work out the gap against the minimum and ACLS cover, and start calling the reliever list in order.",
+          "feedback": "<p>Sixteen stations need four nurses (stations divided by four, rounded up), and ACLS cover is a separate gate. With two nurses you can open at most eight stations. Logging every call the same way is fair, and calling relievers in list order avoids favorites.</p>",
+          "next": "n2" },
+        { "grade": "poor", "text": "Ask both nurses for details of their illness so you can judge whether they really cannot come.",
+          "feedback": "<p>Do not interrogate a sick nurse on the phone. You need only enough to plan. Attendance patterns are handled later, in private, with the log.</p>",
+          "then": "<p>You log both calls and turn to the reliever list.</p>",
+          "next": "n2" },
+        { "grade": "ok", "text": "Message the nurse who always says yes and ask her to come in.",
+          "feedback": "<p>She may come, but always calling the same person is unfair and burns her out. The reliever list, called in order, is how the gap is filled.</p>",
+          "then": "<p>She does not answer. You turn to the reliever list.</p>",
+          "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "time": "Sat 05:20" },
+      "short": "The reliever list:",
+      "scene": "<p>The first number on the reliever list is out of service. The second reliever, Ms. Carla Ramos, says yes at once. She has not worked in your unit for over a year and has no sign-offs on file for your current machines.</p>",
+      "prompt": "Does Ms. Ramos count toward today&rsquo;s minimum?",
+      "choices": [
+        { "grade": "best", "text": "No. Thank her, keep calling down the list for a signed-off reliever, and note that the list needs updating.",
+          "feedback": "<p>Only nurses signed off to work alone count. A reliever who has not been oriented to your machines is supernumerary. A list with dead numbers and lapsed relievers is not a plan; it needs fixing this week.</p>",
+          "then": "<p>The fourth name, Mr. Edwin Garcia, is signed off and can arrive by 7:30.</p>",
+          "vitals": { "nurses": "2 now, 3 at 7:30" }, "next": "n3" },
+        { "grade": "harmful", "text": "Yes. She is a licensed dialysis nurse, so put her on four stations.",
+          "feedback": "<p>A license is not a sign-off. She does not know your machines, your water system, or your emergency roles. Counting her puts four patients with a nurse who has not been cleared to work alone.</p>",
+          "then": "<p>You reconsider and keep calling. Mr. Edwin Garcia, signed off, can arrive by 7:30.</p>",
+          "vitals": { "nurses": "2 now, 3 at 7:30" }, "next": "n3" },
+        { "grade": "ok", "text": "Bring her in as an extra pair of hands, not counted, and keep calling.",
+          "feedback": "<p>That is acceptable if she is supervised and supernumerary. The key point is that she does not count toward the minimum, so you still need a signed-off reliever.</p>",
+          "then": "<p>Mr. Edwin Garcia, signed off, can arrive by 7:30.</p>",
+          "vitals": { "nurses": "2 now, 3 at 7:30" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "Sat 05:45", "waiting": "8 of 16" },
+      "short": "Opening at 6:00:",
+      "scene": "<p>It is 5:45. Two signed-off nurses are here, including Ms. Dela Cruz with ACLS. Mr. Garcia arrives at 7:30. Sixteen patients are booked for 6:00.</p>",
+      "prompt": "How do you open?",
+      "choices": [
+        { "grade": "best", "text": "Open eight stations; call the physician on duty with the eight waiting patients and ask who can safely start at 7:30 or move to another shift; inform nursing administration and the clinical head.",
+          "feedback": "<p>Do not open short. Deferring or staggering starts is a clinical decision, made with the physician, who knows which patients cannot wait (high potassium, fluid overload). Nursing administration needs to know because the unit is below its staffing rule.</p>",
+          "vitals": { "stations": "8 open", "waiting": "8 (physician reviewing)" }, "next": "n4" },
+        { "grade": "harmful", "text": "Open all sixteen; you will float between stations and help.",
+          "feedback": "<p>You are not assigned patients and cannot safely cover the floor while also leading it. Sixteen stations with two nurses is twice the safe load. An emergency at one chair would leave the others unwatched.</p>",
+          "then": "<p>You stop at eight and call the physician on duty about the eight waiting.</p>",
+          "vitals": { "stations": "8 open", "waiting": "8 (physician reviewing)" }, "next": "n4" },
+        { "grade": "poor", "text": "Ask the nurse assistant to run four stations until Mr. Garcia arrives.",
+          "feedback": "<p>Only signed-off nurses count toward the minimum. A nurse assistant works under a nurse&rsquo;s delegation and supervision and cannot hold stations alone.</p>",
+          "then": "<p>You open eight and call the physician on duty about the eight waiting.</p>",
+          "vitals": { "stations": "8 open", "waiting": "8 (physician reviewing)" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "Sat 09:30", "nurses": "3 signed off", "stations": "12 open", "waiting": "4 moved to afternoon" },
+      "short": "The offer:",
+      "scene": "<p>The physician staggered four patients to 7:30 and moved four to the afternoon. At 9:30 Ms. Dela Cruz offers to stay for the afternoon shift too, so you are not short again. She worked the Friday late shift until 9:00 p.m. and started at 5:30 this morning.</p>",
+      "prompt": "Do you accept?",
+      "choices": [
+        { "grade": "best", "text": "Decline kindly: she has already had a quick return, and a double on short sleep is unsafe for her and her patients. Solve the afternoon from the reliever list.",
+          "feedback": "<p>From 9:00 p.m. to 5:30 a.m. is 8.5 hours, under the 11-hour rule. Adding an afternoon makes a very long day on short sleep, for your only ACLS nurse. Fatigue is a patient-safety issue, not a matter of willingness.</p>",
+          "vitals": { "acls": "Afternoon: reliever with ACLS needed" }, "next": "n5" },
+        { "grade": "poor", "text": "Accept with thanks; she knows the patients and has ACLS.",
+          "feedback": "<p>She has already had a quick return of 8.5 hours. A nurse who offers to stay may do so only if it keeps 11 hours of rest before her next shift and does not make a very long day.</p>",
+          "then": "<p>You take back the offer and call the reliever list for an afternoon nurse with ACLS.</p>",
+          "vitals": { "acls": "Afternoon: reliever with ACLS needed" }, "next": "n5" },
+        { "grade": "ok", "text": "Accept only until 2:00 p.m., then send her home.",
+          "feedback": "<p>Shorter is better than a full double, but she has already had a quick return. The afternoon still needs a plan from the reliever list.</p>",
+          "vitals": { "acls": "Afternoon: reliever with ACLS needed" }, "next": "n5" }
+      ]
+    },
+    "n5": {
+      "short": "Next week:",
+      "prompt": "What do you do after today?",
+      "choices": [
+        { "grade": "best", "text": "Update and test the reliever list, check the roster for quick returns and ACLS on every shift, and bring the shortfall figures to nursing administration if gaps keep needing extra shifts.",
+          "feedback": "<p>A reliever list with outdated numbers or lapsed sign-offs failed you today. If filling the roster regularly needs quick returns or long weeks, that is a staffing shortage, and it needs a staffing decision with figures, not tired nurses.</p>",
+          "next": "end" },
+        { "grade": "ok", "text": "Remind all staff at the next meeting that call-ins should be rare.",
+          "feedback": "<p>Two genuine illnesses are not a discipline problem. The fixable failures today were the reliever list and the lack of a second ACLS nurse.</p>",
+          "next": "end" },
+        { "grade": "poor", "text": "Issue written warnings to both nurses who called in.",
+          "feedback": "<p>A single sick call is not misconduct. Log every absence the same way; a pattern is addressed first in a private conversation. Warnings for illness drive nurses to come in sick or to leave.</p>",
+          "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "vitals": { "time": "Sat 18:00", "waiting": "All treated" },
+      "title": "End of the day",
+      "text": "<p>Every patient was treated, eight of them later than booked, under the physician&rsquo;s plan. Monday morning you rebuild the reliever list, schedule Ms. Ramos for orientation and sign-off, and add a second ACLS nurse to the training plan. The day&rsquo;s log goes to nursing administration with the gap, the hours, and the deferrals.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Do the arithmetic:</b> stations divided by four, rounded up, plus ACLS cover as a separate gate.</li><li><b>Only signed-off nurses count.</b> A license is not a sign-off; orientees and nurse assistants are not the minimum.</li><li><b>Do not open short.</b> The physician decides which patients can start later or move.</li><li><b>Protect rest.</b> At least 11 hours between shifts; decline a well-meant double after a quick return.</li><li><b>Fix the system:</b> a tested reliever list, and staffing figures to nursing administration when gaps recur.</li></ul><p>See <a href=\"#callout\">When someone calls in sick</a> and <a href=\"#rest\">Building a roster that protects sleep</a>.</p>"
+}

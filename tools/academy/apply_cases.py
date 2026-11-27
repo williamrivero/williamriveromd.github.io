@@ -105,10 +105,10 @@ def section(cases):
         parts.append(f"  <h2>Interactive case: {html.escape(cases[0]['title'])}</h2>")
     else:
         parts.append("  <h2>Interactive cases</h2>")
-    parts.append("  <p>Work through a shift one decision at a time. The bedside monitor changes with what you choose. "
+    parts.append("  <p>Work through a shift one decision at a time. The panel at the top changes with what you choose. "
                  "After each choice you see why it is, or is not, the best move; after a weaker one you can try again or carry on "
                  "and see where it leads. Your first choice at each step is scored. The score stays on this device and nothing "
-                 "is sent anywhere. Your unit&rsquo;s protocol and the attending nephrologist come first in real practice.</p>")
+                 "is sent anywhere. In real practice, your unit&rsquo;s protocol and the people responsible for each decision come first.</p>")
     for c in cases:
         if len(cases) > 1:
             parts.append(f"  <h3>{html.escape(c['title'])}</h3>")

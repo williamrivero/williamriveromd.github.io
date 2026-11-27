@@ -68,8 +68,11 @@
       ".rcm-case-body{padding:16px 16px 18px}",
       ".rcm-case-body .rcm-scene{font-size:16px;line-height:1.65;color:var(--text)}",
       ".rcm-case-body .rcm-scene p{margin:0 0 10px}",
+      ".rcm-case p.rcm-case-q,.rcm-case .rcm-fb p,.rcm-case .rcm-ill,.rcm-case .rcm-best{text-align:left !important;hyphens:manual !important}",
       ".rcm-case-q{font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:17px;color:var(--text);margin:12px 0 10px}",
-      ".rcm-choices{display:grid;gap:8px;margin:0;padding:0;list-style:none}",
+      ".rcm-case ul.rcm-choices,.rcm-case ul.rcm-path{display:grid;gap:8px;margin:0 !important;padding:0 !important;list-style:none !important}",
+      ".rcm-case ul.rcm-choices>li,.rcm-case ul.rcm-path>li{margin:0 !important;list-style:none !important}",
+      ".rcm-case ul.rcm-choices>li::before,.rcm-case ul.rcm-path>li::before,.rcm-case ul.rcm-choices>li::marker,.rcm-case ul.rcm-path>li::marker{content:none !important;display:none !important}",
       ".rcm-choice{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;font:inherit;font-size:15.5px;line-height:1.5;color:var(--text);background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;transition:border-color .15s,background .15s}",
       ".rcm-choice:hover:not([disabled]),.rcm-choice:focus-visible{border-color:var(--teal);background:var(--teal-light);outline:none}",
       ".rcm-choice .ltr{flex:0 0 26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;background:var(--bg);border:1px solid var(--border);color:var(--text-mid)}",
@@ -97,7 +100,7 @@
       ".rcm-score{display:flex;align-items:center;gap:14px;margin:6px 0 14px}",
       ".rcm-score .ring{flex:0 0 74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:Inter,system-ui,sans-serif;font-weight:800;font-size:20px;color:var(--text);background:conic-gradient(var(--teal) calc(var(--p)*1%),var(--border) 0)}",
       ".rcm-score .ring span{background:var(--white);width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center}",
-      ".rcm-path{list-style:none;margin:8px 0 14px;padding:0;display:grid;gap:6px}",
+      ".rcm-case ul.rcm-path{margin:8px 0 14px !important;gap:6px}",
       ".rcm-path li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.5;border:1px solid var(--border);border-radius:9px;padding:8px 10px;background:var(--bg);color:var(--text)}",
       ".rcm-path .rcm-pdot{flex:0 0 auto;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;border-radius:999px;padding:2px 8px;margin-top:2px;color:#fff}",
       ".rcm-path .rcm-pdot.best{background:#166534}.rcm-path .rcm-pdot.ok{background:#92400e}.rcm-path .rcm-pdot.poor,.rcm-path .rcm-pdot.harm{background:#b91c1c}",
@@ -179,7 +182,7 @@
 
   /* ── One case ── */
   function Case(host, data) {
-    var id = data.id, nodes = data.nodes, mon = {}, cellEls = {}, strip, monEl, body, topStep, prog, cur, path = [], scored = {};
+    var id = data.id, nodes = data.nodes, mon = {}, cellEls = {}, alarms = [], strip = null, monEl, body, topStep, prog, cur, path = [], scored = {};
     var decisionTotal = data.decisions || Object.keys(nodes).filter(function (k) { return nodes[k].choices; }).length;
     var MON_ORDER = data.monitorOrder || ["time", "bp", "hr", "spo2"];
     var LABELS = { time: "Time", bp: "BP", hr: "Pulse", spo2: "SpO₂", rr: "Resp", temp: "Temp", uf: "Fluid removal", pump: "Blood pump", glucose: "Glucose", ecg: "ECG", k: "Potassium", line: "Venous line" };
@@ -193,8 +196,9 @@
       return false;
     }
     function renderMonitor(vals, first) {
+      if (vals.alarm) alarms = vals.alarm.slice();
       for (var k in vals) if (Object.prototype.hasOwnProperty.call(vals, k)) {
-        if (k === "rhythm" || k === "rhythmLabel") continue;
+        if (k === "rhythm" || k === "rhythmLabel" || k === "alarm") continue;
         var changed = mon[k] !== undefined && mon[k] !== vals[k];
         mon[k] = vals[k];
         if (!cellEls[k]) {
@@ -216,14 +220,15 @@
         var v = cellEls[k].querySelector(".v");
         v.textContent = vals[k] == null ? "—" : String(vals[k]);
         if (UNITS[k] && vals[k] != null && vals[k] !== "—") { var sm = el("small"); sm.textContent = UNITS[k]; v.appendChild(sm); }
-        cellEls[k].classList.toggle("alarm", alarm(k, vals[k]));
+        cellEls[k].classList.toggle("alarm", alarm(k, vals[k]) || alarms.indexOf(k) >= 0);
         if (changed && !first && !REDUCED) flash(cellEls[k]);
       }
-      if (vals.rhythm || vals.hr) {
+      if (vals.alarm) for (var a in cellEls) cellEls[a].classList.toggle("alarm", alarm(a, mon[a]) || alarms.indexOf(a) >= 0);
+      if (strip && (vals.rhythm || vals.hr)) {
         mon.rhythm = vals.rhythm || mon.rhythm || "normal";
         strip.set(parseFloat(mon.hr) || 80, mon.rhythm);
       }
-      if (vals.rhythmLabel) monEl.rlab.textContent = vals.rhythmLabel;
+      if (vals.rhythmLabel && monEl.rlab) monEl.rlab.textContent = vals.rhythmLabel;
     }
     function keyOf(n) { for (var k in cellEls) if (cellEls[k] === n) return k; return ""; }
     function flash(c) { c.classList.add("flash"); setTimeout(function () { c.classList.remove("flash"); }, 700); }
@@ -235,16 +240,18 @@
       topStep = el("span", "rcm-case-step"); top.appendChild(topStep);
       prog = el("div", "rcm-case-prog"); prog.appendChild(el("i")); top.appendChild(prog);
       host.appendChild(top);
-      monEl = el("div", "rcm-mon"); monEl.setAttribute("aria-label", "Bedside monitor");
+      monEl = el("div", "rcm-mon"); monEl.setAttribute("aria-label", data.monitorTitle || "Bedside monitor");
       monEl.grid = el("div", "rcm-mon-grid"); monEl.appendChild(monEl.grid);
-      var st = el("div", "rcm-mon-strip"), cv = el("canvas"); cv.setAttribute("aria-hidden", "true");
-      monEl.rlab = el("span"); monEl.rlab.textContent = "Rhythm strip";
-      st.appendChild(cv); st.appendChild(monEl.rlab); monEl.appendChild(st);
+      if (data.strip !== false) {
+        var st = el("div", "rcm-mon-strip"), cv = el("canvas"); cv.setAttribute("aria-hidden", "true");
+        monEl.rlab = el("span"); monEl.rlab.textContent = "Rhythm strip";
+        st.appendChild(cv); st.appendChild(monEl.rlab); monEl.appendChild(st);
+        strip = Strip(cv);
+      }
       host.appendChild(monEl);
-      strip = Strip(cv);
       body = el("div", "rcm-case-body"); body.setAttribute("aria-live", "polite");
       host.appendChild(body);
-      window.addEventListener("resize", function () { strip.resize(); });
+      if (strip) window.addEventListener("resize", function () { strip.resize(); });
     }
 
     function step(keepLabel) {
@@ -254,13 +261,14 @@
     }
 
     function intro() {
-      cur = null; path = []; scored = {}; mon = {}; cellEls = {};
+      cur = null; path = []; scored = {}; mon = {}; cellEls = {}; alarms = [];
+      if (strip) strip.stop();
       build();
       renderMonitor(data.monitor || {}, true);
       topStep.textContent = decisionTotal + " decisions";
       var sc = el("div", "rcm-scene", data.intro);
       body.appendChild(sc);
-      if (data.illustrative !== false) body.appendChild(el("p", "rcm-ill", "Fictional patient. Values are illustrative, not targets; your unit&rsquo;s protocol and the attending nephrologist&rsquo;s orders come first."));
+      if (data.illustrative !== false) body.appendChild(el("p", "rcm-ill", data.note || "Fictional patient. Values are illustrative, not targets; your unit&rsquo;s protocol and the attending nephrologist&rsquo;s orders come first."));
       var best = store(id);
       if (best && best.max) { var b = el("p", "rcm-best"); b.textContent = "Your best on this device: " + best.score + " of " + best.max + " (" + best.plays + (best.plays === 1 ? " run" : " runs") + ")."; body.appendChild(b); }
       var acts = el("div", "rcm-acts"), go = el("button", "rcm-btn", "Start the case");
