@@ -26,7 +26,9 @@ export const PASS = 0.8;
 export async function db(env) {
   if (!env.REVIEWS_DB) return null;
   await env.REVIEWS_DB.prepare(SCHEMA).run();
-  try { await env.REVIEWS_DB.prepare("ALTER TABLE certificates ADD COLUMN modules_passed INTEGER").run(); } catch (e) { /* already there */ }
+  for (const col of ["modules_passed", "active_min"]) {
+    try { await env.REVIEWS_DB.prepare(`ALTER TABLE certificates ADD COLUMN ${col} INTEGER`).run(); } catch (e) { /* already there */ }
+  }
   return env.REVIEWS_DB;
 }
 
@@ -46,6 +48,6 @@ export function newCode(track, issued) {
 export function publicRecord(r) {
   return {
     code: r.code, status: r.status, issued: r.issued, name: r.name, track: r.track, exam: r.exam,
-    modules: r.modules, modules_passed: r.modules_passed, score: r.score, total: r.total, exam_min: r.exam_min, study_min: r.study_min,
+    modules: r.modules, modules_passed: r.modules_passed, active_min: r.active_min, score: r.score, total: r.total, exam_min: r.exam_min, study_min: r.study_min,
   };
 }

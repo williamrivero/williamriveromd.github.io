@@ -54,11 +54,68 @@
   var me = document.currentScript;
   var STUDY_MIN = me ? +me.getAttribute("data-study-min") || 0 : 0;
 
-  // Time on the examination: from the first answer to "Check answers" (a new set of questions restarts it).
-  var started = 0, examMin = 0;
-  form.addEventListener("change", function () { if (!started) started = Date.now(); });
-  form.addEventListener("submit", function () { if (started) examMin = Math.max(1, Math.round((Date.now() - started) / 60000)); }, true);
-  form.addEventListener("click", function (e) { if (e.target.closest("[data-nc-newset]")) { started = 0; examMin = 0; } });
+  /* ---------- timed examination (Dr. Rivero, Nov 27 2026): one minute per question ----------
+   * The questions stay hidden until "Start the examination". The clock runs from Start; at 0 every unanswered question
+   * gets a "No answer (time ran out)" choice and the answers are checked. Only the FIRST check of a set, made within the
+   * time, counts for the certificate; "Try these again" is practice. "New set of questions" starts a new timed attempt.
+   * Reloading the page draws a new set and restarts the clock. */
+  var started = 0, examMin = 0, deadline = 0, tickT = 0, attempt = 0, timedOut = false, bar = null, gate = null;
+  function shown() { return Array.prototype.filter.call(form.querySelectorAll("fieldset.nc-q"), function (f) { return !f.hidden && f.offsetParent !== null; }); }
+  function limitSec() { return Math.max(1, shown().length) * 60; }
+  function mmss(sec) { sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec / 60) + ":" + ("0" + sec % 60).slice(-2); }
+  function lock() {
+    form.classList.add("rcm-x-locked");
+    if (!gate) { gate = document.createElement("div"); gate.className = "rcm-x-gate"; form.parentNode.insertBefore(gate, form); }
+    var n = shown().length || +form.getAttribute("data-draw") || 0;
+    gate.innerHTML = '<div class="rcm-x-ic" aria-hidden="true">⏱</div><div><b>Timed examination: ' + n + ' questions, ' + n + ' minutes</b>' +
+      '<p>The questions appear when you tap Start, and the clock starts at once. Stay on this page: reloading draws a new set and restarts the clock. ' +
+      'When time runs out, unanswered questions count as wrong and your answers are checked. Only your first check of a set counts for the certificate.</p>' +
+      '<button type="button" class="rcm-x-start">Start the examination</button></div>';
+    gate.hidden = false;
+    gate.querySelector(".rcm-x-start").addEventListener("click", start);
+  }
+  function start() {
+    form.classList.remove("rcm-x-locked"); gate.hidden = true;
+    started = Date.now(); deadline = started + limitSec() * 1000; timedOut = false; examMin = 0;
+    if (!bar) { bar = document.createElement("div"); bar.className = "rcm-x-bar"; bar.setAttribute("role", "timer"); bar.setAttribute("aria-live", "off"); document.body.appendChild(bar); }
+    bar.hidden = false; tick();
+    clearInterval(tickT); tickT = setInterval(tick, 1000);
+    var q = shown()[0]; if (q) q.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+  function stopClock() { clearInterval(tickT); tickT = 0; if (bar) bar.hidden = true; }
+  function tick() {
+    var left = (deadline - Date.now()) / 1000, qs = shown();
+    var answered = qs.filter(function (f) { return f.querySelector("input:checked"); }).length;
+    bar.className = "rcm-x-bar" + (left <= 60 ? " red" : left <= 300 ? " amber" : "");
+    bar.innerHTML = '<span class="t">' + mmss(left) + '</span><span class="l">left · ' + answered + ' of ' + qs.length + ' answered</span>';
+    if (left <= 0) timeUp();
+  }
+  function timeUp() {
+    stopClock(); timedOut = true;
+    shown().forEach(function (f) {
+      if (f.querySelector("input:checked")) return;
+      var name = (f.querySelector("input[type=radio]") || {}).name || "", id = name + "-timeout";
+      var opt = document.createElement("div");
+      opt.className = "nc-opt rcm-x-none";
+      opt.innerHTML = '<div class="nc-opt-row"><input type="radio" name="' + name + '" id="' + id + '" value="timeout" data-correct="0" checked>' +
+        '<label for="' + id + '">No answer (time ran out)</label></div><div><span class="nc-verdict"></span></div>';
+      f.appendChild(opt);
+    });
+    if (form.requestSubmit) form.requestSubmit(); else form.dispatchEvent(new Event("submit", { cancelable: true }));
+  }
+  form.addEventListener("submit", function () {
+    if (started) examMin = Math.max(1, Math.min(Math.round((Date.now() - started) / 60000), Math.round(limitSec() / 60)));
+  }, true);
+  form.addEventListener("click", function (e) {
+    if (e.target.closest("[data-nc-newset]")) {
+      stopClock(); started = 0; examMin = 0; attempt = 0; timedOut = false;
+      Array.prototype.forEach.call(form.querySelectorAll(".rcm-x-none"), function (o) { o.remove(); });
+      setTimeout(lock, 0);   // after the course script has drawn the new set
+    } else if (e.target.closest("[data-nc-retry]")) {
+      Array.prototype.forEach.call(form.querySelectorAll(".rcm-x-none"), function (o) { o.remove(); });
+    }
+  });
+  lock();
   function hm(min) {
     var h = Math.floor(min / 60), m = min % 60;
     return (h ? h + (h === 1 ? " hour" : " hours") : "") + (h && m ? " " : "") + (m ? m + " minutes" : "");
@@ -120,10 +177,22 @@
       if (changed) psave(o);
     } catch (e) {}
   })();
+  function times() { try { return (JSON.parse(localStorage.getItem("rcm-cert-time") || "{}") || {})[TRACK] || {}; } catch (e) { return {}; } }
   function progress() {
-    var t = pload()[TRACK] || {}, done = 0;
-    var list = MODS.map(function (m) { var r = t[m[0]]; if (r && r.p) done++; return { nn: m[0], title: m[1], href: m[2], r: r }; });
-    return { list: list, done: done, total: list.length, all: !list.length || done === list.length, exam: t._exam || null };
+    var t = pload()[TRACK] || {}, tm = times(), done = 0, secs = 0;
+    var list = MODS.map(function (m) {
+      var r = t[m[0]], sec = +tm[m[0]] || 0; if (r && r.p) done++; secs += sec;
+      return { nn: m[0], title: m[1], href: m[2], r: r, sec: sec };
+    });
+    return { list: list, done: done, total: list.length, all: !list.length || done === list.length, exam: t._exam || null, secs: secs };
+  }
+  // 3725 s -> "1 h 02 min"; under a minute -> "<1 min"
+  function dur(sec) {
+    var m = Math.round(sec / 60);
+    if (!sec) return "—";
+    if (m < 1) return "<1 min";
+    var h = Math.floor(m / 60); m = m % 60;
+    return h ? h + " h " + ("0" + m).slice(-2) + " min" : m + " min";
   }
   function recordExam(p) {
     var o = pload(), t = o[TRACK] || (o[TRACK] = {}), old = t._exam;
@@ -440,7 +509,8 @@
     // who and what
     ctx.fillStyle = INK; ctx.font = "italic 700 40px " + SERIF; ctx.fillText(d.name, W / 2, 334);
     ctx.fillStyle = MUTED; ctx.font = "500 24px " + SANS;
-    ctx.fillText(d.track + " · " + pr.total + "-module self-study course" + (d.studyMin ? " · an estimated " + d.studyMin + " minutes of study" : ""), W / 2, 372);
+    ctx.fillText(d.track + " · " + pr.total + "-module self-study course" +
+      (pr.secs ? " · time on module pages: " + dur(pr.secs) : "") + (d.studyMin ? " (estimated " + d.studyMin + " min)" : ""), W / 2, 372);
     ctx.fillStyle = INK; ctx.font = "600 25px " + SANS;
     var ex = pr.exam;
     var summary = pr.done + " of " + pr.total + " module quizzes passed · End-of-course examination: " +
@@ -455,7 +525,8 @@
       ctx.fillStyle = NAVY; ctx.fillRect(cx, top, cw, 38);
       ctx.fillStyle = "#ffffff"; ctx.font = "700 17px " + SANS; ctx.textAlign = "left";
       ctx.fillText("MODULE", cx + 14, top + 25);
-      ctx.textAlign = "right"; ctx.fillText("QUIZ", cx + cw - 196, top + 25); ctx.fillText(done ? "PASSED ON" : "STATUS", cx + cw - 14, top + 25);
+      ctx.textAlign = "right"; ctx.fillText("TIME", cx + cw - 286, top + 25); ctx.fillText("QUIZ", cx + cw - 196, top + 25);
+      ctx.fillText(done ? "PASSED ON" : "STATUS", cx + cw - 14, top + 25);
       for (var i = 0; i < per; i++) {
         var m = pr.list[c * per + i]; if (!m) break;
         var y = top + 38 + i * rowH, r = m.r, ok = r && r.p;
@@ -465,8 +536,10 @@
         ctx.textAlign = "center"; ctx.font = "800 " + (fs + 2) + "px " + SANS;
         ctx.fillStyle = ok ? "#2e6b3e" : r ? "#b45309" : "#9aa3b2"; ctx.fillText(ok ? "✓" : r ? "!" : "○", cx + 22, ty);
         ctx.textAlign = "left"; ctx.fillStyle = INK; ctx.font = "600 " + fs + "px " + SANS;
-        var label = ellipsize(ctx, +m.nn + ". " + m.title, cw - 300); ctx.fillText(label, cx + 44, ty);
-        ctx.textAlign = "right"; ctx.font = "600 " + fs + "px " + SANS; ctx.fillStyle = ok ? INK : MUTED;
+        var label = ellipsize(ctx, +m.nn + ". " + m.title, cw - 420); ctx.fillText(label, cx + 44, ty);
+        ctx.textAlign = "right"; ctx.font = "500 " + fs + "px " + SANS; ctx.fillStyle = m.sec ? INK : MUTED;
+        ctx.fillText(dur(m.sec), cx + cw - 286, ty);
+        ctx.font = "600 " + fs + "px " + SANS; ctx.fillStyle = ok ? INK : MUTED;
         ctx.fillText(r ? r.s + "/" + r.t : "—", cx + cw - 196, ty);
         ctx.fillStyle = ok ? INK : r ? "#b45309" : MUTED; ctx.font = (ok ? "500 " : "italic 500 ") + fs + "px " + SANS;
         ctx.fillText(ok ? shortDate(r.d) : r ? "Not yet passed" : "Not taken", cx + cw - 14, ty);
@@ -476,12 +549,13 @@
     // footer
     ctx.textAlign = "center"; ctx.fillStyle = MUTED; ctx.font = "400 19px " + SANS;
     var foot = done
-      ? "Module quiz results recorded on the learner's device when each quiz was passed (best result shown). Self-study; not CPD-accredited. " +
+      ? "Module quiz results recorded on the learner's device when each quiz was passed (best result shown). Time = active time on each module page " +
+        "(reading, scrolling or listening), recorded on the same device. Self-study; not CPD-accredited. " +
         "Competence is demonstrated on the learner's own unit and signed off by a preceptor." + (d.verified ? " Verify at renalcarematters.com/verify." : "")
       : "Progress record printed " + d.date + ". This is not a certificate of completion: the certificate is issued only after every module quiz " +
-        "and the end-of-course examination are passed. Results are recorded on the learner's device.";
+        "and the end-of-course examination are passed. Results and active time on each module page are recorded on the learner's device.";
     var qr = done && d.verified ? qrMatrix(VERIFY + d.code) : null;
-    wrap(ctx, foot, qr ? W / 2 - 80 : W / 2, 1268, qr ? 1460 : 1640, 28);
+    wrap(ctx, foot, qr ? W / 2 - 80 : W / 2, 1250, qr ? 1460 : 1640, 28);
     if (qr) {
       var size = 100, qx = W - 136 - size, qy = 1206, nq = qr.length, cell = size / nq;
       ctx.fillStyle = "#fff"; ctx.fillRect(qx - 6, qy - 6, size + 12, size + 12);
@@ -544,6 +618,16 @@
     "html[data-theme='dark'] .rcm-cert-check ol,html[data-theme='dark'] .rcm-cert-check li{border-color:#3a3322}",
     "html[data-theme='dark'] .rcm-cc-mk,html[data-theme='dark'] .rcm-cert-check li.ok .rcm-cc-sc{color:#6fcf8e}html[data-theme='dark'] .rcm-cc-ring{background:conic-gradient(#6fcf8e calc(var(--p)*1%),#3a3322 0)}",
     "@media print{.rcm-cert-check,.rcm-cert-saved{display:none!important}}",
+    "form.rcm-x-locked .nc-q,form.rcm-x-locked .nc-actions,form.rcm-x-locked .nc-remember{display:none!important}",
+    ".rcm-x-gate{display:flex;gap:14px;align-items:flex-start;margin:0 0 18px;padding:16px 18px;border-radius:12px;border:1px solid #1f3864;background:#eef2fa;color:#1e2a38}",
+    ".rcm-x-gate b{font:800 17px/1.3 Inter,sans-serif;color:#1f3864}.rcm-x-gate p{margin:6px 0 12px!important;font-size:14.5px;line-height:1.55;text-align:left!important;hyphens:none!important}",
+    ".rcm-x-ic{font-size:30px;line-height:1}.rcm-x-start{font:800 16px Inter,sans-serif;padding:12px 20px;border-radius:999px;border:0;background:#1f3864;color:#fff;cursor:pointer}",
+    "html[data-theme='dark'] .rcm-x-gate{background:#1b2638;border-color:#3d5a8a;color:#e6ebf2}html[data-theme='dark'] .rcm-x-gate b{color:#c9d8f5}",
+    "html[data-theme='dark'] .rcm-x-start{background:#f3c46a;color:#1e2a38}",
+    ".rcm-x-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2147482000;display:flex;gap:8px;align-items:baseline;padding:9px 16px;border-radius:999px;background:#1f3864;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.25);font:600 13.5px Inter,sans-serif;white-space:nowrap}",
+    ".rcm-x-bar .t{font:800 19px Inter,sans-serif;font-variant-numeric:tabular-nums}.rcm-x-bar.amber{background:#b45309}.rcm-x-bar.red{background:#b42318}",
+    ".rcm-x-bar[hidden]{display:none}.rcm-x-note{margin:10px 0 0!important;font-weight:700;font-size:14px;text-align:left!important}",
+    "@media print{.rcm-x-bar,.rcm-x-gate{display:none!important}}",
     ".rcm-cert-opt{display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:14px;line-height:1.45;cursor:pointer}",
     ".rcm-cert-opt input{width:18px;height:18px;flex:none;margin:1px 0 0;padding:0;accent-color:#1f3864}",
     ".rcm-cert-ts{margin-top:10px}.rcm-cert-ts:empty{display:none}.rcm-cert-msg{margin:10px 0 0!important;font-weight:600}",
@@ -598,7 +682,7 @@
       return fetch(API, {
         method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify({ name: d.name, track: d.track, exam: location.pathname.split("/").pop().replace(/\.html$/, ""),
-          modules: d.modules, modules_passed: progress().done, score: d.score, total: d.total, exam_min: d.examMin, study_min: d.studyMin,
+          modules: d.modules, modules_passed: progress().done, active_min: Math.round(progress().secs / 60), score: d.score, total: d.total, exam_min: d.examMin, study_min: d.studyMin,
           turnstile: tsToken(), website: "" })
       }).then(function (r) { return r.json().then(function (j) { return r.ok ? j : { error: j.error || "server" }; }); });
     }).then(function (j) {
@@ -755,7 +839,7 @@
     if (!check) {
       check = document.createElement("details");
       check.className = "rcm-cert-check";
-      form.parentNode.insertBefore(check, form);
+      form.parentNode.insertBefore(check, gate && gate.parentNode ? gate : form);
     }
     check.open = !pr.all;
     check.innerHTML = '<summary><span class="rcm-cc-ring" style="--p:' + Math.round(100 * pr.done / pr.total) + '"></span>' +
@@ -821,7 +905,25 @@
   new MutationObserver(function () {
     if (busy) return;
     if (panel && !document.body.contains(panel)) panel = null;
-    var p = passed();
+    var done = /nc-result-done/.test(result.className);
+    if (done && !result.getAttribute("data-rcm-seen")) {
+      result.setAttribute("data-rcm-seen", "1"); attempt++; stopClock();
+      if (attempt > 1 || !started) {
+        busy = true;
+        var n = document.createElement("p"); n.className = "rcm-x-note";
+        n.textContent = "Practice attempt: only the first timed check of a set counts for the certificate. Tap New set of questions for a new timed attempt.";
+        result.appendChild(n); busy = false;
+        return;
+      }
+      if (timedOut) {
+        busy = true;
+        var tn = document.createElement("p"); tn.className = "rcm-x-note";
+        tn.textContent = "Time ran out: unanswered questions were counted as wrong.";
+        result.appendChild(tn); busy = false;
+      }
+    }
+    if (!done) result.removeAttribute("data-rcm-seen");
+    var p = attempt === 1 && started ? passed() : null;
     if (p && !(panel && result.contains(panel))) { busy = true; recordExam(p); renderCheck(); offer(p); busy = false; }
     else if (!p && panel && result.contains(panel)) { panel.remove(); panel = null; }
   }).observe(result, { childList: true, characterData: true, subtree: true });
@@ -832,7 +934,7 @@
   function offerSaved() {
     var pr = progress();
     if (!pr.exam || (panel && result.contains(panel))) return;
-    if (!savedHost) { savedHost = document.createElement("div"); savedHost.className = "rcm-cert-saved"; form.parentNode.insertBefore(savedHost, form); }
+    if (!savedHost) { savedHost = document.createElement("div"); savedHost.className = "rcm-cert-saved"; form.parentNode.insertBefore(savedHost, gate && gate.parentNode ? gate : form); }
     examMin = examMin || pr.exam.m || 0;
     offer({ score: pr.exam.s, total: pr.exam.t }, savedHost);
   }

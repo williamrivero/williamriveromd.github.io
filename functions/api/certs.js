@@ -35,7 +35,7 @@ export async function onRequestPost({ request, env }) {
   if (/https?:\/\/|www\.|[<>]/i.test(name + track)) return json({ error: "bad_request" }, 400);
   const score = int(b.score, 0, 500), total = int(b.total, 1, 500);
   if (score == null || total == null || score > total || score / total < PASS) return json({ error: "not_passed" }, 400);
-  const modules = int(b.modules, 0, 200), modulesPassed = int(b.modules_passed, 0, 200), examMin = int(b.exam_min, 0, 1440), studyMin = int(b.study_min, 0, 100000);
+  const modules = int(b.modules, 0, 200), modulesPassed = int(b.modules_passed, 0, 200), activeMin = int(b.active_min, 0, 100000), examMin = int(b.exam_min, 0, 1440), studyMin = int(b.study_min, 0, 100000);
   if (modules && (modulesPassed == null || modulesPassed < modules)) return json({ error: "modules" }, 400);
   const ts = await turnstileOk(request, env, b.turnstile);
   if (!ts.ok) return json({ error: "human_check", codes: ts.codes }, 403);
@@ -50,9 +50,9 @@ export async function onRequestPost({ request, env }) {
   for (let i = 0; i < 4; i++) {
     const code = newCode(track, issued);
     try {
-      await d.prepare(`INSERT INTO certificates (code, created, issued, name, track, exam, modules, modules_passed, score, total, exam_min, study_min, status, iph)
-          VALUES (?, datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'valid', ?)`)
-        .bind(code, issued, name, track, exam, modules, modulesPassed, score, total, examMin, studyMin, iph).run();
+      await d.prepare(`INSERT INTO certificates (code, created, issued, name, track, exam, modules, modules_passed, active_min, score, total, exam_min, study_min, status, iph)
+          VALUES (?, datetime('now'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'valid', ?)`)
+        .bind(code, issued, name, track, exam, modules, modulesPassed, activeMin, score, total, examMin, studyMin, iph).run();
       return json({ code, issued });
     } catch (e) { /* code collision: try another */ }
   }

@@ -5,6 +5,9 @@
  * The end-of-course examination page (academy-certificate.js) unlocks the certificate only when every module quiz of
  * the track is passed on this device. A module quiz is passed at its own pass mark (data-pass) or 80%, and never when
  * the page itself says "Not yet passed" (safety-critical questions missed).
+ * It also records the ACTUAL time spent on each module page (localStorage "rcm-cert-time" = { "<track>": { "NN": seconds } }):
+ * a 5-second tick counts while the page is visible and the learner did something in the last 2 minutes (scroll, tap,
+ * key, mouse), or while Listen is reading aloud (counted even with the screen locked). The record of module results shows it.
  * Nothing leaves the device. Edit this file; tools/academy/apply_certificate.py fingerprints and tags it.
  */
 (function () {
@@ -53,4 +56,36 @@
     last = t;
     record(+mm[1], +mm[2], /not yet passed/i.test(t));
   }).observe(result, { childList: true, characterData: true, subtree: true });
+
+  /* ---------- actual time on the module page ---------- */
+  var TKEY = "rcm-cert-time", IDLE = 120000, last = Date.now(), lastAct = Date.now(), pending = 0;
+  ["scroll", "keydown", "pointerdown", "touchstart", "wheel", "mousemove"].forEach(function (ev) {
+    window.addEventListener(ev, function () { lastAct = Date.now(); }, { passive: true, capture: true });
+  });
+  function listening() {
+    try {
+      if (window.speechSynthesis && speechSynthesis.speaking && !speechSynthesis.paused) return true;
+      if (navigator.mediaSession && navigator.mediaSession.playbackState === "playing") return true;
+    } catch (e) {}
+    return false;
+  }
+  function tick() {
+    var now = Date.now(), dt = Math.min(now - last, 30000);   // timers are slowed in the background; never count a gap > 30 s
+    last = now;
+    if ((!document.hidden && now - lastAct < IDLE) || listening()) pending += dt;
+  }
+  function flush() {
+    tick();
+    if (pending < 1000) return;
+    try {
+      var o = JSON.parse(localStorage.getItem(TKEY) || "{}") || {}, t = o[track] || (o[track] = {});
+      t[nn] = (t[nn] || 0) + Math.round(pending / 1000);
+      localStorage.setItem(TKEY, JSON.stringify(o));
+      pending = 0;
+    } catch (e) {}
+  }
+  setInterval(tick, 5000);
+  setInterval(flush, 30000);
+  document.addEventListener("visibilitychange", function () { flush(); if (!document.hidden) { last = Date.now(); lastAct = Date.now(); } });
+  window.addEventListener("pagehide", flush);
 })();

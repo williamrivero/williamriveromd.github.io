@@ -56,8 +56,9 @@ html[data-theme="dark"] .cert-howto .ch-box{{background:#221f15;border-color:#6b
       <em>Certificate checklist</em> above the examination shows which modules are done; each line links to that module's quiz.</li>
     <li><strong>Use the same device and browser</strong> for the modules and this examination. Progress is saved in your
       browser, not in an account. On iPhone and iPad, the Home Screen app and Safari keep separate progress.</li>
-    <li><strong>Pass this examination</strong> (80%; where these instructions say so, every safety-critical question must
-      also be correct). If you pass before finishing the modules, your pass is saved: finish the module quizzes, then come back here.</li>
+    <li><strong>Pass this timed examination</strong> (80%; where these instructions say so, every safety-critical question must
+      also be correct). You have one minute per question from the moment you tap <em>Start the examination</em>; only your first
+      check of a set counts. If you pass before finishing the modules, your pass is saved: finish the module quizzes, then come back here.</li>
     <li><strong>Type your name</strong> the way you want it printed and tap <strong>Make my certificate</strong>. You can
       tick <em>Add a preceptor sign-off line</em> if your unit will sign the printed copy.</li>
     <li><strong>Save or print your completion packet:</strong> two pages, the certificate and a record of your module results.

@@ -16,7 +16,7 @@ export async function onRequestGet({ request, env }) {
   const d = await db(env);
   if (!d) return json({ error: "not_configured" }, 503);
   const q = (new URL(request.url).searchParams.get("q") || "").trim();
-  const cols = "code, created, issued, name, track, exam, modules, modules_passed, score, total, exam_min, study_min, status";
+  const cols = "code, created, issued, name, track, exam, modules, modules_passed, active_min, score, total, exam_min, study_min, status";
   const rows = q
     ? await d.prepare(`SELECT ${cols} FROM certificates WHERE name LIKE ? OR code LIKE ? ORDER BY created DESC LIMIT 300`).bind(`%${q}%`, `%${q.toUpperCase()}%`).all()
     : await d.prepare(`SELECT ${cols} FROM certificates ORDER BY created DESC LIMIT 300`).all();
