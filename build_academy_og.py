@@ -54,6 +54,8 @@ TRACKS = {
                                "CONSULTANT", "24 modules · calculators in every module"),
     "attending-pediatric-nephrologist": ("academy/attending-pediatric-nephrologist.html", "physicians", "Attending Pediatric Nephrologist",
                                          "PEDIATRIC CONSULTANT", "29 modules · seven on dialysis"),
+    "nephrology-trainee": ("academy/nephrology-trainee.html", "physicians", "Nephrology Fellow / Resident / Intern",
+                           "PHYSICIANS IN TRAINING", "36 modules · six pathways, adult and pediatric"),
     "vascular-surgeon": ("academy/vascular-surgeon.html", "physicians", "Vascular Surgeon",
                          "ACCESS SURGERY", "20 modules · referral to rescue"),
     "dialysis-clinical-head": ("academy/dialysis-clinical-head.html", "physicians", "Dialysis Clinical Head",

@@ -50,6 +50,11 @@ QUAL = {
    "PRC-licensed physician with pediatrics specialty credentials and pediatric nephrology training and certification through the Pediatric Nephrology Society of the Philippines (PNSP) and the specialty board; adult nephrology status is not a substitute. Verify the current applicant rules with PNSP. <span class=q-src>PSN, PNSP</span>",
    "Hospital appointment with privileges delineated by age and size range, modality (PD, HD, CKRT, transplant) and procedure; valid PhilHealth professional accreditation where the service requires it. The PhilHealth pediatric PD package names the attending pediatric nephrologist on its forms, and the 2025 kidney transplant survey tool lists a PNSP-certified pediatric nephrologist. <span class=q-src>PhilHealth</span>",
    "Completing this track is a learning record only; it grants no privilege, certification or CPD credit."]),
+ "nephrology-trainee": ("Nephrology Fellow / Resident / Medical Intern", [
+   "Medical interns: one-year post-graduate internship in an APMC-accredited hospital, under the direct supervision of a registered physician (RA 2382 &sect;11(a)); not yet licensed by the Professional Regulation Commission (PRC). <span class=q-src>PRC</span>",
+   "Residents: PRC-licensed, appointed to an accredited internal medicine (PCP) or pediatric (PPS) residency; renal duties follow the rotation and the attending&rsquo;s plan. <span class=q-src>PCP, PPS</span>",
+   "Fellows: appointed to a PSN-accredited (adult) or PNSP-accredited (pediatric) training institution. A paid physician-on-duty shift requires the DOH and PSN qualifications for that post. <span class=q-src>PSN, PNSP, DOH</span>",
+   "Completing this track is a learning record only; it grants no license, privilege, board eligibility or CPD credit."]),
  "vascular-surgeon": ("Vascular Surgeon", [
    "PRC-licensed physician with surgical training; specialty credentials verified by the hospital that appoints the surgeon. No Department of Health (DOH) or Philippine Society of Nephrology (PSN) rule defines a separate vascular surgeon post for a dialysis unit. <span class=q-src>DOH, PSN</span>",
    "PSN 2024 &sect;1.2 b3 asks the attending nephrologist to coordinate access with a vascular surgeon or trained general surgeon; it does not credential the surgeon. <span class=q-src>PSN</span>",

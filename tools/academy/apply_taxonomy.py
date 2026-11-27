@@ -62,6 +62,7 @@ TRACKS = {
     "dialysis-clinical-head": ("physicians", None, "Dialysis Clinical Head", "Dialysis <em>Clinical Head</em>", [], []),
     "attending-nephrologist": ("physicians", None, "Attending Nephrologist", "Attending <em>Nephrologist</em>", [], []),
     "attending-pediatric-nephrologist": ("physicians", None, "Attending Pediatric Nephrologist", "Attending <em>Pediatric Nephrologist</em>", [], []),
+    "nephrology-trainee": ("physicians", None, "Nephrology Fellow / Resident / Medical Intern", "Nephrology Fellow / Resident / <em>Medical Intern</em>", [], []),
     "vascular-surgeon": ("physicians", None, "Vascular Surgeon", "Vascular <em>Surgeon</em>", [], []),
     "physician-on-duty": ("physicians", None, "Physician-on-Duty", "Physician-on-<em>Duty</em>",
                           ["Physician on Duty in the Dialysis Unit"], [("Physician on Duty Module", "Physician-on-Duty Module")]),

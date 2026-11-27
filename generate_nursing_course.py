@@ -264,7 +264,9 @@ def page_meta(fname):
     """(title, description) of an existing guide or calculator page."""
     p = GUIDES / fname
     if not p.exists():
-        return None
+        p = GUIDES.parent / "academy" / fname     # an Academy page (links between academy pages stay relative)
+        if not p.exists():
+            return None
     s = p.read_text(encoding="utf-8", errors="ignore")[:20000]
     t = re.search(r"<title>(.*?)</title>", s, re.S)
     d = re.search(r'<meta name="description" content="(.*?)"', s, re.S)
