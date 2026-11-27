@@ -14,6 +14,13 @@ CARDS = [
                  "Entry lesson: Module 10."),
     },
     {
+        "href": "pediatric-dialysis-nurse.html",
+        "meta": "20 modules &middot; about 164 hours",
+        "title": "Pediatric Dialysis Nurse",
+        "desc": ("Dialysis nursing for infants, children and adolescents: development and assent, weight-based arithmetic, PD and "
+                 "hemodialysis in small bodies, emergencies, growth, caregiver teaching and transition, with three interactive cases."),
+    },
+    {
         "href": "special-dialysis-nurse-roles.html",
         "meta": "By Role &middot; 14 modules &middot; about 111 hours",
         "title": "Special Dialysis Nurse Roles",

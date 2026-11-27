@@ -66,9 +66,18 @@ def expand_first(body, tok, exp):
     pat = re.compile(r"(?<![A-Za-z0-9\-])" + re.escape(tok) + r"(?![A-Za-z0-9\-])")
     parts = re.split(r"(<[^>]+>)", body)
     depth = 0
+    in_script = False
     for i, seg in enumerate(parts):
+        if in_script:          # JSON inside <script> (interactive cases) holds tag-like text; ignore it
+            if re.match(r"</script>", seg, re.I):
+                in_script = False
+                depth = max(0, depth - 1)
+            continue
         if seg.startswith("<"):
-            if SKIP_OPEN.match(seg):
+            if re.match(r"<script\b", seg, re.I):
+                in_script = True
+                depth += 1
+            elif SKIP_OPEN.match(seg):
                 depth += 1
             elif SKIP_CLOSE.match(seg):
                 depth = max(0, depth - 1)

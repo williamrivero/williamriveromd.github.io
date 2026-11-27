@@ -34,6 +34,10 @@ CLOSE = START + """
       <img class="tc-subtrack-img" src="../images/academy/landing/peritoneal-dialysis-nurse.webp" alt="" loading="lazy" decoding="async" width="960" height="540">
       <span class="tc-subtrack-t"><small>By Specialization &middot; subtrack</small><b>Peritoneal Dialysis Nurse <span class="tc-subtrack-go" aria-hidden="true">&rarr;</span></b><span class="tc-subtrack-d">12 modules over six weeks for nurses in peritoneal dialysis, entered from Module 10. The catheter, CAPD and APD, monitoring, peritonitis, home teaching, and five skills stations, with an end-of-course exam.</span></span>
     </a>
+    <a class="tc-subtrack" href="pediatric-dialysis-nurse.html" aria-label="Pediatric Dialysis Nurse, a subtrack of the Nephrology Nursing Track">
+      <img class="tc-subtrack-img" src="../images/academy/landing/pediatric-dialysis-nurse.webp" alt="" loading="lazy" decoding="async" width="960" height="540">
+      <span class="tc-subtrack-t"><small>By Specialization &middot; subtrack</small><b>Pediatric Dialysis Nurse <span class="tc-subtrack-go" aria-hidden="true">&rarr;</span></b><span class="tc-subtrack-d">20 modules over eight weeks for nurses who dialyze infants, children and adolescents. Development and assent, weight-based arithmetic, PD and hemodialysis in small bodies, emergencies, growth, caregiver teaching and transition, with three interactive cases and an end-of-course exam.</span></span>
+    </a>
     <a class="tc-subtrack" href="transplant-nurse.html" aria-label="Kidney Transplant Nurse, a subtrack of the Nephrology Nursing Track">
       <img class="tc-subtrack-img" src="../images/academy/landing/transplant-nurse.webp" alt="" loading="lazy" decoding="async" width="960" height="540">
       <span class="tc-subtrack-t"><small>By Specialization &middot; subtrack</small><b>Kidney Transplant Nurse <span class="tc-subtrack-go" aria-hidden="true">&rarr;</span></b><span class="tc-subtrack-d">12 modules for kidney transplant ward and clinic nurses, entered from Module 11. Referral, donation, immunosuppression, graft and infection surveillance, PhilHealth benefits, and a simulation capstone.</span></span>
@@ -43,10 +47,11 @@ CLOSE = START + """
 
 NAV_ITEM = (START + "\n"
     + '    <a class="acad-track acad-subtrack" href="peritoneal-dialysis-nurse.html"><span class="acad-track-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s5 5.6 5 9.5a5 5 0 0 1-10 0C7 8.6 12 3 12 3z"/><path d="M8 20h8"/></svg></span><span class="acad-track-t"><strong>Peritoneal Dialysis Nurse</strong><small>12 modules</small></span></a>\n'
+    '    <a class="acad-track acad-subtrack" href="pediatric-dialysis-nurse.html"><span class="acad-track-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3"/><path d="M7 21v-4a5 5 0 0 1 10 0v4"/><path d="M12 13v3"/></svg></span><span class="acad-track-t"><strong>Pediatric Dialysis Nurse</strong><small>20 modules</small></span></a>\n'
     '    <a class="acad-track acad-subtrack" href="transplant-nurse.html"><span class="acad-track-ico"><svg viewBox="0 0 24 24" aria-hidden="true">'
     '<path d="M12 21c-4-2.5-6-6-6-10a6 6 0 0 1 12 0c0 4-2 7.5-6 10z"/><path d="M12 8v6M9 11h6"/></svg></span>'
     '<span class="acad-track-t"><strong>Kidney Transplant Nurse</strong><small>12 modules</small></span></a>\n' + END + "\n")
-OLD_NAV = re.compile(r'^    <a class="acad-track[^"]*" href="(?:transplant-nurse|peritoneal-dialysis-nurse)\.html">.*?</a>\n', re.M | re.S)
+OLD_NAV = re.compile(r'^    <a class="acad-track[^"]*" href="(?:transplant-nurse|peritoneal-dialysis-nurse|pediatric-dialysis-nurse)\.html">.*?</a>\n', re.M | re.S)
 
 
 def wire(path):

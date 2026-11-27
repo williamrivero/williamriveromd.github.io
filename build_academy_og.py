@@ -38,6 +38,8 @@ TRACKS = {
                            "BY SPECIALIZATION", "16 core + 1 advanced module · two paths"),
     "transplant-nurse": ("academy/transplant-nurse.html", "nursing", "Kidney Transplant Nurse",
                          "BY SPECIALIZATION", "12 modules · referral to graft care"),
+    "pediatric-dialysis-nurse": ("academy/pediatric-dialysis-nurse.html", "nursing", "Pediatric Dialysis Nurse",
+                                 "BY SPECIALIZATION", "20 modules · PD and hemodialysis for children"),
     "peritoneal-dialysis-nurse": ("academy/peritoneal-dialysis-nurse.html", "nursing", "Peritoneal Dialysis Nurse",
                                   "BY SPECIALIZATION", "12 modules · five skills stations · final exam"),
     "dialysis-head-nurse": ("academy/dialysis-head-nurse.html", "nursing", "Head Nurse",

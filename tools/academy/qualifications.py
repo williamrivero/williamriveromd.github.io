@@ -17,6 +17,8 @@ QUAL = {
    "Ratio: no more than 1 nurse to 4 stations per shift; PSN allows 1:6 when a nursing assistant is present. <span class=q-src>DOH, PSN</span>"]),
  "peritoneal-dialysis-nurse": ("Peritoneal Dialysis Nurse", [
    "Licensed nurse with dialysis nursing training, as for a hemodialysis nurse. " + NA.replace("hemodialysis rules", "hemodialysis rules for a separate PD nurse role") + " Follow your PD program&rsquo;s credentialing."]),
+ "pediatric-dialysis-nurse": ("Pediatric Dialysis Nurse", [
+   "Licensed nurse with dialysis nursing training, as for a hemodialysis or PD nurse. No separate pediatric dialysis nurse license, training length or nurse-to-patient ratio was found in the DOH, PSN or PhilHealth rules (reviewed Nov 2026). The facility authorizes by modality, device and age or size band."]),
  "transplant-nurse": ("Kidney Transplant Nurse", [
    "Licensed nurse (R.A. 9173). The Department of Health (DOH) and Philippine Society of Nephrology (PSN) dialysis rules do not cover transplant nursing; follow your transplant center&rsquo;s credentialing."]),
  "dialysis-head-nurse": ("Head Nurse", [
