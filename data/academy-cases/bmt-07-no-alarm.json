@@ -1,0 +1,187 @@
+{
+  "id": "bmt07-no-alarm",
+  "page": "dialysis-biomedical-technician-07-protective-systems-alarm-testing.html",
+  "title": "The bubble that went through",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Equipment status board",
+  "note": "Fictional unit. The machine’s service manual, its test method and pass criteria, and your unit’s release procedure come first.",
+  "labels": {
+    "time": "Time",
+    "hd9": "HD-09",
+    "air": "Air detector",
+    "clamp": "Venous clamp",
+    "hd12": "HD-12",
+    "floor": "Machines for first shift"
+  },
+  "monitorOrder": ["time", "hd9", "air", "clamp", "hd12", "floor"],
+  "monitor": {
+    "time": "Thu 05:30",
+    "hd9": "Scheduled maintenance",
+    "air": "FAILED: no alarm",
+    "clamp": "Not tested",
+    "hd12": "In service",
+    "floor": "14 of 14 needed",
+    "alarm": ["air"]
+  },
+  "intro": "<p>You are the biomedical technician. At 05:30 on Thursday you are doing HD-09’s scheduled maintenance, which is on time. Following the service manual, you inject a defined air volume into a fluid-filled training line. The bubble passes the detector. No alarm sounds and the blood pump keeps running.</p><p>The first shift starts at 06:30 and needs all 14 machines.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "05:30:",
+      "prompt": "What do you do now?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Tag it out of service, clean and reseat, then repeat the same test.",
+          "feedback": "<p>A failed test is the system doing its job: it found a weakness with no patient connected. Many failures are dirt or alignment, so clean the sensor, reseat a correct training set, and retest by the same method.</p>",
+          "then": "<p>The detector window has a film of dried saline. After cleaning and reseating, the bubble now triggers the alarm and stops the pump.</p>",
+          "vitals": {"time": "Thu 05:50", "hd9": "OUT OF SERVICE", "air": "Pass after cleaning", "floor": "13 of 14 needed", "alarm": ["hd9", "floor"]},
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Run the machine’s start-up self-test; if it passes, the detector is working and the bubble was probably below the limit.",
+          "feedback": "<p>The self-test checks that circuits respond electrically. It cannot prove that the sensor can still see a bubble through the tubing in front of it. The manual’s functional test just failed; that result stands until the same test passes.</p>",
+          "then": "<p>The self-test passes, but you tag the machine out and clean the sensor. The window has a film of dried saline; after cleaning, the bubble triggers the alarm.</p>",
+          "vitals": {"time": "Thu 06:00", "hd9": "OUT OF SERVICE", "air": "Pass after cleaning", "floor": "13 of 14 needed", "alarm": ["hd9", "floor"]},
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Release it for a stable patient today, ask the nurse to watch the venous chamber closely, and repeat the test tonight after the last shift.",
+          "feedback": "<p>A machine whose air protection cannot be shown to work is out of service. A nurse watching the chamber is not a protective system; she cannot clamp a line faster than a bubble moves.</p>",
+          "then": "<p>The chief technician stops the release. You tag the machine out and clean the sensor; after cleaning, the bubble triggers the alarm.</p>",
+          "vitals": {"time": "Thu 06:00", "hd9": "OUT OF SERVICE", "air": "Pass after cleaning", "floor": "13 of 14 needed", "alarm": ["hd9", "floor"]},
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "vitals": {"clamp": "Leaks at test pressure", "alarm": ["hd9", "clamp", "floor"]},
+      "short": "The clamp:",
+      "scene": "<p>You go on to the venous clamp test. With the clamp closed and the test pressure applied, fluid still drips slowly past the jaw.</p>",
+      "prompt": "What now?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Still a fail. Repair it per the manual, then retest the clamp and the detector.",
+          "feedback": "<p>The air chain is sense, stop, clamp, alarm. A clamp that does not fully stop flow breaks it. Replace or adjust with approved parts by the manual, then retest the clamp and anything the repair disturbed.</p>",
+          "then": "<p>You fit a new clamp assembly from stock. The clamp holds at the test pressure and the detector test passes again.</p>",
+          "vitals": {"time": "Thu 06:40", "clamp": "Pass after repair", "alarm": ["hd9", "floor"]},
+          "next": "n3"
+        },
+        {
+          "grade": "harmful",
+          "text": "Release it: the detector now alarms and the pump stops, so a slow drip past the clamp cannot carry much air.",
+          "feedback": "<p>The clamp is there because a stopped pump alone does not seal the return line. Each link must work; the standard is that no single fault can harm the patient.</p>",
+          "then": "<p>You reconsider and replace the clamp assembly. It holds at the test pressure and the detector test passes again.</p>",
+          "vitals": {"time": "Thu 06:50", "clamp": "Pass after repair", "alarm": ["hd9", "floor"]},
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Tighten the clamp spring a little beyond its setting until the drip stops, then release the machine for the first shift.",
+          "feedback": "<p>Adjustments go by the manual with approved parts and values. An improvised setting may hold today and fail, or damage tubing, tomorrow.</p>",
+          "then": "<p>The chief technician asks you to do it by the manual. You fit a new clamp assembly; it holds and the detector test passes again.</p>",
+          "vitals": {"time": "Thu 07:00", "clamp": "Pass after repair", "alarm": ["hd9", "floor"]},
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {"hd12": "Tape over cover switch", "alarm": ["hd12", "floor"]},
+      "short": "On the floor:",
+      "scene": "<p>Walking through the unit to find a spare machine, you notice tape over the cover switch on HD-12. No patient is connected yet. A nurse says the cover alarm “kept going off for nothing.”</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Take HD-12 out, remove the tape, find the fault, and report it.",
+          "feedback": "<p>Tape over a switch removes a protection everyone else still believes is there. The machine is out of service and the event is reported. The repeated false alarm is itself a fault to find, not a nuisance to silence.</p>",
+          "then": "<p>The switch is misaligned. You realign it, test it with the pump running, and report the event to the chief technician and the charge nurse.</p>",
+          "vitals": {"time": "Thu 07:20", "hd12": "Switch realigned · reported", "floor": "13 of 14 needed", "alarm": ["floor"]},
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Remove the tape and test the switch; if it works now, put HD-12 back without a report, since the nurse was only trying to keep the shift running.",
+          "feedback": "<p>Fixing it is half the job. Without a report, nobody learns why the switch kept alarming or that a protection was defeated, and it will happen again.</p>",
+          "then": "<p>The switch alarms again a few minutes later. You find it misaligned, realign it, and report the event.</p>",
+          "vitals": {"time": "Thu 07:30", "hd12": "Switch realigned · reported", "floor": "13 of 14 needed", "alarm": ["floor"]},
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Leave it; the nurses know the machine.",
+          "feedback": "<p>A defeated protective system is a hidden single fault waiting for a second one. Never leave it in service.</p>",
+          "then": "<p>The charge nurse asks about the tape. You take HD-12 out, realign the switch, test it, and report the event.</p>",
+          "vitals": {"time": "Thu 07:40", "hd12": "Switch realigned · reported", "floor": "13 of 14 needed", "alarm": ["floor"]},
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "short": "The record:",
+      "scene": "<p>HD-09 now passes every protective-system test in the manual.</p>",
+      "prompt": "What goes in HD-09’s service record?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Both failures, their causes, the fixes, and the passing values, instruments, date and name.",
+          "feedback": "<p>Record the failure even when the retest passes. The first result is what shows the drift, and it is what the next technician needs to see.</p>",
+          "then": "<p>You release HD-09 through the unit’s release procedure.</p>",
+          "vitals": {"time": "Thu 08:00", "hd9": "Released", "floor": "14 of 14", "alarm": []},
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "The final passing values only, since the machine left your bench in a safe state and that is what matters for its release.",
+          "feedback": "<p>A record of passes only hides the pattern. The failed test, its cause and its fix are the most useful lines in the log.</p>",
+          "then": "<p>The chief technician asks you to add the failures and their causes before release.</p>",
+          "vitals": {"time": "Thu 08:15", "hd9": "Released", "floor": "14 of 14", "alarm": []},
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "“Maintenance done. Pass.”",
+          "feedback": "<p>That tells nobody what was tested, what failed or what was changed.</p>",
+          "then": "<p>The chief technician asks for the full record before release.</p>",
+          "vitals": {"time": "Thu 08:15", "hd9": "Released", "floor": "14 of 14", "alarm": []},
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "short": "Afterward:",
+      "scene": "<p>HD-09’s maintenance was on time, yet its detector had lost its sensitivity to dried saline. Five other machines in the unit are the same model.</p>",
+      "prompt": "What do you do next?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Test the air detector on the other five soon, and report the cause.",
+          "feedback": "<p>One finding may be a pattern. Testing the same model ahead of schedule shows whether the others have drifted too. Report the cause to the chief technician and the charge nurse, so that priming and cleaning can be reviewed with the operators.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Ask for new air detectors on all six machines of this model, so the problem cannot come back on any of them.",
+          "feedback": "<p>New sensors would not stop dried saline building up on the next ones. First test the others and fix the cause.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Remind the nurses to be careful when priming.",
+          "feedback": "<p>A reminder alone does not show whether other machines are already affected. Test them, and report the finding with its cause.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "The next week",
+      "text": "<p>Two of the five machines need their detectors cleaned before they pass the test; none has a clamp fault. The operators review how to prime without spilling saline on the detector, and the chief technician adds a detector-window check to the weekly cleaning list.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>A failed test is the system working:</b> it found a weakness with no patient connected.</li><li><b>Clean, reseat, retest, repair, retest again, record.</b> The machine stays out until it passes.</li><li><b>Every link in the chain counts:</b> sense, stop, clamp, alarm.</li><li><b>Never bypass a protective system,</b> and treat a nuisance alarm as a fault to find.</li><li><b>Record failures,</b> not only passes.</li></ul><p>See <a href=\"#air\">The air detector and the venous clamp</a>, <a href=\"#testing\">Protective systems are only as good as their last test</a> and <a href=\"#never\">When a protective system fails its test</a>.</p>"
+}
