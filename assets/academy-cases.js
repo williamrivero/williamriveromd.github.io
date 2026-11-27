@@ -221,7 +221,7 @@
         }
         var v = cellEls[k].querySelector(".v");
         v.textContent = vals[k] == null ? "—" : decode(String(vals[k]));
-        if (UNITS[k] && vals[k] != null && vals[k] !== "—") { var sm = el("small"); sm.textContent = UNITS[k]; v.appendChild(sm); }
+        if (UNITS[k] && vals[k] != null && /^[0-9./ ]+$/.test(String(vals[k]))) { var sm = el("small"); sm.textContent = UNITS[k]; v.appendChild(sm); }
         cellEls[k].classList.toggle("alarm", alarm(k, vals[k]) || alarms.indexOf(k) >= 0);
         if (changed && !first && !REDUCED) flash(cellEls[k]);
       }

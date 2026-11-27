@@ -1,0 +1,113 @@
+{
+  "id": "hdt10-lights-out",
+  "page": "hemodialysis-technician-10-complications-emergency-response.html",
+  "title": "Lights out at 2:06",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Floor status",
+  "note": "Fictional unit and patients. The charge nurse leads; your unit&rsquo;s emergency plan and your training set what you may do.",
+  "labels": { "time": "Time", "power": "Power", "machines": "Machines", "st8": "Station 8", "water": "Water system" },
+  "monitorOrder": ["time", "power", "machines", "st8", "water"],
+  "monitor": { "time": "Thu 14:06", "power": "OUT; generator not started", "machines": "10 connected", "st8": "Connected", "water": "Unknown", "alarm": ["power"] },
+  "intro": "<p>You are the dialysis technician on the afternoon shift. At 14:06 the power fails. The generator does not start. Machines are alarming, some on battery, some dark. Ten patients are connected. The charge nurse, Ms. Remy Santos, is leading.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "The first five minutes:",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Go to the stations and look at each patient; tell the charge nurse which machines are on battery and which are dark; bring the flashlights and the hand cranks; note the time; start no new treatments.",
+          "feedback": "<p>Go to the patients, not the switchboard. Your first report is short: what happened, where, and how many are connected. The leader needs to see the whole floor at once.</p>",
+          "vitals": { "machines": "6 on battery, 4 dark; reported" }, "next": "n2" },
+        { "grade": "poor", "text": "Run to the generator room to try to start it.",
+          "feedback": "<p>The patients come first, and the leader needs your report from the floor. The generator is someone else&rsquo;s assigned job.</p>",
+          "then": "<p>Ms. Santos calls you back to the floor. You report the machine status.</p>",
+          "vitals": { "machines": "6 on battery, 4 dark; reported" }, "next": "n2" },
+        { "grade": "harmful", "text": "Switch the dark machines off and on to restart them.",
+          "feedback": "<p>Restarting a machine with a patient connected can disturb the circuit and its safety systems. Do not switch machines off and on; tell the leader.</p>",
+          "then": "<p>You stop and report the machine status instead.</p>",
+          "vitals": { "machines": "6 on battery, 4 dark; reported" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "time": "Thu 14:15", "st8": "Manual blood return by nurse; foam near venous chamber", "alarm": ["power", "st8"] },
+      "short": "Station 8:",
+      "scene": "<p>Ms. Santos decides to end treatments. At Station 8, a nurse is returning blood by hand with the crank, in the dark. Holding the flashlight, you see foam and air moving up the venous line toward the patient. The air detector may not be protecting him during manual return.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Say loudly and at once: &ldquo;Stop: air in the venous line!&rdquo;",
+          "feedback": "<p>Never return blood through a line that contains air. During manual return the safety clamp may not work, so the person watching the line is the protection. Speaking up immediately is your job.</p>",
+          "then": "<p>The nurse stops cranking and clamps the line. The air did not reach the patient.</p>",
+          "vitals": { "st8": "Stopped and clamped; blood not returned" }, "next": "n3" },
+        { "grade": "harmful", "text": "Say nothing; the nurse is in charge of the circuit.",
+          "feedback": "<p>The nurse handles the circuit, but you can see what she cannot. Air entering a patient can kill. Speak up.</p>",
+          "then": "<p>The nurse notices the foam a moment later and stops. A small amount may have entered.</p>",
+          "vitals": { "st8": "Stopped late; possible air entry", "alarm": ["power", "st8"] }, "next": "n3" },
+        { "grade": "poor", "text": "Tell her when she finishes, so you don&rsquo;t distract her.",
+          "feedback": "<p>By then the air is in the patient. Interrupt at once.</p>",
+          "then": "<p>You speak up a moment later; she stops and clamps.</p>",
+          "vitals": { "st8": "Stopped and clamped; blood not returned" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "Thu 14:17", "st8": "Patient coughing, chest tight", "alarm": ["power", "st8"] },
+      "short": "He is coughing:",
+      "scene": "<p>The patient at Station 8, Mr. Nestor Ramos, starts coughing and says his chest feels tight.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Call for help immediately, bring the emergency cart and oxygen, and tell the nurse exactly what you saw in the line and where; position him only as the nurse directs.",
+          "feedback": "<p>Sudden cough and chest tightness after air was seen in the line can mean air embolism. The nurse and physician lead; your report of what you saw is part of the diagnosis.</p>",
+          "vitals": { "st8": "Oxygen on; nurse and physician leading" }, "next": "n4" },
+        { "grade": "poor", "text": "Reassure him that it is just the stress of the brownout.",
+          "feedback": "<p>Never reassure away a symptom that follows air in the line. Call for help.</p>",
+          "then": "<p>He gets worse. You call for help and bring the cart.</p>",
+          "vitals": { "st8": "Oxygen on; nurse and physician leading" }, "next": "n4" },
+        { "grade": "ok", "text": "Run to find the physician yourself.",
+          "feedback": "<p>Use the emergency call so help comes to you, and bring the cart; the leader decides who goes where.</p>",
+          "then": "<p>The charge nurse activates the call; you bring the cart.</p>",
+          "vitals": { "st8": "Oxygen on; nurse and physician leading" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "Thu 14:20" },
+      "short": "Recorder:",
+      "scene": "<p>Ms. Santos says: &ldquo;You&rsquo;re the recorder.&rdquo;</p>",
+      "prompt": "How do you record?",
+      "choices": [
+        { "grade": "best", "text": "Use one clock; write each event with its time, who did it, and the words as said aloud; ask &ldquo;What was that dose?&rdquo; if you did not hear it.",
+          "feedback": "<p>The recorder writes what is said aloud, with the time. No opinions, no tidying, nothing filled in later from memory.</p>",
+          "next": "n5" },
+        { "grade": "poor", "text": "Watch closely and write it all up afterward.",
+          "feedback": "<p>Memory after an emergency is unreliable. Write it as it happens.</p>",
+          "next": "n5" },
+        { "grade": "ok", "text": "Use your phone clock and the wall clock, whichever is closer.",
+          "feedback": "<p>One clock for the whole event, so the times line up.</p>",
+          "next": "n5" }
+      ]
+    },
+    "n5": {
+      "vitals": { "time": "Thu 14:50", "power": "Restored 14:48", "water": "RO and loop not yet checked", "st8": "Stable; transferred for assessment", "alarm": ["water"] },
+      "short": "Power is back:",
+      "scene": "<p>Power returns at 14:48. A nurse says, &ldquo;Good, let&rsquo;s reconnect the patients who didn&rsquo;t finish.&rdquo;</p>",
+      "prompt": "What do you say?",
+      "choices": [
+        { "grade": "best", "text": "Tell the charge nurse that the water system and any interrupted disinfection must be checked by the water technician before treatments resume; then write your own account, fact separated from opinion.",
+          "feedback": "<p>When power returns, do not assume the machines and the water are ready. Your account is facts: &ldquo;Station 8 foam in venous line at 14:15,&rdquo; not &ldquo;the crank was faulty.&rdquo;</p>",
+          "vitals": { "water": "Checked and released 15:30" }, "next": "end" },
+        { "grade": "harmful", "text": "Agree and start setting up the machines.",
+          "feedback": "<p>A water system that lost power may have pressure, loop, or disinfection problems. Treating on unchecked water risks every patient.</p>",
+          "then": "<p>The charge nurse holds the restart until the water technician checks the system.</p>",
+          "vitals": { "water": "Checked and released 15:30" }, "next": "end" },
+        { "grade": "ok", "text": "Check the machines&rsquo; self-tests and start if they pass.",
+          "feedback": "<p>Self-tests check the machines, not the water system. The water technician checks and releases the water first.</p>",
+          "vitals": { "water": "Checked and released 15:30" }, "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "The debrief",
+      "text": "<p>Mr. Ramos was assessed and recovered. At the debrief, the team found that the generator&rsquo;s automatic start had been switched to manual after maintenance and never switched back, and that one hand crank was missing. Each fix has a named owner and a date. Your record, with one clock and spoken words, made the review straightforward.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Power failure: go to the patients,</b> report machine status, bring lights and cranks, start nothing new.</li><li><b>During manual return, you may be the air detector.</b> Say &ldquo;stop&rdquo; at once.</li><li><b>Symptoms after air in the line: call for help,</b> bring the cart, report what you saw.</li><li><b>Recorder: one clock, words as spoken,</b> nothing filled in later.</li><li><b>Power back does not mean water ready.</b></li></ul><p>See <a href=\"#part2\">First response and team roles</a>, <a href=\"#codejobs\">Jobs at a code</a> and <a href=\"#firstfive\">The first five minutes</a>.</p>"
+}

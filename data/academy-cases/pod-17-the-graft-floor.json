@@ -1,0 +1,109 @@
+{
+  "id": "pod17-rigors-hour-one",
+  "page": "physician-on-duty-17-fever-and-bloodstream-infection.html",
+  "title": "Rigors in hour one",
+  "decisions": 5,
+  "note": "Fictional patient. Values are illustrative; antibiotic choice and dose, fluid volume, and the catheter plan belong to the attending nephrologist and the unit&rsquo;s protocol.",
+  "labels": { "time": "Time", "rr": "Resp", "temp": "Temp", "floor": "Other patients", "cultures": "Cultures", "abx": "Antibiotic", "uf": "Fluid removal" },
+  "monitorOrder": ["time", "bp", "hr", "rr", "spo2", "temp", "uf", "floor", "cultures", "abx"],
+  "monitor": { "time": "Mon 07:40", "bp": "94/54", "hr": 122, "rr": 26, "spo2": 94, "temp": "39.2 °C", "uf": "Running", "floor": "Not checked", "cultures": "—", "abx": "—", "rhythm": "normal", "rhythmLabel": "Sinus tachycardia", "alarm": ["temp"] },
+  "intro": "<p>You are the physician on duty. Mr. Leandro Pascual, 72, has diabetes and dialyzes through a tunneled right internal jugular catheter. His left arm has a fistula created three weeks ago, not yet mature. Forty minutes into Monday&rsquo;s session he has rigors and is a little confused about the day. His pressure was 148/82 before dialysis. His wife says he had chills on Saturday night.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "First minutes:",
+      "prompt": "What do you do first?",
+      "choices": [
+        { "grade": "best", "text": "Stop fluid removal, assess him, and look around the floor: ask whether any other patient has chills or fever.",
+          "feedback": "<p>Before you decide what is wrong with the patient, look around the floor. One patient is usually an infection; several are the unit until proven otherwise. Stopping fluid removal takes one cause of the low pressure away.</p>",
+          "then": "<p>No other patient has chills. His chills started before today&rsquo;s session, pointing to a catheter infection rather than a pyrogenic reaction.</p>",
+          "vitals": { "uf": "Stopped", "floor": "No others affected", "bp": "102/58" }, "next": "n2" },
+        { "grade": "poor", "text": "Give paracetamol and a blanket, and continue the session.",
+          "feedback": "<p>Rigors with confusion and a fall in pressure are red flags, not discomfort. And you have not checked whether others are affected.</p>",
+          "then": "<p>Twenty minutes later his pressure is 88/50. You stop fluid removal and check the floor: no other patients affected.</p>",
+          "vitals": { "uf": "Stopped", "floor": "No others affected", "bp": "88/50" }, "next": "n2" },
+        { "grade": "ok", "text": "Examine him fully first; check other patients later.",
+          "feedback": "<p>Examination is right, but the floor check takes seconds and changes everything if others are affected. Do both now.</p>",
+          "then": "<p>The nurse confirms no others are affected. You stop fluid removal.</p>",
+          "vitals": { "uf": "Stopped", "floor": "No others affected", "bp": "100/58" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "short": "Cultures:",
+      "scene": "<p>The nurse suggests drawing one culture from his left forearm vein &ldquo;to do it properly,&rdquo; and the antibiotic is already drawn up.</p>",
+      "prompt": "What do you order?",
+      "choices": [
+        { "grade": "best", "text": "Two sets per protocol, from the catheter hub and the dialysis circuit, no arm vein; both before the first antibiotic dose, labeled with site and clock time.",
+          "feedback": "<p>His arms are reserved for access, and his fistula is maturing. In a single-center dialysis study, cultures from the circuit were the most accurate. Cultures first, then antibiotics, never at the cost of a vein he needs.</p>",
+          "vitals": { "cultures": "Hub + circuit 07:48" }, "next": "n3" },
+        { "grade": "poor", "text": "Give the antibiotic now since it is ready; cultures can follow.",
+          "feedback": "<p>The first dose can leave the bottles sterile. Drawing cultures takes minutes; keep the sequence.</p>",
+          "then": "<p>You hold the dose and draw hub and circuit cultures.</p>",
+          "vitals": { "cultures": "Hub + circuit 07:50" }, "next": "n3" },
+        { "grade": "ok", "text": "One set from the forearm vein and one from the catheter.",
+          "feedback": "<p>That is the classic paired approach from non-dialysis patients, but it uses a vein he may need. Follow your unit&rsquo;s protocol: catheter and circuit.</p>",
+          "then": "<p>You switch the peripheral set to the circuit.</p>",
+          "vitals": { "cultures": "Hub + circuit 07:50" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "Mon 07:55" },
+      "short": "Sepsis:",
+      "scene": "<p>His respiratory rate is 26, his systolic pressure is around 100, and he is confused. His quick SOFA (qSOFA) score is 3.</p>",
+      "prompt": "What happens in the next hour?",
+      "choices": [
+        { "grade": "best", "text": "Call the attending nephrologist with SBAR now; give the first antibiotic dose as ordered under protocol within the hour, after the cultures; ask for a lactate if available; give fluid only as the protocol allows, in measured portions, recording each; prepare transfer.",
+          "feedback": "<p>Sepsis is organ failure, not fever. Antibiotics within an hour of recognizing probable sepsis. The fluid volume for an anuric dialysis patient is the nephrologist&rsquo;s or emergency physician&rsquo;s decision.</p>",
+          "vitals": { "abx": "First dose 08:05", "bp": "108/62", "hr": 110 }, "next": "n4" },
+        { "grade": "poor", "text": "Give 30 mL/kg of crystalloid at once, as the sepsis guideline suggests.",
+          "feedback": "<p>That suggestion is written for adults in general and does not address anuric patients, in whom fluid stays until removed. Give what the protocol allows and let the nephrologist decide the volume.</p>",
+          "then": "<p>You stop after the protocol&rsquo;s first portion and call the attending nephrologist. The antibiotic is given at 08:05.</p>",
+          "vitals": { "abx": "First dose 08:05", "bp": "108/62", "hr": 110, "spo2": 92 }, "next": "n4" },
+        { "grade": "ok", "text": "Wait for the culture results before choosing an antibiotic.",
+          "feedback": "<p>Cultures take a day or more. In probable sepsis, empirical antibiotics start within the hour, covering the likely organisms; the cultures refine the choice later.</p>",
+          "then": "<p>You call the attending nephrologist, who orders the first dose under protocol at 08:15.</p>",
+          "vitals": { "abx": "First dose 08:15", "bp": "104/60", "hr": 114 }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "Wed 09:00", "temp": "37.6 °C", "bp": "130/74", "hr": 88, "rr": 18, "cultures": "S. aureus (MSSA)", "alarm": ["cultures"], "rhythmLabel": "Sinus rhythm" },
+      "short": "The culture result:",
+      "scene": "<p>He was admitted. On Wednesday both cultures grow methicillin-susceptible Staphylococcus aureus. He is better and back in the unit for dialysis.</p>",
+      "prompt": "What do you raise with the attending nephrologist?",
+      "choices": [
+        { "grade": "best", "text": "The catheter: the guideline advises removal for S. aureus, with a temporary catheter at another site, and a switch to the narrower antibiotic the guideline names for susceptible strains; plus a plan to look for endocarditis.",
+          "feedback": "<p>IDSA advises catheter removal for S. aureus, Pseudomonas, or Candida, and a switch to cefazolin for susceptible S. aureus. Endocarditis is more common in dialysis patients with S. aureus bacteremia. The decisions are the nephrologist&rsquo;s; your job is to raise them.</p>",
+          "next": "n5" },
+        { "grade": "poor", "text": "Nothing; he is improving on antibiotics.",
+          "feedback": "<p>An infected catheter left in place is a common cause of relapse and of infection seeding the spine or valves. Raise the catheter plan.</p>",
+          "next": "n5" },
+        { "grade": "ok", "text": "Suggest an antibiotic lock and keep the catheter.",
+          "feedback": "<p>Salvage with a lock may be considered for some organisms, but for S. aureus the guideline advises removal. Raise it with the nephrologist.</p>",
+          "next": "n5" }
+      ]
+    },
+    "n5": {
+      "vitals": { "time": "4 weeks later", "temp": "38.1 °C", "cultures": "—", "alarm": ["temp"] },
+      "short": "Four weeks later:",
+      "scene": "<p>Four weeks later, back on his usual schedule, he reports new lower back pain for ten days and a low fever. He says his legs feel &ldquo;heavy.&rdquo;</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Examine the spine and legs, ask about bladder and bowel changes, and call the attending nephrologist now; new leg weakness after bacteremia is an emergency, so arrange transfer while you call.",
+          "feedback": "<p>Spinal infection follows S. aureus bacteremia and is easily missed; about a quarter of dialysis patients in a review developed neurologic deficits. Weakness means possible cord compression.</p>",
+          "next": "end" },
+        { "grade": "poor", "text": "Prescribe a painkiller and review at the next session.",
+          "feedback": "<p>New back pain, fever, and heavy legs after bacteremia can mean an epidural abscess pressing on the cord. Delay risks paralysis.</p>",
+          "next": "end" },
+        { "grade": "ok", "text": "Order blood cultures and see if they grow anything.",
+          "feedback": "<p>Cultures help, but heavy legs need an emergency assessment and imaging now.</p>",
+          "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "Outcome",
+      "text": "<p>Imaging showed a spinal infection with early pressure on the cord. He was treated in time and walks with a cane. His catheter had been replaced, his course extended, and his fistula is now in use. The unit reviewed why the culture-before-antibiotic step nearly slipped and kept the sequence in its fever protocol.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Look around the floor first:</b> one patient is usually an infection; several are the unit.</li><li><b>Cultures before antibiotics,</b> from the catheter and circuit, never a vein the patient needs.</li><li><b>Probable sepsis: antibiotics within the hour;</b> fluid volume is the nephrologist&rsquo;s decision in an anuric patient.</li><li><b>S. aureus: raise catheter removal</b> and a search for endocarditis.</li><li><b>New back pain or leg weakness after bacteremia</b> is an emergency.</li></ul><p>See <a href=\"#sort\">Four explanations</a>, <a href=\"#cultures\">Drawing cultures</a>, <a href=\"#sepsis\">Sepsis</a>, <a href=\"#treat\">Treatment</a> and <a href=\"#hidden\">Where infection hides</a>.</p>"
+}

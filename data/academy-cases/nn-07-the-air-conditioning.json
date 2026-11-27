@@ -1,0 +1,239 @@
+{
+  "id": "nn07-air-conditioning",
+  "page": "nephrology-nursing-07-hd-vascular-access-infection-prevention.html",
+  "title": "“It’s just the air-conditioning”",
+  "decisions": 5,
+  "note": "Fictional patient. Values are illustrative; your unit&rsquo;s protocol and the physician&rsquo;s orders come first.",
+  "labels": {
+    "time": "Time",
+    "temp": "Temp",
+    "site": "Exit site",
+    "cultures": "Cultures",
+    "abx": "Antibiotic"
+  },
+  "monitorOrder": [
+    "time",
+    "bp",
+    "hr",
+    "spo2",
+    "temp",
+    "site",
+    "cultures",
+    "abx"
+  ],
+  "monitor": {
+    "time": "Tue 07:10",
+    "bp": "136/78",
+    "hr": 84,
+    "spo2": 97,
+    "temp": "36.9 °C",
+    "site": "Not yet inspected",
+    "cultures": "—",
+    "abx": "—",
+    "rhythm": "normal",
+    "rhythmLabel": "Sinus rhythm"
+  },
+  "intro": "<p>Mr. Gregorio Mendoza, 67, has diabetes and dialyzes through a tunneled catheter in the right internal jugular vein while waiting for fistula surgery, delayed by cost. It is Tuesday, 07:10, and you are preparing to connect him.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "Connecting:",
+      "scene": "<p>You and Mr. Mendoza are masked. You have scrubbed the arterial hub and opened it. As you reach for the bloodline, the open hub brushes his blanket.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Stop. Do not connect. Clamp, scrub the hub again or replace the contaminated part as the procedure directs, then connect; report the event.",
+          "feedback": "<p>Organisms reach the blood mainly through the inside of the catheter, carried in on hubs and connectors. Reporting a contamination is part of the correction, not an admission of failure.</p>",
+          "vitals": {
+            "site": "Clean, dry; hub re-scrubbed",
+            "time": "Tue 07:20 connected"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Wipe the hub with dry gauze and connect; it only touched for a second.",
+          "feedback": "<p>A second of contact is enough to carry organisms into the catheter. Dry gauze is not a disinfectant. Stop, clamp, scrub again or replace.</p>",
+          "then": "<p>You stop, clamp, scrub the hub again for the full time, and connect.</p>",
+          "vitals": {
+            "site": "Clean, dry; hub re-scrubbed",
+            "time": "Tue 07:22 connected"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Connect quickly; the antibiotic lock will kill anything that got in.",
+          "feedback": "<p>The lock is withdrawn and discarded before use, and it is not a treatment for contamination. Bloodstream infection is the main danger of a catheter.</p>",
+          "then": "<p>You stop before connecting, clamp, and scrub the hub again.</p>",
+          "vitals": {
+            "site": "Clean, dry; hub re-scrubbed",
+            "time": "Tue 07:22 connected"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "vitals": {
+        "time": "Tue 08:05",
+        "bp": "104/62",
+        "hr": 112,
+        "temp": "38.7 °C",
+        "rhythmLabel": "Sinus tachycardia",
+        "alarm": [
+          "temp"
+        ]
+      },
+      "short": "Shaking at 45 minutes:",
+      "scene": "<p>At 45 minutes Mr. Mendoza is shaking under his blanket. &ldquo;It&rsquo;s just the air-conditioning,&rdquo; he says. His temperature is 38.7 &deg;C.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Take a full set of vital signs, inspect the exit site and tunnel, and notify the physician now, during the session.",
+          "feedback": "<p>Chills in a patient with a catheter are a bloodstream infection until shown otherwise. They are not blamed on the air-conditioning. The exit site often looks normal.</p>",
+          "vitals": {
+            "site": "Normal-looking; tunnel not tender"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Give him another blanket and recheck at the end of the session.",
+          "feedback": "<p>Three hours is too long. Older and diabetic patients can deteriorate with few signs. Call the physician now.</p>",
+          "then": "<p>At 08:30 his pressure is 94/56. You call the physician.</p>",
+          "vitals": {
+            "bp": "94/56",
+            "site": "Normal-looking; tunnel not tender"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Check the exit site; it looks fine, so continue and tell the physician on rounds.",
+          "feedback": "<p>A normal-looking exit site does not rule out a catheter bloodstream infection. Notify the physician during the session.</p>",
+          "then": "<p>You call the physician now.</p>",
+          "vitals": {
+            "site": "Normal-looking; tunnel not tender"
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "time": "Tue 08:15",
+        "abx": "Ordered; at the station"
+      },
+      "short": "Cultures and the first dose:",
+      "scene": "<p>The physician orders blood cultures and an antibiotic. The antibiotic arrives at the station first.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Draw the blood cultures as ordered, from the sites the unit protocol names, before the first antibiotic dose; then give the dose and record both times.",
+          "feedback": "<p>Cultures come before antibiotics, because the first dose can leave the bottles sterile. Unit protocols usually draw from the catheter and dialysis circuit rather than arm veins that may be needed for a fistula.</p>",
+          "vitals": {
+            "cultures": "Drawn 08:18 (hub + circuit)",
+            "abx": "Given 08:25"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Give the antibiotic now since it is ready; draw cultures after.",
+          "feedback": "<p>A dose given first can turn the cultures negative and hide the organism that decides the treatment and the catheter plan.</p>",
+          "then": "<p>You hold the dose for the few minutes it takes to draw the cultures.</p>",
+          "vitals": {
+            "cultures": "Drawn 08:18 (hub + circuit)",
+            "abx": "Given 08:25"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Draw one set of cultures from his forearm vein, then give the dose.",
+          "feedback": "<p>Cultures first is right, but follow the protocol&rsquo;s sites. Arm veins may be needed for his fistula.</p>",
+          "then": "<p>You draw from the catheter and circuit as the protocol names.</p>",
+          "vitals": {
+            "cultures": "Drawn 08:18 (hub + circuit)",
+            "abx": "Given 08:25"
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Tue 11:20",
+        "bp": "118/70",
+        "hr": 96,
+        "temp": "37.9 °C",
+        "rhythmLabel": "Sinus rhythm",
+        "alarm": []
+      },
+      "short": "Going home?",
+      "scene": "<p>At the end of the session he feels better and wants to go home. The physician has not yet reviewed him again.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "He does not leave without a medical decision; ask the physician to review him, and give clear instructions on what should bring him back at once.",
+          "feedback": "<p>A patient with a possible catheter bloodstream infection goes home only on a medical decision. Clear return instructions are part of discharge.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Let him go; he feels better and the antibiotic is in.",
+          "feedback": "<p>Feeling better after one dose does not settle the question. The physician decides, and he needs to know what should bring him back.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Let him go and leave a note for the physician.",
+          "feedback": "<p>A note after he has left is not a medical decision. Ask the physician to review him before he goes.</p>",
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "vitals": {
+        "time": "3 weeks later",
+        "temp": "37.8 °C",
+        "site": "Clean",
+        "cultures": "S. aureus (treated)"
+      },
+      "short": "Three weeks later:",
+      "scene": "<p>His cultures grew Staphylococcus aureus; the physician replaced the catheter and he completed antibiotics. Three weeks later he says his lower back has been hurting for a week, and he feels feverish again.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Report it to the physician the same day, together with his recent bacteremia, and ask about any leg weakness, numbness, or bladder change.",
+          "feedback": "<p>After a bloodstream infection, new back pain can mean the infection has seeded the spine. Weakness, numbness, or bladder change would make it an emergency.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Suggest a painkiller and rest; dialysis chairs are hard on the back.",
+          "feedback": "<p>New back pain and fever after Staphylococcus aureus bacteremia must be reported. Spinal infection is easy to miss and can cause lasting harm.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Note it for his next clinic visit.",
+          "feedback": "<p>That could be weeks. Report it the same day.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "Follow-up",
+      "text": "<p>Imaging found an early spinal infection, treated in hospital. Mr. Mendoza&rsquo;s fistula surgery was moved up with help from the social worker. You document the contamination event, the times of cultures and antibiotic, and each report, and the unit adds his catheter to its review of catheter patients without a fistula date.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Hubs carry infection in.</b> A touched hub means stop, clamp, re-scrub or replace, and report.</li><li><b>Chills with a catheter are a bloodstream infection until shown otherwise.</b> Call during the session.</li><li><b>Cultures before the first dose,</b> from the protocol&rsquo;s sites.</li><li><b>No discharge without a medical decision.</b></li><li><b>New back pain after bacteremia</b> is reported the same day.</li></ul><p>See <a href=\"#catheters\">Catheters in depth</a> and <a href=\"#bedside\">Connect cleanly</a>.</p>"
+}
