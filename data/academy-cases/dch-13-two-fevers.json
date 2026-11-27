@@ -1,0 +1,112 @@
+{
+  "id": "dch13-two-fevers",
+  "page": "dialysis-clinical-head-13-serious-events-and-scrutiny.html",
+  "title": "Two fevers, one morning",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Event board",
+  "note": "Fictional unit, patients, and staff. Your facility&rsquo;s disclosure, reporting, and communication policies come first.",
+  "labels": { "time": "Time", "pts": "Patients affected", "held": "Held / preserved", "family": "Family", "outside": "Outside enquiries", "staff": "Staff" },
+  "monitorOrder": ["time", "pts", "held", "family", "outside", "staff"],
+  "monitor": { "time": "Wed 09:40", "pts": "St. 3 transferred; St. 5 rigors", "held": "Nothing yet", "family": "—", "outside": "—", "staff": "—", "alarm": ["pts"] },
+  "intro": "<p>You are the Dialysis Clinical Head. At 09:00 on Wednesday, Mr. Ernesto Pascual at station 3 developed shaking chills, fever, and a falling blood pressure 40 minutes into treatment and was transferred to the emergency department. At 09:40, Mrs. Teresa Uy at station 5, on the same shift, develops rigors and a temperature of 38.9 &deg;C. Both dialyze through catheters. The next shift starts at 11:00.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "The first fifteen minutes:",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Protect: assess Mrs. Uy now and check every patient on the shift. Preserve: tag out stations 3 and 5, keep the lines, dialyzers, vials, and lot numbers, and secure the water results. Assign: one person per family, one to watch the floor, one to keep a timeline.",
+          "feedback": "<p>Care, preserve, communicate. The evidence that explains a cluster is usually thrown away in the first hour.</p>",
+          "vitals": { "held": "St. 3 and 5 tagged; items kept", "pts": "St. 3 ED; St. 5 treated; others checked" }, "next": "n2" },
+        { "grade": "harmful", "text": "Treat Mrs. Uy, and have the staff clean stations 3 and 5 and discard the used lines so the next shift can start on time.",
+          "feedback": "<p>Preserve before you clean. Discarding the lines, dialyzers, and vials destroys the evidence that could explain both fevers and protect the next shift.</p>",
+          "then": "<p>The technical lead stops the cleaning. Most items are recovered from the bins and kept with their lot numbers.</p>",
+          "vitals": { "held": "Most items recovered", "pts": "St. 3 ED; St. 5 treated; others checked" }, "next": "n2" },
+        { "grade": "poor", "text": "Treat Mrs. Uy as a catheter infection and carry on; two fevers can be coincidence.",
+          "feedback": "<p>Two patients with the same new reaction on one shift are a unit problem until proved otherwise. Check every patient and keep the evidence.</p>",
+          "then": "<p>You reconsider: the stations are tagged and the items kept.</p>",
+          "vitals": { "held": "St. 3 and 5 tagged; items kept", "pts": "St. 3 ED; St. 5 treated; others checked" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "time": "Wed 10:05" },
+      "short": "What did they share?",
+      "scene": "<p>Asking the cluster question, you find the two patients had different machines and dialyzer lots, but the same nurse prepared both catheter connections, and both received heparin drawn from one multi-dose vial opened yesterday.</p>",
+      "prompt": "What now?",
+      "choices": [
+        { "grade": "best", "text": "Hold the vial and that product lot and stop new connections that would use them; check yesterday&rsquo;s and today&rsquo;s patients who received it; escalate to the owner, infection prevention, and the quality lead; and check reporting obligations and deadlines with compliance.",
+          "feedback": "<p>Stop new connections on any shared product until the evidence is reviewed. Look back at everyone exposed. Reporting duties have deadlines, and compliance confirms them.</p>",
+          "vitals": { "held": "Vial and lot held; exposures traced", "staff": "Nurse informed" }, "next": "n3" },
+        { "grade": "poor", "text": "Suspend the nurse who prepared both connections.",
+          "feedback": "<p>A shared staff member is one possible link, not a finding. Suspension as the first move signals blame and discourages the reporting you need. Protect patients by holding the product and reviewing the evidence.</p>",
+          "then": "<p>You hold the vial and lot, trace exposures, and escalate.</p>",
+          "vitals": { "held": "Vial and lot held; exposures traced", "staff": "Nurse informed" }, "next": "n3" },
+        { "grade": "ok", "text": "Throw out the vial and use a fresh one for the next shift.",
+          "feedback": "<p>Removing it from use is right; discarding it is not. The vial is evidence and may need culture. Hold it, trace who else received it, and escalate.</p>",
+          "then": "<p>You retrieve the vial, hold it, and trace the exposures.</p>",
+          "vitals": { "held": "Vial and lot held; exposures traced", "staff": "Nurse informed" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "Wed 11:15", "family": "Mr. Pascual&rsquo;s son at the desk" },
+      "short": "The family:",
+      "scene": "<p>Mr. Pascual&rsquo;s son, Mr. Jonas Pascual, arrives and asks you: &ldquo;Did the clinic do this to my father?&rdquo;</p>",
+      "prompt": "What do you say?",
+      "choices": [
+        { "grade": "best", "text": "&ldquo;Your father developed fever and low blood pressure during dialysis and is being treated in the emergency department. We don&rsquo;t yet know why. We are checking everything about his treatment today. I&rsquo;m sorry this happened. I will call you at 6 this evening, and here is a number you can call anytime.&rdquo;",
+          "feedback": "<p>What happened, in plain words; that you do not yet know why; what is being done; an apology; and a definite time to speak again. Early, honest communication is compatible with sound risk management.</p>",
+          "vitals": { "family": "Informed; call-back 18:00" }, "next": "n4" },
+        { "grade": "harmful", "text": "&ldquo;No. Your father was already very sick; these things happen.&rdquo;",
+          "feedback": "<p>Denying a cause before you know one damages trust and may be wrong. Say what you know, that you do not yet know why, and when you will speak again.</p>",
+          "then": "<p>You start again, honestly, and give him a call-back time.</p>",
+          "vitals": { "family": "Informed; call-back 18:00" }, "next": "n4" },
+        { "grade": "poor", "text": "&ldquo;We are investigating. We will let you know.&rdquo;",
+          "feedback": "<p>&ldquo;We will let you know&rdquo; leaves a frightened family waiting. Explain what happened, say you are sorry, and give a time and a number.</p>",
+          "then": "<p>You add what happened, an apology, and a call-back at 6 p.m.</p>",
+          "vitals": { "family": "Informed; call-back 18:00" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "Wed 12:30", "outside": "Radio reporter on the line", "alarm": ["outside"] },
+      "short": "The reporter:",
+      "scene": "<p>The receptionist says a radio reporter is on the line asking whether &ldquo;patients got infected at the clinic today.&rdquo;</p>",
+      "prompt": "What does the receptionist say?",
+      "choices": [
+        { "grade": "best", "text": "&ldquo;I cannot discuss any patient. Let me give you the number of the person who can speak for the clinic.&rdquo; Then log the call for the authorized spokesperson.",
+          "feedback": "<p>Route every outside enquiry to the authorized spokesperson. Confirming that someone is a patient, or describing what happened, breaches patient privacy.</p>",
+          "vitals": { "outside": "Logged; routed to spokesperson", "alarm": [] }, "next": "n5" },
+        { "grade": "poor", "text": "&ldquo;Two patients had fevers, but they are fine.&rdquo;",
+          "feedback": "<p>That confirms patient information to the media and guesses at outcomes. Staff know one sentence and route the call.</p>",
+          "vitals": { "outside": "Logged; routed to spokesperson", "alarm": [] }, "next": "n5" },
+        { "grade": "harmful", "text": "&ldquo;Nothing happened here. The clinic is completely safe.&rdquo;",
+          "feedback": "<p>A false denial on air can be disproved within hours and destroys trust. Route the call; the spokesperson, with compliance, decides what the clinic says.</p>",
+          "vitals": { "outside": "Logged; routed to spokesperson", "alarm": [] }, "next": "n5" }
+      ]
+    },
+    "n5": {
+      "vitals": { "time": "Wed 16:00", "staff": "Nurse distressed" },
+      "short": "The nurse:",
+      "scene": "<p>The nurse who prepared both connections, Ms. Arlene Diaz, is in tears in the staff room. She says she has not slept well since a patient died last year and cannot stop going over this morning.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Offer support separately from the investigation, make clear the review looks at systems, arrange cover for the rest of her shift if she wants it, and check on her over the following days.",
+          "feedback": "<p>Between 10% and 43% of clinicians involved in adverse events suffer this second-victim response. Support offered separately from the investigation keeps seeking help from looking like being investigated, and a supported team reports the next problem early.</p>",
+          "vitals": { "staff": "Support offered; follow-up planned" }, "next": "end" },
+        { "grade": "poor", "text": "Tell her not to worry, and to keep the event to herself until the investigation ends.",
+          "feedback": "<p>Reassurance without support, and a request for silence, isolate her. Offer real support and check on her in the coming days.</p>",
+          "vitals": { "staff": "Support offered; follow-up planned" }, "next": "end" },
+        { "grade": "ok", "text": "Send her home for the day.",
+          "feedback": "<p>Time off may help, but on its own it can feel like a judgment. Pair it with support, clear words about a systems review, and follow-up.</p>",
+          "vitals": { "staff": "Support offered; follow-up planned" }, "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "vitals": { "time": "Wed 18:00", "family": "Called back on time" },
+      "title": "End of the day",
+      "text": "<p>You call Mr. Jonas Pascual at 6 p.m. as promised. The first review meeting separates confirmed facts, open questions with owners, and decisions with times, and agrees the criteria for restoring normal practice. Blood cultures and the held vial go to the laboratory; the unit uses single-dose heparin until the review is complete.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Care, preserve, communicate.</b> Preserve before you clean.</li><li><b>Ask what they shared,</b> hold it, and trace everyone exposed. Escalate and check reporting duties.</li><li><b>Talk with families before you know:</b> what happened, what you do not know, an apology, and a time to speak again.</li><li><b>Route the media</b> to the spokesperson; staff say one sentence.</li><li><b>Support the people involved,</b> separately from the investigation.</li></ul><p>See <a href=\"#first\">Care, preserve, communicate</a>, <a href=\"#family\">Talking with a family</a>, <a href=\"#outside\">Media</a> and <a href=\"#staff\">Supporting the people involved</a>.</p>"
+}
