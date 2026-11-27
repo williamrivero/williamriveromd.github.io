@@ -21,7 +21,7 @@
 
   var PHONE = "(max-width: 640px)";
   // Icon tiles in category colors (Dr. Rivero chose this style, Nov 26 2026). Groups (Dr. Rivero): Orient · Learn ·
-  // Look up (calculators, drugs; "Consult" until Nov 27 2026) · Train · Connect (About, Review). Colors: Learn teal, Look up orange, Train purple; Orient/About gold.
+  // Order (Dr. Rivero, Nov 27 2026): Train · Learn · Assess (calculators, drugs; was "Consult", then "Look up") · Connect (About, Review = rate the site). Colors: Learn teal, Assess orange, Train purple; Orient/About gold.
   var ITEMS = {
     home:        { label: "Home",        hint: "Renal Care Matters",       icon: '<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>' },
     guides:      { label: "Guides",      hint: "For patients and clinicians", icon: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6M9 11h6"/>' },
@@ -36,9 +36,9 @@
   // wide = full-width row card; others pair up two per row
   var GROUPS = [
     { id: "base",  title: "Orient",  items: [["home", 1]] },
-    { id: "learn", title: "Learn", items: [["guides", 1], ["physiology", 0], ["atlas", 0]] },
-    { id: "tools", title: "Look up", items: [["calculators", 0], ["drugs", 0]] },
     { id: "train", title: "Train", items: [["academy", 1]] },
+    { id: "learn", title: "Learn", items: [["guides", 1], ["physiology", 0], ["atlas", 0]] },
+    { id: "tools", title: "Assess", items: [["calculators", 0], ["drugs", 0]] },
     { id: "connect", title: "Connect", items: [["about", 0], ["review", 0]] }
   ];
 
