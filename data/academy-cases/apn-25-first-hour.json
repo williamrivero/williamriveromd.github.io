@@ -1,0 +1,228 @@
+{
+ "id": "apn25-first-hour",
+ "page": "attending-pediatric-nephrologist-25-hd-emergencies-water.html",
+ "title": "Vomiting in the first hour",
+ "decisions": 4,
+ "monitorTitle": "Dialysis chair monitor",
+ "note": "Fictional patient. Values are illustrative and follow the module text; the unit’s pediatric protocol, formulary and the attending pediatric nephrologist decide every order. No doses are given.",
+ "labels": {
+  "bp": "Blood pressure",
+  "uf": "Fluid removal",
+  "gcs": "Alertness",
+  "glu": "Glucose",
+  "vline": "Venous line"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "gcs",
+  "glu",
+  "uf",
+  "vline",
+  "ecg"
+ ],
+ "monitor": {
+  "time": "09:40, minute 50",
+  "bp": "168/100",
+  "hr": 66,
+  "spo2": 97,
+  "gcs": "Slow answers",
+  "glu": "Not checked",
+  "uf": "Running",
+  "vline": "Not checked",
+  "ecg": "Sinus rhythm",
+  "rhythm": "normal",
+  "rhythmLabel": "Sinus rhythm, slow",
+  "alarm": [
+   "bp",
+   "hr",
+   "gcs"
+  ]
+ },
+ "intro": "<p>You are the attending pediatric nephrologist. Rafael “Paeng” Bautista, 13 years old and 40 kg, started hemodialysis three weeks ago with a blood urea nitrogen of 186 mg/dL. He dialyzes in an adult unit in Tarlac because the nearest pediatric HD unit is about 125 kilometers away. His first two sessions, on your written order, were short and gentle.</p><p>Today a covering nurse rewrote the order from the adult template: four hours, the unit’s standard blood flow, the adult dialyzer. Fifty minutes in, Paeng has vomited twice, says his head hurts, is restless and answers slowly. The physician on duty calls: “I gave an antiemetic. His pressure is high. Should I add an antihypertensive and continue?”</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "09:40:",
+   "prompt": "What do you tell the physician on duty?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "This looks like dialysis disequilibrium. Stop the session now (or reduce it to the minimum on my order), lay him on his side, protect his airway, check glucose and oxygen, and watch his alertness closely.",
+     "feedback": "<p>A child with a very high starting urea, dialyzed too fast on an adult order, can develop cerebral edema as urea falls in the blood faster than in the brain. Headache, vomiting, restlessness and slowed answers, with a high pressure and a slow pulse, fit rising intracranial pressure. The treatment is to slow or stop the dialysis, not to push on.</p>",
+     "vitals": {
+      "time": "09:45",
+      "uf": "Stopped",
+      "glu": "98 mg/dL"
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "poor",
+     "text": "Repeat the antiemetic and continue the full four hours.",
+     "feedback": "<p>The antiemetic treats a symptom. Continuing a fast session keeps widening the gradient that is swelling his brain.</p>",
+     "then": "<p>At 09:55 he is drowsier. You tell the physician on duty to stop the session.</p>",
+     "vitals": {
+      "time": "09:55",
+      "gcs": "Drowsy",
+      "uf": "Stopped",
+      "alarm": [
+       "bp",
+       "hr",
+       "gcs"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "harmful",
+     "text": "Give an antihypertensive to bring the pressure down quickly and continue.",
+     "feedback": "<p>His high pressure with a slow pulse may be the body defending blood flow to a swollen brain. Lowering it quickly while dialysis continues can worsen brain perfusion. Blood pressure treatment, if needed, follows your direction and the hospital’s pediatric protocol after the session is stopped.</p>",
+     "then": "<p>You cancel the antihypertensive and ask for the session to stop.</p>",
+     "vitals": {
+      "time": "09:55",
+      "uf": "Stopped"
+     },
+     "next": "n2"
+    }
+   ]
+  },
+  "n2": {
+   "short": "09:50:",
+   "scene": "<p>The blood pump is stopped. Paeng is on his side, still restless, complaining of headache.</p>",
+   "prompt": "What else should the physician on duty check?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Look at the venous line for foam or cherry-red blood, check every connection and the needle sites, record temperature, and ask whether other patients on this shift are unwell.",
+     "feedback": "<p>Disequilibrium is likely, but air, hemolysis, a dislodged needle or a dialysate or water problem can look similar and need different actions. Several unwell patients at once points to the water or the dialysate, not to Paeng.</p>",
+     "vitals": {
+      "vline": "Dark red, no foam"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "ok",
+     "text": "Check his glucose again and nothing else.",
+     "feedback": "<p>Glucose matters, but it is one of several things to exclude. A quick look at the venous line and the other patients takes a minute.</p>",
+     "then": "<p>You ask for the line check; it is normal, and no one else on the shift is unwell.</p>",
+     "vitals": {
+      "vline": "Dark red, no foam"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "poor",
+     "text": "Nothing more; he just needs rest.",
+     "feedback": "<p>Without looking you cannot rule out air, hemolysis or a water problem, each of which would change what happens to the circuit and to the other patients.</p>",
+     "then": "<p>You ask for the checks anyway. The venous line is normal.</p>",
+     "vitals": {
+      "vline": "Dark red, no foam"
+     },
+     "next": "n3"
+    }
+   ]
+  },
+  "n3": {
+   "vitals": {
+    "time": "10:05",
+    "bp": "172/104",
+    "hr": 58,
+    "spo2": 94,
+    "gcs": "Brief seizure, now drowsy",
+    "ecg": "Sinus bradycardia",
+    "rhythm": "normal",
+    "rhythmLabel": "Sinus bradycardia",
+    "alarm": [
+     "bp",
+     "hr",
+     "spo2",
+     "gcs"
+    ]
+   },
+   "short": "10:05:",
+   "scene": "<p>Paeng has a brief generalized seizure. It stops on its own; he is now drowsy, breathing, with oxygen saturation 94%.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Protect him, give oxygen, keep him on his side, check glucose, and transfer urgently to the nearest hospital emergency department that can manage a child; I will call ahead and send a written endorsement.",
+     "feedback": "<p>A seizure, a falling level of consciousness or focal signs are reasons for urgent transfer whatever the cause. An adult freestanding unit is not the place to watch a child’s brain after a seizure.</p>",
+     "vitals": {
+      "time": "10:25, ambulance"
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "ok",
+     "text": "Observe him in the unit for an hour and transfer if he does not improve.",
+     "feedback": "<p>He may improve, but a seizure in this setting already meets the transfer threshold. Watching in a unit without pediatric resuscitation equipment or imaging risks losing time.</p>",
+     "then": "<p>At 10:40 he is no better. You arrange the transfer.</p>",
+     "vitals": {
+      "time": "10:50, ambulance"
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "Restart dialysis at a lower blood flow to finish clearing the urea.",
+     "feedback": "<p>Clearing more urea now is the opposite of what a swelling brain needs. Today’s dialysis is over.</p>",
+     "then": "<p>The physician on duty hesitates and calls you back. You stop the plan and arrange transfer.</p>",
+     "vitals": {
+      "time": "10:45, ambulance"
+     },
+     "next": "n4"
+    }
+   ]
+  },
+  "n4": {
+   "vitals": {
+    "time": "Next day",
+    "bp": "142/90",
+    "hr": 78,
+    "spo2": 98,
+    "gcs": "Alert, oriented",
+    "glu": "Normal",
+    "uf": "—",
+    "vline": "—",
+    "ecg": "Sinus rhythm",
+    "rhythm": "normal",
+    "rhythmLabel": "Sinus rhythm",
+    "alarm": []
+   },
+   "short": "The next day:",
+   "scene": "<p>Paeng recovered in the hospital. His mother asks how this happened and whether it will happen again.</p>",
+   "prompt": "What do you change before his next session?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Agree with the medical director that pediatric orders are printed separately and cannot be overwritten by the adult template; write the next sessions with every number and the rule for stepping up; stock pediatric resuscitation equipment and a pharmacist-prepared weight-based drug reference; check the latest water reports; and explain to his mother what happened.",
+     "feedback": "<p>The failure was a system that let an adult default replace a child’s order. A separate pediatric order, short sessions stepped up on your order, pediatric emergency supplies, current water reports under DOH AO 2013-0003, and an honest explanation are what make the next session safe.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Rewrite his order and ask the nurses to follow it.",
+     "feedback": "<p>The order is fixed for now, but the system that overwrote it is not. The next covering nurse may do the same.</p>",
+     "then": "<p>You also meet the medical director to lock the pediatric order sheet.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "poor",
+     "text": "Report the nurse and keep the unit’s template as it is.",
+     "feedback": "<p>Blame does not change a template that invites the same error. Fix the system and support the staff who work in it.</p>",
+     "then": "<p>After reflection you meet the medical director to change the order process instead.</p>",
+     "next": "end"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Two weeks later",
+   "text": "<p>Paeng dialyzes on a separate pediatric order with sessions stepped up gradually, has had no further symptoms, and is back at school on non-dialysis days. You have started a referral discussion about whether a pediatric unit or home PD would serve him better long term.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Headache, vomiting and restlessness early in the first sessions of a very uremic child are disequilibrium until proven otherwise.</b> Slow or stop the dialysis.</li><li><b>A high pressure with a slow pulse may be protecting the brain;</b> do not lower it fast while dialysis continues.</li><li><b>Exclude the circuit causes:</b> air, hemolysis, needles, water.</li><li><b>Seizure or falling alertness means urgent transfer.</b></li><li><b>The adult template is the hazard.</b> Lock pediatric orders and stock pediatric emergency supplies.</li></ul>"
+}
