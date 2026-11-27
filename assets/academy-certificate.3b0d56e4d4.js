@@ -2395,6 +2395,42 @@ var qrcode = function() {
     return null;
   }
 
+  /* ---------- module quiz progress (recorded by academy-progress.js on each module page) ---------- */
+  var PKEY = "rcm-cert-progress";
+  var TRACK = location.pathname.split("/").pop().replace(/\.html$/, "").replace(/-final-exam$/, "");
+  var MODS = [];
+  try { MODS = JSON.parse((document.getElementById("rcm-cert-modules") || {}).textContent || "[]"); } catch (e) {}
+  function pload() { try { return JSON.parse(localStorage.getItem(PKEY) || "{}") || {}; } catch (e) { return {}; } }
+  function psave(o) { try { localStorage.setItem(PKEY, JSON.stringify(o)); } catch (e) {} }
+  // Module results the course script remembered on this device before the certificate existed.
+  (function importRemembered() {
+    try {
+      var store = document.documentElement.getAttribute("data-nc-store") ||
+        (document.body.getAttribute("data-course") ? "rcm-course-" + document.body.getAttribute("data-course") + "-progress" : "");
+      var prev = store && JSON.parse(localStorage.getItem(store) || "null");
+      if (!prev || !prev.modules) return;
+      var o = pload(), t = o[TRACK] || (o[TRACK] = {}), changed = false;
+      Object.keys(prev.modules).forEach(function (k) {
+        var mm = k.match(/(\d\d)$/), r = prev.modules[k];
+        if (!mm || k === "exam" || !r || !r.total || t[mm[1]]) return;
+        t[mm[1]] = { s: +r.score, t: +r.total, p: +r.score >= Math.ceil(r.total * 0.8), d: String(r.date || "").slice(0, 10) };
+        changed = true;
+      });
+      if (changed) psave(o);
+    } catch (e) {}
+  })();
+  function progress() {
+    var t = pload()[TRACK] || {}, done = 0;
+    var list = MODS.map(function (m) { var r = t[m[0]]; if (r && r.p) done++; return { nn: m[0], title: m[1], href: m[2], r: r }; });
+    return { list: list, done: done, total: list.length, all: !list.length || done === list.length, exam: t._exam || null };
+  }
+  function recordExam(p) {
+    var o = pload(), t = o[TRACK] || (o[TRACK] = {}), old = t._exam;
+    if (!old || p.score / p.total > old.s / old.t || (p.score / p.total === old.s / old.t && examMin && (!old.m || examMin < old.m)))
+      t._exam = { s: p.score, t: p.total, d: today().iso, m: examMin || (old && old.m) || 0 };
+    psave(o);
+  }
+
   function today() {
     var d = new Date();
     return { text: MONTHS[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear(),
@@ -2657,6 +2693,103 @@ var qrcode = function() {
       (qr ? " Verify at renalcarematters.com/verify." : ""), W / 2, 1252, 1480, 30);
   }
 
+  /* ---------- record of module results (page 2 of the completion packet, or the progress record) ---------- */
+  var SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function shortDate(iso) {
+    var p = String(iso || "").split("-");
+    return p.length === 3 ? SHORT[+p[1] - 1] + " " + +p[2] + ", " + p[0] : "";
+  }
+  function ellipsize(ctx, text, maxW) {
+    if (ctx.measureText(text).width <= maxW) return text;
+    while (text.length > 4 && ctx.measureText(text + "…").width > maxW) text = text.slice(0, -1);
+    return text.replace(/[\s,:;]+$/, "") + "…";
+  }
+
+  // mode "complete": issued with the certificate (code, QR). mode "progress": not a certificate.
+  function drawRecord(canvas, d, pr, mode) {
+    var ctx = canvas.getContext("2d"), done = mode === "complete";
+    canvas.width = W; canvas.height = H;
+    var bg = ctx.createRadialGradient(W / 2, H / 2, 200, W / 2, H / 2, 1200);
+    bg.addColorStop(0, "#fffdf6"); bg.addColorStop(1, "#f4ecd8");
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = NAVY; ctx.lineWidth = 16; ctx.strokeRect(30, 30, W - 60, H - 60);
+    ctx.strokeStyle = GOLD; ctx.lineWidth = 2.5; ctx.strokeRect(58, 58, W - 116, H - 116);
+    ctx.lineWidth = 1; ctx.strokeRect(66, 66, W - 132, H - 132);
+    if (!done) {   // diagonal watermark so a progress record can never pass for a certificate
+      ctx.save(); ctx.translate(W / 2, H / 2 + 60); ctx.rotate(-0.32);
+      ctx.fillStyle = "rgba(180,83,9,.075)"; ctx.font = "800 150px " + SANS; ctx.textAlign = "center";
+      ctx.fillText("NOT A CERTIFICATE", 0, 0); ctx.restore();
+    }
+
+    ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+    ctx.fillStyle = NAVY; ctx.font = "700 24px " + SANS; spaced(ctx, "RENAL CARE ACADEMY", W / 2, 140, 6);
+    ctx.fillStyle = NAVY; ctx.font = "400 62px " + SERIF;
+    ctx.fillText(done ? "Record of Module Results" : "Progress Record", W / 2, 222);
+    if (done) {
+      ctx.fillStyle = GOLD; ctx.font = "italic 400 28px " + SERIF;
+      ctx.fillText("Issued with certificate " + d.code, W / 2, 268);
+    } else {
+      var tag = "IN PROGRESS · NOT A CERTIFICATE";
+      ctx.font = "800 22px " + SANS; var tw = ctx.measureText(tag).width + 26 * 2.4 + 48;
+      ctx.fillStyle = "#b45309"; ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(W / 2 - tw / 2, 240, tw, 40, 20); else ctx.rect(W / 2 - tw / 2, 240, tw, 40);
+      ctx.fill(); ctx.fillStyle = "#ffffff"; spaced(ctx, tag, W / 2, 268, 2.4);
+    }
+
+    // who and what
+    ctx.fillStyle = INK; ctx.font = "italic 700 40px " + SERIF; ctx.fillText(d.name, W / 2, 334);
+    ctx.fillStyle = MUTED; ctx.font = "500 24px " + SANS;
+    ctx.fillText(d.track + " · " + pr.total + "-module self-study course" + (d.studyMin ? " · an estimated " + d.studyMin + " minutes of study" : ""), W / 2, 372);
+    ctx.fillStyle = INK; ctx.font = "600 25px " + SANS;
+    var ex = pr.exam;
+    var summary = pr.done + " of " + pr.total + " module quizzes passed · End-of-course examination: " +
+      (ex ? ex.s + " of " + ex.t + " (" + Math.round(100 * ex.s / ex.t) + "%), " + shortDate(ex.d) + (ex.m ? ", " + ex.m + " min" : "") : "not yet passed");
+    fit(ctx, summary, W - 300, 25, "600", SANS); ctx.fillText(summary, W / 2, 414);
+
+    // table: one column up to 16 modules, two columns beyond
+    var n = pr.list.length, cols = n > 16 ? 2 : 1, per = Math.ceil(n / cols), x0 = 120, tw2 = W - 240, gap = 40;
+    var cw = (tw2 - gap * (cols - 1)) / cols, rowH = Math.min(46, Math.floor(700 / Math.max(per, 1))), top = 452;
+    for (var c = 0; c < cols; c++) {
+      var cx = x0 + c * (cw + gap);
+      ctx.fillStyle = NAVY; ctx.fillRect(cx, top, cw, 38);
+      ctx.fillStyle = "#ffffff"; ctx.font = "700 17px " + SANS; ctx.textAlign = "left";
+      ctx.fillText("MODULE", cx + 14, top + 25);
+      ctx.textAlign = "right"; ctx.fillText("QUIZ", cx + cw - 196, top + 25); ctx.fillText(done ? "PASSED ON" : "STATUS", cx + cw - 14, top + 25);
+      for (var i = 0; i < per; i++) {
+        var m = pr.list[c * per + i]; if (!m) break;
+        var y = top + 38 + i * rowH, r = m.r, ok = r && r.p;
+        if (i % 2) { ctx.fillStyle = "rgba(176,138,46,.08)"; ctx.fillRect(cx, y, cw, rowH); }
+        ctx.strokeStyle = "rgba(27,47,85,.14)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx, y + rowH); ctx.lineTo(cx + cw, y + rowH); ctx.stroke();
+        var ty = y + rowH / 2 + 7, fs = rowH < 40 ? 18 : 20;
+        ctx.textAlign = "center"; ctx.font = "800 " + (fs + 2) + "px " + SANS;
+        ctx.fillStyle = ok ? "#2e6b3e" : r ? "#b45309" : "#9aa3b2"; ctx.fillText(ok ? "✓" : r ? "!" : "○", cx + 22, ty);
+        ctx.textAlign = "left"; ctx.fillStyle = INK; ctx.font = "600 " + fs + "px " + SANS;
+        var label = ellipsize(ctx, +m.nn + ". " + m.title, cw - 300); ctx.fillText(label, cx + 44, ty);
+        ctx.textAlign = "right"; ctx.font = "600 " + fs + "px " + SANS; ctx.fillStyle = ok ? INK : MUTED;
+        ctx.fillText(r ? r.s + "/" + r.t : "—", cx + cw - 196, ty);
+        ctx.fillStyle = ok ? INK : r ? "#b45309" : MUTED; ctx.font = (ok ? "500 " : "italic 500 ") + fs + "px " + SANS;
+        ctx.fillText(ok ? shortDate(r.d) : r ? "Not yet passed" : "Not taken", cx + cw - 14, ty);
+      }
+    }
+
+    // footer
+    ctx.textAlign = "center"; ctx.fillStyle = MUTED; ctx.font = "400 19px " + SANS;
+    var foot = done
+      ? "Module quiz results recorded on the learner's device when each quiz was passed (best result shown). Self-study; not CPD-accredited. " +
+        "Competence is demonstrated on the learner's own unit and signed off by a preceptor." + (d.verified ? " Verify at renalcarematters.com/verify." : "")
+      : "Progress record printed " + d.date + ". This is not a certificate of completion: the certificate is issued only after every module quiz " +
+        "and the end-of-course examination are passed. Results are recorded on the learner's device.";
+    var qr = done && d.verified ? qrMatrix(VERIFY + d.code) : null;
+    wrap(ctx, foot, qr ? W / 2 - 80 : W / 2, 1268, qr ? 1460 : 1640, 28);
+    if (qr) {
+      var size = 100, qx = W - 136 - size, qy = 1206, nq = qr.length, cell = size / nq;
+      ctx.fillStyle = "#fff"; ctx.fillRect(qx - 6, qy - 6, size + 12, size + 12);
+      ctx.fillStyle = "#111827";
+      for (var a = 0; a < nq; a++) for (var b = 0; b < nq; b++)
+        if (qr[a][b]) ctx.fillRect(Math.floor(qx + b * cell), Math.floor(qy + a * cell), Math.ceil(cell), Math.ceil(cell));
+    }
+  }
+
   // QR code (qrcode-generator, MIT, bundled ahead of this script): returns a boolean matrix, quiet zone included.
   function qrMatrix(text) {
     if (typeof qrcode !== "function") return null;
@@ -2689,6 +2822,27 @@ var qrcode = function() {
     ".rcm-cert input[type=text]{flex:1 1 240px;min-width:0;font:600 16px Inter,sans-serif;padding:10px 12px;border-radius:10px;border:1px solid #9aa3b2;background:#fff;color:#1e2a38}",
     ".rcm-cert button,.rcm-certm button{font:700 15px Inter,sans-serif;padding:10px 16px;border-radius:999px;border:2px solid #1f3864;background:#1f3864;color:#fff;cursor:pointer}",
     ".rcm-certm button.ghost{background:transparent;color:#1f3864}",
+    ".rcm-cert-check{margin:0 0 18px;border:1px solid #d9c592;border-radius:12px;background:#fffbef;color:#1e2a38}",
+    ".rcm-cert-check summary{display:flex;gap:12px;align-items:center;padding:12px 14px;cursor:pointer;list-style:none}",
+    ".rcm-cert-check summary::-webkit-details-marker{display:none}",
+    ".rcm-cert-check b{font:800 15.5px Inter,sans-serif;color:#1f3864}.rcm-cc-sub{font-size:13.5px;color:#5a6678}",
+    ".rcm-cc-ring{width:34px;height:34px;flex:none;border-radius:50%;background:conic-gradient(#2e6b3e calc(var(--p)*1%),#e6e0cc 0)}",
+    ".rcm-cert-check ol{margin:0;padding:4px 14px 6px 14px;list-style:none;border-top:1px solid #eadfbf}",
+    ".rcm-cert-check li{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:baseline;padding:6px 0;border-bottom:1px solid #f0e8d2;font-size:14px}",
+    ".rcm-cert-check li:last-child{border-bottom:0}.rcm-cc-mk{font-weight:800;color:#2e6b3e;text-align:center}.rcm-cert-check li.try .rcm-cc-mk{color:#b45309}",
+    ".rcm-cc-sc{font-size:12.5px;color:#5a6678;white-space:nowrap}.rcm-cert-check li.ok .rcm-cc-sc{color:#2e6b3e;font-weight:700}",
+    ".rcm-cert a,.rcm-cert-check a{color:#1a6b72}html[data-theme='dark'] .rcm-cert a,html[data-theme='dark'] .rcm-cert-check a{color:#7fd0d6}",
+    ".rcm-cc-note{hyphens:none!important;margin:0!important;padding:8px 14px 12px;font-size:12.5px!important;color:#5a6678;text-align:left!important}",
+    ".rcm-cc-prog{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px 0}",
+    ".rcm-cc-prog input{flex:1 1 200px;min-width:0;font:600 15px Inter,sans-serif;padding:8px 11px;border-radius:9px;border:1px solid #9aa3b2;background:#fff;color:#1e2a38}",
+    ".rcm-cc-prog button{font:700 14px Inter,sans-serif;padding:8px 14px;border-radius:999px;border:2px solid #1f3864;background:#fff;color:#1f3864;cursor:pointer}",
+    "html[data-theme='dark'] .rcm-cc-prog button{background:transparent;border-color:#f3c46a;color:#f3c46a}",
+    ".rcm-cert-left{margin:0 0 8px 18px;padding:0;font-size:14.5px;line-height:1.6}.rcm-cert-saved{margin:0 0 18px}",
+    "html[data-theme='dark'] .rcm-cert-check{background:#221f15;border-color:#6b5a2c;color:#e8e2d4}",
+    "html[data-theme='dark'] .rcm-cert-check b{color:#f3c46a}html[data-theme='dark'] .rcm-cc-sub,html[data-theme='dark'] .rcm-cc-sc,html[data-theme='dark'] .rcm-cc-note{color:#b9b2a2}",
+    "html[data-theme='dark'] .rcm-cert-check ol,html[data-theme='dark'] .rcm-cert-check li{border-color:#3a3322}",
+    "html[data-theme='dark'] .rcm-cc-mk,html[data-theme='dark'] .rcm-cert-check li.ok .rcm-cc-sc{color:#6fcf8e}html[data-theme='dark'] .rcm-cc-ring{background:conic-gradient(#6fcf8e calc(var(--p)*1%),#3a3322 0)}",
+    "@media print{.rcm-cert-check,.rcm-cert-saved{display:none!important}}",
     ".rcm-cert-opt{display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:14px;line-height:1.45;cursor:pointer}",
     ".rcm-cert-opt input{width:18px;height:18px;flex:none;margin:1px 0 0;padding:0;accent-color:#1f3864}",
     ".rcm-cert-ts{margin-top:10px}.rcm-cert-ts:empty{display:none}.rcm-cert-msg{margin:10px 0 0!important;font-weight:600}",
@@ -2700,10 +2854,13 @@ var qrcode = function() {
     ".rcm-certm{position:fixed;inset:0;z-index:2147483000;background:rgba(10,18,32,.78);display:flex;align-items:center;justify-content:center;padding:16px}",
     ".rcm-certm-box{background:#fff;border-radius:14px;max-width:980px;width:100%;max-height:100%;overflow:auto;padding:14px;box-shadow:0 20px 50px rgba(0,0,0,.4)}",
     ".rcm-certm img{display:block;width:100%;height:auto;border:1px solid #d6dae1;border-radius:6px}",
+    ".rcm-certm-title{font:800 17px Inter,sans-serif;color:#1f3864;margin:2px 2px 10px}",
+    ".rcm-certm-pg{margin:0 0 12px}.rcm-certm-pg figcaption{font:600 12.5px Inter,sans-serif;color:#5a6678;margin-top:5px;text-align:center}",
     ".rcm-certm-act{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;margin-top:12px}",
     "#rcm-cert-print{display:none}",
     "@media print{html.rcm-cert-printing body>*:not(#rcm-cert-print){display:none!important}",
-    "html.rcm-cert-printing #rcm-cert-print{display:block!important}html.rcm-cert-printing #rcm-cert-print img{width:100%;height:auto}",
+    "html.rcm-cert-printing #rcm-cert-print{display:block!important}html.rcm-cert-printing #rcm-cert-print img{display:block;width:100%;height:auto;break-after:page;page-break-after:always}",
+    "html.rcm-cert-printing #rcm-cert-print img:last-child{break-after:auto;page-break-after:auto}",
     "@page{size:A4 landscape;margin:8mm}.rcm-cert{display:none!important}}"
   ].join("\n");
   document.head.appendChild(css);
@@ -2740,7 +2897,7 @@ var qrcode = function() {
       return fetch(API, {
         method: "POST", headers: { "content-type": "application/json" },
         body: JSON.stringify({ name: d.name, track: d.track, exam: location.pathname.split("/").pop().replace(/\.html$/, ""),
-          modules: d.modules, score: d.score, total: d.total, exam_min: d.examMin, study_min: d.studyMin,
+          modules: d.modules, modules_passed: progress().done, score: d.score, total: d.total, exam_min: d.examMin, study_min: d.studyMin,
           turnstile: tsToken(), website: "" })
       }).then(function (r) { return r.json().then(function (j) { return r.ok ? j : { error: j.error || "server" }; }); });
     }).then(function (j) {
@@ -2754,7 +2911,7 @@ var qrcode = function() {
     return MONTHS[+p[1] - 1] + " " + +p[2] + ", " + p[0];
   }
 
-  function showPanel(p) {
+  function showPanel(p, host) {
     if (panel) panel.remove();
     panel = document.createElement("div");
     panel.className = "rcm-cert";
@@ -2772,7 +2929,7 @@ var qrcode = function() {
       '<small>To make the certificate verifiable, your name, the track, the date and your score are saved with its code on ' +
       'renalcarematters.com; anyone who scans its QR code sees them. To have your record removed, use Report a correction ' +
       'on any guide. This is a self-study certificate, not CPD units.</small>';
-    result.appendChild(panel);
+    (host || result).appendChild(panel);
     celebrate(panel);
     var input = panel.querySelector("input"), btn = panel.querySelector("button"), msg = panel.querySelector(".rcm-cert-msg");
     config().then(function (c) { if (c && c.turnstile) turnstile(panel.querySelector(".rcm-cert-ts"), c.turnstile); });
@@ -2801,37 +2958,61 @@ var qrcode = function() {
     input.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); go(); } });
   }
 
-  function openCert(d) {
-    var canvas = document.createElement("canvas");
+  // pages: [{canvas, label, file, alt}] drawn and shown together; saved one by one, printed together.
+  function openPacket(title, pages) {
     var ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
     ready.then(function () {
-      draw(canvas, d);
-      var url = canvas.toDataURL("image/png");
-      var file = "Certificate-" + d.track.replace(/[^A-Za-z0-9]+/g, "-") + "-" + d.name.replace(/[^A-Za-z0-9]+/g, "-") + ".png";
+      pages.forEach(function (pg) { pg.draw(pg.canvas); pg.url = pg.canvas.toDataURL("image/png"); });
       if (modal) modal.remove();
       modal = document.createElement("div");
       modal.className = "rcm-certm";
-      modal.setAttribute("role", "dialog"); modal.setAttribute("aria-modal", "true"); modal.setAttribute("aria-label", "Your certificate");
-      modal.innerHTML = '<div class="rcm-certm-box"><img alt=""><div class="rcm-certm-act">' +
-        '<button type="button" data-a="save">Save image</button>' +
-        '<button type="button" data-a="print">Print or save as PDF</button>' +
+      modal.setAttribute("role", "dialog"); modal.setAttribute("aria-modal", "true"); modal.setAttribute("aria-label", title);
+      modal.innerHTML = '<div class="rcm-certm-box"><div class="rcm-certm-title">' + esc(title) + '</div>' +
+        pages.map(function (pg, i) {
+          return '<figure class="rcm-certm-pg"><img alt="' + esc(pg.alt) + '" src="' + pg.url + '"><figcaption>Page ' + (i + 1) + ' of ' + pages.length + ': ' + esc(pg.label) + '</figcaption></figure>';
+        }).join("") + '<div class="rcm-certm-act">' +
+        pages.map(function (pg, i) { return '<button type="button" data-a="save" data-i="' + i + '">Save ' + esc(pg.label.toLowerCase()) + '</button>'; }).join("") +
+        '<button type="button" data-a="print">Print or save as PDF' + (pages.length > 1 ? " (both pages)" : "") + '</button>' +
         '<button type="button" class="ghost" data-a="close">Close</button></div></div>';
-      var img = modal.querySelector("img");
-      img.src = url; img.alt = "Certificate of completion for " + d.name + ", " + d.track + ", " + d.date + ", code " + d.code;
       document.body.appendChild(modal);
       modal.querySelector('[data-a="save"]').focus();
       modal.addEventListener("click", function (e) {
         var a = e.target.closest("[data-a]"); if (e.target === modal) a = { getAttribute: function () { return "close"; } };
         if (!a) return;
-        var act = a.getAttribute("data-a");
+        var act = a.getAttribute("data-a"), pg = pages[+a.getAttribute("data-i") || 0];
         if (act === "close") { modal.remove(); modal = null; }
-        else if (act === "save") save(canvas, url, file);
-        else if (act === "print") printCert(url);
+        else if (act === "save") save(pg.canvas, pg.url, pg.file);
+        else if (act === "print") printCert(pages.map(function (x) { return x.url; }));
       });
-      document.addEventListener("keydown", function esc(e) {
-        if (e.key === "Escape" && modal) { modal.remove(); modal = null; document.removeEventListener("keydown", esc); }
+      document.addEventListener("keydown", function esc2(e) {
+        if (e.key === "Escape" && modal) { modal.remove(); modal = null; document.removeEventListener("keydown", esc2); }
       });
     });
+  }
+  function fileName(kind, d) {
+    return kind + "-" + d.track.replace(/[^A-Za-z0-9]+/g, "-") + "-" + d.name.replace(/[^A-Za-z0-9]+/g, "-") + ".png";
+  }
+  // Completion packet: the certificate and the record of module results.
+  function openCert(d) {
+    var pr = progress();
+    openPacket("Your completion packet", [
+      { canvas: document.createElement("canvas"), label: "Certificate", file: fileName("Certificate", d),
+        alt: "Certificate of completion for " + d.name + ", " + d.track + ", " + d.date + ", code " + d.code,
+        draw: function (c) { draw(c, d); } },
+      { canvas: document.createElement("canvas"), label: "Module record", file: fileName("Module-record", d),
+        alt: "Record of module results for " + d.name + ", " + d.track,
+        draw: function (c) { drawRecord(c, d, pr, "complete"); } }
+    ]);
+  }
+  // Incomplete packet: a progress record only, clearly marked as not a certificate.
+  function openProgress(name) {
+    var pr = progress(), t = today();
+    var d = { name: name, track: trackName(), studyMin: STUDY_MIN, date: t.text, iso: t.iso };
+    openPacket("Your progress record", [
+      { canvas: document.createElement("canvas"), label: "Progress record", file: fileName("Progress-record", d),
+        alt: "Progress record (not a certificate) for " + name + ", " + d.track + ": " + pr.done + " of " + pr.total + " module quizzes passed",
+        draw: function (c) { drawRecord(c, d, pr, "progress"); } }
+    ]);
   }
 
   function save(canvas, url, file) {
@@ -2849,26 +3030,121 @@ var qrcode = function() {
     var a = document.createElement("a"); a.href = url; a.download = file;
     document.body.appendChild(a); a.click(); a.remove();
   }
-  function printCert(url) {
+  function printCert(urls) {
     var holder = document.getElementById("rcm-cert-print");
     if (!holder) { holder = document.createElement("div"); holder.id = "rcm-cert-print"; document.body.appendChild(holder); }
-    holder.innerHTML = '<img alt="Certificate of completion">';
-    var img = holder.querySelector("img");
-    img.onload = function () {
-      document.documentElement.classList.add("rcm-cert-printing");
-      setTimeout(function () { window.print(); }, 50);
-    };
-    img.src = url;
+    holder.innerHTML = urls.map(function () { return '<img alt="">'; }).join("");
+    var imgs = holder.querySelectorAll("img"), left = imgs.length;
+    Array.prototype.forEach.call(imgs, function (img, i) {
+      img.onload = function () {
+        if (--left) return;
+        document.documentElement.classList.add("rcm-cert-printing");
+        setTimeout(function () { window.print(); }, 50);
+      };
+      img.src = urls[i];
+    });
   }
   window.addEventListener("afterprint", function () { document.documentElement.classList.remove("rcm-cert-printing"); });
+
+  /* ---------- certificate checklist on the examination page ---------- */
+  var check = null;
+  function renderCheck() {
+    var pr = progress();
+    if (!pr.total) return pr;
+    if (!check) {
+      check = document.createElement("details");
+      check.className = "rcm-cert-check";
+      form.parentNode.insertBefore(check, form);
+    }
+    check.open = !pr.all;
+    check.innerHTML = '<summary><span class="rcm-cc-ring" style="--p:' + Math.round(100 * pr.done / pr.total) + '"></span>' +
+      '<span><b>Certificate checklist</b><br><span class="rcm-cc-sub">' +
+      (pr.all ? "All " + pr.total + " module quizzes passed. Pass this examination to earn your certificate."
+              : pr.done + " of " + pr.total + " module quizzes passed on this device. Pass all of them and this examination to earn your certificate.") +
+      '</span></span></summary><ol>' + pr.list.map(function (m) {
+        var r = m.r, ok = r && r.p;
+        return '<li class="' + (ok ? "ok" : r ? "try" : "") + '"><span class="rcm-cc-mk" aria-hidden="true">' + (ok ? "✓" : r ? "!" : "") + '</span>' +
+          '<a href="' + esc(m.href) + '#quiz">Module ' + +m.nn + ': ' + esc(m.title) + '</a>' +
+          '<span class="rcm-cc-sc">' + (r ? r.s + "/" + r.t + (ok ? "" : ", not yet passed") : "not taken") + '</span></li>';
+      }).join("") + '</ol>' + (pr.all ? '' :
+        '<div class="rcm-cc-prog"><input type="text" maxlength="70" autocomplete="name" placeholder="Full name" aria-label="Name for the progress record">' +
+        '<button type="button">Print a progress record</button></div>') + '<p class="rcm-cc-note">Each module quiz is passed at its own pass mark (80% unless the module says otherwise). ' +
+      'Progress is saved in this browser on this device only; on iPhone and iPad, the Home Screen app and Safari keep separate progress.</p>';
+    var pi = check.querySelector(".rcm-cc-prog input"), pb = check.querySelector(".rcm-cc-prog button");
+    if (pb) {
+      var go = function () {
+        var nm = pi.value.replace(/\s+/g, " ").trim();
+        if (nm.length < 2) { pi.focus(); pi.setAttribute("aria-invalid", "true"); return; }
+        openProgress(nm);
+      };
+      pb.addEventListener("click", go);
+      pi.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); go(); } });
+    }
+    return pr;
+  }
+
+  function showLocked(p, host) {
+    if (panel) panel.remove();
+    var pr = progress();
+    panel = document.createElement("div");
+    panel.className = "rcm-cert rcm-cert-locked";
+    var left = pr.list.filter(function (m) { return !(m.r && m.r.p); });
+    panel.innerHTML = '<div class="rcm-cert-hd">' + MEDAL + '<div><div class="rcm-cert-kicker">' + (p ? "Well done!" : "Keep going") + '</div>' +
+      '<h3>' + (p ? "You passed the examination" : "Your course progress") + '</h3></div></div>' +
+      '<p>' + p.score + ' of ' + p.total + ' best answers (' + Math.round(100 * p.score / p.total) + '%). ' +
+      'One step left: your certificate unlocks when every module quiz is passed. Still to pass (' + left.length + '):</p>' +
+      '<ul class="rcm-cert-left">' + left.map(function (m) {
+        return '<li><a href="' + esc(m.href) + '#quiz">Module ' + +m.nn + ': ' + esc(m.title) + '</a></li>';
+      }).join("") + '</ul>' +
+      '<p>Need to show your progress to a preceptor? Print a progress record (it is not a certificate).</p>' +
+      '<div class="rcm-cert-row"><input type="text" maxlength="70" autocomplete="name" placeholder="Full name, e.g. Juan Dela Cruz" aria-label="Name for the progress record">' +
+      '<button type="button">Make my progress record</button></div>' +
+      '<small>Your examination pass is saved on this device, so come back here after the module quizzes. The progress record stays on this device.</small>';
+    (host || result).appendChild(panel);
+    var pin = panel.querySelector("input"), pbtn = panel.querySelector("button");
+    function goProg() {
+      var nm = pin.value.replace(/\s+/g, " ").trim();
+      if (nm.length < 2) { pin.focus(); pin.setAttribute("aria-invalid", "true"); return; }
+      pin.removeAttribute("aria-invalid"); openProgress(nm);
+    }
+    pbtn.addEventListener("click", goProg);
+    pin.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); goProg(); } });
+  }
+
+  function offer(p, host) {
+    if (progress().all) showPanel(p, host); else showLocked(p, host);
+  }
 
   /* Watch the examination result: offer the certificate after a pass, remove it when a new set is drawn. */
   var busy = false;
   new MutationObserver(function () {
     if (busy) return;
-    if (panel && !result.contains(panel)) panel = null;
+    if (panel && !document.body.contains(panel)) panel = null;
     var p = passed();
-    if (p && !panel) { busy = true; showPanel(p); busy = false; }
-    else if (!p && panel) { panel.remove(); panel = null; }
+    if (p && !(panel && result.contains(panel))) { busy = true; recordExam(p); renderCheck(); offer(p); busy = false; }
+    else if (!p && panel && result.contains(panel)) { panel.remove(); panel = null; }
   }).observe(result, { childList: true, characterData: true, subtree: true });
+
+  // A pass saved earlier on this device: offer the certificate (or the remaining modules) under the checklist.
+  var saved = renderCheck().exam;
+  var savedHost = null;
+  function offerSaved() {
+    var pr = progress();
+    if (!pr.exam || (panel && result.contains(panel))) return;
+    if (!savedHost) { savedHost = document.createElement("div"); savedHost.className = "rcm-cert-saved"; form.parentNode.insertBefore(savedHost, form); }
+    examMin = examMin || pr.exam.m || 0;
+    offer({ score: pr.exam.s, total: pr.exam.t }, savedHost);
+  }
+  if (saved) offerSaved();
+  // Back from a module tab: refresh the checklist, and unlock the certificate if the last quiz is now passed.
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) return;
+    var was = panel && panel.classList.contains("rcm-cert-locked");
+    var pr = renderCheck();
+    if (was && pr.all) {
+      var host = panel.parentNode, ex = pr.exam;
+      if (host === result) { var p = passed(); if (p) showPanel(p); }
+      else if (ex) showPanel({ score: ex.s, total: ex.t }, host);
+    }
+  });
 })();
