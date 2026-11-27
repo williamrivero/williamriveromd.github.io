@@ -1,0 +1,102 @@
+{
+  "id": "pedn15-the-missed-friday",
+  "page": "pediatric-dialysis-nurse-15-emergencies-and-resuscitation.html",
+  "title": "The missed Friday",
+  "decisions": 5,
+  "note": "Fictional patient. Values are illustrative; your unit&rsquo;s emergency protocol and the team&rsquo;s orders come first. No doses are given here on purpose.",
+  "monitorOrder": ["time", "bp", "hr", "spo2", "k", "ecg"],
+  "monitor": { "time": "7:05 a.m.", "bp": "128/80", "hr": 54, "spo2": 98, "k": "Pending", "ecg": "On monitor", "rhythm": "peaked", "rhythmLabel": "Slow, peaked T waves", "alarm": ["hr"] },
+  "intro": "<p>Rey Fernandez, 15 years old and 45 kilograms, is on hemodialysis through a tunneled catheter. He missed Friday&rsquo;s session for a school event and arrives Monday at 7:00 a.m. He says his legs feel heavy and weak. His pulse is slow and irregular, and the monitor shows tall, peaked T waves. His potassium has just been sent.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "7:05 a.m.:",
+      "prompt": "What do you do first?",
+      "choices": [
+        { "grade": "best", "text": "Keep him lying down on the monitor, call the pediatric nephrologist and the emergency team now, and bring the emergency cart.",
+          "feedback": "<p>Weakness, a slow irregular pulse and peaked T waves after a missed session are life-threatening hyperkalemia until proven otherwise. The ECG justifies acting now.</p>",
+          "vitals": { "ecg": "Team called 7:06" }, "next": "n2" },
+        { "grade": "poor", "text": "Wait for the potassium result, then call.",
+          "feedback": "<p>The result confirms; it should not delay. Arrhythmias in hyperkalemia can be sudden.</p>",
+          "then": "<p>His pulse slows further. You call the team and bring the cart.</p>",
+          "vitals": { "hr": 48, "ecg": "Team called 7:20", "alarm": ["hr", "ecg"] }, "next": "n2" },
+        { "grade": "harmful", "text": "Let him walk to the restroom and sit in the waiting area until his chair is ready.",
+          "feedback": "<p>He needs continuous monitoring and must not be alone or walking. A collapse in the restroom is the outcome this step invites.</p>",
+          "then": "<p>A colleague brings him back on a wheelchair. You put him on the monitor and call the team.</p>",
+          "vitals": { "hr": 48, "ecg": "Team called 7:20", "alarm": ["hr", "ecg"] }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "time": "7:10 a.m.", "ecg": "Team at bedside" },
+      "short": "The team arrives:",
+      "scene": "<p>The nephrologist and emergency team arrive and take the lead. They will give emergency treatment per the unit&rsquo;s protocol.</p>",
+      "prompt": "What is your role now?",
+      "choices": [
+        { "grade": "best", "text": "Take the role the leader assigns: prepare the ordered emergency medicines per protocol, read back each order, and keep the time record.",
+          "feedback": "<p>Clear roles and closed-loop communication make a resuscitation safer. The leader chooses the treatment; you make it happen accurately and on time.</p>",
+          "vitals": { "ecg": "Treatment per protocol from 7:12" }, "next": "n3" },
+        { "grade": "harmful", "text": "Before the leader speaks, give a medicine from the cart on your own to save time.",
+          "feedback": "<p>Uncoordinated drugs cause errors: wrong drug, wrong dose, doubled doses. Wait for the order and read it back.</p>",
+          "then": "<p>The leader stops you, assigns roles, and gives orders.</p>",
+          "vitals": { "ecg": "Treatment per protocol from 7:14" }, "next": "n3" },
+        { "grade": "poor", "text": "Stay at the desk to finish the morning chart.",
+          "feedback": "<p>The team needs every pair of hands. Charting can wait; the time record is a role in the room.</p>",
+          "then": "<p>The leader calls you in to prepare medicines and keep time.</p>",
+          "vitals": { "ecg": "Treatment per protocol from 7:14" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "7:30 a.m.", "hr": 70, "k": "7.4 mmol/L (illustrative)", "rhythm": "normal", "rhythmLabel": "Sinus, T waves less peaked", "alarm": ["k"] },
+      "short": "The result:",
+      "scene": "<p>His potassium comes back high. After treatment, his rhythm is improving. The nephrologist orders urgent hemodialysis.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Prepare urgent dialysis as ordered: machine released, catheter assessed and hubs scrubbed, dialysate as ordered, monitor kept on throughout.",
+          "feedback": "<p>Emergency treatment shifts potassium for a time; dialysis removes it. Release checks still apply in an emergency.</p>",
+          "vitals": { "time": "7:50 a.m.", "ecg": "Dialysis started 7:50" }, "next": "n4" },
+        { "grade": "poor", "text": "The ECG looks better, so send him back to the waiting area until his usual slot.",
+          "feedback": "<p>The shift is temporary. Without removal, potassium rises again.</p>",
+          "then": "<p>The nephrologist insists on urgent dialysis; you prepare it.</p>",
+          "vitals": { "time": "8:10 a.m.", "ecg": "Dialysis started 8:10" }, "next": "n4" },
+        { "grade": "ok", "text": "Wait for a repeat potassium before preparing the machine.",
+          "feedback": "<p>A repeat may be ordered, but preparation can run in parallel; waiting adds avoidable delay.</p>",
+          "then": "<p>You prepare the machine while the repeat is drawn.</p>",
+          "vitals": { "time": "8:00 a.m.", "ecg": "Dialysis started 8:00" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "short": "His mother:",
+      "scene": "<p>Rey&rsquo;s mother arrives, frightened, asking what is happening and whether he will die.</p>",
+      "prompt": "Who looks after her?",
+      "choices": [
+        { "grade": "best", "text": "One team member, as the leader assigns, stays with her, explains simply what is being done, and keeps her updated.",
+          "feedback": "<p>Family support is a named role. A calm explanation helps her and keeps the bedside clear for the team.</p>", "next": "n5" },
+        { "grade": "poor", "text": "Ask her to leave the unit without explanation.",
+          "feedback": "<p>She may need to step back from the bedside, but not without someone explaining and staying with her.</p>",
+          "then": "<p>You assign a colleague to sit with her and explain.</p>", "next": "n5" },
+        { "grade": "ok", "text": "Answer her questions yourself while also preparing medicines.",
+          "feedback": "<p>Kind, but splitting attention during medicine preparation invites errors. Ask the leader to assign someone.</p>",
+          "then": "<p>The leader assigns a colleague to support her.</p>", "next": "n5" }
+      ]
+    },
+    "n5": {
+      "vitals": { "time": "Later that week", "k": "Back in range" },
+      "short": "Afterward:",
+      "scene": "<p>Rey is well. At his next session he says the school event &ldquo;mattered more than one dialysis&rdquo;.</p>",
+      "prompt": "How do you follow up?",
+      "choices": [
+        { "grade": "best", "text": "Talk with him privately, without lecturing, about what happened and why; plan with him and the team for school events (rescheduling a session), and involve the social worker.",
+          "feedback": "<p>Adolescents miss sessions for reasons. Partnership and a schedule that fits his life prevent the next emergency better than blame.</p>", "next": "end" },
+        { "grade": "harmful", "text": "Warn him in front of other patients that he could have died because he was irresponsible.",
+          "feedback": "<p>Public shame breaks trust and makes the next missed session more likely, not less.</p>",
+          "then": "<p>You apologize and arrange a private conversation and a schedule plan.</p>", "next": "end" },
+        { "grade": "poor", "text": "Write &ldquo;noncompliant&rdquo; in the chart and move on.",
+          "feedback": "<p>The label explains nothing and solves nothing. Find the reason and plan with him.</p>",
+          "then": "<p>You arrange a private conversation and a schedule plan.</p>", "next": "end" }
+      ]
+    },
+    "end": { "end": true, "title": "Safe, with a plan",
+      "text": "<p>Rey&rsquo;s potassium is back in range, and he has a schedule that lets him attend school events without missing dialysis. You record the times of recognition, the team call, treatment, the potassium, dialysis start, and the follow-up plan.</p>" }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Act on the ECG.</b> Symptoms, a slow irregular pulse and peaked T waves after a missed session are an emergency before the laboratory confirms it.</li><li><b>Roles and read-back.</b> The leader orders; you prepare, read back and keep time.</li><li><b>Shift, then remove.</b> Emergency treatment buys time; urgent dialysis removes the potassium.</li><li><b>Family support is a role.</b></li><li><b>Partnership prevents the next one.</b> Find the reason for the missed session and plan with the adolescent.</li></ul>"
+}

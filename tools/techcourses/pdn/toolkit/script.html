@@ -1,0 +1,98 @@
+<script>
+/* ===== PDN-CALC-CORE (pure functions; tested by tools/test_pdn_calcs.cjs) ===== */
+var PDN = (function () {
+  function n(x) { if (x === null || x === undefined || String(x).trim() === "") return NaN; var v = Number(x); return isFinite(v) ? v : NaN; }
+  function req(v, label, integer, positive) {
+    if (typeof v !== "number" || !isFinite(v) || v < 0 || (integer && Math.floor(v) !== v) || (positive && v === 0)) {
+      throw new RangeError(label + " must be a " + (integer ? "whole number" : "number") + (positive ? " above 0" : " of 0 or more"));
+    }
+    return v;
+  }
+  function bsa(h, w) { req(h, "Height", false, true); req(w, "Weight", false, true); return Math.sqrt(h * w / 3600); }
+  function fill(h, w, age, f) {
+    req(age, "Age", false, false); req(f, "Fill volume", false, true);
+    var b = bsa(h, w), perM2 = f / b, perKg = f / w, band;
+    if (age < 2) band = (perM2 > 800 || perKg > 50) ? "above" : "within";
+    else band = perM2 > 1400 ? "above" : "within";
+    return { bsa: b, perM2: perM2, perKg: perKg, band: band, under2: age < 2 };
+  }
+  function ecv(w, age, lines, dialyzer) {
+    req(w, "Weight", false, true); req(age, "Age", false, false); req(lines, "Lines volume", false, false); req(dialyzer, "Dialyzer volume", false, false);
+    var perKg = age < 1 ? 85 : 80, ebv = w * perKg, circuit = lines + dialyzer;
+    return { perKg: perKg, ebv: ebv, circuit: circuit, pct: 100 * circuit / ebv, limit: 0.1 * ebv };
+  }
+  function qb(w, h, q) {
+    req(q, "Blood flow", false, true);
+    var b = bsa(h, w);
+    return { perKg: q / w, perM2: q / b, bsa: b, rule: (w + 10) * 2.5, first: 3 * w };
+  }
+  function ufr(w, vol, hours) {
+    req(w, "Weight", false, true); req(vol, "Volume", false, false); req(hours, "Hours", false, true);
+    var perH = vol / hours;
+    return { perH: perH, perKgH: perH / w, pctBwH: 100 * (perH / 1000) / w };
+  }
+  function pdNet(fillMl, drainMl) { req(fillMl, "Fill", false, false); req(drainMl, "Drain", false, false); return drainMl - fillMl; }
+  function fo(inL, outL, w) { req(inL, "Fluid in", false, false); req(outL, "Fluid out", false, false); req(w, "Admission weight", false, true); return 100 * (inL - outL) / w; }
+  function perPtYear(ep, months) { req(ep, "Episodes", true, false); req(months, "Patient-months", false, false); return months === 0 ? null : ep / (months / 12); }
+  function per100(ep, months) { req(ep, "Episodes", true, false); req(months, "Catheter patient-months", false, false); return months === 0 ? null : 100 * ep / months; }
+  return { n: n, bsa: bsa, fill: fill, ecv: ecv, qb: qb, ufr: ufr, pdNet: pdNet, fo: fo, perPtYear: perPtYear, per100: per100 };
+})();
+if (typeof module !== "undefined") module.exports = PDN;
+/* ===== END PDN-CALC-CORE ===== */
+(function () {
+  if (typeof document === "undefined") return;
+  function $(id) { return document.getElementById(id); }
+  function v(id) { return PDN.n($(id).value); }
+  function r1(x) { return x.toLocaleString("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 1 }); }
+  function r2(x) { return x.toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 }); }
+  function r0(x) { return Math.round(x).toLocaleString("en-US"); }
+  function flag(cls, t) { return '<span class="flag ' + cls + '">' + t + "</span>"; }
+  var run = {
+    t1: function () {
+      var r = PDN.fill(v("t1_h"), v("t1_w"), v("t1_a"), v("t1_f"));
+      var ref = r.under2 ? "under 2 years: about 800 mL/m&sup2; (30&ndash;50 mL/kg) often suggested as an upper limit" : "2 years and older: recruitment up to about 1,400 mL/m&sup2;";
+      return "BSA: <b>" + r2(r.bsa) + " m&sup2;</b>. Fill: <b>" + r0(r.perM2) + " mL/m&sup2;</b> and <b>" + r1(r.perKg) + " mL/kg</b>.<br>Reference (" + ref + "). " +
+        (r.band === "above" ? flag("f-stop", "Outside the usual band: confirm the order with the team") : flag("f-ok", "Within the usual band; tolerance still decides")) +
+        '<div class="note">Check the source order before programming; a value far outside the band often signals a transcription error.</div>';
+    },
+    t2: function () {
+      var r = PDN.ecv(v("t2_w"), v("t2_a"), v("t2_l"), v("t2_d"));
+      return "Estimated blood volume: <b>" + r0(r.ebv) + " mL</b> (" + r.perKg + " mL/kg). Circuit: <b>" + r0(r.circuit) + " mL</b> = <b>" + r1(r.pct) + "%</b> of blood volume (10% = " + r0(r.limit) + " mL). " +
+        (r.pct > 10 ? flag("f-stop", "Above about 10%: confirm the priming plan with the nephrologist") : flag("f-ok", "Below about 10%")) +
+        '<div class="note">The prescriber decides saline, albumin or blood prime and whether the circuit is returned.</div>';
+    },
+    t3: function () {
+      var r = PDN.qb(v("t3_w"), v("t3_h"), v("t3_q"));
+      var inKg = r.perKg >= 5 && r.perKg <= 7, inM2 = r.perM2 >= 150 && r.perM2 <= 200;
+      return "Ordered QB = <b>" + r1(r.perKg) + " mL/min/kg</b> and <b>" + r0(r.perM2) + " mL/min/m&sup2;</b> (BSA " + r2(r.bsa) + " m&sup2;).<br>" +
+        "Described ranges: 5&ndash;7 mL/min/kg or 150&ndash;200 mL/min/m&sup2;; first session about 3 mL/kg/min (" + r0(r.first) + " mL/min here); rule of thumb (weight + 10) &times; 2.5 = " + r0(r.rule) + " mL/min. " +
+        ((inKg || inM2) ? flag("f-ok", "Within a described range") : flag("f-warn", "Outside the described ranges: confirm the order")) +
+        '<div class="note">First sessions are deliberately slower to prevent disequilibrium.</div>';
+    },
+    t4: function () {
+      var r = PDN.ufr(v("t4_w"), v("t4_v"), v("t4_t"));
+      var out = "Ultrafiltration: <b>" + r0(r.perH) + " mL/h</b> = <b>" + r1(r.perKgH) + " mL/kg/h</b> = <b>" + r2(r.pctBwH) + "%</b> of body weight per hour.";
+      var fl = v("t4_fill"), dr = v("t4_drain");
+      if (isFinite(fl) && isFinite(dr)) { var net = PDN.pdNet(fl, dr); out += "<br>PD exchange net removal: <b>" + (net >= 0 ? "" : "&minus;") + r0(Math.abs(net)) + " mL</b>" + (net < 0 ? " (fluid absorbed)" : "") + "."; }
+      return out + '<div class="note">A rate the child does not tolerate is too fast, whatever the number. Report behavior and heart rate changes.</div>';
+    },
+    t5: function () {
+      var x = PDN.fo(v("t5_i"), v("t5_o"), v("t5_w"));
+      var cls = x >= 20 ? "f-stop" : (x >= 10 ? "f-warn" : "f-ok");
+      var lab = x >= 20 ? "20% or more" : (x >= 10 ? "10% to under 20%" : "Under 10%");
+      return "Fluid overload: <b>" + r1(x) + "%</b> " + flag(cls, lab) +
+        '<div class="note">Registry bands are observational associations, not thresholds for starting or stopping therapy. Count every flush, drug and feed.</div>';
+    },
+    t6: function () {
+      var a = PDN.perPtYear(v("t6_pe"), v("t6_pm")), b = PDN.per100(v("t6_he"), v("t6_hm")), out = "";
+      out += a === null ? "PD rate: not calculable (0 patient-months)." : "PD rate: <b>" + r2(a) + "</b> episodes per patient-year " + (a <= 0.4 ? flag("f-ok", "At or below the 0.4 benchmark") : flag("f-warn", "Above the 0.4 benchmark: review causes")) + ".";
+      out += "<br>" + (b === null ? "HD CA-BSI: not calculable (0 catheter patient-months)." : "HD CA-BSI: <b>" + r2(b) + "</b> per 100 catheter patient-months.");
+      return out + '<div class="note">State the period and denominator. With few children, one episode moves the rate a lot.</div>';
+    }
+  };
+  document.querySelectorAll("button[data-run]").forEach(function (bt) {
+    bt.addEventListener("click", function () { var id = bt.getAttribute("data-run"); try { $(id + "_out").innerHTML = run[id](); } catch (e) { $(id + "_out").textContent = "Check the inputs: " + (e && e.message ? e.message : "a value is missing or invalid") + "."; } });
+  });
+  Object.keys(run).forEach(function (k) { try { $(k + "_out").innerHTML = run[k](); } catch (e) {} });
+})();
+</script>
