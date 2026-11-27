@@ -1,0 +1,252 @@
+{
+  "id": "dch05-action-level",
+  "page": "dialysis-clinical-head-05-infection-water-and-equipment.html",
+  "title": "Below the limit, above the action level",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Clinical head’s board",
+  "note": "Fictional unit. Limits shown are the ISO 23500-3 values the module cites; use the limits your unit adopted under the DOH water order.",
+  "labels": {
+    "time": "Time",
+    "endo": "Endotoxin, loop return",
+    "cfu": "Bacteria, loop return",
+    "events": "First-hour fevers",
+    "loop": "Loop status",
+    "release": "Release"
+  },
+  "monitorOrder": [
+    "time",
+    "endo",
+    "cfu",
+    "events",
+    "loop",
+    "release"
+  ],
+  "monitor": {
+    "time": "Mon 09:00",
+    "endo": "0.20 EU/mL",
+    "cfu": "60 CFU/mL",
+    "events": "Not reviewed",
+    "loop": "In use",
+    "release": "—",
+    "alarm": [
+      "endo",
+      "cfu"
+    ]
+  },
+  "intro": "<p>You are the clinical head. Monday’s monthly water results arrive for the loop-return port: endotoxin 0.20 EU/mL and bacteria 60 CFU/mL. Your unit’s limits are the ISO maximums (under 0.25 EU/mL and 100 CFU/mL) with action levels at half. Last week, two patients on stations 13 and 15 had fever and chills in the first hour; their blood cultures were negative.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "Monday, 09:00:",
+      "prompt": "What do these results mean for you?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Both above the action level: investigate today, and link them to last week’s fevers.",
+          "feedback": "<p>Action levels exist so problems are investigated before the maximum is reached. Fever and chills in the first hour, with negative blood cultures, fit a pyrogenic reaction, which is what endotoxin causes. Two signals together are stronger than either alone.</p>",
+          "vitals": {
+            "events": "Reviewing"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Within the maximum limits.",
+          "feedback": "<p>Within the maximum, but above the action level, and with a possible clinical signal. Filing it misses the point of an action level.</p>",
+          "then": "<p>The technical lead points out that both results are above the action level. You open an investigation.</p>",
+          "vitals": {
+            "events": "Reviewing"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "ok",
+          "text": "Stop all treatment on the loop now and send every patient elsewhere until the water is retested and cleared.",
+          "feedback": "<p>Stopping is for a failed, missing or untraceable critical check, or a clinical event happening now. An action-level result calls for investigation, and moving every patient carries its own risk. Watch closely and be ready to stop.</p>",
+          "then": "<p>You decide to keep the loop running under close watch while the investigation starts today.</p>",
+          "vitals": {
+            "events": "Reviewing"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "short": "The investigation:",
+      "prompt": "What do you ask for?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Named-port endotoxin and cultures, the disinfection log, a dead-leg check, and every first-hour fever in two months by station.",
+          "feedback": "<p>Named ports along the loop show where the contamination is. The disinfection record shows whether it was done. The clinical list shows whether the fevers cluster by station. Each side answers a different question.</p>",
+          "then": "<p>The list shows four first-hour fevers in six weeks, all at stations 13 to 15.</p>",
+          "vitals": {
+            "events": "4 in 6 weeks · stations 13–15",
+            "alarm": [
+              "endo",
+              "cfu",
+              "events"
+            ]
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Ask the vendor to confirm the system is working, since they installed the loop and know its design better than anyone in the unit.",
+          "feedback": "<p>A vendor’s reassurance is not evidence. You need results from named ports and the records.</p>",
+          "then": "<p>The vendor says all is normal. You ask the technical lead for samples from named ports and your team for the fever list: four in six weeks, all at stations 13 to 15.</p>",
+          "vitals": {
+            "events": "4 in 6 weeks · stations 13–15",
+            "alarm": [
+              "endo",
+              "cfu",
+              "events"
+            ]
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Repeat the loop-return sample.",
+          "feedback": "<p>A repeat confirms the number but not where it comes from, and leaves out the clinical side. Ask for named ports along the loop, the records, and the fever list.</p>",
+          "then": "<p>You widen the request. The fever list shows four in six weeks, all at stations 13 to 15.</p>",
+          "vitals": {
+            "events": "4 in 6 weeks · stations 13–15",
+            "alarm": [
+              "endo",
+              "cfu",
+              "events"
+            ]
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "time": "Tue 07:40",
+        "events": "3 now: stations 13, 14, 15",
+        "alarm": [
+          "endo",
+          "events"
+        ]
+      },
+      "short": "Tuesday, 07:40:",
+      "scene": "<p>Forty minutes into the first shift, the patients at stations 13 and 15 have shaking chills, and the patient at 14 has a fever. Results from the named ports are not back yet.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Stop new connections on the loop; physicians decide for those connected; cultures; call the attendings and technical lead.",
+          "feedback": "<p>Now there is a clinical event happening on the loop. Stop new starts, let the physicians decide patient by patient whether to end treatment, draw blood cultures, and call the people who own the water.</p>",
+          "vitals": {
+            "loop": "No new starts",
+            "time": "Tue 07:50"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Give each patient paracetamol and continue.",
+          "feedback": "<p>A cluster of first-hour reactions on one part of the loop is a unit event, not three separate fevers. Stop new starts and call.</p>",
+          "then": "<p>A fourth patient, at station 16, starts shivering. You stop new connections and call.</p>",
+          "vitals": {
+            "loop": "No new starts",
+            "time": "Tue 08:05"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Move the three patients to free stations at the other end of the loop and continue their sessions there.",
+          "feedback": "<p>The patients have already been exposed, and the whole loop is suspect. Moving them does not stop the next exposure; stopping new starts does.</p>",
+          "then": "<p>The technical lead asks you to stop new connections. You do, and call the attendings.</p>",
+          "vitals": {
+            "loop": "No new starts",
+            "time": "Tue 08:10"
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Wed 15:00",
+        "endo": "Within limit (named ports)",
+        "cfu": "Pending (48 h)",
+        "release": "Technical: requested",
+        "alarm": [
+          "cfu"
+        ]
+      },
+      "short": "The fix:",
+      "scene": "<p>The technical lead found a capped dead leg where a station near 14 was removed last year. He has removed it, disinfected the loop, and endotoxin from the named ports is now within the limit; cultures need 48 hours. He asks to restart Thursday morning.</p>",
+      "prompt": "What must exist before Thursday’s first connection?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "His signed technical release, then your clinical sign-off once patients are assessed.",
+          "feedback": "<p>Two signatures, two questions. He signs that the system is within its limits, with the corrective action recorded and named-port results. You sign that it is safe to treat: affected patients assessed and followed by named owners, staff told, and culture results still owned.</p>",
+          "vitals": {
+            "loop": "Restart Thursday",
+            "release": "Technical + clinical signed"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Sign both releases yourself, since you know the system and it saves the technical lead a trip.",
+          "feedback": "<p>Neither signature stands in for the other. The technical lead verifies the system; you authorize the clinical restart.</p>",
+          "then": "<p>The technical lead signs his release; you sign yours after the patients are assessed.</p>",
+          "vitals": {
+            "loop": "Restart Thursday",
+            "release": "Technical + clinical signed"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Wait for the 48-hour cultures.",
+          "feedback": "<p>Cautious, but patients need dialysis in the meantime. A within-limit endotoxin from named ports, the corrective action and two signatures can support a restart, with the cultures followed up.</p>",
+          "then": "<p>After a day of arranging transfers, you restart on the two signatures.</p>",
+          "vitals": {
+            "loop": "Restart Friday",
+            "release": "Technical + clinical signed"
+          },
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "short": "Closing it:",
+      "prompt": "What is left?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Incident report, reporting obligations, named owners for each patient, and a dead-leg check whenever stations change.",
+          "feedback": "<p>Report through your incident system and check your reporting obligations. Each affected patient has a named physician for follow-up. And the cause becomes a rule: any change to stations includes a check for dead legs.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Nothing; the results are normal.",
+          "feedback": "<p>Normal results close the water problem, not the event. Patients need follow-up, the event needs reporting, and the cause needs a rule so it does not recur.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Lower the action level so the next problem is caught even earlier, and sample the water weekly for the next three months.",
+          "feedback": "<p>Worth discussing, but this time the action level worked. What failed was a dead leg left behind. Report, follow up the patients, and fix the cause.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "A month later",
+      "text": "<p>The 48-hour cultures were within limit. All affected patients recovered, and there have been no first-hour fevers since. The commissioning checklist for station changes now includes removing any dead legs and sampling the nearest port afterward.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>An action level means investigate,</b> even below the maximum.</li><li><b>Link water results to clinical events:</b> first-hour fever with negative cultures fits endotoxin.</li><li><b>Named ports</b> show where the problem is; a vendor’s reassurance is not evidence.</li><li><b>A cluster now</b> means stop new starts on the loop and call.</li><li><b>Two signatures</b> before restart: technical, then clinical.</li></ul><p>See <a href=\"#water\">What water can do</a> and <a href=\"#release\">Two signatures, two questions</a>.</p>"
+}

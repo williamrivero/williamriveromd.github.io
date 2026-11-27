@@ -1,0 +1,239 @@
+{
+  "id": "an20-her-choice",
+  "page": "attending-nephrologist-20-conservative-care.html",
+  "title": "“Start dialysis now,” says her son",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Patient summary",
+  "note": "Fictional patient. Survival figures are observational findings about groups, from the module’s cited studies; they are not predictions for one person.",
+  "labels": {
+    "time": "Time",
+    "egfr": "eGFR",
+    "k": "Potassium",
+    "sym": "Symptoms",
+    "cap": "Capacity",
+    "wish": "Her stated wish",
+    "plan": "Plan"
+  },
+  "monitorOrder": [
+    "time",
+    "egfr",
+    "k",
+    "sym",
+    "cap",
+    "wish",
+    "plan"
+  ],
+  "monitor": {
+    "time": "Tue 21:30",
+    "egfr": "8 mL/min/1.73 m²",
+    "k": "5.7 mmol/L",
+    "sym": "Breathless, swollen",
+    "cap": "Not assessed tonight",
+    "wish": "Conservative care (3 months ago)",
+    "plan": "—",
+    "alarm": [
+      "sym"
+    ]
+  },
+  "intro": "<p>You are the attending nephrologist. Mrs. Lourdes Agustin, 81, has CKD (chronic kidney disease) G5, diabetes and ischemic heart disease. Three months ago, after two clinic meetings, she chose comprehensive conservative care. At 21:30 the emergency department resident calls: she is breathless and her legs are swollen. She is alert. Her son, on a video call from Riyadh, wants a catheter placed tonight and dialysis started.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "21:30:",
+      "prompt": "What do you tell the resident?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Treat the breathlessness now, and ask her, with her son listening, what she wants tonight.",
+          "feedback": "<p>She has capacity until shown otherwise, and her choice can change. Ask her, not around her. Meanwhile, the breathlessness has a treatment that does not need dialysis: a loop diuretic as her conservative plan allows.</p>",
+          "then": "<p>After the diuretic she breathes more easily. She says she wants to feel better and go home, and that she is “not sure” about dialysis.</p>",
+          "vitals": {
+            "sym": "Easing after diuretic",
+            "cap": "Has capacity (assessed)",
+            "wish": "“Not sure”; wants home"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Place the catheter tonight.",
+          "feedback": "<p>A relative’s request does not replace her decision. She is alert: ask her first, and treat the breathlessness while you do.</p>",
+          "then": "<p>The resident asks her before the procedure. She says she is “not sure” and wants to feel better and go home. A diuretic eases her breathing.</p>",
+          "vitals": {
+            "sym": "Easing after diuretic",
+            "cap": "Has capacity (assessed)",
+            "wish": "“Not sure”; wants home"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "No dialysis: she chose conservative care three months ago, so keep her comfortable and admit her under the conservative plan.",
+          "feedback": "<p>Respecting her earlier choice is right, but people can change their minds. She is alert tonight; ask her now.</p>",
+          "then": "<p>You ask her. She says she is “not sure” and wants to feel better and go home. A diuretic eases her breathing.</p>",
+          "vitals": {
+            "sym": "Easing after diuretic",
+            "cap": "Has capacity (assessed)",
+            "wish": "“Not sure”; wants home"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "vitals": {
+        "time": "Wed 10:00",
+        "plan": "Family meeting"
+      },
+      "short": "The family meeting:",
+      "scene": "<p>The next morning you meet Mrs. Agustin, her daughter at the bedside, and her son by video. Her son asks: “How much longer would dialysis give her?”</p>",
+      "prompt": "What do you say?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "In studies of groups, people over 80 with heart disease gained little or no time on dialysis, and spent more days in hospital. These were not trials, and they cannot predict her own course.",
+          "feedback": "<p>Honest and calibrated: the evidence is observational, the groups differed, and the advantage shrank with age and heart disease. Then ask what matters most to her.</p>",
+          "vitals": {
+            "plan": "Options explained"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "“Several years.”",
+          "feedback": "<p>No study supports that for someone like her. Overpromising takes the decision away from her as surely as refusing would.</p>",
+          "then": "<p>You correct yourself and describe what the studies of groups actually show.</p>",
+          "vitals": {
+            "plan": "Options explained"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "“At 81, with her heart, dialysis would be futile.”",
+          "feedback": "<p>“Futile” is a verdict, not evidence. Describe what is known about people like her, and offer a time-limited trial if she is unsure.</p>",
+          "then": "<p>Her son is angry. You step back and describe what the studies of groups show.</p>",
+          "vitals": {
+            "plan": "Options explained"
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "wish": "Conservative care, at home",
+        "plan": "Writing plan"
+      },
+      "short": "Her decision:",
+      "scene": "<p>Mrs. Agustin says she wants to stay home with her granddaughter and continue conservative care. Her son is quiet but says he will respect it.</p>",
+      "prompt": "What goes in her plan?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "A symptom plan, fewer medicines, her emergency wishes in her own words, a number to call, home support, and a letter to her internist.",
+          "feedback": "<p>Conservative care is active treatment. Write how each symptom is treated, stop what she no longer needs, record her wishes in her words, and give the family someone to call.</p>",
+          "vitals": {
+            "plan": "Written; reviewer named"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "“No dialysis.”",
+          "feedback": "<p>A refusal is not a plan. Without symptom treatment, emergency wishes and a number to call, the next breathless night ends in the emergency department again.</p>",
+          "then": "<p>You add the symptom plan, her wishes, and a number to call.</p>",
+          "vitals": {
+            "plan": "Written; reviewer named"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Her diuretic dose and medicines for itch and nausea, with clear instructions for the family on when to give each and how to watch her breathing.",
+          "feedback": "<p>A good start. Add her emergency wishes in her own words, the medicines to stop, home support, and a number the family can call.</p>",
+          "then": "<p>You complete the plan and name yourself as reviewer.</p>",
+          "vitals": {
+            "plan": "Written; reviewer named"
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Clinic, 2 weeks",
+        "sym": "Itch severe, poor sleep, low mood",
+        "alarm": [
+          "sym"
+        ]
+      },
+      "short": "Two weeks later:",
+      "scene": "<p>At clinic, her symptom scale shows severe itch, poor sleep and low mood. Her breathing is better.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Treat each symptom by its source, and assess her for depression.",
+          "feedback": "<p>Name the source of each symptom: skin care and an adjusted antipruritic for itch, sleep measures, and an assessment of her mood. Most have a treatment that does not need dialysis.</p>",
+          "vitals": {
+            "sym": "Itch and sleep improving"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Tell her the symptoms show conservative care is not working, and offer dialysis again.",
+          "feedback": "<p>Uncontrolled symptoms call for better symptom treatment first. She can always ask about dialysis, but her symptoms are not a reason to push it.</p>",
+          "then": "<p>She declines dialysis. You treat each symptom and assess her mood.</p>",
+          "vitals": {
+            "sym": "Itch and sleep improving"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Increase her antipruritic, and see her again in a month, since itch is the symptom she scored as worst.",
+          "feedback": "<p>Itch matters, but poor sleep and low mood need their own look, and a month is a long time with all three.</p>",
+          "then": "<p>You add sleep measures and an assessment of her mood.</p>",
+          "vitals": {
+            "sym": "Itch and sleep improving"
+          },
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "short": "The son calls:",
+      "scene": "<p>A week later, her son messages you from Riyadh: “Please tell her dialysis is the only option. I will pay for everything.”</p>",
+      "prompt": "How do you respond?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Thank him; explain the choice is hers; offer a meeting with her.",
+          "feedback": "<p>His request comes from love and distance. Acknowledge it, explain that the decision is hers while she has capacity, and offer to meet with her and the family. If she changes her mind, a time-limited trial is still open to her.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Agree to talk her into it at the next visit, since cost was one of her worries and he has now solved that.",
+          "feedback": "<p>Removing a barrier is welcome; persuading her for someone else is not. Tell her about his offer and let her decide.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Decline to discuss her care with him.",
+          "feedback": "<p>With her permission, the family belongs in the conversation. Shutting him out leaves him to act on fear alone.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "Three months later",
+      "text": "<p>Mrs. Agustin is at home. Her itch and sleep are better, and the home-visit nurse reports she is eating breakfast again. Her son visited in person last month and joined a video review. The chart holds her capacity assessment, her wishes in her own words, the plan, and your name as reviewer.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>The decision is hers</b> unless she lacks capacity for it, and her choice can change.</li><li><b>Be honest and calibrated:</b> observational findings about groups, not predictions.</li><li><b>Conservative care is active treatment:</b> a written symptom plan, emergency wishes, and a number to call.</li><li><b>Treat each symptom by its source.</b></li><li><b>Bring the family in,</b> with her permission, without letting them decide for her.</li></ul><p>See <a href=\"#physiology\">How it works</a>, <a href=\"#evidence\">What the evidence shows</a> and <a href=\"#practice\">What the attending does</a>.</p>"
+}
