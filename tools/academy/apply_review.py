@@ -100,9 +100,9 @@ def build_page():
 
 
 def wanted(name, text):
-    # every academy page (capture needs #nc-quiz, the shift drill needs any page) except the placement pre-test
-    # pages (apply_placement.py), where a drill would interrupt the test
-    return not name.endswith("-pretest.html")
+    # every academy page except the emergency quick cards (a pop-up must not cover an action card) and the
+    # placement pre-test pages (a drill would interrupt the test)
+    return name != "emergency-cards.html" and not name.endswith("-pretest.html")
 
 
 def main():
