@@ -86,7 +86,7 @@ MODULE = {
 <h3>Returned claims</h3>
 <p>For a return to hospital, log the reason, fix the underlying document through its owner, keep both the original submission and the corrected one, and mark the item corrected only when the amended document and the new acknowledgment are both traceable. Never resubmit an unchanged batch under a new identifier. That is not a correction; it is a second claim for the same service.</p>
 {{key:Eligibility is not delivery, and delivery is not documentation. Prove each, then check for duplicates.}}
-<p>Claims staff take the packet from here. The Academy&rsquo;s <a href="philhealth-claims.html">PhilHealth Liaison, Claims Officer and Clerk track</a> covers filing, returns, and denials in depth.</p>
+<p>Claims staff take the packet from here. The Academy&rsquo;s <a href="philhealth-claims.html">Billing &amp; Claims Officer track</a> covers filing, returns, and denials in depth.</p>
 {{scene:The family told in October|<p>Mrs. Adoracion Villafuerte needed extra sessions in June and July for fluid overload. On October 5 her ledger shows 138 sessions used, and the projection puts her cap in the third week of November.</p>
 <p>The records officer tells the claims lead, who tells the social worker, who meets the family. They apply for assistance from the local government and a charity program, and when the cap arrives, the remaining sessions are covered.</p>
 <p class="tc-scene-take">The same number on December 15 would have been a crisis. On October 5, it was a plan.</p>}}

@@ -8,7 +8,7 @@ HUB = "philhealth-claims"
 _HB = "Illustrated vignette, bright natural light, Filipino staff and families, dialysis unit, no text in image. "
 
 COURSE = {
-    "title": "PhilHealth Liaison, Claims Officer and Clerk",
+    "title": "Billing & Claims Officer",
     "short": "PhilHealth Claims",
     "hub_slug": HUB,
     "label": "Training track for the staff who keep dialysis claims honest, complete, and on time",
@@ -27,7 +27,7 @@ COURSE = {
                  "hemodialysis benefits agreement form, CF5 shadow billing, PhilHealth DRG, ICD-10 N18.5, Data Privacy Act dialysis, "
                  "HMO claims dialysis, HMO letter of authorization LOA, HMO accreditation dialysis center, HMO collections aging, "
                  "HMO disallowance appeal, Insurance Commission HMO complaint"),
-    "page_title": "PhilHealth Liaison, Claims Officer and Clerk: A Training Track",
+    "page_title": "Billing & Claims Officer: A Training Track",
     "desc": ("A free training track for the staff who prepare, file, and follow up PhilHealth claims in dialysis units: roles and "
              "authority, eligibility and the dialysis database, the hemodialysis benefit and patient charges, session evidence and "
              "codes, the claim packet and eSOA, eClaims 3.0 and deadlines, returns and denials, reconciliation, privacy, renal "

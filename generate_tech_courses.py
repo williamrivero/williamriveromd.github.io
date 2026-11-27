@@ -1551,7 +1551,7 @@ def build_academy():
     n_nurse = int(re.match(r"(\d+)", A["nursing"][5]).group(1))
     hero_tracks = [(A["nursing"][0], "Nephrology Nursing", n_nurse)]
     short = {"hemodialysis-technician": "Dialysis Technician", "water-treatment-technician": "Water Treatment Technician",
-             "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head", "philhealth-claims": "PhilHealth Claims", "dialysis-unit-manager": "Unit Manager",
+             "dialysis-biomedical-technician": "Biomedical Technician", "renal-dietitian": "Renal Dietitian", "dialysis-clinical-head": "Dialysis Clinical Head", "philhealth-claims": "Billing & Claims Officer", "dialysis-unit-manager": "Unit Manager",
              "attending-nephrologist": "Attending Nephrologist", "attending-pediatric-nephrologist": "Pediatric Nephrologist", "medical-records-officer": "Medical Records Officer", "dialysis-head-nurse": "Head Nurse", "dialysis-charge-nurse": "Charge Nurse", "dialyzer-reprocessing-technician": "Reprocessing Technician", "vascular-surgeon": "Vascular Surgeon", "transplant-coordinator": "Transplant Coordinator", "social-worker": "Social Worker", "occupational-physical-therapist": "OT/PT"}
     hero_tracks += [(c.hub + ".html", short.get(c.hub, c.meta["title"]), len(live_mods(c))) for c in get_courses().values()]
     desc = A["desc"]
