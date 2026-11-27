@@ -198,7 +198,7 @@
     function renderMonitor(vals, first) {
       if (vals.alarm) alarms = vals.alarm.slice();
       for (var k in vals) if (Object.prototype.hasOwnProperty.call(vals, k)) {
-        if (k === "rhythm" || k === "rhythmLabel" || k === "alarm") continue;
+        if (k === "rhythm" || k === "rhythmLabel" || k === "alarm" || k === "stripRate") continue;
         var changed = mon[k] !== undefined && mon[k] !== vals[k];
         mon[k] = vals[k];
         if (!cellEls[k]) {
@@ -224,9 +224,10 @@
         if (changed && !first && !REDUCED) flash(cellEls[k]);
       }
       if (vals.alarm) for (var a in cellEls) cellEls[a].classList.toggle("alarm", alarm(a, mon[a]) || alarms.indexOf(a) >= 0);
-      if (strip && (vals.rhythm || vals.hr)) {
+      if (vals.stripRate) mon.stripRate = vals.stripRate;
+      if (strip && (vals.rhythm || vals.hr || vals.stripRate)) {
         mon.rhythm = vals.rhythm || mon.rhythm || "normal";
-        strip.set(parseFloat(mon.hr) || 80, mon.rhythm);
+        strip.set(parseFloat(mon.hr) || parseFloat(mon.stripRate) || 80, mon.rhythm);
       }
       if (vals.rhythmLabel && monEl.rlab) monEl.rlab.textContent = vals.rhythmLabel;
     }
