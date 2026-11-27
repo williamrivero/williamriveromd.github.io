@@ -78,6 +78,7 @@ MODULE = {
 <h3>Asking for a decision: SBAR</h3>
 <p>When you need a decision, ask in four parts. <strong>Situation:</strong> what needs deciding. <strong>Background:</strong> the facts the decision maker needs. <strong>Assessment:</strong> your view of the coordination problem &mdash; not a clinical judgment. <strong>Request:</strong> the specific decision, from whom, by when. &ldquo;FYI, some tests are old&rdquo; asks for nothing. &ldquo;Please decide by Friday whether the 14-month-old stress test must be repeated before Tuesday&rsquo;s conference&rdquo; asks for exactly one thing.</p>
 {{key:You coordinate decisions; you do not make them. Every SBAR ends with a named person, one decision, and a time.}}
+{{fig:tc01_fig_who_decides_what_coordinator}}
 """),
         ("why", "Why navigation matters", "What the evidence shows, and what it does not", """
 <p>Why invest in a coordinator at all? Because transplantation is, for most people with kidney failure who can have one, the better long-term treatment &mdash; and because many people who could benefit never finish the steps to get there.</p>

@@ -47,6 +47,7 @@ MODULE = {
 <p>The physician replies that a repeat is needed but the case can still be discussed for a provisional decision. Ms. Javier books the echo for Monday and marks the summary: &ldquo;Echo repeated Monday; result to be reviewed before final listing.&rdquo;</p>
 <p class="tc-scene-take">The conference went ahead honestly, and the gap had an owner and a date.</p>}}
 {{key:Flag expiry before the meeting, not after the decision. The physician decides whether to repeat.}}
+{{fig:tc04_fig_validity_windows_expiry}}
 """),
         ("conference", "Prepare the decision", "The one-page summary", """
 <p>A case conference is a decision meeting. Busy specialists decide better when the decision is stated first and the evidence is arranged around it.</p>

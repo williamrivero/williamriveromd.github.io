@@ -68,6 +68,7 @@ MODULE = {
 </tbody></table></div>
 <p>Do not investigate alone, confront the family, or promise secrecy beyond what the law allows. Your role is to record what you observed, protect the donor&rsquo;s privacy, pause the elective progression, and route the concern to the people with the authority and training to assess it.</p>
 {{key:A benefit tied to donation is a red flag even inside a loving family. Record, pause, and route; never investigate alone.}}
+{{fig:tc06_fig_donor_red_flags_route}}
 """),
         ("withdraw", "Make withdrawal safe", "A truthful way to stop", """
 <p>A donor who wants to stop often fears the family&rsquo;s reaction more than anything else. The program&rsquo;s job is to make stopping private and safe.</p>

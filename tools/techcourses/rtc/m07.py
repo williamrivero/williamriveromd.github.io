@@ -61,6 +61,7 @@ MODULE = {
 <p>Mr. Bautista replies with an SBAR listing the two open donor gates and their owners, and books the earliest monitoring slot. The surgeon agrees to a provisional January date.</p>
 <p class="tc-scene-take">A free operating room is a resource, not a gate. The donor&rsquo;s pace is set by the donor&rsquo;s evaluation.</p>}}
 {{key:Never let the recipient&rsquo;s calendar close a donor gate. Show the open donor gates, with owners, to anyone who proposes a date.}}
+{{fig:tc07_fig_donor_gates_not_recipient_calendar}}
 """),
         ("beyond", "Plan beyond discharge", "Safe for life means followed for life", """
 <p>&ldquo;Safe for life&rdquo; is not a promise anyone can make. What a program can promise is to watch for problems for life, so they are found early. KDIGO&rsquo;s donor guideline asks programs to provide a personalized post-donation care plan and long-term follow-up, and the DOH order makes lifetime monitoring part of the donor&rsquo;s protection.[[rtc_kdigo2017]][[rtc_doh2021]] PhilHealth&rsquo;s post-transplant packages list living donor monitoring among their covered services.[[rtc_ph2025a]]</p>

@@ -58,6 +58,7 @@ MODULE = {
 <tr><td>Owner and next check</td><td>Z Benefits lead; check monthly and after every new circular</td></tr>
 </tbody></table></div>
 {{key:A rule governs from its effective date, and an older rule can keep governing older cases. Record both dates in the source register.}}
+{{fig:tc02_fig_signed_published_effective_legacy}}
 """),
         ("scope", "Scope and paths", "Clinical, support, and regulated roles", """
 <p>This course has two learner paths, and the line between them protects patients.</p>

@@ -61,6 +61,7 @@ MODULE = {
 <p>He reaches the patient by noon and books the first visit. He sends the referring nephrologist a one-line acknowledgment: received, contacted, visit booked for the 14th.</p>
 <p class="tc-scene-take">One phone call to the referrer closed a loop that a filing cabinet would have left open for months.</p>}}
 {{key:A referral closes when the person has been reached and the referrer knows the outcome. Until then it is an open row in your register.}}
+{{fig:tc03_fig_closed_referral_loop}}
 """),
         ("equity", "Measure who gets through", "Fairness you can see", """
 <p>You cannot fix unfairness you cannot see. Keep a simple referral log with the date received, the date of first contact, the date of the first visit, and the outcome. Once a quarter, look at the same numbers by sex, age group, province, and whether the person is on dialysis or not yet. If people from one province take three times as long to reach a first visit, that is a barrier to investigate, not a fact of life. Module 19 shows how to define these measures properly.</p>
