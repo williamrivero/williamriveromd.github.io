@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SRC = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / "Documents/Nephrology Nursing/Module images"
 MAN = []
 for _m in ("image-prompts-manifest.json", "image-prompts-addendum-manifest.json", "image-prompts-addendum2-manifest.json",
-           "image-prompts-addendum3-manifest.json"):
+           "image-prompts-addendum3-manifest.json", "image-prompts-addendum4-manifest.json"):
     _p = ROOT / "docs/nursing-course" / _m
     if _p.exists():
         MAN += json.loads(_p.read_text(encoding="utf-8"))
