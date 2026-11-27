@@ -6,9 +6,33 @@
   "strip": false,
   "monitorTitle": "Equipment status board",
   "note": "Fictional unit. The machine&rsquo;s service manual, your unit&rsquo;s procedure, and the formal release process come first.",
-  "labels": { "time": "Time", "floor": "Machines in alarm", "central": "Central acid supply", "hd11": "HD-11 conductivity", "meter": "Reference meter", "release": "HD-11 status" },
-  "monitorOrder": ["time", "floor", "central", "hd11", "meter", "release"],
-  "monitor": { "time": "Tue 06:25", "floor": "HD-02, HD-07, HD-13: bypass", "central": "Tank refilled 05:50", "hd11": "—", "meter": "—", "release": "—", "alarm": ["floor"] },
+  "labels": {
+    "time": "Time",
+    "floor": "Machines in alarm",
+    "central": "Central acid supply",
+    "hd11": "HD-11 conductivity",
+    "meter": "Reference meter",
+    "release": "HD-11 status"
+  },
+  "monitorOrder": [
+    "time",
+    "floor",
+    "central",
+    "hd11",
+    "meter",
+    "release"
+  ],
+  "monitor": {
+    "time": "Tue 06:25",
+    "floor": "HD-02, HD-07, HD-13: bypass",
+    "central": "Tank refilled 05:50",
+    "hd11": "—",
+    "meter": "—",
+    "release": "—",
+    "alarm": [
+      "floor"
+    ]
+  },
   "intro": "<p>You are the biomedical technician. At 06:25 on Tuesday, the charge nurse calls you: three machines in different rows, HD-02, HD-07, and HD-13, are alarming for conductivity and going in and out of bypass. No patient is connected yet; the first shift starts at 06:45. The central acid concentrate tank was refilled from a new delivery at 05:50.</p>",
   "start": "n1",
   "nodes": {
@@ -16,91 +40,217 @@
       "short": "Three alarms:",
       "prompt": "Where do you look first?",
       "choices": [
-        { "grade": "best", "text": "The shared supply: several machines at once points to the central concentrate or the water. Check the tank, the new batch and its label, and the valve, and ask the nurse to hold connections on machines fed by it.",
+        {
+          "grade": "best",
+          "text": "The shared supply: check the central tank, the new batch and its label, and hold connections on machines fed by it.",
           "feedback": "<p>Read the pattern before you touch a machine. One machine with a problem points to that machine; several machines at once point to something they share.</p>",
           "then": "<p>The new drums are labeled for a different proportioning system from the one your machines are configured for. The tank was filled with the wrong product.</p>",
-          "vitals": { "central": "WRONG product in tank", "alarm": ["floor", "central"] }, "next": "n2" },
-        { "grade": "poor", "text": "Start with HD-02 and work through each machine&rsquo;s conductivity calibration.",
+          "vitals": {
+            "central": "WRONG product in tank",
+            "alarm": [
+              "floor",
+              "central"
+            ]
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Start with HD-02 and work through each machine&rsquo;s conductivity calibration, since all three are the same model and may share a fault.",
           "feedback": "<p>Three machines failing together are very unlikely to have three separate sensor faults. Recalibrating them to the wrong fluid would teach them to accept it.</p>",
           "then": "<p>You check the central tank instead. The new drums are labeled for a different proportioning system. The tank was filled with the wrong product.</p>",
-          "vitals": { "central": "WRONG product in tank", "alarm": ["floor", "central"] }, "next": "n2" },
-        { "grade": "harmful", "text": "Override the bypass on the three machines so the shift can start on time.",
+          "vitals": {
+            "central": "WRONG product in tank",
+            "alarm": [
+              "floor",
+              "central"
+            ]
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Override the bypass on the three machines so the shift can start on time.",
           "feedback": "<p>Bypass is the safe state: the machine is saying it does not trust the fluid. Overriding it sends fluid of unknown composition to the patient&rsquo;s dialyzer.</p>",
           "then": "<p>The charge nurse refuses. You check the central tank: the new drums are labeled for a different proportioning system.</p>",
-          "vitals": { "central": "WRONG product in tank", "alarm": ["floor", "central"] }, "next": "n2" }
+          "vitals": {
+            "central": "WRONG product in tank",
+            "alarm": [
+              "floor",
+              "central"
+            ]
+          },
+          "next": "n2"
+        }
       ]
     },
     "n2": {
       "short": "The wrong product:",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Stop use of the central supply, label the drums and the batch as held, keep them and their lot numbers, tell the charge nurse and the chief technician, and refill with the verified correct product by procedure.",
+        {
+          "grade": "best",
+          "text": "Hold the central supply and the batch with its lot numbers, report it, and refill with the verified product by procedure.",
           "feedback": "<p>The batch and labels are evidence, and no machine runs on that supply until it is corrected. The charge nurse decides what happens to the shift; your job is to make the fluid right and say when it is.</p>",
           "then": "<p>The tank is drained, rinsed, and refilled with the correct product by procedure. By 07:30, HD-02, HD-07, and HD-13 stabilize and pass their checks.</p>",
-          "vitals": { "time": "Tue 07:30", "central": "Correct product, verified", "floor": "All stable", "alarm": [] }, "next": "n3" },
-        { "grade": "poor", "text": "Top up the tank with the correct product; it will dilute the wrong one.",
+          "vitals": {
+            "time": "Tue 07:30",
+            "central": "Correct product, verified",
+            "floor": "All stable",
+            "alarm": []
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Top up the tank with the correct product; it will dilute the wrong one.",
           "feedback": "<p>A mixture of two products is a third, unknown fluid. The tank is emptied and refilled with the right product by procedure.</p>",
           "then": "<p>The chief technician has the tank drained, rinsed, and refilled. By 07:30 the three machines stabilize and pass their checks.</p>",
-          "vitals": { "time": "Tue 07:30", "central": "Correct product, verified", "floor": "All stable", "alarm": [] }, "next": "n3" },
-        { "grade": "ok", "text": "Switch the three machines to individual jugs of the correct concentrate and deal with the tank later.",
+          "vitals": {
+            "time": "Tue 07:30",
+            "central": "Correct product, verified",
+            "floor": "All stable",
+            "alarm": []
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Switch the three machines to individual jugs of the correct concentrate so the shift can start, and deal with the central tank after the shift.",
           "feedback": "<p>That can keep treatments going if your procedure allows it, but every machine on the central supply is still exposed. Hold the supply and report it first.</p>",
           "then": "<p>The tank is held, drained, and refilled. By 07:30 the three machines stabilize and pass their checks.</p>",
-          "vitals": { "time": "Tue 07:30", "central": "Correct product, verified", "floor": "All stable", "alarm": [] }, "next": "n3" }
+          "vitals": {
+            "time": "Tue 07:30",
+            "central": "Correct product, verified",
+            "floor": "All stable",
+            "alarm": []
+          },
+          "next": "n3"
+        }
       ]
     },
     "n3": {
-      "vitals": { "time": "Tue 10:00", "hd11": "Display 3% higher than others", "release": "Taken off the floor", "alarm": ["hd11"] },
+      "vitals": {
+        "time": "Tue 10:00",
+        "hd11": "Display 3% higher than others",
+        "release": "Taken off the floor",
+        "alarm": [
+          "hd11"
+        ]
+      },
       "short": "HD-11:",
       "scene": "<p>Mid-morning, the nurse reports that HD-11, on its own jugs, has read steadily about 3% higher than the machines beside it all week, and alarmed once today. It is taken off the floor for you.</p>",
       "prompt": "How do you start the verification?",
       "choices": [
-        { "grade": "best", "text": "Check your reference meter against standard solution today, match its reference temperature and units to the machine, let the machine stabilize in dialysis mode on the correct concentrates, and sample by the manual&rsquo;s method after rinsing the probe.",
+        {
+          "grade": "best",
+          "text": "Check the meter against standard today, match reference temperature, let HD-11 stabilize, and sample by the manual.",
           "feedback": "<p>A verification is only as good as its reference. An unchecked meter or a temperature mismatch can create a false disagreement of several percent, and you may adjust a correct machine to match a wrong meter.</p>",
           "then": "<p>Your meter reads the standard correctly. HD-11&rsquo;s display reads 2.8% above the reference, outside the manual&rsquo;s tolerance.</p>",
-          "vitals": { "meter": "Checked vs standard today", "hd11": "+2.8% vs reference (out of tolerance)" }, "next": "n4" },
-        { "grade": "poor", "text": "Adjust HD-11 to match the reading on the machine next to it.",
+          "vitals": {
+            "meter": "Checked vs standard today",
+            "hd11": "+2.8% vs reference (out of tolerance)"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Adjust HD-11 to match the reading on the machine next to it.",
           "feedback": "<p>Another machine&rsquo;s display is not a reference. Use a calibrated meter checked against standard solution.</p>",
           "then": "<p>You get the reference meter and check it against standard first. HD-11 reads 2.8% above the reference, outside tolerance.</p>",
-          "vitals": { "meter": "Checked vs standard today", "hd11": "+2.8% vs reference (out of tolerance)" }, "next": "n4" },
-        { "grade": "ok", "text": "Measure with your meter straight away; it was calibrated last month.",
+          "vitals": {
+            "meter": "Checked vs standard today",
+            "hd11": "+2.8% vs reference (out of tolerance)"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Measure with your meter straight away; it was calibrated by the supplier last month and the certificate is still valid.",
           "feedback": "<p>Last month&rsquo;s calibration is not today&rsquo;s check. Prove the meter against standard solution the same day before you trust it to judge the machine.</p>",
           "then": "<p>You check the meter against standard: it reads correctly. HD-11 reads 2.8% above the reference, outside tolerance.</p>",
-          "vitals": { "meter": "Checked vs standard today", "hd11": "+2.8% vs reference (out of tolerance)" }, "next": "n4" }
+          "vitals": {
+            "meter": "Checked vs standard today",
+            "hd11": "+2.8% vs reference (out of tolerance)"
+          },
+          "next": "n4"
+        }
       ]
     },
     "n4": {
-      "vitals": { "hd11": "Descaling overdue in log" },
+      "vitals": {
+        "hd11": "Descaling overdue in log"
+      },
       "short": "Out of tolerance:",
       "scene": "<p>The log shows HD-11&rsquo;s descaling is overdue, and its readings have drifted up over several weeks.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Descale and clean the cells by the manual, then repeat the verification; calibrate by the manual only if it is still outside tolerance.",
+        {
+          "grade": "best",
+          "text": "Descale and clean the cells, then verify again; calibrate only if it is still out of tolerance.",
           "feedback": "<p>A drift over weeks points to scale on the cells and in the pumps. Clean first; calibration is changed only when a verified reference shows the sensor itself is wrong.</p>",
           "then": "<p>After descaling, HD-11 reads within 0.5% of the reference. No calibration change is needed.</p>",
-          "vitals": { "hd11": "Within 0.5% after descaling" }, "next": "n5" },
-        { "grade": "harmful", "text": "Widen HD-11&rsquo;s conductivity alarm limits so it stops alarming.",
+          "vitals": {
+            "hd11": "Within 0.5% after descaling"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "harmful",
+          "text": "Widen HD-11&rsquo;s conductivity alarm limits so it stops alarming.",
           "feedback": "<p>Wider limits let fluid of the wrong composition reach the patient, which is exactly what the alarm is for. Never adjust a machine to silence an alarm.</p>",
           "then": "<p>You restore the limits and descale the cells by the manual. HD-11 then reads within 0.5% of the reference.</p>",
-          "vitals": { "hd11": "Within 0.5% after descaling" }, "next": "n5" },
-        { "grade": "poor", "text": "Recalibrate the sensor to the reference now and skip the descaling.",
+          "vitals": {
+            "hd11": "Within 0.5% after descaling"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Recalibrate the sensor to the reference now, which brings it into tolerance at once, and schedule the descaling for next month.",
           "feedback": "<p>Calibrating over scale hides the cause, and the reading drifts again as the scale changes. Clean first, then verify again.</p>",
           "then": "<p>You descale first. HD-11 then reads within 0.5% of the reference without a calibration change.</p>",
-          "vitals": { "hd11": "Within 0.5% after descaling" }, "next": "n5" }
+          "vitals": {
+            "hd11": "Within 0.5% after descaling"
+          },
+          "next": "n5"
+        }
       ]
     },
     "n5": {
       "short": "Before release:",
       "prompt": "What remains before HD-11 goes back to the floor?",
       "choices": [
-        { "grade": "best", "text": "Prove the protection by the manual&rsquo;s method (create an out-of-limit condition and confirm the alarm and bypass), disinfect, record as-found and as-left values with the meter&rsquo;s identity, and release through the formal process.",
+        {
+          "grade": "best",
+          "text": "Prove the alarm and bypass by the manual, disinfect, record as-found and as-left, and release formally.",
           "feedback": "<p>A correct reading is half the job. The other half is proving that an out-of-range reading really does switch the bypass valve. The record lets the next person see what changed.</p>",
-          "vitals": { "release": "Bypass proven; released", "alarm": [] }, "next": "end" },
-        { "grade": "poor", "text": "The reading is correct now, so tell the nurse it is ready.",
+          "vitals": {
+            "release": "Bypass proven; released",
+            "alarm": []
+          },
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "The reading is correct now, so tell the nurse it is ready.",
           "feedback": "<p>A machine is released only after its protective function is proven and recorded, through the formal process.</p>",
-          "vitals": { "release": "Bypass proven; released", "alarm": [] }, "next": "end" },
-        { "grade": "ok", "text": "Record the as-left value and release it.",
+          "vitals": {
+            "release": "Bypass proven; released",
+            "alarm": []
+          },
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Record the as-left value with the meter&rsquo;s identity and release it to the nurse, since the reading is now within tolerance.",
           "feedback": "<p>Recording matters, but the as-found value, the meter identity, the bypass test, and disinfection are part of the record too.</p>",
-          "vitals": { "release": "Bypass proven; released", "alarm": [] }, "next": "end" }
+          "vitals": {
+            "release": "Bypass proven; released",
+            "alarm": []
+          },
+          "next": "end"
+        }
       ]
     },
     "end": {

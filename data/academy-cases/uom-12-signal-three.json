@@ -6,9 +6,33 @@
   "strip": false,
   "monitorTitle": "Continuity board",
   "note": "Fictional unit. Your continuity plan and the Medical Director&rsquo;s decisions come first.",
-  "labels": { "time": "Time", "forecast": "Forecast", "fuel": "Fuel", "water": "Treated water", "patients": "Patients", "status": "Unit" },
-  "monitorOrder": ["time", "forecast", "status", "fuel", "water", "patients"],
-  "monitor": { "time": "Tue 09:00", "forecast": "Landfall Thu night, Signal No. 3", "status": "Open, 12 stations", "fuel": "600 L", "water": "2,700 L storage", "patients": "36 on schedule", "alarm": ["forecast"] },
+  "labels": {
+    "time": "Time",
+    "forecast": "Forecast",
+    "fuel": "Fuel",
+    "water": "Treated water",
+    "patients": "Patients",
+    "status": "Unit"
+  },
+  "monitorOrder": [
+    "time",
+    "forecast",
+    "status",
+    "fuel",
+    "water",
+    "patients"
+  ],
+  "monitor": {
+    "time": "Tue 09:00",
+    "forecast": "Landfall Thu night, Signal No. 3",
+    "status": "Open, 12 stations",
+    "fuel": "600 L",
+    "water": "2,700 L storage",
+    "patients": "36 on schedule",
+    "alarm": [
+      "forecast"
+    ]
+  },
   "intro": "<p>You manage a twelve-station unit in Tacloban City. On Tuesday morning, PAGASA forecasts a typhoon making landfall on Thursday night, with Signal No. 3 expected for your area. Your Thursday and Friday patients are due during the storm and just after it.</p>",
   "start": "n1",
   "nodes": {
@@ -16,96 +40,208 @@
       "short": "Tuesday, 72 hours out:",
       "prompt": "What do you do today?",
       "choices": [
-        { "grade": "best", "text": "Meet the Medical Director today to decide on early dialysis; then notify patients of revised schedules, top up fuel and water, and move records and equipment above flood level.",
+        {
+          "grade": "best",
+          "text": "Meet the Medical Director today on early dialysis, then act on the advisory plan.",
           "feedback": "<p>The advisory phase is when decisions are made. The Medical Director decides on early sessions; your job is to make that decision happen.</p>",
           "then": "<p>The Medical Director moves all Thursday and Friday patients to Wednesday and early Thursday morning.</p>",
-          "vitals": { "patients": "Thu/Fri patients moved earlier", "status": "Advisory phase" }, "next": "n2" },
-        { "grade": "poor", "text": "Wait for Thursday&rsquo;s bulletin; the track may change.",
+          "vitals": {
+            "patients": "Thu/Fri patients moved earlier",
+            "status": "Advisory phase"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Wait for Thursday&rsquo;s bulletin; the track may change.",
           "feedback": "<p>Waiting for landfall to decide on early dialysis is one of the common failure modes. By Thursday there is no time to reschedule 24 patients.</p>",
           "then": "<p>You call the Medical Director that afternoon. Thursday and Friday patients are moved to Wednesday and early Thursday.</p>",
-          "vitals": { "patients": "Thu/Fri patients moved earlier", "status": "Advisory phase" }, "next": "n2" },
-        { "grade": "ok", "text": "Reschedule the Thursday and Friday patients yourself and tell the Medical Director afterward.",
+          "vitals": {
+            "patients": "Thu/Fri patients moved earlier",
+            "status": "Advisory phase"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "ok",
+          "text": "Reschedule the Thursday and Friday patients yourself today and tell the Medical Director afterward.",
           "feedback": "<p>Acting early is right, but early dialysis is a treatment change: the Medical Director decides. Bring the plan, not a fait accompli.</p>",
           "then": "<p>The Medical Director confirms the plan with one change for two patients.</p>",
-          "vitals": { "patients": "Thu/Fri patients moved earlier", "status": "Advisory phase" }, "next": "n2" }
+          "vitals": {
+            "patients": "Thu/Fri patients moved earlier",
+            "status": "Advisory phase"
+          },
+          "next": "n2"
+        }
       ]
     },
     "n2": {
-      "vitals": { "time": "Wed 08:00" },
+      "vitals": {
+        "time": "Wed 08:00"
+      },
       "short": "The binding constraint:",
       "scene": "<p>You expect grid power to fail. The generator burns about 25 liters an hour at full load, and you have 600 liters. Twelve machines at a dialysate flow of 500 mL a minute, plus about 90 liters an hour of other use, draw on 2,700 liters of usable treated-water storage.</p>",
       "prompt": "Which runs out first on generator power?",
       "choices": [
-        { "grade": "best", "text": "Water: 12 &times; 0.5 &times; 60 = 360 + 90 = 450 L an hour, so about 6 hours. Fuel lasts about 24 hours. Arrange the water tanker under contract.",
+        {
+          "grade": "best",
+          "text": "Water, about 6 hours (450 L/h); fuel lasts about 24. Call the tanker.",
           "feedback": "<p>Operating autonomy is the smaller of the two. Water is the binding constraint: one full shift, not two. More diesel would not help.</p>",
-          "vitals": { "fuel": "~24 h", "water": "~6 h (binding)", "alarm": ["water"] }, "next": "n3" },
-        { "grade": "poor", "text": "Fuel: order another 600 liters of diesel.",
+          "vitals": {
+            "fuel": "~24 h",
+            "water": "~6 h (binding)",
+            "alarm": [
+              "water"
+            ]
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Fuel: order another 600 liters of diesel today, since the generator is what keeps the whole unit running.",
           "feedback": "<p>Run the numbers: fuel lasts about 24 hours, water about 6. Solving the wrong shortage wastes the hours you have.</p>",
           "then": "<p>You recalculate and call the water tanker under the standing contract.</p>",
-          "vitals": { "fuel": "~24 h", "water": "~6 h (binding)", "alarm": ["water"] }, "next": "n3" },
-        { "grade": "ok", "text": "Both seem fine for a day; check again if the power goes.",
+          "vitals": {
+            "fuel": "~24 h",
+            "water": "~6 h (binding)",
+            "alarm": [
+              "water"
+            ]
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Both seem fine for a day; check again if the power goes.",
           "feedback": "<p>Water lasts about 6 hours at full load, not a day. Find the binding constraint before the outage, not during it.</p>",
           "then": "<p>You run the numbers and call the water tanker.</p>",
-          "vitals": { "fuel": "~24 h", "water": "~6 h (binding)", "alarm": ["water"] }, "next": "n3" }
+          "vitals": {
+            "fuel": "~24 h",
+            "water": "~6 h (binding)",
+            "alarm": [
+              "water"
+            ]
+          },
+          "next": "n3"
+        }
       ]
     },
     "n3": {
-      "vitals": { "time": "Thu 10:00", "status": "Imminent phase" },
+      "vitals": {
+        "time": "Thu 10:00",
+        "status": "Imminent phase"
+      },
       "short": "24 hours out:",
       "prompt": "What must every patient leave with before the unit closes?",
       "choices": [
-        { "grade": "best", "text": "A printed emergency information sheet (prescription, access type, serology, PhilHealth Dialysis Database status, contacts, partner units) and the dietitian&rsquo;s emergency diet, plus a confirmed place to shelter; and you print the patient contact list.",
+        {
+          "grade": "best",
+          "text": "A printed emergency sheet, emergency diet, a shelter plan; print the contact list.",
           "feedback": "<p>If the unit cannot open, another unit needs these details to treat them. And a patient list that lives only in the electronic system is lost when the power or network goes.</p>",
-          "vitals": { "patients": "All treated early; sheets given; list printed" }, "next": "n4" },
-        { "grade": "poor", "text": "A reminder to come back on Saturday; the records are all in the system.",
+          "vitals": {
+            "patients": "All treated early; sheets given; list printed"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "A reminder to come back on Saturday; the records are all in the system.",
           "feedback": "<p>&ldquo;The list in the dead computer&rdquo; is a classic failure. Print the contacts, and give each patient what another unit would need.</p>",
           "then": "<p>You print the sheets and the contact list before closing.</p>",
-          "vitals": { "patients": "All treated early; sheets given; list printed" }, "next": "n4" },
-        { "grade": "ok", "text": "A copy of their prescription only.",
+          "vitals": {
+            "patients": "All treated early; sheets given; list printed"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "A copy of their prescription, so another unit could treat them if needed.",
           "feedback": "<p>A start, but a partner unit also needs the access type, serology, and PhilHealth Dialysis Database status, and the patient needs the emergency diet.</p>",
           "then": "<p>You complete the sheets and print the contact list.</p>",
-          "vitals": { "patients": "All treated early; sheets given; list printed" }, "next": "n4" }
+          "vitals": {
+            "patients": "All treated early; sheets given; list printed"
+          },
+          "next": "n4"
+        }
       ]
     },
     "n4": {
-      "vitals": { "time": "Sat 07:00", "forecast": "Passed", "status": "Power back; water untested", "alarm": ["status"] },
+      "vitals": {
+        "time": "Sat 07:00",
+        "forecast": "Passed",
+        "status": "Power back; water untested",
+        "alarm": [
+          "status"
+        ]
+      },
       "short": "Reopening:",
       "scene": "<p>The typhoon has passed. Grid power returned at 05:00. The building is dry. Staff are arriving and patients are calling to ask when they can come.</p>",
       "prompt": "How do you reopen?",
       "choices": [
-        { "grade": "best", "text": "Inspect building, power, and water; have the water tested and released before any treatment; reopen in phases, highest-risk patients first; and contact every patient.",
+        {
+          "grade": "best",
+          "text": "Inspect; release the water first; reopen in phases by risk; contact everyone.",
           "feedback": "<p>Interrupted power affects the water system as well as the machines. The water is tested and released before treatment, and the Medical Director&rsquo;s priority list sets who comes first.</p>",
-          "vitals": { "status": "Water released 09:00; phased reopening" }, "next": "n5" },
-        { "grade": "harmful", "text": "Open all twelve stations as soon as staff arrive; the power is back.",
+          "vitals": {
+            "status": "Water released 09:00; phased reopening"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "harmful",
+          "text": "Open all twelve stations as soon as staff arrive; the power is back.",
           "feedback": "<p>Power back does not mean the water is safe. Treating on untested water after an outage risks every patient on the floor.</p>",
           "then": "<p>The water technician stops the start and tests the water. It is released at 09:00 and the unit reopens in phases.</p>",
-          "vitals": { "status": "Water released 09:00; phased reopening" }, "next": "n5" },
-        { "grade": "poor", "text": "Reopen in order of the usual schedule.",
+          "vitals": {
+            "status": "Water released 09:00; phased reopening"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Reopen following the usual schedule, so every patient knows exactly when to come.",
           "feedback": "<p>After a closure, the patients with the longest gap and highest risk come first, on the Medical Director&rsquo;s list. And the water still has to be released before anyone starts.</p>",
           "then": "<p>The water is released at 09:00, and the Medical Director&rsquo;s priority list sets the order.</p>",
-          "vitals": { "status": "Water released 09:00; phased reopening" }, "next": "n5" }
+          "vitals": {
+            "status": "Water released 09:00; phased reopening"
+          },
+          "next": "n5"
+        }
       ]
     },
     "n5": {
-      "vitals": { "patients": "33 of 36 reached" },
+      "vitals": {
+        "patients": "33 of 36 reached"
+      },
       "short": "Three not reached:",
       "scene": "<p>By noon, nurses have reached 33 of 36 patients. Three cannot be reached; one lives in a barangay where the bridge is out.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Ask the barangay health workers and local officials to find the three; for the patient who cannot cross, arrange transfer to a partner unit with the emergency sheet, on the Medical Director&rsquo;s decision.",
+        {
+          "grade": "best",
+          "text": "Barangay health workers to find them; partner-unit transfer on the director&rsquo;s decision.",
           "feedback": "<p>Your job is to know where every patient is and to make the clinical decision happen. Partner units and the emergency sheet exist for exactly this.</p>",
-          "next": "end" },
-        { "grade": "poor", "text": "Wait for them to call; they know the unit is open.",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Wait for them to call; they know the unit is open.",
           "feedback": "<p>A patient who cannot be reached may not have a phone, power, or a way across. Waiting can cost a life.</p>",
-          "next": "end" },
-        { "grade": "ok", "text": "Keep calling every hour.",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Keep calling all three every hour until you reach them, and leave messages with neighbors.",
           "feedback": "<p>Calling continues, but bring in the barangay health workers and the partner-unit plan now, not after another day.</p>",
-          "next": "end" }
+          "next": "end"
+        }
       ]
     },
     "end": {
       "end": true,
-      "vitals": { "patients": "All 36 accounted for" },
+      "vitals": {
+        "patients": "All 36 accounted for"
+      },
       "title": "Accounted for",
       "text": "<p>The barangay health workers find two patients in an evacuation center; the third is taken across by a rescue boat and treated at the partner unit with her emergency sheet. You add to the plan: test the reverse osmosis output on generator power at the next load test, and send one transient patient through the partner unit agreement each year.</p>"
     }

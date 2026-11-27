@@ -6,9 +6,30 @@
   "strip": false,
   "monitorTitle": "Water room status board",
   "note": "Fictional unit. Values are illustrative; your unit&rsquo;s written procedure, the chief technician, and the medical director come first.",
-  "labels": { "time": "Time", "worker": "After worker tank", "polisher": "After polisher", "kit": "Test kit", "status": "Water status", "patients": "Patients" },
-  "monitorOrder": ["time", "worker", "polisher", "kit", "status", "patients"],
-  "monitor": { "time": "Mon 05:10", "worker": "Not tested", "polisher": "Not tested", "kit": "Total chlorine, in date", "status": "Not yet released", "patients": "First shift due 06:00" },
+  "labels": {
+    "time": "Time",
+    "worker": "After worker tank",
+    "polisher": "After polisher",
+    "kit": "Test kit",
+    "status": "Water status",
+    "patients": "Patients"
+  },
+  "monitorOrder": [
+    "time",
+    "worker",
+    "polisher",
+    "kit",
+    "status",
+    "patients"
+  ],
+  "monitor": {
+    "time": "Mon 05:10",
+    "worker": "Not tested",
+    "polisher": "Not tested",
+    "kit": "Total chlorine, in date",
+    "status": "Not yet released",
+    "patients": "First shift due 06:00"
+  },
   "intro": "<p>It is Monday, 05:10, after a long weekend when the unit was closed. You are the water technician on duty. The city water supply uses chloramine. The system has just been switched on. The carbon in the worker tank was last replaced four months ago, and the log shows the after-worker-tank reading creeping up over the past two weeks. The first shift of twelve patients is due at 06:00.</p>",
   "start": "n1",
   "nodes": {
@@ -16,18 +37,51 @@
       "short": "Taking the sample:",
       "prompt": "How do you take the first total chlorine test?",
       "choices": [
-        { "grade": "best", "text": "Let the system run at working flow for the time the procedure states, flush the port after the worker tank, then test with the in-date total chlorine kit and a timer.",
+        {
+          "grade": "best",
+          "text": "Run at working flow, flush the port, and test with the in-date total chlorine kit, timed.",
           "feedback": "<p>Water that sat in the carbon all weekend reads falsely low. A test only counts if it represents the water patients will get: running system, flushed port, total chlorine reagent, exact timing.</p>",
           "then": "<p>At 05:30 the result after the worker tank is 0.16 mg/L. You test after the polisher at once: 0.03 mg/L.</p>",
-          "vitals": { "time": "Mon 05:30", "worker": "0.16 mg/L", "polisher": "0.03 mg/L", "alarm": ["worker"] }, "next": "n2" },
-        { "grade": "poor", "text": "Sample straight from the worker tank port now, to save time before the first shift.",
+          "vitals": {
+            "time": "Mon 05:30",
+            "worker": "0.16 mg/L",
+            "polisher": "0.03 mg/L",
+            "alarm": [
+              "worker"
+            ]
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Sample straight from the worker tank port now, so the result is ready before the first shift arrives.",
           "feedback": "<p>Water that stood in the carbon over the weekend has had far longer contact than water at working flow. It reads falsely low, which is the dangerous direction.</p>",
           "then": "<p>The first reading is below 0.02 mg/L. You remember the rule, run the system, flush the port, and retest at 05:30: 0.16 mg/L after the worker tank, 0.03 after the polisher.</p>",
-          "vitals": { "time": "Mon 05:30", "worker": "0.16 mg/L", "polisher": "0.03 mg/L", "alarm": ["worker"] }, "next": "n2" },
-        { "grade": "harmful", "text": "Use the free chlorine strips in the drawer; they are faster to read.",
+          "vitals": {
+            "time": "Mon 05:30",
+            "worker": "0.16 mg/L",
+            "polisher": "0.03 mg/L",
+            "alarm": [
+              "worker"
+            ]
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Use the free chlorine strips in the drawer; they are faster to read.",
           "feedback": "<p>A free chlorine test misses chloramine entirely, and this city uses chloramine. It can read zero while chloramine passes straight through to patients.</p>",
           "then": "<p>You put the strips aside, run the system, and test with the total chlorine kit at 05:30: 0.16 mg/L after the worker tank, 0.03 after the polisher.</p>",
-          "vitals": { "time": "Mon 05:30", "worker": "0.16 mg/L", "polisher": "0.03 mg/L", "alarm": ["worker"] }, "next": "n2" }
+          "vitals": {
+            "time": "Mon 05:30",
+            "worker": "0.16 mg/L",
+            "polisher": "0.03 mg/L",
+            "alarm": [
+              "worker"
+            ]
+          },
+          "next": "n2"
+        }
       ]
     },
     "n2": {
@@ -35,77 +89,171 @@
       "scene": "<p>The limit in your procedure is 0.1 mg/L of total chlorine. The charge nurse, Ms. Rowena Santiago, asks whether she can start.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Record both numbers and release the water, because the polisher result is within the limit; tell the chief technician the worker tank has broken through and needs replacement, and test more often today.",
+        {
+          "grade": "best",
+          "text": "Release on the polisher result, report the breakthrough, and test more often.",
           "feedback": "<p>Above the limit after the worker tank means the worker carbon is exhausted. The polisher is now the only barrier, so you release on its result, report at once, and test at shorter intervals as your procedure states.</p>",
-          "vitals": { "status": "Released, increased testing", "patients": "First shift connected" }, "next": "n3" },
-        { "grade": "ok", "text": "Record both numbers and release the water. The polisher is fine, so nothing else is needed today.",
+          "vitals": {
+            "status": "Released, increased testing",
+            "patients": "First shift connected"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Record both numbers and release the water; the polisher is within the limit, so nothing else is needed today.",
           "feedback": "<p>Releasing is right, but the worker tank breakthrough must be reported now and testing increased. The polisher alone will not last long against chloramine.</p>",
           "then": "<p>Later you report the breakthrough and switch to more frequent testing.</p>",
-          "vitals": { "status": "Released", "patients": "First shift connected" }, "next": "n3" },
-        { "grade": "poor", "text": "Hold all treatments until the worker tank carbon is replaced.",
+          "vitals": {
+            "status": "Released",
+            "patients": "First shift connected"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Hold all treatments until the worker tank carbon is replaced.",
           "feedback": "<p>This is safe for the water but not for the patients, who missed treatment over the long weekend. The polisher result is within the limit, which is what the polisher is there for. Release, report, and test more often.</p>",
           "then": "<p>The chief technician reviews the numbers by phone and asks you to release the water and test every two hours.</p>",
-          "vitals": { "status": "Released, increased testing", "patients": "First shift connected" }, "next": "n3" }
+          "vitals": {
+            "status": "Released, increased testing",
+            "patients": "First shift connected"
+          },
+          "next": "n3"
+        }
       ]
     },
     "n3": {
-      "vitals": { "time": "Mon 09:40", "worker": "0.28 mg/L", "polisher": "0.12 mg/L", "status": "Above limit", "alarm": ["worker", "polisher", "status"] },
+      "vitals": {
+        "time": "Mon 09:40",
+        "worker": "0.28 mg/L",
+        "polisher": "0.12 mg/L",
+        "status": "Above limit",
+        "alarm": [
+          "worker",
+          "polisher",
+          "status"
+        ]
+      },
       "short": "The 09:40 test:",
       "scene": "<p>At 09:40 you retest. After the worker tank: 0.28 mg/L. After the polisher: 0.12 mg/L. The first shift is still connected, and the second shift arrives at 10:30.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Stop: this water is not used for any treatment. Tell the charge nurse and the medical director immediately, and record the number you saw.",
+        {
+          "grade": "best",
+          "text": "Stop: no treatments on this water. Tell the charge nurse and medical director.",
           "feedback": "<p>Above the limit after the polisher means chloramine is reaching the dialysis fluid. There is no workaround in the water room. The charge nurse and medical director decide what happens to the patients now connected and to the next shift.</p>",
-          "vitals": { "status": "STOP, no treatments", "patients": "Medical director informed" }, "next": "n4" },
-        { "grade": "poor", "text": "Retest in an hour to confirm before raising an alarm.",
+          "vitals": {
+            "status": "STOP, no treatments",
+            "patients": "Medical director informed"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Retest in an hour to confirm the reading before raising an alarm that will stop the whole unit.",
           "feedback": "<p>A confirmed reading above the limit after the polisher is the alarm. Chloramine breaks red cells, and twelve patients are connected now. Report first; repeat tests come after.</p>",
           "then": "<p>You think again and call the charge nurse and the medical director.</p>",
-          "vitals": { "status": "STOP, no treatments", "patients": "Medical director informed" }, "next": "n4" },
-        { "grade": "harmful", "text": "Write 0.1 mg/L in the log, since it is so close to the limit, and change the carbon after the shift.",
+          "vitals": {
+            "status": "STOP, no treatments",
+            "patients": "Medical director informed"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Write 0.1 mg/L in the log, since it is so close to the limit, and change the carbon after the shift.",
           "feedback": "<p>Never write a result you did not see. A falsified log hides the one warning that protects patients, and the shortfall is real exposure to chloramine.</p>",
           "then": "<p>You write 0.12 mg/L and call the charge nurse and the medical director.</p>",
-          "vitals": { "status": "STOP, no treatments", "patients": "Medical director informed" }, "next": "n4" }
+          "vitals": {
+            "status": "STOP, no treatments",
+            "patients": "Medical director informed"
+          },
+          "next": "n4"
+        }
       ]
     },
     "n4": {
-      "vitals": { "time": "Mon 10:15", "patients": "Treatments stopped; second shift on hold" },
+      "vitals": {
+        "time": "Mon 10:15",
+        "patients": "Treatments stopped; second shift on hold"
+      },
       "short": "Replacing the carbon:",
       "scene": "<p>The medical director stops the treatments and holds the second shift. New carbon is in stock.</p>",
       "prompt": "How do you replace it?",
       "choices": [
-        { "grade": "best", "text": "Move the polisher into the worker position, put new virgin carbon of the specified chloramine grade in the polisher position, rinse until clear, then test after each tank at working flow.",
+        {
+          "grade": "best",
+          "text": "Polisher to worker, new specified carbon as polisher, rinse, test each tank.",
           "feedback": "<p>This keeps the freshest carbon as the last barrier before the patient. Virgin carbon of the specified grade matters: regenerated or cheaper carbon can be exhausted within weeks.</p>",
           "then": "<p>After rinsing and running at working flow: below 0.02 mg/L after both tanks.</p>",
-          "vitals": { "worker": "Below 0.02 mg/L", "polisher": "Below 0.02 mg/L", "alarm": [] }, "next": "n5" },
-        { "grade": "ok", "text": "Put the new carbon in the worker position and leave the old polisher where it is.",
+          "vitals": {
+            "worker": "Below 0.02 mg/L",
+            "polisher": "Below 0.02 mg/L",
+            "alarm": []
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Put the new carbon in the worker position, where the chlorine load is highest, and leave the polisher where it is.",
           "feedback": "<p>This works today, but the older carbon becomes the last barrier, which is the wrong way round. Rotate so the freshest carbon is always last.</p>",
           "then": "<p>After rinsing and running at working flow: below 0.02 mg/L after both tanks.</p>",
-          "vitals": { "worker": "Below 0.02 mg/L", "polisher": "Below 0.02 mg/L", "alarm": [] }, "next": "n5" },
-        { "grade": "poor", "text": "Use the cheaper regenerated carbon the supplier offered last month, to save time and money.",
+          "vitals": {
+            "worker": "Below 0.02 mg/L",
+            "polisher": "Below 0.02 mg/L",
+            "alarm": []
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Use the cheaper regenerated carbon the supplier offered last month, to save time and money.",
           "feedback": "<p>Regenerated carbon is not used for dialysis. Use what the system designer specified, made for chloramine removal.</p>",
           "then": "<p>The chief technician sends for the specified virgin carbon. After rinsing and testing: below 0.02 mg/L after both tanks.</p>",
-          "vitals": { "worker": "Below 0.02 mg/L", "polisher": "Below 0.02 mg/L", "alarm": [] }, "next": "n5" }
+          "vitals": {
+            "worker": "Below 0.02 mg/L",
+            "polisher": "Below 0.02 mg/L",
+            "alarm": []
+          },
+          "next": "n5"
+        }
       ]
     },
     "n5": {
-      "vitals": { "time": "Mon 12:30", "status": "Ready for release review" },
+      "vitals": {
+        "time": "Mon 12:30",
+        "status": "Ready for release review"
+      },
       "short": "Before treatments resume:",
       "prompt": "What do you record and report?",
       "choices": [
-        { "grade": "best", "text": "Date, carbon type and batch, every test result with port, time, and initials; report to the medical director, who decides on restart; and propose replacing carbon on the rising trend next time, before breakthrough.",
+        {
+          "grade": "best",
+          "text": "Full record, report to the medical director, and plan replacement on the trend.",
           "feedback": "<p>The record proves the water is safe again. The restart is the medical director&rsquo;s decision. And the two weeks of rising after-worker numbers were a warning: a trend is the time to plan replacement, not the day it breaks through.</p>",
-          "next": "end" },
-        { "grade": "ok", "text": "Record the new results and tell the charge nurse the water is ready.",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Record the new results and tell the charge nurse the water is ready for the second shift.",
           "feedback": "<p>The results are right, but the medical director stopped treatments, so the medical director releases them. Add the carbon batch to the record and raise the trend so it does not happen again.</p>",
-          "next": "end" },
-        { "grade": "poor", "text": "Release the water to the second shift yourself, since the numbers are now normal.",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Release the water to the second shift yourself, since the numbers are now normal.",
           "feedback": "<p>After a stop, the restart is the medical director&rsquo;s decision, and the patients who were connected may need assessment first.</p>",
-          "next": "end" }
+          "next": "end"
+        }
       ]
     },
     "end": {
       "end": true,
-      "vitals": { "status": "Released by medical director", "patients": "Treatments resumed 13:00" },
+      "vitals": {
+        "status": "Released by medical director",
+        "patients": "Treatments resumed 13:00"
+      },
       "title": "Back in service",
       "text": "<p>The medical director reviews the results, confirms that the connected patients were assessed, and releases the water at 13:00. The unit adds a rule: when the after-worker reading rises on three straight tests, the carbon replacement is scheduled within the week. Your log, with every number, is the evidence for the review.</p>"
     }

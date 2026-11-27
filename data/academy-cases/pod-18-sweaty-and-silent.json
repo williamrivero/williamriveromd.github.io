@@ -3,8 +3,26 @@
   "page": "physician-on-duty-18-potassium-sugar-and-the-brain.html",
   "title": "Sweaty and silent",
   "decisions": 5,
-  "monitorOrder": ["time", "bp", "hr", "spo2", "glucose", "k", "ecg"],
-  "monitor": { "time": "Hour 0:45", "bp": "150/88", "hr": 56, "spo2": 97, "glucose": "Not checked", "k": "Pending", "ecg": "On monitor", "rhythm": "normal", "rhythmLabel": "Sinus, slow" },
+  "monitorOrder": [
+    "time",
+    "bp",
+    "hr",
+    "spo2",
+    "glucose",
+    "k",
+    "ecg"
+  ],
+  "monitor": {
+    "time": "Hour 0:45",
+    "bp": "150/88",
+    "hr": 56,
+    "spo2": 97,
+    "glucose": "Not checked",
+    "k": "Pending",
+    "ecg": "On monitor",
+    "rhythm": "normal",
+    "rhythmLabel": "Sinus, slow"
+  },
   "intro": "<p>Mrs. Lourdes Navarro, 63, has had type 2 diabetes for 15 years and takes insulin. She dialyzes on Tuesdays, Thursdays, and Saturdays through a left arm fistula. Today is Tuesday, the first session after the long weekend gap. She had only coffee this morning because she felt unwell, but she took her usual insulin.</p><p>At hour 0:45 the nurse, Ms. Carmela Ramos, calls you. Mrs. Navarro has stopped answering questions and is sweating. Both needles are in place, the blood pump is running, and there are no machine alarms. Her predialysis potassium was sent at 6:30 a.m. and has not come back.</p>",
   "start": "n1",
   "nodes": {
@@ -12,86 +30,159 @@
       "short": "The first minute:",
       "prompt": "After a glance at her airway and breathing, what do you check first?",
       "choices": [
-        { "grade": "best", "text": "A capillary glucose.",
+        {
+          "grade": "best",
+          "text": "A capillary glucose.",
           "feedback": "<p>She took insulin, ate nothing, and is losing glucose into the dialysis fluid. A failed kidney also clears insulin slowly. Low sugar is the likeliest cause of confusion and sweating here, and the fastest to reverse. It takes one minute.</p>",
           "then": "<p>The reading is 44 mg/dL.</p>",
-          "vitals": { "glucose": "44 mg/dL" }, "next": "n2" },
-        { "grade": "ok", "text": "A full stroke check: face, arm, and speech.",
+          "vitals": {
+            "glucose": "44 mg/dL"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "ok",
+          "text": "A full stroke check of face, arm, and speech, and the time she was last seen well.",
           "feedback": "<p>Stroke matters in a confused dialysis patient, and you will record when she was last seen well. But a glucose comes first, because low sugar can mimic a stroke and is reversible in minutes.</p>",
           "then": "<p>Her face and arms are hard to assess while she is not following commands. Ms. Ramos checks the glucose: 44 mg/dL.</p>",
-          "vitals": { "glucose": "44 mg/dL" }, "next": "n2" },
-        { "grade": "poor", "text": "Have the session stopped and send her to the emergency department for a head CT.",
+          "vitals": {
+            "glucose": "44 mg/dL"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Have the session stopped and send her to the emergency department for a head CT.",
           "feedback": "<p>Sending her out before a one-minute bedside test skips the most likely, reversible cause. Hypoglycemia left untreated during transfer can cause brain injury.</p>",
           "then": "<p>Ms. Ramos asks to check a glucose before the transfer. It is 44 mg/dL.</p>",
-          "vitals": { "glucose": "44 mg/dL" }, "next": "n2" }
+          "vitals": {
+            "glucose": "44 mg/dL"
+          },
+          "next": "n2"
+        }
       ]
     },
     "n2": {
-      "vitals": { "time": "Hour 0:55", "glucose": "112 mg/dL", "k": "6.8 mmol/L", "rhythm": "peaked", "rhythmLabel": "Tall, narrow T waves", "ecg": "Peaked T waves" },
+      "vitals": {
+        "time": "Hour 0:55",
+        "glucose": "112 mg/dL",
+        "k": "6.8 mmol/L",
+        "rhythm": "peaked",
+        "rhythmLabel": "Tall, narrow T waves",
+        "ecg": "Peaked T waves"
+      },
       "scene": "<p>Ms. Ramos treats the low sugar under the unit&rsquo;s protocol. Within minutes Mrs. Navarro wakes, apologizes, and asks for her daughter. Her recheck is 112 mg/dL. Then the laboratory calls: her predialysis potassium is 6.8 mmol/L. The monitor shows tall, narrow T waves, and her pulse is 56.</p>",
       "short": "Two problems:",
       "prompt": "How do you rank what is in front of you?",
       "choices": [
-        { "grade": "best", "text": "Two problems: the low sugar explained the confusion; the high potassium with ECG changes and a slow pulse is now the more dangerous one.",
+        {
+          "grade": "best",
+          "text": "Two problems: low sugar caused the confusion; the potassium is now the bigger danger.",
           "feedback": "<p>High potassium causes weakness and rhythm problems, rarely confusion, and the quick recovery with sugar confirms the cause. A potassium of 6.8 with peaked T waves and a slow pulse can stop the heart without warning.</p>",
-          "next": "n3" },
-        { "grade": "poor", "text": "One problem: the potassium caused the confusion, and the sugar was a coincidence.",
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "One problem: the potassium caused the confusion, and the low sugar was a coincidence that is now fixed.",
           "feedback": "<p>Her prompt recovery after glucose shows the low sugar caused the confusion. Merging the two risks missing the next low sugar, especially if insulin is about to be used.</p>",
-          "next": "n3" },
-        { "grade": "harmful", "text": "She is awake now, so the crisis is over. Note the potassium and review it after dialysis.",
+          "next": "n3"
+        },
+        {
+          "grade": "harmful",
+          "text": "She is awake now, so the crisis is over. Note the potassium and review it after dialysis.",
           "feedback": "<p>The ECG changes and slow pulse mean the potassium is acting on the heart now. Waiting until the end of the session leaves her exposed to a rhythm arrest.</p>",
-          "next": "n3" }
+          "next": "n3"
+        }
       ]
     },
     "n3": {
       "short": "Treating the potassium:",
       "prompt": "What do you do about the potassium?",
       "choices": [
-        { "grade": "best", "text": "Keep her on the cardiac monitor, give calcium because the ECG has changed, start the unit&rsquo;s hyperkalemia order set, keep dialysis running, and call the attending nephrologist.",
+        {
+          "grade": "best",
+          "text": "Monitor, calcium for the ECG changes, the order set, dialysis running, and call.",
           "feedback": "<p>Stabilize, shift, remove. Calcium protects the heart muscle without lowering potassium. Dialysis is the treatment that removes it, and she is already connected. The nephrologist needs the value, the ECG, and the fact that she was hypoglycemic minutes ago.</p>",
-          "next": "n4" },
-        { "grade": "harmful", "text": "Stop dialysis and transfer her to the emergency department for treatment of hyperkalemia.",
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Stop dialysis and transfer her to the emergency department, where hyperkalemia can be treated with full monitoring.",
           "feedback": "<p>Dialysis is the definitive treatment for high potassium, and she is already on it. Stopping it to transfer her removes the one step that lowers total body potassium.</p>",
           "then": "<p>You keep her connected, give calcium under the order set, and call the attending nephrologist.</p>",
-          "next": "n4" },
-        { "grade": "ok", "text": "Keep dialysis running and recheck the potassium in an hour.",
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Keep dialysis running and recheck the potassium in an hour.",
           "feedback": "<p>Keeping dialysis running is right. But ECG changes with a slow pulse call for calcium under the order set now, plus a monitor and an immediate call, not a wait.</p>",
           "then": "<p>You give calcium under the order set and call the attending nephrologist.</p>",
-          "next": "n4" }
+          "next": "n4"
+        }
       ]
     },
     "n4": {
-      "vitals": { "time": "Hour 1:10", "hr": 66, "rhythmLabel": "T waves less peaked" },
+      "vitals": {
+        "time": "Hour 1:10",
+        "hr": 66,
+        "rhythmLabel": "T waves less peaked"
+      },
       "short": "Insulin and glucose:",
       "scene": "<p>The attending nephrologist agrees with your plan and decides, under the order set, to add insulin with glucose while dialysis continues.</p>",
       "prompt": "What must happen over the next several hours?",
       "choices": [
-        { "grade": "best", "text": "Glucose checks at the times the order set gives, continuing for hours after the insulin and past the end of dialysis; make sure she eats; she goes home only when the attending nephrologist agrees.",
+        {
+          "grade": "best",
+          "text": "Glucose checks for hours, past the end of dialysis; she eats; home only when the attending agrees.",
           "feedback": "<p>In hospital series, hypoglycemia after insulin for hyperkalemia began at a median of about 2 hours and lasted about 2 hours. Mrs. Navarro is at higher risk: she was already low, has not eaten, and her own insulin is still acting.</p>",
-          "next": "n5" },
-        { "grade": "poor", "text": "One glucose check 30 minutes after the insulin; if it is normal, no further checks.",
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "One glucose check 30 minutes after the insulin; if it is normal, no further checks.",
           "feedback": "<p>A single early check misses most of the risk window, which runs for hours. A normal value at 30 minutes says little about 2 hours.</p>",
-          "next": "n5" },
-        { "grade": "ok", "text": "Glucose checks until the end of dialysis.",
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Glucose checks every 30 minutes until the end of dialysis, when the insulin effect will have worn off.",
           "feedback": "<p>The checks need to continue past the end of the session if the window has not passed. The schedule and amounts come from the order set, which the Medical Director sets.</p>",
-          "next": "n5" }
+          "next": "n5"
+        }
       ]
     },
     "n5": {
-      "vitals": { "time": "End of session", "glucose": "98 mg/dL", "k": "4.6 mmol/L", "hr": 72, "rhythm": "normal", "rhythmLabel": "Sinus rhythm", "ecg": "T waves normalizing" },
+      "vitals": {
+        "time": "End of session",
+        "glucose": "98 mg/dL",
+        "k": "4.6 mmol/L",
+        "hr": 72,
+        "rhythm": "normal",
+        "rhythmLabel": "Sinus rhythm",
+        "ecg": "T waves normalizing"
+      },
       "short": "Before she leaves:",
       "scene": "<p>The session ends. Her potassium is 4.6 mmol/L, her glucose 98 mg/dL, and the ECG has improved. Her daughter is waiting to take her home.</p>",
       "prompt": "What do you do before she leaves?",
       "choices": [
-        { "grade": "best", "text": "Confirm she has eaten and that the glucose watch window has passed, give her and her daughter clear warning signs, and report to the attending nephrologist, including the insulin she took at home.",
+        {
+          "grade": "best",
+          "text": "Confirm she ate and the watch window passed, give warning signs, and report.",
           "feedback": "<p>Potassium rebounds after the session as cells release it, and sugar can fall again at home. The nephrologist decides whether she may go and reviews her home insulin, which was given on an empty stomach before dialysis.</p>",
-          "next": "end" },
-        { "grade": "poor", "text": "Her numbers are normal now, so she can go.",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Her numbers are normal now, so she can go.",
           "feedback": "<p>Normal numbers at the end of dialysis do not cover the next few hours. The insulin may still be acting, and potassium rebounds. She goes home only when the nephrologist agrees.</p>",
-          "next": "end" },
-        { "grade": "ok", "text": "Keep her for one more glucose check, then send her home.",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Keep her for one more glucose check after dialysis, and send her home if it is normal.",
           "feedback": "<p>An extra check is reasonable. But the decision to send her home, and changes to her home insulin, belong to the attending nephrologist.</p>",
-          "next": "end" }
+          "next": "end"
+        }
       ]
     },
     "end": {

@@ -6,9 +6,30 @@
   "strip": false,
   "monitorTitle": "Consult board",
   "note": "Fictional patient. Values are illustrative; the physician&rsquo;s orders and your unit&rsquo;s protocol come first.",
-  "labels": { "k": "Potassium", "hco3": "Bicarbonate", "meds": "Medicines", "bowel": "Bowels", "plan": "Plan" },
-  "monitorOrder": ["k", "hco3", "meds", "bowel", "plan"],
-  "monitor": { "k": "6.3 mmol/L (Mon pre-HD)", "hco3": "17 mmol/L", "meds": "Losartan", "bowel": "Not asked", "plan": "—", "alarm": ["k"] },
+  "labels": {
+    "k": "Potassium",
+    "hco3": "Bicarbonate",
+    "meds": "Medicines",
+    "bowel": "Bowels",
+    "plan": "Plan"
+  },
+  "monitorOrder": [
+    "k",
+    "hco3",
+    "meds",
+    "bowel",
+    "plan"
+  ],
+  "monitor": {
+    "k": "6.3 mmol/L (Mon pre-HD)",
+    "hco3": "17 mmol/L",
+    "meds": "Losartan",
+    "bowel": "Not asked",
+    "plan": "—",
+    "alarm": [
+      "k"
+    ]
+  },
   "intro": "<p>Mr. Roberto Lim, 58, is on hemodialysis three times a week. The nephrologist refers him to you because his Monday pre-dialysis potassium was 6.1 mmol/L last week and 6.3 mmol/L today. You see him in the waiting area before his session.</p><p>As you sit down, he says his legs feel heavy this morning and his heart &ldquo;keeps skipping.&rdquo;</p>",
   "start": "n1",
   "nodes": {
@@ -16,18 +37,36 @@
       "short": "Heavy legs, skipped beats:",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Stop the consult and get the nurse and physician now: a high potassium with weakness and an irregular pulse goes to the physician at once.",
+        {
+          "grade": "best",
+          "text": "Stop and get the nurse and physician now.",
           "feedback": "<p>Weakness and palpitations with a potassium of 6.3 can mean the potassium is affecting his heart and muscles. This is not a diet-sheet moment. The physician and nurse act first; your consult can wait an hour.</p>",
           "then": "<p>The nurse puts him on a monitor and the physician starts treatment under the unit&rsquo;s order set, then dialysis. You see him after the session.</p>",
-          "vitals": { "plan": "Physician managed; consult after HD" }, "next": "n2" },
-        { "grade": "harmful", "text": "Finish the consult quickly: give him a low-potassium food list and tell him to mention the symptoms to the nurse.",
+          "vitals": {
+            "plan": "Physician managed; consult after HD"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Finish the consult quickly: give him a low-potassium food list and tell him to mention the symptoms to the nurse.",
           "feedback": "<p>Sending a patient with these symptoms on with a food list delays urgent care. Report at once; do not send him on with a diet sheet.</p>",
           "then": "<p>You stop and call the nurse, who puts him on a monitor. The physician manages him, then dialysis. You see him after the session.</p>",
-          "vitals": { "plan": "Physician managed; consult after HD" }, "next": "n2" },
-        { "grade": "ok", "text": "Tell the nurse when she passes, and carry on with the diet history meanwhile.",
+          "vitals": {
+            "plan": "Physician managed; consult after HD"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "ok",
+          "text": "Tell the nurse when she next passes, and carry on with the diet history so the consult is not wasted.",
           "feedback": "<p>Telling the nurse is right, but not &ldquo;when she passes.&rdquo; Symptoms with a high potassium need the physician at once.</p>",
           "then": "<p>You go and get the nurse. The physician manages him, then dialysis.</p>",
-          "vitals": { "plan": "Physician managed; consult after HD" }, "next": "n2" }
+          "vitals": {
+            "plan": "Physician managed; consult after HD"
+          },
+          "next": "n2"
+        }
       ]
     },
     "n2": {
@@ -35,33 +74,67 @@
       "scene": "<p>After his session he is well and ready to talk.</p>",
       "prompt": "Where do you start the assessment?",
       "choices": [
-        { "grade": "best", "text": "The checklist that puts diet last: was the result real, his medicines and over-the-counter products, bowels, acidosis, glucose, his dialysis attendance and time, then concentrated potassium sources.",
+        {
+          "grade": "best",
+          "text": "The checklist with diet last: result, medicines, bowels, acidosis, glucose, dialysis time, sources.",
           "feedback": "<p>High potassium in kidney failure usually has several causes together, and diet is seldom the only one. Finding the blocked drains often helps more than any food change.</p>",
           "then": "<p>You learn three things: he has left dialysis 45 minutes early twice this month to catch his ride, he goes four days between bowel movements, and he takes a painkiller from the sari-sari store for his back.</p>",
-          "vitals": { "bowel": "Every 4 days", "meds": "Losartan; OTC painkiller (NSAID)" }, "next": "n3" },
-        { "grade": "poor", "text": "A food recall, and a list of the fruits and vegetables to stop.",
+          "vitals": {
+            "bowel": "Every 4 days",
+            "meds": "Losartan; OTC painkiller (NSAID)"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "A detailed three-day food recall, then a list of the high-potassium fruits and vegetables he should stop.",
           "feedback": "<p>Diet is the last item on the checklist, not the first. A blanket ban on fruit and vegetables has no outcome evidence behind it and costs fiber, alkali, and enjoyment.</p>",
           "then": "<p>You go back to the checklist and learn three things: he has left dialysis early twice this month, he goes four days between bowel movements, and he takes a store-bought painkiller for his back.</p>",
-          "vitals": { "bowel": "Every 4 days", "meds": "Losartan; OTC painkiller (NSAID)" }, "next": "n3" }
+          "vitals": {
+            "bowel": "Every 4 days",
+            "meds": "Losartan; OTC painkiller (NSAID)"
+          },
+          "next": "n3"
+        }
       ]
     },
     "n3": {
-      "vitals": { "plan": "Reviewing food sources" },
+      "vitals": {
+        "plan": "Reviewing food sources"
+      },
       "short": "The food side:",
       "scene": "<p>His diet history: a large glass of buko juice every afternoon, &ldquo;lite salt&rdquo; in his cooking because his son read it is good for blood pressure, and vegetables most days.</p>",
       "prompt": "Which food changes come first?",
       "choices": [
-        { "grade": "best", "text": "Stop the lite salt and swap the buko juice for water with calamansi; keep his vegetables.",
+        {
+          "grade": "best",
+          "text": "Stop the lite salt and buko juice; keep his vegetables.",
           "feedback": "<p>Potassium chloride in salt substitutes and the potassium in coconut water are absorbed almost completely and quickly, with nothing he needs. Whole vegetables release potassium more slowly and bring fiber and alkali, which help.</p>",
-          "vitals": { "plan": "Lite salt and buko juice stopped" }, "next": "n4" },
-        { "grade": "poor", "text": "Stop all fruits and vegetables until his potassium is normal.",
+          "vitals": {
+            "plan": "Lite salt and buko juice stopped"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Stop all fruits and vegetables until his potassium is normal.",
           "feedback": "<p>A blanket ban removes fiber and alkali. With his constipation and low bicarbonate, it may make the potassium worse, and it leaves the two concentrated sources in place.</p>",
           "then": "<p>You change course: stop the lite salt and the buko juice, keep the vegetables.</p>",
-          "vitals": { "plan": "Lite salt and buko juice stopped" }, "next": "n4" },
-        { "grade": "ok", "text": "Teach him to boil vegetables and discard the water, and cut his banana to half.",
+          "vitals": {
+            "plan": "Lite salt and buko juice stopped"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Teach him to boil vegetables in plenty of water and discard it, and to cut his daily banana to half.",
           "feedback": "<p>These lower potassium modestly, but leave the two biggest and least useful sources, the lite salt and the buko juice, untouched.</p>",
           "then": "<p>You add the two bigger changes: no lite salt, water instead of buko juice.</p>",
-          "vitals": { "plan": "Lite salt and buko juice stopped" }, "next": "n4" }
+          "vitals": {
+            "plan": "Lite salt and buko juice stopped"
+          },
+          "next": "n4"
+        }
       ]
     },
     "n4": {
@@ -69,33 +142,66 @@
       "scene": "<p>He asks: &ldquo;My neighbor says losartan raises potassium. Should I stop it?&rdquo;</p>",
       "prompt": "What do you say, and what do you report?",
       "choices": [
-        { "grade": "best", "text": "Do not stop it; it protects his heart, and the decision is his physician&rsquo;s. Report to the nephrologist: the potassium values, bicarbonate, the store-bought painkiller, the constipation, the early departures from dialysis, and the food sources you stopped.",
+        {
+          "grade": "best",
+          "text": "Don&rsquo;t stop it; report all the other causes to the nephrologist.",
           "feedback": "<p>Your job is to remove the other causes so the physician can keep the medicine going. The painkiller, the acidosis, the shortened sessions, and laxatives are the physician&rsquo;s and nurse&rsquo;s to act on, but only if you report them.</p>",
-          "vitals": { "plan": "Reported to nephrologist" }, "next": "n5" },
-        { "grade": "harmful", "text": "Yes, stop it until your potassium is down.",
+          "vitals": {
+            "plan": "Reported to nephrologist"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "harmful",
+          "text": "Yes, stop it until your potassium is down.",
           "feedback": "<p>Never advise a patient to stop a medicine. Stopping it for a potassium you can lower in other ways may cost him more than it gains.</p>",
           "then": "<p>You correct yourself, tell him not to stop it, and report everything to the nephrologist.</p>",
-          "vitals": { "plan": "Reported to nephrologist" }, "next": "n5" },
-        { "grade": "ok", "text": "Say you don&rsquo;t know and he should ask his doctor.",
+          "vitals": {
+            "plan": "Reported to nephrologist"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Say you don&rsquo;t know, and that he should ask his doctor about the losartan at his next clinic visit.",
           "feedback": "<p>Deferring to the physician is right, but add that he should not stop it in the meantime, and send the physician the findings that make keeping it possible.</p>",
-          "vitals": { "plan": "Reported to nephrologist" }, "next": "n5" }
+          "vitals": {
+            "plan": "Reported to nephrologist"
+          },
+          "next": "n5"
+        }
       ]
     },
     "n5": {
-      "vitals": { "k": "4.7 mmol/L (4 weeks later)", "hco3": "21 mmol/L", "bowel": "Daily", "plan": "Follow-up", "alarm": [] },
+      "vitals": {
+        "k": "4.7 mmol/L (4 weeks later)",
+        "hco3": "21 mmol/L",
+        "bowel": "Daily",
+        "plan": "Follow-up",
+        "alarm": []
+      },
       "short": "Four weeks later:",
       "scene": "<p>The nephrologist stopped the painkiller, treated the acidosis, and the nurse arranged for him to finish every session. Four weeks later his potassium is 4.7 mmol/L. But his appetite is poor and he has lost 1.5 kilograms of dry weight. His daughter has put a &ldquo;no banana, no kamote&rdquo; list on the refrigerator.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Lift the extra restrictions, protect his intake with foods he likes, keep the lite salt and buko juice out, and tell the nephrologist about the weight loss.",
+        {
+          "grade": "best",
+          "text": "Lift the extra restrictions, protect his intake, and report the weight loss.",
           "feedback": "<p>A controlled potassium and falling intake are the signals to lift restrictions. Old restrictions that nobody lifted are among the most common findings in renal consults. Protecting intake comes first.</p>",
-          "next": "end" },
-        { "grade": "poor", "text": "Keep the list on the refrigerator to be safe.",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Keep the list on the refrigerator to be safe.",
           "feedback": "<p>The causes have been fixed, and he is losing weight. Restrictions without a reason now cost nutrition and enjoyment.</p>",
-          "next": "end" },
-        { "grade": "ok", "text": "Add an oral nutrition supplement and leave the list as it is.",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Add an oral nutrition supplement for the weight loss and leave the list as it is, since his potassium is now good.",
           "feedback": "<p>A supplement may help, but the first step is to let him eat the foods he enjoys again. The restriction no longer has a reason.</p>",
-          "next": "end" }
+          "next": "end"
+        }
       ]
     },
     "end": {

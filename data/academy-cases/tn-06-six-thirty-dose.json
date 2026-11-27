@@ -6,9 +6,27 @@
   "strip": false,
   "monitorTitle": "Transplant clinic board",
   "note": "Fictional patient. Any dose change, substitution, or omission comes only from an authorized prescriber; your program&rsquo;s protocol comes first.",
-  "labels": { "time": "Time", "level": "Tacrolimus sample", "bottles": "Bottles brought", "new": "New medicines", "routed": "Routed to team" },
-  "monitorOrder": ["time", "level", "bottles", "new", "routed"],
-  "monitor": { "time": "Tue 07:40", "level": "Not yet drawn", "bottles": "—", "new": "—", "routed": "—" },
+  "labels": {
+    "time": "Time",
+    "level": "Tacrolimus sample",
+    "bottles": "Bottles brought",
+    "new": "New medicines",
+    "routed": "Routed to team"
+  },
+  "monitorOrder": [
+    "time",
+    "level",
+    "bottles",
+    "new",
+    "routed"
+  ],
+  "monitor": {
+    "time": "Tue 07:40",
+    "level": "Not yet drawn",
+    "bottles": "—",
+    "new": "—",
+    "routed": "—"
+  },
   "intro": "<p>You are the transplant nurse at the morning laboratory window. Mr. Jomar Dizon, 41, is two years after a deceased-donor kidney transplant and takes twice-daily immediate-release tacrolimus, mycophenolate, and prednisone. He is in line for his routine tacrolimus level. You ask the question you ask everyone in this line: &ldquo;Have you taken this morning&rsquo;s tacrolimus?&rdquo; He took it at 6:30 a.m. &ldquo;so I wouldn&rsquo;t forget.&rdquo;</p>",
   "start": "n1",
   "nodes": {
@@ -16,55 +34,120 @@
       "short": "The sample:",
       "prompt": "What do you do about the blood test?",
       "choices": [
-        { "grade": "best", "text": "Write the last evening dose time, the 6:30 a.m. dose, and the collection time on the request, and flag it: this sample will not be a trough.",
+        {
+          "grade": "best",
+          "text": "Write the dose and draw times, and flag it as not a trough.",
           "feedback": "<p>A sample drawn soon after the morning dose is near the peak and can read two or three times the true trough. If it is read as a trough, a correct dose may be cut and the kidney exposed to rejection. Your documentation is part of the test.</p>",
-          "vitals": { "level": "Drawn 07:45; flagged NOT a trough" }, "next": "n2" },
-        { "grade": "poor", "text": "Draw the sample and send it as usual.",
+          "vitals": {
+            "level": "Drawn 07:45; flagged NOT a trough"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Draw the sample and send it as usual.",
           "feedback": "<p>Without the times, the team will read a near-peak level as a trough. One question and two times on the request turn a number into an interpretable result.</p>",
           "then": "<p>You catch it before the sample leaves and add the times and the flag.</p>",
-          "vitals": { "level": "Drawn 07:45; flagged NOT a trough" }, "next": "n2" },
-        { "grade": "ok", "text": "Send him home and ask him to come back tomorrow before his dose.",
+          "vitals": {
+            "level": "Drawn 07:45; flagged NOT a trough"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "ok",
+          "text": "Send him home without drawing and ask him to come back tomorrow before his morning dose.",
           "feedback": "<p>A correctly timed level is the goal, but he may not return, and today&rsquo;s visit still has value if the sample is labeled. Check with the team whether to draw and flag it or rebook, and teach the routine either way.</p>",
           "then": "<p>The team asks you to draw and flag it today and book a correctly timed level.</p>",
-          "vitals": { "level": "Drawn 07:45; flagged NOT a trough" }, "next": "n2" }
+          "vitals": {
+            "level": "Drawn 07:45; flagged NOT a trough"
+          },
+          "next": "n2"
+        }
       ]
     },
     "n2": {
-      "vitals": { "time": "Tue 08:20", "bottles": "Once-daily extended-release generic, taken twice a day", "alarm": ["bottles"] },
+      "vitals": {
+        "time": "Tue 08:20",
+        "bottles": "Once-daily extended-release generic, taken twice a day",
+        "alarm": [
+          "bottles"
+        ]
+      },
       "short": "The bottles:",
       "scene": "<p>You reconcile his bottles against the verified order. The pharmacy ran out of his usual brand last month and gave him a once-daily extended-release tacrolimus generic. He has been taking it twice a day, the way he always took tacrolimus.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Document both sources and the discrepancy, and route it to the transplant team and pharmacist today for a team-directed plan and a follow-up level.",
+        {
+          "grade": "best",
+          "text": "Document the discrepancy and route it to the team and pharmacist today.",
           "feedback": "<p>Immediate-release and extended-release tacrolimus are not interchangeable milligram for milligram, and taking the once-daily product twice a day may double his exposure. The plan, and any dose change, belongs to the team.</p>",
-          "vitals": { "routed": "Formulation error: team and pharmacist today" }, "next": "n3" },
-        { "grade": "harmful", "text": "Tell him to take it once a day from now on.",
+          "vitals": {
+            "routed": "Formulation error: team and pharmacist today"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "harmful",
+          "text": "Tell him to take the new product once a day from now on, since that is what the label says.",
           "feedback": "<p>That is a dose change, which only an authorized prescriber can make. The right dose of the new product may not be his old daily total, and he needs a follow-up level.</p>",
           "then": "<p>You correct yourself, tell him to wait for the team&rsquo;s instruction, and call the team.</p>",
-          "vitals": { "routed": "Formulation error: team and pharmacist today" }, "next": "n3" },
-        { "grade": "poor", "text": "Note it in the chart for the doctor at his next visit.",
+          "vitals": {
+            "routed": "Formulation error: team and pharmacist today"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Note it in the chart for the doctor at his next visit.",
           "feedback": "<p>His next visit may be months away. A formulation error with possible double exposure is routed the same day.</p>",
           "then": "<p>You call the team that morning instead.</p>",
-          "vitals": { "routed": "Formulation error: team and pharmacist today" }, "next": "n3" }
+          "vitals": {
+            "routed": "Formulation error: team and pharmacist today"
+          },
+          "next": "n3"
+        }
       ]
     },
     "n3": {
-      "vitals": { "new": "Health center: &ldquo;six-month cough medicine,&rdquo; 4 days", "alarm": ["new"] },
+      "vitals": {
+        "new": "Health center: &ldquo;six-month cough medicine,&rdquo; 4 days",
+        "alarm": [
+          "new"
+        ]
+      },
       "short": "The cough tablets:",
       "scene": "<p>Asked about other medicines, he mentions that the barangay health center started him on &ldquo;the six-month cough medicine&rdquo; four days ago, four tablets a day. You ask him to read the label: a fixed-dose tuberculosis combination containing rifampicin.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Call the transplant nephrologist today with the drug name and start date, so an urgent level and a plan can be made with the health center.",
+        {
+          "grade": "best",
+          "text": "Call the nephrologist today with the drug and start date.",
           "feedback": "<p>Rifampicin induces tacrolimus metabolism so strongly that levels can fall to near zero within days, and the effect lasts a week or more after it stops. Tuberculosis treatment is essential too, so the team plans it together with the health center.</p>",
-          "vitals": { "routed": "Formulation + rifampicin: nephrologist today" }, "next": "n4" },
-        { "grade": "harmful", "text": "Tell him to stop the tuberculosis tablets until the transplant team sees him.",
+          "vitals": {
+            "routed": "Formulation + rifampicin: nephrologist today"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Tell him to stop the tuberculosis tablets until the transplant team sees him, to protect the kidney.",
           "feedback": "<p>Stopping tuberculosis treatment is not a nursing decision and can harm him and others. Route it to the team the same day.</p>",
           "then": "<p>You take that back, ask him to keep taking his medicines as prescribed until the team calls, and phone the nephrologist.</p>",
-          "vitals": { "routed": "Formulation + rifampicin: nephrologist today" }, "next": "n4" },
-        { "grade": "poor", "text": "Tuberculosis treatment is important; mention it at the next visit.",
+          "vitals": {
+            "routed": "Formulation + rifampicin: nephrologist today"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Tuberculosis treatment is important; mention it at the next visit.",
           "feedback": "<p>Rejection can follow within days of starting rifampicin. This cannot wait for the next visit.</p>",
           "then": "<p>You call the nephrologist that afternoon.</p>",
-          "vitals": { "routed": "Formulation + rifampicin: nephrologist today" }, "next": "n4" }
+          "vitals": {
+            "routed": "Formulation + rifampicin: nephrologist today"
+          },
+          "next": "n4"
+        }
       ]
     },
     "n4": {
@@ -72,38 +155,68 @@
       "scene": "<p>He adds that he has been eating suha (pomelo) every day because it is in season, and taking mefenamic acid for a toothache.</p>",
       "prompt": "What do you do?",
       "choices": [
-        { "grade": "best", "text": "Teach him to avoid pomelo and grapefruit, report the mefenamic acid to the team, ask by name about herbal teas and supplements, and have him tell every prescriber and dentist he has a transplant.",
+        {
+          "grade": "best",
+          "text": "Avoid pomelo, report the painkiller, ask about herbs, tell every prescriber.",
           "feedback": "<p>Pomelo, like grapefruit, can raise tacrolimus levels. Anti-inflammatory painkillers add to its effect on kidney blood flow and potassium. Patients rarely list foods, herbs, or over-the-counter drugs unless you ask by name.</p>",
-          "vitals": { "new": "Rifampicin, pomelo, mefenamic acid: all routed" }, "next": "n5" },
-        { "grade": "ok", "text": "Report the mefenamic acid; pomelo is just fruit.",
+          "vitals": {
+            "new": "Rifampicin, pomelo, mefenamic acid: all routed"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Report the mefenamic acid to the team; pomelo is a fruit, so there is no need to worry about it.",
           "feedback": "<p>Reporting the painkiller is right, but pomelo (suha) is grapefruit&rsquo;s relative and can raise tacrolimus levels.</p>",
-          "vitals": { "new": "Rifampicin, pomelo, mefenamic acid: all routed" }, "next": "n5" },
-        { "grade": "poor", "text": "Nothing; neither is a prescription medicine.",
+          "vitals": {
+            "new": "Rifampicin, pomelo, mefenamic acid: all routed"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Nothing; neither is a prescription medicine.",
           "feedback": "<p>Foods and over-the-counter medicines move tacrolimus too. Ask about them by name, and route what you find.</p>",
-          "vitals": { "new": "Rifampicin, pomelo, mefenamic acid: all routed" }, "next": "n5" }
+          "vitals": {
+            "new": "Rifampicin, pomelo, mefenamic acid: all routed"
+          },
+          "next": "n5"
+        }
       ]
     },
     "n5": {
       "short": "Missed doses:",
       "prompt": "How do you ask about missed doses?",
       "choices": [
-        { "grade": "best", "text": "&ldquo;Many people miss a dose now and then. In the last month, how many times has that happened to you?&rdquo;",
+        {
+          "grade": "best",
+          "text": "&ldquo;Many people miss a dose. How many times last month?&rdquo;",
           "feedback": "<p>Asked without judgment, the question gets an honest answer. Nonadherence is common, highest among kidney recipients in a meta-analysis, and strongly associated with later graft failure.</p>",
           "then": "<p>He admits he missed four evening doses when he worked late shifts. You route this with the rest and teach a plan he can follow on late shifts, as the team advises.</p>",
-          "next": "end" },
-        { "grade": "poor", "text": "&ldquo;You don&rsquo;t miss doses, do you?&rdquo;",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "&ldquo;You don&rsquo;t miss doses, do you?&rdquo;",
           "feedback": "<p>A question that expects &ldquo;no&rdquo; gets &ldquo;no.&rdquo; Normalize missing doses, then ask how often.</p>",
           "then": "<p>He says &ldquo;no.&rdquo; Later, asked differently, he admits four missed evening doses on late shifts.</p>",
-          "next": "end" },
-        { "grade": "ok", "text": "Count the capsules left in his bottles.",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Count the capsules left in his bottles against the dispensing date to estimate how many he has missed.",
           "feedback": "<p>A pill count can help, but the formulation switch makes it hard to read. Ask openly, without judgment, as well.</p>",
           "then": "<p>The count is confusing; when you ask, he tells you about four missed evening doses.</p>",
-          "next": "end" }
+          "next": "end"
+        }
       ]
     },
     "end": {
       "end": true,
-      "vitals": { "time": "Tue 15:00", "routed": "Team plan received; level booked" },
+      "vitals": {
+        "time": "Tue 15:00",
+        "routed": "Team plan received; level booked"
+      },
       "title": "The plan",
       "text": "<p>The transplant nephrologist gives a written plan for the formulation, coordinates his tuberculosis treatment with the health center with close level monitoring, and books a correctly timed level. Mr. Dizon repeats back the trough routine (&ldquo;bring my tablets, take them after the blood is drawn&rdquo;) and the plan. You document the reconciliation, the interactions found, and the teach-back.</p>"
     }
