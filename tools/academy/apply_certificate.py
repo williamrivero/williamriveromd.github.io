@@ -30,6 +30,11 @@ PILOT = None   # rolled out to every end-of-course examination (Dr. Rivero, Nov 
 TAG_RE = re.compile(r'\n?<script src="[^"]*assets/' + NAME + r'\.[0-9a-f]{10}\.js"[^>]*></script>')
 PROG = "academy-progress"   # module-quiz recorder on every module page of a track that has a final exam
 PROG_RE = re.compile(r'\n?<script src="[^"]*assets/' + PROG + r'\.[0-9a-f]{10}\.js" defer></script>')
+def is_copy(name):
+    """iCloud / Finder conflict copies ("page 2.html") are never real pages (Nov 27 2026)."""
+    return bool(re.search(r" \d+(\.[^.]+)?$", name))
+
+
 LIST_RE = re.compile(r'\n?<script type="application/json" id="rcm-cert-modules">.*?</script>', re.S)
 
 
@@ -85,7 +90,7 @@ def add_howto(text, n_modules):
 
 
 def module_pages(exam_name):
-    return sorted(ACADEMY.glob(exam_name[: -len("-final-exam.html")] + "-[0-9][0-9]-*.html"))
+    return sorted(f for f in ACADEMY.glob(exam_name[: -len("-final-exam.html")] + "-[0-9][0-9]-*.html") if not is_copy(f.name))
 
 
 def module_list(exam_name):
@@ -107,6 +112,8 @@ def study_minutes(exam_name):
     prefix = exam_name[: -len("-final-exam.html")]
     words = 0
     for f in ACADEMY.glob(prefix + "-[0-9][0-9]-*.html"):
+        if is_copy(f.name):
+            continue
         m = re.search(r"<main[^>]*>(.*?)</main>", f.read_text(encoding="utf-8"), re.S)
         if not m:
             continue
@@ -151,7 +158,7 @@ def main():
     dry = "--dry-run" in sys.argv
     hashed = bundle(dry)
     prog = fingerprint(PROG, dry)
-    exams = [f.name for f in ACADEMY.glob("*-final-exam.html") if wanted(f.name)]
+    exams = [f.name for f in ACADEMY.glob("*-final-exam.html") if wanted(f.name) and not is_copy(f.name)]
     module_files = {p.name for e in exams for p in module_pages(e)}
     changed = 0
     for f in sorted(ACADEMY.glob("*.html")):

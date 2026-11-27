@@ -27,6 +27,8 @@ DRY = "--dry-run" in sys.argv
 
 
 def is_academy(name):
+    if re.search(r" \d+\.html$", name):   # iCloud "page 2.html" copies are never academy pages
+        return False
     return name == LANDING or (name.endswith(".html") and any(name == p + ".html" or name.startswith(p + "-") for p in PREFIXES))
 
 

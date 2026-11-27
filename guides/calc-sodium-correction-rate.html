@@ -2249,7 +2249,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 <div class="mdc-instructions"><span class="mdc-instr-label">Instructions</span>
 <ol style="margin:0 0 8px 1.1em;padding:0;line-height:1.8;">
 <li>Enter the current measured serum Na⁺ (mEq/L), body weight, and the total-body-water fraction (sex/age) — these set total body water.</li>
-<li>Enter the <strong>time interval</strong> (hours) over which the sources are given, and set <strong>duration</strong> (chronic vs. acute) and any <strong>high-ODS risk factors</strong> (alcoholism, malnutrition, K⁺ &lt; 3.0, liver disease) — these set the safe ceiling (6 / 8 / 12 mEq/L per 24 h).</li>
+<li>Enter the <strong>time interval</strong> (hours) over which the sources are given, and set <strong>duration</strong> (chronic vs. acute) and any <strong>high-ODS risk factors</strong> (alcoholism, malnutrition, K⁺ &lt; 3.0, liver disease) — the limit is the site standard for every patient (European guideline, 2014): no more than +10 mEq/L in the first 24 h and +8 mEq/L in each 24 h after. High-risk patients get the same limit, but aim well below it and check sodium more often.</li>
 <li>Add up to <strong>three sodium sources</strong> in any combination — IV saline (3% / 2% / 1.5% / NS) and/or oral NaCl / NaHCO₃ tablets — each with its dose (mL for fluids, number of tablets for oral). Leave unused slots on “— none —”.</li>
 <li>Read the live result: the <strong>combined ΔNa⁺</strong> from all sources, predicted serum Na⁺, the correction rate, and the projected 24-h rise versus the safe ceiling (green = within, red = exceeds).</li>
 <li>Treat the ceiling as a hard limit — if exceeded, reduce a source, slow the rate, or extend the interval, and recheck Na⁺ every 2–4 h.</li>
@@ -2357,7 +2357,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
     <option value="no">No high-risk factors</option>
     <option value="yes">Yes — alcoholism, malnutrition, K⁺ &lt;3.0, liver disease</option>
   </select>
-  <div class="field-hint">High-risk → cap 6 mEq/L per 24 h.</div>
+  <div class="field-hint">High risk: same limit; aim well below it and recheck often.</div>
 </div>
 </div>
 
@@ -2472,7 +2472,7 @@ html[data-theme="dark"] .mdc-instructions{border-left-color:var(--teal);}
 </tbody>
 </table>
 <h3 class="mdc-sub">Evidence &amp; References</h3>
-<p>The correction-rate limits derive from retrospective and prospective case series linking rapid correction to ODS and from the landmark 2014 European clinical practice guideline (Spasovski et al.) and the 2015 NEJM review by Sterns. The Adrogué–Madias 2000 NEJM review remains the standard reference for pathophysiology and management targets. The high-risk 6 mEq/L ceiling is supported by multiple case series showing ODS events at rates below 10 mEq/24 h in patients with alcohol use disorder, malnutrition, and severe hypokalemia.</p>
+<p>The correction-rate limits derive from retrospective and prospective case series linking rapid correction to ODS and from the landmark 2014 European clinical practice guideline (Spasovski et al.) and the 2015 NEJM review by Sterns. The Adrogué–Madias 2000 NEJM review remains the standard reference for pathophysiology and management targets. Site standard (Nov 27 2026): the European limits (Spasovski et al., 2014) for every patient, +10 mEq/L in the first 24 h and +8 mEq/L in each 24 h after. Some experts advise a lower ceiling (6 to 8 mEq/L per 24 h) at the highest risk, because case series show ODS events below 10 mEq/24 h in patients with alcohol use disorder, malnutrition, and severe hypokalemia; the calculator flags these patients so you can aim well below the limit.</p>
 <ol style="margin:8px 0 0 1.1em;padding:0;line-height:1.85;font-size:.94rem;">
 <li>Adrogué HJ, Madias NE. Hyponatremia. <em>N Engl J Med.</em> 2000;342(21):1581–1589.</li>
 <li>Sterns RH. Disorders of plasma sodium — causes, consequences, and correction. <em>N Engl J Med.</em> 2015;372(1):55–65.</li>
@@ -2639,8 +2639,8 @@ function calcHNA(){
 
   var tbw=wt*frac;
   var isHighRisk=risk==='yes'||cur<105;
-  var maxPer24=dur==='acute'?12:(isHighRisk?6:8);
-  var maxPer48=dur==='acute'?24:18;
+  var maxPer24=10;   // site standard (European guideline 2014), Dr. Rivero, Nov 27 2026
+  var maxPer48=18;   // +10 first 24 h, then +8
 
   // sum up to three sodium sources (IV fluids add Na + volume; tablets add Na only)
   var totalNa=0, totalVolL=0, anySource=false, parts=[];
@@ -2679,11 +2679,11 @@ function calcHNA(){
   } else {
     cards='<div class="calc-metric-card"><div class="cmv">'+maxPer24+'</div><div class="cml">Max rise / 24 h</div><div class="cmt">'+(dur==='acute'?'Acute':'Chronic')+(isHighRisk?' · high-risk':'')+'</div></div>'+
       '<div class="calc-metric-card"><div class="cmv">'+Math.min(cur+maxPer24,145).toFixed(0)+'</div><div class="cml">Na⁺ ceiling 24 h</div><div class="cmt">do not exceed</div></div>'+
-      '<div class="calc-metric-card"><div class="cmv">'+maxPer48+'</div><div class="cml">Max rise / 48 h</div><div class="cmt">chronic</div></div>';
+      '<div class="calc-metric-card"><div class="cmv">'+maxPer48+'</div><div class="cml">Max rise / 48 h</div><div class="cmt">+10, then +8</div></div>';
     verdict='Add one or more <strong>sodium sources</strong> (IV and/or oral) with a dose, plus a <strong>time interval</strong>, to predict the combined sodium rise and correction rate.';
   }
   if(isHighRisk){
-    alertBox='<div style="background:var(--red-soft);border:1px solid rgba(185,28,28,.25);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--red);"><strong>High ODS risk:</strong> Limit correction to 6 mEq/L/day; check Na⁺ every ~6 h. Keep desmopressin (DDAVP) 1–2 mcg IV/SC available to halt overcorrection.</div>';
+    alertBox='<div style="background:var(--red-soft);border:1px solid rgba(185,28,28,.25);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:var(--red);"><strong>High ODS risk:</strong> Same 10 mEq/L limit, but aim well below it (many experts use 6 to 8 mEq/L per 24 h); check Na⁺ every ~6 h. Keep desmopressin (DDAVP) 1–2 mcg IV/SC available to halt overcorrection.</div>';
   }
   showCalcResult(el,
     '<div class="calc-metrics-row">'+cards+'</div>'+
