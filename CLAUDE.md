@@ -1072,6 +1072,14 @@ answer to a due deck card in a module quiz also promotes it. `academy/review-dec
 landing page's head, header and footer; noindex; shared in Schola via `SHARED_PAGES` in `build_schola.py`) runs a 5-question
 "shift drill" or up to 10 due cards, shows boxes, manage / remove / back up / restore / clear. The landing page shows a
 "due today" card when anything is due. Not recorded for the certificate.
+**Start-of-shift drill (Nov 27 2026, Dr. Rivero):** the same script, now tagged on EVERY academy page (hubs and trainers
+too; `wanted()` in apply_review.py), serves the five most overdue cards in a dialog (`.rcm-sd`, z-index 100010, above the
+resume prompt and notes drawer; bottom sheet on phones) on the first Academy page opened in a new shift: 8 h or more
+since the last offer (`SHIFT_GAP`), at least one card due, never on final exams, the deck page or print. The offer time
+is claimed before drawing, so a second tab does not repeat it. "Not this shift" / × / Esc / scrim wait for the next
+shift; "Stop these pop-ups" turns it off; the deck page has a checkbox to turn it back on. State in localStorage
+`rcm-review-shift` `{at, off}` (device setting, not in the deck backup). Drill engine `makeDrill(root, opts)` is shared
+by the deck page and the dialog.
 **Study tools section on the landing page (Nov 27 2026, Dr. Rivero):** `tools/academy/apply_study_tools.py` (run by `publish_academy.py`) puts "Study tools in every module" (`#tools`, between STUDY-TOOLS markers, after #use, nav pill "Study tools") on academy/index.html: one card each for Listen, voices, figures while listening, Figure slideshow, highlights and notes, bookmarks, resume, offline with Schola, Light/Dim/Dark/E-paper, print, plus a driving note and a privacy line. Edit the `CARDS` text there when a tool changes; inline emphasis uses `<strong>` (`.tc-card b` is the block title).
 **Occupational and Physical Therapist track (Nov 25 2026):** Ancillary Staff subtrack, package `tools/techcourses/otpt/` (content mNN.py, banks quizbank.py = handoff JSON + quiz_new.py, situations.py, figs.py, refs.py). Rebuild: `python3 generate_tech_courses.py --course otpt --patch`, then `python3 tools/techcourses/otpt/expand_acronyms.py` (first-use acronym pass; the generator's auto_expand misses first uses in objectives, quiz stems and link titles) and, only if the landing card changes, `python3 tools/techcourses/otpt/wire_landing.py` (idempotent OTPT markers in academy/index.html). Toolkit: `python3 tools/techcourses/otpt/build_toolkit.py` builds guides/calc-renal-rehabilitation-toolkit.html (core tested by `node tools/test_otpt_calcs.cjs`). The track sets no universal exercise-clearance numbers: parameters come from the physician and the unit sheet. Images (75, audited) come from /Volumes/Storage/Renal Care Academy/OT-PT/images; share cards are images/og/<slug>-og.jpg.
 

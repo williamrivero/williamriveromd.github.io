@@ -8,6 +8,8 @@
       (1, 3, 7, 14, 30 days); after the last box it counts as learned and leaves the deck. A wrong answer
       sends it back to box 1, due tomorrow (Leitner system).
    3. The Academy landing page shows a "due today" card when anything is due.
+   4. Shift drill: the first Academy page opened in a new shift (8+ hours after the last offer) serves the five
+      most overdue cards in a dialog, when any are due (Dr. Rivero, Nov 27 2026). Off switch on the deck page.
 
    Stored only in localStorage "rcm-review" (no account, no network), like notes and bookmarks. Edit this
    file; tools/academy/apply_review.py fingerprints it as assets/academy-review.<hash>.js. */
@@ -182,6 +184,184 @@
     main.insertBefore(box, main.firstChild);
   }
 
+  /* ── Drill engine (shared by the deck page and the shift pop-up) ──
+     opts.onExit(msg) runs when the round ends or the learner stops; opts.exitLabel names the stop button. */
+  function makeDrill(root, opts) {
+    var session = null, d = load();
+    function start(keys, practice) {
+      d = load();
+      session = { keys: keys.slice(), i: 0, right: 0, again: [], practice: !!practice, total: keys.length };
+      ask();
+    }
+    function ask() {
+      root.innerHTML = "";
+      if (session.i >= session.keys.length) {
+        if (session.again.length) { session.keys = session.keys.concat(session.again); session.again = []; session.retry = true; }
+        else return done();
+      }
+      var k = session.keys[session.i], c = d.cards[k];
+      if (!c) { session.i++; return ask(); }
+      var q = el("div", "rcm-rv-q");
+      q.appendChild(el("div", "rcm-rv-prog", (session.i < session.total ? "Question " + (session.i + 1) + " of " + session.total : "Second try") + (session.practice ? " · practice, not scored" : " · Box " + c.b)));
+      var meta = el("div", "rcm-rv-meta"); meta.textContent = (c.t ? c.t + " · " : "") + c.m + " · ";
+      var a = el("a", null, "open module"); a.href = c.u + "#quiz"; meta.appendChild(a); q.appendChild(meta);
+      var stem = el("p", "rcm-rv-stem", c.s); stem.setAttribute("tabindex", "-1"); q.appendChild(stem);
+      var box = el("div", "rcm-rv-opts"), order = c.o.map(function (o, i) { return i; });
+      for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = order[i]; order[i] = order[j]; order[j] = t; }
+      order.forEach(function (oi) {
+        var b = el("button", "rcm-rv-opt", c.o[oi][0]); b.type = "button";
+        b.addEventListener("click", function () { answer(k, c, oi, box, q, b); });
+        box.appendChild(b);
+      });
+      q.appendChild(box); root.appendChild(q);
+      var quit = el("button", "rcm-rv-btn sec", opts.exitLabel || "Stop and go back"); quit.type = "button";
+      quit.addEventListener("click", function () { opts.onExit(session.i ? "Stopped. Your answers so far are saved." : ""); });
+      var acts = el("div", "rcm-rv-acts"); acts.appendChild(quit); root.appendChild(acts);
+      stem.focus({ preventScroll: true });
+      if (q.getBoundingClientRect().top < 0) q.scrollIntoView({ block: "start" });
+    }
+    function answer(k, c, oi, box, q, btn) {
+      var right = c.o[oi][1] === 1, btns = box.querySelectorAll(".rcm-rv-opt"), rat = "";
+      Array.prototype.forEach.call(btns, function (b) { b.disabled = true; });
+      c.o.forEach(function (o) { if (o[1]) { rat = o[2]; Array.prototype.forEach.call(btns, function (b) { if (b.textContent === o[0]) b.classList.add("right"); }); } });
+      if (!right) btn.classList.add("wrong");
+      var fb = el("div", "rcm-rv-fb"), head = el("b"), dd = load(), live = dd.cards[k], note = "";
+      if (!session.practice && !session.retry && live) {
+        if (right) { var res = promote(dd, k, live); session.right++; note = res === "learned" ? "Learned: it leaves the deck." : "Moves to box " + live.b + ", due " + fmtDate(live.due) + "."; }
+        else { live.b = 1; live.n = (live.n || 0) + 1; live.due = dueAt(1); session.again.push(k); note = "Back to box 1. You will see it again at the end of this round and tomorrow."; }
+        logDay(dd, right); save(dd); d = dd;
+      } else if (!right && !session.retry && session.practice) { note = "Practice only: the deck is unchanged."; }
+      head.textContent = (right ? "Correct. " : "Not the best answer. ") + note;
+      fb.appendChild(head);
+      if (rat) fb.appendChild(el("span", null, rat));
+      q.appendChild(fb);
+      var next = el("button", "rcm-rv-btn", "Next"); next.type = "button";
+      next.addEventListener("click", function () { session.i++; ask(); });
+      var acts = el("div", "rcm-rv-acts"); acts.appendChild(next); q.appendChild(acts);
+      next.focus({ preventScroll: true });
+    }
+    function done() {
+      opts.onExit(session.practice ? "Practice round finished." :
+        "Round finished: " + session.right + " of " + session.total + " right on the first try.", true);
+    }
+    return { start: start };
+  }
+
+  /* ── 4. Shift drill pop-up ──
+     The first Academy page a learner opens in a new shift (8 or more hours after the last offer) serves the five
+     most overdue cards in a dialog, if any are due. "Not this shift" (or Esc) waits for the next shift. Never on a
+     final examination, the deck page, while printing, or when the learner turned it off on the deck page.
+     State: localStorage "rcm-review-shift" {at: last offer time, off: 1 when turned off}; kept out of the deck
+     backup on purpose (it belongs to the device, not the deck). */
+  var SHIFT_KEY = "rcm-review-shift", SHIFT_GAP = 8 * 36e5;
+  function shiftState() { try { return JSON.parse(localStorage.getItem(SHIFT_KEY) || "{}") || {}; } catch (e) { return {}; } }
+  function setShift(o) { try { localStorage.setItem(SHIFT_KEY, JSON.stringify(o)); } catch (e) {} }
+  function dueKeys(d) {
+    return Object.keys(d.cards).filter(function (k) { return isDue(d.cards[k]); })
+      .sort(function (a, b) { return d.cards[a].due - d.cards[b].due || d.cards[a].b - d.cards[b].b; });
+  }
+  function shiftDrill() {
+    var p = location.pathname;
+    if (/final-exam|review-deck/.test(p) || /[?&]print\b/.test(location.search)) return;
+    var st = shiftState(), now = Date.now();
+    if (st.off || (st.at && now - st.at < SHIFT_GAP && st.at <= now)) return;
+    var d = load(), keys = dueKeys(d);
+    if (!keys.length) return;
+    setShift({ at: now });   // claim this shift first, so another tab does not offer it too
+    css(); shiftCss();
+    var prev = document.activeElement;
+    var scrim = el("div", "rcm-sd-scrim"), dlg = el("div", "rcm-sd");
+    dlg.setAttribute("role", "dialog"); dlg.setAttribute("aria-modal", "true"); dlg.setAttribute("aria-labelledby", "rcm-sd-h");
+    var head = el("div", "rcm-sd-head"), h = el("h2", null, "Start-of-shift drill"); h.id = "rcm-sd-h";
+    var x = el("button", "rcm-sd-x", "×"); x.type = "button"; x.setAttribute("aria-label", "Not this shift");
+    head.appendChild(h); head.appendChild(x);
+    var body = el("div", "rcm-sd-body");
+    dlg.appendChild(head); dlg.appendChild(body); scrim.appendChild(dlg); document.body.appendChild(scrim);
+    document.documentElement.classList.add("rcm-sd-open");
+    function close() {
+      scrim.remove(); document.documentElement.classList.remove("rcm-sd-open");
+      document.removeEventListener("keydown", onKey, true);
+      if (prev && prev.focus) try { prev.focus({ preventScroll: true }); } catch (e) {}
+    }
+    function onKey(e) {
+      if (e.key === "Escape") { e.preventDefault(); close(); return; }
+      if (e.key !== "Tab") return;
+      var f = dlg.querySelectorAll("button:not([disabled]),a[href],select,input");
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    document.addEventListener("keydown", onKey, true);
+    x.addEventListener("click", close);
+    scrim.addEventListener("click", function (e) { if (e.target === scrim) close(); });
+    var n = Math.min(5, keys.length), round = keys.slice(0, n);
+    function intro() {
+      body.innerHTML = "";
+      body.appendChild(el("p", "rcm-sd-lead", (keys.length === 1 ? "1 question you missed is" : keys.length + " questions you missed are") +
+        " due for review. " + ["", "One question", "Two questions", "Three questions", "Four questions", "Five questions"][n] +
+        ", about " + Math.max(1, Math.round(n * 0.6)) + (n * 0.6 < 1.5 ? " minute" : " minutes") + ", before you start."));
+      var acts = el("div", "rcm-rv-acts");
+      var go = el("button", "rcm-rv-btn", "Start the drill"); go.type = "button";
+      var later = el("button", "rcm-rv-btn sec", "Not this shift"); later.type = "button";
+      go.addEventListener("click", function () { drill.start(round); });
+      later.addEventListener("click", close);
+      acts.appendChild(go); acts.appendChild(later); body.appendChild(acts);
+      var foot = el("p", "rcm-sd-foot");
+      foot.appendChild(document.createTextNode("Served once a shift from your "));
+      var a = el("a", null, "review deck"); a.href = DECK_URL; foot.appendChild(a);
+      foot.appendChild(document.createTextNode(", stored only on this device. "));
+      var off = el("button", "rcm-sd-link", "Stop these pop-ups"); off.type = "button";
+      off.addEventListener("click", function () {
+        setShift({ at: Date.now(), off: 1 });
+        body.innerHTML = "";
+        body.appendChild(el("p", "rcm-sd-lead", "Shift drills are off on this device. Your deck still collects missed questions; turn the drills back on from the review deck page."));
+        var ok = el("button", "rcm-rv-btn", "Close"); ok.type = "button"; ok.addEventListener("click", close);
+        var w = el("div", "rcm-rv-acts"); w.appendChild(ok); body.appendChild(w); ok.focus();
+      });
+      foot.appendChild(off);
+      body.appendChild(foot);
+      go.focus({ preventScroll: true });
+    }
+    var drill = makeDrill(body, {
+      exitLabel: "Stop for now",
+      onExit: function (msg, finished) {
+        body.innerHTML = "";
+        var left = dueKeys(load()).length;
+        body.appendChild(el("p", "rcm-sd-lead", (msg || "Stopped.") + (finished && left ? " " + left + (left === 1 ? " more card is" : " more cards are") + " due today on the review deck." : "")));
+        var acts = el("div", "rcm-rv-acts");
+        var back = el("button", "rcm-rv-btn", /academy\/?(index(\.html)?)?$/.test(p) ? "Back to the Academy" : "Back to this page"); back.type = "button";
+        back.addEventListener("click", close);
+        var deck = el("a", "rcm-rv-btn sec", "Open the review deck"); deck.href = DECK_URL;
+        acts.appendChild(back); acts.appendChild(deck); body.appendChild(acts);
+        back.focus({ preventScroll: true });
+      }
+    });
+    intro();
+  }
+  function shiftCss() {
+    if (document.getElementById("rcm-sd-css")) return;
+    var s = el("style"); s.id = "rcm-sd-css";
+    s.textContent = [
+      "html.rcm-sd-open,html.rcm-sd-open body{overflow:hidden}",
+      ".rcm-sd-scrim{position:fixed;inset:0;z-index:100010;background:rgba(10,20,40,.55);display:flex;align-items:center;justify-content:center;padding:16px}",
+      ".rcm-sd{background:var(--bg,#fff);color:var(--text);border-radius:16px;border-top:6px solid var(--purple,#4B3280);box-shadow:0 18px 50px rgba(0,0,0,.35);width:min(640px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;padding:4px 20px 18px}",
+      ".rcm-sd-head{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;background:inherit;padding:12px 0 4px;z-index:1}",
+      ".rcm-sd-head h2{font-family:Inter,system-ui,sans-serif;font-size:19px;margin:0;color:var(--text)}",
+      ".rcm-sd-x{font:inherit;font-size:26px;line-height:1;background:none;border:0;color:var(--text-muted);cursor:pointer;padding:4px 8px;border-radius:8px}",
+      ".rcm-sd-x:focus-visible,.rcm-sd-link:focus-visible{outline:3px solid var(--gold-light);outline-offset:2px}",
+      ".rcm-sd-lead{font-size:16px;line-height:1.6;color:var(--text-mid);margin:8px 0 4px}",
+      ".rcm-sd-foot{font-size:13.5px;color:var(--text-muted);margin:6px 0 0;line-height:1.55}",
+      ".rcm-sd-foot a,.rcm-sd .rcm-rv-meta a{color:var(--teal)}",
+      "html[data-theme=\"dark\"] .rcm-sd-foot a,html[data-theme=\"dark\"] .rcm-sd-link,html[data-theme=\"dark\"] .rcm-sd .rcm-rv-meta a{color:#7fd3d9}",
+      ".rcm-sd-link{font:inherit;background:none;border:0;padding:0;color:var(--teal);text-decoration:underline;cursor:pointer}",
+      ".rcm-sd .rcm-rv-q{margin:8px 0}",
+      "@media (max-width:640px){.rcm-sd-scrim{align-items:flex-end;padding:0}.rcm-sd{border-radius:16px 16px 0 0;max-height:92vh;max-height:92dvh;padding:2px 16px 16px}}",
+      "@media print{.rcm-sd-scrim{display:none !important}}"
+    ].join("\n");
+    document.head.appendChild(s);
+  }
+
   /* ── 2. The review deck page ── */
   function deckPage(root) {
     css();
@@ -240,6 +420,7 @@
       root.appendChild(bx);
       var bl = el("div", "rcm-rv-boxl"); ["Box 1 · 1 day", "Box 2 · 3 days", "Box 3 · 7 days", "Box 4 · 14 days", "Box 5 · 30 days"].forEach(function (t) { bl.appendChild(el("span", null, t)); });
       root.appendChild(bl);
+      root.appendChild(shiftSetting());
       root.appendChild(manage());
       root.appendChild(privacy());
       if (location.hash === "#drill" && dueKeys.length) { history.replaceState(null, "", location.pathname); start(dueKeys.slice(0, 5)); }
@@ -297,73 +478,27 @@
       det.appendChild(body); wrap.appendChild(det);
       return wrap;
     }
+    function shiftSetting() {
+      var st = shiftState(), lab = el("label", "rcm-rv-note"), cb = el("input");
+      cb.type = "checkbox"; cb.checked = !st.off; cb.style.cssText = "margin-right:8px;width:18px;height:18px;vertical-align:-3px";
+      cb.addEventListener("change", function () { var o = shiftState(); if (cb.checked) delete o.off; else o.off = 1; setShift(o); });
+      lab.appendChild(cb);
+      lab.appendChild(document.createTextNode("Serve a 5-question drill at the start of each shift (the first Academy page I open 8 or more hours after the last one, when cards are due)"));
+      lab.style.display = "block";
+      return lab;
+    }
     function privacy() {
       return el("p", "rcm-rv-note", "Your deck stays in this browser on this device. Nothing is sent anywhere. On iPhone and iPad the Schola Home Screen app keeps a separate deck from Safari. Use Back up and Restore to move it.");
     }
-    function start(keys, practice) {
-      session = { keys: keys.slice(), i: 0, right: 0, again: [], practice: !!practice, total: keys.length };
-      ask();
-    }
-    function ask() {
-      root.innerHTML = "";
-      if (session.i >= session.keys.length) {
-        if (session.again.length) { session.keys = session.keys.concat(session.again); session.again = []; session.retry = true; }
-        else return done();
-      }
-      var k = session.keys[session.i], c = d.cards[k];
-      if (!c) { session.i++; return ask(); }
-      var q = el("div", "rcm-rv-q");
-      var prog = el("div", "rcm-rv-prog", (session.i < session.total ? "Question " + (session.i + 1) + " of " + session.total : "Second try") + (session.practice ? " · practice, not scored" : " · Box " + c.b));
-      q.appendChild(prog);
-      var meta = el("div", "rcm-rv-meta"); meta.textContent = (c.t ? c.t + " · " : "") + c.m + " · ";
-      var a = el("a", null, "open module"); a.href = c.u + "#quiz"; meta.appendChild(a); q.appendChild(meta);
-      var stem = el("p", "rcm-rv-stem", c.s); stem.setAttribute("tabindex", "-1"); q.appendChild(stem);
-      var opts = el("div", "rcm-rv-opts"), order = c.o.map(function (o, i) { return i; });
-      for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = order[i]; order[i] = order[j]; order[j] = t; }
-      order.forEach(function (oi) {
-        var o = c.o[oi], b = el("button", "rcm-rv-opt", o[0]); b.type = "button";
-        b.addEventListener("click", function () { answer(k, c, oi, opts, q, b); });
-        opts.appendChild(b);
-      });
-      q.appendChild(opts); root.appendChild(q);
-      var quit = el("button", "rcm-rv-btn sec", "Stop and go back"); quit.type = "button";
-      quit.addEventListener("click", function () { home(); });
-      var acts = el("div", "rcm-rv-acts"); acts.appendChild(quit); root.appendChild(acts);
-      stem.focus({ preventScroll: true });
-      if (q.getBoundingClientRect().top < 0) q.scrollIntoView({ block: "start" });
-    }
-    function answer(k, c, oi, opts, q, btn) {
-      var right = c.o[oi][1] === 1, btns = opts.querySelectorAll(".rcm-rv-opt"), rat = "";
-      Array.prototype.forEach.call(btns, function (b) { b.disabled = true; });
-      c.o.forEach(function (o, i) { if (o[1]) { rat = o[2]; Array.prototype.forEach.call(btns, function (b) { if (b.textContent === o[0]) b.classList.add("right"); }); } });
-      if (!right) btn.classList.add("wrong");
-      var fb = el("div", "rcm-rv-fb"), head = el("b");
-      var dd = load(), live = dd.cards[k], note = "";
-      if (!session.practice && !session.retry && live) {
-        if (right) { var res = promote(dd, k, live); session.right++; note = res === "learned" ? "Learned: it leaves the deck." : "Moves to box " + live.b + ", due " + fmtDate(live.due) + "."; }
-        else { live.b = 1; live.n = (live.n || 0) + 1; live.due = dueAt(1); session.again.push(k); note = "Back to box 1. You will see it again at the end of this round and tomorrow."; }
-        logDay(dd, right); save(dd); d = dd;
-      } else if (!right && !session.retry && session.practice) { note = "Practice only: the deck is unchanged."; }
-      head.textContent = (right ? "Correct. " : "Not the best answer. ") + note;
-      fb.appendChild(head);
-      if (rat) fb.appendChild(el("span", null, rat));
-      q.appendChild(fb);
-      var next = el("button", "rcm-rv-btn", "Next"); next.type = "button";
-      next.addEventListener("click", function () { session.i++; ask(); });
-      var acts = el("div", "rcm-rv-acts"); acts.appendChild(next); q.appendChild(acts);
-      next.focus({ preventScroll: true });
-    }
-    function done() {
-      var msg = session.practice ? "Practice round finished." :
-        "Round finished: " + session.right + " of " + session.total + " right on the first try.";
-      home(msg);
-    }
+    var drill = makeDrill(root, { onExit: function (msg) { home(msg); } });
+    function start(keys, practice) { d = load(); drill.start(keys, practice); }
     home();
   }
 
   function init() {
     hookQuiz();
     landing();
+    setTimeout(shiftDrill, 700);   // after the page's own prompts (resume, update flags) have drawn
     var root = document.getElementById("rcm-review-app");
     if (root) deckPage(root);
   }

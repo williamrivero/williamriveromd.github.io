@@ -9,7 +9,8 @@ This patcher:
   1. fingerprints it as assets/academy-review.<hash>.js (older copies pruned; _headers caches
      /assets/academy-review.* immutable);
   2. writes academy/review-deck.html (the deck page, built on the landing page's head, header and footer);
-  3. tags the script on every academy page with a self-assessment (#nc-quiz), the landing page, and the deck page.
+  3. tags the script on every academy page (Nov 27 2026: hubs and trainers too, so the start-of-shift drill
+     can be served on whichever Academy page a learner opens first; the script itself skips final exams).
 
 Run after every publish (publish_academy.py does, before build_schola.py, which also saves the deck page offline).
 
@@ -80,7 +81,7 @@ MAIN = """
   <section class="rcm-rv-how" id="how">
     <h2>How it works</h2>
     <p>Every time you check a module self-assessment or a final examination, each question you missed is copied here. Reviewing at growing intervals is one of the most reliable ways to make learning last: a card you answer right moves up one box and comes back later (after 1, 3, 7, 14, then 30 days). A card you miss goes back to box 1 and returns tomorrow. Five right answers in a row and it counts as learned.</p>
-    <p>A <b>shift drill</b> of five questions takes about three minutes: a good habit before a shift or during a break. Answering a deck question correctly in a module&rsquo;s own self-assessment also counts as a review.</p>
+    <p>A <b>shift drill</b> of five questions takes about three minutes. When cards are due, it is served automatically on the first Academy page you open at the start of each shift (8 or more hours after the last one); &ldquo;Not this shift&rdquo; waits for the next, and the setting at the top of this page turns it off. Answering a deck question correctly in a module&rsquo;s own self-assessment also counts as a review.</p>
     <p>This is study practice, not an assessment, and it is not recorded for any certificate.</p>
   </section>
 </main>
@@ -99,7 +100,7 @@ def build_page():
 
 
 def wanted(name, text):
-    return name in ("index.html", PAGE) or 'id="nc-quiz"' in text
+    return True   # every academy page: capture needs #nc-quiz, the shift drill needs any page
 
 
 def main():
