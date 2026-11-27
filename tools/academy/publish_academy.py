@@ -100,6 +100,8 @@ def main():
         CA = importlib.util.module_from_spec(spec); spec.loader.exec_module(CA); CA.main()   # interactive branching cases
         spec = importlib.util.spec_from_file_location("apply_review", Path(__file__).with_name("apply_review.py"))
         RV = importlib.util.module_from_spec(spec); spec.loader.exec_module(RV); RV.main()   # spaced-repetition review deck
+        spec = importlib.util.spec_from_file_location("apply_emergency_cards", Path(__file__).with_name("apply_emergency_cards.py"))
+        EQ = importlib.util.module_from_spec(spec); spec.loader.exec_module(EQ); EQ.main()   # emergency quick cards page + links
         spec = importlib.util.spec_from_file_location("apply_updates", Path(__file__).with_name("apply_updates.py"))
         UP = importlib.util.module_from_spec(spec); spec.loader.exec_module(UP); UP.main([])   # "Updated since you read it" flags
         spec = importlib.util.spec_from_file_location("apply_tools", Path(__file__).with_name("apply_tools.py"))
