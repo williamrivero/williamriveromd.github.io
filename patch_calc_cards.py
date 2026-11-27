@@ -70,6 +70,9 @@ CALC_MAP = {
         ("calc-iron-deficit-ganzoni.html",
          "Iron Deficit & IV Iron Dose — Ganzoni Equation",
          "Calculates total iron deficit and recommended IV iron repletion dose."),
+        ("calc-oral-iron-replacement.html",
+         "Oral Iron Replacement Planner",
+         "Converts each oral preparation to elemental iron and estimates how long it takes to refill the deficit."),
     ],
     "ckd-mbd.html": [
         ("calc-ckd-mbd.html",

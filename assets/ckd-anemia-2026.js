@@ -51,5 +51,45 @@
     if(r.action==='INVALID') return {status:'WATCH',note:'Interpret ferritin and TSAT together. Neither an isolated value nor a general laboratory range establishes CKD iron-treatment eligibility.'};
     return {status:'WATCH',note:r.detail};
   }
-  const api={iron,ganzoni,esa,initiation,lab};root.CKDAnemia2026=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+  /* Oral iron replacement planning (calc-oral-iron-replacement).
+   * Fractional absorption = CKD planning assumptions for one ~65 mg dose, [reduced, typical, favorable].
+   * Ferrous salts anchor to the site-wide CKD figure (10–15%); the others are scaled from non-CKD
+   * relative-bioavailability data or CKD efficacy trials (low to very low certainty; editable on the page).
+   * Dose response: absorbed iron rises with dose^0.55 above 65 mg/day and a second dose the same day adds
+   * no extra absorption (Moretti 2015; Stoffel 2017; KDIGO 2026 PP 2.3). Alternate-day dosing raises
+   * fractional absorption per dose ~1.34x (Stoffel 2017).
+   */
+  const ORAL_ABSORPTION={ferrous:[0.05,0.12,0.15],ipc:[0.04,0.10,0.12],encapsulated:[0.06,0.15,0.20],heme:[0.08,0.15,0.25]};
+  const ORAL_PRESETS=[
+    {id:'fs65',group:'ferrous',fe:65,unit:'tablet',units:1,doses:3,label:'Ferrous sulfate 325 mg (heptahydrate) — 65 mg Fe',note:'Most common 325 mg tablet. Local examples: Ferolem, Ferosul, Anemifer, United Home Fersulfate, generics. KDIGO 2026 Table 3: 1 tablet 3 times daily, between meals.'},
+    {id:'fs105',group:'ferrous',fe:105,unit:'tablet',units:1,doses:2,label:'Ferrous sulfate 325 mg (dried) — 105 mg Fe',note:'Dried (exsiccated) ferrous sulfate: the same “325 mg” on the box, but about 105 mg elemental iron (e.g., Ferrogen, Feruz, Ferustab, Ferricore, Sulfagold). Read the label before converting tablets to iron.'},
+    {id:'fs60fa',group:'ferrous',fe:60,unit:'tablet',units:1,doses:3,label:'Ferrous sulfate + folic acid — 60 mg Fe (e.g., Ferolitab)',note:'Ferrous sulfate with folic acid, 60 mg elemental iron per tablet (e.g., Ferolitab, United Home Fersulfate Plus, Ferrogen Plus, Docifer Plus, generics).'},
+    {id:'ff106',group:'ferrous',fe:106,unit:'tablet',units:1,doses:2,label:'Ferrous fumarate 325 mg — 106 mg Fe',note:'Ferrous fumarate is about 33% elemental iron: 325 mg = 106 mg (KDIGO 2026 Table 3: 1 tablet twice daily); 300 mg ≈ 99 mg. Local products usually add folic acid or B12 (e.g., Drexifer 107 mg).'},
+    {id:'ff66',group:'ferrous',fe:66,unit:'capsule',units:1,doses:3,label:'Ferrous fumarate 200 mg — 66 mg Fe',note:'Ferrous fumarate 200 mg ≈ 66 mg elemental iron (e.g., Anemicon Plus, Fergesol); 182 mg products carry 60 mg (e.g., Folimate Plus, Feragen Plus).'},
+    {id:'fg35',group:'ferrous',fe:35,unit:'tablet',units:2,doses:3,label:'Ferrous gluconate 300 mg — 35 mg Fe',note:'Ferrous gluconate 300 mg ≈ 35 mg elemental iron (KDIGO 2026 Table 3: 4–6 tablets daily). Less iron per tablet, so often better tolerated; few single-agent products locally.'},
+    {id:'bis',group:'ferrous',fe:18,unit:'capsule',units:1,doses:2,label:'Ferrous bisglycinate (chelated) — confirm label',note:'Chelated iron, usually 14–28 mg per capsule, registered locally as food supplements (e.g., Risofer, Ultravit Iron 18 mg). No CKD absorption data; planned like ferrous salts. Confirm the elemental iron on the label.'},
+    {id:'ipc100',group:'ipc',fe:100,unit:'capsule',units:1,doses:2,label:'Iron polymaltose complex (IPC) 100 mg Fe',note:'Iron(III) hydroxide polymaltose complex, 100 mg elemental iron (e.g., Ferium, Erytose, Gravid-OB, HERA Iron; with folic acid). Usually 100 mg once or twice daily; can be taken with food.'},
+    {id:'suc30',group:'encapsulated',fe:30,unit:'capsule',units:1,doses:1,label:'Sucrosomial iron 30 mg (Sideral Forte)',note:'Sucrosomial ferric pyrophosphate (PharmaNutra; distributed by Wert Philippines; registered as a food supplement). The CKD trial regimen was 30 mg once daily for 3 months (Pisani 2015).'},
+    {id:'lipo30',group:'encapsulated',fe:30,unit:'tablet',units:1,doses:1,label:'Liposomal ferric pyrophosphate (e.g., Pelamis) — confirm label',note:'Liposomal ferric pyrophosphate food supplements (e.g., Pelamis tablets, Feronat capsules). KDIGO 2026 Table 3 lists liposomal iron 30 mg once daily; confirm the elemental iron on your product’s label.'},
+    {id:'hip12',group:'heme',fe:12,unit:'tablet',units:1,doses:3,label:'Heme iron polypeptide 12 mg (e.g., Proferrin ES)',note:'Heme iron polypeptide (KDIGO 2026 Table 3: 12 mg, 1 tablet 3–4 times daily; the CKD trial used 11 mg 3 times daily). Local food supplements: Proferrin ES (some packs labeled 10.5 mg), Hemeron, Polyinizin.'},
+    {id:'custom',group:'ferrous',fe:null,unit:'unit',units:1,doses:1,label:'Other product — enter elemental iron',note:'Enter the elemental iron per unit from the label (not the salt weight). The absorption assumption defaults to ferrous salts; choose “Custom” to set your own.'}
+  ];
+  function oralAbsorption(group,scenario){
+    const r=ORAL_ABSORPTION[group]; if(!r) return null;
+    return scenario==='reduced'?r[0]:scenario==='favorable'?r[2]:r[1];
+  }
+  function oralIron({deficit,fe,units=1,doses=1,schedule='daily',fraction,losses=0}) {
+    if(![deficit,fe,units,doses,fraction,losses].every(finite)||deficit<=0||fe<=0||units<=0||doses<1||doses>6||fraction<=0||fraction>0.6||losses<0||!['daily','alternate'].includes(schedule)) return null;
+    const alt=schedule==='alternate';
+    const perDose=fe*units, dosingDay=perDose*doses;
+    const f=alt?Math.min(fraction*1.34,0.6):fraction;
+    const absorbedDosingDay=dosingDay<=65?dosingDay*f:f*65*Math.pow(dosingDay/65,0.55);
+    const elementalPerDay=alt?dosingDay/2:dosingDay, absorbedPerDay=alt?absorbedDosingDay/2:absorbedDosingDay;
+    const netPerDay=absorbedPerDay-losses, r2=x=>Math.round(x*100)/100;
+    const base={elementalPerDay:r2(elementalPerDay),absorbedPerDay:r2(absorbedPerDay),netPerDay:r2(netPerDay),effectiveFraction:r2(absorbedDosingDay/dosingDay),highDaily:dosingDay>200,splitDose:doses>1};
+    if(netPerDay<=0) return Object.assign(base,{cannotKeepUp:true,days:null,weeks:null,unitsTotal:null,unitsPer30:null,withinWindow:false});
+    const days=Math.ceil(deficit/netPerDay), dosingDays=alt?Math.ceil(days/2):days;
+    return Object.assign(base,{cannotKeepUp:false,days,weeks:Math.round(days/7*10)/10,unitsTotal:Math.ceil(dosingDays*units*doses),unitsPer30:Math.ceil((alt?15:30)*units*doses),withinWindow:days<=90});
+  }
+  const api={iron,ganzoni,esa,initiation,lab,oralIron,oralAbsorption,ORAL_PRESETS,ORAL_ABSORPTION};root.CKDAnemia2026=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

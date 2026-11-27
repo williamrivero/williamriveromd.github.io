@@ -49,7 +49,7 @@ eq(A.lab({key:'tsat',value:110,ferritin:200}).status,'FLAG');
 eq(A.lab({key:'hgb',value:110,age:12}).status,'WATCH');
 const changedExtra=require('child_process').execFileSync('git',['diff','--name-only'],{cwd:root,encoding:'utf8'}).trim().split('\n').filter(x=>x.endsWith('.html'));
 const changed=[...new Set(['anemia-management','calc-eri','calc-esa-dose-adjustment','calc-iron-deficit-ganzoni','calc-iron-status-tsat','calc-iv-iron-dose','calc-reticulocyte-rpi','calc-transfusion-hgb','esa-dose-cancer-risk','epo-resistant-renal-anemia','understanding-iron','lab-interpreter-guide','medication-operational-guide','practical-outpatient-algorithms'].map(n=>'guides/'+n+'.html').concat(changedExtra))];
-for(const file of changed){const html=fs.readFileSync(path.join(root,file),'utf8');for(const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)){if(!/application\/ld\+json/.test(m[1]))new vm.Script(m[2],{filename:file});}checks++;}
+for(const file of changed){const html=fs.readFileSync(path.join(root,file),'utf8');for(const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)){if(!/application\/ld\+json|speculationrules|importmap|application\/json/.test(m[1]))new vm.Script(m[2],{filename:file});}checks++;}
 // Re-audit additions (Nov 6, 2026): profound iron deficiency, transplant extension, TSAT entry check, nutrition calculators, stale-threshold lint.
 eq(A.iron({setting:'nd',ferritin:20,tsat:10}).profound,true);
 eq(/Profound iron deficiency/.test(A.iron({setting:'hd',ferritin:25,tsat:15}).detail),true);
@@ -70,6 +70,18 @@ const stale=[/\(target\s*[−-]\s*actual[^)]*\)\s*×\s*0\.24\s*\+\s*500/i,/Targe
 for(const dir of ['guides','downloads'].filter(d=>fs.existsSync(path.join(root,d))))for(const file of fs.readdirSync(path.join(root,dir)).filter(f=>f.endsWith('.html'))){
  const html=fs.readFileSync(path.join(root,dir,file),'utf8');for(const re of stale)assert(!re.test(html),`${dir}/${file} contains stale iron text ${re}`);checks++;
 }
+// Oral iron replacement planner (calc-oral-iron-replacement).
+eq(A.oralIron({deficit:932,fe:65,doses:1,fraction:0.12}).days,120);
+eq(A.oralIron({deficit:932,fe:65,doses:3,fraction:0.12}).absorbedPerDay,14.27);
+eq(A.oralIron({deficit:932,fe:65,doses:3,fraction:0.12}).days,66);
+eq(A.oralIron({deficit:932,fe:65,doses:3,fraction:0.12}).unitsTotal,198);
+eq(A.oralIron({deficit:932,fe:65,doses:1,schedule:'alternate',fraction:0.12}).days,179);
+eq(A.oralIron({deficit:932,fe:30,doses:1,fraction:0.05,losses:4}).cannotKeepUp,true);
+eq(A.oralIron({deficit:932,fe:65,doses:3,fraction:0.12}).withinWindow,true);
+for(const arg of [{deficit:0,fe:65,fraction:.1},{deficit:900,fe:0,fraction:.1},{deficit:900,fe:65,fraction:0},{deficit:900,fe:65,fraction:.1,losses:-1},{deficit:900,fe:65,fraction:.1,schedule:'weekly'}])eq(A.oralIron(arg),null);
+eq(A.oralAbsorption('ferrous','typical'),0.12);eq(A.oralAbsorption('ferrous','reduced')<A.oralAbsorption('ferrous','typical'),true);
+for(const p of A.ORAL_PRESETS){if(p.fe!==null){assert(p.fe>0&&A.ORAL_ABSORPTION[p.group],'preset '+p.id);checks++;}}
+{const html=fs.readFileSync(path.join(root,'guides','calc-oral-iron-replacement.html'),'utf8');assert(html.includes('assets/ckd-anemia-2026.js')&&html.includes('A.ganzoni(')&&html.includes('A.iron(')&&html.includes('A.oralIron('),'oral iron page uses the shared module');checks++;}
 // Iron-tool pages keep exactly one full KDIGO table (in Evidence), not one per accordion.
-for(const page of ['calc-iron-deficit-ganzoni','calc-iron-status-tsat','calc-iv-iron-dose']){const html=fs.readFileSync(path.join(root,'guides',page+'.html'),'utf8');eq([page,(html.match(/<td>Withhold routine iron<\/td>/g)||[]).length],[page,1]);}
+for(const page of ['calc-iron-deficit-ganzoni','calc-iron-status-tsat','calc-iv-iron-dose','calc-oral-iron-replacement']){const html=fs.readFileSync(path.join(root,'guides',page+'.html'),'utf8');eq([page,(html.match(/<td>Withhold routine iron<\/td>/g)||[]).length],[page,1]);}
 console.log(`${checks} checks passed: thresholds, unit equivalence, invalid inputs, ESA timing, lab interpretation, embedded UI, and script syntax.`);
