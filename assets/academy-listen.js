@@ -143,6 +143,7 @@
           if (text.length > 1) items.push({ el: el, sec: si, parts: chunks(text) });
           return;
         }
+        if (tag === "DT") return;                                    // read with its dd ("What you see: ...")
         if (tag === "TR") text = tableRowText(el);
         else if (tag === "FIGCAPTION") { var d = el.querySelector(".fig-desc"); text = d ? cleanText(d) : cleanText(el); if (text) text = "Figure. " + text; }
         else {
@@ -161,11 +162,19 @@
         }
         var m = textMap(el);
         if (m.str !== text) m = null;                               // map must match what is read, else no in-text highlight
+        var label = "";
+        if (tag === "DD") {                                          // the card label before it, e.g. "What to do"
+          var dt = el.previousElementSibling;
+          while (dt && dt.tagName !== "DT") dt = dt.previousElementSibling;
+          if (dt && visible(dt)) { label = cleanText(dt); if (label && !/[.:!?]$/.test(label)) label += ":"; }
+        }
         var raw = chunks(text), parts = [], spans = [], at = 0;
         raw.forEach(function (r) {
           var a = m ? m.str.indexOf(r, at) : -1;
           if (a >= 0) at = a + r.length;
           var say = speakable(r);
+          if (label && !parts.length) { say = speakable(label) + " " + say; label = ""; }
+          if (say.length > 1 && !/[.!?:;,"')]$/.test(say)) say += ".";   // a fragment without end punctuation ("The 10:00 ride")
           if (say.length > 1) { parts.push(say); spans.push(a >= 0 ? { a: a, b: a + r.length, same: say === r.trim() } : null); }
         });
         if (parts.length) items.push({ el: el, sec: si, parts: parts, spans: spans, map: m });
@@ -339,20 +348,49 @@
     fails = 0; stop(true); status("The voice stopped. Tap play to try again.");
     return true;
   }
+  // Dr. Rivero (Nov 27 2026, iPad): the reader stopped mid-module. A failed or stalled sentence now gets one retry on a
+  // fresh voice engine (the model is cached, so a restart takes seconds), then is read once with the device voice, and
+  // the natural voice carries on. Only repeated failures after all that stop the player.
+  var retried = {};
+  function timed(p, ms) { return new Promise(function (ok, fail) { var t = setTimeout(function () { fail(new Error("timeout")); }, ms); p.then(function (v) { clearTimeout(t); ok(v); }, function (e) { clearTimeout(t); fail(e); }); }); }
+  function reviveEngine() {
+    var key = natural; if (!key) return Promise.reject(new Error("no voice"));
+    if (worker) { try { worker.terminate(); } catch (e) {} }
+    worker = null; workerReady = null; workerKey = null;
+    return startEngine(key);
+  }
+  function speakDeviceOnce(my) {                   // one sentence with the built-in voice, then back to the natural voice
+    var txt = items[idx] && items[idx].parts[part];
+    if (!txt) { part++; speakNext(); return; }
+    var t0 = Date.now();
+    ES.speak({ text: txt, voice: voice || undefined, rate: rate, pitch: 1, volume: 1, force: true,
+      end: function () { if (my !== token) return; if (txt.length > 30 && Date.now() - t0 < 150) { if (failed()) return; } else fails = 0; part++; speakNext(); },
+      error: function (e) { if (my !== token) return; if (e && /interrupted|canceled/.test(e.error || "")) return; if (failed()) return; part++; speakNext(); }
+    }).catch(function () { if (my !== token) return; if (failed()) return; part++; speakNext(); });
+  }
   function speakNatural(my) {
     var it = items[idx];
     status("Reading aloud");
     var key = idx + ":" + part;
-    synthAt(idx, part).then(function (url) {
+    timed(synthAt(idx, part), 20000).then(function (url) {
       if (my !== token || !playing) return;
+      delete retried[key];
       var a = audioEl();
       a.src = url; audKey = key; a.playbackRate = rate;
       a.play().then(function () { mediaState(); }).catch(function () { stop(true); status("Tap play to continue."); });
       prefetch();
     }, function () {
-      if (my !== token) return;
-      if (failed()) return;
-      part++; speakNext();                          // skip a sentence that would not synthesize
+      if (my !== token || !playing) return;
+      delete cache[key];
+      if (!retried[key]) {                          // first failure: restart the voice engine and try the same sentence again
+        retried[key] = 1;
+        status("Reconnecting the natural voice…");
+        reviveEngine().then(function () { if (my === token && playing) speakNatural(my); },
+                            function () { if (my === token && playing) speakDeviceOnce(my); });
+        return;
+      }
+      delete retried[key];
+      speakDeviceOnce(my);                          // still failing: read this sentence with the device voice
     });
     if (!cache[nextPos(idx, part, 1) ? nextPos(idx, part, 1).join(":") : ""]) prefetch();
   }

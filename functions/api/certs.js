@@ -1,5 +1,6 @@
 // GET  /api/certs            -> { ready: true, turnstile: <site key or null> }  (503 when the database is not bound)
 // GET  /api/certs?c=<code>   -> the certificate record for /verify (404 when unknown)
+// GET  /api/certs?stats=1    -> { issued: <count of valid certificates> } for the homepage (a number only, no names)
 // POST /api/certs            -> register a certificate: {name, track, exam, modules, score, total, exam_min, study_min,
 //                               turnstile, website (honeypot)} -> { code, issued }
 import { db, json, hashIp, clean, turnstileOk, PASS, manilaDate, newCode, publicRecord } from "../../functions-lib/certs.js";
@@ -9,7 +10,12 @@ const CODE_RE = /^RCA-[A-Z]{1,4}-\d{6}-[0-9A-F]{8}$/;
 export async function onRequestGet({ request, env }) {
   const d = await db(env);
   if (!d) return json({ error: "not_configured" }, 503);
-  const c = (new URL(request.url).searchParams.get("c") || "").trim().toUpperCase();
+  const q = new URL(request.url).searchParams;
+  if (q.get("stats")) {
+    const r = await d.prepare("SELECT COUNT(*) AS n FROM certificates WHERE status='valid'").first();
+    return json({ issued: (r && r.n) || 0 }, 200, { "cache-control": "public, max-age=300" });
+  }
+  const c = (q.get("c") || "").trim().toUpperCase();
   if (!c) return json({ ready: true, turnstile: env.TURNSTILE_SITE_KEY || null });
   if (!CODE_RE.test(c)) return json({ error: "not_found" }, 404);
   const r = await d.prepare("SELECT * FROM certificates WHERE code=?").bind(c).first();
