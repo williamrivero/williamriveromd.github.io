@@ -33,6 +33,56 @@ PROG_RE = re.compile(r'\n?<script src="[^"]*assets/' + PROG + r'\.[0-9a-f]{10}\.
 LIST_RE = re.compile(r'\n?<script type="application/json" id="rcm-cert-modules">.*?</script>', re.S)
 
 
+HOWTO_RE = re.compile(r'\n?<!-- CERT-HOWTO-START -->.*?<!-- CERT-HOWTO-END -->\n?', re.S)
+
+
+def howto(n_modules):
+    """'How to get your certificate' section, placed just before the examination's own section."""
+    mods = f"all {n_modules} module quizzes" if n_modules else "every module quiz"
+    return f"""
+<!-- CERT-HOWTO-START -->
+<style>
+.cert-howto ol{{margin:6px 0 12px 22px;padding:0}}.cert-howto li{{margin:0 0 9px;line-height:1.6}}
+.cert-howto .ch-box{{border:1px solid #d9c592;background:#fffbef;border-radius:12px;padding:16px 20px 6px}}
+html[data-theme="dark"] .cert-howto .ch-box{{background:#221f15;border-color:#6b5a2c}}
+.cert-howto .ch-note{{font-size:14px;color:var(--text-muted,#5a6678)}}
+@media print{{.cert-howto{{display:none}}}}
+</style>
+<section class="section cert-howto" id="certificate">
+  <h2>How to get your certificate of completion</h2>
+  <div class="ch-box">
+  <ol>
+    <li><strong>Pass {mods}.</strong> Each module quiz is passed at 80%, or at the pass mark the module states. The
+      <em>Certificate checklist</em> above the examination shows which modules are done; each line links to that module's quiz.</li>
+    <li><strong>Use the same device and browser</strong> for the modules and this examination. Progress is saved in your
+      browser, not in an account. On iPhone and iPad, the Home Screen app and Safari keep separate progress.</li>
+    <li><strong>Pass this examination</strong> (80%; where these instructions say so, every safety-critical question must
+      also be correct). If you pass before finishing the modules, your pass is saved: finish the module quizzes, then come back here.</li>
+    <li><strong>Type your name</strong> the way you want it printed and tap <strong>Make my certificate</strong>. You can
+      tick <em>Add a preceptor sign-off line</em> if your unit will sign the printed copy.</li>
+    <li><strong>Save or print your completion packet:</strong> two pages, the certificate and a record of your module results.
+      Use <em>Print or save as PDF</em> to keep both pages together.</li>
+    <li><strong>Be online when you make it,</strong> so the certificate gets its QR code. Anyone can scan the code, or enter it
+      at renalcarematters.com/verify, to confirm it.</li>
+  </ol>
+  <p class="ch-note">Not finished yet? Use <em>Print a progress record</em> in the checklist to show a preceptor how far you have
+    gone; it is clearly marked "not a certificate". The certificate is a self-study certificate of completion, not CPD units:
+    competence is demonstrated on your own unit and signed off by a preceptor. To make the QR code work, your name, track, date
+    and score are saved with the certificate code; to have them removed, use <em>Report a correction</em> on any guide.</p>
+  </div>
+</section>
+<!-- CERT-HOWTO-END -->
+"""
+
+
+def add_howto(text, n_modules):
+    i = text.find('id="nc-quiz"')
+    j = text.rfind("<section", 0, i) if i > 0 else -1
+    if j < 0:
+        return text
+    return text[:j] + howto(n_modules).lstrip("\n") + text[j:]
+
+
 def module_pages(exam_name):
     return sorted(ACADEMY.glob(exam_name[: -len("-final-exam.html")] + "-[0-9][0-9]-*.html"))
 
@@ -107,13 +157,14 @@ def main():
         old = f.read_text(encoding="utf-8")
         if "</body>" not in old:
             continue
-        text = PROG_RE.sub("", LIST_RE.sub("", TAG_RE.sub("", old)))
+        text = HOWTO_RE.sub("\n", PROG_RE.sub("", LIST_RE.sub("", TAG_RE.sub("", old))))
         if f.name in module_files:
             i = text.rfind("</body>")
             text = text[:i] + f'<script src="../assets/{prog}" defer></script>' + "\n" + text[i:]
         if wanted(f.name):
             mins = study_minutes(f.name)
             mods = len(module_pages(f.name))
+            text = add_howto(text, mods)
             tag = (f'<script src="../assets/{hashed}"' + (f' data-modules="{mods}"' if mods else "")
                    + (f' data-study-min="{mins}"' if mins else "") + " defer></script>")
             lst = json.dumps(module_list(f.name), ensure_ascii=False).replace("</", "<\\/")
