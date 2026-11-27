@@ -29,7 +29,7 @@ TC = ROOT / "tools" / "techcourses"
 DATA = ROOT / "data" / "tech-courses"
 DOCS = ROOT / "docs" / "tech-courses"
 SITE = "https://renalcarematters.com"
-PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "apn", "ntr", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs", "rtc", "otpt", "duo", "sw", "pdn"]
+PACKAGES = ["hd_technician", "water_treatment", "biomed", "pod", "renal_dietitian", "dch", "pd_nurse", "philhealth_claims", "uom", "an", "apn", "ntr", "mro", "head_nurse", "charge_nurse", "reprocessing_tech", "vs", "rtc", "otpt", "duo", "sw", "pdn", "resus"]
 ERRORS = []
 CRIT = '<span class="tc-crit">Critical</span>'
 

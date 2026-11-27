@@ -1,0 +1,202 @@
+<script>
+/* ===== RL-CALC-CORE (pure functions; tested by tools/test_resus_toolkit.cjs) ===== */
+var RL = (function () {
+  function n(x) { if (x === null || x === undefined || String(x).trim() === "") return NaN; var v = Number(x); return isFinite(v) ? v : NaN; }
+  function req(v, label, min) {
+    if (typeof v !== "number" || !isFinite(v) || v < (min === undefined ? 0 : min)) throw new RangeError(label + " must be a number of " + (min === undefined ? 0 : min) + " or more");
+    return v;
+  }
+  function list(s) {
+    return String(s || "").split(/[,;\s]+/).filter(function (x) { return x !== ""; }).map(function (x) {
+      var v = Number(x); if (!isFinite(v) || v < 0) throw new RangeError("Each pause must be a number of seconds"); return v;
+    });
+  }
+  // 1. compression fraction from pauses
+  function ccf(obs, pauses) {
+    req(obs, "Observation time", 1);
+    var total = pauses.reduce(function (a, b) { return a + b; }, 0);
+    if (total > obs) throw new RangeError("Total pause time cannot exceed the observation time");
+    var longest = pauses.length ? Math.max.apply(null, pauses) : 0;
+    return { fraction: 100 * (obs - total) / obs, totalPause: total, longest: longest, count: pauses.length,
+             over10: pauses.filter(function (p) { return p > 10; }).length, mean: pauses.length ? total / pauses.length : 0 };
+  }
+  // 2. timeline
+  function secs(t) {
+    var m = /^(\d{1,3}):([0-5]\d)$/.exec(t); if (!m) throw new RangeError("Times must be mm:ss (for example 01:30)");
+    return Number(m[1]) * 60 + Number(m[2]);
+  }
+  var KINDS = [["recognition", /recogni/], ["cstart", /compressions? (start|resume|on)/], ["cstop", /compressions? (stop|pause|off)/],
+               ["pads", /pads/], ["shock", /shock|defibrillat/], ["epi", /epinephrine|adrenaline/], ["amio", /amiodarone|lidocaine/],
+               ["check", /rhythm check/], ["circuit", /circuit stopped|uf stopped|fluid removal (off|stopped)/], ["bret", /blood returned/],
+               ["bclamp", /blood clamped|clamped/], ["airway", /airway/], ["rosc", /rosc/], ["handover", /handover/], ["end", /^end/]];
+  function parse(text) {
+    var ev = [];
+    String(text || "").split(/\r?\n/).forEach(function (line, i) {
+      line = line.trim(); if (!line) return;
+      var m = /^(\d{1,3}:[0-5]\d)\s+(.+)$/.exec(line);
+      if (!m) throw new RangeError("Line " + (i + 1) + " is not in mm:ss event form");
+      var label = m[2].toLowerCase(), kind = "other";
+      for (var k = 0; k < KINDS.length; k++) { if (KINDS[k][1].test(label)) { kind = KINDS[k][0]; break; } }
+      ev.push({ t: secs(m[1]), kind: kind, label: m[2] });
+    });
+    ev.sort(function (a, b) { return a.t - b.t; });
+    return ev;
+  }
+  function timeline(ev) {
+    if (!ev.length) throw new RangeError("The log is empty");
+    function first(k) { for (var i = 0; i < ev.length; i++) if (ev[i].kind === k) return ev[i].t; return null; }
+    var t0 = first("recognition"); if (t0 === null) t0 = 0;
+    var start = first("cstart");
+    var endEv = null; for (var i = 0; i < ev.length; i++) if (ev[i].kind === "rosc" || ev[i].kind === "end") { endEv = ev[i].t; break; }
+    if (endEv === null) endEv = ev[ev.length - 1].t;
+    var on = 0, pauses = [], running = null, pauseFrom = null;
+    ev.forEach(function (e) {
+      if (start === null || e.t < start || e.t > endEv) return;
+      if (e.kind === "cstart" && running === null) { if (pauseFrom !== null) pauses.push(e.t - pauseFrom); running = e.t; pauseFrom = null; }
+      else if (e.kind === "cstop" && running !== null) { on += e.t - running; running = null; pauseFrom = e.t; }
+    });
+    if (running !== null) on += endEv - running;
+    else if (pauseFrom !== null && endEv > pauseFrom) pauses.push(endEv - pauseFrom);
+    var window = start === null ? 0 : endEv - start;
+    var epis = ev.filter(function (e) { return e.kind === "epi"; }).map(function (e) { return e.t; });
+    var gaps = []; for (var j = 1; j < epis.length; j++) gaps.push(epis[j] - epis[j - 1]);
+    function rel(x) { return x === null ? null : x - t0; }
+    return { toCompression: rel(start), toPads: rel(first("pads")), toShock: rel(first("shock")), toEpi: rel(epis.length ? epis[0] : null),
+             toCircuit: rel(first("circuit")), toRosc: rel(first("rosc")), epiCount: epis.length, epiGaps: gaps,
+             fraction: window > 0 ? 100 * on / window : null, window: window, longestPause: pauses.length ? Math.max.apply(null, pauses) : 0,
+             pausesOver10: pauses.filter(function (p) { return p > 10; }).length, shocks: ev.filter(function (e) { return e.kind === "shock"; }).length };
+  }
+  // 3. pediatric trainer
+  var ITEMS = {
+    epi: { kind: "drug", perKg: 0.01, max: 1, unit: "mg", name: "Epinephrine (arrest, IV/IO)", conc: 0.1, note: "Every 3 to 5 minutes. Concentration 0.1 mg/mL: 0.1 mL/kg." },
+    amio: { kind: "drug", perKg: 5, max: 300, unit: "mg", name: "Amiodarone bolus", note: "May repeat up to 3 doses for refractory VF/pVT (algorithm)." },
+    lido: { kind: "drug", perKg: 1, max: null, unit: "mg", name: "Lidocaine loading dose", note: "Initial loading dose (algorithm)." },
+    ade1: { kind: "drug", perKg: 0.1, max: 6, unit: "mg", name: "Adenosine, first dose", note: "Rapid push followed by a flush." },
+    ade2: { kind: "drug", perKg: 0.2, max: 12, unit: "mg", name: "Adenosine, second dose", note: "Rapid push followed by a flush." },
+    def1: { kind: "energy", perKg: 2, max: null, unit: "J", name: "First defibrillation shock", note: "2 J/kg (the guideline allows 2 to 4 J/kg)." },
+    def2: { kind: "energy", perKg: 4, max: null, unit: "J", name: "Second defibrillation shock", note: "4 J/kg." },
+    defmax: { kind: "energy", perKg: 10, max: null, unit: "J", name: "Highest later shock", note: "Later shocks at least 4 J/kg, not above 10 J/kg or the adult maximum of your device, whichever is lower." },
+    cv1: { kind: "energy", perKg: 0.5, perKgHigh: 1, max: null, unit: "J", name: "Synchronized cardioversion, first", note: "0.5 to 1 J/kg." },
+    cv2: { kind: "energy", perKg: 2, max: null, unit: "J", name: "Synchronized cardioversion, if unsuccessful", note: "2 J/kg." },
+    fl10: { kind: "fluid", perKg: 10, max: null, unit: "mL", name: "Fluid bolus", note: "Reassess after every bolus for response and fluid overload (dialysis patients overload easily)." },
+    fl20: { kind: "fluid", perKg: 20, max: null, unit: "mL", name: "Fluid bolus", note: "Reassess after every bolus for response and fluid overload (dialysis patients overload easily)." }
+  };
+  function peds(weight, key, conc) {
+    req(weight, "Weight", 0.5); if (weight > 150) throw new RangeError("Weight must be 150 kg or less");
+    var it = ITEMS[key]; if (!it) throw new RangeError("Unknown item");
+    var raw = it.perKg * weight, capped = it.max !== null && raw > it.max, dose = capped ? it.max : raw;
+    var out = { item: it, raw: raw, dose: dose, capped: capped, high: it.perKgHigh ? it.perKgHigh * weight : null, volume: null,
+                adultSize: weight >= 40 };
+    if (it.kind === "drug") {
+      req(conc, "Concentration", 0.000001);
+      out.volume = dose / conc;
+      out.concMismatch = it.conc !== undefined && Math.abs(conc - it.conc) > 1e-9;
+    }
+    return out;
+  }
+  function checkTry(answer, correct) {
+    if (!(answer > 0) || !(correct > 0)) return null;
+    var r = answer / correct;
+    return { ok: Math.abs(r - 1) <= 0.05, ratio: r, tenfold: Math.abs(Math.log10(r)) > 0.9 };
+  }
+  // 4. oxygen
+  function oxygen(cap, full, now, reserve, flow) {
+    req(cap, "Content", 1); req(full, "Full pressure", 1); req(now, "Current pressure", 0); req(reserve, "Reserve", 0); req(flow, "Flow", 0.1);
+    if (now > full) throw new RangeError("Current pressure cannot exceed the full pressure");
+    var usable = Math.max(0, cap * (now - reserve) / full);
+    return { usable: usable, minutes: usable / flow };
+  }
+  // 5. rotation
+  function rotation(staff, roles, drills) {
+    if (!staff.length) throw new RangeError("Enter at least one staff member");
+    if (!roles.length) throw new RangeError("Enter at least one role");
+    req(drills, "Number of drills", 1);
+    var order = roles.slice(), wi = -1;
+    order.forEach(function (r, i) { if (/watcher/i.test(r)) wi = i; });
+    if (wi >= staff.length) { var w = order.splice(wi, 1)[0]; order.splice(staff.length - 1, 0, w); }   // the watcher is never a combined role
+    var out = [];
+    for (var d = 0; d < drills; d++) {
+      var row = {};
+      order.forEach(function (r, i) {
+        row[r] = staff[(i + d) % staff.length] + (i < staff.length ? "" : " (combine)");
+      });
+      out.push(row);
+    }
+    return out;
+  }
+  return { n: n, list: list, ccf: ccf, secs: secs, parse: parse, timeline: timeline, ITEMS: ITEMS, peds: peds, checkTry: checkTry, oxygen: oxygen, rotation: rotation };
+})();
+if (typeof module !== "undefined") module.exports = RL;
+/* ===== END RL-CALC-CORE ===== */
+(function () {
+  if (typeof document === "undefined") return;
+  function $(id) { return document.getElementById(id); }
+  function v(id) { return RL.n($(id).value); }
+  function f1(x) { return x.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+  function f2(x) { return x.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function g(x) { return Number(x.toPrecision(3)).toLocaleString("en-US"); }
+  function mmss(s) { if (s === null || s === undefined) return "&mdash;"; var m = Math.floor(s / 60), r = s % 60; return m + ":" + String(r).padStart(2, "0"); }
+  function flag(cls, t) { return '<span class="flag ' + cls + '">' + t + "</span>"; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  var run = {
+    t1: function () {
+      var r = RL.ccf(v("t1_obs"), RL.list($("t1_p").value));
+      var cls = r.fraction >= 80 ? "f-ok" : (r.fraction >= 60 ? "f-warn" : "f-stop");
+      return "Compression fraction: " + flag(cls, f1(r.fraction) + "%") + "<br>" + r.count + " pauses, total <b>" + r.totalPause + " s</b>, mean <b>" + f1(r.mean) + " s</b>, longest <b>" + r.longest + " s</b>. " +
+        (r.over10 ? flag("f-stop", r.over10 + " pause" + (r.over10 > 1 ? "s" : "") + " over 10 s") : flag("f-ok", "no pause over 10 s")) +
+        '<div class="note">Formula: (' + v("t1_obs") + " &minus; " + r.totalPause + ") &divide; " + v("t1_obs") + " &times; 100. Data source: " + esc($("t1_src").value) +
+        ". The AHA floor is 60% (COR 2b); the 80% color mark is an Academy drill goal, not a guideline number. Browser timing does not measure depth or ventilation.</div>";
+    },
+    t2: function () {
+      var r = RL.timeline(RL.parse($("t2_log").value));
+      var rows = [["First compression", r.toCompression], ["Pads on", r.toPads], ["First shock", r.toShock], ["First epinephrine", r.toEpi], ["Circuit stopped", r.toCircuit], ["ROSC", r.toRosc]];
+      var gaps = r.epiGaps.length ? r.epiGaps.map(function (x) { var c = x < 180 ? "f-warn" : (x > 300 ? "f-warn" : "f-ok"); return flag(c, mmss(x)); }).join(" ") : "&mdash;";
+      return '<table style="width:100%;border-collapse:collapse">' + rows.map(function (x) { return "<tr><td>" + x[0] + "</td><td style=\"text-align:right\"><b>" + mmss(x[1]) + "</b></td></tr>"; }).join("") + "</table>" +
+        "<br>Shocks: <b>" + r.shocks + "</b>. Epinephrine doses: <b>" + r.epiCount + "</b>; intervals " + gaps + " (target 3 to 5 minutes)." +
+        "<br>Compression fraction from first compression to ROSC or end: " + (r.fraction === null ? "&mdash;" : "<b>" + f1(r.fraction) + "%</b>") +
+        "; longest pause <b>" + r.longestPause + " s</b>" + (r.pausesOver10 ? " (" + r.pausesOver10 + " over 10 s)" : "") + "." +
+        '<div class="note">Educational result from logged times. It is not a measure of compression depth, ventilation, or a prediction of patient survival.</div>';
+    },
+    t3: function () {
+      var key = $("t3_d").value, r = RL.peds(v("t3_w"), key, v("t3_c")), it = r.item, w = v("t3_w");
+      var s = "<b>" + it.name + "</b> for <b>" + w + " kg</b>:<br>";
+      if (it.kind === "energy") {
+        s += it.perKg + " J/kg &times; " + w + " kg = <b>" + g(r.raw) + " J</b>" + (r.high ? " to " + it.perKgHigh + " J/kg &times; " + w + " kg = <b>" + g(r.high) + " J</b>" : "") + ". Use the nearest setting on your device.";
+      } else if (it.kind === "fluid") {
+        s += it.perKg + " mL/kg &times; " + w + " kg = <b>" + g(r.raw) + " mL</b>.";
+      } else {
+        s += it.perKg + " mg/kg &times; " + w + " kg = " + g(r.raw) + " mg" + (r.capped ? " &rarr; " + flag("f-warn", "capped at the maximum, " + it.max + " mg") : "") +
+          ".<br>Dose: <b>" + g(r.dose) + " mg</b>. Volume: " + g(r.dose) + " mg &divide; " + v("t3_c") + " mg/mL = <b>" + f2(r.volume) + " mL</b>.";
+        if (r.concMismatch) s += '<div class="note">' + flag("f-stop", "Concentration check") + " The arrest algorithm volume assumes 0.1 mg/mL. You entered " + v("t3_c") + " mg/mL. If this is the 1 mg/mL ampule, a 0.1 mL/kg volume would be a tenfold overdose.</div>";
+        if (!$("t3_ok").checked) s += '<div class="note">' + flag("f-warn", "Confirm") + " Read the concentration aloud and have a second person confirm it.</div>";
+        var t = RL.checkTry(v("t3_try"), r.volume);
+        if (t) s += '<div class="note">Your answer: ' + (t.ok ? flag("f-ok", "matches") : flag("f-stop", t.tenfold ? "tenfold error" : "does not match")) + "</div>";
+      }
+      if (r.adultSize) s += '<div class="note">' + flag("f-info", "Large child") + " At this weight doses approach adult doses; after puberty, adult guidance applies.</div>";
+      return s + '<div class="note">' + it.note + " Teaching tool: use your unit&rsquo;s length-based tape or dose card at the bedside.</div>";
+    },
+    t4: function () {
+      var r = RL.oxygen(v("t4_cap"), v("t4_full"), v("t4_now"), v("t4_res"), v("t4_flow")), trip = v("t4_trip");
+      var enough = isFinite(trip) ? r.minutes >= trip * 1.5 : null;
+      return "Usable oxygen: <b>" + Math.round(r.usable) + " L</b>. At " + v("t4_flow") + " L/min it lasts about <b>" + Math.floor(r.minutes) + " minutes</b>." +
+        (enough === null ? "" : "<br>" + (enough ? flag("f-ok", "Enough for the trip with a margin") : flag("f-stop", "Not enough margin: bring a full cylinder"))) +
+        '<div class="note">The margin mark uses 1.5 times the expected transfer time as an Academy planning choice. Traffic and delays can double a trip.</div>';
+    },
+    t5: function () {
+      var staff = $("t5_s").value.split(",").map(function (x) { return x.trim(); }).filter(Boolean);
+      var roles = $("t5_r").value.split(",").map(function (x) { return x.trim(); }).filter(Boolean);
+      var rows = RL.rotation(staff, roles, v("t5_n"));
+      var h = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.9rem"><tr><th>Drill</th>' + roles.map(function (r) { return "<th>" + esc(r) + "</th>"; }).join("") + "</tr>";
+      rows.forEach(function (row, i) { h += "<tr><td>" + (i + 1) + "</td>" + roles.map(function (r) { return "<td>" + esc(row[r]) + "</td>"; }).join("") + "</tr>"; });
+      return h + "</table></div>" + (staff.length < roles.length ? '<div class="note">Fewer staff than roles: &ldquo;combine&rdquo; marks a second role for that person. Never combine the watcher with the arrest.</div>' : "") +
+        '<div class="note">Nothing is saved. Print the page or copy the table.</div>';
+    }
+  };
+  document.querySelectorAll("button[data-run]").forEach(function (b) {
+    b.addEventListener("click", function () { var id = b.getAttribute("data-run"); try { $(id + "_out").innerHTML = run[id](); } catch (e) { $(id + "_out").textContent = "Check the inputs: " + (e && e.message ? e.message : "a value is missing or invalid") + "."; } });
+  });
+  var sel = $("t3_d");
+  if (sel) sel.addEventListener("change", function () { var it = RL.ITEMS[sel.value]; if (it && it.conc) $("t3_c").value = it.conc; });
+  Object.keys(run).forEach(function (k) { try { $(k + "_out").innerHTML = run[k](); } catch (e) {} });
+})();
+</script>

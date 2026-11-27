@@ -167,11 +167,11 @@ def resources(text, page_url, small):
 
 
 # ── tracks ─────────────────────────────────────────────────────────────────────────────────────────────────
-SHARED_PAGES = ("index.html", "review-deck.html", "same-event-every-role.html", "emergency-cards.html")
+SHARED_PAGES = ("index.html", "review-deck.html", "same-event-every-role.html", "emergency-cards.html", "emergency-readiness.html")
 
 
 def hub_names(names):
-    return [n[:-5] for n in names if n not in SHARED_PAGES and not re.search(r"-\d{2}-|final-exam|trainer|-pretest\.html$", n)]
+    return [n[:-5] for n in names if n not in SHARED_PAGES and not re.search(r"-\d{2}-|final-exam|trainer|-pretest\.html$|-practice\.html$", n)]
 
 
 def track_of(name, hubs):

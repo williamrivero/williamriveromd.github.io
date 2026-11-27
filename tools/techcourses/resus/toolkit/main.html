@@ -1,0 +1,80 @@
+<main class="container dch-calc">
+
+<nav class="toc" aria-label="Calculators">
+<a href="#tool-1">1 CPR interruption analyzer</a><a href="#tool-2">2 Megacode timeline</a><a href="#tool-3">3 Pediatric dose and volume trainer</a><a href="#tool-4">4 Oxygen cylinder planner</a><a href="#tool-5">5 Drill rotation planner</a>
+</nav>
+
+<p class="disclaimer"><b>DRAFT, pending clinical sign-off.</b> Teaching and drill tools for the Renal Care Academy Resuscitation Lab. They do arithmetic and display, not clinical decisions. They are not BLS, ACLS or PALS certification, and they do not replace your unit&rsquo;s protocol, order set, length-based tape, dose card or the attending physician. Nothing you enter leaves this page.</p>
+
+<section class="calc" id="tool-1"><h2>1. CPR interruption and compression-fraction analyzer</h2>
+<p class="why">Chest compression fraction (CCF) is the share of the arrest observation time spent compressing: <b>CCF = (observation time &minus; total pause time) &divide; observation time &times; 100</b>. The 2025 AHA adult BLS guideline says a fraction of at least 60% may be reasonable (COR 2b, LOE C-LD) and that pulse checks should take no more than 10 seconds (COR 1). Pauses over 10 seconds are flagged. State the <b>data source</b>: browser timing measures time only, never compression depth or ventilation quality.</p>
+<div class="grid">
+<label>Observation time, seconds (for example 600 = 10 minutes)<input id="t1_obs" type="number" min="1" step="1" value="600" placeholder="e.g. 600"></label>
+<label>Pause durations, seconds (comma-separated)<input id="t1_p" type="text" value="8, 6, 14, 9, 22, 7" placeholder="e.g. 8, 6, 14"></label>
+<label>Data source<select id="t1_src"><option>Observer timestamps</option><option>Defibrillator download</option><option>CPR feedback device</option><option>Participant entry</option></select></label>
+</div><button data-run="t1">Calculate</button><div class="out" id="t1_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-2"><h2>2. Megacode timeline analyzer</h2>
+<p class="why">Paste a drill log, one event per line, as <b>mm:ss event</b>. Recognized events: <i>recognition, compressions start, compressions stop, pads on, shock, epinephrine, amiodarone, rhythm check, circuit stopped, blood returned, blood clamped, airway, ROSC, handover, end</i>. The <a href="../academy/resuscitation-lab-practice.html">Practice Lab facilitator recorder</a> exports this format. Times are measured from recognition (or 00:00). Compression fraction is computed from compressions start/stop pairs between the first compression and ROSC or end. This is an educational result, not a predicted patient outcome.</p>
+<div class="grid">
+<label style="grid-column:1/-1">Drill log<textarea id="t2_log" rows="9">00:00 recognition
+00:12 compressions start
+00:35 pads on
+00:40 compressions stop
+00:46 shock
+00:47 compressions start
+00:58 circuit stopped
+01:30 blood returned
+02:47 compressions stop
+02:53 compressions start
+03:10 epinephrine
+04:50 compressions stop
+04:58 shock
+04:59 compressions start
+07:05 epinephrine
+08:00 ROSC</textarea></label>
+</div><button data-run="t2">Analyze</button><div class="out" id="t2_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-3"><h2>3. Pediatric resuscitation dose-and-volume trainer</h2>
+<p class="why">A <b>trainer</b> for the arithmetic of weight-based doses, using the doses printed on the 2025 AHA/AAP pediatric algorithms: epinephrine 0.01 mg/kg of 0.1 mg/mL (maximum 1 mg); amiodarone 5 mg/kg (maximum 300 mg); lidocaine 1 mg/kg; adenosine 0.1 mg/kg (maximum 6 mg), repeat 0.2 mg/kg (maximum 12 mg); defibrillation 2 J/kg, then 4 J/kg, later up to 10 J/kg or the adult maximum; synchronized cardioversion 0.5 to 1 J/kg, then 2 J/kg; fluid bolus 10 or 20 mL/kg (septic shock, with reassessment). Every step is shown. After puberty, adult guidance applies. <b>Use your unit&rsquo;s length-based tape or approved dose card at the bedside; a second person checks every dose.</b></p>
+<div class="grid">
+<label>Weight, kg (protocol weight)<input id="t3_w" type="number" min="0.5" max="150" step="0.1" value="20" placeholder="e.g. 20"></label>
+<label>Item<select id="t3_d">
+<option value="epi">Epinephrine, cardiac arrest (IV/IO)</option>
+<option value="amio">Amiodarone, shock-refractory VF/pVT</option>
+<option value="lido">Lidocaine, shock-refractory VF/pVT</option>
+<option value="ade1">Adenosine, first dose (SVT)</option>
+<option value="ade2">Adenosine, second dose (SVT)</option>
+<option value="def1">Defibrillation, first shock</option>
+<option value="def2">Defibrillation, second shock</option>
+<option value="defmax">Defibrillation, highest later shock</option>
+<option value="cv1">Synchronized cardioversion, first</option>
+<option value="cv2">Synchronized cardioversion, if unsuccessful</option>
+<option value="fl10">Fluid bolus, 10 mL/kg</option>
+<option value="fl20">Fluid bolus, 20 mL/kg</option>
+</select></label>
+<label>Concentration on your syringe or ampule, mg/mL (drugs only)<input id="t3_c" type="number" min="0" step="0.001" value="0.1" placeholder="e.g. 0.1"></label>
+<label>Your calculated volume, mL (optional, to check)<input id="t3_try" type="number" min="0" step="0.01" placeholder="e.g. 2"></label>
+<label style="grid-column:1/-1"><input id="t3_ok" type="checkbox" style="width:auto"> I have read the concentration aloud and a second person confirmed it</label>
+</div><button data-run="t3">Calculate</button><div class="out" id="t3_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-4"><h2>4. Oxygen cylinder duration planner</h2>
+<p class="why">Estimates how long a cylinder lasts at a given flow, for transfer planning: <b>usable liters = full content &times; (current pressure &minus; reserve pressure) &divide; full pressure</b>; <b>minutes = usable liters &divide; flow</b>. Use the content and full pressure printed on your cylinder (any pressure unit, used consistently). The estimate assumes the cylinder&rsquo;s stated capacity and a steady flow.</p>
+<div class="grid">
+<label>Full content, liters (from the label)<input id="t4_cap" type="number" min="1" step="1" value="680" placeholder="e.g. 680"></label>
+<label>Full pressure (same unit as below)<input id="t4_full" type="number" min="1" step="1" value="2000" placeholder="e.g. 2000"></label>
+<label>Current gauge pressure<input id="t4_now" type="number" min="0" step="1" value="1000" placeholder="e.g. 1000"></label>
+<label>Reserve to keep (same unit)<input id="t4_res" type="number" min="0" step="1" value="200" placeholder="e.g. 200"></label>
+<label>Flow, L/min<input id="t4_flow" type="number" min="0.1" step="0.1" value="15" placeholder="e.g. 15"></label>
+<label>Expected transfer time, minutes<input id="t4_trip" type="number" min="0" step="1" value="30" placeholder="e.g. 30"></label>
+</div><button data-run="t4">Calculate</button><div class="out" id="t4_out" aria-live="polite"></div></section>
+
+<section class="calc" id="tool-5"><h2>5. Drill coverage and role-rotation planner</h2>
+<p class="why">Builds a rotation so that, over a series of drills, each staff member practices different code roles. Enter initials only (no full names needed). The watcher role is included so it is practiced too. Nothing is stored; print or copy the table.</p>
+<div class="grid">
+<label>Staff initials (comma-separated)<input id="t5_s" type="text" value="JD, PR, BC, LM, GS, TA" placeholder="e.g. JD, PR, BC"></label>
+<label>Number of drills<input id="t5_n" type="number" min="1" max="24" step="1" value="6" placeholder="e.g. 6"></label>
+<label style="grid-column:1/-1">Roles (comma-separated, in priority order)<input id="t5_r" type="text" value="Leader, Compressor 1, Compressor 2, Airway, Defibrillator and drugs, Circuit nurse, Recorder, Watcher"></label>
+</div><button data-run="t5">Build rotation</button><div class="out" id="t5_out" aria-live="polite"></div></section>
+
+</main>

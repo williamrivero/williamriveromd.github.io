@@ -1,0 +1,178 @@
+{
+ "id": "rl09-needle-out",
+ "page": "resuscitation-lab-09-circuit-emergencies.html",
+ "title": "Needle out",
+ "decisions": 3,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "4:15 p.m.",
+  "bp": "84/50",
+  "hr": 118,
+  "spo2": 95,
+  "ecg": "Sinus tachycardia",
+  "uf": "On",
+  "pump": "Running",
+  "line": "No alarm",
+  "rhythm": "normal",
+  "rhythmLabel": "Sinus tachycardia",
+  "alarm": [
+   "bp"
+  ]
+ },
+ "intro": "<p>Bacolod City, 4:15 p.m. Mrs. Gloria Santiago, 74, asleep under a thick blanket in her third hour. Blood is dripping from under the blanket onto a wet floor. The machine shows no alarm. She is pale and hard to wake.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "4:15",
+   "scene": "",
+   "prompt": "What do you do in the first ten seconds?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Lift the blanket; venous needle out: stop the blood pump, clamp both sides, press firmly with gloved hands and gauze, shout for help.",
+     "feedback": "<p>A quiet machine proves nothing; stop the loss first.</p>",
+     "next": "n2",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped; pressure on site",
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Reinsert the needle and continue.",
+     "feedback": "<p>Never reinsert a dislodged needle.</p>",
+     "next": "n2",
+     "then": "<p>The charge nurse stops you; pump off, clamp, pressure.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped; pressure on site",
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Check the machine first; it shows no alarm, so it must be minor.",
+     "feedback": "<p>The venous pressure alarm can stay silent when a needle is out.</p>",
+     "next": "n2",
+     "then": "<p>You lift the blanket and see the needle out.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped; pressure on site",
+      "uf": "Off"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "4:16",
+   "scene": "<p>Pressure 76/42, heart rate 128. Large pool of blood.</p>",
+   "prompt": "Next?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Lay her flat, oxygen, call the physician-on-duty and attending, new IV (not the open line) for saline per physician, estimate the loss, assign a watcher, dry the floor.",
+     "feedback": "<p>Hemorrhagic shock: volume, help, and a safe floor.</p>",
+     "next": "n3",
+     "vitals": {
+      "bp": "80/46",
+      "hr": 124
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Return the circuit blood through the open line end.",
+     "feedback": "<p>Blood is never returned through an open line end.</p>",
+     "next": "n3",
+     "then": "<p>You use a new IV instead.</p>",
+     "vitals": {
+      "bp": "78/44",
+      "hr": 126
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "4:22",
+   "scene": "<p>She becomes unresponsive; no pulse.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Cardiac arrest with hemorrhage as the cause: compressions, pads, arrest algorithm, fluids, early transfer for blood; floor dried before kneeling or shocking.",
+     "feedback": "<p>The cause guides treatment during CPR.</p>",
+     "next": "end",
+     "vitals": {
+      "time": "4:22 p.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 110,
+      "spo2": "—",
+      "rhythm": "normal",
+      "rhythmLabel": "Organized rhythm, no pulse (PEA)",
+      "cpr": "Running",
+      "alarm": [
+       "hr"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Keep pressing the site and wait for the physician.",
+     "feedback": "<p>Without a pulse, compressions come first.</p>",
+     "next": "end",
+     "then": "<p>A nurse starts compressions.</p>",
+     "vitals": {
+      "time": "4:23 p.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 110,
+      "spo2": "—",
+      "rhythm": "normal",
+      "rhythmLabel": "Organized rhythm, no pulse (PEA)",
+      "cpr": "Running",
+      "alarm": [
+       "hr"
+      ]
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "4:45 p.m.",
+   "text": "<p>With fluids and CPR she regains a pulse and is transferred for blood. The unit changes its blanket rule: access arms stay visible.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Lift the blanket;</b> machines can miss dislodgement.</li><li><b>Stop, clamp, press;</b> never reinsert or return through an open end.</li><li><b>Arrest from hemorrhage:</b> CPR plus volume and early blood.</li></ul>",
+ "lab": {
+  "algorithm": "dialysis-hemorrhage",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 15
+ }
+}

@@ -1,0 +1,169 @@
+{
+ "id": "rl10-child-quiet",
+ "page": "resuscitation-lab-10-pediatric-bls-and-deterioration.html",
+ "title": "The child becoming quiet",
+ "decisions": 3,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "rr",
+  "ecg",
+  "uf",
+  "pump"
+ ],
+ "monitor": {
+  "time": "2:40 p.m.",
+  "bp": "104/66",
+  "hr": 54,
+  "spo2": 82,
+  "rr": 8,
+  "ecg": "Sinus bradycardia",
+  "uf": "On",
+  "pump": "Running",
+  "rhythm": "normal",
+  "rhythmLabel": "Slow sinus rhythm, 54/min",
+  "alarm": [
+   "hr",
+   "spo2"
+  ]
+ },
+ "intro": "<p>Jun-Jun, 8, 22 kg, arrived coughing and breathing fast after gaining 1.8 kg. Forty minutes into dialysis he is drowsy and pale, with slow shallow breaths. Saturation 82%; heart rate 54 (it was 120). You are the pediatric dialysis nurse.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "2:40",
+   "scene": "",
+   "prompt": "What is happening, and what is first?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Respiratory failure with hypoxic bradycardia: call for help and the pediatric cart; open the airway; bag-mask ventilation with oxygen using the right mask size.",
+     "feedback": "<p>In children, breathing usually fails first; ventilation breaks the chain.</p>",
+     "next": "n2",
+     "vitals": {
+      "spo2": 90,
+      "hr": 88,
+      "rr": "Bagging 20/min"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Atropine for the slow heart rate.",
+     "feedback": "<p>Hypoxic bradycardia needs oxygen and ventilation, not atropine.</p>",
+     "next": "n2",
+     "then": "<p>You ventilate; the rate rises.</p>",
+     "vitals": {
+      "spo2": 88,
+      "hr": 80,
+      "rr": "Bagging"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Start compressions at once.",
+     "feedback": "<p>With a pulse and a rate over 60 for now, effective ventilation comes first.</p>",
+     "next": "n2",
+     "then": "<p>A colleague takes the airway and ventilates; the rate rises.</p>",
+     "vitals": {
+      "spo2": 88,
+      "hr": 82,
+      "rr": "Bagging"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "2:43",
+   "scene": "<p>With bagging, saturation 90%, heart rate 88. The physician-on-duty and attending pediatric nephrologist are called.</p>",
+   "prompt": "What about the circuit?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Report the fluid status and pressure; the physicians decide whether fluid removal continues for the edema or stops for pressure.",
+     "feedback": "<p>In pulmonary edema, fluid removal may be treatment; it is a physician decision.</p>",
+     "next": "n3"
+    },
+    {
+     "grade": "ok",
+     "text": "Stop fluid removal automatically because he is unwell.",
+     "feedback": "<p>Stopping may remove part of the treatment for edema; ask the physician.</p>",
+     "next": "n3",
+     "then": "<p>The attending restarts gentle fluid removal.</p>"
+    }
+   ]
+  },
+  "n3": {
+   "short": "2:50",
+   "scene": "<p>Despite good bag-mask ventilation with oxygen, his heart rate falls to 50 and he is mottled with weak pulses.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Start pediatric CPR: one-third chest depth, 100 to 120 a minute, 15:2 with two rescuers; epinephrine by weight if compromise persists after hypoxia is corrected.",
+     "feedback": "<p>PALS 2025: CPR for HR under 60 with compromise despite effective oxygenated ventilation (COR 1).</p>",
+     "next": "end",
+     "vitals": {
+      "time": "2:50 p.m.",
+      "hr": 50,
+      "bp": "62/34",
+      "spo2": 88,
+      "cpr": "Running",
+      "alarm": [
+       "hr",
+       "bp",
+       "spo2"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Wait until the heart rate is under 40.",
+     "feedback": "<p>The threshold is under 60 with poor perfusion despite ventilation.</p>",
+     "next": "end",
+     "then": "<p>You start CPR a minute later.</p>",
+     "vitals": {
+      "time": "2:51 p.m.",
+      "hr": 44,
+      "bp": "58/30",
+      "spo2": 86,
+      "cpr": "Running",
+      "alarm": [
+       "hr",
+       "bp",
+       "spo2"
+      ]
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "3:15 p.m.",
+   "text": "<p>Jun-Jun&rsquo;s heart rate recovers with ventilation and brief CPR; he is moved to the pediatric intensive care unit with a plan for gentle fluid removal there.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Breathing fails first in children;</b> ventilate with the right mask.</li><li><b>Under 60 with poor perfusion despite ventilation:</b> compressions.</li><li><b>The circuit decision</b> belongs to the physicians.</li></ul>",
+ "lab": {
+  "algorithm": "peds-deterioration",
+  "set": [
+   "pediatric",
+   "dialysis"
+  ],
+  "budget": 20
+ }
+}

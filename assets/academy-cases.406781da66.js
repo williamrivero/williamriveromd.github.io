@@ -131,9 +131,16 @@
       var rr = 60 / Math.max(25, hr), py = null;
       ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.6;
       for (var px = 0; px < w; px++) {
-        var k = (px / 70) % rr, y = h * 0.72 - wave(k) * h * 0.62;
+        var k = (px / 70) % rr, y = h * 0.72 - (CONT[shape] ? cont(px / 70) : wave(k)) * h * 0.62;
         ctx.beginPath(); ctx.moveTo(px - 1, py == null ? y : py); ctx.lineTo(px, y); ctx.stroke(); py = y;
       }
+    }
+    // continuous (beat-free) rhythms: ventricular fibrillation and asystole (Resuscitation Lab, Nov 2026)
+    var CONT = { vf: 1, asystole: 1 };
+    function cont(T) {
+      if (shape === "asystole") return 0.012 * Math.sin(T * 4.4) + 0.006 * Math.sin(T * 23);
+      var amp = 0.62 + 0.38 * Math.sin(T * 1.3);
+      return amp * (0.24 * Math.sin(T * 33.3) + 0.17 * Math.sin(T * 44.6 + 1) + 0.1 * Math.sin(T * 23.2 + 2)) + 0.2;
     }
     // y offset (0..1, up) for time t seconds after a beat
     function wave(t) {
@@ -142,9 +149,12 @@
       if (shape === "irregular") y = 0.02 * Math.sin(t * 40);         // no P, fibrillatory baseline
       y += g(0.2, 0.012, -0.12) + g(0.22, 0.012, 0.9) + g(0.24, 0.012, -0.2); // QRS
       if (shape === "wide") y = g(0.08, 0.025, 0.1) + g(0.24, 0.045, 0.75) + g(0.32, 0.04, -0.25);
+      if (shape === "svt") y = g(0.2, 0.012, -0.1) + g(0.22, 0.012, 0.85) + g(0.24, 0.012, -0.18) + g(0.34, 0.04, 0.16); // no visible P
+      if (shape === "sine") { var rr0 = 60 / Math.max(25, hr); return 0.42 * Math.sin(2 * Math.PI * t / rr0) + 0.2; }  // late hyperkalemia
+      if (shape === "paced") y = g(0.1, 0.004, 0.7) + g(0.2, 0.05, 0.6) + g(0.3, 0.05, -0.3) + g(0.5, 0.07, -0.18); // pacer spike, wide QRS
       if (shape === "peaked") y += g(0.42, 0.035, 0.62);              // tall narrow T
       else if (shape === "st") y += (t > 0.27 && t < 0.38 ? -0.12 : 0) + g(0.47, 0.06, 0.12);
-      else if (shape !== "wide") y += g(0.44, 0.06, 0.22);
+      else if (shape !== "wide" && shape !== "svt" && shape !== "paced") y += g(0.44, 0.06, 0.22);
       return y;
     }
     function frame(ts) {
@@ -160,7 +170,7 @@
           if (shape === "irregular") { rnd = 0.6 + Math.random() * 0.8; rr *= rnd; }
           nextBeat = now + rr;
         }
-        var y = h * 0.72 - wave(now - beatT) * h * 0.62;
+        var y = h * 0.72 - (CONT[shape] ? cont(now) : wave(now - beatT)) * h * 0.62;
         ctx.fillStyle = "#0b1220"; ctx.fillRect(x, 0, 8, h);
         ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.6; ctx.beginPath();
         ctx.moveTo(x - 1, prevY == null ? y : prevY); ctx.lineTo(x, y); ctx.stroke();

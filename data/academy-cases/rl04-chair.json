@@ -1,0 +1,188 @@
+{
+ "id": "rl04-chair",
+ "page": "resuscitation-lab-04-bls-at-the-chair.html",
+ "title": "The chair that would not recline",
+ "decisions": 4,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "7:05 a.m.",
+  "bp": "—",
+  "hr": "No pulse",
+  "stripRate": 200,
+  "spo2": "—",
+  "ecg": "Not yet attached",
+  "uf": "On",
+  "pump": "Running",
+  "rhythm": "vf",
+  "rhythmLabel": "Monitor not yet attached",
+  "alarm": [
+   "hr"
+  ]
+ },
+ "intro": "<p>You are a nurse assistant passing Station 4 in Quezon City at 7:05 a.m. Mrs. Lorna Castillo, 64, about 85 kg, has slumped forward ten minutes after connection. She does not answer, she is gasping, and you feel no pulse. You shout for help and pull the recliner lever; the backrest goes only halfway down and sticks.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "7:05",
+   "scene": "",
+   "prompt": "What do you do now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Start compressions where she is, as flat as the chair goes, while help comes.",
+     "feedback": "<p>Compressions start where the patient is. A better surface is worth it only if it costs no time.</p>",
+     "next": "n2",
+     "vitals": {
+      "cpr": "Running"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Keep working the lever until the chair is flat.",
+     "feedback": "<p>Every second fighting the chair is a second without blood flow.</p>",
+     "next": "n2",
+     "then": "<p>After 30 seconds you give up on the lever and compress.</p>",
+     "vitals": {
+      "cpr": "Running"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Pull her onto the floor by yourself while she is still connected.",
+     "feedback": "<p>Moving a connected patient without clamping can pull out the needles; a single rescuer cannot lift 85 kg safely.</p>",
+     "next": "n2",
+     "then": "<p>A nurse stops you; you compress in the chair.</p>",
+     "vitals": {
+      "cpr": "Running"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "7:06",
+   "scene": "<p>Two nurses arrive with the cart. One says, &ldquo;Let us move her to the floor.&rdquo;</p>",
+   "prompt": "What is the best plan?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Keep compressing; one nurse tries the CPR release or slides a backboard; the circuit nurse stops the pump and clamps before any move; move only with four people on a count.",
+     "feedback": "<p>A firm surface helps only if it does not delay compressions, and the circuit must be safe before moving.</p>",
+     "next": "n3",
+     "vitals": {
+      "uf": "Off",
+      "pump": "Stopped",
+      "line": "Clamped"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Stop compressions and move her now.",
+     "feedback": "<p>Stopping for an unplanned move costs a minute of no flow and risks the access.</p>",
+     "next": "n3",
+     "then": "<p>The move takes 50 seconds without compressions; the leader restarts CPR on the floor.</p>",
+     "vitals": {
+      "uf": "Off",
+      "pump": "Stopped",
+      "line": "Clamped"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "7:07",
+   "scene": "<p>Pads go on. The AED analyzes and advises a shock.</p>",
+   "prompt": "What happens around the shock?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "&ldquo;Everyone clear: patient, chair, lines, machine.&rdquo; Shock, then compressions immediately, no pulse check.",
+     "feedback": "<p>Resume compressions immediately after a shock (COR 2a, LOE B-R); clear the lines and machine in a dialysis unit.</p>",
+     "next": "n4",
+     "vitals": {
+      "ecg": "AED: shock delivered",
+      "rhythmLabel": "Shockable rhythm",
+      "time": "7:07 a.m."
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Shock, then check the pulse for 10 seconds.",
+     "feedback": "<p>A post-shock pulse check adds a pause when the heart is stunned; compress first.</p>",
+     "next": "n4",
+     "then": "<p>The leader calls for compressions after the pause.</p>",
+     "vitals": {
+      "ecg": "AED: shock delivered",
+      "time": "7:07 a.m."
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Shock while the circuit nurse keeps holding the blood lines.",
+     "feedback": "<p>Anything touching the patient during a shock can carry current to staff.</p>",
+     "next": "n4",
+     "then": "<p>The AED pauses; the nurse lets go; the shock is delivered.</p>",
+     "vitals": {
+      "ecg": "AED: shock delivered",
+      "time": "7:08 a.m."
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "7:09",
+   "scene": "<p>Compressions continue. Your arms are burning after two minutes.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Swap with the next compressor at the rhythm check, standing ready beside the chair.",
+     "feedback": "<p>Depth falls with fatigue before you feel it; swap every two minutes.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Keep going until you cannot continue.",
+     "feedback": "<p>Quality drops before you notice.</p>",
+     "next": "end",
+     "then": "<p>The leader swaps you at the next check.</p>"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "7:20 a.m.",
+   "text": "<p>The physician-on-duty arrives and leads the rest of the arrest. The stuck recliner is tagged out, and every chair&rsquo;s CPR position is added to tomorrow&rsquo;s morning check.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Compress where the patient is.</b> Improve the surface only if it costs no time.</li><li><b>Clamp before any move.</b> The circuit nurse makes the lines safe first.</li><li><b>Clear patient, chair, lines and machine;</b> compress immediately after the shock.</li></ul>",
+ "lab": {
+  "algorithm": "adult-bls",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 15
+ }
+}

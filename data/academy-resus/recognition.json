@@ -1,0 +1,1224 @@
+{
+ "tags": {
+  "rhythm-equals-pulse": "Treating the monitor rhythm as proof of a pulse",
+  "gasping-is-breathing": "Mistaking gasping for breathing",
+  "stable-by-numbers": "Judging stability by heart rate instead of signs",
+  "shock-nonshockable": "Shocking a nonshockable rhythm",
+  "wrong-algorithm-after-change": "Staying in the old algorithm after the patient changes",
+  "hyperk-normal-ecg": "Trusting a normal ECG in hyperkalemia",
+  "hyperk-pulse-vs-arrest": "Confusing hyperkalemia with a pulse and hyperkalemic arrest",
+  "return-contaminated-blood": "Returning blood after air, hemolysis or a reaction",
+  "pause-for-machine": "Pausing CPR for the machine",
+  "peds-adult-dose": "Adult doses, energies or ratios in a child",
+  "epi-concentration": "Confusing epinephrine concentrations or routes",
+  "peds-breathing-first": "Missing respiratory failure as the cause in a child",
+  "rosc-check": "Confirming ROSC without a pulse and pressure",
+  "artifact": "Mistaking artifact for a lethal rhythm",
+  "stop-dialysis-hyperk": "Stopping dialysis in stable hyperkalemia",
+  "sync-unsync": "Confusing synchronized and unsynchronized shocks"
+ },
+ "items": [
+  {
+   "id": "r01",
+   "type": "pick",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "adult-arrest",
+   "stem": "A patient slumps in the chair: unresponsive, gasping every 10 seconds, no definite pulse in 10 seconds.",
+   "options": [
+    "Adult cardiac arrest: compressions now",
+    "Respiratory arrest: ventilate only",
+    "Intradialytic hypotension: saline",
+    "Vasovagal faint: legs up and observe"
+   ],
+   "answer": 0,
+   "why": [
+    "Gasping with no definite pulse is cardiac arrest.",
+    "There is no pulse, so ventilation alone does not circulate blood.",
+    "Treating pressure first wastes the critical minute.",
+    "A faint has a pulse."
+   ],
+   "tag": "gasping-is-breathing",
+   "mod": 3
+  },
+  {
+   "id": "r02",
+   "type": "pick",
+   "set": [
+    "adult"
+   ],
+   "algo": "resp-arrest",
+   "stem": "An adult is not breathing but has a strong carotid pulse.",
+   "options": [
+    "Respiratory arrest: open the airway and give about one breath every 6 seconds",
+    "Cardiac arrest: compressions",
+    "Shock",
+    "Observe"
+   ],
+   "answer": 0,
+   "why": [
+    "Respiratory arrest with a pulse: ventilate (AHA suggests 10 breaths a minute) and recheck the pulse often.",
+    "There is a pulse.",
+    "No rhythm indication.",
+    "Without breathing, arrest follows within minutes."
+   ],
+   "tag": "gasping-is-breathing",
+   "mod": 3
+  },
+  {
+   "id": "r03",
+   "type": "pick",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "deterioration",
+   "stem": "A patient is pale and sweaty with a pressure of 76/40, responsive, breathing normally, pulse 104, an hour before the end of the session.",
+   "options": [
+    "Deterioration with a pulse: lay flat, stop fluid removal, check the access and causes (Card 3)",
+    "Cardiac arrest",
+    "Respiratory arrest",
+    "Tachycardia algorithm: cardiovert"
+   ],
+   "answer": 0,
+   "why": [
+    "Responsive with a pulse and breathing: deterioration, treated by cause.",
+    "There is a pulse.",
+    "He is breathing.",
+    "Sinus tachycardia from low pressure is not treated with cardioversion."
+   ],
+   "tag": "rhythm-equals-pulse",
+   "mod": 3
+  },
+  {
+   "id": "r04",
+   "type": "pick",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-brady",
+   "stem": "Heart rate 34, pressure 80/46, new confusion; the patient has a pulse.",
+   "options": [
+    "Unstable bradycardia: atropine per protocol, then pacing or an infusion; treat causes",
+    "Stable bradycardia: observe",
+    "Cardiac arrest: compressions",
+    "Adenosine"
+   ],
+   "answer": 0,
+   "why": [
+    "Low pressure and confusion are compromise.",
+    "Signs of compromise make it unstable.",
+    "There is a pulse.",
+    "Adenosine slows the heart further."
+   ],
+   "tag": "stable-by-numbers",
+   "mod": 6
+  },
+  {
+   "id": "r05",
+   "type": "pick",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-tachy",
+   "stem": "Heart rate 168, regular and narrow, pressure 124/78, alert, palpitations only.",
+   "options": [
+    "Stable tachycardia: 12-lead ECG, vagal maneuvers, adenosine per protocol",
+    "Synchronized cardioversion now",
+    "Defibrillation",
+    "Atropine"
+   ],
+   "answer": 0,
+   "why": [
+    "No compromise: stable path.",
+    "Cardioversion is for instability.",
+    "Defibrillation is for pulseless or polymorphic VT.",
+    "Atropine speeds the heart."
+   ],
+   "tag": "stable-by-numbers",
+   "mod": 6
+  },
+  {
+   "id": "r06",
+   "type": "pick",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "hyperkalemia",
+   "stem": "Monday, missed session, potassium 7.6 mmol/L, peaked T waves, alert with a pulse, connected.",
+   "options": [
+    "Hyperkalemia with a pulse: calcium for ECG changes, shift, keep dialyzing",
+    "Hyperkalemic arrest algorithm",
+    "Stop dialysis and observe",
+    "Wait for a repeat sample"
+   ],
+   "answer": 0,
+   "why": [
+    "Pulse present: protect, shift, remove.",
+    "She is not in arrest.",
+    "Dialysis is the cure.",
+    "ECG changes mean treat now."
+   ],
+   "tag": "hyperk-pulse-vs-arrest",
+   "mod": 8
+  },
+  {
+   "id": "r07",
+   "type": "pick",
+   "set": [
+    "pediatric",
+    "dialysis"
+   ],
+   "algo": "peds-deterioration",
+   "stem": "A 7-year-old on dialysis is drowsy, breathing slowly, saturation 80%, heart rate falling from 120 to 70.",
+   "options": [
+    "Respiratory failure: open the airway and bag-mask ventilate with oxygen",
+    "Atropine",
+    "Synchronized cardioversion",
+    "Wait for the heart rate to fall below 60"
+   ],
+   "answer": 0,
+   "why": [
+    "Children usually arrest from respiratory failure; ventilation breaks the chain.",
+    "Hypoxic bradycardia needs oxygen.",
+    "No tachycardia.",
+    "Act before arrest."
+   ],
+   "tag": "peds-breathing-first",
+   "mod": 10
+  },
+  {
+   "id": "r08",
+   "type": "pick",
+   "set": [
+    "pediatric",
+    "dialysis"
+   ],
+   "algo": "peds-arrest",
+   "stem": "Which pathway for a 15-year-old with signs of puberty in cardiac arrest?",
+   "options": [
+    "Adult BLS (30:2), with doses checked against weight and adult maximums",
+    "Infant BLS",
+    "Child BLS with 15:2 always",
+    "No CPR until weight is known"
+   ],
+   "answer": 0,
+   "why": [
+    "After puberty, adult guidance applies.",
+    "Not an infant.",
+    "15:2 applies before puberty.",
+    "Never delay CPR."
+   ],
+   "tag": "peds-adult-dose",
+   "mod": 10
+  },
+  {
+   "id": "r09",
+   "type": "pick",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "dialysis-air",
+   "stem": "Foam below the venous chamber, air alarm, the patient coughs and is breathless.",
+   "options": [
+    "Stop the pump, clamp the venous line, do not return the blood, oxygen, lay flat",
+    "Rinse back the blood",
+    "Sit the patient up",
+    "Override the alarm and continue"
+   ],
+   "answer": 0,
+   "why": [
+    "Card 5 actions.",
+    "Rinse-back pushes air in.",
+    "Sitting up may send air to the brain.",
+    "Never override the detector."
+   ],
+   "tag": "return-contaminated-blood",
+   "mod": 7
+  },
+  {
+   "id": "r10",
+   "type": "pick",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "dialysis-anaphylaxis",
+   "stem": "Five minutes after connection: hives, wheeze, lip swelling, pressure 82/46.",
+   "options": [
+    "Stop the pump, clamp, do not return; IM epinephrine per protocol",
+    "Antihistamine and continue",
+    "Return the blood and finish",
+    "IV epinephrine 1 mg bolus"
+   ],
+   "answer": 0,
+   "why": [
+    "Epinephrine first; blood not returned.",
+    "Antihistamines do not replace epinephrine.",
+    "The circuit carries the trigger.",
+    "IV bolus of 1 mg is the arrest dose, dangerous with a pulse."
+   ],
+   "tag": "epi-concentration",
+   "mod": 9
+  },
+  {
+   "id": "r11",
+   "type": "strip",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "adult-arrest",
+   "stem": "Unresponsive, gasping, no pulse.",
+   "options": [
+    "PEA: compressions and epinephrine as soon as feasible",
+    "ROSC: post-arrest care",
+    "Shock",
+    "Observe"
+   ],
+   "answer": 0,
+   "why": [
+    "Organized rhythm without a pulse is PEA.",
+    "ROSC needs a pulse.",
+    "PEA is not shockable.",
+    "No pulse means CPR."
+   ],
+   "tag": "rhythm-equals-pulse",
+   "mod": 3,
+   "strip": {
+    "rhythm": "normal",
+    "rate": 70
+   },
+   "findings": "No pulse, gasping"
+  },
+  {
+   "id": "r12",
+   "type": "strip",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "post-rosc",
+   "stem": "After CPR: strong carotid pulse, pressure 102/64.",
+   "options": [
+    "ROSC: post-arrest care, pads stay on",
+    "PEA: continue CPR",
+    "Shock",
+    "Asystole"
+   ],
+   "answer": 0,
+   "why": [
+    "A pulse and pressure confirm ROSC.",
+    "There is a pulse.",
+    "Not shockable.",
+    "There is organized activity."
+   ],
+   "tag": "rosc-check",
+   "mod": 12,
+   "strip": {
+    "rhythm": "normal",
+    "rate": 70
+   },
+   "findings": "Pulse 70, BP 102/64"
+  },
+  {
+   "id": "r13",
+   "type": "strip",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "adult-arrest",
+   "stem": "Unresponsive, no pulse.",
+   "options": [
+    "VF: shock, then compressions",
+    "Asystole: epinephrine",
+    "Atrial fibrillation: rate control",
+    "Artifact: reattach leads"
+   ],
+   "answer": 0,
+   "why": [
+    "Chaotic trace with no pulse is VF.",
+    "There is electrical activity.",
+    "AF has a pulse.",
+    "Artifact does not cause pulselessness."
+   ],
+   "tag": "shock-nonshockable",
+   "mod": 5,
+   "strip": {
+    "rhythm": "vf"
+   },
+   "findings": "No pulse"
+  },
+  {
+   "id": "r14",
+   "type": "strip",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-arrest",
+   "stem": "Talking, shivering under a blanket, pressure 130/80.",
+   "options": [
+    "Artifact: check the patient and leads",
+    "VF: shock",
+    "Asystole",
+    "Pulseless VT"
+   ],
+   "answer": 0,
+   "why": [
+    "A talking patient cannot be in VF.",
+    "Shocking a conscious patient is dangerous.",
+    "Not flat.",
+    "He has a pulse."
+   ],
+   "tag": "artifact",
+   "mod": 3,
+   "strip": {
+    "rhythm": "vf"
+   },
+   "findings": "Alert and talking"
+  },
+  {
+   "id": "r15",
+   "type": "strip",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "adult-arrest",
+   "stem": "Unresponsive, no pulse; flat line confirmed in two leads, gain up.",
+   "options": [
+    "Asystole: CPR and epinephrine as soon as feasible",
+    "Shock",
+    "Pacing",
+    "Stop resuscitation"
+   ],
+   "answer": 0,
+   "why": [
+    "Confirmed asystole is nonshockable.",
+    "Nothing to defibrillate.",
+    "Routine pacing in arrest is not recommended.",
+    "Not a reason to stop."
+   ],
+   "tag": "shock-nonshockable",
+   "mod": 5,
+   "strip": {
+    "rhythm": "asystole"
+   },
+   "findings": "No pulse; confirmed in two leads"
+  },
+  {
+   "id": "r16",
+   "type": "strip",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-tachy",
+   "stem": "Pulse present, pressure 70/40, confused.",
+   "options": [
+    "Unstable VT with a pulse: synchronized cardioversion",
+    "Pulseless VT: defibrillate",
+    "Stable: amiodarone infusion",
+    "Adenosine for any wide rhythm"
+   ],
+   "answer": 0,
+   "why": [
+    "Wide regular tachycardia with a pulse and compromise.",
+    "He has a pulse.",
+    "Not stable.",
+    "Adenosine only if regular, monomorphic and stable."
+   ],
+   "tag": "stable-by-numbers",
+   "mod": 6,
+   "strip": {
+    "rhythm": "wide",
+    "rate": 180
+   },
+   "findings": "Pulse present, BP 70/40, confused"
+  },
+  {
+   "id": "r17",
+   "type": "strip",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-arrest",
+   "stem": "Unresponsive, no pulse.",
+   "options": [
+    "Pulseless VT: defibrillate",
+    "VT with a pulse: synchronized cardioversion",
+    "Sinus tachycardia",
+    "Adenosine"
+   ],
+   "answer": 0,
+   "why": [
+    "Pulseless VT is treated like VF.",
+    "There is no pulse.",
+    "Wide fast complexes are not sinus.",
+    "Never adenosine in arrest."
+   ],
+   "tag": "sync-unsync",
+   "mod": 5,
+   "strip": {
+    "rhythm": "wide",
+    "rate": 190
+   },
+   "findings": "No pulse"
+  },
+  {
+   "id": "r18",
+   "type": "strip",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "hyperkalemia",
+   "stem": "Alert, pulse 62, missed Friday session.",
+   "options": [
+    "Hyperkalemia with a pulse: protect, shift, dialyze",
+    "Hyperkalemic arrest",
+    "Normal ECG",
+    "Ischemia only"
+   ],
+   "answer": 0,
+   "why": [
+    "Peaked T waves in a missed-session patient with a pulse.",
+    "There is a pulse.",
+    "Tall narrow T waves are abnormal.",
+    "Potassium first in this story."
+   ],
+   "tag": "hyperk-pulse-vs-arrest",
+   "mod": 8,
+   "strip": {
+    "rhythm": "peaked",
+    "rate": 62
+   },
+   "findings": "Pulse present; missed session"
+  },
+  {
+   "id": "r19",
+   "type": "strip",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "hyperkalemia",
+   "stem": "Unresponsive, no pulse, missed two sessions.",
+   "options": [
+    "Hyperkalemic arrest: CPR first; potassium treatment per unit protocol",
+    "Hyperkalemia with a pulse",
+    "VF: shock",
+    "Asystole only"
+   ],
+   "answer": 0,
+   "why": [
+    "A sine-wave pattern without a pulse is hyperkalemic arrest.",
+    "No pulse.",
+    "Not VF.",
+    "There is activity; cause is potassium."
+   ],
+   "tag": "hyperk-pulse-vs-arrest",
+   "mod": 8,
+   "strip": {
+    "rhythm": "sine",
+    "rate": 40
+   },
+   "findings": "No pulse"
+  },
+  {
+   "id": "r20",
+   "type": "strip",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-tachy",
+   "stem": "Pulse present, irregular, 150, pressure 84/50, chest discomfort.",
+   "options": [
+    "Unstable AF: synchronized cardioversion (initial energy at least 200 J reasonable)",
+    "Adenosine",
+    "Observe",
+    "Defibrillation unsynchronized"
+   ],
+   "answer": 0,
+   "why": [
+    "Irregular, no P waves, unstable.",
+    "Adenosine does not treat AF.",
+    "Unstable needs treatment now.",
+    "Use sync with a pulse."
+   ],
+   "tag": "sync-unsync",
+   "mod": 6,
+   "strip": {
+    "rhythm": "irregular",
+    "rate": 150
+   },
+   "findings": "Pulse present, BP 84/50, chest discomfort"
+  },
+  {
+   "id": "r21",
+   "type": "strip",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-brady",
+   "stem": "Pulse 38, pressure 128/76, alert, no symptoms.",
+   "options": [
+    "Stable bradycardia: monitor and find the cause",
+    "Unstable: pace now",
+    "Cardiac arrest",
+    "Atropine 3 mg at once"
+   ],
+   "answer": 0,
+   "why": [
+    "No compromise: monitor and look for causes such as potassium and drugs.",
+    "Not unstable.",
+    "There is a pulse.",
+    "Not indicated, and not as a single 3 mg dose."
+   ],
+   "tag": "stable-by-numbers",
+   "mod": 6,
+   "strip": {
+    "rhythm": "normal",
+    "rate": 38
+   },
+   "findings": "Pulse 38, BP 128/76, alert"
+  },
+  {
+   "id": "r22",
+   "type": "strip",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-tachy",
+   "stem": "Pulse present, alert, pressure 120/70.",
+   "options": [
+    "Stable regular narrow tachycardia (SVT): vagal maneuver, adenosine per protocol",
+    "Unstable: cardiovert",
+    "VT",
+    "Sinus rhythm"
+   ],
+   "answer": 0,
+   "why": [
+    "Stable regular narrow tachycardia.",
+    "No compromise.",
+    "Narrow complexes.",
+    "Too fast and no P waves."
+   ],
+   "tag": "stable-by-numbers",
+   "mod": 6,
+   "strip": {
+    "rhythm": "svt",
+    "rate": 176
+   },
+   "findings": "Pulse present, BP 120/70, alert"
+  },
+  {
+   "id": "r23",
+   "type": "strip",
+   "set": [
+    "pediatric",
+    "dialysis"
+   ],
+   "algo": "peds-brady",
+   "stem": "8-year-old, pulse 52, mottled, weak pulses, despite good bag-mask ventilation with oxygen.",
+   "options": [
+    "Start pediatric CPR",
+    "Atropine only",
+    "Observe",
+    "Synchronized cardioversion"
+   ],
+   "answer": 0,
+   "why": [
+    "Under 60 with compromise despite effective oxygenated ventilation: CPR (PALS COR 1).",
+    "Hypoxic bradycardia does not respond to atropine alone.",
+    "Arrest is near.",
+    "Not a tachycardia."
+   ],
+   "tag": "peds-breathing-first",
+   "mod": 10,
+   "strip": {
+    "rhythm": "normal",
+    "rate": 52
+   },
+   "findings": "Pulse 52, mottled, despite effective ventilation"
+  },
+  {
+   "id": "r24",
+   "type": "missing",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-tachy",
+   "stem": "The monitor shows a wide, fast, regular rhythm. Before choosing treatment, what must you check?",
+   "options": [
+    "Whether there is a pulse",
+    "The potassium result",
+    "The dry weight",
+    "The dialysis fluid temperature"
+   ],
+   "answer": 0,
+   "why": [
+    "Pulse decides arrest vs tachycardia algorithm.",
+    "Later.",
+    "Irrelevant now.",
+    "Irrelevant now."
+   ],
+   "tag": "rhythm-equals-pulse",
+   "mod": 3
+  },
+  {
+   "id": "r25",
+   "type": "missing",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-arrest",
+   "stem": "A patient is slumped and the monitor shows sinus rhythm at 80. What do you check first?",
+   "options": [
+    "Breathing and a definite pulse together",
+    "The blood pressure cuff",
+    "Glucose",
+    "The machine alarms"
+   ],
+   "answer": 0,
+   "why": [
+    "Breathing and pulse place the patient.",
+    "Cuffs can wait.",
+    "Later.",
+    "Later."
+   ],
+   "tag": "rhythm-equals-pulse",
+   "mod": 3
+  },
+  {
+   "id": "r26",
+   "type": "missing",
+   "set": [
+    "adult"
+   ],
+   "algo": "post-rosc",
+   "stem": "After an organized rhythm appears at a rhythm check, what confirms ROSC?",
+   "options": [
+    "A definite pulse and a measurable blood pressure",
+    "The rhythm alone",
+    "The patient&rsquo;s color",
+    "Time elapsed"
+   ],
+   "answer": 0,
+   "why": [
+    "ROSC is clinical.",
+    "May be PEA.",
+    "Unreliable.",
+    "Irrelevant."
+   ],
+   "tag": "rosc-check",
+   "mod": 12
+  },
+  {
+   "id": "r27",
+   "type": "missing",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-tachy",
+   "stem": "A tachycardia with a pulse at 160. Which assessment decides between cardioversion and drugs?",
+   "options": [
+    "Signs of instability: low pressure, altered mental status, shock, chest pain, heart failure",
+    "The heart rate number",
+    "The patient&rsquo;s age",
+    "The time of day"
+   ],
+   "answer": 0,
+   "why": [
+    "Stability decides.",
+    "Rate alone does not.",
+    "Not decisive.",
+    "Irrelevant."
+   ],
+   "tag": "stable-by-numbers",
+   "mod": 6
+  },
+  {
+   "id": "r28",
+   "type": "missing",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "dialysis-arrest",
+   "stem": "Before deciding to return the circuit blood in an arrest, what must the circuit nurse check?",
+   "options": [
+    "Air, hemolysis, a severe reaction, or an open line end",
+    "The dialyzer brand",
+    "The patient&rsquo;s billing status",
+    "The water room logbook"
+   ],
+   "answer": 0,
+   "why": [
+    "These forbid returning the blood.",
+    "Irrelevant.",
+    "Irrelevant.",
+    "Not at this moment."
+   ],
+   "tag": "return-contaminated-blood",
+   "mod": 7
+  },
+  {
+   "id": "r29",
+   "type": "missing",
+   "set": [
+    "pediatric",
+    "dialysis"
+   ],
+   "algo": "peds-arrest",
+   "stem": "Before giving a pediatric epinephrine dose, what must be read aloud and confirmed?",
+   "options": [
+    "Weight, dose in mg, volume in mL, and concentration",
+    "Only the volume",
+    "Only the drug name",
+    "The parents&rsquo; names"
+   ],
+   "answer": 0,
+   "why": [
+    "All four prevent tenfold errors.",
+    "Volume without concentration is unsafe.",
+    "Not enough.",
+    "Irrelevant."
+   ],
+   "tag": "epi-concentration",
+   "mod": 11
+  },
+  {
+   "id": "r30",
+   "type": "order",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "adult-arrest",
+   "stem": "Put the first actions of an arrest on the machine in order.",
+   "options": [
+    "Shock if shockable",
+    "Recognize and call the code",
+    "Compressions with the chair flat",
+    "Pads on",
+    "Epinephrine when due"
+   ],
+   "answer": [
+    1,
+    2,
+    3,
+    0,
+    4
+   ],
+   "why": "Recognize and call; compress; pads; shock a shockable rhythm; drugs when due. The circuit nurse stops fluid removal in parallel.",
+   "tag": "pause-for-machine",
+   "mod": 4
+  },
+  {
+   "id": "r31",
+   "type": "order",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "dialysis-arrest",
+   "stem": "Order the circuit nurse&rsquo;s actions in an arrest with no circuit cause.",
+   "options": [
+    "Make the access safe for drugs",
+    "Stop fluid removal",
+    "Announce the blood decision",
+    "Check for air, hemolysis, reaction, open line",
+    "Return the blood or clamp and disconnect"
+   ],
+   "answer": [
+    1,
+    3,
+    4,
+    2,
+    0
+   ],
+   "why": "Stop fluid removal; check for a circuit cause; return or clamp; announce; prepare the access.",
+   "tag": "return-contaminated-blood",
+   "mod": 7
+  },
+  {
+   "id": "r32",
+   "type": "order",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "hyperkalemia",
+   "stem": "Order the treatment of hyperkalemia with a pulse and ECG changes.",
+   "options": [
+    "Remove (dialysis)",
+    "Protect (IV calcium)",
+    "Shift (insulin with glucose, salbutamol)",
+    "Glucose checks for hours"
+   ],
+   "answer": [
+    1,
+    2,
+    0,
+    3
+   ],
+   "why": "Protect, shift, remove, then monitor glucose after insulin.",
+   "tag": "hyperk-pulse-vs-arrest",
+   "mod": 8
+  },
+  {
+   "id": "r33",
+   "type": "order",
+   "set": [
+    "pediatric",
+    "dialysis"
+   ],
+   "algo": "peds-deterioration",
+   "stem": "Order the steps for a child whose breathing is failing.",
+   "options": [
+    "Compressions if HR stays under 60 with poor perfusion",
+    "Open the airway and bag-mask with oxygen",
+    "Call for help and the pediatric cart",
+    "Epinephrine if compromise persists after hypoxia is corrected"
+   ],
+   "answer": [
+    2,
+    1,
+    0,
+    3
+   ],
+   "why": "Call; ventilate; compress if needed; epinephrine if compromise persists.",
+   "tag": "peds-breathing-first",
+   "mod": 10
+  },
+  {
+   "id": "r34",
+   "type": "order",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "post-rosc",
+   "stem": "Order the first actions after ROSC.",
+   "options": [
+    "Hand over with dialysis facts",
+    "Confirm pulse and pressure, pads on",
+    "Oxygen to 90 to 98% and MAP at least 65",
+    "12-lead ECG, glucose, potassium"
+   ],
+   "answer": [
+    1,
+    2,
+    3,
+    0
+   ],
+   "why": "Confirm; stabilize; test; hand over.",
+   "tag": "rosc-check",
+   "mod": 12
+  },
+  {
+   "id": "r35",
+   "type": "unsafe",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "dialysis-arrest",
+   "stem": "Which action is unsafe during an arrest on the machine?",
+   "options": [
+    "Returning the blood after foam is seen in the venous line",
+    "Stopping fluid removal",
+    "Securing the venous needle for drugs",
+    "Clamping and disconnecting"
+   ],
+   "answer": 0,
+   "why": [
+    "Returning blood after air pushes air in.",
+    "Correct.",
+    "Correct.",
+    "Acceptable."
+   ],
+   "tag": "return-contaminated-blood",
+   "mod": 7
+  },
+  {
+   "id": "r36",
+   "type": "unsafe",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "dialysis-arrest",
+   "stem": "Which is unsafe before a shock?",
+   "options": [
+    "The circuit nurse holding the blood lines during the shock",
+    "Wiping a wet chair",
+    "Pads on dry skin away from the access arm",
+    "Disconnecting a machine not rated defibrillation-proof"
+   ],
+   "answer": 0,
+   "why": [
+    "Lines touch the patient and can carry current.",
+    "Safe.",
+    "Safe.",
+    "Safe."
+   ],
+   "tag": "pause-for-machine",
+   "mod": 7
+  },
+  {
+   "id": "r37",
+   "type": "unsafe",
+   "set": [
+    "pediatric",
+    "dialysis"
+   ],
+   "algo": "peds-arrest",
+   "stem": "Which is unsafe for a 20 kg child in arrest?",
+   "options": [
+    "2 mL of 1 mg/mL epinephrine IV",
+    "2 mL of 0.1 mg/mL epinephrine IV",
+    "First shock 40 J",
+    "Compressions one-third of chest depth"
+   ],
+   "answer": 0,
+   "why": [
+    "That is 2 mg, ten times the dose.",
+    "Correct dose (0.2 mg).",
+    "2 J/kg.",
+    "Correct."
+   ],
+   "tag": "epi-concentration",
+   "mod": 11
+  },
+  {
+   "id": "r38",
+   "type": "unsafe",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "hyperkalemia",
+   "stem": "Which is unsafe in a stable, connected patient with potassium 7.0 and peaked T waves?",
+   "options": [
+    "Stopping dialysis and sending him home to return tomorrow",
+    "IV calcium per order set",
+    "Insulin with glucose and glucose checks",
+    "Calling the attending nephrologist"
+   ],
+   "answer": 0,
+   "why": [
+    "Removes the definitive treatment.",
+    "Appropriate.",
+    "Appropriate.",
+    "Appropriate."
+   ],
+   "tag": "stop-dialysis-hyperk",
+   "mod": 8
+  },
+  {
+   "id": "r39",
+   "type": "unsafe",
+   "set": [
+    "adult"
+   ],
+   "algo": "adult-tachy",
+   "stem": "Which is unsafe for unstable polymorphic VT with a pulse?",
+   "options": [
+    "Synchronized cardioversion at low energy",
+    "Unsynchronized high-energy shock",
+    "Calling for help",
+    "Preparing for arrest"
+   ],
+   "answer": 0,
+   "why": [
+    "The device may not synchronize to changing QRS shapes; use defibrillation.",
+    "Correct.",
+    "Correct.",
+    "Correct."
+   ],
+   "tag": "sync-unsync",
+   "mod": 6
+  },
+  {
+   "id": "r40",
+   "type": "unsafe",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "dialysis-anaphylaxis",
+   "stem": "Which is unsafe in severe anaphylaxis on dialysis?",
+   "options": [
+    "Pushing the 1 mg/mL ampule IV as a bolus",
+    "IM epinephrine into the outer thigh",
+    "Stopping the pump and clamping",
+    "Keeping the dialyzer for review"
+   ],
+   "answer": 0,
+   "why": [
+    "A tenfold-concentration IV bolus with a pulse is dangerous.",
+    "Correct.",
+    "Correct.",
+    "Correct."
+   ],
+   "tag": "epi-concentration",
+   "mod": 9
+  },
+  {
+   "id": "r41",
+   "type": "evolve",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "transitions",
+   "stem": "A patient with unstable bradycardia (HR 34, BP 78/40) becomes unresponsive and gasping; no pulse. Which algorithm now?",
+   "options": [
+    "Cardiac arrest: compressions now",
+    "Keep pacing",
+    "More atropine",
+    "Synchronized cardioversion"
+   ],
+   "answer": 0,
+   "why": [
+    "Pulse lost: arrest.",
+    "Pacing belongs to bradycardia with a pulse; routine pacing in arrest is not recommended.",
+    "Not without a pulse.",
+    "No tachycardia."
+   ],
+   "tag": "wrong-algorithm-after-change",
+   "mod": 2
+  },
+  {
+   "id": "r42",
+   "type": "evolve",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "transitions",
+   "stem": "During PEA arrest, the next rhythm check shows VF.",
+   "options": [
+    "Shockable path: shock",
+    "Continue nonshockable path",
+    "Stop CPR",
+    "Synchronized cardioversion"
+   ],
+   "answer": 0,
+   "why": [
+    "Rhythm changed: shock.",
+    "The rhythm now is shockable.",
+    "No.",
+    "No pulse: unsynchronized."
+   ],
+   "tag": "wrong-algorithm-after-change",
+   "mod": 5
+  },
+  {
+   "id": "r43",
+   "type": "evolve",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "transitions",
+   "stem": "Ten minutes after ROSC the patient loses the pulse again.",
+   "options": [
+    "Re-arrest: compressions within seconds",
+    "Recheck the pressure cuff",
+    "Restart dialysis",
+    "Give fluids and wait"
+   ],
+   "answer": 0,
+   "why": [
+    "Re-arrest: arrest algorithm.",
+    "Delay.",
+    "Never.",
+    "CPR first."
+   ],
+   "tag": "wrong-algorithm-after-change",
+   "mod": 12
+  },
+  {
+   "id": "r44",
+   "type": "evolve",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "transitions",
+   "stem": "A stable SVT (BP 120/70) becomes BP 74/40 with confusion after adenosine.",
+   "options": [
+    "Now unstable: synchronized cardioversion",
+    "Repeat adenosine and wait",
+    "Observe",
+    "Unsynchronized shock"
+   ],
+   "answer": 0,
+   "why": [
+    "Instability changes the path.",
+    "Do not delay.",
+    "Unsafe.",
+    "Use sync with a pulse."
+   ],
+   "tag": "wrong-algorithm-after-change",
+   "mod": 6
+  },
+  {
+   "id": "r45",
+   "type": "evolve",
+   "set": [
+    "pediatric",
+    "dialysis"
+   ],
+   "algo": "transitions",
+   "stem": "A child&rsquo;s heart rate rose with ventilation, then falls to 48 with poor perfusion despite good ventilation.",
+   "options": [
+    "Pediatric CPR",
+    "Continue ventilation only",
+    "Synchronized cardioversion",
+    "Wait for 40"
+   ],
+   "answer": 0,
+   "why": [
+    "Under 60 with compromise despite ventilation: CPR.",
+    "Not enough now.",
+    "No.",
+    "Threshold is 60."
+   ],
+   "tag": "wrong-algorithm-after-change",
+   "mod": 10
+  },
+  {
+   "id": "r46",
+   "type": "evolve",
+   "set": [
+    "adult",
+    "dialysis"
+   ],
+   "algo": "transitions",
+   "stem": "Hyperkalemia with a pulse (connected, dialyzing) progresses to a sine wave and no pulse.",
+   "options": [
+    "Hyperkalemic arrest: CPR first, then potassium per protocol",
+    "Continue the shift treatments only",
+    "Increase blood flow",
+    "Wait for the result"
+   ],
+   "answer": 0,
+   "why": [
+    "Arrest comes first.",
+    "Not without a pulse.",
+    "No.",
+    "No."
+   ],
+   "tag": "hyperk-pulse-vs-arrest",
+   "mod": 8
+  }
+ ]
+}

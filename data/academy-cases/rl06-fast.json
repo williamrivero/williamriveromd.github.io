@@ -1,0 +1,178 @@
+{
+ "id": "rl06-fast",
+ "page": "resuscitation-lab-06-peri-arrest-rhythms.html",
+ "title": "Fast rhythm with a pulse",
+ "decisions": 4,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "11:10 a.m.",
+  "bp": "118/72",
+  "hr": 176,
+  "spo2": 96,
+  "ecg": "Regular narrow tachycardia",
+  "uf": "On",
+  "pump": "Running",
+  "rhythm": "svt",
+  "rhythmLabel": "Regular narrow tachycardia, 176/min",
+  "alarm": [
+   "hr"
+  ]
+ },
+ "intro": "<p>Mr. Felix Domingo, 52, dialyzes through a tunneled catheter. Halfway through his session he reports palpitations. He is alert, talking, pressure 118/72. You are the physician-on-duty.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "11:10",
+   "scene": "",
+   "prompt": "Is he stable, and what first?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Stable: 12-lead ECG, stop fluid removal per protocol, vagal maneuver, then adenosine per protocol if it persists.",
+     "feedback": "<p>Stable regular narrow tachycardia: vagal maneuvers, then adenosine (COR 1).</p>",
+     "next": "n2",
+     "vitals": {
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Unstable: synchronized cardioversion now.",
+     "feedback": "<p>No signs of compromise; cardioversion is for instability.</p>",
+     "next": "n2",
+     "then": "<p>You pause and treat him as stable.</p>",
+     "vitals": {
+      "uf": "Off"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "11:14",
+   "scene": "<p>Vagal maneuvers fail. He has only the dialysis catheter for access.</p>",
+   "prompt": "How do you give adenosine?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Aspirate the catheter lock, flush; give the dose the physician decides for a central line (the guideline notes 1 mg may be adequate), as a rapid push with a flush; warn him about a brief pause.",
+     "feedback": "<p>A dialysis catheter is a central line: lock first, and the dose decision changes.</p>",
+     "next": "n3"
+    },
+    {
+     "grade": "harmful",
+     "text": "Push 12 mg straight into the catheter limb with the lock still in it.",
+     "feedback": "<p>This pushes heparin or citrate lock into him and gives a large central dose.</p>",
+     "next": "n3",
+     "then": "<p>The circuit nurse stops you, aspirates the lock, and you choose a central-line dose.</p>"
+    }
+   ]
+  },
+  "n3": {
+   "short": "11:16",
+   "scene": "<p>After adenosine, the rhythm briefly slows, then returns at 180. Now his pressure is 76/40 and he is confused.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Unstable: synchronized cardioversion per protocol (sedate if feasible), sync markers confirmed on each R wave, everyone clear.",
+     "feedback": "<p>Persistent tachyarrhythmia with hypotension and confusion needs synchronized cardioversion.</p>",
+     "next": "n4",
+     "vitals": {
+      "time": "11:20 a.m.",
+      "hr": 82,
+      "bp": "112/70",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm",
+      "alarm": []
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Another adenosine and wait.",
+     "feedback": "<p>He is now unstable; drugs must not delay cardioversion.</p>",
+     "next": "n4",
+     "then": "<p>His pressure falls further; you cardiovert.</p>",
+     "vitals": {
+      "time": "11:23 a.m.",
+      "hr": 84,
+      "bp": "108/68",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm",
+      "alarm": []
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Unsynchronized shock at low energy.",
+     "feedback": "<p>An unsynchronized shock can land on the T wave and cause VF; use sync for a tachycardia with a pulse.</p>",
+     "next": "n4",
+     "then": "<p>You switch the device to sync before the shock.</p>",
+     "vitals": {
+      "time": "11:22 a.m.",
+      "hr": 84,
+      "bp": "108/68",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm",
+      "alarm": []
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "11:25",
+   "scene": "<p>He is in sinus rhythm, alert, pressure 112/70.</p>",
+   "prompt": "What about the session?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Keep him monitored; the physician-on-duty and attending decide whether to resume, return the blood or end; check potassium, magnesium, and the catheter tip position if suspected.",
+     "feedback": "<p>Rhythm changes around dialysis need a cause review before restarting.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Restart fluid removal at the original rate.",
+     "feedback": "<p>Restarting without review may trigger it again; the attending decides.</p>",
+     "next": "end",
+     "then": "<p>The attending lowers the fluid goal and asks for electrolytes.</p>"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "12:30 p.m.",
+   "text": "<p>Mr. Domingo finishes a shortened session with a reduced fluid goal and is referred for cardiology review.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Stable or unstable decides the path.</b> </li><li><b>Adenosine through a dialysis catheter:</b> aspirate the lock; central-line dose decided by the physician.</li><li><b>Synchronized for tachycardia with a pulse;</b> unsynchronized only for pulseless or polymorphic VT.</li></ul>",
+ "lab": {
+  "algorithm": "adult-tachy",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 25
+ }
+}

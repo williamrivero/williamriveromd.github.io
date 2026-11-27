@@ -1,0 +1,195 @@
+{
+ "id": "rl07-air",
+ "page": "resuscitation-lab-07-arrest-in-the-dialysis-chair.html",
+ "title": "Air in the system",
+ "decisions": 4,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "1:40 p.m.",
+  "bp": "138/80",
+  "hr": 92,
+  "spo2": 97,
+  "ecg": "Sinus",
+  "line": "Foam below venous chamber",
+  "uf": "On",
+  "pump": "Stopped (air alarm)",
+  "rhythm": "normal",
+  "rhythmLabel": "Sinus rhythm",
+  "alarm": [
+   "line",
+   "pump"
+  ]
+ },
+ "intro": "<p>At 1:40 p.m., the air detector alarms on Mrs. Nora Valdez&rsquo;s machine. You see foam below the venous chamber. She is sitting up and suddenly coughs and says her chest feels tight. You are her nurse.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "1:40",
+   "scene": "",
+   "prompt": "What do you do first?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Keep the pump stopped, clamp the venous line, never override the detector; do not return the blood.",
+     "feedback": "<p>Air on the patient side is an emergency; returning the blood pushes more air in.</p>",
+     "next": "n2",
+     "vitals": {
+      "line": "Venous line clamped",
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Clear the alarm and complete rinse-back.",
+     "feedback": "<p>Overriding the detector and rinsing back drives air into the patient.</p>",
+     "next": "n2",
+     "then": "<p>The charge nurse stops the rinse-back and clamps.</p>",
+     "vitals": {
+      "line": "Venous line clamped",
+      "uf": "Off",
+      "spo2": 90
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Tap the chamber to move the bubbles and restart.",
+     "feedback": "<p>Air below the venous chamber is not removed by tapping; restarting risks embolism.</p>",
+     "next": "n2",
+     "then": "<p>You clamp the line instead.</p>",
+     "vitals": {
+      "line": "Venous line clamped",
+      "uf": "Off"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "1:41",
+   "scene": "<p>She is breathless, saturation 89%.</p>",
+   "prompt": "How do you position and support her?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "100% oxygen; lay her flat per the unit protocol (supine or left side; never sitting up); call for help, the cart, the physician-on-duty and the attending; arrange emergency transfer.",
+     "feedback": "<p>AHA 2025: 100% oxygen (COR 1) and supine or recovery position on a level surface (COR 2a); dialysis teaching uses the left side. Never sitting up.</p>",
+     "next": "n3",
+     "vitals": {
+      "spo2": 93
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Sit her upright to ease the breathing.",
+     "feedback": "<p>Sitting up can send air to the brain; every source says never sit up.</p>",
+     "next": "n3",
+     "then": "<p>The physician lays her flat.</p>",
+     "vitals": {
+      "spo2": 88
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "1:45",
+   "scene": "<p>She becomes unresponsive with gasping. No pulse.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Cardiac arrest: CPR flat on her back, pads, arrest algorithm; the circuit stays clamped, blood not returned.",
+     "feedback": "<p>Every source agrees CPR is done flat on the back. The blood decision stays &ldquo;not returned.&rdquo;</p>",
+     "next": "n4",
+     "vitals": {
+      "time": "1:45 p.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 50,
+      "spo2": "—",
+      "rhythm": "wide",
+      "rhythmLabel": "Slow wide rhythm, no pulse (PEA)",
+      "cpr": "Running",
+      "alarm": [
+       "hr"
+      ]
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Keep her on her left side while compressing.",
+     "feedback": "<p>Effective compressions need her flat on her back.</p>",
+     "next": "n4",
+     "then": "<p>The team turns her supine and compresses.</p>",
+     "vitals": {
+      "time": "1:46 p.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 50,
+      "spo2": "—",
+      "rhythm": "wide",
+      "rhythmLabel": "Slow wide rhythm, no pulse (PEA)",
+      "cpr": "Running",
+      "alarm": [
+       "hr"
+      ]
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "1:48",
+   "scene": "<p>The technician wants to inspect the circuit.</p>",
+   "prompt": "What happens to the machine?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Keep the circuit clamped and intact for inspection; the machine is held until the biomedical technician checks the detector and clamp.",
+     "feedback": "<p>Finding the air entry point prevents the next event.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "poor",
+     "text": "Discard the lines to tidy the station.",
+     "feedback": "<p>The evidence of the entry point is lost.</p>",
+     "next": "end",
+     "then": "<p>The charge nurse retrieves the lines.</p>"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "2:10 p.m.",
+   "text": "<p>Mrs. Valdez regains a pulse and is transferred for oxygen therapy and assessment for hyperbaric treatment. The entry point is found: a loose connection before the blood pump.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Air: clamp, do not return,</b> 100% oxygen, flat, never sitting up.</li><li><b>Position differs between sources;</b> follow the unit protocol. CPR is always flat on the back.</li><li><b>Keep the circuit</b> for inspection.</li></ul>",
+ "lab": {
+  "algorithm": "dialysis-air",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 20
+ }
+}

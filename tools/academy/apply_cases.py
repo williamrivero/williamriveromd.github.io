@@ -5,7 +5,7 @@ Case data lives in data/academy-cases/<id>.json (one file per case; "page" names
 to). Schema, in short:
 
     { "id", "page", "title", "decisions": N, "intro": "<p>…</p>", "start": "n1",
-      "monitor": {time, bp, hr, spo2, …, "rhythm": normal|peaked|st|irregular|wide, "rhythmLabel"},
+      "monitor": {time, bp, hr, spo2, …, "rhythm": normal|peaked|st|irregular|wide|svt|sine|paced|vf|asystole, "rhythmLabel", "stripRate"},
       "labels": {key: "Monitor label"}, "monitorOrder": [keys],
       "nodes": { "n1": {"scene", "prompt", "short", "vitals", "choices": [
                      {"grade": best|ok|poor|harmful, "text", "feedback", "then", "vitals", "next"}]},

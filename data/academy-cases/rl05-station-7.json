@@ -1,0 +1,220 @@
+{
+ "id": "rl05-station-7",
+ "page": "resuscitation-lab-05-adult-cardiac-arrest.html",
+ "title": "Collapse at Station 7",
+ "decisions": 4,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "rhythm": "vf",
+  "rhythmLabel": "Ventricular fibrillation",
+  "hr": "No pulse",
+  "stripRate": 220,
+  "bp": "—",
+  "spo2": "—",
+  "ecg": "VF",
+  "time": "9:40 a.m.",
+  "uf": "On",
+  "pump": "Running",
+  "cpr": "Starting",
+  "alarm": [
+   "hr",
+   "ecg"
+  ]
+ },
+ "intro": "<p>Tuesday, 9:40 a.m., freestanding unit in Pasig. Mr. Arnel Gutierrez, 61, two hours into dialysis, collapses: unresponsive, not breathing, no pulse. The physician-on-duty stepped out to the pharmacy next door. You are the ACLS-current nurse leading until she returns. Compressions start within 15 seconds; pads go on at 40 seconds. The screen shows a chaotic trace.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "9:41",
+   "scene": "",
+   "prompt": "First rhythm check. What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "VF: &ldquo;Charging, continue compressions. Everyone clear: patient, chair, lines, machine. Shock.&rdquo; Compressions immediately.",
+     "feedback": "<p>VF is shockable; shock early and resume compressions at once.</p>",
+     "next": "n2",
+     "vitals": {
+      "time": "9:41 a.m.",
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Wait for the physician-on-duty before shocking.",
+     "feedback": "<p>A trained nurse defibrillates per protocol; waiting lowers the chance of success with each minute.</p>",
+     "next": "n2",
+     "then": "<p>You shock 90 seconds later.</p>",
+     "vitals": {
+      "time": "9:43 a.m.",
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Give epinephrine first, then shock.",
+     "feedback": "<p>On the shockable path, the shock comes first; epinephrine follows failed initial shocks.</p>",
+     "next": "n2",
+     "then": "<p>You shock after the drug.</p>",
+     "vitals": {
+      "time": "9:42 a.m.",
+      "uf": "Off"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "9:43",
+   "scene": "<p>Second rhythm check: still VF. Second shock delivered; compressions resume.</p>",
+   "prompt": "What about epinephrine now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Epinephrine 1 mg IV through the secured venous needle (circuit nurse confirms), then every 3 to 5 minutes; the recorder calls the time.",
+     "feedback": "<p>After initial shocks fail, epinephrine 1 mg every 3 to 5 minutes is reasonable (COR 2a).</p>",
+     "next": "n3",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Give epinephrine at every two-minute check.",
+     "feedback": "<p>Every 2 minutes is too often; every other cycle keeps 3 to 5 minutes.</p>",
+     "next": "n3",
+     "then": "<p>The recorder corrects the interval.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Give 5 mg of epinephrine to make up for lost time.",
+     "feedback": "<p>High-dose epinephrine is not recommended (COR 3: No Benefit).</p>",
+     "next": "n3",
+     "then": "<p>The drug nurse reads back and the leader corrects to 1 mg.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "9:47",
+   "scene": "<p>Third check: VF persists after three shocks and one epinephrine. The physician-on-duty returns.</p>",
+   "prompt": "What happens now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "15-second summary and &ldquo;You have the lead.&rdquo; Shock again; consider amiodarone 300 mg (or lidocaine) per protocol; review causes aloud.",
+     "feedback": "<p>Shock-refractory VF: amiodarone or lidocaine may be considered (COR 2b). A clean leadership handover keeps one voice.</p>",
+     "next": "n4",
+     "vitals": {
+      "time": "9:47 a.m."
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Both of you give orders until it settles.",
+     "feedback": "<p>Two leaders cause duplicated and missed actions.</p>",
+     "next": "n4",
+     "then": "<p>The physician asks for a summary and takes the lead.</p>",
+     "vitals": {
+      "time": "9:48 a.m."
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Routine calcium and bicarbonate for every dialysis arrest.",
+     "feedback": "<p>Routine calcium and bicarbonate are not recommended; give them only for a specific cause per protocol.</p>",
+     "next": "n4",
+     "then": "<p>The physician asks for the last potassium first.</p>",
+     "vitals": {
+      "time": "9:48 a.m."
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "9:51",
+   "scene": "<p>After the fourth shock and amiodarone, the rhythm check shows organized narrow complexes at 88.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Feel for a definite pulse within 10 seconds; a pulse and pressure mean ROSC; no pulse means PEA and compressions resume.",
+     "feedback": "<p>An organized rhythm needs a pulse check; the rhythm alone does not mean circulation.</p>",
+     "next": "end",
+     "vitals": {
+      "time": "9:51 a.m.",
+      "hr": 88,
+      "bp": "92/58",
+      "spo2": 94,
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm with a pulse",
+      "ecg": "Sinus",
+      "cpr": "Stopped",
+      "alarm": []
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Stop CPR: the rhythm is back.",
+     "feedback": "<p>Stopping without a pulse check risks leaving PEA untreated.</p>",
+     "next": "end",
+     "then": "<p>A nurse feels for a pulse: present, pressure 92/58.</p>",
+     "vitals": {
+      "time": "9:52 a.m.",
+      "hr": 88,
+      "bp": "92/58",
+      "spo2": 94,
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm with a pulse",
+      "ecg": "Sinus",
+      "cpr": "Stopped",
+      "alarm": []
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "10:05 a.m.",
+   "text": "<p>Mr. Gutierrez has ROSC and is handed over to the ambulance with the recorder&rsquo;s sheet, a 12-lead ECG, and the dialysis facts.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Shock VF early;</b> compress immediately after.</li><li><b>Epinephrine after the initial shocks fail,</b> then every 3 to 5 minutes, 1 mg.</li><li><b>Refractory VF:</b> amiodarone or lidocaine may be considered; no routine calcium or bicarbonate.</li><li><b>ROSC is a pulse and a pressure.</b> </li></ul>",
+ "lab": {
+  "algorithm": "adult-arrest",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 20
+ }
+}

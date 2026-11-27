@@ -1,0 +1,254 @@
+{
+ "id": "rl02-box-by-box",
+ "page": "resuscitation-lab-02-algorithm-foundations.html",
+ "title": "Box by box: one patient, three algorithms",
+ "decisions": 4,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "10:15 a.m.",
+  "bp": "78/40",
+  "hr": 38,
+  "spo2": 94,
+  "ecg": "Sinus bradycardia",
+  "uf": "On",
+  "pump": "Running",
+  "rhythm": "normal",
+  "rhythmLabel": "Slow narrow rhythm",
+  "alarm": [
+   "bp",
+   "hr"
+  ]
+ },
+ "intro": "<p>Mrs. Remedios Aquino, 72, on a beta-blocker, is two hours into dialysis in Iloilo City. She is drowsy but opens her eyes to her name. You are the physician-on-duty, just arrived with the defibrillator.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "10:15",
+   "scene": "",
+   "prompt": "Which algorithm is she in, and what is your first move?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Bradycardia with a pulse, unstable (low pressure, drowsy): monitor and pads on, oxygen, IV access, atropine per protocol, and look for causes (potassium, the beta-blocker).",
+     "feedback": "<p>Five questions: responsive (barely), breathing, definite pulse, not an arrest rhythm, unstable. That places her in unstable bradycardia.</p>",
+     "next": "n2",
+     "vitals": {
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Cardiac arrest: start compressions.",
+     "feedback": "<p>She has a pulse and responds. Compressions are for absent circulation.</p>",
+     "next": "n2",
+     "then": "<p>A nurse feels a pulse and stops you. You treat unstable bradycardia.</p>",
+     "vitals": {
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Intradialytic hypotension: saline bolus and observe.",
+     "feedback": "<p>A heart rate of 38 with drowsiness is a rhythm problem first; fluid alone misses the cause.</p>",
+     "next": "n2",
+     "then": "<p>You see the rate and treat unstable bradycardia.</p>",
+     "vitals": {
+      "uf": "Off"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "10:19",
+   "scene": "<p>While pads go on and atropine is drawn up, she stops answering. Slow gasps. No definite carotid pulse in 10 seconds.</p>",
+   "prompt": "What do you say?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "&ldquo;No pulse. Cardiac arrest. Compressions now, chair flat.&rdquo; Stop the pacing plan; the recorder notes the time.",
+     "feedback": "<p>Announcing the transition closes the old plan for everyone at once.</p>",
+     "next": "n3",
+     "vitals": {
+      "time": "10:19",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 30,
+      "spo2": "—",
+      "ecg": "Slow wide complexes, no pulse",
+      "rhythm": "wide",
+      "rhythmLabel": "Slow wide rhythm, no pulse",
+      "cpr": "Running",
+      "alarm": [
+       "bp",
+       "ecg",
+       "hr"
+      ]
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "&ldquo;Increase the pacer current and give another atropine.&rdquo;",
+     "feedback": "<p>Pacing and atropine belong to bradycardia with a pulse. Without a pulse, only compressions move blood.</p>",
+     "next": "n3",
+     "then": "<p>Thirty seconds later the recorder says no one has checked a pulse. You call the arrest.</p>",
+     "vitals": {
+      "time": "10:20",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 30,
+      "spo2": "—",
+      "ecg": "Slow wide complexes, no pulse",
+      "rhythm": "wide",
+      "rhythmLabel": "Slow wide rhythm, no pulse",
+      "cpr": "Running",
+      "alarm": [
+       "bp",
+       "ecg",
+       "hr"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Wait for the atropine to work before deciding.",
+     "feedback": "<p>Gasping without a pulse is cardiac arrest now; waiting withholds compressions.</p>",
+     "next": "n3",
+     "then": "<p>You start compressions a minute later.</p>",
+     "vitals": {
+      "time": "10:20",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 30,
+      "spo2": "—",
+      "ecg": "Slow wide complexes, no pulse",
+      "rhythm": "wide",
+      "rhythmLabel": "Slow wide rhythm, no pulse",
+      "cpr": "Running",
+      "alarm": [
+       "bp",
+       "ecg",
+       "hr"
+      ]
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "10:20",
+   "scene": "<p>Compressions are running. The monitor shows organized slow wide complexes.</p>",
+   "prompt": "Which arrest path, and which cause do you raise first?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Nonshockable (PEA): epinephrine as soon as feasible, two-minute cycles, and treat potassium and the beta-blocker as likely causes (BRASH), per protocol.",
+     "feedback": "<p>Organized electricity without a pulse is PEA. In a dialysis patient on a beta-blocker, potassium and the drug together top the cause list.</p>",
+     "next": "n4",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Shock it.",
+     "feedback": "<p>PEA is not shockable; a shock wastes time and pauses compressions.</p>",
+     "next": "n4",
+     "then": "<p>The leader corrects the path to nonshockable.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    },
+    {
+     "grade": "ok",
+     "text": "Nonshockable path, but look for causes later once the physician has time.",
+     "feedback": "<p>The path is right, but in PEA finding the cause is the treatment; ask now.</p>",
+     "next": "n4",
+     "then": "<p>You raise potassium at the next cycle.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "10:31",
+   "scene": "<p>After epinephrine and potassium treatment per protocol, the rhythm check shows a narrow rhythm at 72. A nurse feels a strong carotid pulse; pressure 96/60.</p>",
+   "prompt": "Which algorithm now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Post-ROSC care: keep pads on, oxygen titrated, MAP target, 12-lead ECG, glucose and potassium, call the attending nephrologist and the transfer.",
+     "feedback": "<p>A definite pulse and pressure is ROSC: the third algorithm in ten minutes. Pads stay on because re-arrest is common.</p>",
+     "next": "end",
+     "vitals": {
+      "time": "10:31",
+      "bp": "96/60",
+      "hr": 72,
+      "spo2": 95,
+      "ecg": "Sinus rhythm",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm with a pulse",
+      "cpr": "Stopped",
+      "alarm": []
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Keep compressing until the ambulance arrives.",
+     "feedback": "<p>Compressing over a strong pulse is unnecessary; reassessment exists to catch this change.</p>",
+     "next": "end",
+     "then": "<p>The recorder points out the pulse; compressions stop.</p>",
+     "vitals": {
+      "time": "10:32",
+      "bp": "96/60",
+      "hr": 72,
+      "spo2": 95,
+      "ecg": "Sinus rhythm",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm with a pulse",
+      "cpr": "Stopped",
+      "alarm": []
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "10:45",
+   "text": "<p>Mrs. Aquino is transferred with a pulse after passing through three algorithms: unstable bradycardia, PEA arrest, and post-ROSC care. Each transition was announced aloud.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Five questions place the patient;</b> ask them again at every reassessment.</li><li><b>Announce transitions aloud.</b> &ldquo;No pulse, cardiac arrest&rdquo; closes the previous plan.</li><li><b>Slow rhythm plus a rate-slowing drug in a dialysis patient</b> means potassium and BRASH until proven otherwise.</li></ul>",
+ "lab": {
+  "algorithm": "transitions",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 30
+ }
+}

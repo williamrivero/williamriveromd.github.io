@@ -1,0 +1,177 @@
+{
+ "id": "rl06-slow",
+ "page": "resuscitation-lab-06-peri-arrest-rhythms.html",
+ "title": "Slow rhythm, worsening perfusion",
+ "decisions": 3,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "Mon 6:20 a.m.",
+  "bp": "82/50",
+  "hr": 36,
+  "spo2": 95,
+  "ecg": "Slow wide-looking rhythm",
+  "k": "Pending (40 min)",
+  "uf": "Not started",
+  "pump": "Not connected",
+  "rhythm": "wide",
+  "rhythmLabel": "Slow wide rhythm, 36/min",
+  "alarm": [
+   "bp",
+   "hr"
+  ]
+ },
+ "intro": "<p>Mrs. Teresita Morales, 69, takes a beta-blocker and amlodipine, had diarrhea over the weekend, and arrives on Monday weak and dizzy in Cebu City. Heart rate 36, pressure 82/50, pale and slow to answer. You are the physician-on-duty. The potassium result will take 40 minutes.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "6:20",
+   "scene": "",
+   "prompt": "Is she stable, and what do you suspect?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Unstable bradycardia (low pressure, slow responses); suspect hyperkalemia plus the beta-blocker together (BRASH), triggered by dehydration.",
+     "feedback": "<p>Stability is judged by signs; a slow rhythm in a dialysis patient on an AV-nodal drug is potassium until proven otherwise.</p>",
+     "next": "n2"
+    },
+    {
+     "grade": "poor",
+     "text": "Stable: the rate is slow but she is talking.",
+     "feedback": "<p>Low pressure and slow responses are signs of compromise.</p>",
+     "next": "n2",
+     "then": "<p>Her pressure falls to 78/44; you treat her as unstable.</p>"
+    },
+    {
+     "grade": "poor",
+     "text": "Beta-blocker overdose only: hold the drug and observe.",
+     "feedback": "<p>The dose is usual; potassium and the drug together are the likely mechanism.</p>",
+     "next": "n2",
+     "then": "<p>You add potassium to the plan.</p>"
+    }
+   ]
+  },
+  "n2": {
+   "short": "6:22",
+   "scene": "<p>Pads are on; pacing is ready.</p>",
+   "prompt": "What is your treatment plan now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Atropine 1 mg per protocol (without delaying the rest), IV calcium and insulin with glucose per order set, cautious saline, pacing or an epinephrine infusion if no response; call the attending about urgent dialysis.",
+     "feedback": "<p>Treat the rate and the potassium together; atropine often works poorly in potassium- and drug-driven block.</p>",
+     "next": "n3",
+     "vitals": {
+      "time": "6:30 a.m.",
+      "hr": 44,
+      "bp": "88/54",
+      "rhythmLabel": "Slow rhythm, improving"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Atropine every 3 minutes until the rate rises, nothing else yet.",
+     "feedback": "<p>Atropine alone may fail and delays potassium treatment; the maximum is 3 mg.</p>",
+     "next": "n3",
+     "then": "<p>After 3 mg with no change, you give calcium and insulin and prepare to pace.</p>",
+     "vitals": {
+      "time": "6:35 a.m.",
+      "hr": 40,
+      "bp": "84/50"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Adenosine to &ldquo;reset&rdquo; the rhythm.",
+     "feedback": "<p>Adenosine slows AV conduction further and is for regular narrow tachycardia.</p>",
+     "next": "n3",
+     "then": "<p>The nurse questions the order; you switch to atropine, calcium and insulin.</p>",
+     "vitals": {
+      "time": "6:32 a.m.",
+      "hr": 38,
+      "bp": "80/48"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "6:40",
+   "scene": "<p>The potassium returns at 6.9 mmol/L. Her rate is 46, pressure 90/56, more alert.</p>",
+   "prompt": "What happens to dialysis?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "With the attending nephrologist&rsquo;s plan, connect her now for urgent dialysis on the potassium bath the physician orders, monitored, with glucose checks after insulin.",
+     "feedback": "<p>Dialysis is the definitive treatment; calcium and insulin only buy time.</p>",
+     "next": "end",
+     "vitals": {
+      "time": "6:50 a.m.",
+      "uf": "Low per order",
+      "pump": "Running",
+      "k": "6.9 mmol/L",
+      "hr": 58,
+      "bp": "102/60",
+      "rhythm": "normal",
+      "rhythmLabel": "Narrow rhythm, 58/min",
+      "alarm": [
+       "k"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Delay dialysis until tomorrow since she is better.",
+     "feedback": "<p>Shifting treatments wear off and potassium rebounds.</p>",
+     "next": "end",
+     "then": "<p>The attending asks for urgent connection.</p>",
+     "vitals": {
+      "time": "7:10 a.m.",
+      "uf": "Low per order",
+      "pump": "Running",
+      "k": "6.9 mmol/L",
+      "hr": 52,
+      "bp": "96/58",
+      "alarm": [
+       "k"
+      ]
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "9:30 a.m.",
+   "text": "<p>After dialysis her rate is 70 and her pressure 118/68. The attending reviews her beta-blocker and the reason she became dehydrated.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Stability by signs, not the number.</b> </li><li><b>BRASH:</b> potassium and an AV-nodal drug slow the heart together; treat both.</li><li><b>Dialysis is the cure for potassium-driven bradycardia;</b> connect with the attending&rsquo;s plan.</li></ul>",
+ "lab": {
+  "algorithm": "adult-brady",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 30
+ }
+}

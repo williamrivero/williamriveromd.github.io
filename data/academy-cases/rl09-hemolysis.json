@@ -1,0 +1,163 @@
+{
+ "id": "rl09-hemolysis",
+ "page": "resuscitation-lab-09-circuit-emergencies.html",
+ "title": "Dark blood, chest pain, rising potassium",
+ "decisions": 3,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "8:30 a.m.",
+  "bp": "168/94",
+  "hr": 104,
+  "spo2": 96,
+  "ecg": "Sinus tachycardia",
+  "line": "Translucent, port-wine blood",
+  "uf": "On",
+  "pump": "Running",
+  "rhythm": "normal",
+  "rhythmLabel": "Sinus tachycardia",
+  "alarm": [
+   "line"
+  ]
+ },
+ "intro": "<p>At 8:30 a.m., Mrs. Linda Ocampo, 61, at Station 9 reports back and chest pain and nausea. The blood in her venous line looks translucent, like red wine. Two minutes later, the patient at Station 10 says his back hurts.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "8:30",
+   "scene": "",
+   "prompt": "What do you do at Station 9?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Stop the pump, clamp the lines, do not return the blood; monitor; urgent potassium and hemoglobin; call the physician-on-duty.",
+     "feedback": "<p>Hemolyzed blood carries potassium and is never returned.</p>",
+     "next": "n2",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped, not returned",
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Return the blood and end the session.",
+     "feedback": "<p>Returning hemolyzed blood adds potassium.</p>",
+     "next": "n2",
+     "then": "<p>The charge nurse clamps the lines.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped",
+      "uf": "Off",
+      "k": "Rising"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "8:33",
+   "scene": "<p>Station 10 has the same symptoms; his venous line also looks abnormal.</p>",
+   "prompt": "What does the charge nurse do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Declare a possible cluster: stop and clamp at Station 10, check every patient on the same water and concentrate, hold new starts, call the Medical Director; technician keeps lines and samples water and fluid.",
+     "feedback": "<p>Hemolysis is often a shared supply fault.</p>",
+     "next": "n3"
+    },
+    {
+     "grade": "poor",
+     "text": "Treat Station 10 separately later.",
+     "feedback": "<p>A cluster needs immediate action across the unit.</p>",
+     "next": "n3",
+     "then": "<p>You declare the cluster five minutes later.</p>"
+    }
+   ]
+  },
+  "n3": {
+   "short": "8:50",
+   "scene": "<p>Mrs. Ocampo&rsquo;s potassium is 7.4 mmol/L; the ECG shows peaked T waves. At 8:55 she becomes unresponsive and pulseless.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Cardiac arrest: CPR, arrest algorithm, potassium treatment per protocol; blood still not returned; the watcher covers Station 10 and the rest.",
+     "feedback": "<p>Potassium is the reversible cause; the circuit decision stays.</p>",
+     "next": "end",
+     "vitals": {
+      "time": "8:55 a.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 40,
+      "spo2": "—",
+      "rhythm": "sine",
+      "rhythmLabel": "Sine-wave pattern, no pulse",
+      "cpr": "Running",
+      "k": "7.4 mmol/L",
+      "alarm": [
+       "hr",
+       "k"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Everyone goes to Station 9.",
+     "feedback": "<p>Station 10 is also affected and needs a watcher.</p>",
+     "next": "end",
+     "then": "<p>The charge nurse sends one nurse back to Station 10.</p>",
+     "vitals": {
+      "time": "8:56 a.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 40,
+      "spo2": "—",
+      "rhythm": "sine",
+      "rhythmLabel": "Sine-wave pattern, no pulse",
+      "cpr": "Running",
+      "k": "7.4 mmol/L",
+      "alarm": [
+       "hr",
+       "k"
+      ]
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "10:00 a.m.",
+   "text": "<p>Mrs. Ocampo has ROSC and is transferred; the patient at Station 10 is stable. The water team finds a carbon tank breakthrough. No treatment restarts until the water and fluid are cleared.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Port-wine blood is never returned.</b> </li><li><b>One hemolysis can be a cluster:</b> check everyone on the same supply.</li><li><b>Potassium drives the arrest risk;</b> keep a watcher for the other patients.</li></ul>",
+ "lab": {
+  "algorithm": "dialysis-hemolysis",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 20
+ }
+}

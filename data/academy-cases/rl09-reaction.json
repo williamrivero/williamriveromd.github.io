@@ -1,0 +1,180 @@
+{
+ "id": "rl09-reaction",
+ "page": "resuscitation-lab-09-circuit-emergencies.html",
+ "title": "Reaction after connection",
+ "decisions": 3,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "6:08 a.m.",
+  "bp": "86/48",
+  "hr": 124,
+  "spo2": 91,
+  "ecg": "Sinus tachycardia",
+  "uf": "On",
+  "pump": "Running",
+  "rhythm": "normal",
+  "rhythmLabel": "Sinus tachycardia",
+  "alarm": [
+   "bp",
+   "spo2"
+  ]
+ },
+ "intro": "<p>Eight minutes after connection with a new dialyzer type, Mr. Romeo Castro, 66, develops hives, wheeze, lip swelling and a pressure of 86/48.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "6:08",
+   "scene": "",
+   "prompt": "First actions?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Stop the pump, clamp, do not return the blood; call for help; IM epinephrine into the outer thigh per protocol.",
+     "feedback": "<p>Anaphylaxis: epinephrine first; the circuit carries the trigger.</p>",
+     "next": "n2",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped, not returned",
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Give an antihistamine and observe.",
+     "feedback": "<p>Antihistamines do not replace epinephrine.</p>",
+     "next": "n2",
+     "then": "<p>He worsens; IM epinephrine is given.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped, not returned",
+      "uf": "Off",
+      "bp": "80/44"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Return the blood quickly to treat the low pressure.",
+     "feedback": "<p>Returning the blood gives back the trigger.</p>",
+     "next": "n2",
+     "then": "<p>The charge nurse clamps; IM epinephrine is given.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped",
+      "uf": "Off",
+      "bp": "78/42"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "6:10",
+   "scene": "<p>The drug nurse holds a 1 mg/mL ampule and asks, &ldquo;IV push?&rdquo;</p>",
+   "prompt": "What do you say?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "&ldquo;No. Intramuscular, outer thigh, the protocol dose of 1 mg per mL. IV epinephrine is for arrest, at 0.1 mg per mL.&rdquo;",
+     "feedback": "<p>Route and concentration differ; an IV bolus of the IM concentration is a tenfold error.</p>",
+     "next": "n3",
+     "vitals": {
+      "bp": "98/58",
+      "spo2": 94
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "&ldquo;Yes, push it IV quickly.&rdquo;",
+     "feedback": "<p>A bolus of 1 mg/mL IV in a patient with a pulse can cause dangerous arrhythmias.</p>",
+     "next": "n3",
+     "then": "<p>A second nurse reads back the route and corrects to IM.</p>",
+     "vitals": {
+      "bp": "96/56",
+      "spo2": 93
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "6:16",
+   "scene": "<p>Despite a second IM dose per protocol, he becomes unresponsive with no pulse.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Cardiac arrest algorithm: compressions, IV epinephrine 1 mg every 3 to 5 minutes, isotonic IV fluids (reasonable in anaphylactic arrest), transfer.",
+     "feedback": "<p>AHA 2025: IV fluids reasonable (COR 2a); the standard IM dose in arrest is of uncertain effectiveness.</p>",
+     "next": "end",
+     "vitals": {
+      "time": "6:16 a.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 120,
+      "spo2": "—",
+      "rhythm": "normal",
+      "rhythmLabel": "Organized rhythm, no pulse (PEA)",
+      "cpr": "Running",
+      "alarm": [
+       "hr"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Another IM dose and wait.",
+     "feedback": "<p>In arrest, IV epinephrine within the arrest algorithm and CPR come first.</p>",
+     "next": "end",
+     "then": "<p>The leader starts the arrest algorithm.</p>",
+     "vitals": {
+      "time": "6:17 a.m.",
+      "bp": "—",
+      "hr": "0",
+      "stripRate": 120,
+      "spo2": "—",
+      "rhythm": "normal",
+      "rhythmLabel": "Organized rhythm, no pulse (PEA)",
+      "cpr": "Running",
+      "alarm": [
+       "hr"
+      ]
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "6:40 a.m.",
+   "text": "<p>He regains a pulse and is transferred. The dialyzer, packaging and lot number are kept; that dialyzer type is not used again for him until the physician reviews it.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Anaphylaxis: IM epinephrine first;</b> blood not returned.</li><li><b>Say route and concentration aloud.</b> IM 1 mg/mL vs IV 0.1 mg/mL.</li><li><b>Arrest:</b> the standard algorithm with IV epinephrine and fluids.</li></ul>",
+ "lab": {
+  "algorithm": "dialysis-anaphylaxis",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 20
+ }
+}

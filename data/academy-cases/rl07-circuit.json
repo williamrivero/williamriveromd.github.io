@@ -1,0 +1,169 @@
+{
+ "id": "rl07-circuit",
+ "page": "resuscitation-lab-07-arrest-in-the-dialysis-chair.html",
+ "title": "Station 7, the circuit",
+ "decisions": 4,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "rhythm": "vf",
+  "rhythmLabel": "Ventricular fibrillation",
+  "hr": "No pulse",
+  "stripRate": 220,
+  "bp": "—",
+  "spo2": "—",
+  "ecg": "VF",
+  "time": "9:40 a.m.",
+  "uf": "On (2.1 L of 3.2 L)",
+  "pump": "Running",
+  "cpr": "Running",
+  "alarm": [
+   "hr",
+   "ecg"
+  ]
+ },
+ "intro": "<p>Same arrest as Module 5: Mr. Arnel Gutierrez, 61, forearm fistula, 2.1 L removed of a 3.2 L goal. Compressions have started. You are his assigned nurse, now the circuit nurse. A saline bag dripped earlier and the chair is wet near his arm.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "9:40",
+   "scene": "",
+   "prompt": "Your first action?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Stop fluid removal and say it aloud.",
+     "feedback": "<p>Fluid removal empties a circulation that has none to spare.</p>",
+     "next": "n2",
+     "vitals": {
+      "uf": "Off"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Run to help with compressions.",
+     "feedback": "<p>The circuit needs one owner; leaving it unmanaged keeps removing fluid.</p>",
+     "next": "n2",
+     "then": "<p>The leader sends you back to the machine.</p>",
+     "vitals": {
+      "uf": "Off"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "9:40",
+   "scene": "<p>No air, no abnormal blood color, lines intact, no reaction signs.</p>",
+   "prompt": "The blood decision?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Return the blood quickly with saline (or clamp and disconnect if that would take you away from something more urgent), and announce it.",
+     "feedback": "<p>With no circuit cause, return the blood volume (ERC) or clamp and disconnect (Card 1).</p>",
+     "next": "n3",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Leave the pump running and keep dialyzing during CPR.",
+     "feedback": "<p>A running circuit during arrest is unmanaged and may keep removing volume.</p>",
+     "next": "n3",
+     "then": "<p>The leader asks you to stop and return.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Spend four minutes on a full rinse-back program.",
+     "feedback": "<p>The decision should take seconds; a long rinse-back pulls you from the team.</p>",
+     "next": "n3",
+     "then": "<p>You switch to clamp and disconnect.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Clamped, disconnected"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "9:41",
+   "scene": "<p>The defibrillator is charging for VF.</p>",
+   "prompt": "What must be true before the shock?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Wet drapes wiped or moved, pads on dry skin away from the fistula arm, the machine disconnected unless rated defibrillation-proof, your hands off the lines at &ldquo;clear.&rdquo;",
+     "feedback": "<p>ERC: disconnect unless defibrillation-proof, beware wet surfaces.</p>",
+     "next": "n4"
+    },
+    {
+     "grade": "harmful",
+     "text": "Hold the lines steady during the shock so the needles do not move.",
+     "feedback": "<p>The lines touch the patient and can carry current to you.</p>",
+     "next": "n4",
+     "then": "<p>You let go when the leader repeats &ldquo;clear.&rdquo;</p>"
+    }
+   ]
+  },
+  "n4": {
+   "short": "9:43",
+   "scene": "<p>The leader asks for epinephrine.</p>",
+   "prompt": "Which access, and how?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "The secured venous needle with a saline-primed line, flush before and after; tell the leader it is ready.",
+     "feedback": "<p>ERC: leave the access open (working, secured) and use it for drugs.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "poor",
+     "text": "Start a new IV in the fistula arm.",
+     "feedback": "<p>Avoid the fistula arm; the existing venous needle is ready and safer.</p>",
+     "next": "end",
+     "then": "<p>You use the venous needle instead.</p>"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "10:05 a.m.",
+   "text": "<p>Handover: two hours on the machine, 2.1 L removed, blood returned at the start, last potassium, fistula needles secured. Dialysis is not restarted without the attending nephrologist.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Stop fluid removal first.</b> </li><li><b>Decide and announce the blood:</b> return or clamp; never return after air, hemolysis or reaction.</li><li><b>Before the shock:</b> dry, pads clear, disconnected unless rated, hands off.</li><li><b>Use the access safely</b> for drugs.</li></ul>",
+ "lab": {
+  "algorithm": "dialysis-arrest",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 20
+ }
+}

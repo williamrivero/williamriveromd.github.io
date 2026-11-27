@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[2]
 GUIDES, ACADEMY = ROOT / "guides", ROOT / "academy"
 SITE = "https://renalcarematters.com"
 LANDING = "renal-care-academy.html"
-PREFIXES = ("nephrology-nursing", "hemodialysis-technician", "water-treatment-technician", "dialysis-biomedical-technician", "physician-on-duty", "renal-dietitian", "dialysis-clinical-head", "peritoneal-dialysis-nurse", "philhealth-claims", "dialysis-unit-manager", "transplant-nurse", "attending-nephrologist", "attending-pediatric-nephrologist", "medical-records-officer", "dialysis-head-nurse", "dialysis-unit-support-staff", "dialysis-charge-nurse", "special-dialysis-nurse-roles", "dialyzer-reprocessing-technician", "dialysis-nurse-assistant", "vascular-surgeon", "transplant-coordinator", "occupational-physical-therapist", "social-worker", "dialysis-unit-owner", "pediatric-dialysis-nurse", "nephrology-trainee")
+PREFIXES = ("nephrology-nursing", "hemodialysis-technician", "water-treatment-technician", "dialysis-biomedical-technician", "physician-on-duty", "renal-dietitian", "dialysis-clinical-head", "peritoneal-dialysis-nurse", "philhealth-claims", "dialysis-unit-manager", "transplant-nurse", "attending-nephrologist", "attending-pediatric-nephrologist", "medical-records-officer", "dialysis-head-nurse", "dialysis-unit-support-staff", "dialysis-charge-nurse", "special-dialysis-nurse-roles", "dialyzer-reprocessing-technician", "dialysis-nurse-assistant", "vascular-surgeon", "transplant-coordinator", "occupational-physical-therapist", "social-worker", "dialysis-unit-owner", "pediatric-dialysis-nurse", "nephrology-trainee", "resuscitation-lab")
 DRY = "--dry-run" in sys.argv
 
 
@@ -110,6 +110,8 @@ def main():
         SK = importlib.util.module_from_spec(spec); spec.loader.exec_module(SK); SK.main([])   # preceptor sign-off on the learner's device
         spec = importlib.util.spec_from_file_location("apply_emergency_cards", Path(__file__).with_name("apply_emergency_cards.py"))
         EQ = importlib.util.module_from_spec(spec); spec.loader.exec_module(EQ); EQ.main()   # emergency quick cards page + links
+        spec = importlib.util.spec_from_file_location("apply_resus_lab", Path(__file__).with_name("apply_resus_lab.py"))
+        RL = importlib.util.module_from_spec(spec); spec.loader.exec_module(RL); RL.main()   # Emergency Readiness section + Resuscitation Lab Practice Lab
         spec = importlib.util.spec_from_file_location("apply_updates", Path(__file__).with_name("apply_updates.py"))
         UP = importlib.util.module_from_spec(spec); spec.loader.exec_module(UP); UP.main([])   # "Updated since you read it" flags
         spec = importlib.util.spec_from_file_location("apply_tools", Path(__file__).with_name("apply_tools.py"))

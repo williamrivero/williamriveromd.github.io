@@ -1,0 +1,237 @@
+{
+ "id": "rl03-another-low-bp",
+ "page": "resuscitation-lab-03-algorithm-recognition.html",
+ "title": "&ldquo;It looks like another low BP&rdquo;",
+ "decisions": 4,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "3:20 p.m.",
+  "bp": "72/40",
+  "hr": 64,
+  "spo2": "—",
+  "ecg": "Regular narrow rhythm",
+  "uf": "On",
+  "pump": "Running",
+  "rhythm": "normal",
+  "rhythmLabel": "Regular narrow rhythm, 64/min",
+  "alarm": [
+   "bp"
+  ]
+ },
+ "intro": "<p>Mr. Danilo Reyes, 59, often has low pressure in his last hour of dialysis in Davao City. The pressure alarm sounds. He is slumped, eyes half open, with a snoring breath every few seconds. A colleague says, &ldquo;Another low BP. Legs up, saline bolus?&rdquo;</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "3:20",
+   "scene": "",
+   "prompt": "What do you check first?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Breathing and a definite pulse together, within 10 seconds.",
+     "feedback": "<p>Slumped and snoring every few seconds may be agonal breathing. Breathing and pulse separate arrest from hypotension.</p>",
+     "next": "n2",
+     "vitals": {
+      "hr": "No pulse",
+      "alarm": [
+       "bp",
+       "hr"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Give a saline bolus through the circuit first.",
+     "feedback": "<p>Treating the pressure first can waste the critical minute of an arrest.</p>",
+     "next": "n2",
+     "then": "<p>As the saline runs, you check: no definite pulse.</p>",
+     "vitals": {
+      "hr": "No pulse",
+      "alarm": [
+       "bp",
+       "hr"
+      ]
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Look at the monitor: the rhythm is regular, so he has a circulation.",
+     "feedback": "<p>A regular rhythm on the monitor cannot prove a pulse.</p>",
+     "next": "n2",
+     "then": "<p>You feel the neck anyway: no pulse.</p>",
+     "vitals": {
+      "hr": "No pulse",
+      "alarm": [
+       "bp",
+       "hr"
+      ]
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "3:21",
+   "scene": "<p>No definite pulse. The snoring breaths are irregular gasps. The monitor still shows a regular narrow rhythm at 64.</p>",
+   "prompt": "What is this, and what do you say?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "&ldquo;Not breathing normally, no pulse: code! Chair flat, compressions.&rdquo; Pulseless electrical activity.",
+     "feedback": "<p>Gasping without a pulse is cardiac arrest; organized rhythm without a pulse is PEA.</p>",
+     "next": "n3",
+     "vitals": {
+      "bp": "—",
+      "cpr": "Running",
+      "uf": "Off",
+      "rhythmLabel": "Organized rhythm, no pulse (PEA)"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Respiratory arrest: give breaths only.",
+     "feedback": "<p>There is no pulse, so this is cardiac arrest. Breaths alone do not circulate blood.</p>",
+     "next": "n3",
+     "then": "<p>A second nurse confirms no pulse and starts compressions.</p>",
+     "vitals": {
+      "bp": "—",
+      "cpr": "Running",
+      "uf": "Off",
+      "rhythmLabel": "Organized rhythm, no pulse (PEA)"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Recheck the blood pressure cuff first.",
+     "feedback": "<p>A cuff reading does not change a pulseless patient&rsquo;s algorithm.</p>",
+     "next": "n3",
+     "then": "<p>Compressions start 30 seconds later.</p>",
+     "vitals": {
+      "bp": "—",
+      "cpr": "Running",
+      "uf": "Off",
+      "rhythmLabel": "Organized rhythm, no pulse (PEA)"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "3:22",
+   "scene": "<p>Compressions are running. The circuit nurse has stopped fluid removal. There is no air, no abnormal blood color, and the lines are intact.</p>",
+   "prompt": "Which causes do you raise for this late-session PEA?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Hypovolemia from fluid removal, bleeding at the access (lift the blanket), low potassium or calcium from the bath, then the rest; saline through the circuit per protocol.",
+     "feedback": "<p>Late-session arrest points to volume and falling electrolytes; PEA is treated by finding the cause.</p>",
+     "next": "n4",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned + saline"
+     }
+    },
+    {
+     "grade": "ok",
+     "text": "High potassium first, as in every dialysis arrest.",
+     "feedback": "<p>Potassium is always on the list, but late in the session volume and low electrolytes are more likely.</p>",
+     "next": "n4",
+     "then": "<p>The leader adds volume and the access check.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned + saline"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "None: give drugs and wait.",
+     "feedback": "<p>In PEA the cause is often the only way back.</p>",
+     "next": "n4",
+     "then": "<p>You lift the blanket: the access is dry. You give saline per protocol.</p>",
+     "vitals": {
+      "pump": "Stopped",
+      "line": "Blood returned + saline"
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "3:30",
+   "scene": "<p>After epinephrine and saline through the circuit, the next rhythm check shows a narrow rhythm at 98 with a palpable pulse; pressure 88/52.</p>",
+   "prompt": "What next?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "ROSC: pads stay on, oxygen, pressure support per physician, ECG, glucose and potassium, call the attending and arrange transfer; dialysis not restarted.",
+     "feedback": "<p>ROSC is a pulse and a pressure. Dialysis restarts only on the attending&rsquo;s decision.</p>",
+     "next": "end",
+     "vitals": {
+      "time": "3:30 p.m.",
+      "bp": "88/52",
+      "hr": 98,
+      "spo2": 93,
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm with a pulse",
+      "cpr": "Stopped",
+      "alarm": [
+       "bp"
+      ]
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Reconnect and finish the last 40 minutes of dialysis.",
+     "feedback": "<p>Restarting a circuit in an unstable patient after arrest risks re-arrest and is the attending&rsquo;s decision.</p>",
+     "next": "end",
+     "then": "<p>The physician-on-duty stops the restart and calls the attending.</p>",
+     "vitals": {
+      "time": "3:31 p.m.",
+      "bp": "88/52",
+      "hr": 98,
+      "spo2": 93,
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm with a pulse",
+      "cpr": "Stopped",
+      "alarm": [
+       "bp"
+      ]
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "3:50 p.m.",
+   "text": "<p>Mr. Reyes leaves by ambulance with a pulse. The debrief records one habit: in every slumped patient, breathing and pulse come before blood pressure.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Breathing and pulse first.</b> A familiar pattern (&ldquo;another low BP&rdquo;) can hide an arrest.</li><li><b>The rhythm does not prove a pulse.</b> Regular narrow rhythm without a pulse is PEA.</li><li><b>Late-session arrest:</b> volume, the access, and low electrolytes lead the cause list.</li></ul>",
+ "lab": {
+  "algorithm": "recognition",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 20
+ }
+}

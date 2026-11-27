@@ -1,0 +1,149 @@
+{
+ "id": "rl01-five-forty",
+ "page": "resuscitation-lab-01-readiness-before-collapse.html",
+ "title": "The 5:40 a.m. check",
+ "decisions": 3,
+ "monitorTitle": "Station monitor",
+ "note": "Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success is an educational result, not a prediction of patient survival.",
+ "labels": {
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "ecg": "Rhythm",
+  "k": "Potassium",
+  "glucose": "Glucose",
+  "line": "Venous line",
+  "cpr": "CPR",
+  "etco2": "ETCO2",
+  "access": "Access"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "ecg",
+  "uf",
+  "pump",
+  "k"
+ ],
+ "monitor": {
+  "time": "Mon 5:40 a.m.",
+  "bp": "—",
+  "hr": "—",
+  "spo2": "—",
+  "ecg": "Defibrillator self-test: battery warning",
+  "rhythm": "asystole",
+  "rhythmLabel": "Defibrillator screen (no patient)",
+  "alarm": [
+   "ecg"
+  ]
+ },
+ "intro": "<p>You are the charge nurse at an 18-station freestanding unit in Caloocan. The first shift connects at 6:00. Opening the crash cart with the technician, you find a defibrillator battery warning, adult pads that expired last month, and an oxygen cylinder about a quarter full. Today&rsquo;s list includes a patient who missed Friday after a hospital stay. The physician-on-duty arrives at 6:20.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "5:40 a.m.",
+   "scene": "",
+   "prompt": "What do you do about the defibrillator and pads?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Treat it as a stop-and-fix item: charge or swap the battery, get in-date pads from stock or a sister unit, and call the Dialysis Clinical Head now.",
+     "feedback": "<p>A unit without a working defibrillator cannot treat a shockable arrest. Fixing it before connection and escalating the same morning is the readiness standard.</p>",
+     "next": "n2",
+     "vitals": {
+      "ecg": "Spare battery in; new pads"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Write it in the logbook for the biomedical technician and start the shift.",
+     "feedback": "<p>Logging leaves the risk in place all day. Clinic registries show staff applied a defibrillator before EMS in only about half of arrests; a dead one helps nobody.</p>",
+     "next": "n2",
+     "then": "<p>At 5:50 you reconsider, send the technician for a spare battery and pads, and call the clinical head.</p>",
+     "vitals": {
+      "ecg": "Spare battery in; new pads"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Use the expired pads; they usually work.",
+     "feedback": "<p>Expired gel can fail to conduct, causing a failed shock or a burn. In-date pads are part of the morning check.</p>",
+     "next": "n2",
+     "then": "<p>The technician refuses and brings fresh pads from the sister unit.</p>",
+     "vitals": {
+      "ecg": "Spare battery in; new pads"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "5:52 a.m.",
+   "scene": "<p>The defibrillator now passes its self-test with fresh pads. The oxygen cylinder still reads a quarter full.</p>",
+   "prompt": "What about the oxygen?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Swap it for a full cylinder before 6:00 and check the planner: a quarter cylinder will not last a 30-minute transfer at high flow.",
+     "feedback": "<p>Oxygen for transfer is part of readiness. The toolkit&rsquo;s oxygen planner turns the gauge reading into minutes.</p>",
+     "next": "n3"
+    },
+    {
+     "grade": "ok",
+     "text": "Keep it but put a full cylinder on order for the afternoon.",
+     "feedback": "<p>Better than nothing, but an arrest before noon would start with too little oxygen.</p>",
+     "next": "n3",
+     "then": "<p>You decide to swap it now after all.</p>"
+    },
+    {
+     "grade": "poor",
+     "text": "Oxygen is not needed for dialysis; leave it.",
+     "feedback": "<p>Resuscitation and transfer depend on oxygen. A low cylinder is a failed check.</p>",
+     "next": "n3",
+     "then": "<p>The technician swaps the cylinder anyway.</p>"
+    }
+   ]
+  },
+  "n3": {
+   "short": "5:55 a.m.",
+   "scene": "<p>Six staff are on the roster: two ACLS-current nurses, two nurses with BLS, a technician and a nurse assistant.</p>",
+   "prompt": "How do you set up the code roles?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "A two-minute huddle: leader until the physician arrives (an ACLS nurse), two compressors, circuit nurse, recorder, runner who calls the ambulance, and a watcher who never joins. Seat the high-risk patient in view of the cart.",
+     "feedback": "<p>Named roles from the real roster prevent the &ldquo;who does what?&rdquo; delay. The watcher protects the other patients.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Tell staff to &ldquo;help as needed&rdquo; if anything happens.",
+     "feedback": "<p>Unnamed roles invite crowding and gaps, and the other patients go unwatched.</p>",
+     "next": "end",
+     "then": "<p>During the huddle you name the roles after all.</p>"
+    },
+    {
+     "grade": "poor",
+     "text": "Wait for the physician-on-duty at 6:20 to assign roles.",
+     "feedback": "<p>The first 20 minutes are the riskiest of the week for the Monday patient; roles must exist before the first connection.</p>",
+     "next": "end",
+     "then": "<p>You assign roles at 5:58 instead.</p>"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "6:00 a.m.",
+   "text": "<p>The defibrillator works, the oxygen is full, the roles are named, and the clinical head knows what failed. The Monday patient sits at Station 2, in front of the cart. Nothing happened today; that was the point.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Fix before you start.</b> A failed defibrillator, pads or oxygen check is a stop-and-fix item, escalated the same morning.</li><li><b>Read the list for risk.</b> Monday, missed sessions, low-potassium baths and recent discharge are arrest flags.</li><li><b>Name roles from the real roster,</b> including a watcher who never joins the arrest.</li></ul>",
+ "lab": {
+  "algorithm": "readiness",
+  "set": [
+   "adult",
+   "dialysis"
+  ],
+  "budget": 45
+ }
+}
