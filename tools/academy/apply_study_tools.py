@@ -16,6 +16,13 @@ START, END = "<!-- STUDY-TOOLS-START -->", "<!-- STUDY-TOOLS-END -->"
 PILL = '<a class="nav-pill" href="#tools">Study tools</a>'
 
 CARDS = [
+    ("Review deck",
+     "Every self-assessment question you miss is copied to your <a href=\"review-deck.html\">review deck</a>. It comes back "
+     "tomorrow, then after 3, 7, 14 and 30 days, until you answer it right five times in a row. A <strong>shift drill</strong> "
+     "of five questions takes about three minutes. When anything is due, a card on this page reminds you."),
+    ("Interactive cases",
+     "Some modules have an <strong>Interactive case</strong>: a shift you work through one decision at a time while a bedside "
+     "monitor responds. Each choice explains why it is, or is not, the best move. Your best score stays on this device."),
     ("Listen to a module",
      "Tap <strong>Listen to this module</strong> under the module title. A player opens at the bottom of the screen and reads "
      "the module aloud, highlighting the sentence it is reading. Use the buttons to go to the previous or next "

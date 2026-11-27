@@ -21,7 +21,7 @@
   var K_FIGS = "rcm-tts-figs", figBtn = null;   // "0" = do not pause for figures (default: pause)
   var K_POS = "rcm-tts:" + PATH, K_RATE = "rcm-tts-rate", K_VOICE = "rcm-tts-voice";
   var RATES = [0.8, 1, 1.15, 1.3, 1.5, 1.75, 2];
-  var SKIP_SECTIONS = { quiz: 1, reading: 1 };
+  var SKIP_SECTIONS = { quiz: 1, reading: 1, sim: 1 };   // sim = interactive case (needs the screen)
   var reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -127,6 +127,8 @@
     });
     main.querySelectorAll("section.section").forEach(function (sec) {
       if (SKIP_SECTIONS[sec.id] || !visible(sec)) {
+        if (sec.id === "sim") items.push({ el: sec.querySelector("h2") || sec, sec: sections.length - 1, note: 1,
+          parts: ["This module has an interactive case here. Try it on screen when it is safe to do so."] });
         if (sec.id === "quiz") items.push({ el: sec.querySelector("h2") || sec, sec: sections.length - 1, note: 1,
           parts: ["This module ends with a short quiz. Open it on screen when it is safe to do so. End of module."] });
         return;

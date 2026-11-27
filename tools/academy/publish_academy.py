@@ -94,6 +94,10 @@ def main():
         L = importlib.util.module_from_spec(spec); spec.loader.exec_module(L); L.main()   # Listen player (read aloud)
         spec = importlib.util.spec_from_file_location("apply_certificate", Path(__file__).with_name("apply_certificate.py"))
         CE = importlib.util.module_from_spec(spec); spec.loader.exec_module(CE); CE.main()   # certificate of completion on final exams
+        spec = importlib.util.spec_from_file_location("apply_cases", Path(__file__).with_name("apply_cases.py"))
+        CA = importlib.util.module_from_spec(spec); spec.loader.exec_module(CA); CA.main()   # interactive branching cases
+        spec = importlib.util.spec_from_file_location("apply_review", Path(__file__).with_name("apply_review.py"))
+        RV = importlib.util.module_from_spec(spec); spec.loader.exec_module(RV); RV.main()   # spaced-repetition review deck
         spec = importlib.util.spec_from_file_location("strip_symptom_widget", Path(__file__).with_name("strip_symptom_widget.py"))
         W = importlib.util.module_from_spec(spec); spec.loader.exec_module(W); W.main()   # no Symptom Checker in the Academy
         spec = importlib.util.spec_from_file_location("patch_site_nav", Path(__file__).resolve().parents[2] / "patch_site_nav.py")

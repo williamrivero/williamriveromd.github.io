@@ -167,8 +167,11 @@ def resources(text, page_url, small):
 
 
 # ── tracks ─────────────────────────────────────────────────────────────────────────────────────────────────
+SHARED_PAGES = ("index.html", "review-deck.html")
+
+
 def hub_names(names):
-    return [n[:-5] for n in names if n != "index.html" and not re.search(r"-\d{2}-|final-exam|trainer", n)]
+    return [n[:-5] for n in names if n not in SHARED_PAGES and not re.search(r"-\d{2}-|final-exam|trainer", n)]
 
 
 def track_of(name, hubs):
@@ -210,9 +213,9 @@ def main():
     missing = set()
     shared = set()
     # landing page + its resources are shared by every download
-    for n in ["index.html"]:
+    for n in [x for x in SHARED_PAGES if x in page_res]:   # landing page + review deck (Nov 27 2026)
         key = page_key(n)
-        files[key] = facts("/academy/index.html")
+        files[key] = facts("/academy/" + n)
         shared.add(key)
         for r in page_res[n]:
             (shared.add(r) if add(r) else missing.add(r))
@@ -224,7 +227,7 @@ def main():
     order = {h: i for i, h in enumerate(dict.fromkeys(re.findall(r'href="(?:\./)?([a-z0-9-]+)\.html"', texts.get("index.html", ""))))}
     tracks = {}
     for n in names:
-        if n == "index.html":
+        if n in SHARED_PAGES:
             continue
         t = track_of(n, hubs)
         if not t:
