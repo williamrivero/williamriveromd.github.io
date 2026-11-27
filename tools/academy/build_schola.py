@@ -167,7 +167,7 @@ def resources(text, page_url, small):
 
 
 # ── tracks ─────────────────────────────────────────────────────────────────────────────────────────────────
-SHARED_PAGES = ("index.html", "review-deck.html", "emergency-cards.html")
+SHARED_PAGES = ("index.html", "review-deck.html", "emergency-cards.html", "same-event-every-role.html")
 
 
 def hub_names(names):

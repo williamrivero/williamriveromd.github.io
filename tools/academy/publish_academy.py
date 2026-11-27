@@ -100,6 +100,8 @@ def main():
         SR = importlib.util.module_from_spec(spec); spec.loader.exec_module(SR); SR.main()   # Personal Study Record (hubs + checklist sign-off dates)
         spec = importlib.util.spec_from_file_location("apply_cases", Path(__file__).with_name("apply_cases.py"))
         CA = importlib.util.module_from_spec(spec); spec.loader.exec_module(CA); CA.main()   # interactive branching cases
+        spec = importlib.util.spec_from_file_location("apply_cross_role", Path(__file__).with_name("apply_cross_role.py"))
+        CR = importlib.util.module_from_spec(spec); spec.loader.exec_module(CR); CR.main()   # "Same event, every role" team drill
         spec = importlib.util.spec_from_file_location("apply_review", Path(__file__).with_name("apply_review.py"))
         RV = importlib.util.module_from_spec(spec); spec.loader.exec_module(RV); RV.main()   # spaced-repetition review deck
         spec = importlib.util.spec_from_file_location("apply_emergency_cards", Path(__file__).with_name("apply_emergency_cards.py"))
