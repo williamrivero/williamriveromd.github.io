@@ -485,7 +485,7 @@ def main_html():
     <button type="button" class="eqc-btn" id="eqc-print">Print cards</button>
   </div>
   <p class="eqc-status" id="eqc-status" aria-live="polite">Save these cards once while you have signal; they then open on this device with no signal. Saving any track in Schola saves them too.</p>
-  <p class="eqc-note">These cards are a memory aid for trained adult hemodialysis staff, not a protocol. <b>Your unit&rsquo;s protocol decides, and the attending nephrologist is called for every event.</b> Drugs are named without doses: doses, limits and stock are set by your unit. {ndraft} of the {total} cards are marked <b>DRAFT</b> until a clinical reviewer signs them off.</p>
+  <p class="eqc-note">These cards are a memory aid for trained adult hemodialysis staff, not a protocol. <b>Your unit&rsquo;s protocol decides, and the attending nephrologist is called for every event.</b> Drugs are named without doses: doses, limits and stock are set by your unit. {("All " + str(total) + " cards were clinically reviewed and signed off by Dr. William Gregory Rivero on " + D.CHECKED_SIGNED + ".") if ndraft == 0 else (str(ndraft) + " of the " + str(total) + " cards are marked <b>DRAFT</b> until a clinical reviewer signs them off.")}</p>
 {index_html()}
 {CIRCUIT_WORDS}
 {code}

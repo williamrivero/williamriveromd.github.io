@@ -11,12 +11,24 @@ Step tuple: (who, html, same_time). who="" for no role chip. same_time=True prin
 """
 
 CHECKED = "November 27, 2026"
+CHECKED_SIGNED = "November 28, 2026"
 
 # Clinical review status per card id. A card is "reviewed" only when a reviewer and date are recorded here.
-REVIEW = {
-    "code": {"status": "pending", "note": "Published November 27, 2026. Clinical sign-off not yet recorded."},
-    "leak": {"status": "pending", "note": "Published November 27, 2026. Clinical sign-off not yet recorded."},
-    # e.g. "hypotension": {"status": "reviewed", "by": "W. G. M. Rivero, MD", "date": "December 1, 2026"},
+REVIEW = {  # Dr. Rivero signed off all 14 cards on November 28, 2026
+    "code": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "leak": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "hypotension": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "access-bleeding": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "air-embolism": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "hemolysis": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "anaphylaxis": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "chest-pain": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "arrhythmia": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "hyperkalemia": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "hypoglycemia": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "seizure": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "stroke": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "fever-rigors": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
 }
 
 SHORT = {   # short labels for the in-card Sources line

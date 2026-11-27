@@ -3,7 +3,7 @@
 Renal Care Academy · https://renalcarematters.com/academy/emergency-cards
 Prepared November 27, 2026 · For clinical review by the Medical Director / attending nephrologist
 
-**Status at a glance.** Cards 1 and 2 are live and were published on November 27, 2026, with no clinical sign-off recorded yet. Cards 3 to 14 are live on the page as clearly marked **DRAFTS**. A white "DRAFT · Clinical review required" badge sits in each card header and a dashed "draft" tag on the card index, so the status is shown in text and not by color alone. A card becomes "reviewed" only when a reviewer and date are entered in `REVIEW` in `tools/academy/emergency_cards_data.py`. The badge then changes to "Clinically reviewed by … , date".
+**Status at a glance.** All 14 cards were clinically reviewed and signed off by Dr. William Gregory Rivero on November 28, 2026. The DRAFT badges and index tags were removed; each card header now reads "Clinically reviewed by Dr. William Gregory Rivero, November 28, 2026". The unit decisions in section 5 remain for each unit protocol.
 
 ---
 
@@ -36,7 +36,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 3. Severe low blood pressure or collapse on dialysis  (`#hypotension`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Pressure falls during dialysis with yawning, cramps, nausea, dizziness or sweating, or the patient becomes faint. Unresponsive and not breathing normally: Card 1.
 
@@ -62,7 +62,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 4. Venous needle dislodgement or access bleeding  (`#access-bleeding`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Blood on the bed, chair or floor; a wet dressing or blanket over the access; a needle out or a line apart; or a patient who turns pale, sweaty or drowsy for no clear reason.
 
@@ -88,7 +88,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 5. Suspected air embolism  (`#air-embolism`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Air or foam in the venous line or below the venous chamber, or an air detector alarm, with or without a sudden cough, chest tightness, breathlessness, confusion or collapse.
 
@@ -114,7 +114,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 6. Suspected hemolysis  (`#hemolysis`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Blood in the venous line looks translucent, cherry-red or “port-wine,” or a sample shows pink plasma, often with chest, back or belly pain, nausea and a rising blood pressure. Several patients may be affected.
 
@@ -140,7 +140,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 7. Severe dialyzer reaction or anaphylaxis  (`#anaphylaxis`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Within the first minutes of treatment, or soon after a drug, any of: itching, hives, flushing, throat tightness, hoarseness, wheeze, breathlessness, swelling of the face or lips, low blood pressure or collapse.
 
@@ -166,7 +166,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 8. Chest pain during dialysis  (`#chest-pain`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** New chest pain, pressure or heaviness during dialysis, or its equivalents: breathlessness, sweating, a fall in pressure or a new abnormal pulse, with or without pain.
 
@@ -192,7 +192,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 9. Symptomatic arrhythmia  (`#arrhythmia`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** A new fast, slow or irregular pulse or a monitor rhythm change, with palpitations, dizziness, chest discomfort, breathlessness, low pressure or confusion.
 
@@ -218,7 +218,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 10. Suspected severe hyperkalemia  (`#hyperkalemia`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** A high potassium result, or missed sessions or the long gap with weakness, a slow or irregular pulse, or electrocardiogram (ECG) changes (peaked T waves, wide QRS, absent P waves).
 
@@ -244,7 +244,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 11. Low blood sugar or sudden confusion  (`#hypoglycemia`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** New confusion, drowsiness, sweating, odd behavior, slurred speech or a seizure, above all in a patient taking insulin or a sulfonylurea or who ate little.
 
@@ -270,7 +270,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 12. Seizure during dialysis  (`#seizure`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Jerking of the limbs, stiffening, staring with no response, or a sudden fall in consciousness with twitching, during or soon after dialysis.
 
@@ -296,7 +296,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 13. New weakness, facial droop or speech change: suspected stroke  (`#stroke`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Sudden facial droop, arm or leg weakness, slurred or absent speech, eyes turned to one side, loss of vision or balance, or a sudden severe headache.
 
@@ -322,7 +322,7 @@ The live page is the authoritative rendering. The text below is generated from t
 
 ### Card 14. Fever, rigors or suspected sepsis during dialysis  (`#fever-rigors`)
 
-**Status:** DRAFT, clinical review required. **Sources checked:** November 27, 2026.
+**Status:** Clinically reviewed, November 28, 2026. **Sources checked:** November 27, 2026.
 
 **Recognize:** Shaking chills or fever during dialysis, often with a catheter, with or without low pressure, confusion or fast breathing. Chills in two or more patients: see the warning.
 
