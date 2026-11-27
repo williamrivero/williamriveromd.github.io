@@ -1,7 +1,7 @@
-# Dialysis Unit Support Staff subtrack · blueprint v2 and implementation notes
+# Housekeeping & Support Staff subtrack · blueprint v2 and implementation notes
 
-Renal Care Academy → Nephrology Nursing → Dialysis Unit Support Staff (orderlies and environmental service aides).
-Built 24 November 2026 from the owner's blueprint package in `/Volumes/Storage/Renal Care Academy/Dialysis Unit Support Staff`
+Renal Care Academy → Nephrology Nursing → Housekeeping & Support Staff (orderlies and environmental service aides).
+Built 24 November 2026 from the owner's blueprint package in `/Volumes/Storage/Renal Care Academy/Housekeeping & Support Staff`
 (CURRICULUM_BLUEPRINT.md, REGULATORY_REVIEW.md, JOB_DESCRIPTIONS.md, CLAUDE_CODE_HANDOFF.md, curriculum.json, sources.json, educator files),
 under CLAUDE.md guide policies, the /setup-guide pipeline and the medical-teaching-standard skill, in the voice of the POD modules.
 Status: **draft for clinical, infection prevention and regulatory review** (not published).

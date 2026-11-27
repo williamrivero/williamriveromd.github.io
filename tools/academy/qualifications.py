@@ -95,7 +95,7 @@ QUAL = {
    "Physical therapists: PRC-registered under RA 5680; treatment requires a physician&rsquo;s prescription (Sec. 12). <span class=q-src>RA 5680</span>",
    "Occupational therapists: PRC-registered under RA 11241, a separate profession with its own scope; works on referral. <span class=q-src>RA 11241</span>",
    "The DOH and PSN dialysis rules list no renal OT or PT position, staffing ratio or renal therapist certificate; scope is the license, the referral and employer privileges. <span class=q-src>DOH, PSN</span>"]),
- "dialysis-unit-support-staff": ("Dialysis Unit Support Staff (orderly, environmental services aide)", [
+ "dialysis-unit-support-staff": ("Housekeeping & Support Staff (orderly, environmental services aide)", [
    NA + " PSN groups housekeeping with the other nonmedical staff and expects written unit policies on infection control, waste, emergencies, and the environment. <span class=q-src>PSN</span>",
    "Your scope is your employer&rsquo;s written task list plus the tasks you have been trained and signed off on. <span class=q-src>DOH, PSN</span>"]),
  "dialysis-unit-manager": ("Unit Operations Manager/Unit Manager", [

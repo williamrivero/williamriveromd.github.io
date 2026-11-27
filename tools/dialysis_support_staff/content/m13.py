@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Receiving, storing and moving supplies so they stay sealed, dry, in date and clean; first in, first out; why you never open, sort or tidy clinical supplies; and the technical boundaries around machines, power, water and concentrates, with exactly what to report when something looks wrong.",
-    "desc": "Dialysis Unit Support Staff Module 13: supply receipt and storage, first in first out, damaged and expired items, clean supply rules, electrical and water hazards around dialysis machines, technical boundaries (machines, water treatment, concentrate, reprocessing) and fault reporting.",
+    "desc": "Housekeeping & Support Staff Module 13: supply receipt and storage, first in first out, damaged and expired items, clean supply rules, electrical and water hazards around dialysis machines, technical boundaries (machines, water treatment, concentrate, reprocessing) and fault reporting.",
     "keywords": "hospital supply storage first in first out, dialysis supplies storage orderly, dialysis machine fault reporting, electrical safety cleaning near medical equipment, support staff technical boundaries dialysis",
     "image_alt": "An orderly placing sealed boxes of dialysis supplies on a wire shelf off the floor in a bright storeroom, older stock moved to the front.",
     "objectives": [

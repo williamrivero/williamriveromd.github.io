@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "The chain of infection in plain words, why hepatitis B and C spread so easily in dialysis units, how long germs live on chairs and buttons, and the five steps by which hands carry them from one patient to the next.",
-    "desc": "Dialysis Unit Support Staff Module 3: the chain of infection, bloodborne viruses (hepatitis B, hepatitis C, HIV) and their survival on surfaces, invisible blood contamination at dialysis stations, prior-occupant risk, and the five-step hand transmission model.",
+    "desc": "Housekeeping & Support Staff Module 3: the chain of infection, bloodborne viruses (hepatitis B, hepatitis C, HIV) and their survival on surfaces, invisible blood contamination at dialysis stations, prior-occupant risk, and the five-step hand transmission model.",
     "keywords": "how infections spread in dialysis unit, hepatitis B survival on surfaces, hepatitis C dialysis outbreak, chain of infection housekeeping, environmental contamination hemodialysis",
     "image_alt": "Close-up of a dialysis chair armrest under soft light with a faint, barely visible smear, a gloved hand holding a folded cleaning cloth above it.",
     "objectives": [

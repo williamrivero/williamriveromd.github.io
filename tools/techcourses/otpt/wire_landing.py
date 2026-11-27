@@ -20,7 +20,7 @@ BLOCKS = {
                'for licensed OTs and PTs: why kidney failure makes movement expensive, safe screening and escalation, access protection, function testing, exercise during '
                'and around dialysis, fatigue, falls, home and community access, transplant prehabilitation, and PhilHealth rehabilitation pathways.</span>'
                '<span><strong>20 modules &middot; OT and PT pathways &middot; a six-tool rehabilitation toolkit &middot; eight practical stations &middot; end-of-course exam</strong></span></span>\n    </a>'),
-    "QUAL": ('<tr><td><a href="dialysis-unit-support-staff.html">Dialysis Unit Support Staff</a></td>',
+    "QUAL": ('<tr><td><a href="dialysis-unit-support-staff.html">Housekeeping & Support Staff</a></td>',
              f'<tr><td><a href="{HUB}">Occupational and Physical Therapist</a></td><td><ul class="acad-qual">'
              '<li>Physical therapists: PRC-registered under RA 5680; treatment requires a physician&rsquo;s prescription (Sec. 12). <span class=q-src>RA 5680</span></li>'
              '<li>Occupational therapists: PRC-registered under RA 11241, a separate profession with its own scope; works on referral. <span class=q-src>RA 11241</span></li>'

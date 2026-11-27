@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Renal Care Academy · Ancillary Staff Track · Dialysis Unit Support Staff (orderlies and EVS aides).
+"""Renal Care Academy · Ancillary Staff Track · Housekeeping & Support Staff (orderlies and EVS aides).
 
 Pages: hub (dialysis-unit-support-staff), 15 modules (dialysis-unit-support-staff-NN-<slug>), end-of-course knowledge
 check (dialysis-unit-support-staff-final-exam), and the Support Staff Toolkit calculator (guides/calc-dialysis-support-staff-toolkit.html).
@@ -130,7 +130,7 @@ class Cites:
 
 # ───────────────────────── extra CSS (second style block survives patch_master_css.py) ─────────────────────────
 TN_CSS = """
-/* Dialysis Unit Support Staff subtrack: visual components (design tokens only, so dark mode holds). */
+/* Housekeeping & Support Staff subtrack: visual components (design tokens only, so dark mode holds). */
 .tc-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;list-style:none;margin:14px 0;padding:0;counter-reset:tc;}
 .tc-flow li{flex:1 1 150px;border:1px solid var(--border);border-top:4px solid var(--teal);border-radius:10px;background:var(--white);padding:10px 12px;font-size:14px;line-height:1.5;color:var(--text-mid);counter-increment:tc;}
 .tc-flow li b{display:block;color:var(--text);font-size:14.5px;margin-bottom:2px;}
@@ -460,7 +460,7 @@ def build_module(mid):
         fname, title, m["desc"], m["keywords"], f"Ancillary Staff Track &middot; Module {n} of {len(MODS)}", m["title"], m["sub"],
         "Dialysis unit orderlies, environmental service aides, utility workers and contracted cleaners &middot; their supervisors and preceptors",
         nav, bar(f"Module {n}"), main, N.glossary_block(main, m.get("terms", [])), N.related_block(cards),
-        jsonld_extra={"isPartOf": {"@type": "Course", "name": "Dialysis Unit Support Staff (Renal Care Academy)", "url": f"{SITE}/guides/{COURSE['hub_slug']}"},
+        jsonld_extra={"isPartOf": {"@type": "Course", "name": "Housekeeping & Support Staff (Renal Care Academy)", "url": f"{SITE}/guides/{COURSE['hub_slug']}"},
                       "learningResourceType": "Self-study module with case and knowledge check",
                       "lastReviewed": COURSE["review_date"]},
         hero_img={"file": m["slug"] + "-vignette-hero", "alt": m["image_alt"]}, disclaimer=DISCLAIMER,
@@ -605,10 +605,10 @@ def build_hub():
                (MODS["01"]["slug"] + ".html", "Start", MODS["01"]["title"], "Module 1 of the course."),
                (EXAM, "Knowledge check", "End-of-Course Knowledge Check", f"{COURSE['exam_items']} questions, one per module; pass at {COURSE['pass_correct']}.")]
     page = N.shell(
-        HUB, "Dialysis Unit Support Staff: Orderlies and EVS Aides · Renal Care Academy",
+        HUB, "Housekeeping & Support Staff: Orderlies and EVS Aides · Renal Care Academy",
         f"A free Philippine-first training track in the Renal Care Academy&rsquo;s Ancillary Staff Track, for dialysis unit orderlies and environmental service aides: {n_mod} modules on scope, dignity, how germs travel, hand hygiene, aseptic habits, cleaning products, station turnover, spills and sharps, health care waste, linen, patient transport, safe lifting, emergencies and records.",
         "dialysis unit orderly training, environmental service aide dialysis, hospital housekeeping infection control Philippines, health care waste segregation training, patient transport orderly course, renal care academy",
-        "Ancillary Staff Track &middot; Course home", "Dialysis Unit Support Staff",
+        "Ancillary Staff Track &middot; Course home", "Housekeeping & Support Staff",
         f"{n_mod} modules for orderlies and environmental service aides: the reason behind every cleaning, waste and transport task, what the evidence shows, and exactly where your role begins and ends.",
         "Orderlies, environmental service aides, utility workers and contracted cleaners in hemodialysis units &middot; their supervisors and preceptors",
         nav, bar("Subtrack home").replace(f'<span class="nc-sep">›</span><a href="{HUB}">{COURSE["title"]}</a><span class="nc-sep">›</span><span>Subtrack home</span>', f'<span class="nc-sep">›</span><span>{COURSE["title"]}</span>'),
@@ -659,12 +659,12 @@ def build_exam():
 </section>"""
     main = tn_expand(main, EXAM)
     page = N.shell(
-        EXAM, "End-of-Course Knowledge Check: Dialysis Unit Support Staff · Renal Care Academy",
-        f"{COURSE['exam_items']}-question end-of-course knowledge check for the Renal Care Academy Dialysis Unit Support Staff course, one question drawn from each module, pass mark {COURSE['pass_correct']} of {COURSE['exam_items']}, with reasons for every answer.",
+        EXAM, "End-of-Course Knowledge Check: Housekeeping & Support Staff · Renal Care Academy",
+        f"{COURSE['exam_items']}-question end-of-course knowledge check for the Renal Care Academy Housekeeping & Support Staff course, one question drawn from each module, pass mark {COURSE['pass_correct']} of {COURSE['exam_items']}, with reasons for every answer.",
         "dialysis orderly quiz, environmental service aide test, dialysis housekeeping knowledge check, renal care academy",
         "Ancillary Staff Track &middot; Examination", "End-of-Course Knowledge Check",
         f"One question from each of the {n_mod} modules, drawn at random each sitting. Pass with {COURSE['pass_correct']} of {COURSE['exam_items']}.",
-        "Learners who have completed the Dialysis Unit Support Staff modules",
+        "Learners who have completed the Housekeeping & Support Staff modules",
         [("exam", "Knowledge check"), ("next", "Next steps")], bar("Knowledge check"), main, N.glossary_block(main, []),
         N.related_block([(HUB, "Subtrack home", COURSE["long_title"], "All modules, pathways and assessment details."),
                          (MODS["15"]["slug"] + ".html", "Capstone", MODS["15"]["title"], "The six practical stations.")]),
@@ -685,7 +685,7 @@ def entry_blocks():
 <section class="section" id="support-staff">
   <div class="section-tag">For the whole team</div>
   <h2>Training the support staff who share your infection prevention work</h2>
-  <p>Orderlies and environmental service aides clean the stations, carry the waste and move the patients you care for. The Renal Care Academy&rsquo;s <a href="{HUB}">Dialysis Unit Support Staff course</a> gives them the reasons behind the tasks: {len(ORDER)} modules on scope, hand hygiene, aseptic habits, product labels and wet contact time, station turnover after clinical clearance, spills and exposures, health care waste, linen, patient transport and safe lifting. Use it to onboard new support staff and to keep the clinical and environmental phases of turnover distinct.</p>
+  <p>Orderlies and environmental service aides clean the stations, carry the waste and move the patients you care for. The Renal Care Academy&rsquo;s <a href="{HUB}">Housekeeping & Support Staff course</a> gives them the reasons behind the tasks: {len(ORDER)} modules on scope, hand hygiene, aseptic habits, product labels and wet contact time, station turnover after clinical clearance, spills and exposures, health care waste, linen, patient transport and safe lifting. Use it to onboard new support staff and to keep the clinical and environmental phases of turnover distinct.</p>
 </section>
 {ENTRY_MARK[1]}
 """

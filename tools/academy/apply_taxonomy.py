@@ -7,7 +7,7 @@ One source of truth for how the Academy is organized (set by Dr. Rivero, Nov 202
                                 By Role: Head Nurse, Charge Nurse
   Renal Care Physicians Track   Dialysis Clinical Head, Attending Nephrologist, Physician-on-Duty
   Renal Technicians Track       Dialysis Technician, Water Treatment Technician, Biomedical Equipment Technician
-  Ancillary Staff Track         Renal Dietitian, Medical Records Officer/Custodian, Dialysis Unit Support Staff
+  Ancillary Staff Track         Renal Dietitian, Medical Records Officer/Custodian, Housekeeping & Support Staff
   Administrative Staff Track    Unit Operations Manager/Unit Manager, PhilHealth Liaison/Claims Officer
 
 For each page it sets: the hero tag ("<Group> Track · <By ...> · Module n of N"), the breadcrumb
@@ -78,8 +78,8 @@ TRACKS = {
                       [], [("Renal Social Worker Module", "Renal Social Worker Module")]),
     "occupational-physical-therapist": ("ancillary", None, "Occupational and Physical Therapist", "Occupational and Physical <em>Therapist</em>",
                                         [], [("OT/PT Module", "Occupational and Physical Therapist Module")]),
-    "dialysis-unit-support-staff": ("ancillary", None, "Dialysis Unit Support Staff", "Dialysis Unit <em>Support Staff</em>",
-                                    [], [("Dialysis Support Staff Module", "Dialysis Unit Support Staff Module")]),
+    "dialysis-unit-support-staff": ("ancillary", None, "Housekeeping & Support Staff", "Housekeeping &amp; <em>Support Staff</em>",
+                                    [], [("Dialysis Support Staff Module", "Housekeeping & Support Staff Module")]),
     "dialysis-unit-manager": ("administrative", None, "Unit Operations Manager/Unit Manager", "Unit Operations Manager/<em>Unit Manager</em>",
                               ["Dialysis Unit Operations Manager"], []),
     "philhealth-claims": ("administrative", None, "PhilHealth Liaison/Claims Officer", "PhilHealth Liaison/<em>Claims Officer</em>",

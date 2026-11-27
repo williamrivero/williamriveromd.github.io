@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Turnover has a clinical phase and an environmental phase, and yours begins only after clinical clearance and the patient has left. The four station statuses, the surfaces and sequence, keeping surfaces wet, what a &ldquo;clean&rdquo; tag does and does not mean, and what the trials of better cleaning actually show.",
-    "desc": "Dialysis Unit Support Staff Module 7: safe environmental turnover of a dialysis station after clinical clearance, four station statuses, surface sequence and wet contact time, a worked turnover time budget, fluorescent-marker audit evidence, and the REACH and multicenter cleaning trials.",
+    "desc": "Housekeeping & Support Staff Module 7: safe environmental turnover of a dialysis station after clinical clearance, four station statuses, surface sequence and wet contact time, a worked turnover time budget, fluorescent-marker audit evidence, and the REACH and multicenter cleaning trials.",
     "keywords": "dialysis station turnover cleaning, dialysis chair disinfection between patients, clinical clearance before cleaning, environmental cleaning trial REACH, fluorescent marker cleaning audit",
     "image_alt": "An environmental service aide wiping the armrest of an empty dialysis chair, the dialysis machine beside it switched to standby, a small status card reading nothing visible clipped to the table.",
     "objectives": [

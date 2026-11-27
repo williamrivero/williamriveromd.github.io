@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Your part in a patient emergency, a fire, a power failure, an earthquake or a flood, when every patient is attached to a machine and cannot simply walk out; and how to protect yourself from heat, fatigue, violence and chemical harm on an ordinary day.",
-    "desc": "Dialysis Unit Support Staff Module 14: support-staff roles in patient collapse and bleeding emergencies, fire (RACE and PASS), power failure, earthquake, typhoon and flood in a dialysis unit, evacuation support, and worker safety: heat stress, fatigue, aggression, chemicals and reporting under RA 11058.",
+    "desc": "Housekeeping & Support Staff Module 14: support-staff roles in patient collapse and bleeding emergencies, fire (RACE and PASS), power failure, earthquake, typhoon and flood in a dialysis unit, evacuation support, and worker safety: heat stress, fatigue, aggression, chemicals and reporting under RA 11058.",
     "keywords": "dialysis unit emergency orderly role, hospital fire RACE PASS housekeeping, earthquake dialysis unit evacuation, typhoon preparedness dialysis staff, workplace violence hospital support staff, heat stress cleaners Philippines",
     "image_alt": "During a drill in a dialysis unit, an orderly holding open a fire exit door and pointing the route while nurses attend to patients in chairs, emergency lights on.",
     "objectives": [

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Why truthful records protect patients and you, how fluorescent-marker and hand hygiene audits work and what a percentage really means, how small improvement cycles fix problems without blame, and the six capstone stations that end the track.",
-    "desc": "Dialysis Unit Support Staff Module 15: honest cleaning and waste records, correcting errors, fluorescent-marker and hand hygiene audits with worked percentages, audit and feedback evidence, simple Plan-Do-Study-Act improvement, and the six-station practical capstone with critical failures.",
+    "desc": "Housekeeping & Support Staff Module 15: honest cleaning and waste records, correcting errors, fluorescent-marker and hand hygiene audits with worked percentages, audit and feedback evidence, simple Plan-Do-Study-Act improvement, and the six-station practical capstone with critical failures.",
     "keywords": "cleaning log hospital housekeeping, fluorescent marker audit percentage, hand hygiene compliance audit calculation, PDSA housekeeping improvement, dialysis support staff capstone assessment",
     "image_alt": "An EVS supervisor and an aide reviewing a simple run chart of cleaning audit results pinned on a staff-room board, a small ultraviolet flashlight on the table.",
     "objectives": [

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Image plan for the Dialysis Unit Support Staff subtrack (Renal Care Academy).
+"""Image plan for the Housekeeping & Support Staff subtrack (Renal Care Academy).
 
 HEROES: one circular-vignette hero per page (williamriveromd-hero-vignette v3), 16 in all (hub + 15 modules;
 the end-of-course check reuses the hub hero).
