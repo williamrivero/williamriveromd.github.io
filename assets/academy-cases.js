@@ -36,6 +36,8 @@
       localStorage.setItem("rcm-case:" + id, JSON.stringify(v));
     } catch (e) { return null; }
   }
+  var decoder = document.createElement("textarea");
+  function decode(s) { if (s.indexOf("&") < 0) return s; decoder.innerHTML = s; return decoder.value; }
   function epaper() { return document.documentElement.getAttribute("data-shade") === "epaper"; }
 
   /* ── Styles (design tokens, so light / dim / dark / e-paper follow the page) ── */
@@ -218,7 +220,7 @@
           }
         }
         var v = cellEls[k].querySelector(".v");
-        v.textContent = vals[k] == null ? "—" : String(vals[k]);
+        v.textContent = vals[k] == null ? "—" : decode(String(vals[k]));
         if (UNITS[k] && vals[k] != null && vals[k] !== "—") { var sm = el("small"); sm.textContent = UNITS[k]; v.appendChild(sm); }
         cellEls[k].classList.toggle("alarm", alarm(k, vals[k]) || alarms.indexOf(k) >= 0);
         if (changed && !first && !REDUCED) flash(cellEls[k]);
