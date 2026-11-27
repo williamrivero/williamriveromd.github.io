@@ -1,0 +1,245 @@
+{
+  "id": "dna08-dont-tell-the-nurse",
+  "page": "dialysis-nurse-assistant-08-deterioration-emergencies.html",
+  "title": "“Don’t call the nurse”",
+  "decisions": 5,
+  "note": "Fictional patients and staff. Your registered nurse, the unit&rsquo;s emergency plan, and your practical BLS training come first.",
+  "labels": {
+    "time": "Time",
+    "where": "Station",
+    "concern": "Concern",
+    "rn": "Registered nurse"
+  },
+  "monitorOrder": [
+    "time",
+    "where",
+    "bp",
+    "hr",
+    "concern",
+    "rn"
+  ],
+  "monitor": {
+    "time": "Tue 09:40",
+    "where": "Station 3",
+    "bp": "138/80",
+    "hr": 92,
+    "concern": "Chest pain",
+    "rn": "At Station 12",
+    "rhythm": "normal",
+    "rhythmLabel": "Sinus rhythm",
+    "alarm": [
+      "concern"
+    ]
+  },
+  "intro": "<p>You are a dialysis nurse assistant doing the delegated hourly observations. At 09:40, at hour two, Mrs. Luz Bernardo, 66, at Station 3 says quietly that her chest hurts. &ldquo;Please don&rsquo;t call the nurse. I don&rsquo;t want them to stop my dialysis early. It will pass.&rdquo;</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "Chest pain:",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "&ldquo;I understand. I have to tell the nurse now, because chest pain can be serious. I&rsquo;ll stay with you.&rdquo; Call the RN and stay.",
+          "feedback": "<p>Chest pain is smoke before fire. You cannot keep it secret, even when asked kindly. Tell her why, call the RN, and stay with her.</p>",
+          "then": "<p>The RN comes at once, gets an ECG, and calls the physician. Mrs. Bernardo is treated and transferred for assessment.</p>",
+          "vitals": {
+            "rn": "At Station 3 in 1 min",
+            "concern": "ECG; physician called"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Agree to keep it between you and recheck her in 15 minutes.",
+          "feedback": "<p>A heart attack or rhythm problem can turn into an arrest within minutes. Keeping it secret takes the decision away from the people who can treat it.</p>",
+          "then": "<p>Ten minutes later she is sweating and gray. You call the RN, who starts the emergency response.</p>",
+          "vitals": {
+            "rn": "At Station 3, 10 min late",
+            "concern": "ECG; physician called"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Check her blood pressure first; if it&rsquo;s normal, there&rsquo;s no need to call.",
+          "feedback": "<p>A normal blood pressure does not rule out a heart attack. Chest pain is reported at once, whatever the numbers.</p>",
+          "then": "<p>Her pressure is normal, but you call the RN anyway.</p>",
+          "vitals": {
+            "rn": "At Station 3 in 3 min",
+            "concern": "ECG; physician called"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "vitals": {
+        "time": "Tue 10:15",
+        "where": "Station 7",
+        "bp": "164/92",
+        "hr": 84,
+        "concern": "Slurred speech, right arm weak",
+        "rn": "At Station 3 (with Mrs. Bernardo)",
+        "alarm": [
+          "concern"
+        ]
+      },
+      "short": "Station 7:",
+      "scene": "<p>At 10:15, Mr. Arturo Cruz, 70, at Station 7 is answering you with slurred words, and his right hand cannot hold the cup. He was talking normally when you checked him at 09:15.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Call for the RN now, using the backup route since she is with another patient; note the time he was last seen normal (09:15); stay with him.",
+          "feedback": "<p>Sudden slurred speech and one-sided weakness can mean a stroke, low blood sugar, or very low blood pressure. The time he was last normal decides what treatment is possible.</p>",
+          "vitals": {
+            "rn": "Backup RN at Station 7; last normal 09:15 noted"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Let him rest and recheck him at the next round.",
+          "feedback": "<p>Stroke treatment depends on time. An hour&rsquo;s wait can close options.</p>",
+          "then": "<p>You think again and call the backup RN, noting he was last normal at 09:15.</p>",
+          "vitals": {
+            "rn": "Backup RN at Station 7; last normal 09:15 noted"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Finish the observations on your other stations, then tell the RN.",
+          "feedback": "<p>These signs are reported at once, not at the end of a round.</p>",
+          "then": "<p>You stop and call the backup RN.</p>",
+          "vitals": {
+            "rn": "Backup RN at Station 7; last normal 09:15 noted"
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "time": "Tue 11:05",
+        "where": "Station 5",
+        "bp": "—",
+        "hr": "—",
+        "concern": "Unresponsive, not breathing normally",
+        "rn": "Far end of Bay B",
+        "rhythm": "irregular",
+        "rhythmLabel": "Chaotic rhythm",
+        "alarm": [
+          "concern"
+        ]
+      },
+      "short": "Collapse:",
+      "scene": "<p>At 11:05, Mr. Rey Santos at Station 5 slumps forward. He does not answer when you call his name, and his chest is not moving normally. The RN is at the far end of Bay B. Your coworker Kuya Ben is at Station 8.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Shout and activate the emergency call: &ldquo;Emergency, Station 5, unresponsive, not breathing normally!&rdquo; &ldquo;Ben, bring the AED!&rdquo; Start the BLS actions you were trained to perform until the team takes over.",
+          "feedback": "<p>Unresponsive and not breathing normally is a cardiac arrest until proven otherwise. Staff-started CPR in dialysis clinics was associated with about three times the odds of surviving with good brain function. Send someone for the AED rather than leaving the patient.</p>",
+          "vitals": {
+            "rn": "RN leading code at Station 5"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Stop the blood pump and disconnect him so he can be moved.",
+          "feedback": "<p>Never change dialysis settings or disconnect the circuit. The RN and code team manage the dialysis-specific hazards. Your job is to call, fetch, and start trained BLS.</p>",
+          "then": "<p>Kuya Ben shouts for help and brings the AED. You start the BLS actions you were trained in.</p>",
+          "vitals": {
+            "rn": "RN leading code at Station 5"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Run down the bay to find the RN.",
+          "feedback": "<p>Leaving him alone loses the minutes that matter most. Shout, activate the call, and send someone else for equipment.</p>",
+          "then": "<p>You turn back, shout for help, and Kuya Ben brings the AED.</p>",
+          "vitals": {
+            "rn": "RN leading code at Station 5"
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Tue 11:07"
+      },
+      "short": "During the code:",
+      "scene": "<p>The RN leads. She says: &ldquo;Ben, compressions. You, bring the emergency cart and clear the chairs.&rdquo;</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "&ldquo;Bringing the cart, clearing the chairs.&rdquo; Do it, then report &ldquo;Cart here, chairs cleared,&rdquo; and tell her the last readings you took and when he collapsed.",
+          "feedback": "<p>Repeat back every instruction and confirm when done. Clear the space for the team, and relay what you saw, briefly and exactly.</p>",
+          "vitals": {
+            "rn": "Cart at bedside 11:08"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Go for the cart without saying anything.",
+          "feedback": "<p>Without a repeat-back the leader cannot be sure the task is happening. Closed-loop communication prevents missed tasks.</p>",
+          "vitals": {
+            "rn": "Cart at bedside 11:09"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Bring the cart, then go back to your observations.",
+          "feedback": "<p>Stay available to the leader: report the task done, relay the last readings and the time, and take the next task.</p>",
+          "vitals": {
+            "rn": "Cart at bedside 11:08"
+          },
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "vitals": {
+        "time": "Tue 11:30",
+        "concern": "Pulse back; transferred"
+      },
+      "short": "Afterward:",
+      "scene": "<p>Mr. Santos regained a pulse after a shock and was taken by ambulance. The RN asks you to write what you saw.</p>",
+      "prompt": "How do you write it?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Only what you saw and did, with times: last observation, collapse at 11:05, call, AED arrival, who was there. Then join the debrief and say if you feel shaken.",
+          "feedback": "<p>A factual account helps the review. Do not fill gaps from memory of what usually happens. It is normal to feel shaken; tell your RN or head nurse.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Write the usual sequence of a code, so the record looks complete.",
+          "feedback": "<p>Filling gaps with what usually happens makes the record wrong. Write only what you saw and did.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Let the RN write it; she was leading.",
+          "feedback": "<p>Your observations before and at the collapse are things only you saw. Write your own account.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "The debrief",
+      "text": "<p>At the debrief the team notes three early calls: chest pain at Station 3, stroke signs at Station 7 with a clear last-normal time, and a fast call at Station 5. Mrs. Bernardo had a heart attack and was treated early. Mr. Cruz reached the hospital within the treatment window. The unit adds &ldquo;Patient asks you not to tell: tell the RN anyway&rdquo; to the observation card.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Smoke before fire:</b> chest pain, stroke signs, and breathlessness are reported at once, even when the patient asks you not to.</li><li><b>Note the time last seen normal.</b></li><li><b>Collapse: shout, activate, send for the AED,</b> start the BLS you were trained in.</li><li><b>Never touch the circuit or settings.</b></li><li><b>Repeat back, confirm done,</b> and write only what you saw.</li></ul><p>See <a href=\"#why\">Why dialysis patients collapse</a>, <a href=\"#activate\">Activating help</a> and <a href=\"#after\">After the event</a>.</p>"
+}
