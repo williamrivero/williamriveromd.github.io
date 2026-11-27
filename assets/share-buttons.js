@@ -184,11 +184,14 @@
     var anchors = document.querySelectorAll('.hero-meta');
     if (!anchors.length) { var h1 = document.querySelector('h1'); if (h1) { var tl = h1.nextElementSibling; anchors = [tl && tl.classList.contains('hero-tagline') ? tl : h1]; } }
     Array.prototype.forEach.call(anchors, function (a) {
-      var bar = document.createElement('div');
-      bar.className = 'rcm-share'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Share this guide');
+      // patch_share_slot.py writes an empty, pre-sized placeholder where the row goes,
+      // so filling it moves nothing (CLS fix, Nov 27 2026).
+      var nx = a.nextElementSibling, slot = nx && nx.classList.contains('rcm-share-slot') && !nx.children.length;
+      var bar = slot ? nx : document.createElement('div');
+      bar.className = 'rcm-share'; bar.removeAttribute('aria-hidden'); bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Share this guide');
       bar.innerHTML = '<span class="rcm-share-lbl">' + langSpans({ en: 'Share', tl: 'Ibahagi', ceb: 'Ipaambit', kap: 'Ibahagi' }) + '</span>' +
         list.map(function (n) { return item(n, false); }).join('');
-      a.parentNode.insertBefore(bar, a.nextSibling);
+      if (!slot) a.parentNode.insertBefore(bar, a.nextSibling);
       wire(bar);
     });
 

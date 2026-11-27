@@ -149,7 +149,21 @@ self.addEventListener('fetch',function(e){
 });
 """
 
-CTA = (CTA_START + '\n<a class="ca-cta" href="#calc-app" id="calc-app-cta"><svg viewBox="0 0 24 24" aria-hidden="true">'
+# The CTA's core styles ship inline with it: calc-app.js is deferred, and before it ran the two unsized
+# SVG icons drew as page-wide squares, making the hero ~2,100 px taller for a moment (CLS 0.4, Nov 27 2026).
+# Keep these in step with the .ca-cta rules in assets/calc-app.js.
+CTA_CSS = ('<style id="ca-cta-css">'
+           '.ca-cta{display:inline-flex;align-items:center;gap:12px;margin:14px 0 4px;padding:11px 16px 11px 14px;border-radius:14px;'
+           'color:#fff!important;text-decoration:none!important;background:linear-gradient(135deg,#4338ca 0%,#312e81 100%)}'
+           '.ca-cta>svg:first-child{flex:none;width:34px;height:34px;padding:6px;border-radius:10px;background:rgba(255,255,255,.16);'
+           'fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}'
+           '.ca-cta-t{display:flex;flex-direction:column;gap:2px;line-height:1.2}'
+           '.ca-cta-t strong{font:700 15px/1.2 Inter,system-ui,sans-serif;color:#fff}'
+           '.ca-cta-t small{font:500 12.5px/1.3 Manrope,system-ui,sans-serif;color:#e0e7ff}'
+           '.ca-cta-arr{flex:none;width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:.85}'
+           '</style>')
+
+CTA = (CTA_START + '\n' + CTA_CSS + '<a class="ca-cta" href="#calc-app" id="calc-app-cta"><svg viewBox="0 0 24 24" aria-hidden="true">'
        '<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7"/><path d="m9 11 3 3 3-3"/><path d="M10.5 18.5h3"/></svg>'
        '<span class="ca-cta-t"><strong>Install Calculo, the calculators app</strong><small>Every calculator, even with no signal</small></span>'
        '<svg class="ca-cta-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>\n' + CTA_END)

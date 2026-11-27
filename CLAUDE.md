@@ -99,6 +99,10 @@ python3 patch_symptom_widget.py --report  # audit which eligible guides lack the
 python3 patch_symptom_widget.py --dry-run
 python3 patch_symptom_widget.py --guide hmo-ckd-coverage.html  # single guide
 
+python3 patch_share_slot.py               # pre-sized empty slot where the hero share row goes (no layout shift; guides/ + academy/)
+python3 patch_share_slot.py --check       # exit 1 if any page needs it
+python3 patch_desktop_prepaint.py         # restore the saved "Desktop view" choice before first paint (pages with the desktop toggle)
+python3 patch_desktop_prepaint.py --check
 python3 patch_share_buttons.py            # install the share bar (hero icon row + "Share this guide" panel) on every content guide
 python3 patch_share_buttons.py --report   # audit which eligible guides lack the share bar (no writes)
 python3 patch_share_buttons.py --guide igan-guide.html  # single guide
@@ -602,6 +606,16 @@ widget** (imported from `patch_symptom_widget.py`) **plus every calculator** (`c
 `ckd-dri-calculator.html`; Nov 17 2026), where the end panel reads "Share this calculator". The drug
 database pages load it from `generate_drug_pages.py`. Run it (or rely on `/setup-guide`) after
 adding any new guide; `--report` audits coverage. Never hand-author share markup in a guide.
+**Layout-shift guards (Nov 27 2026, after Cloudflare showed CLS 0.44 on the calculators index).** The deferred share script
+used to insert its hero row after first paint and push the hero text down. `patch_share_slot.py` writes an empty
+`<div class="rcm-share-slot" aria-hidden="true">` at the row's anchor (after each `.hero-meta`, else after the first `<h1>` /
+its `.hero-tagline`), sized by a `<style id="rcm-share-slot-css">` right after the first slot (34 px; 74 px on phones, where
+the row wraps); the script fills the slot instead of inserting. The slot must NOT carry the `rcm-share` class (the script
+stops if a `.rcm-share` exists). The sitemap workflow and `publish_academy.py` run it, so new and regenerated pages keep it.
+`patch_desktop_prepaint.py` puts a `<!-- DESKTOP-PREPAINT -->` restore of `wgmr-desktop` right after the viewport meta.
+Same lesson elsewhere: anything in the first screen whose size depends on a deferred script needs its size in the HTML
+(the Calculo hero button now ships its core CSS inline, `CTA_CSS` in `build_calc_app.py`; kidney-physiology's origins pin is
+CSS `position:sticky`, no JS absolute/fixed switching).
 
 **Side rail (desktop/tablet ≥ 1024px, Nov 2026).** Every content guide also loads
 `assets/guide-rail.js` (tag placed right **after** the share-buttons tag; its Share tab calls

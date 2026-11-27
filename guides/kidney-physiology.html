@@ -2237,7 +2237,10 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
   .origins-lede{font-family:'Inter',sans-serif;font-weight:300;font-size:clamp(16px,2vw,20px);line-height:1.7;color:var(--ink-mid);margin:0 auto;}
   .origins-lede em{color:var(--cyan);font-style:italic;}
   .origins-arc{position:relative;height:840vh;}
-  .origins-pin{position:absolute;top:0;left:0;width:100%;height:100vh;overflow:hidden;}
+  .origins-pin{position:sticky;top:0;left:0;width:100%;height:100vh;overflow:hidden;}
+  /* Sticky, not JS absolute/fixed switching: the switch counted as layout shift (Cloudflare CLS 1.0, Nov 27 2026).
+     Sticky needs a scrolling viewport, so body must not be its own overflow container. */
+  body{overflow-x:visible;}
   .origins-stage-img{position:absolute;inset:0;pointer-events:none;z-index:2;}
   .origins-frame{position:absolute;left:34%;top:50%;transform:translate(-50%,-50%);width:min(56vw,960px);max-width:none;height:auto;opacity:0;transition:opacity .6s ease;filter:drop-shadow(0 8px 26px rgba(0,0,0,.5));}
   .origins-frame.is-active{opacity:1;}
@@ -2865,6 +2868,7 @@ html.lite-mode .scroll-cue::after{animation:none;background:linear-gradient(to b
         <div>Reabsorbed<strong>~99 percent</strong></div>
         <div>Passed<strong>1.5 L / day</strong></div>
       </div>
+<div class="rcm-share-slot" aria-hidden="true"></div><style id="rcm-share-slot-css">.rcm-share-slot:empty{display:block;margin:12px 0 0;height:34px}@media (max-width:420px){.rcm-share-slot:empty{height:74px}}@media (max-width:480px) and (hover:none){.rcm-share-slot:empty{height:74px}}.rcm-share+.rcm-share-slot:empty{display:none}@media print{.rcm-share-slot:empty{display:none}}</style>
       <a class="hero-cta" href="#egfr" data-reveal data-delay="4" data-magnetic>Calculate your own eGFR &amp; watch your kidneys work <span aria-hidden="true">&rarr;</span></a>
     </div>
     <div class="scroll-cue" data-reveal data-delay="4">Scroll</div>
@@ -4446,11 +4450,7 @@ if(statBand){
   function update(){
     ticking=false;
     var r=arc.getBoundingClientRect(), vh=window.innerHeight;
-    if(pin){
-      if(r.top>0){ pin.style.position='absolute'; pin.style.top='0'; pin.style.bottom='auto'; }
-      else if(r.bottom<vh){ pin.style.position='absolute'; pin.style.top='auto'; pin.style.bottom='0'; }
-      else { pin.style.position='fixed'; pin.style.top='0'; pin.style.bottom='auto'; }
-    }
+    /* the pin is position:sticky in CSS; no JS positioning (it caused layout shifts) */
     var total=arc.offsetHeight-vh;
     var p= total>0 ? (-r.top/total) : 0;
     if(p<0)p=0; if(p>1)p=1;
