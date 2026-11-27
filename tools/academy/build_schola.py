@@ -167,7 +167,7 @@ def resources(text, page_url, small):
 
 
 # ── tracks ─────────────────────────────────────────────────────────────────────────────────────────────────
-SHARED_PAGES = ("index.html", "review-deck.html")
+SHARED_PAGES = ("index.html", "review-deck.html", "emergency-cards.html")
 
 
 def hub_names(names):
@@ -213,7 +213,7 @@ def main():
     missing = set()
     shared = set()
     # landing page + its resources are shared by every download
-    for n in [x for x in SHARED_PAGES if x in page_res]:   # landing page + review deck (Nov 27 2026)
+    for n in [x for x in SHARED_PAGES if x in page_res]:   # landing page + review deck + emergency quick cards (Nov 27 2026)
         key = page_key(n)
         files[key] = facts("/academy/" + n)
         shared.add(key)

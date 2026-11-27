@@ -100,7 +100,9 @@ def build_page():
 
 
 def wanted(name, text):
-    return True   # every academy page: capture needs #nc-quiz, the shift drill needs any page
+    # every academy page: capture needs #nc-quiz, the shift drill needs any page; never the emergency quick cards
+    # (a quiz pop-up must not cover an action card during an emergency)
+    return name != "emergency-cards.html"
 
 
 def main():
