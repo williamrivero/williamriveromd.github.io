@@ -1,0 +1,359 @@
+{
+ "id": "ntr03-crea-pls-eval",
+ "page": "nephrology-trainee-03-renal-consultation-synthesis.html",
+ "title": "&ldquo;Crea 2.6, pls eval ?HD&rdquo;",
+ "decisions": 5,
+ "strip": false,
+ "monitorTitle": "Consult worksheet",
+ "note": "Fictional patient. Values are illustrative and follow the module text; local protocol and the attending nephrologist&rsquo;s judgment come first.",
+ "labels": {
+  "time": "Time",
+  "q": "Referral question",
+  "temp": "Temp",
+  "crea": "Creatinine",
+  "k": "Potassium",
+  "uo": "Urine output",
+  "order": "Renal plan"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "temp",
+  "spo2",
+  "crea",
+  "k",
+  "uo",
+  "q",
+  "order"
+ ],
+ "monitor": {
+  "time": "Mon 16:10",
+  "bp": "100/62",
+  "hr": 106,
+  "temp": "—",
+  "spo2": "—",
+  "crea": "2.6 mg/dL (1.8 on admission)",
+  "k": "5.4 mmol/L",
+  "uo": "Not charted since 06:00",
+  "q": "&ldquo;Crea 2.6, pls eval ?HD&rdquo;",
+  "order": "None",
+  "alarm": [
+   "crea",
+   "uo",
+   "q"
+  ]
+ },
+ "intro": "<p>You are the internal medicine resident rotating on the renal consult service of a tertiary hospital in Pampanga. At 16:10 on Monday, a referral arrives through the hospital messaging system from the surgery service: &ldquo;Bed 9, 68F, crea 2.6, pls eval ?HD. Tnx.&rdquo; The &ldquo;?HD&rdquo; asks whether she needs hemodialysis.</p><p>The chart shows Mrs. Erlinda Castillo, 68, a retired public school teacher with type 2 diabetes and hypertension. She was admitted two days ago with an infected diabetic foot, had a computed tomography (CT) angiogram of the leg with contrast on admission, and underwent debridement under spinal anesthesia yesterday. She is on an intravenous antibiotic and ketorolac, a nonsteroidal anti-inflammatory drug (NSAID), for pain. Her creatinine was 1.8 mg/dL on admission and is 2.6 mg/dL today; potassium is 5.4 mmol/L. Your renal fellow, Dr. Paolo Lacson, is in the outpatient clinic and reachable by phone.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "16:10:",
+   "prompt": "The referral is one line. What do you do first?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "Open the chart and spend the next hour building a complete history and creatinine timeline, then go to the bedside.",
+     "feedback": "<p>The timeline matters, but it answers no question yet, and nobody has checked whether anything is dangerous today. The question and the patient&rsquo;s stability come first; the timeline comes after.</p>",
+     "then": "<p>At 17:00 you call the surgical resident and go to the bedside.</p>",
+     "vitals": {
+      "time": "Mon 16:40",
+      "q": "Dialysis? Antibiotic dose?",
+      "temp": "38.2",
+      "spo2": 96,
+      "uo": "None since 06:00; bladder scan 720 mL",
+      "alarm": [
+       "uo"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "best",
+     "text": "Call the referring surgical resident to learn the real question, then go to the bedside and check potassium, fluid, acid, uremia, obstruction and circulation before taking the history.",
+     "feedback": "<p>&ldquo;Creatinine high&rdquo; is not a question; determining the question is the first of Goldman&rsquo;s ten consultation principles. Stability comes next, because potassium, fluid, acid, uremia and obstruction can kill or injure within hours, and none of them waits for the timeline.</p>",
+     "vitals": {
+      "time": "Mon 16:40",
+      "q": "Dialysis? Antibiotic dose?",
+      "temp": "38.2",
+      "spo2": 96,
+      "uo": "None since 06:00; bladder scan 720 mL",
+      "alarm": [
+       "uo"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "harmful",
+     "text": "Reply in the chat: &ldquo;Crea 2.6 is not dialysis level, no need for HD, will see tomorrow.&rdquo;",
+     "feedback": "<p>A creatinine value alone cannot answer whether a patient is safe tonight. The potassium trend, the urine output, the fluid status and the bladder are unknown, and you have answered a consultation without seeing the patient.</p>",
+     "then": "<p>Dr. Lacson reads the thread and asks you to see her now. You call the surgical resident and go to the bedside.</p>",
+     "vitals": {
+      "time": "Mon 16:40",
+      "q": "Dialysis? Antibiotic dose?",
+      "temp": "38.2",
+      "spo2": 96,
+      "uo": "None since 06:00; bladder scan 720 mL",
+      "alarm": [
+       "uo"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "poor",
+     "text": "Order a kidney ultrasound, a urinalysis and a full serology panel through the chat, and see her once the results return.",
+     "feedback": "<p>Tests ordered before you know the question or the patient&rsquo;s stability may miss the emergency. A broad serology panel rarely changes tonight&rsquo;s decision, costs the family money, and delays the tests that matter.</p>",
+     "then": "<p>You cancel the serologies, call the surgical resident and go to the bedside.</p>",
+     "vitals": {
+      "time": "Mon 16:40",
+      "q": "Dialysis? Antibiotic dose?",
+      "temp": "38.2",
+      "spo2": 96,
+      "uo": "None since 06:00; bladder scan 720 mL",
+      "alarm": [
+       "uo"
+      ]
+     },
+     "next": "n2"
+    }
+   ]
+  },
+  "n2": {
+   "short": "At the bedside:",
+   "scene": "<p>The surgical resident says the team wants to know two things: does she need dialysis, and how should they dose her antibiotic? At the bedside Mrs. Castillo is awake, with a temperature of 38.2 °C and clear lungs. The electrocardiogram (ECG) shows no peaked T waves. She has passed no urine since 06:00 and complains of lower abdominal discomfort. The nurse&rsquo;s bladder scan shows 720 mL.</p>",
+   "prompt": "What do you recommend first?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "A fluid bolus, because her urine output is low.",
+     "feedback": "<p>A full bladder is not a volume problem. Fluid given to a patient who cannot pass urine adds to the load without fixing anything.</p>",
+     "then": "<p>You withdraw the bolus suggestion and ask for a catheter. It drains 750 mL.</p>",
+     "vitals": {
+      "time": "Mon 17:20",
+      "uo": "750 mL on catheter, then 60 mL/h",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "ok",
+     "text": "A kidney ultrasound in the morning to look for hydronephrosis.",
+     "feedback": "<p>The right idea, too slowly. The bladder scan already shows outlet obstruction, which is quick to fix and easy to miss; relieve it now and image later.</p>",
+     "then": "<p>You ask for a catheter now. It drains 750 mL.</p>",
+     "vitals": {
+      "time": "Mon 17:20",
+      "uo": "750 mL on catheter, then 60 mL/h",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "harmful",
+     "text": "Intravenous furosemide to get the urine flowing.",
+     "feedback": "<p>A diuretic cannot empty an obstructed bladder; it only adds urine behind the blockage. Until the outflow is open, the urine output tells you nothing about the kidneys.</p>",
+     "then": "<p>You cancel the order and ask for a catheter. It drains 750 mL.</p>",
+     "vitals": {
+      "time": "Mon 17:20",
+      "uo": "750 mL on catheter, then 60 mL/h",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "best",
+     "text": "Relieve the obstruction now with a bladder catheter per the ward protocol, then chart urine output every hour.",
+     "feedback": "<p>Obstruction is the cause of kidney injury that is quickest to fix and easiest to miss. Draining the bladder treats it and turns the urine output back into a measure of kidney function.</p>",
+     "then": "<p>The catheter drains 750 mL.</p>",
+     "vitals": {
+      "time": "Mon 17:20",
+      "uo": "750 mL on catheter, then 60 mL/h",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n3"
+    }
+   ]
+  },
+  "n3": {
+   "short": "The baseline:",
+   "scene": "<p>Her son, Mr. Jerome Castillo, shows you photos of laboratory slips on his phone: creatinine 1.5 mg/dL ten months ago and 1.6 mg/dL five months ago, from a diagnostic center in Angeles City. An older slip, three years ago, reads 0.9 mg/dL. Today&rsquo;s 2.6 mg/dL came 48 hours after the admission value of 1.8 mg/dL.</p>",
+   "prompt": "Which baseline do you write in the note?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "1.6 mg/dL, the most recent outpatient value.",
+     "feedback": "<p>Close. In Siew&rsquo;s study the mean of outpatient values from 7 to 365 days before admission agreed best with nephrologists, better than the most recent value; here the difference is small, but the habit matters.</p>",
+     "then": "<p>You write the mean of the two values from the past year.</p>",
+     "vitals": {
+      "crea": "2.6 mg/dL (baseline ≈1.55)",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "0.9 mg/dL, the lowest value she has ever had.",
+     "feedback": "<p>The lowest value, especially an old one, makes the injury look larger than it is. Siew found that adding older values did not improve agreement with the nephrologists&rsquo; reference.</p>",
+     "then": "<p>You write the mean of the two values from the past year.</p>",
+     "vitals": {
+      "crea": "2.6 mg/dL (baseline ≈1.55)",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "best",
+     "text": "About 1.55 mg/dL, the mean of the two outpatient values from the past year.",
+     "feedback": "<p>The mean of last year&rsquo;s stable outpatient values agreed best with nephrologists (intraclass correlation 0.91). Separately, the rise of 0.8 mg/dL in 48 hours already meets the Kidney Disease: Improving Global Outcomes (KDIGO) 2012 definition of acute kidney injury (AKI), on top of a reduced baseline.</p>",
+     "vitals": {
+      "crea": "2.6 mg/dL (baseline ≈1.55)",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "No baseline in our chart, so record chronic kidney disease (CKD) based on today&rsquo;s value.",
+     "feedback": "<p>KDIGO 2024 says chronicity needs at least three months of evidence and should not be assumed from one abnormal value. Her old slips may support CKD, but today&rsquo;s rise is acute and must be named as such.</p>",
+     "then": "<p>You write the mean of the two values from the past year and record the acute rise.</p>",
+     "vitals": {
+      "crea": "2.6 mg/dL (baseline ≈1.55)",
+      "alarm": [
+       "crea"
+      ]
+     },
+     "next": "n4"
+    }
+   ]
+  },
+  "n4": {
+   "short": "The problem:",
+   "scene": "<p>A co-resident glances at the chart: &ldquo;Contrast CT on admission, creatinine up two days later. Contrast nephropathy. Done.&rdquo; The medication sheet shows ketorolac every eight hours since admission, and Mr. Castillo mentions herbal capsules &ldquo;for sugar&rdquo; that his mother buys online.</p>",
+   "prompt": "How do you frame the problem and the work-up?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Write one sentence with the tempo, syndrome and context; sort causes by perfusion, tubule, interstitium, glomerulus and obstruction; stop the ketorolac and the capsules; and order urinalysis with sediment and a kidney ultrasound.",
+     "feedback": "<p>A sharp problem representation narrows the search, and asking &ldquo;what else, and what would prove me wrong?&rdquo; guards against premature closure. Sepsis, the NSAID, contrast, the herbal product and the obstruction each need a deliberate check, and each test ordered should change the next decision.</p>",
+     "vitals": {
+      "time": "Mon 18:10",
+      "order": "Ketorolac and capsules stopped; urinalysis, sediment, ultrasound"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "harmful",
+     "text": "Accept contrast nephropathy and leave the ketorolac running, since her pain control matters after debridement.",
+     "feedback": "<p>This is premature closure, the most common cognitive error in Graber&rsquo;s series. The NSAID blocks afferent vasodilation in a septic patient and may be part of the cause; leaving it running keeps harming the kidney.</p>",
+     "then": "<p>Dr. Lacson asks what else could explain the picture. You stop the ketorolac and the capsules and rewrite the plan.</p>",
+     "vitals": {
+      "time": "Mon 18:10",
+      "order": "Ketorolac and capsules stopped; urinalysis, sediment, ultrasound"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "poor",
+     "text": "Send every serology available tonight so nothing is missed.",
+     "feedback": "<p>Blanket testing is not a differential. It costs the family money and rarely changes tonight&rsquo;s decision, while the urinalysis and sediment that would change it wait.</p>",
+     "then": "<p>You cancel most of the panel, stop the ketorolac and the capsules, and order the focused tests.</p>",
+     "vitals": {
+      "time": "Mon 18:10",
+      "order": "Ketorolac and capsules stopped; urinalysis, sediment, ultrasound"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "ok",
+     "text": "Agree that contrast is the likely cause, but stop the ketorolac to be safe.",
+     "feedback": "<p>The right action for an incomplete reason. You have still closed on one cause; the herbal product, the sepsis and the obstruction need a place in the differential, and the urine sediment can separate them.</p>",
+     "then": "<p>You also stop the capsules, write a full differential, and order urinalysis with sediment and a kidney ultrasound.</p>",
+     "vitals": {
+      "time": "Mon 18:10",
+      "order": "Ketorolac and capsules stopped; urinalysis, sediment, ultrasound"
+     },
+     "next": "n5"
+    }
+   ]
+  },
+  "n5": {
+   "short": "18:30, the answer:",
+   "scene": "<p>Your problem representation reads: &ldquo;A 68-year-old woman with diabetes, a reduced baseline and sepsis from a foot infection has AKI over two days, from about 1.55 to 2.6 mg/dL, with urinary retention, after contrast, ketorolac and an unidentified herbal product.&rdquo; Dr. Lacson agrees by phone. Her potassium on repeat is 5.3 mmol/L, and her urine is now flowing at 60 mL an hour. The surgical team changes shift at 19:00.</p>",
+   "prompt": "How do you deliver the consultation?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "A complete note with the history first and the recommendations at the end of the second page; the night team will read it.",
+     "feedback": "<p>A correct plan that is not found in time is a failed consultation. The referring team should see the answer in the first lines, and a time-sensitive plan needs a direct conversation.</p>",
+     "then": "<p>You move the answer to the top and call the surgical resident.</p>",
+     "vitals": {
+      "order": "Note, call with read-back, owner named",
+      "alarm": []
+     },
+     "next": "end"
+    },
+    {
+     "grade": "best",
+     "text": "Lead the note with the answer (AKI, not dialysis tonight; antibiotic dosed for kidney function with pharmacy), numbered recommendations and if-then triggers; call the surgical resident for a read-back; have the fellow inform the attending; name the renal fellow at morning rounds as the owner.",
+     "feedback": "<p>Goldman&rsquo;s principles ask for a specific answer, contingency plans, direct communication and follow-up. I-PASS handoffs with a read-back by the receiver were associated with fewer medical errors in a before-and-after study, and AKI needs an owner beyond tonight.</p>",
+     "vitals": {
+      "order": "Note, call with read-back, owner named",
+      "alarm": []
+     },
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "A note with numbered recommendations, and a chat message to the ward: &ldquo;See my note.&rdquo;",
+     "feedback": "<p>The note is good, but a chat message without acknowledgment does not confirm that anyone read it. Call, read back the triggers, and name who follows up.</p>",
+     "then": "<p>You call the surgical resident, read back the plan, and add the owner to the note.</p>",
+     "vitals": {
+      "order": "Note, call with read-back, owner named",
+      "alarm": []
+     },
+     "next": "end"
+    },
+    {
+     "grade": "poor",
+     "text": "Tell the surgical resident she is &ldquo;cleared from the renal side&rdquo; and that renal will sign off.",
+     "feedback": "<p>AKI is not a one-night problem. In AKI-EPI, nearly half of intensive care patients with AKI left hospital with an estimated glomerular filtration rate (eGFR) below 60 mL/min/1.73 m², so someone must own the follow-up; signing off leaves no one.</p>",
+     "then": "<p>Dr. Lacson asks you to stay on the case. You write the triggers, call the surgical resident, and name the owner.</p>",
+     "vitals": {
+      "order": "Note, call with read-back, owner named",
+      "alarm": []
+     },
+     "next": "end"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Two days later",
+   "vitals": {
+    "time": "Wed 08:00",
+    "crea": "2.0 mg/dL, falling",
+    "k": "4.6 mmol/L",
+    "uo": "Steady",
+    "temp": "37.1",
+    "alarm": []
+   },
+   "text": "<p>Mrs. Castillo&rsquo;s creatinine is 2.0 mg/dL and falling, her urine flows, and her antibiotic is dosed for her kidney function. The ketorolac and the capsules stay stopped; the son has photographed the capsule label for the chart. The discharge plan names a creatinine check at a laboratory near her home in Mabalacat and a renal clinic visit, because AKI on a reduced baseline needs someone to follow it.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Get the real question first,</b> then check potassium, fluid, acid, uremia, obstruction and circulation before the history.</li><li><b>Look at the bladder.</b> Obstruction is quick to fix and easy to miss, and a diuretic or a bolus will not fix it.</li><li><b>Choose the baseline deliberately:</b> the mean of last year&rsquo;s stable outpatient values; do not assume chronicity from one result.</li><li><b>Say the problem in one sentence,</b> then ask what else it could be and order only tests that change the next decision.</li><li><b>Lead with the answer, give if-then triggers, call for a read-back, and name the owner.</b></li></ul><p>See <a href=\"#question\">Question and stability</a>, <a href=\"#timeline\">The timeline</a>, <a href=\"#problem\">Problem representation</a> and <a href=\"#consult-note\">Note, call, handoff</a>.</p>"
+}

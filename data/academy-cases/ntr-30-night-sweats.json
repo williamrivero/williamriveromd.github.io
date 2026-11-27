@@ -1,0 +1,381 @@
+{
+ "id": "ntr30-night-sweats",
+ "page": "nephrology-trainee-30-transplant-followup-dysfunction.html",
+ "title": "Night sweats at seven months",
+ "decisions": 5,
+ "strip": false,
+ "monitorTitle": "Ward chart",
+ "note": "Fictional patient. Values are illustrative, not targets, and no doses are given. The transplant team, the infectious diseases team and the attending nephrologist decide every change in immunosuppression or tuberculosis treatment.",
+ "labels": {
+  "creat": "Creatinine",
+  "tac": "Tacrolimus trough",
+  "meds": "Immunosuppressants",
+  "tb": "Tuberculosis",
+  "work": "Work-up",
+  "team": "Transplant team"
+ },
+ "monitorOrder": [
+  "time",
+  "temp",
+  "bp",
+  "hr",
+  "creat",
+  "tac",
+  "meds",
+  "tb",
+  "work",
+  "team"
+ ],
+ "monitor": {
+  "time": "Mon 22:00, admission",
+  "temp": "38.2",
+  "bp": "128/80",
+  "hr": 96,
+  "creat": "1.4 mg/dL (baseline 1.3)",
+  "tac": "Not checked",
+  "meds": "All held: NPO order",
+  "tb": "Suspected",
+  "work": "Chest film, sputum sent",
+  "team": "Not called",
+  "alarm": [
+   "meds",
+   "team"
+  ]
+ },
+ "intro": "<p>You are the internal medicine resident on call at a provincial hospital in Tarlac City. Mr. Rommel Bautista, 51, received a kidney from his wife at a Metro Manila transplant center seven months ago. His creatinine has been stable at 1.3 mg/dL on tacrolimus, mycophenolate and prednisone.</p><p>He has had three weeks of cough, night sweats, weight loss and evening fever. His chest film shows an upper-lobe opacity, and sputum has been sent. The intern has admitted him and written: &ldquo;Nothing by mouth (NPO) after midnight for bronchoscopy. Hold all oral medicines.&rdquo; The transplant center is three hours away by bus. The Kidney Disease: Improving Global Outcomes (KDIGO) 2009 transplant recipient guideline is your reference.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "22:00:",
+   "prompt": "What do you do about his medicines tonight?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "Keep the hold until the bronchoscopy is done tomorrow, then restart everything at the usual times.",
+     "feedback": "<p>A missed day of immunosuppression can start rejection. Immunosuppressants are not held for NPO without an explicit decision, and that decision belongs to the transplant team.</p>",
+     "then": "<p>You cancel the blanket hold, list every medicine by name and brand with Rommel&rsquo;s wife, and call the transplant team. They want all three immunosuppressants continued and a trough sent before the morning dose.</p>",
+     "vitals": {
+      "time": "Mon 23:00",
+      "meds": "All three continued; brands listed",
+      "team": "Called tonight",
+      "alarm": []
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "harmful",
+     "text": "Stop the mycophenolate and prednisone while infection is being worked up, and continue the tacrolimus alone.",
+     "feedback": "<p>A resident does not stop, start or substitute an immunosuppressant on their own. Lowering immunosuppression may be right or wrong here, and only the transplant team can weigh it against the graft.</p>",
+     "then": "<p>You cancel the blanket hold, list every medicine by name and brand with Rommel&rsquo;s wife, and call the transplant team. They want all three immunosuppressants continued and a trough sent before the morning dose.</p>",
+     "vitals": {
+      "time": "Mon 23:00",
+      "meds": "All three continued; brands listed",
+      "team": "Called tonight",
+      "alarm": []
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "best",
+     "text": "Cancel the blanket hold, list every medicine by name and brand, and call the transplant team tonight before any dose is missed.",
+     "feedback": "<p>The intern&rsquo;s complete list and the resident&rsquo;s call on admission are the two things that protect the graft. The transplant team decides whether any dose changes around the procedure.</p>",
+     "vitals": {
+      "time": "Mon 23:00",
+      "meds": "All three continued; brands listed",
+      "team": "Called tonight",
+      "alarm": []
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "ok",
+     "text": "Restart the immunosuppressants as usual, and plan to update the transplant team when he is discharged.",
+     "feedback": "<p>Keeping the drugs going is right. But the call belongs on day one, not at discharge: a recipient with suspected tuberculosis is about to get drugs that move tacrolimus levels.</p>",
+     "then": "<p>You cancel the blanket hold, list every medicine by name and brand with Rommel&rsquo;s wife, and call the transplant team. They want all three immunosuppressants continued and a trough sent before the morning dose.</p>",
+     "vitals": {
+      "time": "Mon 23:00",
+      "meds": "All three continued; brands listed",
+      "team": "Called tonight",
+      "alarm": []
+     },
+     "next": "n2"
+    }
+   ]
+  },
+  "n2": {
+   "short": "Day 3:",
+   "vitals": {
+    "time": "Wed, day 3",
+    "tb": "Sputum positive",
+    "alarm": [
+     "tb"
+    ]
+   },
+   "scene": "<p>His sputum is positive for tuberculosis. The health center&rsquo;s tuberculosis program plans to start its usual rifampin-based regimen tomorrow, and the bronchoscopy is cancelled.</p>",
+   "prompt": "What do you do before the first dose?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "Hold tuberculosis treatment until his transplant clinic visit in three weeks, so the transplant team can plan it in person.",
+     "feedback": "<p>The concern is right, but three weeks of untreated active tuberculosis in an immunosuppressed man is too long. The plan can be made by phone this week.</p>",
+     "then": "<p>You call the transplant team before any dose is given. The infectious diseases team chooses the regimen, and the transplant team schedules tacrolimus troughs from the first week.</p>",
+     "vitals": {
+      "time": "Wed, day 3",
+      "tb": "Pulmonary tuberculosis; treatment planned",
+      "team": "Informed before first dose",
+      "alarm": [
+       "tb"
+      ]
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "best",
+     "text": "Tell the transplant team before the first dose. The infectious diseases team chooses the regimen, and the transplant team plans tacrolimus troughs from the first week.",
+     "feedback": "<p>Rifampin strongly induces the enzymes that clear tacrolimus. Started without warning, it can drop levels enough to cause rejection within weeks. KDIGO 2009 suggests the same regimens as the local population (2D) and recommends monitoring calcineurin inhibitor levels with rifampin (1C).</p>",
+     "vitals": {
+      "time": "Wed, day 3",
+      "tb": "Pulmonary tuberculosis; treatment planned",
+      "team": "Informed before first dose",
+      "alarm": [
+       "tb"
+      ]
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "poor",
+     "text": "Raise the tacrolimus dose yourself now, to get ahead of the fall that rifampin will cause.",
+     "feedback": "<p>The direction is right in theory, but the size and timing of any change belong to the transplant team and must follow measured troughs. A guessed increase can tip him into toxicity.</p>",
+     "then": "<p>You call the transplant team before any dose is given. The infectious diseases team chooses the regimen, and the transplant team schedules tacrolimus troughs from the first week.</p>",
+     "vitals": {
+      "time": "Wed, day 3",
+      "tb": "Pulmonary tuberculosis; treatment planned",
+      "team": "Informed before first dose",
+      "alarm": [
+       "tb"
+      ]
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "harmful",
+     "text": "Let the health center start its usual regimen tomorrow, and recheck his creatinine at the one-month transplant visit.",
+     "feedback": "<p>Rifampin can drop tacrolimus enough to cause rejection within weeks, and a creatinine rise is a late sign. By the one-month visit the graft may already be injured.</p>",
+     "then": "<p>You call the transplant team before any dose is given. The infectious diseases team chooses the regimen, and the transplant team schedules tacrolimus troughs from the first week.</p>",
+     "vitals": {
+      "time": "Wed, day 3",
+      "tb": "Pulmonary tuberculosis; treatment planned",
+      "team": "Informed before first dose",
+      "alarm": [
+       "tb"
+      ]
+     },
+     "next": "n3"
+    }
+   ]
+  },
+  "n3": {
+   "short": "Day 14:",
+   "vitals": {
+    "time": "Day 14 of treatment",
+    "temp": "37.1",
+    "creat": "2.0 mg/dL (baseline 1.3)",
+    "tac": "Below his center&rsquo;s target",
+    "alarm": [
+     "creat",
+     "tac"
+    ]
+   },
+   "scene": "<p>He returns to your clinic on day 14 of tuberculosis treatment. His fever has settled. His creatinine is 2.0 mg/dL. A trough sent out two days ago is below his transplant center&rsquo;s target range. The graft is not tender, and he has no diarrhea.</p>",
+   "prompt": "What do you do next?",
+   "choices": [
+    {
+     "grade": "harmful",
+     "text": "Give high-dose steroids tonight for presumed rejection, then let the transplant team know in the morning.",
+     "feedback": "<p>Rejection is likely but not proven. KDIGO 2009 recommends a biopsy before treating acute rejection unless it would substantially delay treatment (1C). BK nephropathy can look the same and is made worse by more immunosuppression.</p>",
+     "then": "<p>You send the full work-up (repeat creatinine, Doppler ultrasound of the graft, urine protein, plasma BK polyomavirus DNA, and donor-specific antibodies through the transplant team) and call the team.</p>",
+     "vitals": {
+      "time": "Day 14 of treatment",
+      "creat": "2.0 mg/dL (baseline 1.3)",
+      "tac": "Below his center&rsquo;s target",
+      "work": "Doppler, urine protein, BK DNA, antibodies sent",
+      "alarm": [
+       "creat",
+       "tac"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "best",
+     "text": "Repeat the creatinine, check volume and new drugs, and order a graft Doppler, urine protein, plasma BK polyomavirus DNA and donor-specific antibodies. Then call the transplant team about a biopsy.",
+     "feedback": "<p>Rejection, drug effects, BK nephropathy and obstruction can all raise the creatinine, and they need opposite moves. KDIGO 2009 recommends a biopsy for declining function of unclear cause (1C), and a provincial work-up makes the phone call part of it.</p>",
+     "vitals": {
+      "time": "Day 14 of treatment",
+      "creat": "2.0 mg/dL (baseline 1.3)",
+      "tac": "Below his center&rsquo;s target",
+      "work": "Doppler, urine protein, BK DNA, antibodies sent",
+      "alarm": [
+       "creat",
+       "tac"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "ok",
+     "text": "Encourage oral fluids, review his drug list, and recheck the creatinine in one week before deciding anything.",
+     "feedback": "<p>Volume and drugs are the right first look. But a low trough on rifampin with a rising creatinine points toward rejection, and a week&rsquo;s wait can cost graft function.</p>",
+     "then": "<p>You send the full work-up (repeat creatinine, Doppler ultrasound of the graft, urine protein, plasma BK polyomavirus DNA, and donor-specific antibodies through the transplant team) and call the team.</p>",
+     "vitals": {
+      "time": "Day 14 of treatment",
+      "creat": "2.0 mg/dL (baseline 1.3)",
+      "tac": "Below his center&rsquo;s target",
+      "work": "Doppler, urine protein, BK DNA, antibodies sent",
+      "alarm": [
+       "creat",
+       "tac"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "Stop the rifampin so the tacrolimus level can recover, and restart tuberculosis treatment once the creatinine is back to baseline.",
+     "feedback": "<p>Interrupting treatment for active tuberculosis is not your decision to make alone. The infectious diseases and transplant teams decide together how to treat both.</p>",
+     "then": "<p>You send the full work-up (repeat creatinine, Doppler ultrasound of the graft, urine protein, plasma BK polyomavirus DNA, and donor-specific antibodies through the transplant team) and call the team.</p>",
+     "vitals": {
+      "time": "Day 14 of treatment",
+      "creat": "2.0 mg/dL (baseline 1.3)",
+      "tac": "Below his center&rsquo;s target",
+      "work": "Doppler, urine protein, BK DNA, antibodies sent",
+      "alarm": [
+       "creat",
+       "tac"
+      ]
+     },
+     "next": "n4"
+    }
+   ]
+  },
+  "n4": {
+   "short": "The call:",
+   "scene": "<p>The transplant fellow on call answers. You have about two minutes.</p>",
+   "prompt": "How do you present him?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "&ldquo;I have your patient Rommel Bautista here. His creatinine is up and he has tuberculosis. Can you see him?&rdquo;",
+     "feedback": "<p>It gets the call made, but the fellow must now dig for everything that matters. Give the timeline, the drugs, the level and your question.</p>",
+     "then": "<p>You call again with the full picture. The transplant fellow accepts him for transfer tomorrow and plans a biopsy.</p>",
+     "vitals": {
+      "team": "Transfer accepted; biopsy planned at the center",
+      "alarm": [
+       "creat",
+       "tac"
+      ]
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "poor",
+     "text": "He is stable, so leave a message for the transplant attending and wait for a call back in the morning.",
+     "feedback": "<p>An unexplained creatinine rise and a low trough after starting rifampin are on the module&rsquo;s stop-and-call list. Graft injury does not wait for office hours.</p>",
+     "then": "<p>You call again with the full picture. The transplant fellow accepts him for transfer tomorrow and plans a biopsy.</p>",
+     "vitals": {
+      "team": "Transfer accepted; biopsy planned at the center",
+      "alarm": [
+       "creat",
+       "tac"
+      ]
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "best",
+     "text": "Seven months after a living-donor transplant, on tacrolimus, mycophenolate and prednisone (brands named). Rifampin since day 3; trough now below target; creatinine 1.3 to 2.0; ultrasound and BK results. Question: drug plan, biopsy and transfer.",
+     "feedback": "<p>Time since transplant, the regimen with brands, the interacting drug with its start date, the level and the trend are what the transplant team needs. Ending with a clear question gets a clear decision.</p>",
+     "vitals": {
+      "team": "Transfer accepted; biopsy planned at the center",
+      "alarm": [
+       "creat",
+       "tac"
+      ]
+     },
+     "next": "n5"
+    }
+   ]
+  },
+  "n5": {
+   "short": "Before he leaves:",
+   "scene": "<p>Before the transfer, his wife asks what they should do differently at home.</p>",
+   "prompt": "What do you teach?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "Buy whichever tacrolimus brand is cheapest each month at the health center pharmacy; generic tacrolimus is the same drug.",
+     "feedback": "<p>The molecule is the same, but exposure can differ between products. A brand switch is a change that needs a trough, so keep one brand when you can and tell the clinic before any switch.</p>",
+     "then": "<p>You go back over it: one brand when possible, no new medicine or brand change without telling the clinic, a written list, a two-week buffer, where to get a trough near home, no live vaccines, and the PhilHealth office at the center.</p>",
+     "vitals": {
+      "meds": "One brand; buffer; written list",
+      "alarm": [
+       "creat"
+      ]
+     },
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Keep every transplant clinic appointment and take the medicines exactly as written on the discharge sheet.",
+     "feedback": "<p>True, but it misses what put him at risk this time: a new drug started elsewhere without the transplant team knowing.</p>",
+     "then": "<p>You go back over it: one brand when possible, no new medicine or brand change without telling the clinic, a written list, a two-week buffer, where to get a trough near home, no live vaccines, and the PhilHealth office at the center.</p>",
+     "vitals": {
+      "meds": "One brand; buffer; written list",
+      "alarm": [
+       "creat"
+      ]
+     },
+     "next": "end"
+    },
+    {
+     "grade": "harmful",
+     "text": "Get the oral typhoid vaccine at the health center before the fiesta, since he will eat outside.",
+     "feedback": "<p>Oral typhoid is a live vaccine, and live vaccines are avoided after transplant. Inactivated vaccines are the ones he may be given.</p>",
+     "then": "<p>You go back over it: one brand when possible, no new medicine or brand change without telling the clinic, a written list, a two-week buffer, where to get a trough near home, no live vaccines, and the PhilHealth office at the center.</p>",
+     "vitals": {
+      "meds": "One brand; buffer; written list",
+      "alarm": [
+       "creat"
+      ]
+     },
+     "next": "end"
+    },
+    {
+     "grade": "best",
+     "text": "Keep one brand when possible; tell the clinic before any new medicine or brand change, including from the health center; carry a written list with brands; keep a two-week buffer; know where to get a trough nearby; ask the PhilHealth office about the post-transplant benefit.",
+     "feedback": "<p>Every new drug and every brand change is a reason to ask what just happened to the tacrolimus level. Supply gaps and distance are real in the provinces, so the buffer, the list and a nearby laboratory protect the graft.</p>",
+     "vitals": {
+      "meds": "One brand; buffer; written list",
+      "alarm": [
+       "creat"
+      ]
+     },
+     "next": "end"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Three weeks later",
+   "vitals": {
+    "time": "Three weeks later",
+    "creat": "1.5 mg/dL",
+    "tac": "Rechecked weekly",
+    "alarm": []
+   },
+   "text": "<p>At the transplant center a biopsy guides treatment, and his tacrolimus is adjusted against weekly troughs while tuberculosis treatment continues. Three weeks later his creatinine is 1.5 mg/dL. His wife keeps a written list of every medicine and brand on the refrigerator, and the health center now calls the transplant clinic before changing anything.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Never hold immunosuppressants by default.</b> Continue every dose unless the transplant team makes an explicit decision, and call them on day one.</li><li><b>Rifampin lowers tacrolimus.</b> Tell the transplant team before the first dose; KDIGO 2009 recommends level monitoring with rifampin (1C).</li><li><b>A rising creatinine means rejection, toxicity, infection or obstruction until proven otherwise.</b> Biopsy for unclear decline (1C), before treating rejection.</li><li><b>Present with the timeline, the drugs and brands, the level and a clear question.</b></li><li><b>Teach the household:</b> one brand, no new drug without the clinic, a written list, a buffer, no live vaccines.</li></ul><p>See <a href=\"#immunosuppression\">Immunosuppression</a>, <a href=\"#dysfunction\">Rising creatinine</a> and <a href=\"#infection\">Infection</a>.</p>"
+}

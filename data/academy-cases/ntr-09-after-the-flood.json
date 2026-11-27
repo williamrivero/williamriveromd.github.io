@@ -1,0 +1,333 @@
+{
+  "id": "ntr09-after-the-flood",
+  "page": "nephrology-trainee-09-aki-akd-recovery.html",
+  "title": "Floodwater, fever and a falling urine output",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Ward chart",
+  "note": "Fictional patient. Values are illustrative and follow the module text; no doses are given. Your hospital&rsquo;s leptospirosis protocol and the attending nephrologist decide every order.",
+  "labels": {
+    "bp": "Blood pressure",
+    "crea": "Creatinine",
+    "k": "Potassium",
+    "uo": "Urine output",
+    "stage": "KDIGO stage",
+    "order": "Orders"
+  },
+  "monitorOrder": [
+    "time",
+    "bp",
+    "hr",
+    "spo2",
+    "crea",
+    "k",
+    "uo",
+    "stage",
+    "order"
+  ],
+  "monitor": {
+    "time": "Tue 15:00, fever day 6",
+    "bp": "98/62",
+    "hr": 112,
+    "spo2": 96,
+    "crea": "2.1 mg/dL (was 0.8, 18 mo ago)",
+    "k": "3.2 mmol/L",
+    "uo": "300 mL in 24 h",
+    "stage": "Not written",
+    "order": "Emergency room orders running",
+    "alarm": [
+      "crea",
+      "k",
+      "uo"
+    ]
+  },
+  "intro": "<p>You are the second-year medicine resident in a provincial hospital in San Fernando, Pampanga, eight days after a typhoon flooded the duck farms of Candaba. Mr. Joel Lansangan, 41, a duck farmer who weighs about 60 kg, waded in floodwater for three days to move his flock. Six days ago he developed fever, severe calf pain and red eyes. Today his eyes are yellow.</p><p>The medical intern, Dr. Camille Ocampo, presents him: creatinine 2.1 mg/dL, against 0.8 mg/dL on a health center check 18 months ago; potassium 3.2 mmol/L; platelets 60,000 per microliter; 300 mL of urine in the 24 hours since admission. In the emergency room he received an aminoglycoside and an injectable nonsteroidal anti-inflammatory drug (NSAID) for his calf pain, and his home losartan was continued. She asks you to stage his acute kidney injury (AKI) by the Kidney Disease: Improving Global Outcomes (KDIGO) criteria before the team calls the attending nephrologist.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "15:00:",
+      "prompt": "How do you stage him, and what goes into the report?",
+      "choices": [
+        {
+          "grade": "ok",
+          "text": "Stage 2 by creatinine, since 2.1 is about 2.6 times his baseline; report it and repeat the creatinine in the morning.",
+          "feedback": "<p>The creatinine ratio is right, but it is not the whole stage. Creatinine lags behind the injury; the urine bag tells you sooner, and KDIGO stages by the worse of the two criteria.</p>",
+          "then": "<p>You divide the urine by his weight and the hours: about 0.21 mL/kg/h for 24 hours. You restage him as stage 3 and ask for an hourly urine record.</p>",
+          "vitals": {
+            "stage": "3 (by urine output)",
+            "order": "Hourly urine; daily weight"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "best",
+          "text": "Stage 3 by urine output (about 0.21 mL/kg/h for 24 hours), stage 2 by creatinine; take the worse. Report it with the baseline used and its date, the exposures and the two nephrotoxins given, and start an hourly urine record.",
+          "feedback": "<p>300 mL &divide; 60 kg &divide; 24 h is about 0.21 mL/kg/h, below 0.3 for 24 hours: stage 3. An 18-month-old value is still a baseline if you write which one you used. Urine output is the criterion most often lost, so it needs a measured bag and an hourly record.</p>",
+          "vitals": {
+            "stage": "3 (by urine output)",
+            "order": "Hourly urine; daily weight"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Give a diuretic first to see whether the kidney responds, then stage him on the urine that follows.",
+          "feedback": "<p>KDIGO advises against diuretics to treat AKI except to manage volume overload (2C). A diuretic makes urine, not kidney function, and it erases the very criterion you are trying to measure.</p>",
+          "then": "<p>You hold the diuretic, do the arithmetic on the urine he has already passed, stage him 3 and start an hourly urine record.</p>",
+          "vitals": {
+            "stage": "3 (by urine output)",
+            "order": "Hourly urine; daily weight"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Do not stage yet: the only baseline is 18 months old. Repeat the creatinine tomorrow and decide then.",
+          "feedback": "<p>An old baseline is still a baseline; write which value you used and why. A day&rsquo;s wait in a febrile, oliguric man after a flood loses the hours in which antimicrobials and a transfer plan matter most.</p>",
+          "then": "<p>The fellow, on the phone, asks for the urine output. You do the arithmetic, stage him 3 and start an hourly urine record.</p>",
+          "vitals": {
+            "stage": "3 (by urine output)",
+            "order": "Hourly urine; daily weight"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "short": "The medicine chart:",
+      "scene": "<p>The emergency room orders are still running: the aminoglycoside, the injectable NSAID every eight hours, and his losartan. The leptospirosis antimicrobial has not been started. The picture of floodwater, calf pain, red eyes, jaundice and AKI with a low potassium points to severe leptospirosis.</p>",
+      "prompt": "What do you write?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Start the leptospirosis antimicrobial now per protocol; stop the NSAID; hold the losartan for the illness and name who restarts it; ask the attending whether the aminoglycoside is still needed now that the likely cause is known.",
+          "feedback": "<p>Delayed antimicrobial treatment was associated with death in the 2009 Metro Manila outbreak. An NSAID removes the prostaglandin dilation of the afferent arteriole, losartan lowers glomerular pressure in a kidney with no reserve, and KDIGO suggests avoiding aminoglycosides unless no less nephrotoxic alternative exists (2A).</p>",
+          "vitals": {
+            "order": "Antimicrobial started; NSAID stopped; losartan held"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Start the antimicrobial per protocol and stop the NSAID; keep the losartan and the aminoglycoside as ordered.",
+          "feedback": "<p>Two right moves. But losartan lowers glomerular pressure during an acute illness, and the aminoglycoside is a direct tubular toxin whose indication should be reviewed every day.</p>",
+          "then": "<p>At evening rounds the fellow asks about both. You hold the losartan and the attending stops the aminoglycoside.</p>",
+          "vitals": {
+            "order": "Antimicrobial started; NSAID stopped; losartan held"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Keep all three; ask pharmacy to adjust the aminoglycoside dose to his kidney function, and start the leptospirosis antimicrobial on morning rounds.",
+          "feedback": "<p>A dose adjustment does not answer whether the drug is needed at all. And a night&rsquo;s delay in the antimicrobial is the kind of delay that was associated with death in the Manila series.</p>",
+          "then": "<p>The attending, reviewing the chart by phone, asks you to start the antimicrobial now, stop the NSAID and the aminoglycoside, and hold the losartan.</p>",
+          "vitals": {
+            "order": "Antimicrobial started; NSAID stopped; losartan held"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "harmful",
+          "text": "Add low-dose dopamine to protect the kidneys while the antibiotics take effect.",
+          "feedback": "<p>KDIGO recommends against low-dose dopamine to prevent or treat AKI (1A). &ldquo;Renal-dose dopamine&rdquo; has no place, and the nephrotoxins and the missing antimicrobial are still on the chart.</p>",
+          "then": "<p>The fellow cancels the dopamine and walks you through the chart: antimicrobial now, NSAID and aminoglycoside stopped, losartan held.</p>",
+          "vitals": {
+            "order": "Antimicrobial started; NSAID stopped; losartan held"
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "time": "Tue 18:00",
+        "bp": "92/58",
+        "hr": 116,
+        "uo": "10 mL/h for 3 h",
+        "alarm": [
+          "hr",
+          "crea",
+          "uo"
+        ]
+      },
+      "short": "18:00:",
+      "scene": "<p>His pressure has drifted to 92/58 mm Hg with a pulse of 116. His neck veins are flat, his lungs are clear, and his oxygen saturation is 96% on room air. He has passed 10 mL an hour for three hours.</p>",
+      "prompt": "What volume plan do you write?",
+      "choices": [
+        {
+          "grade": "poor",
+          "text": "Albumin first, because it stays in the vessels; then reassess.",
+          "feedback": "<p>KDIGO suggests isotonic crystalloids rather than colloids such as albumin or starches for volume expansion in the absence of hemorrhagic shock (2B). Albumin also costs the family more for no stated advantage here.</p>",
+          "then": "<p>The fellow changes the order to crystalloid in measured portions with reassessment after each. By 20:00 his pressure is 104/66.</p>",
+          "vitals": {
+            "time": "Tue 20:00",
+            "bp": "104/66",
+            "hr": 100,
+            "uo": "25 mL/h for 2 h"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Isotonic crystalloid at a fixed maintenance rate overnight; recheck in the morning.",
+          "feedback": "<p>Crystalloid is the right fluid, but a fixed rate with no checkpoint can underfill him now and flood his lungs later. Write when to reassess and when to stop.</p>",
+          "then": "<p>You add a plan: measured portions, reassessment after each. By 20:00 his pressure is 104/66.</p>",
+          "vitals": {
+            "time": "Tue 20:00",
+            "bp": "104/66",
+            "hr": 100,
+            "uo": "25 mL/h for 2 h"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "best",
+          "text": "Isotonic crystalloid in measured portions, reassessing after each one (pressure, pulse, lungs, oxygen, urine), with the point at which you stop written in the order.",
+          "feedback": "<p>He is underperfused, so his kidney needs volume, and KDIGO suggests crystalloid over colloid (2B). But severe leptospirosis can bleed into the lungs, so each portion is a test, not a quota.</p>",
+          "vitals": {
+            "time": "Tue 20:00",
+            "bp": "104/66",
+            "hr": 100,
+            "uo": "25 mL/h for 2 h"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Three liters of crystalloid over three hours to &ldquo;flush the kidneys,&rdquo; then a diuretic to push the urine.",
+          "feedback": "<p>A large, unmonitored load in a disease that bleeds into the lungs risks pulmonary edema, and a diuretic is not a treatment for AKI (KDIGO 2C). Fluid is given to restore perfusion, a portion at a time.</p>",
+          "then": "<p>At 20:00 his saturation falls to 93% with crackles at both bases. You stop the infusion and call the fellow, who reviews the plan with you.</p>",
+          "vitals": {
+            "time": "Tue 20:00",
+            "bp": "104/66",
+            "hr": 104,
+            "spo2": 93,
+            "uo": "15 mL/h for 2 h",
+            "alarm": [
+              "spo2",
+              "crea",
+              "uo"
+            ]
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Wed 07:00",
+        "bp": "100/64",
+        "hr": 108,
+        "spo2": 92,
+        "crea": "3.9 mg/dL",
+        "k": "3.6 mmol/L",
+        "uo": "40 mL in 12 h",
+        "alarm": [
+          "spo2",
+          "crea",
+          "uo"
+        ]
+      },
+      "short": "Wednesday 07:00:",
+      "scene": "<p>Overnight he passed 40 mL in 12 hours. He coughed up streaks of blood twice, and his saturation is 92% on room air. His creatinine is 3.9 mg/dL; his potassium is 3.6 mmol/L, and he has no acidosis yet. The hospital&rsquo;s one hemodialysis machine is booked for maintenance patients all day, and there is no intensive care bed.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Call the attending nephrologist now with a structured report, start oxygen, and ask for transfer today to a center that can dialyze and ventilate, with acute peritoneal dialysis here if transfer is impossible.",
+          "feedback": "<p>Near-anuria and coughing blood with falling saturation are both on the module&rsquo;s stop-and-call list. In the 2009 outbreak pulmonary hemorrhage was the leading cause of death, and anuria at admission carried a risk ratio of 4.17 (observational). The transfer takes hours, so it is decided before the urgent indication arrives.</p>",
+          "vitals": {
+            "time": "Wed 11:00",
+            "order": "Transferred on oxygen to the referral center"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Call the fellow and plan the transfer for when he develops an urgent indication, such as hyperkalemia or acidosis.",
+          "feedback": "<p>Calling is right; the timing is not. Leptospirosis wastes potassium, so hyperkalemia may come late or never, and the lung bleeding will not wait for it. Waiting safely needs a machine within reach.</p>",
+          "then": "<p>The attending, hearing about the hemoptysis, asks for transfer today. He leaves at 11:00 on oxygen.</p>",
+          "vitals": {
+            "time": "Wed 11:00",
+            "order": "Transferred on oxygen to the referral center"
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "No urgent indication yet. Continue the fluids and reassess at noon.",
+          "feedback": "<p>Normal potassium is not reassurance in leptospirosis. More fluid into a man who is barely passing urine, with blood in his sputum, adds water he cannot excrete and may worsen his lungs.</p>",
+          "then": "<p>At 09:00 his saturation is 90%. The nurse calls the fellow, who calls the attending; he is transferred at noon on oxygen.</p>",
+          "vitals": {
+            "time": "Wed 12:00",
+            "spo2": 90,
+            "order": "Transferred on oxygen to the referral center",
+            "alarm": [
+              "spo2",
+              "crea",
+              "uo"
+            ]
+          },
+          "next": "n5"
+        },
+        {
+          "grade": "harmful",
+          "text": "The blood streaks are from coughing. Give a cough remedy and recheck tomorrow.",
+          "feedback": "<p>Pulmonary hemorrhage is the most lethal complication of severe leptospirosis. Blood in the sputum with falling saturation is a reason to call, not a symptom to suppress.</p>",
+          "then": "<p>The nurse, worried, calls the fellow directly. The attending arranges transfer; he leaves at noon on oxygen.</p>",
+          "vitals": {
+            "time": "Wed 12:00",
+            "order": "Transferred on oxygen to the referral center"
+          },
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "vitals": {
+        "time": "Day 14",
+        "bp": "128/80",
+        "hr": 82,
+        "spo2": 98,
+        "crea": "1.6 mg/dL (peak 6.0)",
+        "k": "4.1 mmol/L",
+        "uo": "1.8 L a day",
+        "stage": "Recovering: acute kidney disease",
+        "order": "Back on your ward for discharge",
+        "alarm": []
+      },
+      "short": "Going home:",
+      "scene": "<p>At the referral center he needed four hemodialysis sessions, which stopped when his urine returned. He was sent back to your ward to finish recovering. Today he goes home. His wife asks whether he will need &ldquo;dialysis forever.&rdquo;</p>",
+      "prompt": "What goes into the discharge plan?",
+      "choices": [
+        {
+          "grade": "ok",
+          "text": "Tell them to come back for a creatinine check at 3 months.",
+          "feedback": "<p>The 3-month check is right, but the first weeks matter too: the creatinine may still be settling, and the held losartan needs a date and a person to restart it with a potassium check.</p>",
+          "then": "<p>You add a two-week visit at the Candaba health center and write the plan on a card for him to carry.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "His creatinine is almost normal. Restart all his home medicines today and follow up as needed.",
+          "feedback": "<p>Recovery is checked, not assumed. The creatinine may settle above his old baseline, and &ldquo;as needed&rdquo; usually means never in a town with no nephrologist.</p>",
+          "then": "<p>The fellow asks you to rewrite the plan: losartan held until the two-week check, and a card with the dates.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "best",
+          "text": "A written card: peak and discharge creatinine, stage, cause and the dialysis he needed; losartan held and who restarts it; creatinine, potassium and blood pressure in 1 to 2 weeks; creatinine with estimated glomerular filtration rate (eGFR) and urine albumin-to-creatinine ratio (ACR) at 3 months; no NSAIDs or herbal products.",
+          "feedback": "<p>KDIGO advises evaluation 3 months after AKI for resolution, new chronic kidney disease (CKD) or worsening CKD (not graded). In a meta-analysis of 13 cohorts, AKI was associated with later CKD and kidney failure, most after severe AKI (observational). The card travels with him because the next doctor may not see your chart.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "Three months later",
+      "text": "<p>At the two-week visit the health center physician checked his potassium and restarted his losartan, as the card said. At three months his creatinine is 1.0 mg/dL and his urine albumin is normal. You told his wife at discharge that most people who survive leptospirosis recover their kidney function, and that recovery would be checked, not assumed. It was.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Stage by creatinine and by urine output, and take the worse.</b> Do the mL/kg/h arithmetic and write the baseline you used.</li><li><b>Start the leptospirosis antimicrobial without delay and clear the chart of second hits:</b> NSAIDs, held losartan, an aminoglycoside reviewed daily.</li><li><b>Give crystalloid a portion at a time</b> and reassess after each; these lungs can bleed and flood.</li><li><b>Anuria or blood in the sputum means call the attending and decide on transfer now,</b> before the urgent indication; normal potassium is not reassurance in leptospirosis.</li><li><b>No AKI patient leaves without a written plan</b> and a 3-month check.</li></ul><p>See <a href=\"#definitions\">Definitions</a>, <a href=\"#tropical\">Tropical AKI</a>, <a href=\"#kidney-protect\">Kidney protection</a> and <a href=\"#recovery\">Recovery and follow-up</a>.</p>"
+}

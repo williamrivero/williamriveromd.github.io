@@ -1,0 +1,272 @@
+{
+  "id": "ntr12-cuff-to-plan",
+  "page": "nephrology-trainee-12-blood-pressure-cardiovascular.html",
+  "title": "174/104 over a sleeve",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Clinic sheet",
+  "note": "Fictional patient. Values are illustrative and follow the module text; no doses are given. The target and every drug are the attending&rsquo;s decision, taken from the label and your unit&rsquo;s protocol.",
+  "labels": {
+    "bp": "Blood pressure",
+    "method": "How measured",
+    "crea": "Creatinine",
+    "k": "Potassium",
+    "acr": "Urine ACR",
+    "meds": "Medicines",
+    "target": "Written target"
+  },
+  "monitorOrder": [
+    "time",
+    "bp",
+    "method",
+    "crea",
+    "k",
+    "acr",
+    "meds",
+    "target"
+  ],
+  "monitor": {
+    "time": "Thu 09:30, medicine clinic",
+    "bp": "174/104",
+    "method": "Triage: over sleeve, after walking",
+    "crea": "1.15 mg/dL (eGFR 52)",
+    "k": "4.6 mmol/L",
+    "acr": "650 mg/g (confirmed)",
+    "meds": "Amlodipine &ldquo;when I remember&rdquo;",
+    "target": "None",
+    "alarm": [
+      "bp",
+      "acr"
+    ]
+  },
+  "intro": "<p>You are the second-year medicine resident in the internal medicine clinic of a provincial hospital in Lucena City, Quezon. Mrs. Nenita Galang, 55, runs a carinderia near the port. She has had high blood pressure for 8 years and does not have diabetes. Her chronic kidney disease (CKD) is G3a A3: estimated glomerular filtration rate (eGFR) 52 mL/min/1.73 m&sup2;, urine albumin-to-creatinine ratio (ACR) 650 mg/g on two samples. She takes amlodipine &ldquo;when I remember,&rdquo; and she cooks with patis, bagoong and dried fish every day.</p><p>The triage nurse took her pressure with the cuff over her blouse sleeve, right after she walked up from the jeepney stop: 174/104 mm Hg. She has no headache, chest pain, breathlessness, confusion or visual change. The intern asks whether to give &ldquo;something to bring it down now.&rdquo;</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "09:30:",
+      "prompt": "What do you tell the intern?",
+      "choices": [
+        {
+          "grade": "harmful",
+          "text": "Yes: give a fast-acting tablet now and recheck in an hour.",
+          "feedback": "<p>Very high pressure without organ injury is not an emergency. A rapid drop can starve a brain whose autoregulation has shifted upward, and this reading is not even reliable.</p>",
+          "then": "<p>Your attending cancels it and asks for a proper measurement. Repeated the standardized way, her pressure is 152/94.</p>",
+          "vitals": {
+            "bp": "152/94",
+            "method": "Standardized office, mean of 2"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "ok",
+          "text": "Repeat it once, now, in the other arm.",
+          "feedback": "<p>A second arm does not remove the errors: no rest after walking, possibly the wrong cuff, talking. Each pushes the number up.</p>",
+          "then": "<p>The second reading is 168/100. You seat her for five quiet minutes, bare her arm and repeat the standardized way: 152/94.</p>",
+          "vitals": {
+            "bp": "152/94",
+            "method": "Standardized office, mean of 2"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "best",
+          "text": "Not yet. Repeat it the standardized way: bare arm, right cuff size, back supported, feet flat, arm at heart level, five minutes seated in silence, two or more readings averaged. And confirm she has no sign of organ injury.",
+          "feedback": "<p>Almost every error in a blood pressure reading pushes it up. The Kidney Disease: Improving Global Outcomes (KDIGO) 2021 guideline recommends standardized office measurement over routine readings (1B), because the trials behind its targets used it.</p>",
+          "vitals": {
+            "bp": "152/94",
+            "method": "Standardized office, mean of 2"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Accept the reading and add a second drug today.",
+          "feedback": "<p>Never treat a pressure you did not measure properly. A reading taken over a sleeve after a walk can move a patient from one drug to three.</p>",
+          "then": "<p>The attending asks you to repeat it first. Standardized, her pressure is 152/94.</p>",
+          "vitals": {
+            "bp": "152/94",
+            "method": "Standardized office, mean of 2"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "short": "The target:",
+      "prompt": "Which target do you propose to the attending, and how do you write it?",
+      "choices": [
+        {
+          "grade": "poor",
+          "text": "Below 140/90. The guidelines disagree, so choose the one she can reach.",
+          "feedback": "<p>The guidelines disagree on far less than they agree. Both treat most adults with CKD to well below 140, and lower when tolerated.</p>",
+          "then": "<p>The attending chooses the KDIGO target and asks you to write it with its method.</p>",
+          "vitals": {
+            "target": "Systolic &lt;120, standardized office, when tolerated"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "best",
+          "text": "&ldquo;Systolic below 120 mm Hg by standardized office measurement, when tolerated (KDIGO 2021, 2B),&rdquo; or below 130/80 if the attending prefers the 2025 American Heart Association and American College of Cardiology (AHA/ACC) target; home readings for a week; ask about dizziness and falls at every visit.",
+          "feedback": "<p>She is 55, without diabetes, with CKD: close to the Systolic Blood Pressure Intervention Trial (SPRINT) CKD population. A target means nothing without its method, because SPRINT measured with an automated device, averaging three readings after 5 minutes of rest. Either target is defensible when written that way.</p>",
+          "vitals": {
+            "target": "Systolic &lt;120, standardized office, when tolerated"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "harmful",
+          "text": "Below 120 systolic, measured at triage at each visit.",
+          "feedback": "<p>Triage readings run higher than SPRINT&rsquo;s method, so treating them to 120 means overtreatment. Intensive treatment in SPRINT already brought more hypotension, syncope, electrolyte problems and acute kidney injury.</p>",
+          "then": "<p>The attending rewrites it: below 120 by standardized office measurement, when tolerated.</p>",
+          "vitals": {
+            "target": "Systolic &lt;120, standardized office, when tolerated"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Below 130/80, lower if tolerated (AHA/ACC 2025).",
+          "feedback": "<p>A defensible target, and one the National Kidney Foundation&rsquo;s Kidney Disease Outcomes Quality Initiative (KDOQI) commentary supports. Add how it will be measured, and ask for home readings, so the next doctor knows what &ldquo;130&rdquo; means.</p>",
+          "then": "<p>The attending prefers the KDIGO target. You write it with its method.</p>",
+          "vitals": {
+            "target": "Systolic &lt;120, standardized office, when tolerated"
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "short": "The drugs:",
+      "prompt": "What do you suggest to the attending?",
+      "choices": [
+        {
+          "grade": "ok",
+          "text": "Raise the amlodipine dose and ask her to take it every day.",
+          "feedback": "<p>Taking it daily is right. But a calcium channel blocker alone does not lower albuminuria, and with A3 albuminuria without diabetes, KDIGO recommends a renin-angiotensin system inhibitor (RASi) (1B).</p>",
+          "then": "<p>The attending adds losartan, to be titrated to the highest tolerated dose, with a potassium and creatinine check in 2 to 4 weeks.</p>",
+          "vitals": {
+            "meds": "Losartan (titrating) + amlodipine daily; salt below 2 g sodium"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Start an angiotensin-converting enzyme (ACE) inhibitor and an angiotensin receptor blocker (ARB) together, to cut the albuminuria faster.",
+          "feedback": "<p>KDIGO recommends avoiding any combination of an ACE inhibitor, an ARB and a direct renin inhibitor (1B). One RASi at the highest tolerated dose is the plan.</p>",
+          "then": "<p>The attending keeps one: losartan, titrated, with a potassium and creatinine check in 2 to 4 weeks.</p>",
+          "vitals": {
+            "meds": "Losartan (titrating) + amlodipine daily; salt below 2 g sodium"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "best",
+          "text": "Add an ARB such as losartan, titrated to the highest tolerated dose; amlodipine every day; potassium and creatinine in 2 to 4 weeks; sodium below 2 g a day, starting with the patis, bagoong and dried fish.",
+          "feedback": "<p>Blocking angiotensin II relaxes the efferent arteriole, lowering glomerular pressure and albuminuria. KDIGO recommends a RASi for CKD with A3 albuminuria without diabetes (1B) and suggests sodium below 2 g a day (2C); salt restriction strengthens every drug.</p>",
+          "vitals": {
+            "meds": "Losartan (titrating) + amlodipine daily; salt below 2 g sodium"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Add a beta-blocker.",
+          "feedback": "<p>A beta-blocker is for coronary disease, heart failure or rate control, not first-line for pressure alone, and it does nothing for her albuminuria.</p>",
+          "then": "<p>The attending chooses losartan instead, titrated, with a potassium and creatinine check in 2 to 4 weeks.</p>",
+          "vitals": {
+            "meds": "Losartan (titrating) + amlodipine daily; salt below 2 g sodium"
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Three weeks later",
+        "bp": "132/84",
+        "crea": "1.38 mg/dL (up 20%)",
+        "k": "5.0 mmol/L",
+        "alarm": [
+          "crea"
+        ]
+      },
+      "short": "Three weeks later:",
+      "scene": "<p>Her standardized pressure is 132/84. Her creatinine has risen from 1.15 to 1.38 mg/dL, about 20%, and potassium is 5.0 mmol/L. She feels well, is eating and drinking normally, and has taken no painkillers. The intern is worried about the creatinine.</p>",
+      "prompt": "What do you advise?",
+      "choices": [
+        {
+          "grade": "poor",
+          "text": "Stop the losartan: her kidneys are getting worse.",
+          "feedback": "<p>This rise is the drug lowering glomerular pressure, which is how it protects her. Stopping it gives up that protection for an expected change.</p>",
+          "then": "<p>The attending restarts it and explains the 30% rule to the intern.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "best",
+          "text": "Continue it. A rise under 30% within 4 weeks is the expected pressure effect; keep titrating as tolerated and recheck potassium and creatinine with the next change.",
+          "feedback": "<p>KDIGO advises continuing an ACE inhibitor or ARB unless creatinine rises by more than 30% within 4 weeks of starting or increasing the dose (practice point). A rise beyond that asks for a cause: volume depletion, a nonsteroidal anti-inflammatory drug, renal artery stenosis or heart failure.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "ok",
+          "text": "Halve the dose, to be safe.",
+          "feedback": "<p>It feels cautious, but it lowers the protection she needs for an expected rise that is under the 30% threshold.</p>",
+          "then": "<p>The attending keeps the full dose and asks for the next check after any increase.</p>",
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "vitals": {
+        "time": "Six months later",
+        "bp": "146/88",
+        "method": "Standardized office; home readings match",
+        "crea": "1.35 mg/dL",
+        "k": "4.3 mmol/L",
+        "meds": "Losartan, amlodipine, chlorthalidone, all at highest tolerated doses",
+        "alarm": [
+          "bp"
+        ]
+      },
+      "short": "Six months later:",
+      "scene": "<p>She is on losartan, amlodipine and chlorthalidone, each at the highest dose she tolerates. Her standardized pressure is 146/88, and a week of home readings agrees. A pill count confirms she takes every tablet; she takes no painkillers, decongestants or herbal products; she has cut the patis to a few drops. Her potassium is 4.3 mmol/L.</p>",
+      "prompt": "What is the next step?",
+      "choices": [
+        {
+          "grade": "poor",
+          "text": "Screen for primary aldosteronism only if her potassium falls low.",
+          "feedback": "<p>Many patients with primary aldosteronism never have hypokalemia; that is why it is underdiagnosed. The AHA/ACC 2025 guideline recommends screening every adult with resistant hypertension, whatever the potassium.</p>",
+          "then": "<p>The attending orders the screen.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Add spironolactone now as the fourth drug.",
+          "feedback": "<p>PATHWAY-2 supports spironolactone as the fourth drug, but it was not a trial in CKD, where hyperkalemia is more likely. Screen for a treatable cause first, and choose any fourth drug with the attending and a potassium plan.</p>",
+          "then": "<p>The attending orders the screen first and plans the fourth drug with a potassium check.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "harmful",
+          "text": "Stop all her blood pressure medicines for two weeks so the screening test is clean.",
+          "feedback": "<p>Her pressure would climb with nothing on board. The AHA/ACC guideline advises continuing most drugs other than mineralocorticoid receptor antagonists while screening, so testing is not delayed.</p>",
+          "then": "<p>The attending keeps her medicines going and orders the screen.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "best",
+          "text": "She now meets the definition of resistant hypertension. Present her to the attending and screen for primary aldosteronism with an aldosterone-to-renin ratio, even with a normal potassium, keeping her current drugs; read the ratio with care in CKD.",
+          "feedback": "<p>Only after the reading, the tablets and the salt are confirmed do you call hypertension resistant. The AHA/ACC 2025 guideline recommends screening for primary aldosteronism in resistant hypertension regardless of potassium (Class 1). In CKD, reduced GFR and medicines change both numbers.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "The plan now",
+      "text": "<p>Her screen is positive, and endocrinology and nephrology are confirming it. Her plan also has a statin, because she is over 50 with an eGFR below 60 (KDIGO 2024, 1A), and her losartan and amlodipine come free from the PhilHealth Guaranteed and Accessible Medications for Outpatient Treatment (GAMOT) list, within its annual limit. She brings her home readings on her phone to every visit.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Never treat a blood pressure you did not measure properly.</b> Repeat it the standardized way before you change a drug, and check for organ injury before you call it an emergency.</li><li><b>Write the target with its method:</b> &ldquo;below 120 by standardized office reading&rdquo; is a plan; &ldquo;below 120&rdquo; alone is a risk.</li><li><b>In albuminuric CKD, one RASi comes first,</b> at the highest tolerated dose, with less salt; never an ACE inhibitor with an ARB.</li><li><b>A creatinine rise under 30% in the first 4 weeks is expected;</b> keep going.</li><li><b>Call it resistant only after the reading, the tablets and the salt are confirmed,</b> then screen for primary aldosteronism even with a normal potassium.</li></ul><p>See <a href=\"#measure\">Measure it right</a>, <a href=\"#targets\">Targets</a>, <a href=\"#drugs\">Drugs</a>, <a href=\"#resistant\">Resistant hypertension</a> and <a href=\"#cv-risk\">Cardiovascular risk</a>.</p>"
+}

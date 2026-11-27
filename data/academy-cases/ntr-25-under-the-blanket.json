@@ -1,0 +1,362 @@
+{
+ "id": "ntr25-under-the-blanket",
+ "page": "nephrology-trainee-25-hd-emergencies.html",
+ "title": "Blood under the blanket",
+ "decisions": 5,
+ "monitorTitle": "Dialysis chair monitor",
+ "note": "Fictional patient. Values are illustrative and follow the module text; no drug doses are given. Your unit’s protocol, advanced cardiac life support and the attending nephrologist decide every order.",
+ "labels": {
+  "alert": "Responsiveness",
+  "uf": "Fluid removal",
+  "pump": "Blood pump",
+  "line": "Needle sites",
+  "loss": "Blood loss",
+  "ecg": "ECG"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "alert",
+  "uf",
+  "pump",
+  "line",
+  "loss",
+  "ecg"
+ ],
+ "monitor": {
+  "time": "01:15, hour 2",
+  "bp": "84/50",
+  "hr": 122,
+  "spo2": 96,
+  "alert": "Drowsy, answers slowly",
+  "uf": "Running",
+  "pump": "Running",
+  "line": "Under the blanket",
+  "loss": "Not assessed",
+  "ecg": "Sinus tachycardia",
+  "rhythm": "normal",
+  "rhythmLabel": "Sinus tachycardia",
+  "alarm": [
+   "bp",
+   "hr",
+   "alert"
+  ]
+ },
+ "intro": "<p>You are a third-year internal medicine resident moonlighting as the only physician on duty (POD) on the night shift of a freestanding hemodialysis unit in Malolos, Bulacan. Last month you showed the unit your POD course and advanced cardiac life support (ACLS) certificates, and at the start of the shift you checked the defibrillator and the crash cart.</p><p>Mr. Ernesto Galang, 72, has hypertension and dialyzes through a left forearm fistula. The room is cold, so he is dozing under a blanket pulled up to his chin. At 01:15 the nurse, Ms. Rhea Santos, calls you: his pressure is 84/50 mm Hg, down from 150/88 at the start, his pulse is 122, and he is drowsy. The machine has not alarmed. The attending nephrologist is at home in Quezon City; the nearest hospital emergency department is 15 minutes away.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "01:15:",
+   "prompt": "What do you do first?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "Recline him flat, stop fluid removal, give fluid in measured portions per protocol, and recheck the pressure every few minutes.",
+     "feedback": "<p>These are the right first steps for a volume drop, but you have not looked at the needles or the lines. Every emergency in the chair comes from the patient or the circuit, and a covered arm hides the circuit.</p>",
+     "then": "<p>Ms. Santos pulls back the blanket. The venous needle lies on the sheet, the sheet is soaked, and blood is pooling on the floor. The pump is still running.</p>",
+     "vitals": {
+      "time": "01:19",
+      "bp": "76/44",
+      "hr": 130,
+      "uf": "Stopped",
+      "line": "Venous needle out",
+      "loss": "Large, still running",
+      "alarm": [
+       "bp",
+       "hr",
+       "alert",
+       "line",
+       "loss"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "best",
+     "text": "Go to the chair. Check that he responds, breathes and has a pulse; recline him and stop fluid removal. Pull back the blanket and look at both needle sites, the lines and the color of the venous blood.",
+     "feedback": "<p>The first question at every drop is patient or circuit. A blanket over the arm is how a dislodged venous needle bleeds unnoticed: the venous pressure alarm may not fall far enough to trigger.</p>",
+     "vitals": {
+      "time": "01:17",
+      "bp": "78/46",
+      "hr": 128,
+      "uf": "Stopped",
+      "line": "Venous needle out",
+      "loss": "Large, still running",
+      "alarm": [
+       "bp",
+       "hr",
+       "alert",
+       "line",
+       "loss"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "poor",
+     "text": "No alarm has sounded, so the circuit must be intact. Give fluid per protocol and keep fluid removal running to reach his dry weight.",
+     "feedback": "<p>A silent machine does not prove a sound circuit. And fluid removal should stop at any drop; the remaining goal belongs to the prescription, not to the clock.</p>",
+     "then": "<p>Ms. Santos lifts the blanket to check the arm. The venous needle is out and blood is pooling on the floor, with the pump still running.</p>",
+     "vitals": {
+      "time": "01:20",
+      "bp": "74/42",
+      "hr": 132,
+      "uf": "Stopped",
+      "line": "Venous needle out",
+      "loss": "Large, still running",
+      "alarm": [
+       "bp",
+       "hr",
+       "alert",
+       "line",
+       "loss"
+      ]
+     },
+     "next": "n2"
+    }
+   ]
+  },
+  "n2": {
+   "short": "The needle is out:",
+   "scene": "<p>The blood pump is still drawing blood from the arterial needle and sending it out of the loose venous needle onto the floor.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "harmful",
+     "text": "Push the venous needle back into the fistula and tape it, so the blood in the circuit goes back to him.",
+     "feedback": "<p>That needle has been on the sheet and the circuit is no longer sterile. Blood goes back only once the circuit is intact and sterile, per protocol. Meanwhile the pump keeps pumping.</p>",
+     "then": "<p>Ms. Santos stops the pump and clamps the lines while you press on the site.</p>",
+     "vitals": {
+      "time": "01:22",
+      "pump": "Stopped, lines clamped",
+      "loss": "Large; circuit not returned"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "poor",
+     "text": "Keep the pump running while the nurse finds a fresh needle, so the circuit does not clot.",
+     "feedback": "<p>Every minute the pump runs, it pumps more of his blood onto the floor. A clotted circuit can be replaced; lost blood cannot.</p>",
+     "then": "<p>Ms. Santos stops the pump and clamps the lines.</p>",
+     "vitals": {
+      "time": "01:22",
+      "pump": "Stopped, lines clamped",
+      "loss": "Large; circuit not returned"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "best",
+     "text": "Stop the blood pump, clamp the lines, press on the needle site, and call for help. Estimate the blood lost. The circuit blood goes back only if the circuit is intact and sterile, per protocol.",
+     "feedback": "<p>This is the module’s first move for needle dislodgement: stop the pump, clamp, apply pressure, assess the loss. A contaminated circuit is not returned.</p>",
+     "vitals": {
+      "time": "01:21",
+      "pump": "Stopped, lines clamped",
+      "loss": "Large; circuit not returned"
+     },
+     "next": "n3"
+    }
+   ]
+  },
+  "n3": {
+   "vitals": {
+    "time": "01:24",
+    "bp": "Unrecordable",
+    "hr": "No pulse",
+    "spo2": "No trace",
+    "alert": "Unresponsive",
+    "ecg": "Slow wide complexes",
+    "rhythm": "wide",
+    "stripRate": 40,
+    "rhythmLabel": "Slow wide complexes, no pulse",
+    "alarm": [
+     "bp",
+     "hr",
+     "spo2",
+     "alert",
+     "loss"
+    ]
+   },
+   "short": "01:24:",
+   "scene": "<p>As you press on the site, Mr. Galang stops answering. He is not breathing normally and you cannot feel a carotid pulse. The monitor shows slow, wide complexes.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Call the code and note the time. Lower the chair flat and start compressions; follow ACLS. Disconnect the circuit without letting it delay compressions, and treat the dialysis cause you already know: blood loss from the access.",
+     "feedback": "<p>In 398 arrests in outpatient units, 66% had a nonshockable first rhythm, and staff-started cardiopulmonary resuscitation (CPR) was associated with about threefold odds of leaving hospital alive with good neurologic status (observational). Compressions first, the circuit second.</p>",
+     "vitals": {
+      "time": "01:31",
+      "bp": "88/52",
+      "hr": 118,
+      "spo2": 93,
+      "alert": "Eyes open to voice",
+      "ecg": "Sinus tachycardia",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus tachycardia",
+      "alarm": [
+       "bp",
+       "alert",
+       "loss"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "ok",
+     "text": "Finish disconnecting and capping the circuit first, then start CPR.",
+     "feedback": "<p>The circuit has to be dealt with, but not before compressions. Each second without them costs brain and heart.</p>",
+     "then": "<p>Compressions start a minute later. After CPR and fluid per ACLS and the unit protocol, a pulse returns.</p>",
+     "vitals": {
+      "time": "01:33",
+      "bp": "86/50",
+      "hr": 120,
+      "spo2": 92,
+      "alert": "Eyes open to voice",
+      "ecg": "Sinus tachycardia",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus tachycardia",
+      "alarm": [
+       "bp",
+       "alert",
+       "loss"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "Wait for the automated external defibrillator (AED) to arrive and analyze the rhythm before starting compressions.",
+     "feedback": "<p>This rhythm is not shockable, and the AED does nothing until it is applied. In a large cohort, having an AED in the unit was not by itself associated with survival; what staff do in the first minutes matters most.</p>",
+     "then": "<p>Ms. Santos starts compressions while the AED is applied; it advises no shock. After CPR and fluid per ACLS and the unit protocol, a pulse returns.</p>",
+     "vitals": {
+      "time": "01:33",
+      "bp": "86/50",
+      "hr": 120,
+      "spo2": 92,
+      "alert": "Eyes open to voice",
+      "ecg": "Sinus tachycardia",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus tachycardia",
+      "alarm": [
+       "bp",
+       "alert",
+       "loss"
+      ]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "harmful",
+     "text": "Phone the attending nephrologist first and ask what to do.",
+     "feedback": "<p>Any collapse: start the code first, then call. The attending cannot do compressions from Quezon City.</p>",
+     "then": "<p>Ms. Santos starts compressions while you are still dialing. You hang up and lead the code. After CPR and fluid per ACLS and the unit protocol, a pulse returns.</p>",
+     "vitals": {
+      "time": "01:34",
+      "bp": "84/50",
+      "hr": 122,
+      "spo2": 92,
+      "alert": "Eyes open to voice",
+      "ecg": "Sinus tachycardia",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus tachycardia",
+      "alarm": [
+       "bp",
+       "alert",
+       "loss"
+      ]
+     },
+     "next": "n4"
+    }
+   ]
+  },
+  "n4": {
+   "short": "Pulse back:",
+   "scene": "<p>Mr. Galang has a pulse and opens his eyes to voice. The needle site is dressed and not bleeding. Your hands are free.</p>",
+   "prompt": "What calls do you make, and what do you say?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "Call an ambulance and send him with a nurse. Phone the attending in the morning once he is settled at the hospital.",
+     "feedback": "<p>Transfer is right, but the attending needs to know now. An arrest in the unit is a stop-and-call event, and the attending may have instructions for the receiving team.</p>",
+     "then": "<p>Ms. Santos reminds you of the unit protocol. You call the attending before the ambulance leaves.</p>",
+     "vitals": {
+      "time": "01:50",
+      "pump": "Off; circuit discarded",
+      "alert": "Awake, confused"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "best",
+     "text": "Call emergency services for transfer, then the attending: time into the session, pressure and pulse, the venous needle found out under the blanket, the estimated blood loss, the arrest rhythm, how long CPR lasted, what was given, and how he is now. Call the receiving emergency department ahead and send the session record with a written endorsement.",
+     "feedback": "<p>Transfer and the attending come as soon as hands allow. The receiving team needs the cause, the rhythm and the timeline, and the session record keeps them accurate.</p>",
+     "vitals": {
+      "time": "01:45",
+      "pump": "Off; circuit discarded",
+      "alert": "Awake, confused"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "poor",
+     "text": "He has recovered. Place a new venous needle and finish the last two hours of his session before transferring.",
+     "feedback": "<p>He has lost a large volume of blood and has just had an arrest. Tonight’s dialysis is over; he needs a hospital.</p>",
+     "then": "<p>You think again, call emergency services and the attending, and send him with the session record.</p>",
+     "vitals": {
+      "time": "01:55",
+      "pump": "Off; circuit discarded",
+      "alert": "Awake, confused"
+     },
+     "next": "n5"
+    }
+   ]
+  },
+  "n5": {
+   "vitals": {
+    "time": "Monday review",
+    "alarm": []
+   },
+   "short": "Monday:",
+   "scene": "<p>Mr. Galang is recovering in the hospital. On Monday you join the fellow, the attending, the head nurse and the night team for the event review.</p>",
+   "prompt": "What should the unit change?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "Write up the night nurse for missing the dislodged needle.",
+     "feedback": "<p>Most dialysis emergencies trace to human error inside a system that allowed it. Blame changes nothing about blankets over arms or alarms that do not trigger.</p>",
+     "then": "<p>The attending steers the meeting to a root cause review.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Remind all staff at the next meeting to check on sleeping patients more often.",
+     "feedback": "<p>Good intent, but a reminder fades. A rule the night shift can see works better: needle sites and lines stay uncovered.</p>",
+     "then": "<p>The head nurse turns the reminder into a written rule on the night-shift card.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "best",
+     "text": "A root cause review: needle sites and lines stay uncovered (the blanket covers the body, not the arm), needle taping is checked at each round, staff learn that the venous alarm may stay silent when a needle slips out, and the defibrillator and crash cart logs are confirmed. Debrief the team, and tell the family what happened with the attending.",
+     "feedback": "<p>Reviews of dialysis emergencies recommend root cause analysis so the same event does not recur. Every serious event should change a prescription or a system.</p>",
+     "next": "end"
+    },
+    {
+     "grade": "harmful",
+     "text": "Widen the venous pressure alarm limits so the night shift gets fewer nuisance alarms.",
+     "feedback": "<p>Wider limits make the alarm even less likely to catch a dislodged needle, the very failure that nearly killed him.</p>",
+     "then": "<p>The fellow objects, and the attending keeps the limits. The meeting moves to a root cause review.</p>",
+     "next": "end"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Two weeks later",
+   "text": "<p>Mr. Galang left the hospital after a week and is back in his chair, with the blanket tucked below his left arm and the needle sites in view. The night-shift card now opens with “needle sites and lines uncovered,” and the unit has run a mock code in the chair.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>At every drop, ask patient or circuit,</b> and look at the needles and lines yourself.</li><li><b>A silent machine is not proof:</b> the venous pressure alarm may not trigger when a needle slips out.</li><li><b>Needle out: stop the pump, clamp, press, assess the loss;</b> blood goes back only through an intact, sterile circuit.</li><li><b>In a code in the chair, compressions first, the circuit second,</b> then the dialysis cause.</li><li><b>Every serious event gets a review</b> that changes a system, not a person’s file.</li></ul><p>See <a href=\"#circuit\">Circuit emergencies</a>, <a href=\"#arrest\">Code in the chair</a> and <a href=\"#hypotension\">Hypotension and cramps</a>.</p>"
+}

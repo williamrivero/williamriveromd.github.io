@@ -1,0 +1,277 @@
+{
+ "id": "ntr23-low-ktv",
+ "page": "nephrology-trainee-23-hd-prescription-adequacy.html",
+ "title": "A Kt/V of 1.08",
+ "decisions": 5,
+ "strip": false,
+ "monitorTitle": "Monthly dialysis review",
+ "note": "Fictional patient. Values are illustrative and follow the module text; they are not targets. No doses or order sets are given. The unit’s protocol and the attending nephrologist decide every change to the prescription.",
+ "labels": {
+  "ktv": "spKt/V",
+  "pump": "Blood pump",
+  "mins": "Delivered time",
+  "gain": "Weight gain",
+  "ufr": "UF rate",
+  "urine": "Urine output",
+  "nutr": "Nutrition",
+  "plan": "Plan"
+ },
+ "monitorOrder": ["time", "bp", "ktv", "pump", "mins", "gain", "ufr", "urine", "nutr", "plan"],
+ "monitor": {
+  "time": "June review",
+  "bp": "148/88",
+  "ktv": "1.08 (May: 1.35)",
+  "pump": "Not yet reviewed",
+  "mins": "Not yet reviewed",
+  "gain": "—",
+  "ufr": "—",
+  "urine": "Almost none",
+  "nutr": "Albumin stable",
+  "plan": "None",
+  "alarm": ["ktv"]
+ },
+ "intro": "<p>You are the internal medicine resident on the renal rotation, doing the monthly review in a freestanding hemodialysis unit in Angeles City with the fellow, Dr. Carlo Lim. Mrs. Milagros “Mila” Ocampo, 58, a former seamstress with diabetes, dialyzes three times a week, Monday, Wednesday and Friday, for 4 hours, through a tunneled catheter in her right internal jugular vein while she waits for a new fistula. Her dry weight is 65 kg and she passes almost no urine.</p><p>This month’s single-pool Kt/V (spKt/V), a measure of urea removal per session, is 1.08; last month it was 1.35. The Kidney Disease Outcomes Quality Initiative (KDOQI) 2015 guideline sets a minimum delivered spKt/V of 1.2 for thrice-weekly dialysis.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "The number:",
+   "prompt": "What do you do with a spKt/V of 1.08?",
+   "choices": [
+    {
+     "grade": "harmful",
+     "text": "Nothing. 1.08 is above the KDOQI minimum of 1.0.",
+     "feedback": "<p>The KDOQI minimum for thrice-weekly dialysis is 1.2 (1B), with a target of 1.4. She is below the floor.</p>",
+     "then": "<p>Dr. Lim corrects the minimum. You check how the sample was drawn and pull the month’s flow sheets. The post-dialysis sample was drawn correctly. All 12 sessions ran the full 4 hours, but the blood pump ran well below the prescribed speed in most of them, with arterial pressure alarms, and the nurses often reversed the catheter lines.</p>",
+     "vitals": {
+      "pump": "Below prescribed speed; arterial alarms; lines often reversed",
+      "mins": "Full 4 hours, 12 of 12 sessions",
+      "alarm": ["ktv", "pump"]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "ok",
+     "text": "Repeat the Kt/V next week and change nothing until then.",
+     "feedback": "<p>Repeating a doubtful sample is reasonable, but the flow sheets already hold the answer. A repeat alone does not tell you whether K, t or V fell.</p>",
+     "then": "<p>Dr. Lim asks you to review the flow sheets now. The post-dialysis sample was drawn correctly. All 12 sessions ran the full 4 hours, but the blood pump ran well below the prescribed speed in most of them, with arterial pressure alarms, and the lines were often reversed.</p>",
+     "vitals": {
+      "pump": "Below prescribed speed; arterial alarms; lines often reversed",
+      "mins": "Full 4 hours, 12 of 12 sessions",
+      "alarm": ["ktv", "pump"]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "best",
+     "text": "Before changing anything, check how and when the post-dialysis sample was drawn, and review every flow sheet of the month: delivered minutes, actual pump speed and alarms.",
+     "feedback": "<p>A Kt/V can mislead in either direction: a late sample reads falsely low, a diluted one falsely high. And one full session can hide several short ones, so the flow sheets come first.</p>",
+     "then": "<p>The post-dialysis sample was drawn correctly. All 12 sessions ran the full 4 hours, but the blood pump ran well below the prescribed speed in most of them, with arterial pressure alarms, and the nurses often reversed the catheter lines.</p>",
+     "vitals": {
+      "pump": "Below prescribed speed; arterial alarms; lines often reversed",
+      "mins": "Full 4 hours, 12 of 12 sessions",
+      "alarm": ["ktv", "pump"]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "poor",
+     "text": "Change to a larger dialyzer this week to raise the clearance.",
+     "feedback": "<p>A bigger dialyzer raises K only if blood reaches it. Changing the prescription before you know whether K, t or V fell may treat the wrong cause.</p>",
+     "then": "<p>Dr. Lim holds the change and asks for the flow sheets. The sample was drawn correctly. All 12 sessions ran the full 4 hours, but the blood pump ran well below the prescribed speed in most of them, with arterial pressure alarms, and the lines were often reversed.</p>",
+     "vitals": {
+      "pump": "Below prescribed speed; arterial alarms; lines often reversed",
+      "mins": "Full 4 hours, 12 of 12 sessions",
+      "alarm": ["ktv", "pump"]
+     },
+     "next": "n2"
+    }
+   ]
+  },
+  "n2": {
+   "short": "K, t or V:",
+   "prompt": "Time was delivered. What do you propose?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "K has fallen because the catheter cannot give the prescribed blood flow, and reversed lines add recirculation. Report to the attending for catheter evaluation per unit protocol, and push the new fistula referral.",
+     "feedback": "<p>A failing access is the commonest hidden cause of a low dose. The fix for a failing access is not a bigger dialyzer; it is the access.</p>",
+     "vitals": {
+      "plan": "Catheter evaluation; fistula referral expedited"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "poor",
+     "text": "Raise the dialysate flow and use a larger dialyzer to make up for the slower pump.",
+     "feedback": "<p>Each step gives less than the one before, and neither fixes blood that is not reaching the dialyzer. The cause stays in place.</p>",
+     "then": "<p>The attending asks for the catheter to be evaluated per unit protocol and the fistula referral to be expedited.</p>",
+     "vitals": {
+      "plan": "Catheter evaluation; fistula referral expedited"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "ok",
+     "text": "Lengthen each session to make up the dose while the catheter stays as it is.",
+     "feedback": "<p>More time raises t and is a reasonable bridge, but it leaves the failing access unexamined. Find out why K fell.</p>",
+     "then": "<p>The attending agrees to the longer sessions as a bridge, and asks for the catheter to be evaluated and the fistula referral expedited.</p>",
+     "vitals": {
+      "plan": "Catheter evaluation; fistula referral expedited"
+     },
+     "next": "n3"
+    }
+   ]
+  },
+  "n3": {
+   "vitals": {
+    "time": "Monday, 07:00",
+    "bp": "162/94",
+    "gain": "3.9 kg after the long gap",
+    "ufr": "Not calculated",
+    "alarm": ["gain"]
+   },
+   "short": "Monday morning:",
+   "scene": "<p>After the catheter is exchanged, the pump runs at the prescribed speed. On Monday, after the weekend, Mrs. Ocampo arrives 3.9 kg above her 65-kg dry weight, with ankle edema but clear lungs. The nurse plans to remove all of it in the usual 4 hours.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "harmful",
+     "text": "Remove an extra kilogram today to get ahead of next weekend’s gain.",
+     "feedback": "<p>Removal beyond refill capacity drops her blood volume, often before the pressure falls. A higher rate means more hypotension and cramps, and cramps shorten sessions.</p>",
+     "then": "<p>Dr. Lim stops the order. You calculate the rate and discuss the options with him.</p>",
+     "vitals": {
+      "ufr": "15 mL/kg/h in 4 h; plan reviewed",
+      "plan": "Longer Monday session; salt counseling; dialysate sodium review",
+      "alarm": ["gain", "ufr"]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "best",
+     "text": "Calculate the ultrafiltration (UF) rate: 3,900 mL over 4 hours in 65 kg is 15 mL/kg/h. Discuss with the fellow a longer session, salt counseling, a dialysate sodium review and a look at her dry weight.",
+     "feedback": "<p>Observational studies associate UF rates above 13 mL/kg/h with higher mortality; they do not prove that lowering the rate saves lives. Over 5 hours the same volume is 12 mL/kg/h, and more time is the lever the module names.</p>",
+     "vitals": {
+      "ufr": "15 mL/kg/h in 4 h; plan reviewed",
+      "plan": "Longer Monday session; salt counseling; dialysate sodium review",
+      "alarm": ["gain", "ufr"]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "ok",
+     "text": "Remove only what keeps the rate under 13 mL/kg/h and send her home the rest above dry weight.",
+     "feedback": "<p>Respecting the speed limit is right, but leaving fluid behind every Monday without a plan builds chronic overload. Add time, sessions or salt work so she can reach dry weight safely.</p>",
+     "then": "<p>Dr. Lim agrees to cap the rate today and proposes a longer Monday session and salt counseling.</p>",
+     "vitals": {
+      "ufr": "15 mL/kg/h in 4 h; plan reviewed",
+      "plan": "Longer Monday session; salt counseling; dialysate sodium review",
+      "alarm": ["gain", "ufr"]
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "Remove all 3.9 kg in 4 hours as usual and treat cramps if they come.",
+     "feedback": "<p>A rate of 15 mL/kg/h outruns refilling in many patients. Cramps then end sessions early, and the delivered dose falls again.</p>",
+     "then": "<p>She cramps at hour three and the session ends 30 minutes early. You calculate the rate and discuss it with Dr. Lim.</p>",
+     "vitals": {
+      "ufr": "15 mL/kg/h in 4 h; plan reviewed",
+      "mins": "One session ended 30 min early",
+      "plan": "Longer Monday session; salt counseling; dialysate sodium review",
+      "alarm": ["gain", "ufr", "mins"]
+     },
+     "next": "n4"
+    }
+   ]
+  },
+  "n4": {
+   "short": "The family asks:",
+   "scene": "<p>Her son, a tricycle driver, says the trips are hard: a tricycle and a bus each way, three times a week. He asks whether she could come only twice a week. She passes almost no urine. She was registered in the PhilHealth Dialysis Database (PDD) last year.</p>",
+   "prompt": "What do you say and do?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "Agree to twice weekly with longer sessions; transport is a real barrier.",
+     "feedback": "<p>With almost no urine, twice weekly is underdialysis by arithmetic: the weekly minimum is hard to reach with two sessions, and the long gaps bring bigger gains and higher potassium.</p>",
+     "then": "<p>Dr. Lim asks you to call the attending and the social worker before anything is changed.</p>",
+     "vitals": {
+      "plan": "Stay thrice weekly; social worker for transport; attending informed"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "ok",
+     "text": "Tell him the schedule is the attending’s decision and that you will pass the request on.",
+     "feedback": "<p>Involving the attending is right, but he deserves the reason now, and the barrier he named, transport, can be worked on today.</p>",
+     "then": "<p>The attending meets the family, explains the reason, and asks the social worker to help with transport.</p>",
+     "vitals": {
+      "plan": "Stay thrice weekly; social worker for transport; attending informed"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "best",
+     "text": "Explain that her kidneys no longer help, so two sessions cannot do the work of three. PhilHealth covers up to 156 sessions a year for PDD patients (confirm on the date of service). Ask the social worker to look at transport, and bring the request to the attending.",
+     "feedback": "<p>A family asking to reduce frequency in a patient with little urine is on the module’s stop-and-call list. Twice weekly is a prescription only when residual function is measured and followed; without urine, transport is the problem to solve.</p>",
+     "vitals": {
+      "plan": "Stay thrice weekly; social worker for transport; attending informed"
+     },
+     "next": "n5"
+    }
+   ]
+  },
+  "n5": {
+   "vitals": {
+    "time": "October review",
+    "bp": "136/82",
+    "ktv": "1.55",
+    "pump": "At prescribed speed",
+    "mins": "Full length, all sessions",
+    "gain": "2.4 kg average",
+    "ufr": "Under 13 mL/kg/h",
+    "nutr": "Weight down 3 kg; albumin and nPCR falling; poor appetite",
+    "alarm": ["nutr"]
+   },
+   "short": "Four months later:",
+   "scene": "<p>In October her spKt/V is 1.55. Her pump runs at the prescribed speed, sessions are full length and her gains are smaller. But she has lost 3 kg of flesh, her appetite is poor, and her albumin and normalized protein catabolic rate (nPCR) are falling.</p>",
+   "prompt": "How do you read this?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "The dose is above target; recheck the Kt/V next month.",
+     "feedback": "<p>The dose is fine, but the number is not the whole story. Falling weight, albumin and nPCR deserve action now.</p>",
+     "then": "<p>Dr. Lim points to the weight trend and asks for a dietitian review and a dry weight reassessment.</p>",
+     "vitals": {
+      "plan": "Dietitian review; dry weight reassessed; look for a cause of poor appetite"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "poor",
+     "text": "The Kt/V is well above 1.4, so the sessions can be shortened.",
+     "feedback": "<p>Part of that rise may be a shrinking V, not better dialysis. Cutting time would lower clearance in a patient who is already losing weight, and time also removes phosphate and water.</p>",
+     "then": "<p>Dr. Lim declines and asks for a dietitian review and a dry weight reassessment.</p>",
+     "vitals": {
+      "plan": "Dietitian review; dry weight reassessed; look for a cause of poor appetite"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "best",
+     "text": "Part of the higher Kt/V may be a smaller V from muscle loss. Ask about appetite and intake, refer to the dietitian, reassess her dry weight as she loses flesh, and look for a cause with the attending.",
+     "feedback": "<p>Muscle wasting lowers V, so the same Kt gives a higher Kt/V, a reassuring number in a malnourished patient. A falling nPCR with a “good” Kt/V is the warning that V, not K, has changed.</p>",
+     "vitals": {
+      "plan": "Dietitian review; dry weight reassessed; look for a cause of poor appetite"
+     },
+     "next": "end"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "December",
+   "text": "<p>Her new fistula is in use. With dietitian support her appetite and weight are recovering, her dry weight has been reset, and her spKt/V is above target on a measured, full-length, thrice-weekly schedule. The social worker found a neighbor with a tricycle who takes her for a fixed fare.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Check the measurement and the month,</b> not one number: sample timing and technique, delivered minutes, actual pump speed.</li><li><b>Ask which of K, t or V explains a low Kt/V</b> before changing anything; a failing access is fixed at the access, not with a bigger dialyzer.</li><li><b>Turn every weight gain into a UF rate.</b> Above about 13 mL/kg/h, the levers are more time, more sessions and less salt.</li><li><b>Twice weekly without urine is underdialysis.</b> Use the PhilHealth benefit, solve transport, and bring the request to the attending.</li><li><b>A high Kt/V in a shrinking patient</b> may mean a smaller V; watch weight, albumin and nPCR.</li></ul><p>See <a href=\"#kinetics\">Kinetics</a>, <a href=\"#uf-dry-weight\">UF and dry weight</a> and <a href=\"#hdf-incremental\">HDF and incremental HD</a>.</p>"
+}
