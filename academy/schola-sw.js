@@ -2,7 +2,7 @@
    Pages: network first; after 4 s without an answer, or with no signal, the saved copy (Save this track /
    Download all), else a recently opened copy, else a short "not saved" page. Figures, scripts and styles: the
    saved copy first, else the network; with no signal a large figure falls back to the small copy that was saved. */
-var V = 'c1011da4e4', SAVED = 'schola-saved', RECENT = 'schola-recent', MAN = '/academy/schola-offline.json';
+var V = '2e37d71f39', SAVED = 'schola-saved', RECENT = 'schola-recent', MAN = '/academy/schola-offline.json';
 self.addEventListener('install', function () { self.skipWaiting(); });
 self.addEventListener('activate', function (e) { e.waitUntil(self.clients.claim()); });
 
@@ -69,6 +69,14 @@ self.addEventListener('fetch', function (e) {
         finish(r);
       }).catch(function () { fallback(true); });
       setTimeout(function () { fallback(false); }, 4000);
+    }));
+    return;
+  }
+  if (req.cache === 'no-cache' || req.cache === 'reload' || req.cache === 'no-store') {
+    /* a download or an update (Schola Save / Update, the emergency cards' Update saved copy) asks for the network copy:
+       serving the saved copy here would re-save stale content under the new hash (Nov 27 2026) */
+    e.respondWith(fetch(req).catch(function () {
+      return caches.open(SAVED).then(function (c) { return c.match(k); }).then(function (r) { return r || Response.error(); });
     }));
     return;
   }

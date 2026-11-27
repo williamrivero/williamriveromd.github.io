@@ -370,6 +370,14 @@ self.addEventListener('fetch', function (e) {
     }));
     return;
   }
+  if (req.cache === 'no-cache' || req.cache === 'reload' || req.cache === 'no-store') {
+    /* a download or an update (Schola Save / Update, the emergency cards' Update saved copy) asks for the network copy:
+       serving the saved copy here would re-save stale content under the new hash (Nov 27 2026) */
+    e.respondWith(fetch(req).catch(function () {
+      return caches.open(SAVED).then(function (c) { return c.match(k); }).then(function (r) { return r || Response.error(); });
+    }));
+    return;
+  }
   e.respondWith(caches.open(SAVED).then(function (c) {
     return c.match(k).then(function (hit) {
       if (hit) return hit;
