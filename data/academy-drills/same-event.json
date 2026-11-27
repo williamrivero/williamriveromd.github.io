@@ -1,0 +1,231 @@
+{
+  "_doc": "Same Event, Every Role drill (Dr. Rivero, Nov 27 2026). Rendered by tools/academy/apply_cross_role.py into academy/same-event-every-role.html. Role ids: nurse, pod, tech, hn. Each phase has actions per role (empty list = not yet involved), optional handoff and stop per role. Thresholds must match the track modules (water: total chlorine 0.1 mg/L, worker then polisher; IDH: POD Module 13). Clinical content needs Dr. Rivero's sign-off.",
+  "roles": {
+    "nurse": {"name": "Hemodialysis Nurse", "hub": "nephrology-nursing.html", "color": "teal"},
+    "pod": {"name": "Physician-on-Duty", "hub": "physician-on-duty.html", "color": "navy"},
+    "tech": {"name": "Technician", "hub": "hemodialysis-technician.html", "color": "orange"},
+    "hn": {"name": "Head Nurse", "hub": "dialysis-head-nurse.html", "color": "purple"}
+  },
+  "events": [
+    {
+      "id": "idh",
+      "label": "Intradialytic hypotension",
+      "title": "Hour 3, Station 7: Mrs. Santos feels faint",
+      "setup": "Mrs. Santos is 68, has diabetic kidney disease, and has been on hemodialysis three times a week for four years. She arrived 3.6 kg above her target weight of 60 kg and took her amlodipine this morning. The ultrafiltration (UF) goal is 3.8 L over 4 hours. At 2 hours 50 minutes she yawns, says she is dizzy and nauseated, and her blood pressure (BP) has fallen from 148/80 at the start to 84/50. Her heart rate is 104. The patient and the numbers are illustrative.",
+      "facts": ["Gain 3.6 kg (6% of body weight)", "UF rate 15.8 mL/kg/h", "Dialysate 36.5 °C", "Last hemoglobin 9.4 g/dL", "Insulin-treated diabetes"],
+      "tech": {"name": "Dialysis Technician", "hub": "hemodialysis-technician.html"},
+      "links": {
+        "nurse": [["nephrology-nursing-09-hd-session-complication-response.html", "The Complete HD Session and Complication Response"]],
+        "pod": [["physician-on-duty-13-when-the-pressure-falls.html", "When the Pressure Falls"]],
+        "tech": [["hemodialysis-technician-10-complications-emergency-response.html", "Complications and Emergency Response"]],
+        "hn": [["dialysis-head-nurse-07-deterioration-and-emergencies.html", "Leading the First Minutes of an Emergency"]]
+      },
+      "phases": [
+        {
+          "time": "0 to 2 min", "name": "Recognize",
+          "nurse": [
+            "Recognize the warning signs: yawning, nausea, dizziness, cramps, or restlessness often come before the number drops.",
+            "Lay her flat with her legs raised, if her breathing allows. This moves venous blood back toward the heart.",
+            "Set UF to minimum or pause it. The machine is removing plasma faster than fluid can refill from the tissues.",
+            "Recheck BP now, then every 5 minutes. Look at her: sweating, pallor, confusion, chest pain?"
+          ],
+          "pod": [],
+          "tech": [
+            "Hear the call or the alarm and move to Station 7.",
+            "Bring the saline line and the glucose meter to the chair without being asked."
+          ],
+          "hn": [],
+          "handoff": {"nurse": "Call the physician-on-duty (POD) now if systolic BP stays under 90 mm Hg or she has any red-flag symptom. Do not wait until the saline is finished."}
+        },
+        {
+          "time": "2 to 10 min", "name": "Respond",
+          "nurse": [
+            "If she does not recover with positioning and UF off, give an isotonic saline bolus as your unit protocol sets (usually 100 mL), and reassess BP after each bolus.",
+            "Check capillary blood glucose. She takes insulin, and hypoglycemia can look exactly like hypotension.",
+            "Report to the POD in SBAR form (Situation, Background, Assessment, Recommendation): weight gain, UF rate, BP trend, what you have given, glucose result."
+          ],
+          "pod": [
+            "Come to the chair. Confirm she is responsive and breathing; feel the pulse yourself for rate, rhythm, and strength.",
+            "Look for the causes that are not simply fluid removed too fast: chest pain or a rhythm change (ischemia, arrhythmia), fever or rigors (bacteremia, especially with a catheter), bleeding, raised neck veins or muffled heart sounds (pericardial effusion), dark or cherry-red blood in the lines (hemolysis), or sudden breathlessness after an air alarm (air embolism).",
+            "Order a 12-lead electrocardiogram (ECG) for chest pain, a rhythm change, or a poor response to volume."
+          ],
+          "tech": [
+            "Check the machine: the UF goal and rate entered match the order, dialysate temperature and conductivity are right, and there is no air-detector or blood-leak alarm in the history.",
+            "Keep the lines secure while the nurse repositions her.",
+            "Bring the ECG machine if the POD asks for it."
+          ],
+          "hn": [
+            "See that one nurse and one technician are tied up at Station 7. Reassign that nurse's other patients for the next 15 to 20 minutes so no one else goes unwatched."
+          ],
+          "handoff": {
+            "pod": "Tell the nurse exactly what happens next: continue, resume UF at a lower rate, or end the session early. Write the order.",
+            "tech": "Report any machine finding (a wrong UF entry, temperature, alarm history) to the nurse and the POD at once."
+          }
+        },
+        {
+          "time": "10 to 30 min", "name": "Stabilize or escalate",
+          "nurse": [
+            "If she recovers (systolic BP above 100 mm Hg and symptoms gone), resume UF at the lower rate the POD ordered. Accept that she may finish above target weight today.",
+            "If she does not recover after the saline your protocol allows, or develops chest pain, a new arrhythmia, or drowsiness, prepare to return blood and end the treatment."
+          ],
+          "pod": [
+            "Decide: resume with a smaller UF goal, extend the time, or end the session. Do not push a patient who has just crashed to the original target weight.",
+            "Consider cooler dialysate (for example 0.5 °C below her body temperature) for the rest of the session.",
+            "If she has not recovered, or a cardiac, septic, or bleeding cause is suspected, arrange transfer to the emergency room."
+          ],
+          "tech": [
+            "If the session is ending, help with blood return and line care as the nurse directs.",
+            "Save the alarm history and machine settings for the incident report."
+          ],
+          "hn": [
+            "If she needs transfer, arrange the bed, the transport, and who goes with her.",
+            "Check that the Attending Nephrologist has been told, as your unit protocol requires."
+          ],
+          "handoff": {"pod": "Inform the Attending Nephrologist: what happened, what was done, and the plan for her next session."},
+          "stop": {"pod": "No response to volume, chest pain, a new arrhythmia, drowsiness, or suspected sepsis: end the treatment and escalate per unit protocol, but always ask the Attending Nephrologist for guidance."}
+        },
+        {
+          "time": "After the shift", "name": "Prevent the next one",
+          "nurse": [
+            "Document the BP trend, symptoms, saline given, UF achieved against UF prescribed, and the end weight.",
+            "Teach her, once her doctor agrees: when to take amlodipine on dialysis days, how to keep salt and fluid down between sessions, and why a heavy meal on the chair can drop her pressure."
+          ],
+          "pod": [
+            "Write the event in the treatment record.",
+            "Flag the questions for the attending: Is her target weight too low? Is her UF rate regularly above 13 mL/kg/h because of large gains? Should antihypertensives be held on dialysis days? Does she need a longer session, an extra session, or cooler dialysate as her standard?"
+          ],
+          "tech": [
+            "Confirm the machine is disinfected and passes its checks before the next patient.",
+            "Log any equipment fault for the biomedical technician."
+          ],
+          "hn": [
+            "Review the event at the next huddle, without blame: Was the 3.6 kg gain flagged before connection? Was the morning amlodipine caught at assessment?",
+            "Track episodes per patient per month as a quality indicator. Repeated episodes mean the prescription needs review, not more saline."
+          ],
+          "handoff": {"hn": "Send the list of patients with repeated episodes to the Dialysis Clinical Head for the monthly quality meeting."}
+        }
+      ],
+      "breaks": [
+        ["Waiting for the POD before acting", "Lying the patient flat and pausing UF are nursing actions. Every minute of continued fluid removal deepens the drop."],
+        ["Giving saline without stopping UF", "The machine removes the saline you just gave. Pause UF first."],
+        ["Assuming every drop is \"just fluid\"", "Ischemia, sepsis, bleeding, tamponade, hemolysis, and air embolism can all present as low blood pressure. Ruling them out is the POD's job."],
+        ["Chasing the original target weight", "After a crash, finishing the full UF goal often brings a second one. A slightly higher end weight today is the safer choice."],
+        ["Treating it as a one-off", "Repeated episodes are linked to heart and brain injury and to faster loss of residual kidney function. They point to a prescription problem."]
+      ],
+      "debrief": [
+        "Who set today's UF goal, and was the 3.6 kg gain flagged before the session started?",
+        "When did the nurse call the POD, and was that early enough?",
+        "Was the glucose checked, and how long did it take?",
+        "What will change in her prescription, medicine timing, or teaching before her next session?"
+      ]
+    },
+    {
+      "id": "water",
+      "label": "Water system alarm",
+      "title": "6:10 a.m., first shift: total chlorine is high after the worker carbon tank",
+      "setup": "Before the first shift, the water treatment technician tests total chlorine at the sample port after the first (worker) carbon tank. It reads 0.3 mg/L; the limit is 0.1 mg/L. Chlorine and chloramine that reach the dialysate cross the dialyzer and damage red cells, causing hemolysis. Twelve patients are due to start in 20 minutes, and two who arrived early are already connected. The unit and the numbers are illustrative.",
+      "facts": ["Limit: total chlorine 0.1 mg/L", "Two carbon tanks in series", "2 patients connected", "10 more due at 6:30", "Test kit reads to 0.1 mg/L"],
+      "tech": {"name": "Water Treatment Technician", "hub": "water-treatment-technician.html"},
+      "links": {
+        "nurse": [["nephrology-nursing-08-hd-equipment-water-dialysate-safety.html", "HD Equipment, Water, and Dialysate Safety"]],
+        "pod": [["physician-on-duty.html", "Physician-on-Duty track"]],
+        "tech": [["water-treatment-technician-04-carbon-tanks-chlorine-control.html", "Carbon Tanks and Chlorine Control"], ["water-treatment-technician-12-failures-emergencies-capstone.html", "Failures, Emergencies, and Capstone"]],
+        "hn": [["dialysis-head-nurse-06-water-equipment-and-supplies.html", "Water, Machines, and Supplies"]]
+      },
+      "phases": [
+        {
+          "time": "0 to 2 min", "name": "Recognize",
+          "nurse": ["Hear the technician's warning. Start no new patient until the water is released in words."],
+          "pod": [],
+          "tech": [
+            "Confirm the reading: total chlorine kit (not free chlorine), within its expiry date, port flushed, color read at the stated time.",
+            "Test after the second (polisher) tank at once. That result decides what happens next."
+          ],
+          "hn": [],
+          "handoff": {"tech": "Tell the charge nurse and the head nurse now: \"Chlorine is high after the worker tank. Hold all new starts until I give you the polisher result.\""}
+        },
+        {
+          "time": "2 to 10 min", "name": "Respond",
+          "nurse": [
+            "Hold all new starts.",
+            "Watch the two connected patients for hemolysis: chest tightness, back pain, breathlessness, nausea, or blood in the venous line that looks dark, port-wine, or translucent cherry-red.",
+            "Have blood tubes ready in case the POD orders hemolysis tests."
+          ],
+          "pod": [
+            "Come to the unit and get the numbers from the technician yourself: worker tank result, polisher result, and the time of the last normal test.",
+            "Examine the two connected patients for signs of hemolysis."
+          ],
+          "tech": [
+            "Polisher at or below 0.1 mg/L: tell the responsible person the worker tank needs replacement, and test more often, as your procedure states. Treatments continue only as the procedure allows.",
+            "Polisher above 0.1 mg/L: stop. No treatments on this water. Tell the charge nurse and the medical director immediately.",
+            "Look for the cause: exhausted carbon, a bypass valve left open, a change in the feed water disinfectant, or a flow rate too high for the carbon's contact time."
+          ],
+          "hn": [
+            "Take charge of the floor and make the decision plain to every nurse: hold starts now, and stop treatments if the polisher fails.",
+            "Have someone start calling the 6:30 patients to delay their arrival."
+          ],
+          "handoff": {
+            "tech": "Give the POD and the head nurse both numbers, with times, written on the water log.",
+            "nurse": "Report any symptom or abnormal blood color to the POD at once."
+          },
+          "stop": {"tech": "Polisher above 0.1 mg/L: stop all treatments per unit protocol, but always ask the Attending Nephrologist for guidance."}
+        },
+        {
+          "time": "10 to 30 min", "name": "Stabilize or escalate",
+          "nurse": [
+            "If treatments are stopped and the blood looks hemolyzed, do not return it: clamp the lines and wait for the POD's order. Hemolyzed blood carries free hemoglobin and potassium.",
+            "Draw the tests the POD orders. Keep the patients under observation; do not send anyone home yet."
+          ],
+          "pod": [
+            "If hemolysis is suspected, order hemoglobin, potassium, lactate dehydrogenase (LDH), haptoglobin, and plasma free hemoglobin if available, and look at the ECG for signs of high potassium.",
+            "Decide who goes to the emergency room: a falling hemoglobin, chest pain, high potassium, or unstable vital signs.",
+            "Decide which patients must still be dialyzed today, and where (high potassium and fluid overload first)."
+          ],
+          "tech": [
+            "Replace or rebed the failed carbon. Do not release water until both tanks test at or below 0.1 mg/L after flushing.",
+            "Record every result, its time, and each corrective action on the water log."
+          ],
+          "hn": [
+            "Notify the Attending Nephrologist, the Dialysis Clinical Head, and the Unit Operations Manager.",
+            "Rebuild the day: extended hours, a later shift, or referral of the most urgent patients to a partner unit."
+          ],
+          "handoff": {"hn": "Assign one nurse to call every waiting patient with a new time. High potassium and fluid overload get the first slots."},
+          "stop": {"pod": "Any patient with signs of hemolysis, high potassium, or instability: escalate per unit protocol, but always ask the Attending Nephrologist for guidance."}
+        },
+        {
+          "time": "After the shift", "name": "Prevent the next one",
+          "nurse": [
+            "Document, for each affected patient, the symptoms, tests drawn, and whether blood was returned.",
+            "Recheck hemoglobin at the next session if the POD ordered it."
+          ],
+          "pod": [
+            "Write each affected patient's event and plan in the record.",
+            "Ask for follow-up hemoglobin and an anemia review for any patient who hemolyzed."
+          ],
+          "tech": [
+            "Find the root cause. Was carbon replacement overdue? Did the feed water disinfectant change? Is the flow too high for the carbon volume?",
+            "Hand any valve or equipment fault to the biomedical technician and record it in the maintenance log."
+          ],
+          "hn": [
+            "File the incident report and run a no-blame review with the technician, the POD, and the nurses.",
+            "Confirm the pre-shift chlorine test is done and signed every time, and that the water-failure plan is posted at the nurses' station."
+          ],
+          "handoff": {"hn": "Report the event and corrective actions to the Dialysis Clinical Head and the Unit Operations Manager for the quality and compliance file."}
+        }
+      ],
+      "breaks": [
+        ["Starting patients because the schedule is full", "Twelve patients on chloramine-contaminated water is a mass hemolysis event. A late start is always the smaller harm."],
+        ["Not testing after the polisher", "The second carbon tank exists for exactly this moment. Its result decides whether treatments continue or stop."],
+        ["Returning hemolyzed blood", "Free hemoglobin and potassium go straight back into the patient. Clamp and wait for the POD."],
+        ["Restarting after one good reading", "Both tanks must test clear after the carbon is fixed, and testing stays frequent until the cause is known."],
+        ["Nobody owns the waiting patients", "A missed session can harm a patient with high potassium or fluid overload. Someone must sort them by urgency and rebook them."]
+      ],
+      "debrief": [
+        "When was the last normal chlorine test, and how long were the two early patients exposed?",
+        "Who told whom, and did every nurse hear the hold on new starts?",
+        "What was the root cause, and what will stop it from happening again?",
+        "How long did it take to rebook the waiting patients, and who decided the order?"
+      ]
+    }
+  ]
+}
