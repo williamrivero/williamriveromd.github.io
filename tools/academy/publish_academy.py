@@ -98,6 +98,8 @@ def main():
         CA = importlib.util.module_from_spec(spec); spec.loader.exec_module(CA); CA.main()   # interactive branching cases
         spec = importlib.util.spec_from_file_location("apply_review", Path(__file__).with_name("apply_review.py"))
         RV = importlib.util.module_from_spec(spec); spec.loader.exec_module(RV); RV.main()   # spaced-repetition review deck
+        spec = importlib.util.spec_from_file_location("apply_updates", Path(__file__).with_name("apply_updates.py"))
+        UP = importlib.util.module_from_spec(spec); spec.loader.exec_module(UP); UP.main([])   # "Updated since you read it" flags
         spec = importlib.util.spec_from_file_location("strip_symptom_widget", Path(__file__).with_name("strip_symptom_widget.py"))
         W = importlib.util.module_from_spec(spec); spec.loader.exec_module(W); W.main()   # no Symptom Checker in the Academy
         spec = importlib.util.spec_from_file_location("patch_site_nav", Path(__file__).resolve().parents[2] / "patch_site_nav.py")
