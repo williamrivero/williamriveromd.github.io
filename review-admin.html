@@ -45,6 +45,9 @@
   .msg { padding:10px 12px; border-radius:10px; background:var(--soft); margin-bottom:12px; display:none; }
   .msg.show { display:block; }
   .msg.err { background:#fde7e5; color:var(--err); }
+  .chip.st-valid { background:#e3f2e7; color:var(--ok); }
+  .chip.st-revoked { background:#fde7e5; color:var(--err); }
+  [hidden] { display:none !important; }
   .empty { color:var(--muted); padding:20px; text-align:center; }
 </style>
 </head>
@@ -63,8 +66,14 @@
       <button data-s="rating_only">Rating only</button>
       <button data-s="rejected">Rejected</button>
       <button data-s="all">All</button>
+      <button data-s="certs">Certificates</button>
     </div>
-    <div class="bulk">
+    <div class="bulk" id="cert-bar" hidden>
+      <span class="count" id="cert-count"></span>
+      <input type="search" id="cert-q" placeholder="Search name or code" aria-label="Search certificates by name or code" style="padding:9px 11px;font-size:15px;border:1.5px solid var(--border);border-radius:10px;min-width:220px">
+      <button id="cert-go">Search</button>
+    </div>
+    <div class="bulk" id="rv-bar">
       <span class="count" id="count"></span>
       <button id="sel-clean">Select unflagged without comments</button>
       <button id="sel-none">Clear selection</button>
@@ -73,7 +82,8 @@
       <button class="danger" data-bulk="reject">Reject selected</button>
     </div>
     <div id="list"></div>
-    <p class="meta">Approve: the rating counts and any public comment is shown. Rating only: the rating counts, the comment stays hidden. Reject: nothing counts or shows. Flags: "same connection" means other submissions came from the same scrambled connection code; "burst" means they came within 10 minutes of each other.</p>
+    <p class="meta" id="cert-note" hidden>Certificates of completion from the Academy final exams, newest first. Revoke: the verify page says the certificate was revoked (Restore undoes it). Delete: removes the record and the learner's name (use when a learner asks to be removed); the verify page then says the code is not on record. Name searches match any part of the name.</p>
+    <p class="meta" id="rv-note">Approve: the rating counts and any public comment is shown. Rating only: the rating counts, the comment stays hidden. Reject: nothing counts or shows. Flags: "same connection" means other submissions came from the same scrambled connection code; "burst" means they came within 10 minutes of each other.</p>
   </div>
 </main>
 <script>
@@ -95,7 +105,59 @@
     return fetch(API + (qs || ""), { method: method, headers: { authorization: "Bearer " + token(), "content-type": "application/json" }, body: body ? JSON.stringify(body) : undefined })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; }); });
   }
+  var CAPI = "/api/certs/admin", certs = [];
+  function capi(method, body, qs) {
+    return fetch(CAPI + (qs || ""), { method: method, headers: { authorization: "Bearer " + token(), "content-type": "application/json" }, body: body ? JSON.stringify(body) : undefined })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; }); });
+  }
+  function md(iso) { var p = String(iso || "").split("-"); var M = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; return p.length === 3 ? M[+p[1] - 1] + " " + +p[2] + ", " + p[0] : iso; }
+  function mins(n) { if (!n) return ""; var h = Math.floor(n / 60), m = n % 60; return (h ? h + " h " : "") + m + " min"; }
+  function loadCerts() {
+    var q = document.getElementById("cert-q").value.trim();
+    capi("GET", null, q ? "?q=" + encodeURIComponent(q) : "").then(function (res) {
+      if (res.status === 401) { status = "pending"; return load(); }
+      if (res.status === 503) { say("The database isn't connected yet.", true); return; }
+      certs = res.j.items || [];
+      var valid = certs.filter(function (c) { return c.status === "valid"; }).length;
+      document.getElementById("cert-count").textContent = certs.length + (certs.length === 300 ? "+" : "") + " shown · " + valid + " valid · " + (certs.length - valid) + " revoked";
+      var L = document.getElementById("list");
+      if (!certs.length) { L.innerHTML = '<div class="empty">No certificates yet.</div>'; return; }
+      L.innerHTML = certs.map(function (c) {
+        var pct = c.total ? Math.round(100 * c.score / c.total) : 0;
+        var lines = [
+          esc(c.track) + (c.modules ? " · " + c.modules + " modules" + (c.modules_passed != null ? " (" + c.modules_passed + " quizzes passed)" : "") : ""),
+          "Exam " + c.score + "/" + c.total + " (" + pct + "%)" + (c.exam_min ? " in " + c.exam_min + " min" : "") +
+            (c.active_min ? " · time on modules " + mins(c.active_min) : "") + (c.study_min ? " · estimated " + c.study_min + " min" : ""),
+          "Issued " + esc(md(c.issued)) + " · registered " + esc(when(c.created))
+        ];
+        return '<div class="item"><span></span><div>' +
+          '<div class="top"><b style="font:800 16px Inter,sans-serif">' + esc(c.name) + '</b><span class="chip st-' + esc(c.status) + '">' + esc(c.status) + '</span>' +
+          '<span class="meta" style="font-family:ui-monospace,Menlo,monospace">' + esc(c.code) + "</span></div>" +
+          lines.map(function (l) { return '<div class="meta" style="font-size:13.5px;margin-top:3px">' + l + "</div>"; }).join("") +
+          '<div class="acts"><a href="/verify?c=' + encodeURIComponent(c.code) + '" target="_blank" rel="noopener"><button type="button">Open verify page</button></a>' +
+          (c.status === "valid" ? '<button class="warn" data-cact="revoke" data-code="' + esc(c.code) + '">Revoke</button>'
+                                : '<button class="ok" data-cact="restore" data-code="' + esc(c.code) + '">Restore</button>') +
+          '<button class="danger" data-cact="delete" data-code="' + esc(c.code) + '">Delete</button></div></div></div>';
+      }).join("");
+    });
+  }
+  function certAct(action, code) {
+    if (action === "delete" && !confirm("Delete certificate " + code + " and the learner's name permanently?")) return;
+    if (action === "revoke" && !confirm("Revoke certificate " + code + "? The verify page will say it was revoked.")) return;
+    capi("POST", { action: action, codes: [code] }).then(function (res) {
+      if (res.j.ok) { say(action === "delete" ? "Deleted " + code + "." : action === "revoke" ? "Revoked " + code + "." : "Restored " + code + "."); loadCerts(); }
+      else say("Couldn't update. Please try again.", true);
+    });
+  }
+  function mode() {
+    var c = status === "certs";
+    document.getElementById("rv-bar").hidden = c; document.getElementById("rv-note").hidden = c;
+    document.getElementById("cert-bar").hidden = !c; document.getElementById("cert-note").hidden = !c;
+    document.querySelector("header h1").textContent = c ? "Certificates" : "Review queue";
+  }
   function load() {
+    mode();
+    if (status === "certs") { document.getElementById("login").hidden = true; document.getElementById("app").hidden = false; return loadCerts(); }
     api("GET", null, "?status=" + status).then(function (res) {
       if (res.status === 401) { try { sessionStorage.removeItem("rcm-rv-key"); } catch (e) {} document.getElementById("app").hidden = true; document.getElementById("login").hidden = false; say("That key didn't work.", true); document.getElementById("msg").style.display = "block"; return; }
       if (res.status === 503) { document.getElementById("login").hidden = true; document.getElementById("app").hidden = false; say("The review database isn't connected yet. Finish the Cloudflare setup steps.", true); return; }
@@ -149,8 +211,11 @@
   });
   document.getElementById("list").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-act]"); if (b) act(b.dataset.act, [+b.dataset.id]);
+    var cb = e.target.closest("button[data-cact]"); if (cb) certAct(cb.dataset.cact, cb.dataset.code);
   });
-  document.querySelector(".bulk").addEventListener("click", function (e) {
+  document.getElementById("cert-go").addEventListener("click", loadCerts);
+  document.getElementById("cert-q").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); loadCerts(); } });
+  document.getElementById("rv-bar").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return;
     var boxes = document.querySelectorAll("#list input[type=checkbox]");
     if (b.id === "sel-clean") Array.prototype.forEach.call(boxes, function (x) { x.checked = x.dataset.plain === "1"; });
