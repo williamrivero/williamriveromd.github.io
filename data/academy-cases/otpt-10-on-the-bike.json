@@ -1,0 +1,109 @@
+{
+  "id": "otpt10-on-the-bike",
+  "page": "occupational-physical-therapist-10-intradialytic-rehabilitation.html",
+  "title": "On the bike",
+  "decisions": 5,
+  "note": "Fictional patients. Eligibility and stop rules are agreed with the nephrologist and head nurse; the nurse checks pressure and you never touch the machine or lines.",
+  "labels": { "time": "Session time", "rpe": "Effort (RPE)", "access": "Access arm", "status": "Exercise" },
+  "monitorOrder": ["time", "bp", "hr", "spo2", "rpe", "access", "status"],
+  "monitor": { "time": "Before connection", "bp": "—", "hr": "—", "spo2": "—", "rpe": "—", "access": "—", "status": "Planning", "rhythm": "normal", "rhythmLabel": "Sinus rhythm" },
+  "intro": "<p>You are the physical therapist running the new intradialytic exercise program on the morning shift. Two pedal cycles are available. Today&rsquo;s list has Mr. Felipe Ramos, 66, who had a drop in blood pressure in the chair last Wednesday, and Mrs. Carmen Velasco, 61, who has done six sessions without problems.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "Who cycles today:",
+      "prompt": "Does Mr. Ramos cycle today?",
+      "choices": [
+        { "grade": "best", "text": "Check the eligibility rules agreed with the nephrologist and head nurse: recent hypotension in the chair excludes him for now, so he does not cycle today; offer seated exercises off dialysis if the plan allows.",
+          "feedback": "<p>Eligibility is agreed in advance with the nephrologist and head nurse, per unit protocol: stable sessions and no recent hypotension in the chair.</p>",
+          "vitals": { "status": "Mrs. Velasco today" }, "next": "n2" },
+        { "grade": "poor", "text": "Let him cycle at a lower resistance.",
+          "feedback": "<p>A lighter load still adds to the strain of fluid removal. The agreed rule excludes him for now.</p>",
+          "then": "<p>The nurse reminds you of the rule. Mrs. Velasco cycles today.</p>",
+          "vitals": { "status": "Mrs. Velasco today" }, "next": "n2" },
+        { "grade": "ok", "text": "Ask him whether he feels up to it.",
+          "feedback": "<p>His view matters, but the eligibility rule is clinical, agreed with the team. Check it first.</p>",
+          "then": "<p>The rule excludes him for now. Mrs. Velasco cycles today.</p>",
+          "vitals": { "status": "Mrs. Velasco today" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "time": "Connected 07:30", "bp": "142/80", "hr": 76, "spo2": 97, "access": "Left forearm fistula" },
+      "short": "When to start:",
+      "prompt": "When does Mrs. Velasco start cycling?",
+      "choices": [
+        { "grade": "best", "text": "After the nurse has connected her and the session is running smoothly, in the agreed slot (about 30 to 90 minutes in), and finishing well before the end.",
+          "feedback": "<p>Exercise in the first half of the session. Nurses are busiest at connection and disconnection; a fixed slot after connection keeps the program from depending on them at those times.</p>",
+          "vitals": { "time": "08:10 (40 min in)", "status": "Warm-up" }, "next": "n3" },
+        { "grade": "poor", "text": "Straight away, while the nurse is connecting, to save time.",
+          "feedback": "<p>Connection needs the nurse&rsquo;s full attention, and the session should be running smoothly first.</p>",
+          "then": "<p>You wait until 08:10, after the nurse confirms she is stable.</p>",
+          "vitals": { "time": "08:10 (40 min in)", "status": "Warm-up" }, "next": "n3" },
+        { "grade": "ok", "text": "In the last hour, when she has settled.",
+          "feedback": "<p>The last hour is when fluid removal has gone furthest and blood pressure is most likely to fall. Use the first half.</p>",
+          "then": "<p>You move her slot to 08:10.</p>",
+          "vitals": { "time": "08:10 (40 min in)", "status": "Warm-up" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "short": "Setting up:",
+      "prompt": "How do you set her up on the bike?",
+      "choices": [
+        { "grade": "best", "text": "Legs do the work; the fistula arm stays still and visible, needles taped, lines free of the pedals; warm up 2 to 5 minutes, then cycle at a rating of perceived exertion (RPE) of 11 to 13.",
+          "feedback": "<p>The access arm must stay still and in view, and the lines clear of moving parts. RPE 11 to 13 is &ldquo;fairly light&rdquo; to &ldquo;somewhat hard,&rdquo; progressing toward 30 minutes over weeks.</p>",
+          "vitals": { "rpe": "12", "access": "Still, visible, lines clear", "status": "Cycling" }, "next": "n4" },
+        { "grade": "poor", "text": "Cover her arm with a blanket so she stays warm while cycling.",
+          "feedback": "<p>The access arm stays visible during exercise, so any needle movement or bleeding is seen at once.</p>",
+          "then": "<p>You fold the blanket back so the arm is in view.</p>",
+          "vitals": { "rpe": "12", "access": "Still, visible, lines clear", "status": "Cycling" }, "next": "n4" },
+        { "grade": "ok", "text": "Start at a hard pace to make the most of the time.",
+          "feedback": "<p>Start with a warm-up and a moderate effort. A hard pace early raises the risk of a drop in pressure and makes people stop coming.</p>",
+          "then": "<p>You ease her to RPE 12 after a warm-up.</p>",
+          "vitals": { "rpe": "12", "access": "Still, visible, lines clear", "status": "Cycling" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "09:00 (1 h 30 min)", "bp": "96/58", "hr": 96, "status": "Yawning, nausea", "alarm": ["status"] },
+      "short": "Yawning:",
+      "scene": "<p>Twenty minutes into cycling she starts yawning and says she feels a little sick.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Stop pedaling and call the nurse at once.",
+          "feedback": "<p>Yawning and nausea can be the first signs of a falling blood pressure. Stop and call; the nurse checks the pressure and responds. You never touch the machine or lines.</p>",
+          "then": "<p>The nurse finds 96/58, reclines the chair, and adjusts treatment. Mrs. Velasco recovers within minutes.</p>",
+          "vitals": { "bp": "118/70", "hr": 82, "status": "Stopped; nurse managing" }, "next": "n5" },
+        { "grade": "poor", "text": "Lower the resistance and let her keep going slowly.",
+          "feedback": "<p>Any symptom means stop. Pedaling on can deepen a falling pressure.</p>",
+          "then": "<p>She becomes pale. You stop and call the nurse, who reclines the chair and manages it.</p>",
+          "vitals": { "bp": "118/70", "hr": 82, "status": "Stopped; nurse managing" }, "next": "n5" },
+        { "grade": "harmful", "text": "Pause the fluid removal on the machine yourself while you call the nurse.",
+          "feedback": "<p>You never touch the machine or lines. Stop the exercise and call the nurse; treatment changes are hers.</p>",
+          "then": "<p>The nurse arrives, manages the pressure, and reminds you of the rule.</p>",
+          "vitals": { "bp": "118/70", "hr": 82, "status": "Stopped; nurse managing" }, "next": "n5" }
+      ]
+    },
+    "n5": {
+      "short": "Her question:",
+      "scene": "<p>When she is settled, Mrs. Velasco asks: &ldquo;Will this make me live longer?&rdquo;</p>",
+      "prompt": "What do you say?",
+      "choices": [
+        { "grade": "best", "text": "&ldquo;The best studies show exercise during dialysis helps people get stronger and stand up more easily, and in one large study people spent fewer days in hospital. We don&rsquo;t yet have proof that it makes people live longer.&rdquo;",
+          "feedback": "<p>The DiaTT trial improved sit-to-stand performance and found fewer hospital days as a secondary finding, with no effect on mortality. An honest answer builds trust.</p>",
+          "next": "end" },
+        { "grade": "poor", "text": "&ldquo;Yes, exercise adds years to your life.&rdquo;",
+          "feedback": "<p>No trial in dialysis has shown that. Overpromising damages trust when the promise is not kept.</p>",
+          "next": "end" },
+        { "grade": "ok", "text": "&ldquo;It will make you feel better.&rdquo;",
+          "feedback": "<p>Many people do feel better, but answer her actual question: what is shown, and what is not yet known.</p>",
+          "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "vitals": { "time": "3 months later", "status": "Program running" },
+      "title": "Three months on",
+      "text": "<p>You record the stopped session and the nurse&rsquo;s response. The program tracks sessions offered and done, and sit-to-stand every three months. Mrs. Velasco&rsquo;s sit-to-stand count rises from 12 to 15. Mr. Ramos joins once the nephrologist confirms his sessions are stable again.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Eligibility and stop rules are agreed in advance</b> with the nephrologist and head nurse.</li><li><b>Exercise in the first half,</b> after a smooth connection, in a fixed slot.</li><li><b>Access arm still and visible,</b> lines clear of the pedals.</li><li><b>Any symptom: stop and call the nurse.</b> Never touch the machine or lines.</li><li><b>Answer honestly</b> about what the trials show.</li></ul><p>See <a href=\"#setup\">Setting up safely</a>, <a href=\"#trials\">The trials</a> and <a href=\"#measure\">Measuring the program</a>.</p>"
+}

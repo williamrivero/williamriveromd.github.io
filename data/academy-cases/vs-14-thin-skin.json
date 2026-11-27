@@ -1,0 +1,105 @@
+{
+  "id": "vs14-thin-skin",
+  "page": "vascular-surgeon-14-aneurysm-and-life-threatening-bleeding.html",
+  "title": "Thin skin",
+  "decisions": 5,
+  "note": "Fictional patient. Values are illustrative; your institution&rsquo;s emergency pathway and the treating team&rsquo;s judgment come first.",
+  "labels": { "time": "Time", "skin": "Aneurysm skin", "vp": "Venous pressure", "bleeding": "Bleeding", "dialysis": "Dialysis plan" },
+  "monitorOrder": ["time", "bp", "hr", "skin", "vp", "bleeding", "dialysis"],
+  "monitor": { "time": "Mon 14:00 (clinic)", "bp": "146/88", "hr": 78, "skin": "Thin, shiny, small ulcer", "vp": "Rising over 2 months", "bleeding": "None yet", "dialysis": "Due tomorrow", "rhythm": "normal", "rhythmLabel": "Sinus rhythm", "alarm": ["skin"] },
+  "intro": "<p>You are the access surgeon in clinic. Mrs. Rosario Dela Paz, 63, has had a left upper-arm fistula for nine years. Most cannulations have used one segment, which is now a 3.5 cm aneurysm. Over its top the skin is thin and shiny with a small ulcer. Her venous pressures have been rising for two months. She has not bled. Her next dialysis is tomorrow morning, and she would like to keep using &ldquo;the easy spot.&rdquo;</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "In clinic:",
+      "prompt": "What is your plan?",
+      "choices": [
+        { "grade": "best", "text": "No cannulation of the threatened skin. Book prompt surgical repair, and image the outflow, because rising venous pressures suggest a stenosis raising the pressure in the aneurysm.",
+          "feedback": "<p>Thin, shiny skin with an ulcer means the barrier has almost gone. Never needle threatened skin. An outflow stenosis raises the pressure and must be treated with the aneurysm.</p>",
+          "vitals": { "dialysis": "Not via threatened segment" }, "next": "n2" },
+        { "grade": "harmful", "text": "She has not bled, so the usual site can be used; review in three months.",
+          "feedback": "<p>Ulcerated skin over an aneurysm signals impending rupture. A needle there could start a bleed she might not survive, and most fatal access bleeds happen at home.</p>",
+          "then": "<p>You change the plan: no cannulation of that skin, prompt repair, outflow imaging.</p>",
+          "vitals": { "dialysis": "Not via threatened segment" }, "next": "n2" },
+        { "grade": "poor", "text": "Ask the unit to send monthly photographs so you can watch it.",
+          "feedback": "<p>A photograph cannot establish that skin is safe. Thin, ulcerated skin needs action, not surveillance.</p>",
+          "then": "<p>You book prompt repair and outflow imaging, and tell the unit not to cannulate that skin.</p>",
+          "vitals": { "dialysis": "Not via threatened segment" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "short": "Tomorrow&rsquo;s dialysis:",
+      "prompt": "How does she dialyze tomorrow?",
+      "choices": [
+        { "grade": "best", "text": "Agree a safe plan with the nephrologist and the unit: cannulate a healthy segment well away from the threatened skin if one exists; otherwise a temporary catheter.",
+          "feedback": "<p>The access plan and the dialysis plan go together. If no safe segment exists, a temporary catheter until the repair is safer than needling threatened skin.</p>",
+          "vitals": { "dialysis": "Proximal healthy segment; catheter if needed" }, "next": "n3" },
+        { "grade": "poor", "text": "Leave it to the unit to find a site.",
+          "feedback": "<p>The nurses need a clear instruction from you and the nephrologist: which segment, and what to avoid.</p>",
+          "then": "<p>You call the unit and the nephrologist with a specific plan.</p>",
+          "vitals": { "dialysis": "Proximal healthy segment; catheter if needed" }, "next": "n3" },
+        { "grade": "ok", "text": "Skip dialysis until the repair.",
+          "feedback": "<p>Missed dialysis carries its own risks, such as high potassium and fluid overload. Find a safe route instead.</p>",
+          "then": "<p>You agree a safe segment with the nephrologist.</p>",
+          "vitals": { "dialysis": "Proximal healthy segment; catheter if needed" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "Thu 02:10 (ED)", "bp": "92/58", "hr": 118, "bleeding": "Active, from aneurysm", "rhythm": "normal", "rhythmLabel": "Sinus tachycardia", "alarm": ["bleeding"] },
+      "short": "2 a.m.:",
+      "scene": "<p>Before the repair date, the emergency department calls at 02:10. She woke bleeding from the aneurysm; her husband pressed a towel on it and brought her in. A nurse is applying a thick pressure dressing, and the emergency physician wants CT angiography &ldquo;to see the anatomy.&rdquo;</p>",
+      "prompt": "What do you tell them?",
+      "choices": [
+        { "grade": "best", "text": "Replace the bulky dressing with firm, focused pressure on the bleeding point with one or two fingers; lay her flat; resuscitate per protocol; no imaging while it bleeds; I am coming to control it.",
+          "feedback": "<p>Focused pressure on the point stops access bleeding; a large dressing spreads the pressure. Imaging, photographs, and paperwork come after control.</p>",
+          "vitals": { "bleeding": "Controlled by focused pressure", "bp": "104/64", "hr": 104 }, "next": "n4" },
+        { "grade": "harmful", "text": "Get the CT angiogram first so I can plan the repair.",
+          "feedback": "<p>Sending a bleeding patient to the scanner loses minutes she may not have. Control the bleeding first.</p>",
+          "then": "<p>You cancel the scan and ask for focused two-finger pressure until you arrive.</p>",
+          "vitals": { "bleeding": "Controlled by focused pressure", "bp": "98/60", "hr": 110 }, "next": "n4" },
+        { "grade": "poor", "text": "The pressure dressing is fine; observe her until morning.",
+          "feedback": "<p>A bulky dressing can look controlled while bleeding continues underneath. Thin skin that has bled once will bleed again.</p>",
+          "then": "<p>The dressing soaks through. You ask for focused pressure and come in.</p>",
+          "vitals": { "bleeding": "Controlled by focused pressure", "bp": "100/62", "hr": 108 }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "Thu 03:30 (theater)", "bleeding": "Controlled" },
+      "short": "Definitive care:",
+      "prompt": "What is your operative plan?",
+      "choices": [
+        { "grade": "best", "text": "Control and repair the aneurysm, treat the outflow stenosis that raised the pressure, and arrange the next dialysis route with the nephrologist in case the access is lost.",
+          "feedback": "<p>The UKKA 2025 guideline suggests surgical repair as the main approach, combined with treatment of downstream stenosis where appropriate. The access may be lost, so a dialysis plan is part of the operation.</p>",
+          "vitals": { "dialysis": "Repaired; outflow treated; catheter backup planned" }, "next": "n5" },
+        { "grade": "poor", "text": "Ligate the fistula and let the nephrologist sort out dialysis later.",
+          "feedback": "<p>Ligation may sometimes be needed, but ending her access without a plan leaves her without dialysis. Consider repair, and plan the next route now.</p>",
+          "vitals": { "dialysis": "Repaired; outflow treated; catheter backup planned" }, "next": "n5" },
+        { "grade": "ok", "text": "Repair the aneurysm only.",
+          "feedback": "<p>Repair without treating the outflow stenosis leaves the high pressure that drove the aneurysm, and it may recur.</p>",
+          "vitals": { "dialysis": "Repaired; outflow treated; catheter backup planned" }, "next": "n5" }
+      ]
+    },
+    "n5": {
+      "short": "Before she goes home:",
+      "prompt": "What do she and her husband need to know?",
+      "choices": [
+        { "grade": "best", "text": "Teach both of them: press firmly with two fingers on the bleeding spot, keep pressing, call emergency help, and do not lift to look; give them the unit&rsquo;s and your numbers and the nearest hospital that can treat a bleed.",
+          "feedback": "<p>Most fatal access bleeds happen at home. Every patient and household member should know the response, taught and repeated, especially once an aneurysm appears.</p>",
+          "next": "end" },
+        { "grade": "poor", "text": "&ldquo;If it bleeds, put a towel on it and come to the hospital.&rdquo;",
+          "feedback": "<p>A towel spreads the pressure. Two fingers on the spot, kept there, while help is called.</p>",
+          "next": "end" },
+        { "grade": "ok", "text": "Give them a leaflet on access care.",
+          "feedback": "<p>A leaflet helps, but the response must be shown and practiced so it is automatic.</p>",
+          "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "vitals": { "time": "Day 3", "bp": "138/82", "hr": 80, "rhythmLabel": "Sinus rhythm" },
+      "title": "Day 3",
+      "text": "<p>The repaired fistula has a good thrill, and she dialyzes through a healthy segment. Her husband demonstrates two-finger pressure on the ward. The unit adds a bleeding drill to its monthly emergency practice and reviews its cannulation rotation.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Never needle threatened skin.</b> Thin, shiny, ulcerated, or scabbed skin means impending rupture.</li><li><b>Look for the outflow stenosis</b> behind a growing aneurysm.</li><li><b>Major bleed: focused two-finger pressure,</b> lie flat, resuscitate, transfer. No imaging while it bleeds.</li><li><b>Repair and treat the outflow;</b> plan the next dialysis route.</li><li><b>Teach the household</b>; most fatal bleeds happen at home.</li></ul><p>See <a href=\"#why\">Why access bleeding can be fatal</a>, <a href=\"#response\">Responding to a major bleed</a> and <a href=\"#teaching\">Teaching</a>.</p>"
+}

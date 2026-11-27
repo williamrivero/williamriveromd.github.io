@@ -1,0 +1,113 @@
+{
+  "id": "tc16-friday-445",
+  "page": "transplant-coordinator-16-urgent-triage-and-escalation.html",
+  "title": "Friday, 4:45 p.m.",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Urgent-call log",
+  "note": "Fictional patients. Your program&rsquo;s written urgent-call protocol is the authority; only clinicians give medicine instructions.",
+  "labels": { "time": "Time", "call1": "Call 1 (recipient)", "call2": "Call 2 (laboratory)", "call3": "Call 3 (donor)", "oncall": "On-call clinician" },
+  "monitorOrder": ["time", "call1", "call2", "call3", "oncall"],
+  "monitor": { "time": "Fri 16:45", "call1": "Text: out of tacrolimus", "call2": "—", "call3": "—", "oncall": "Dr. Ramos (backup: Dr. Lim)", "alarm": ["call1"] },
+  "intro": "<p>You are the transplant coordinator. At 4:45 p.m. on Friday, Ms. Joy Navarro, 29, three months after transplant, texts the clinic number: &ldquo;The pharmacy has no tacrolimus until Monday. I&rsquo;ll just restart on Monday, ok?&rdquo;</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "Out of tacrolimus:",
+      "prompt": "How do you reply?",
+      "choices": [
+        { "grade": "best", "text": "&ldquo;Please do not stop or stretch your doses. A doctor from the team will call you within the hour.&rdquo; Log it with two identifiers and a callback number, and route it to the on-call transplant clinician now.",
+          "feedback": "<p>A missed immunosuppressant is a same-day route under the protocol. Running out for even a few days can trigger rejection. Never tell a caller to take, skip, delay, or double a medicine outside the protocol.</p>",
+          "vitals": { "call1": "Logged; routed 16:50" }, "next": "n2" },
+        { "grade": "harmful", "text": "&ldquo;OK, three days should be fine. Restart Monday.&rdquo;",
+          "feedback": "<p>That is medicine advice, outside your role, and it is wrong: three days without tacrolimus three months after transplant risks rejection.</p>",
+          "then": "<p>You text again: &ldquo;Please wait, a doctor will call you.&rdquo; Then you route it.</p>",
+          "vitals": { "call1": "Logged; routed 17:00" }, "next": "n2" },
+        { "grade": "poor", "text": "&ldquo;Try other pharmacies over the weekend.&rdquo;",
+          "feedback": "<p>She may find one, but a supply gap is an emergency in slow motion. The team needs to arrange an authorized continuity plan today.</p>",
+          "then": "<p>You route it to the on-call clinician as well.</p>",
+          "vitals": { "call1": "Logged; routed 17:00" }, "next": "n2" }
+      ]
+    },
+    "n2": {
+      "vitals": { "time": "Fri 17:05", "call2": "Lab: creatinine 2.4 (was 1.2)", "alarm": ["call1", "call2"] },
+      "short": "The laboratory:",
+      "scene": "<p>The laboratory calls: Mr. Leo Bautista, five months after transplant, has a creatinine of 2.4 mg/dL today. His last result was 1.2. The report will also be emailed.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Treat it as an urgent call: log it and route it to the on-call transplant clinician now.",
+          "feedback": "<p>A doubled creatinine can be the first sign of rejection, which usually causes no symptoms. An abnormal result triggers a call, not a filing.</p>",
+          "vitals": { "call2": "Routed 17:07" }, "next": "n3" },
+        { "grade": "poor", "text": "File the emailed report for the clinic on Monday.",
+          "feedback": "<p>Rejection found late has fewer options. A result like this is routed the same day.</p>",
+          "then": "<p>You reconsider and route it at 17:30.</p>",
+          "vitals": { "call2": "Routed 17:30" }, "next": "n3" },
+        { "grade": "ok", "text": "Call Mr. Bautista and ask how he feels before deciding.",
+          "feedback": "<p>His symptoms help, but rejection is often silent. The clinician decides what the number means; route it first.</p>",
+          "then": "<p>He feels well. You route the result at 17:15.</p>",
+          "vitals": { "call2": "Routed 17:15" }, "next": "n3" }
+      ]
+    },
+    "n3": {
+      "vitals": { "time": "Fri 17:20", "oncall": "Dr. Ramos: no reply in 15 min", "alarm": ["call1", "call2", "oncall"] },
+      "short": "No answer:",
+      "scene": "<p>You paged Dr. Ramos and posted both calls in the transplant group chat at 17:05. Fifteen minutes later, no reply. The protocol&rsquo;s response time is 15 minutes.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Escalate to the backup on the list, Dr. Lim, by phone; a group chat post is dispatch, not closure.",
+          "feedback": "<p>If the clinician does not respond within the protocol&rsquo;s time, escalate to the backup. A text, voicemail, or chat message only sends the problem; it does not close it.</p>",
+          "then": "<p>Dr. Lim answers at 17:22. Ms. Navarro is to collect a supply from the center&rsquo;s pharmacy tonight; Mr. Bautista is to come to the emergency department for assessment.</p>",
+          "vitals": { "oncall": "Dr. Lim (backup) acting 17:22", "call1": "Plan: center pharmacy tonight", "call2": "Plan: ED tonight" }, "next": "n4" },
+        { "grade": "poor", "text": "Wait; the chat shows the message was seen.",
+          "feedback": "<p>&ldquo;Seen&rdquo; is not &ldquo;acted.&rdquo; Two patients are waiting on a decision.</p>",
+          "then": "<p>At 17:40 you call Dr. Lim, who gives both plans.</p>",
+          "vitals": { "oncall": "Dr. Lim (backup) acting 17:40", "call1": "Plan: center pharmacy tonight", "call2": "Plan: ED tonight" }, "next": "n4" },
+        { "grade": "ok", "text": "Page Dr. Ramos again.",
+          "feedback": "<p>One more try is reasonable, but the protocol time has passed. Escalate to the backup.</p>",
+          "then": "<p>No answer again. You call Dr. Lim, who gives both plans.</p>",
+          "vitals": { "oncall": "Dr. Lim (backup) acting 17:30", "call1": "Plan: center pharmacy tonight", "call2": "Plan: ED tonight" }, "next": "n4" }
+      ]
+    },
+    "n4": {
+      "vitals": { "time": "Fri 17:35", "call3": "Donor&rsquo;s wife: wound red, oozing, fever", "alarm": ["call3"] },
+      "short": "The donor:",
+      "scene": "<p>Mrs. Liza Bautista calls about her husband, Mr. Leo Bautista&rsquo;s brother and his kidney donor, two weeks after nephrectomy. His wound is red and oozing and he has a fever. &ldquo;And please tell Leo&rsquo;s doctor too, so they know.&rdquo;</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        { "grade": "best", "text": "Open a separate urgent-call log in the donor&rsquo;s record and route it to the donor surgical team; explain kindly that his information goes only to his own team.",
+          "feedback": "<p>The donor has his own team. Two people, two logs, two routes, even from one family. The donor&rsquo;s information stays in the donor&rsquo;s record.</p>",
+          "vitals": { "call3": "Separate log; donor surgical team" }, "next": "n5" },
+        { "grade": "poor", "text": "Add it to Mr. Bautista&rsquo;s call so one doctor sees both.",
+          "feedback": "<p>That routes the donor through the recipient&rsquo;s team and puts his information in another person&rsquo;s record.</p>",
+          "then": "<p>You separate it and route it to the donor surgical team.</p>",
+          "vitals": { "call3": "Separate log; donor surgical team" }, "next": "n5" },
+        { "grade": "ok", "text": "Tell her to take him to any emergency department.",
+          "feedback": "<p>Urgent care may be right, but the donor surgical team must know and decide. Log and route it.</p>",
+          "then": "<p>You log it and route it to the donor surgical team, who give the plan.</p>",
+          "vitals": { "call3": "Separate log; donor surgical team" }, "next": "n5" }
+      ]
+    },
+    "n5": {
+      "short": "Closing the calls:",
+      "prompt": "When is each call closed?",
+      "choices": [
+        { "grade": "best", "text": "When the clinician has received it, given a plan, the patient has repeated the plan back, and the log shows times and who decided; then check later that each patient arrived or collected the medicine.",
+          "feedback": "<p>Received, acted, understood, documented. Anything less is an open urgent call. Checking that the plan happened closes it for real.</p>",
+          "next": "end" },
+        { "grade": "poor", "text": "When the message has been sent to the clinician.",
+          "feedback": "<p>Sending is dispatch. A call is closed when the patient has the plan and you have documented it.</p>",
+          "next": "end" },
+        { "grade": "ok", "text": "When the clinician has given a plan.",
+          "feedback": "<p>Close, but the patient must also understand the plan (repeat it back), and the log must show it.</p>",
+          "next": "end" }
+      ]
+    },
+    "end": {
+      "end": true,
+      "vitals": { "time": "Fri 20:30", "call1": "Supply collected 19:10", "call2": "In ED; admitted", "call3": "Seen by donor team" },
+      "title": "8:30 p.m.",
+      "text": "<p>Ms. Navarro collected her tacrolimus at 7:10 p.m. Mr. Leo Bautista was admitted for assessment of his kidney. His brother was seen by the donor surgical team and started on treatment for a wound infection. Each log shows the times, who decided, the plan, and your follow-up check.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Route by protocol.</b> Missed immunosuppressants and a rising creatinine are same-day calls.</li><li><b>Never give medicine advice outside protocol.</b></li><li><b>A chat message is dispatch, not closure.</b> Escalate to the backup when the response time passes.</li><li><b>Donors have their own team.</b> Two people, two logs, two routes.</li><li><b>Close the loop:</b> received, acted, understood, documented, and checked.</li></ul><p>See <a href=\"#contact\">Protocol, not advice</a>, <a href=\"#donor\">The donor has their own team</a> and <a href=\"#close\">From call to confirmed plan</a>.</p>"
+}
