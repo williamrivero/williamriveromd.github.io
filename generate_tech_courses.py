@@ -979,7 +979,8 @@ def build_module(course, d, built):
 
 def glossary(body_html, terms):
     """Abbreviations found on the page plus the module's plain-language terms."""
-    used = N.abbr_used(body_html)
+    own = {t for t, _ in terms}      # a module's own definition wins over the shared list
+    used = [t for t in N.abbr_used(body_html) if t not in own]
     dt = 'style="font-weight:700;color:var(--text);"'
     rows = []
     for tok in used:

@@ -64,7 +64,7 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
                '<p><strong>Definition.</strong> The Kidney Disease: Improving Global Outcomes (KDIGO) 2012 guideline, still the current '
                'final version, stages AKI by creatinine and urine output.[[an05_1]] The KDIGO 2026 draft, still in public review, adds '
                'structural biomarkers and follow-up; until it is final, quote the 2012 grades.[[an05_2]]</p>\n'
-               '<p><strong>Fluids.</strong> SMART randomized 15,802 adults in five intensive care units (ICUs) to balanced crystalloids or '
+               '<p><strong>Fluids.</strong> The Isotonic Solutions and Major Adverse Renal Events Trial (SMART) randomized 15,802 adults in five intensive care units (ICUs) to balanced crystalloids or '
                'saline. Death, new KRT or persistent kidney dysfunction at 30 days occurred in 14.3% versus 15.4%, about 1 percentage point; '
                'no single component differed significantly.[[an05_6]] A modest, single-center result, but it favors balanced fluid.</p>\n'
                '<p><strong>Bicarbonate.</strong> BICARICU-2 randomized 640 patients in 43 French ICUs with pH &le;7.20 and moderate to severe '
@@ -166,7 +166,8 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
            ('ICU', 'Intensive care unit'),
            ('ECG', 'Electrocardiogram'),
            ('KDIGO', 'Kidney Disease: Improving Global Outcomes'),
-           ('KRT', 'Kidney replacement therapy')],
+           ('KRT', 'Kidney replacement therapy'),
+           ('SMART', 'Isotonic Solutions and Major Adverse Renal Events Trial')],
  'readings': [('aki-does-not-end-at-discharge.html', 'AKI Does Not End at Discharge: 90-Day Recovery Guide'),
               ('leptospirosis-nephropathy.html', 'Leptospirosis After Flood Exposure: Symptoms, Kidney Warning Signs & What To Do')],
  'calcs': ['calc-aki-staging.html', 'calc-fena-feurea.html', 'calc-leptospirosis-aki-risk.html', 'calc-post-aki-followup.html']}
