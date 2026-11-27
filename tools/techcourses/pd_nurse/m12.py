@@ -84,6 +84,7 @@ MODULE = {
 <h3>International comparison</h3>
 <p>In the Peritoneal Dialysis Outcomes and Practice Patterns Study (PDOPPS), crude peritonitis rates were 0.28 episodes per patient-year overall, ranging from 0.26 in the United States to 0.40 in Thailand, and 10% of facilities exceeded 0.50. These are observational data from seven countries, not including the Philippines.[[pd_perl2020]]</p>
 {{key:Count time, not heads. Then read the episodes behind the rate.}}
+{{fig:pd12_fig_12_patient_years_at_risk_rates}}
 """),
         ("tracking-loss-from", "Tracking loss from PD", "Tracking loss from PD", """
 <p>The 2026 ISPD position statement notes that nearly half of people who start PD are no longer on it at two years. The most common causes are transfer to hemodialysis, death and kidney transplantation. Others include recovery of kidney function, transfer to another dialysis program and loss to follow-up. The statement replaces the inconsistently defined term &ldquo;technique failure&rdquo; with standardized definitions of causes of loss, recommendations on measurement, analysis and reporting, and key performance indicators for benchmarking and improvement.[[pd_quinn2026]]</p>

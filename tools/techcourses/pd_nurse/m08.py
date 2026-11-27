@@ -99,6 +99,7 @@ MODULE = {
 <p>During a heat wave, Mr. Joel feels dizzy and his weight is down 1.5 kg. His wife suggests he drink more and &ldquo;use the weaker bag.&rdquo; Dizziness and weight loss in heat may mean he is too dry. Changing solution strength is the prescriber&rsquo;s decision. You assess blood pressure, intake, sweating and urine, and call the team the same day.</p>
 <p>The site&rsquo;s guides on typhoon and disaster preparedness and on heat and dialysis give patient-facing language you can reuse.</p>
 {{key:A disaster plan works only if it exists before the disaster. Check it before every rainy season.}}
+{{fig:pd08_fig_08_typhoon_go_bag_plan}}
 """),
     ],
     "debrief": ["""

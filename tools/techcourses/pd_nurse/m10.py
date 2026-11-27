@@ -65,6 +65,7 @@ MODULE = {
 <h3>The 2026 joint ISRNM and ISPD practice recommendation</h3>
 <p>This is the first international nutrition guidance specific to PD. It used the GRADE framework for graded recommendations and expert-consensus practice points. It covers five themes: nutrition screening, assessment and monitoring; dietary recommendations; nutrition interventions for complications; supplementation; and education to build health, nutrition and food literacy.[[pd_wang2026]] Nurses contribute screening, monitoring and reinforcement of the dietitian&rsquo;s plan.</p>
 {{key:Advice that was right on hemodialysis can be wrong on PD. Ask what the patient is actually eating, and why.}}
+{{fig:pd10_fig_10_glucose_absorption_low_potassium}}
 """),
         ("the-icodextrin-glucose", "Icodextrin and glucose meters", "The icodextrin and glucose meter hazard", """
 <p>Icodextrin is broken down to maltose and other short sugars that circulate in the blood. Some point-of-care glucose meters and test strips cannot tell maltose from glucose, and report falsely high glucose.</p>

@@ -64,6 +64,7 @@ MODULE = {
 <h3>Example: cloudy, but not what it seems</h3>
 <p>Ms. Andrea, 31, calls because her morning bag is pink and hazy. It is the second day of her period, she has no pain and no fever, and this happened last month too. It may well be menstrual blood. But that is the team&rsquo;s conclusion to reach, not hers or yours. You arrange same-day assessment so the effluent can be examined. If it is blood alone, she has learned how to report it. If it is not, she was treated early.</p>
 {{key:Treat every cloudy bag as possible peritonitis until the team says otherwise.}}
+{{fig:pd07_fig_07_peritonitis_diagnosis_two_of_three}}
 """),
         ("what-you-do", "The first hour", "What you do: the first hour", """
 {{fig:pd07_hour}}
@@ -122,6 +123,7 @@ MODULE = {
 <h3>Nursing follow-through</h3>
 <p>Repeat cell counts as ordered. Track the culture and sensitivities. Confirm the antibiotic course is completed. Watch UF and weight during the episode, because UF often falls. Watch for hearing changes if aminoglycosides are used; the 2022 update added a recommendation on adjunctive oral N-acetylcysteine to reduce aminoglycoside ototoxicity, a prescriber decision. Confirm antifungal prophylaxis whenever antibiotics are given, if the program uses it.[[pd_li2022]]</p>
 <p>Ask the patient directly about ringing in the ears, muffled hearing or unsteadiness, because many will not mention them unprompted.</p>
+{{fig:pd07_fig_07_relapsing_recurrent_repeat_timeline}}
 """),
         ("prevention-after-every", "Prevention", "Prevention after every episode", """
 <p>Every episode is a signal. Review it as a team, without blame, within days of the episode.</p>

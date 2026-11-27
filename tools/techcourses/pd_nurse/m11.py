@@ -65,6 +65,7 @@ MODULE = {
 <p>After a flood, a 38-year-old farmer with leptospirosis is admitted to a provincial hospital with severe AKI. The hospital has two hemodialysis machines, both in use, and no continuous kidney replacement therapy. The nephrologist inserts an acute PD catheter at the bedside and starts acute PD.</p>
 <p>The ward nurses have never done PD. The PD nurse from the outpatient unit is asked to help. Her job is not to run the prescription; the nephrologist sets that, and it may change several times a day. Her job is to teach the ward nurses the exchange technique for the closed system, set up an hourly fluid-balance sheet, make sure potassium and glucose are checked as ordered, and agree on who calls the nephrologist for what. She writes a one-page bedside guide and stays for the first two exchanges of each shift.</p>
 {{key:In acute PD, the margins are hours, not weeks. Monitoring and communication matter more than technique alone.}}
+{{fig:pd11_fig_11_acute_pd_optimal_vs_minimum}}
 """),
         ("assisted-pd", "Assisted PD", "Assisted PD", """
 <h3>Definition and scope</h3>

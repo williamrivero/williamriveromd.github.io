@@ -36,6 +36,7 @@ MODULE = {
 <p>Above a modest floor, more small-solute clearance does not buy survival. Kt/V is a surrogate: a laboratory measure of dose, not an outcome patients feel. The 2020 ISPD practice recommendations on prescribing high-quality goal-directed PD therefore treat Kt/V and creatinine clearance as one input among several, not as the definition of adequate dialysis. These recommendations are practice points, not graded recommendations, because the evidence base is limited.[[pd_brown2020]]</p>
 <p>Both trials studied CAPD patients in specific populations two decades ago, and most of the Hong Kong patients had little residual function. They do not say that clearance is irrelevant. They say that beyond a floor, chasing the number is not the same as helping the person.</p>
 {{key:Kt/V is a surrogate. Above a modest floor, raising it did not improve survival in trials. Read it alongside how the person is living.}}
+{{fig:pd06_fig_06_ademex_hong_kong_clearance}}
 """),
         ("goal-directed-pd", "Goal-directed PD", "Goal-directed PD", """
 <p>The 2020 ISPD recommendations describe care goals agreed through shared decision-making between the person and the team. The aim is both to let the person achieve their own life goals and to deliver high-quality care.[[pd_brown2020]] In practice, a review covers these domains.</p>
@@ -106,6 +107,7 @@ MODULE = {
 <tr><td>Blood drawn days away from the collection</td><td>Ratio may not reflect the collection period</td></tr>
 </tbody></table></div>
 {{key:An invalid collection is worse than none, because it looks like evidence.}}
+{{fig:pd06_fig_06_adequacy_collection_errors}}
 """),
         ("reading-trends", "Reading trends", "Reading trends", """
 <p>State the baseline, the interval and the current value. Then give context: missed exchanges, changes in intake, falling urine, measurement changes, intercurrent illness, symptoms. A trend over a week is more informative than a single day.</p>

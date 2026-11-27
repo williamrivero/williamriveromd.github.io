@@ -47,6 +47,7 @@ MODULE = {
 <tr><td>&ldquo;If I choose PD, I can never get a transplant.&rdquo;</td><td>PD does not close the door to transplantation. Evaluation can run alongside.</td></tr>
 </tbody></table></div>
 {{key:Say what the evidence shows and what it cannot show. &ldquo;Broadly similar&rdquo; is the honest answer on survival for people eligible for both.}}
+{{fig:pd02_fig_02_pd_offers_and_asks}}
 """),
         ("the-conversation", "The conversation", "The conversation", """
 <p>Start with the person, not the modality. A brochure answers questions the patient has not asked. A good conversation finds out what the treatment must fit around.</p>

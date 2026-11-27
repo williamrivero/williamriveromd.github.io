@@ -89,6 +89,7 @@ MODULE = {
 </tbody></table></div>
 <p>Drains and UF per night barely changed. What changed is that three nights in week three were stopped early, and therapy time fell by almost two hours. The weight followed. The question is not about the catheter. It is about the patient&rsquo;s night: a new baby in the house, a night-shift job, a power problem, fear of the alarms? Ask, with interest, and report the lost therapy with the reason.</p>
 {{key:Read completion before you read volumes. Treatment that was not delivered cannot work.}}
+{{fig:pd05_fig_05_cycler_record_three_weeks}}
 """),
         ("respond-to-alarms", "Respond to alarms", "Respond to alarms and interruptions", """
 <p><strong>Assess the person first.</strong> A drain alarm in a patient with severe abdominal pain is not a machine problem.</p>

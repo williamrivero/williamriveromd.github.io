@@ -117,6 +117,7 @@ MODULE = {
 <h3>Example: drift after a good year</h3>
 <p>At a routine home visit, Mr. Arturo, a year into CAPD with no peritonitis, skips the mask the program requires and rests the cap on the table during the fill. He has not had a problem, so the shortcuts felt safe. Joy watches a full exchange, names the two drifts without scolding, retrains the steps and books a recheck. Drift is normal. Catching it is the job.</p>
 {{key:A good year is not proof of good technique. Watch a full exchange at scheduled visits.}}
+{{fig:pd09_fig_09_retraining_triggers_nine}}
 """),
     ],
     "debrief": ["""

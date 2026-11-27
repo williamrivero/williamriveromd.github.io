@@ -82,6 +82,7 @@ MODULE = {
 <p>A provincial PD program follows 40 patients. Over the past year, because some patients started or stopped during the year, the total time at risk adds up to 34.5 patient-years. The team recorded 11 exit-site infections.</p>
 <p>Rate = 11 episodes &divide; 34.5 years at risk = about 0.32 episodes per year at risk. That is within the 2023 target. The head nurse then looks at the 11 episodes one by one. Six followed catheter trauma, four of them in patients who do manual labor. The next improvement project writes itself: immobilization teaching for working patients.</p>
 {{key:A rate tells you whether the program is on track. The episodes behind the rate tell you what to fix.}}
+{{fig:pd03_fig_03_exit_site_prevention_evidence}}
 """),
         ("assessment-at-every", "Assessment and triage", "Assessment at every indicated visit", """
 <p>Ask first, then look and feel, in the same order every time. Ask about pain, recent pulling or trauma, a wet or soiled dressing, fever, a change in drainage, cloudy effluent and abdominal pain.</p>
@@ -131,6 +132,7 @@ MODULE = {
 <tr><td>&ldquo;The gauze looks wet with clear fluid.&rdquo;</td><td>Report it. Early leak and drainage need the team to look, especially after an urgent start.</td></tr>
 </tbody></table></div>
 {{key:Most early exit-site problems are mechanical. Ask about the patient&rsquo;s day before you blame their technique.}}
+{{fig:pd03_fig_03_catheter_break_in_first_weeks}}
 """),
     ],
     "debrief": ["""

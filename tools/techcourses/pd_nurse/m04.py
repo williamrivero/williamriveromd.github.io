@@ -104,6 +104,7 @@ MODULE = {
 <h3>Example: the UF that fell overnight</h3>
 <p>Mr. Gary&rsquo;s daily UF dropped from about +800 mL to about +450 mL in one week. Before anyone suspected the membrane, Nurse Rhea asked one question: &ldquo;Did anything change in how you measure?&rdquo; His son had started weighing the bags on the kitchen scale instead of the bathroom scale, and had stopped subtracting the empty-bag weight the same way. With the old method restored, the numbers returned. Nothing was wrong with Mr. Gary. Something was wrong with the arithmetic.</p>
 {{key:Before you read a falling UF as physiology, rule out a change in measurement.}}
+{{fig:pd04_fig_04_net_uf_diary_error_sources}}
 """),
         ("contamination-dry-or", "Contamination", "Contamination: dry or wet", """
 <p>The 2022 International Society for Peritoneal Dialysis (ISPD) peritonitis recommendations revised the guidance on managing contamination of the PD system.[[pd_li2022]] Programs commonly classify events this way.</p>
