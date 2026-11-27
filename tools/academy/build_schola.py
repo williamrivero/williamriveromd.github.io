@@ -171,7 +171,7 @@ SHARED_PAGES = ("index.html", "review-deck.html")
 
 
 def hub_names(names):
-    return [n[:-5] for n in names if n not in SHARED_PAGES and not re.search(r"-\d{2}-|final-exam|trainer", n)]
+    return [n[:-5] for n in names if n not in SHARED_PAGES and not re.search(r"-\d{2}-|final-exam|trainer|-pretest\.html$", n)]
 
 
 def track_of(name, hubs):

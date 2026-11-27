@@ -100,7 +100,9 @@ def build_page():
 
 
 def wanted(name, text):
-    return True   # every academy page: capture needs #nc-quiz, the shift drill needs any page
+    # every academy page (capture needs #nc-quiz, the shift drill needs any page) except the placement pre-test
+    # pages (apply_placement.py), where a drill would interrupt the test
+    return not name.endswith("-pretest.html")
 
 
 def main():
