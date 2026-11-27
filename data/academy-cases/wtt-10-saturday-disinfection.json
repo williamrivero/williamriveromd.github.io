@@ -1,0 +1,244 @@
+{
+  "id": "wtt10-saturday-disinfection",
+  "page": "water-treatment-technician-10-disinfection-biofilm-control.html",
+  "title": "Saturday night disinfection",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Disinfection log",
+  "note": "Fictional unit. Product, strengths, volumes and times are illustrative; use your system manufacturer’s instructions, your written procedure and the product label.",
+  "labels": {
+    "time": "Time",
+    "plan": "Procedure",
+    "far": "Farthest point (station 16)",
+    "clock": "Dwell clock",
+    "resid": "Residual test",
+    "culture": "End-of-loop culture"
+  },
+  "monitorOrder": [
+    "time",
+    "plan",
+    "far",
+    "clock",
+    "resid",
+    "culture"
+  ],
+  "monitor": {
+    "time": "Sat 19:30",
+    "plan": "240 L at 0.2%; stock 4%",
+    "far": "—",
+    "clock": "Not started",
+    "resid": "—",
+    "culture": "Last: 30 CFU/mL",
+    "alarm": []
+  },
+  "intro": "<p>You are the water treatment technician. The last patient left at 19:15 on Saturday. Tonight is the scheduled chemical disinfection of the distribution loop with a peracetic acid product. Your written procedure says: system volume 240 liters, working strength 0.2%. The stock container in front of you is labeled 4%.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "The dose:",
+      "prompt": "How much stock do you need?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "12 L, made up to 240 L.",
+          "feedback": "<p>Stock needed = (working strength × total volume) ÷ stock strength = (0.2 × 240) ÷ 4 = 12 liters, made up to 240 liters with dialysis water. Check the label strength, the expiry, and the system volume written in the procedure.</p>",
+          "vitals": {
+            "time": "Sat 19:50",
+            "plan": "12 L stock · in date"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "48 L: 240 multiplied by 0.2 gives 48, which is the amount of stock to add to the loop.",
+          "feedback": "<p>That leaves out the stock strength. 48 is the amount of pure disinfectant at 100%; with 4% stock you divide by 4. Forty-eight liters would make the loop twenty times too strong, risking damage and a much longer rinse.</p>",
+          "then": "<p>You recheck the formula before pouring: (0.2 × 240) ÷ 4 = 12 liters.</p>",
+          "vitals": {
+            "time": "Sat 20:00",
+            "plan": "12 L stock · in date"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Whatever the last log used; the loop hasn’t changed.",
+          "feedback": "<p>The last log may have used a different product strength. Products with the same name come in different strengths. Work it out from tonight’s label every time.</p>",
+          "then": "<p>The last log used a 5% stock. You work it out for tonight’s 4% label: 12 liters.</p>",
+          "vitals": {
+            "time": "Sat 20:00",
+            "plan": "12 L stock · in date"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "vitals": {
+        "time": "Sat 20:30",
+        "far": "Strip: below working strength",
+        "alarm": [
+          "far"
+        ]
+      },
+      "short": "20:30:",
+      "scene": "<p>After circulating for 30 minutes, the high-range strip reads full strength at the first stations, but at station 16, the farthest point, it reads well below working strength.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Don’t start the dwell clock. Find the cause, correct it, and confirm full strength at every point first.",
+          "feedback": "<p>Dwell time counts only from the moment full strength is proven at the farthest point. A low reading only at the far end points to a closed valve, an air lock or a pump problem, not a dosing error.</p>",
+          "then": "<p>A branch valve near station 14 is half closed. You open it, circulate again, and at 20:55 the strip reads full strength at station 16.</p>",
+          "vitals": {
+            "time": "Sat 20:55",
+            "far": "Full strength",
+            "clock": "Started 20:55",
+            "alarm": []
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Start the clock now; it has already circulated for half an hour.",
+          "feedback": "<p>Time before full strength is proven at the farthest point does not count, however long it was. The far end of the loop would be under-disinfected without any sign.</p>",
+          "then": "<p>You stop and look for the cause: a half-closed branch valve near station 14. At 21:00 the strip reads full strength at station 16, and the clock starts then.</p>",
+          "vitals": {
+            "time": "Sat 21:00",
+            "far": "Full strength",
+            "clock": "Started 21:00",
+            "alarm": []
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "ok",
+          "text": "Add more stock until station 16 reads full strength, then start the clock and record the extra amount added.",
+          "feedback": "<p>If the first stations already read full strength, the dose is not the problem. Adding more raises the strength everywhere else. Find why the far end is not getting it.</p>",
+          "then": "<p>The far end still reads low. You find a half-closed branch valve near station 14, open it, and start the clock at 21:05.</p>",
+          "vitals": {
+            "time": "Sat 21:05",
+            "far": "Full strength",
+            "clock": "Started 21:05",
+            "alarm": []
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "time": "Sun 05:30",
+        "resid": "Negative at 15 of 16 · station 11 positive",
+        "alarm": [
+          "resid"
+        ]
+      },
+      "short": "Sunday, 05:30:",
+      "scene": "<p>After the dwell and a long rinse, the low-range residual strip is negative at 15 outlets. Station 11, which has the longest connector hose, still tests positive. The first patients arrive at 06:30.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Keep flushing station 11 and retest. No patient connects until every outlet is negative and recorded.",
+          "feedback": "<p>A positive residual means disinfectant is still in the water. A long hose or dead leg holds it; flush that outlet longer and report it. The release covers the whole loop.</p>",
+          "then": "<p>After 20 more minutes of flushing, station 11 is negative. You retest two other outlets: still negative.</p>",
+          "vitals": {
+            "time": "Sun 06:00",
+            "resid": "Negative at all 16",
+            "alarm": []
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Release the loop, and tag station 11 out of use until it tests negative.",
+          "feedback": "<p>Tagging the station protects its patient, but your procedure releases the loop when every outlet is negative. Flush it, and the problem is gone in minutes.</p>",
+          "then": "<p>You flush station 11 for 20 minutes; it is negative, and you release the whole loop.</p>",
+          "vitals": {
+            "time": "Sun 06:00",
+            "resid": "Negative at all 16",
+            "alarm": []
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "harmful",
+          "text": "Release: 15 of 16 negative is close enough.",
+          "feedback": "<p>Disinfectant in the dialysis water reaches the patient’s blood. No patient is connected until every outlet tests negative.</p>",
+          "then": "<p>The charge nurse asks for the residual log and sees station 11. You flush it until it is negative before anyone connects.</p>",
+          "vitals": {
+            "time": "Sun 06:20",
+            "resid": "Negative at all 16",
+            "alarm": []
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Two weeks later",
+        "culture": "45 CFU/mL (was 5 after disinfection)",
+        "alarm": [
+          "culture"
+        ]
+      },
+      "short": "Two weeks later:",
+      "scene": "<p>The end-of-loop culture taken three days after the disinfection was 5 CFU/mL. Today’s, two weeks after, is 45 CFU/mL. Your unit’s action level is 50.</p>",
+      "prompt": "What do you make of it?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Counts back up this fast suggest mature biofilm or a seeding source. Report it, and look for the source.",
+          "feedback": "<p>The number is under the action level; the trend is not. Look at dead legs, the storage tank, old hoses and the bicarbonate system. A different agent, repeated cycles or replacing parts may be needed, which is for your water lead and the medical director to decide.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Nothing yet: 45 is still under the action level of 50, and the culture three days after disinfection showed the loop was clean.",
+          "feedback": "<p>Read the trend, not only the number. From 5 to 45 in under two weeks means the schedule is not keeping up, or something is seeding the loop.</p>",
+          "then": "<p>Your water lead asks about the trend. You report it and start looking for the source.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Use double strength next time.",
+          "feedback": "<p>Strength is set by the manufacturer’s instructions; going above it risks the pipework and membranes. Find the source first.</p>",
+          "then": "<p>Your water lead asks you to report the trend and look for the source instead.</p>",
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "short": "In the chemical store:",
+      "scene": "<p>While you look for the source, a utility worker comes in with a bucket of bleach solution to clean the floor around the tank, next to the open container of peracetic acid product.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Stop him: never mix bleach with acid. Move the bleach out and ventilate.",
+          "feedback": "<p>Bleach and acid products together release chlorine gas. Keep them apart, ventilate, and if anything has mixed, leave the area and follow the safety data sheet.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Let him finish quickly, since he is only cleaning the floor and the peracetic acid container still has its lid on.",
+          "feedback": "<p>One splash is enough. Bleach does not belong in a room with an open acid product.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Tell him to use only a little, and open the window.",
+          "feedback": "<p>Ventilation helps, but the rule is never to mix. Move the bleach out of the room.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "The source",
+      "text": "<p>The search finds an old flexible hose to a station that has not been used for months. It is removed and the next disinfection is brought forward. The log for Saturday shows the dose calculation, the valve, the time the clock started, both strip results at every outlet, and your name.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Work out the dose every time</b> from tonight’s label: (working strength × volume) ÷ stock strength.</li><li><b>The dwell clock starts</b> only when full strength is proven at the farthest point.</li><li><b>Every outlet negative</b> on the low-range strip before any patient connects.</li><li><b>Counts back up quickly</b> mean biofilm or a source: report and investigate.</li><li><b>Never mix bleach with acid.</b></li></ul><p>See <a href=\"#dilution\">Working out a dilution</a>, <a href=\"#disinfection\">Disinfecting the system</a> and <a href=\"#problems\">Troubleshooting</a>.</p>"
+}

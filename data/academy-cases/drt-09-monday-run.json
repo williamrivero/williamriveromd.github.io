@@ -1,0 +1,272 @@
+{
+  "id": "drt09-monday-run",
+  "page": "dialyzer-reprocessing-technician-09-testing-and-acceptance.html",
+  "title": "Seventy-eight percent on a Monday",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Reprocessing run board",
+  "note": "Fictional unit. The 80% floor is from the PhilHealth quality circular and the AAMI standard cited in the module; your program’s procedure sets every step.",
+  "labels": {
+    "time": "Time",
+    "dz": "Dialyzer",
+    "base": "Baseline TCV",
+    "meas": "Measured TCV",
+    "ret": "Retained",
+    "status": "Status",
+    "rp": "Reprocessor"
+  },
+  "monitorOrder": [
+    "time",
+    "dz",
+    "base",
+    "meas",
+    "ret",
+    "status",
+    "rp"
+  ],
+  "monitor": {
+    "time": "Mon 07:10",
+    "dz": "RU-1104",
+    "base": "92 mL",
+    "meas": "72 mL",
+    "ret": "?",
+    "status": "Testing",
+    "rp": "In use",
+    "alarm": []
+  },
+  "intro": "<p>You are the reprocessing technician on Monday’s morning run. Dialyzer RU-1104 belongs to Mrs. Nenita Ramos, who is due at 10:00 for its sixth use. Its baseline total cell volume (TCV) is 92 mL; today’s measured volume is 72 mL. The unit floor is 80% retained.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "RU-1104:",
+      "prompt": "What is the result, and what do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "78%: below the floor. It fails the volume gate; follow the discard procedure and tell the charge nurse she needs a new dialyzer.",
+          "feedback": "<p>72 ÷ 92 × 100 = 78%. Below 80% means too many fibers have closed. The charge nurse needs to know now so a new dialyzer is ready for her 10:00 session.</p>",
+          "vitals": {
+            "ret": "78%",
+            "status": "FAILED volume · charge nurse told",
+            "alarm": [
+              "ret",
+              "status"
+            ]
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Run the test again.",
+          "feedback": "<p>A repeat is legitimate only for a defined, recorded reason the procedure allows, with the first result kept. Repeating until it passes proves only that the test can be beaten.</p>",
+          "then": "<p>You find no reason for a repeat. RU-1104 fails at 78%, and you tell the charge nurse.</p>",
+          "vitals": {
+            "ret": "78%",
+            "status": "FAILED volume · charge nurse told",
+            "alarm": [
+              "ret",
+              "status"
+            ]
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Accept it for one last use: 78% is close to 80%.",
+          "feedback": "<p>The floor is the floor. A dialyzer below it fails the gate, however close.</p>",
+          "then": "<p>The supervisor stops the release. RU-1104 fails at 78%, and the charge nurse is told.</p>",
+          "vitals": {
+            "ret": "78%",
+            "status": "FAILED volume · charge nurse told",
+            "alarm": [
+              "ret",
+              "status"
+            ]
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "vitals": {
+        "time": "Mon 07:40",
+        "dz": "RU-1110",
+        "base": "— (blank in record)",
+        "meas": "88 mL",
+        "ret": "?",
+        "status": "Testing",
+        "alarm": [
+          "base"
+        ]
+      },
+      "short": "RU-1110:",
+      "scene": "<p>The next dialyzer, RU-1110, measures 88 mL. Its baseline field in the record is blank. The catalog lists 95 mL for this model, which would make it 93%.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Hold it.",
+          "feedback": "<p>A missing baseline is a hold, not a guess. Individual dialyzers of the same model differ, so a catalog value cannot stand in for this dialyzer’s own first measurement. Investigate the record by your procedure.</p>",
+          "vitals": {
+            "status": "HOLD: baseline missing"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Use the catalog value of 95 mL. At 93%, it passes comfortably, and the patient keeps her dialyzer.",
+          "feedback": "<p>Without its own baseline there is no denominator, and the result means nothing. Hold it and investigate.</p>",
+          "then": "<p>The supervisor reverses it. RU-1110 is held while the record is investigated.</p>",
+          "vitals": {
+            "status": "HOLD: baseline missing"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Enter today’s 88 mL as its baseline and continue processing.",
+          "feedback": "<p>That would make a used dialyzer look new and hide any fibers already lost. A baseline is measured before first use, never later.</p>",
+          "then": "<p>You stop before saving. RU-1110 is held while the record is investigated.</p>",
+          "vitals": {
+            "status": "HOLD: baseline missing"
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "time": "Mon 08:30",
+        "dz": "Run so far",
+        "base": "—",
+        "meas": "4 of 9 lower than last use",
+        "ret": "—",
+        "status": "Pattern",
+        "alarm": [
+          "meas"
+        ]
+      },
+      "short": "A pattern:",
+      "scene": "<p>By 08:30, four of the nine dialyzers processed this morning have measured 6 to 10% lower than at their last use, which is unusual. On one, you found a loose connection on the test line and repeated the test once, as your procedure allows.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Keep both results for the repeat with its recorded reason. Stop the run, and report a possible reprocessor fault to the biomedical technician.",
+          "feedback": "<p>A legitimate repeat has a defined, recorded reason, and the first result stays in the record. Several odd results on different dialyzers suggest the equipment, not the dialyzers: report it before more are processed.</p>",
+          "then": "<p>The biomedical technician finds the volume sensor giving erratic readings, high and low.</p>",
+          "vitals": {
+            "rp": "OUT OF SERVICE: sensor erratic",
+            "alarm": [
+              "rp"
+            ]
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Keep processing, and record only the repeat results.",
+          "feedback": "<p>Every result belongs in the record. And four odd results in one morning is a pattern to escalate, not to work through.</p>",
+          "then": "<p>The supervisor asks you to restore the first results and stop the run. The biomedical technician finds the volume sensor erratic.</p>",
+          "vitals": {
+            "rp": "OUT OF SERVICE: sensor erratic",
+            "alarm": [
+              "rp"
+            ]
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "ok",
+          "text": "Finish the run so the afternoon dialyzers are ready on time, then report the odd readings to the biomedical technician at the end of the day.",
+          "feedback": "<p>Reporting is right, but every dialyzer processed meanwhile is open to doubt. Stop and report now.</p>",
+          "then": "<p>The biomedical technician finds the volume sensor erratic. Five more dialyzers have been processed on it since 08:30.</p>",
+          "vitals": {
+            "rp": "OUT OF SERVICE: sensor erratic",
+            "alarm": [
+              "rp"
+            ]
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "time": "Mon 10:30",
+        "dz": "RU-1104",
+        "base": "92 mL",
+        "meas": "72 mL",
+        "ret": "78%",
+        "status": "Failed (recorded)"
+      },
+      "short": "RU-1104 again:",
+      "scene": "<p>A colleague says: “The sensor was faulty, so RU-1104’s failure doesn’t count. Retest it on the other reprocessor and release it if it passes.”</p>",
+      "prompt": "What do you say?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Its failure stands; the program decides its fate. The fault puts every pass from that reprocessor in question.",
+          "feedback": "<p>A later finding that the reprocessor was faulty does not erase a recorded failure. It does raise a question about every result the faulty sensor produced, passes included.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Agree: retest it on the other reprocessor.",
+          "feedback": "<p>That is the same as repeating until it passes. The failure is recorded; what happens next follows the program, not a convenient retest.</p>",
+          "then": "<p>The supervisor keeps the failure on record and refers it to the program.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Discard it at once, so there can be no more argument.",
+          "feedback": "<p>Its disposition follows the program, which may also want it kept while the fault is investigated.</p>",
+          "then": "<p>The supervisor holds it for the program’s decision.</p>",
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "vitals": {
+        "time": "Mon 11:00",
+        "dz": "Stored, passed on this reprocessor",
+        "meas": "Since last verified check",
+        "ret": "—",
+        "status": "In question",
+        "alarm": [
+          "status",
+          "rp"
+        ]
+      },
+      "short": "The ones that passed:",
+      "scene": "<p>Eleven dialyzers stored for release this week passed their volume test on this reprocessor since its last verified check. Three are due on the afternoon shift.</p>",
+      "prompt": "What do you do?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "Hold all eleven for the program’s decision, and tell the charge nurse which patients need new dialyzers this afternoon.",
+          "feedback": "<p>A pass from an erratic sensor is not a pass. Hold them until they are retested on verified equipment or otherwise dispositioned, and give the floor time to prepare new dialyzers.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "Release them: they passed.",
+          "feedback": "<p>They passed on a sensor now known to be erratic in both directions. The result cannot be trusted.</p>",
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Hold only the three due this afternoon, and let the other eight wait in storage until the biomedical technician reports on the sensor.",
+          "feedback": "<p>That protects today’s patients, but the other eight have the same doubtful result. Hold all of them for the program’s decision.</p>",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "End of the day",
+      "text": "<p>The volume sensor is replaced and verified. The eleven held dialyzers are retested on verified equipment under the supervisor’s direction; two now fall below the floor and are discarded. Mrs. Ramos dialyzes on a new dialyzer, and the record keeps every result, every repeat with its reason, and the fault report.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Compare with the dialyzer’s own baseline;</b> below the floor fails, however close.</li><li><b>A missing baseline is a hold,</b> never a catalog value.</li><li><b>Repeat only for a recorded reason,</b> and keep every result.</li><li><b>A pattern points to the equipment:</b> stop and report.</li><li><b>A faulty reprocessor</b> does not erase a failure, and puts every pass in question.</li></ul><p>See <a href=\"#tcv\">Measuring against a baseline</a>, <a href=\"#gates\">Every gate must pass</a> and <a href=\"#repeats\">Repeating a test</a>.</p>"
+}
