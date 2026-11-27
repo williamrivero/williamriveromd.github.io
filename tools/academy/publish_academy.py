@@ -96,6 +96,8 @@ def main():
         L = importlib.util.module_from_spec(spec); spec.loader.exec_module(L); L.main()   # Listen player (read aloud)
         spec = importlib.util.spec_from_file_location("apply_certificate", Path(__file__).with_name("apply_certificate.py"))
         CE = importlib.util.module_from_spec(spec); spec.loader.exec_module(CE); CE.main()   # certificate of completion on final exams
+        spec = importlib.util.spec_from_file_location("apply_study_record", Path(__file__).with_name("apply_study_record.py"))
+        SR = importlib.util.module_from_spec(spec); spec.loader.exec_module(SR); SR.main()   # Personal Study Record (hubs + checklist sign-off dates)
         spec = importlib.util.spec_from_file_location("apply_cases", Path(__file__).with_name("apply_cases.py"))
         CA = importlib.util.module_from_spec(spec); spec.loader.exec_module(CA); CA.main()   # interactive branching cases
         spec = importlib.util.spec_from_file_location("apply_review", Path(__file__).with_name("apply_review.py"))
