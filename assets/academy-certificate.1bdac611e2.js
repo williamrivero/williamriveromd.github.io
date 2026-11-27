@@ -2823,7 +2823,7 @@ var qrcode = function() {
     ".rcm-cert button,.rcm-certm button{font:700 15px Inter,sans-serif;padding:10px 16px;border-radius:999px;border:2px solid #1f3864;background:#1f3864;color:#fff;cursor:pointer}",
     ".rcm-certm button.ghost{background:transparent;color:#1f3864}",
     ".rcm-cert-check{margin:0 0 18px;border:1px solid #d9c592;border-radius:12px;background:#fffbef;color:#1e2a38}",
-    ".rcm-cert-check summary{display:flex;gap:12px;align-items:center;padding:12px 14px;cursor:pointer;list-style:none}",
+    ".rcm-cert-check summary{display:flex;gap:12px;align-items:center;padding:12px 14px;cursor:pointer;list-style:none;line-height:1.4}",
     ".rcm-cert-check summary::-webkit-details-marker{display:none}",
     ".rcm-cert-check b{font:800 15.5px Inter,sans-serif;color:#1f3864}.rcm-cc-sub{font-size:13.5px;color:#5a6678}",
     ".rcm-cc-ring{width:34px;height:34px;flex:none;border-radius:50%;background:conic-gradient(#2e6b3e calc(var(--p)*1%),#e6e0cc 0)}",
