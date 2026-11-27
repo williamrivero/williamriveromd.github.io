@@ -2027,6 +2027,43 @@ html body .hero.hero h1 { font-size: 46px; line-height: 1.12; }   /* page title:
 <meta name="apple-mobile-web-app-title" content="Schola">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <!-- /SCHOLA-HEAD -->
+<style id="academy-pager">
+.nc-nextprev.rca-pager{display:block;--pg-num:var(--teal);--pg-go:#c55a11;--pg-rule:var(--navy,#1f3864);--pg-done:var(--teal);--pg-cur:#c55a11;
+  border:1px solid var(--border);border-radius:16px;background:var(--white);padding:24px 26px 26px;margin:24px 0 12px;}
+html[data-theme="dark"] .nc-nextprev.rca-pager{--pg-go:#f0915a;--pg-cur:#f0915a;--pg-rule:var(--text);}
+.rca-pager .rca-rail{display:flex;gap:5px;margin:0 0 9px !important;padding:0 !important;list-style:none;}
+.rca-pager .rca-rail li{flex:1;height:6px;border-radius:3px;background:var(--border);margin:0 !important;padding:0;}
+.rca-pager .rca-rail li.is-done{background:var(--pg-done);opacity:.85;}
+.rca-pager .rca-rail li.is-current{background:var(--pg-cur);}
+.rca-pager .rca-rail.is-dense{gap:3px;}
+.rca-status{display:flex;justify-content:space-between;gap:12px;margin:0 0 20px;font:600 12px/1.3 Inter,Manrope,system-ui,sans-serif;letter-spacing:.04em;color:var(--text-muted);}
+.rca-row{display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,2fr);gap:26px;border-top:2px solid var(--pg-rule);padding-top:20px;}
+.rca-sep{background:var(--border);}
+.rca-pager .nc-np{display:block;border:0;border-radius:6px;background:none;padding:0;text-align:left;color:var(--text);text-decoration:none;}
+.rca-pager .nc-np:hover{border-color:transparent;}
+.rca-pager .nc-np small{display:flex;align-items:center;gap:6px;margin:0 0 7px;font:700 11px/1.3 Inter,Manrope,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);}
+.rca-t{display:block;font-family:Manrope,Inter,system-ui,sans-serif;font-weight:700;color:var(--text);text-wrap:balance;transition:color .2s;}
+.rca-prev .rca-t{font-size:16px;line-height:1.4;}
+.rca-prev:hover .rca-t{color:var(--teal);}
+.rca-pager .rca-next{display:flex;gap:18px;align-items:flex-start;}
+.rca-num{flex:none;min-width:1.2em;font:700 56px/.9 Manrope,Inter,system-ui,sans-serif;letter-spacing:-.03em;color:var(--pg-num);font-variant-numeric:tabular-nums;}
+.rca-num svg{display:block;width:50px;height:50px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.rca-body{min-width:0;flex:1;}
+.rca-next .rca-t{font-size:20px;line-height:1.3;}
+.rca-go{display:inline-flex;align-items:center;gap:6px;margin-top:11px;padding-bottom:2px;border-bottom:2px solid transparent;
+  font:700 13px/1.3 Inter,Manrope,system-ui,sans-serif;color:var(--pg-go);transition:border-color .2s,gap .2s;}
+.rca-next:hover .rca-go,.rca-next:focus-visible .rca-go{border-color:var(--pg-go);gap:10px;}
+.rca-pager .nc-np:focus-visible{outline:2px solid var(--teal);outline-offset:5px;}
+@media (max-width:640px){
+  .nc-nextprev.rca-pager{padding:20px 18px 22px;}
+  .rca-row{grid-template-columns:1fr;gap:18px;}
+  .rca-sep{display:none;}
+  .rca-pager .rca-next{order:-1;padding-bottom:16px;border-bottom:1px solid var(--border);border-radius:0;}
+  .rca-num{font-size:44px;} .rca-num svg{width:40px;height:40px;}
+  .rca-next .rca-t{font-size:18px;}
+}
+@media (prefers-reduced-motion:reduce){.rca-pager *{transition:none !important;}}
+</style>
 </head>
 
 <body class="physician-mode single-mode" data-course="uom">
@@ -2529,9 +2566,14 @@ html body .hero.hero h1 { font-size: 46px; line-height: 1.12; }   /* page title:
     <span class="calc-card-arrow">Open →</span>
   </a>
 </div>
-  <div class="nc-nextprev">
-    <a class="nc-np" href="dialysis-unit-manager-10-billing-and-information.html"><small>← Previous &middot; Module 10</small>PhilHealth Claims, Documentation, and Privacy</a>
-    <a class="nc-np nc-np-next" href="dialysis-unit-manager-12-business-continuity.html"><small>Next &middot; Module 12 →</small>Continuity During Outages and Disasters</a>
+  <div class="nc-nextprev rca-pager">
+    <ol class="rca-rail" aria-hidden="true"><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-done"></li><li class="is-current"></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+    <p class="rca-status"><span>Module 11 of 19</span><span>8 modules to go</span></p>
+    <div class="rca-row" role="navigation" aria-label="Module navigation">
+      <a class="nc-np rca-prev" href="dialysis-unit-manager-10-billing-and-information.html"><small>← Previous &middot; Module 10</small><span class="rca-t">PhilHealth Claims, Documentation, and Privacy</span></a>
+      <span class="rca-sep" aria-hidden="true"></span>
+      <a class="nc-np nc-np-next rca-next" href="dialysis-unit-manager-12-business-continuity.html"><span class="rca-num" aria-hidden="true">12</span><span class="rca-body"><small>Next module</small><span class="rca-t">Continuity During Outages and Disasters</span><span class="rca-go">Continue <span aria-hidden="true">&rarr;</span></span></span></a>
+    </div>
   </div>
 </section>
 </main>

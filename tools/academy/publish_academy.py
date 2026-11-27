@@ -104,6 +104,8 @@ def main():
         UP = importlib.util.module_from_spec(spec); spec.loader.exec_module(UP); UP.main([])   # "Updated since you read it" flags
         spec = importlib.util.spec_from_file_location("apply_tools", Path(__file__).with_name("apply_tools.py"))
         TL = importlib.util.module_from_spec(spec); spec.loader.exec_module(TL); TL.main([])   # inline Calculo / Dosis tools
+        spec = importlib.util.spec_from_file_location("apply_pager", Path(__file__).with_name("apply_pager.py"))
+        PG = importlib.util.module_from_spec(spec); spec.loader.exec_module(PG); PG.main([])   # editorial module pager (prev / next)
         spec = importlib.util.spec_from_file_location("strip_symptom_widget", Path(__file__).with_name("strip_symptom_widget.py"))
         W = importlib.util.module_from_spec(spec); spec.loader.exec_module(W); W.main()   # no Symptom Checker in the Academy
         spec = importlib.util.spec_from_file_location("patch_site_nav", Path(__file__).resolve().parents[2] / "patch_site_nav.py")
