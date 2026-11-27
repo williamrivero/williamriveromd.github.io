@@ -80,7 +80,7 @@ MODULE = {'image_alt': 'A farmer walks along a path between flooded rice paddies
                '<p><strong>After discharge.</strong> KDIGO 2012 advises evaluating patients about 3 months after AKI for recovery, new CKD, '
                'or worsening of existing CKD (ungraded).[[an05_1]]</p>\n'
                '{{key:Quote the grade with its source. A Grade A in the Philippine leptospirosis guideline and a 1A in KDIGO come from '
-               'different systems.}}\n'),
+               'different systems.}}\n' '\n{{fig:an05_fig_aki_evidence_fluids_bicarbonate_lepto}}\n'),
               ('practice',
                'Practice',
                'What the attending does',

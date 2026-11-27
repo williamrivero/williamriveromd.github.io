@@ -50,7 +50,7 @@ MODULE = {'image_alt': 'A three-dimensional forearm showing an arteriovenous fis
                'cultures grow <em>Staphylococcus aureus</em> again, four weeks after the last course. The exit site looks clean.</p><p>You '
                'explain to the fellow that the bacteria live in the biofilm, out of reach of the antibiotics.</p><p '
                'class="tc-scene-take"><b>What this shows.</b> Treat the source, not only the culture.</p></div>\n'
-               '\n'),
+               '\n' '\n{{fig:an16_fig_fistula_catheter_biofilm}}\n'),
               ('evidence',
                'Evidence',
                'What the evidence shows',

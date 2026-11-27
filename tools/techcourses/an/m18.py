@@ -61,7 +61,7 @@ MODULE = {'image_alt': 'A peritoneal dialysis nurse holds a drained dialysis bag
                'start a laxative and ask him to call back after his bowels move, and you book an abdominal X-ray if drainage does not '
                'improve.</p><p class="tc-scene-take"><b>What this shows.</b> Ask about the color of the fluid before you ask about anything '
                'else.</p></div>\n'
-               '\n'),
+               '\n' '\n{{fig:an18_fig_peritonitis_membrane_damage_chain}}\n'),
               ('evidence',
                'Evidence',
                'What the evidence shows',

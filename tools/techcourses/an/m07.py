@@ -60,7 +60,7 @@ MODULE = {'image_alt': 'An intensivist and a nephrologist confer at the foot of 
                'write: &ldquo;No indication today. Start if potassium exceeds 6.0 despite treatment, pH falls below 7.15, or oxygen '
                'requirement rises with a positive fluid balance. Review tomorrow.&rdquo;</p><p class="tc-scene-take"><b>What this '
                'shows.</b> A written trigger lets the team act without waiting for you.</p></div>\n'
-               '\n'),
+               '\n' '\n{{fig:an07_fig_what_the_kidney_has_lost}}\n'),
               ('evidence',
                'Evidence',
                'What the evidence shows',

@@ -97,7 +97,7 @@ MODULE = {'image_alt': 'A dialysis nurse reads back an order over the phone whil
                'unit.|Write it::Complete the endorsement form and a current abstract with the prescription and medicines.|Hand it '
                'over::Give a copy to the patient and send one to the receiving unit or nephrologist through an approved channel.|Close the '
                'loop::Confirm the first session or the admission was received, and record who accepted the patient.}}\n'
-               '{{key:A patient who leaves without an endorsement arrives at the next unit as a stranger.}}\n'),
+               '{{key:A patient who leaves without an endorsement arrives at the next unit as a stranger.}}\n' '\n{{fig:an03_fig_safe_endorsement_four_steps}}\n'),
               ('practice',
                'Practice',
                'What the attending does',

@@ -84,7 +84,7 @@ MODULE = {'image_alt': 'A woman sets up a home dialysis cycler at her bedside in
                'details change; confirm them on the date of service. What the patient pays beyond the package shapes what they can do at '
                'home.</p>\n'
                '{{key:A higher Kt/V is not a better patient. Ask whether the prescription controls symptoms and volume, and whether the patient '
-               'can deliver it.}}\n'),
+               'can deliver it.}}\n' '\n{{fig:an17_fig_ademex_hong_kong_clearance}}\n'),
               ('practice',
                'Practice',
                'What the attending does',

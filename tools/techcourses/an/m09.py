@@ -100,7 +100,7 @@ MODULE = {'image_alt': 'A three-dimensional glomerulus with its incoming and out
                'standardized office technique (2B).[[an09_1]] The grade is weak, and few Philippine clinics measure pressure the way the '
                'trials did. Use the target as a direction, not a reflex.</p>\n'
                '{{key:Quote the absolute numbers, not only the hazard ratios. A patient at high baseline risk, like one with heavy '
-               'albuminuria, gains more from the same relative effect.}}\n'),
+               'albuminuria, gains more from the same relative effect.}}\n' '\n{{fig:an09_fig_ckd_pillars_trial_evidence}}\n'),
               ('practice',
                'Practice',
                'What the attending does',

@@ -93,7 +93,7 @@ MODULE = {'image_alt': 'A renal pathologist looks into a teaching microscope wit
                '<p><strong>Before immunosuppression.</strong> KDIGO 2021 glomerular guidance covers infection screening and prophylaxis '
                'before and during immunosuppression.[[an11_1]]</p>\n'
                '{{key:Give biopsy risk as numbers, and pair it with what the result would change. Risk alone sounds like a reason to '
-               'refuse.}}\n'),
+               'refuse.}}\n' '\n{{fig:an11_fig_native_biopsy_risk_pexivas}}\n'),
               ('practice',
                'Practice',
                'What the attending does',

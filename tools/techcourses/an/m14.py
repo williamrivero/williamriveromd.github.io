@@ -69,7 +69,7 @@ MODULE = {'image_alt': 'Close-up of a hollow-fiber dialyzer cartridge standing u
                'written before CONVINCE, judged HDF as good as but not better than hemodialysis.[[an14_4]]</p>\n'
                '<p>PhilHealth covers up to 156 sessions a year[[an14_9]] and has issued quality standards for maintenance '
                'hemodialysis.[[an14_2]]</p>\n'
-               '{{key:Kt/V is a floor, not a goal. Above it, fluid, time and the access matter more.}}\n'),
+               '{{key:Kt/V is a floor, not a goal. Above it, fluid, time and the access matter more.}}\n' '\n{{fig:an14_fig_hd_dose_hemo_convince}}\n'),
               ('practice',
                'Practice',
                'What the attending does',

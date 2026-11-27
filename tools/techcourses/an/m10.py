@@ -105,7 +105,7 @@ MODULE = {'image_alt': 'Top-down arrangement of a blood tube, an iron vial, an i
                '<p><strong>Acid.</strong> KDIGO 2024 suggests considering drug treatment, with or without diet, to prevent acidosis with '
                'clinical implications, giving serum bicarbonate &lt;18 mmol/L as an example. This is a practice point, not a graded '
                'recommendation.[[an10_1]]</p>\n'
-               '{{key:Hemoglobin is a surrogate. Treat to relieve symptoms and avoid transfusion, never to normalize the number.}}\n'),
+               '{{key:Hemoglobin is a surrogate. Treat to relieve symptoms and avoid transfusion, never to normalize the number.}}\n' '\n{{fig:an10_fig_anemia_2026_thresholds_treat}}\n'),
               ('practice',
                'Practice',
                'What the attending does',
