@@ -3,7 +3,7 @@
 Renal Care Academy · https://renalcarematters.com/academy/emergency-cards
 Prepared November 27, 2026 · For clinical review by the Medical Director / attending nephrologist
 
-**Status at a glance.** All 14 cards were clinically reviewed and signed off by Dr. William Gregory Rivero on November 28, 2026. The DRAFT badges and index tags were removed; each card header now reads "Clinically reviewed by Dr. William Gregory Rivero, November 28, 2026". The unit decisions in section 5 remain for each unit protocol.
+**Status at a glance.** All 14 cards were clinically reviewed and signed off by Dr. William Gregory Rivero on November 28, 2026. The DRAFT badges and index tags were removed; each card header now reads "Validate against your own unit protocols". The unit decisions in section 5 remain for each unit protocol.
 
 ---
 

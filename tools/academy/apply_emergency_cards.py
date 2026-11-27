@@ -145,7 +145,7 @@ def status_html(cid):
     """Visible review status line in a card header (text, not color alone)."""
     r = D.REVIEW.get(cid)
     if r and r.get("status") == "reviewed":
-        return f'<p class="eqc-stat ok">Clinically reviewed by {r["by"]}, {r["date"]}</p>'
+        return '<p class="eqc-stat ok">Validate against your own unit protocols</p>'
     if r and r.get("status") == "pending":
         return f'<p class="eqc-stat pend">{r["note"]}</p>'
     return '<p class="eqc-stat draft"><b>DRAFT</b> &middot; Clinical review required<span class="eqc-x"> &middot; not yet for bedside use</span></p>'
@@ -485,7 +485,7 @@ def main_html():
     <button type="button" class="eqc-btn" id="eqc-print">Print cards</button>
   </div>
   <p class="eqc-status" id="eqc-status" aria-live="polite">Save these cards once while you have signal; they then open on this device with no signal. Saving any track in Schola saves them too.</p>
-  <p class="eqc-note">These cards are a memory aid for trained adult hemodialysis staff, not a protocol. <b>Your unit&rsquo;s protocol decides, and the attending nephrologist is called for every event.</b> Drugs are named without doses: doses, limits and stock are set by your unit. {("All " + str(total) + " cards were clinically reviewed and signed off by Dr. William Gregory Rivero on " + D.CHECKED_SIGNED + ".") if ndraft == 0 else (str(ndraft) + " of the " + str(total) + " cards are marked <b>DRAFT</b> until a clinical reviewer signs them off.")}</p>
+  <p class="eqc-note">These cards are a memory aid for trained adult hemodialysis staff, not a protocol. <b>Your unit&rsquo;s protocol decides, and the attending nephrologist is called for every event.</b> Drugs are named without doses: doses, limits and stock are set by your unit. {("Validate every card against your own unit protocols before use.") if ndraft == 0 else (str(ndraft) + " of the " + str(total) + " cards are marked <b>DRAFT</b> until a clinical reviewer signs them off.")}</p>
 {index_html()}
 {CIRCUIT_WORDS}
 {code}
