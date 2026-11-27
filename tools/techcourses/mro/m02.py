@@ -47,6 +47,7 @@ MODULE = {
 {{scene:The consent that ran out|<p>Mrs. Natividad Ocampo signed her hemodialysis consent on October 3 last year. On October 10 this year, her chart still holds only that form. No one noticed, because nothing about her treatment changed.</p>
 <p>The records officer&rsquo;s renewal calendar flags it two weeks ahead. The charge nurse brings the new form to her Monday session, the attending physician explains it again, and Mrs. Ocampo signs. The audit three months later finds every consent current.</p>
 <p class="tc-scene-take">Renewal dates do not announce themselves. A calendar is the only reliable reminder.</p>}}
+{{fig:mro02_fig_02_longitudinal_chart_contents}}
 """),
         ("layers", "Three layers", "Authorized, delivered, safe", """
 {{fig:mro02_layers}}
@@ -76,6 +77,7 @@ MODULE = {
 {{scene:A trace that found a machine|<p>Tracing one random session from last Wednesday, the records officer finds that the run sheet lists machine M-09 at station 9. The maintenance record shows M-09 was sent out for repair on Monday.</p>
 <p>The charge nurse explains: M-12 was moved to station 9 on Monday, but the station board still said M-09. The run sheets for that week are corrected by their authors, the board is fixed, and the technical supervisor adds &ldquo;update the station board&rdquo; to the machine-swap checklist.</p>
 <p class="tc-scene-take">The trace did not find a wrong treatment. It found a habit that would eventually have hidden one.</p>}}
+{{fig:mro02_fig_02_one_session_trace}}
 """),
         ("deficiency", "Deficiencies", "Four states, one owner each", """
 <p>When you audit a chart, mark every expected item as one of four states.</p>

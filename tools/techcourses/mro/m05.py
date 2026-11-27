@@ -83,6 +83,7 @@ MODULE = {
 {{scene:The query that changed nothing, and everything|<p>A query asks Dr. Salvador Ilagan to clarify Mrs. Josefina Mercado&rsquo;s diagnosis: &ldquo;AKI / CKD (stage __) / both / other / unable to determine.&rdquo; He writes back: &ldquo;Both. CKD stage 4 at baseline, AKI on CKD this admission.&rdquo;</p>
 <p>That answer was not among the guesses anyone in the office had made. It changed her code, her registry status, and the plan to recheck her kidney function in three months.</p>
 <p class="tc-scene-take">Offering &ldquo;both&rdquo; and &ldquo;other&rdquo; is not politeness. It is how the record gets the answer no one expected.</p>}}
+{{fig:mro05_fig_05_leading_vs_nonleading_query}}
 """),
         ("pressure", "Under pressure", "When someone wants the code changed", """
 <p>Pressure to change a code rarely sounds like fraud. It sounds like common sense, deadlines, and kindness to the patient.</p>

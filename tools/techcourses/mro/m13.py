@@ -42,6 +42,7 @@ MODULE = {
 {{scene:The inspector&rsquo;s first request|<p>An inspector&rsquo;s first request is: &ldquo;Show me the last quarter&rsquo;s standing-order renewals for five patients I choose.&rdquo;</p>
 <p>The records officer opens the evidence index, finds the row with its location and last-verified date, and retrieves the five charts in four minutes. The inspector moves on to the next item.</p>
 <p class="tc-scene-take">Readiness is measured in minutes, on the day, for the item the inspector chooses.</p>}}
+{{fig:mro13_fig_13_evidence_index_last_verified}}
 """),
         ("define", "Define first", "Define before you count", """
 <div class="table-wrap"><table>

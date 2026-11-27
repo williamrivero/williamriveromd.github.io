@@ -48,6 +48,7 @@ MODULE = {
 {{scene:The chart that never expires|<p>Mr. Ambrosio Velasco has dialyzed with the unit for eleven years. His chart fills two boxes, and a staff member asks whether the first box can be shredded because it is &ldquo;more than ten years old.&rdquo;</p>
 <p>The records officer explains that the clock has not started: the trigger is his last treatment, and he is still a patient. The first box is scanned, the scans are indexed and checked page by page, and the paper is kept until the schedule says otherwise.</p>
 <p class="tc-scene-take">Age is not the trigger. The last treatment is.</p>}}
+{{fig:mro10_fig_10_retention_trigger_timeline}}
 """),
         ("holds", "Holds", "Holds override schedules", """
 {{fig:mro10_clock}}

@@ -52,6 +52,7 @@ MODULE = {
 {{scene:Received, but not the hepatitis result|<p>The receiving unit acknowledges a transfer packet for Mr. Alfredo Tolentino. Checking the acknowledgment against the manifest, the records officer sees that they list every item except the hepatitis serology.</p>
 <p>She calls. The page had printed blank on their side. She resends it, gets a second acknowledgment naming it, and closes the transfer. Their first session for him was the next morning.</p>
 <p class="tc-scene-take">An acknowledgment is only as good as its match to the manifest.</p>}}
+{{fig:mro14_fig_14_transfer_close_four_updates}}
 """),
         ("abroad", "Abroad", "What other countries do, and how to use it", """
 <p>Other countries have thought hard about records custody, and their practices are worth knowing. They are also easy to misuse.</p>

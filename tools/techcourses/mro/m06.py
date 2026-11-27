@@ -90,6 +90,7 @@ MODULE = {
 {{scene:The family told in October|<p>Mrs. Adoracion Villafuerte needed extra sessions in June and July for fluid overload. On October 5 her ledger shows 138 sessions used, and the projection puts her cap in the third week of November.</p>
 <p>The records officer tells the claims lead, who tells the social worker, who meets the family. They apply for assistance from the local government and a charity program, and when the cap arrives, the remaining sessions are covered.</p>
 <p class="tc-scene-take">The same number on December 15 would have been a crisis. On October 5, it was a plan.</p>}}
+{{fig:mro06_fig_06_session_ledger_156_cap}}
 """),
     ],
     "debrief": ["""

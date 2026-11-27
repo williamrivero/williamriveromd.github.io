@@ -44,6 +44,7 @@ MODULE = {
 {{scene:The account of a nurse who left|<p>Nurse Maricel Domingo moves to a hospital in Manila on a Friday. Her account is disabled that afternoon as part of the offboarding checklist.</p>
 <p>On Monday a request arrives from the new hospital asking for a patient&rsquo;s records &ldquo;that Nurse Domingo will need.&rdquo; Because her old access is gone, the request has to come through the release procedure, with the patient&rsquo;s authorization, as it should.</p>
 <p class="tc-scene-take">Access belongs to a role in this unit, not to a person wherever she goes next.</p>}}
+{{fig:mro11_fig_11_role_based_access_matrix}}
 """),
         ("trail", "The audit trail", "Reading the audit trail", """
 {{fig:mro11_audit}}

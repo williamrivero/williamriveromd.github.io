@@ -70,6 +70,7 @@ MODULE = {
 {{scene:Five years, not two|<p>Mrs. Corazon Gatdula needs a clinical abstract for a transplant work-up. The unit&rsquo;s template pulls her &ldquo;dialysis start&rdquo; from her first session at this unit, two years ago.</p>
 <p>The records officer checks the referral packet: first-ever hemodialysis five years earlier, at a hospital in Quezon City. She corrects the source sheet, the physician signs the corrected vintage, and the transplant program receives an accurate history.</p>
 <p class="tc-scene-take">Three missing years would have been three years of her history erased from the decision.</p>}}
+{{fig:mro09_fig_09_dialysis_vintage_serology_dates}}
 """),
     ],
     "debrief": ["""

@@ -60,6 +60,7 @@ MODULE = {
 {{scene:The allergy that was not hers|<p>Reading a copy of her chart, Mrs. Liwayway Dimagiba notices &ldquo;allergic to sulfa&rdquo; on her problem list. She has never had a sulfa allergy; her sister has.</p>
 <p>The records officer logs the request and routes it to the attending physician, who confirms the error, corrects the problem list through the clinical workflow, and notes the patient&rsquo;s report. Mrs. Dimagiba receives a written answer, and her disputed-entry request stays with the record.</p>
 <p class="tc-scene-take">A patient reading her own chart caught what no audit had.</p>}}
+{{fig:mro08_fig_08_correction_request_six_steps}}
 """),
         ("breach", "A possible breach", "The first hour", """
 {{fig:mro08_hour}}

@@ -64,6 +64,7 @@ MODULE = {
 {{scene:The kit that saved an hour|<p>When the electronic record fails at 5:50 a.m. on a Monday, the charge nurse opens the downtime kit at each station. Inside are numbered run sheets, a patient list printed the previous evening, and current standing orders.</p>
 <p>The first patients are connected by 6:10 a.m. on paper. A unit across the province without a kit spends its first hour phoning physicians for prescriptions.</p>
 <p class="tc-scene-take">A kit is checked on a quiet day so that it works on a loud one.</p>}}
+{{fig:mro12_fig_12_downtime_kit_paper_rules}}
 """),
         ("after", "After recovery", "Three lists, one truth", """
 {{fig:mro12_lists}}

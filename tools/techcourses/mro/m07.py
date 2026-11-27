@@ -74,6 +74,7 @@ MODULE = {
 {{scene:Twelve sent, ten heard from|<p>A batch of 12 registry rows returns an acknowledgment for 10. The balance check shows two rows with no disposition.</p>
 <p>The records officer calls the receiving office. One row was held because a date field was blank; the other had been silently dropped as a duplicate of a row sent the month before. She corrects the first, documents the second as withdrawn, and the batch balances.</p>
 <p class="tc-scene-take">Without the balance check, the blank date would have stayed blank for a year.</p>}}
+{{fig:mro07_fig_07_registry_batch_balance}}
 """),
     ],
     "debrief": ["""

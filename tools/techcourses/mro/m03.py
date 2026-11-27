@@ -81,6 +81,7 @@ MODULE = {
 {{scene:The overlay that took a month|<p>A clerk at another unit merged two charts for &ldquo;Rodel Santos, born 1968,&rdquo; believing they were one man. They were two: one in Bulacan, one in Pampanga. For three weeks, both men&rsquo;s results, orders, and allergies sat in one record.</p>
 <p>Unwinding it took the records officer, two physicians, and both men&rsquo;s nurses most of a month, entry by entry. One man&rsquo;s penicillin allergy had briefly appeared in the other&rsquo;s chart.</p>
 <p class="tc-scene-take">A duplicate hides half a history. An overlay mixes two. That is why a merge always waits for verification.</p>}}
+{{fig:mro03_fig_03_duplicate_misfile_overlay}}
 """),
         ("resolve", "Resolving", "Suspected duplicate or misfile", """
 {{flow:Safe resolution|Stop::Halt further routing of the contested document.|Quarantine::Place it in a protected exception queue, filed to neither chart.|Notify::Tell health information management (HIM) and the clinical owner.|Verify independently::Use a trusted directory number, not the number printed on the suspicious document.|Resolve through the controlled workflow::Merge or reassign only with authorization, preserving both original identifiers.|Check downstream::Claims, registry rows, the dialyzer log, and any released copies.}}

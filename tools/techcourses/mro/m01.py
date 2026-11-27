@@ -110,6 +110,7 @@ MODULE = {
 {{scene:Friday at 4:45 p.m.|<p>At 4:45 p.m. on a Friday, the records officer finds three problems in one stack: a laboratory page in the wrong chart for a patient who dialyzes Saturday at 6 a.m., a claim missing its Annex A, and an email to the wrong address from Thursday.</p>
 <p>She sorts them by what they could affect. The misfiled page goes to the charge nurse before she leaves, because Saturday&rsquo;s session is first. The email goes to the data protection officer the same hour. The claim waits for Monday, logged with an owner.</p>
 <p class="tc-scene-take">Three problems, three clocks. The order comes from what each one could harm, not from which one is easiest.</p>}}
+{{fig:mro01_fig_01_decision_owners_escalation_clock}}
 """),
         ("week", "Your first week", "A first-week plan", """
 <p>A new records officer usually inherits a mix of good systems and loose ends. Use the first week to find out which is which before you change anything.</p>

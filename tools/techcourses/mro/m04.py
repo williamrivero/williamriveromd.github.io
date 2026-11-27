@@ -44,6 +44,7 @@ MODULE = {
 {{scene:Page two of two|<p>A scanned run sheet for Mrs. Lydia Panganiban looks complete: one page, signed, legible. The paper original, still in the tray, has a second page with the nurse&rsquo;s note about a hypotensive episode and the saline given.</p>
 <p>The clerk rejects the scan and rescans both pages. A month later, when the attending physician reviews why Mrs. Panganiban&rsquo;s dry weight was changed, the note is there.</p>
 <p class="tc-scene-take">A page count check takes three seconds and catches the one page that explains everything else.</p>}}
+{{fig:mro04_fig_04_six_capture_fields_scan_check}}
 """),
         ("two", "Two corrections", "Indexing correction or clinical correction", """
 {{fig:mro04_corrections}}
