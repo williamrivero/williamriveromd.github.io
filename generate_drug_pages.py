@@ -5495,6 +5495,7 @@ def interactions_page(n_owners: int, n_rows: int) -> str:
 <h1>Interaction checker</h1>
 <p class="hero-sub">Add the medicines a patient takes, by Philippine brand or generic name. The checker grades each interaction, flags kidney risks, and shows kidney dosing for the patient's kidney function.</p>
 <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
+{explainer("interaction-checker", "Watch the explainer (1 min 13 s)")}
 </div></div></div></section>
 <main class="container dd-wide" id="dd-ix" data-src="/drugs/search-index.json" data-ix="/drugs/interactions.json">
 <div class="dd-ix-pick">
@@ -5565,6 +5566,28 @@ def scheduler_data(ctx: "Ctx", ixd: dict) -> dict:
     return {"v": 1, "r": rules, "hdAfter": sorted(hd_after), "sep": sep, "pu": pu}
 
 
+XPL_CSS = """<style>
+.ms-xpl{margin:16px 0 0;max-width:760px;border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;}
+.ms-xpl>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:10px 14px;font:700 15px Inter,system-ui,sans-serif;color:var(--teal);}
+.ms-xpl>summary::-webkit-details-marker{display:none;}
+.ms-xpl-play{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#0e4a50;color:#fff;font-size:11px;padding-left:2px;box-sizing:border-box;}
+.ms-xpl video{display:block;width:100%;height:auto;background:#000;}
+.ms-xpl-tr{padding:6px 14px 10px;} .ms-xpl-tr summary{cursor:pointer;font:600 13.5px Inter,system-ui,sans-serif;color:var(--text-muted);}
+.ms-xpl-tr p{font-size:14px;line-height:1.6;color:var(--text-mid);margin:8px 0 0;}
+</style>"""
+
+
+def explainer(name: str, label: str) -> str:
+    """Cartoon explainer video in a tool page's hero (Nov 28 2026): videos/dosis/<name>.mp4 + .jpg poster,
+    transcript from tools/academy/explainers/<name>/script.txt. Inline style, so DRUG_CSS stays unchanged."""
+    sp = REPO / "tools" / "academy" / "explainers" / name / "script.txt"
+    tr = html.escape(" ".join(sp.read_text(encoding="utf-8").split("\n")).strip()) if sp.exists() else ""
+    return (XPL_CSS + f'\n<details class="ms-xpl"><summary><span class="ms-xpl-play" aria-hidden="true">&#9654;</span> {label}</summary>\n'
+            f'<video controls playsinline preload="none" poster="/videos/dosis/{name}-explainer.jpg" width="1280" height="720">'
+            f'<source src="/videos/dosis/{name}-explainer.mp4" type="video/mp4"></video>\n'
+            + (f'<details class="ms-xpl-tr"><summary>Read the transcript</summary><p>{tr}</p></details>' if tr else "") + "</details>")
+
+
 def scheduler_page() -> str:
     canonical = f"{SITE}/drugs/med-scheduler"
     jsonld = json.dumps({"@context": "https://schema.org", "@type": "WebApplication", "@id": canonical, "url": canonical,
@@ -5583,18 +5606,7 @@ def scheduler_page() -> str:
 <h1>Med Scheduler</h1>
 <p class="hero-sub">Set the patient's day (meals, bedtime, dialysis), add the medicines, and get a timetable for dialysis and non-dialysis days that respects food rules and dose spacing. Print a simple sheet for the patient.</p>
 <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span></div>
-<style>
-.ms-xpl{{margin:16px 0 0;max-width:760px;border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;}}
-.ms-xpl>summary{{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:10px 14px;font:700 15px Inter,system-ui,sans-serif;color:var(--teal);}}
-.ms-xpl>summary::-webkit-details-marker{{display:none;}}
-.ms-xpl-play{{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#0e4a50;color:#fff;font-size:11px;padding-left:2px;box-sizing:border-box;}}
-.ms-xpl video{{display:block;width:100%;height:auto;background:#000;}}
-.ms-xpl-tr{{padding:6px 14px 10px;}} .ms-xpl-tr summary{{cursor:pointer;font:600 13.5px Inter,system-ui,sans-serif;color:var(--text-muted);}}
-.ms-xpl-tr p{{font-size:14px;line-height:1.6;color:var(--text-mid);margin:8px 0 0;}}
-</style>
-<details class="ms-xpl"><summary><span class="ms-xpl-play" aria-hidden="true">&#9654;</span> Watch the explainer (1 min 18 s)</summary>
-<video controls playsinline preload="none" poster="/videos/dosis/med-scheduler-explainer.jpg" width="1280" height="720"><source src="/videos/dosis/med-scheduler-explainer.mp4" type="video/mp4"></video>
-<details class="ms-xpl-tr"><summary>Read the transcript</summary><p>Meet the Med Scheduler, in Dosis. It turns a long prescription into one clear daily timetable, for the clinic and for home. Start with the patient's day: when they wake, eat and sleep. For hemodialysis, pick the dialysis days and the session times. Then add the medicines. Search them one by one, or paste the whole prescription, and the scheduler reads how often each one is taken. Each dose is placed by rules: meal and time-of-day rules from the drug label, spacing between medicines that block each other, and the fewest dose times possible. Dialysis days get their own timetable. Doses that fall during the session move to after it, and blood pressure medicines can wait until dialysis is done. Every placement shows why: the label, the evidence, or a practice default. If a rule cannot be met, like levothyroxine four hours away from a phosphate binder, it says so at the top. When the schedule looks right, copy it into the prescription remarks, print a tick-box sheet for the patient, and check the pill count for the month. The sample prescriptions are fictional, so always review the schedule before you give it to a patient. You will find it in Dosis, the Drug Index.</p></details></details>
+{explainer("med-scheduler", "Watch the explainer (1 min 18 s)")}
 </div></div></div></section>
 <main class="container dd-wide" id="dd-ms" data-src="/drugs/search-index.json" data-ix="/drugs/interactions.json" data-ms="/drugs/med-scheduler.json">
 <div class="dd-ms-grid no-print">
