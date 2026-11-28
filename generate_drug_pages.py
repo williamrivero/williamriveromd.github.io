@@ -5568,8 +5568,7 @@ def scheduler_data(ctx: "Ctx", ixd: dict) -> dict:
 
 XPL_CSS = """<style>
 .ms-xpl{margin:16px 0 0;max-width:760px;border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;}
-.ms-xpl>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:10px 14px;font:700 15px Inter,system-ui,sans-serif;color:var(--teal);}
-.ms-xpl>summary::-webkit-details-marker{display:none;}
+.ms-xpl>figcaption{display:flex;align-items:center;gap:10px;padding:10px 14px;font:700 15px Inter,system-ui,sans-serif;color:var(--teal);}
 .ms-xpl-play{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#0e4a50;color:#fff;font-size:11px;padding-left:2px;box-sizing:border-box;}
 .ms-xpl video{display:block;width:100%;height:auto;background:#000;}
 .ms-xpl-tr{padding:6px 14px 10px;} .ms-xpl-tr summary{cursor:pointer;font:600 13.5px Inter,system-ui,sans-serif;color:var(--text-muted);}
@@ -5582,10 +5581,10 @@ def explainer(name: str, label: str) -> str:
     transcript from tools/academy/explainers/<name>/script.txt. Inline style, so DRUG_CSS stays unchanged."""
     sp = REPO / "tools" / "academy" / "explainers" / name / "script.txt"
     tr = html.escape(" ".join(sp.read_text(encoding="utf-8").split("\n")).strip()) if sp.exists() else ""
-    return (XPL_CSS + f'\n<details class="ms-xpl"><summary><span class="ms-xpl-play" aria-hidden="true">&#9654;</span> {label}</summary>\n'
+    return (XPL_CSS + f'\n<figure class="ms-xpl"><figcaption><span class="ms-xpl-play" aria-hidden="true">&#9654;</span> {label}</figcaption>\n'
             f'<video controls playsinline preload="none" poster="/videos/dosis/{name}-explainer.jpg" width="1280" height="720">'
             f'<source src="/videos/dosis/{name}-explainer.mp4" type="video/mp4"></video>\n'
-            + (f'<details class="ms-xpl-tr"><summary>Read the transcript</summary><p>{tr}</p></details>' if tr else "") + "</details>")
+            + (f'<details class="ms-xpl-tr"><summary>Read the transcript</summary><p>{tr}</p></details>' if tr else "") + "</figure>")
 
 
 def scheduler_page() -> str:
