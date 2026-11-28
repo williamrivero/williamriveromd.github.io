@@ -1230,7 +1230,7 @@ var EasySpeech = (function () {
         }
         if (tag === "DT") return;                                    // read with its dd ("What you see: ...")
         if (tag === "TR") text = tableRowText(el);
-        else if (tag === "FIGCAPTION") { var d = el.querySelector(".fig-desc"); text = d ? cleanText(d) : cleanText(el); if (text) text = "Figure. " + text; }
+        else if (tag === "FIGCAPTION") { var d = el.querySelector(".fig-desc"); text = d ? cleanText(d) : cleanText(el); if (text && !/^fig(?:ure)?\.?\s*\d/i.test(text)) text = "Figure. " + text; }   // "Figure 2. ..." already says it
         else {
           if (el.closest("figcaption,tr") || el.querySelector(LEAF)) return; // read leaves only
           text = cleanText(el);
