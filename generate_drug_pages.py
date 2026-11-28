@@ -5365,6 +5365,7 @@ Search by brand, generic, class, indication, manufacturer or registration number
         <div class="hero-meta"><span><strong>Last updated:</strong> <time class="dd-meta-time" datetime="__ISO__">__DATE__</time></span>
         <p class="dd-sched"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="m9.5 15 2 2 3.5-3.5"/></svg>
 <span><strong>Updated weekly:</strong> every Monday morning, Philippine time. US and EU label text is refreshed and every page is rebuilt.<span class="dd-sched-next" hidden> Next update: <time id="dd-next-upd"></time>.</span></span></p></div>
+{explainer("drug-index", "Meet the Drug Index and Dosis (1 min 26 s)")}
     </div></div>
   </div>
 </section>

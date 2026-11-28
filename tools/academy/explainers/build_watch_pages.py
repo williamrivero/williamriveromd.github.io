@@ -56,6 +56,12 @@ VIDEOS = [
      "desc": "Add a patient's medicines and see graded interactions, kidney checks and kidney dosing. "
              "Free in Dosis, the Drug Index on renalcarematters.com. For clinicians.",
      "tool": "/drugs/interactions", "tool_label": "Open the Interaction Checker", "script": "interaction-checker"},
+    {"name": "drug-index", "video": "/videos/dosis/drug-index-explainer.mp4",
+     "poster": "videos/dosis/drug-index-explainer.jpg",
+     "title": "Meet the Drug Index and Dosis: a cartoon explainer",
+     "desc": "Every FDA Philippines-registered drug product in one free index: official U.S. and EU label text, "
+             "kidney dosing, interaction checks and a med scheduler, with one download for use with no signal.",
+     "tool": "/drugs/", "tool_label": "Open the Drug Index", "script": "drug-index"},
 ]
 
 
