@@ -36,6 +36,7 @@ def academy_names():
     names = {f.name for f in GUIDES.glob("*.html") if is_academy(f.name)}
     if ACADEMY.is_dir():
         names |= {f.name for f in ACADEMY.glob("*.html") if is_academy(f.name)}
+        names |= {f.name for f in ACADEMY.glob("*.html")}   # pages built straight into academy/ (team drill, review deck, quick cards)
         if (ACADEMY / "index.html").exists():
             names.add(LANDING)
     return names

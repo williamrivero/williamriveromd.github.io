@@ -56,6 +56,7 @@ SOURCE_OVERRIDES = {
     'dialyzer-reprocessing-technician': 'dialyzer-reprocessing-reuse-hero.webp',
     'calc-reprocessing-technician-toolkit': 'dialyzer-reprocessing-reuse-hero.webp',
     'plant-forward-renal-diet': 'plant-forward-renal-diet-01-filipino-plate.webp',  # og PNG is missing
+    'same-event-every-role': 'resuscitation-lab-13-team-code-status-and-debrief-vignette-hero.webp',  # team drill page has no image of its own
 }
 
 ACADEMY_SUFFIX_RE = re.compile(r'-(?:trainer|final-exam|educator|\d\d-.+)$')
@@ -78,11 +79,33 @@ def get_academy_image(page: Path, depth: int = 0) -> Path | None:
     return None
 
 
+def _vignette_scale(src: Path):
+    """White-margin scale of a circular vignette hero (patch_vignette_trim.py), or None."""
+    if '-vignette-hero' not in src.name:
+        return None
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('patch_vignette_trim', Path(__file__).parent / 'patch_vignette_trim.py')
+        vt = importlib.util.module_from_spec(spec); spec.loader.exec_module(vt)
+        return vt.margin_scale(src)
+    except Exception:
+        return None
+
+
 def generate_thumb(src: Path, dest: Path) -> bool:
     try:
+        sc = _vignette_scale(src)
         with Image.open(src) as img:
             img = img.convert('RGB')
             w, h = img.size
+            # Vignette heroes are a photo disc inside a white margin: keep only the square inscribed in the
+            # photo circle, so a thumbnail never shows white corners (Nov 28 2026).
+            if sc:
+                side = int(min(w, h) / sc / 1.4142 * 0.98)      # the square inscribed in the photo disc
+                side = min(side, int(min(w, h) / sc))
+                cx, cy = w // 2, h // 2
+                img = img.crop((cx - side // 2, cy - side // 2, cx + side // 2, cy + side // 2))
+                w, h = img.size
             # Center crop to target aspect ratio
             target_ratio = THUMB_W / THUMB_H
             src_ratio = w / h
