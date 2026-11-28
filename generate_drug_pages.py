@@ -5580,7 +5580,7 @@ XPL_CSS = """<style>
 
 # Share: the page itself (opens at the video), never the video file; native share sheet, else copy the link.
 XPL_JS = """<script>(function(){var b=document.querySelector('[data-xpl-share]');if(!b)return;b.addEventListener('click',function(){
-var c=document.querySelector('link[rel=canonical]'),u=(c?c.href:location.href.split('#')[0])+'#explainer',t=document.title,l=b.querySelector('span');
+var w=b.getAttribute('data-xpl-share'),c=document.querySelector('link[rel=canonical]'),u=w?'https://renalcarematters.com'+w:(c?c.href:location.href.split('#')[0])+'#explainer',t=document.title,l=b.querySelector('span');
 function done(m){l.textContent=m;setTimeout(function(){l.textContent='Share';},2200);}
 if(navigator.share){navigator.share({title:t,url:u}).catch(function(){});return;}
 if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){done('Link copied');},function(){prompt('Copy this link',u);});else prompt('Copy this link',u);});})();</script>"""
@@ -5592,7 +5592,7 @@ def explainer(name: str, label: str) -> str:
     sp = REPO / "tools" / "academy" / "explainers" / name / "script.txt"
     tr = html.escape(" ".join(sp.read_text(encoding="utf-8").split("\n")).strip()) if sp.exists() else ""
     return (XPL_CSS + f'\n<figure class="ms-xpl" id="explainer"><figcaption><span class="ms-xpl-play" aria-hidden="true">&#9654;</span> {label}'
-            '<button type="button" class="ms-xpl-share" data-xpl-share aria-label="Share this explainer: a link to this page">'
+            f'<button type="button" class="ms-xpl-share" data-xpl-share="/watch/{name}" aria-label="Share this explainer video">'
             '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
             '<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>\n'
             f'<video controls playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false" '

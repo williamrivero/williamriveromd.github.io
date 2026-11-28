@@ -585,7 +585,7 @@
     (function () {   // Share the page (opens at the video), never the video file
       var sb = $(".rl-xpl-share", disp); if (!sb) return;
       sb.addEventListener("click", function () {
-        var c = document.querySelector("link[rel=canonical]"), u = (c ? c.href : location.href.split("#")[0]) + "#explainer", l = sb.querySelector("span");
+        var u = "https://renalcarematters.com/watch/megacode-shared-monitor", l = sb.querySelector("span");   // the watch page: its share card shows the video frame with a play button
         function done(m) { l.textContent = m; setTimeout(function () { l.textContent = "Share"; }, 2200); }
         if (navigator.share) { navigator.share({ title: document.title, url: u }).catch(function () {}); return; }
         if (navigator.clipboard) navigator.clipboard.writeText(u).then(function () { done("Link copied"); }, function () { prompt("Copy this link", u); }); else prompt("Copy this link", u);
