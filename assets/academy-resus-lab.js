@@ -915,7 +915,12 @@
         '<span class="m-count"></span><button type="button" class="m-b m-snd" aria-pressed="true">Sound on</button></div>' +
       '<p class="m-note">Training display &middot; not a medical device &middot; alarm limits are simulation defaults</p>';
     document.body.appendChild(wrap);
-    if (THUMB) { wrap.classList.add("m-thumbview"); var hs = document.documentElement.style; hs.height = "720px"; hs.overflow = "hidden"; document.body.style.overflow = "hidden"; }
+    if (THUMB) {   // a fixed 1280 x 720 page: Safari on iPad grows an iframe to its content, so nothing here may depend on the viewport height
+      wrap.classList.add("m-thumbview");
+      var hs = document.documentElement.style, bs = document.body.style;
+      hs.height = bs.height = "720px"; hs.width = bs.width = "1280px"; hs.overflow = bs.overflow = "hidden"; bs.margin = "0";
+      wrap.style.cssText += ";position:absolute;top:0;left:0;right:auto;bottom:auto;width:1280px;height:720px;min-height:0;max-height:720px;box-sizing:border-box;";
+    }
     var capno = Capno($(".rl-dco2", wrap));
     var strip = Strip($(".rl-dstrip", wrap), $(".rl-dpleth", wrap)), cur = {}, flash = !(REDUCED || epaper());
     // clock
@@ -968,6 +973,8 @@
       var amp = arrest || sp === null ? 0 : sys === null ? 0.8 : Math.max(0.22, Math.min(1, (sys - 30) / 90));
       strip.set(m.rhythm, m.rate, true, amp);
       // capnography: EtCO₂ 35–45 is usual; during CPR it reflects the quality of compressions
+      var ps0 = (m.etco2 == null || m.rr == null) && presetState(m.rhythm);   // state saved before capnography existed: use the rhythm's typical values
+      if (ps0) { if (m.etco2 == null) m.etco2 = ps0.etco2; if (m.rr == null) m.rr = ps0.rr; }
       var co2 = num(m.etco2), rrv = num(m.rr), cl = co2 === null ? "" : lvl(co2, 20, 30, 50, 60), rl2 = rrv === null ? "" : lvl(rrv, 6, 8, 30, 40);
       setBox(".m-co2b", co2 === null ? "--" : String(co2), cl || rl2);
       $(".m-rr", wrap).textContent = rrv === null ? "--" : String(rrv);
