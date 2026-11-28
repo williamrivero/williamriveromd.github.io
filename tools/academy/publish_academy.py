@@ -126,6 +126,8 @@ def main():
         NV = importlib.util.module_from_spec(spec); spec.loader.exec_module(NV); sys.argv = sys.argv[:1]; NV.main()  # nav order + phone menu
         spec = importlib.util.spec_from_file_location("patch_share_slot", Path(__file__).resolve().parents[2] / "patch_share_slot.py")
         SS = importlib.util.module_from_spec(spec); spec.loader.exec_module(SS); sys.argv = sys.argv[:1]; SS.main()  # pre-sized hero share row (no layout shift)
+        spec = importlib.util.spec_from_file_location("patch_vignette_trim", Path(__file__).resolve().parents[2] / "patch_vignette_trim.py")
+        VT = importlib.util.module_from_spec(spec); spec.loader.exec_module(VT); sys.argv = sys.argv[:1]; VT.main()  # hero vignette fills its disc
         spec = importlib.util.spec_from_file_location("apply_glossary_terms", Path(__file__).with_name("apply_glossary_terms.py"))
         GT = importlib.util.module_from_spec(spec); spec.loader.exec_module(GT); GT.main([])   # tap-to-define glossary terms
         spec = importlib.util.spec_from_file_location("apply_search", Path(__file__).with_name("apply_search.py"))
