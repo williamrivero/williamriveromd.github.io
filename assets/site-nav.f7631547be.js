@@ -226,10 +226,10 @@
   panel.setAttribute("role", "navigation");
   panel.setAttribute("aria-label", "Site menu");
   // Sub-links listed right under their card in both menus (Dr. Rivero, Nov 28 2026)
-  // Academy: the five tracks (anchors on the Academy landing page) + Emergency Readiness
+  // Academy: the six tracks (anchors on the Academy landing page) + Emergency Readiness
   var TRACKS = [["track-physicians", "Physicians", "#8fb0e8"], ["track-nursing", "Nurses", "#5ec2c6"],
     ["renal-technician-program", "Technicians", "#f2a36b"], ["track-ancillary", "Ancillary Staff", "#7fd39a"],
-    ["track-administrative", "Admin Staff", "#b9a3e3"]];   // Patients: Dr. Rivero adds it once the patient track is built
+    ["track-administrative", "Admin Staff", "#b9a3e3"], ["track-patients", "Patients", "#f08cb5"]];   // Patients (Dr. Rivero, Nov 28 2026): the Patients & Care Partners track
   // Emergency Readiness (Dr. Rivero, Nov 28 2026): its own card under Learn
   var EMERGENCY_LINKS = [["/academy/resuscitation-lab", "Resuscitation Lab", "#f0938a"], ["/academy/resuscitation-lab-practice", "Megacode Practice Lab", "#f0938a"],
     ["/academy/disaster-preparedness", "Disaster Readiness", "#f2a36b"], ["/academy/disaster-preparedness-practice", "Disaster Drills", "#f2a36b"]];   // Dr. Rivero, Nov 28 2026: sixth pill
