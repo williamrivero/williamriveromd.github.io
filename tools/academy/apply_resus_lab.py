@@ -409,7 +409,7 @@ def ready_main():
         rows.append(f"<tr><td><b>{lvl}</b></td><td>{', '.join(names)}</td></tr>")
     mods = "".join(f'<li><a href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(MODS.items()))
     dmods = "".join(f'<li><a href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(DMODS.items()))
-    return f"""{hero('<span class="nc-cur">Emergency Readiness</span>', 'Emergency <em>Readiness</em>', 'Act, learn and practice for emergencies and disasters on the dialysis floor')}
+    return f"""{hero('<span class="nc-cur">Emergency Readiness</span>', 'Emergency <em>Readiness</em>', 'Act, learn and practice for emergencies and disasters on the dialysis floor', "emergency-readiness-vignette-hero", "A ready dialysis unit: a red crash cart with a defibrillator and bag-valve-mask parked beside an empty blue dialysis recliner, machines and palm-view windows behind.")}
 {CSS}
 <main class="container rl-main">
 <section class="section" id="parts">
