@@ -84,6 +84,44 @@
     var d = u - 0.13;
     return Math.exp(-d * 3.1) * (1 - 0.2 * Math.exp(-Math.pow((u - 0.37) / 0.045, 2))) + 0.11 * Math.exp(-Math.pow((u - 0.45) / 0.06, 2));
   }
+  /* Capno(canvas): capnogram sweep at the ECG speed. Each breath: baseline while breathing in, a steep upstroke, an
+     almost flat plateau with a slight rise, then a sharp fall. Height = EtCO₂ on a 0–50 mmHg scale; "—" = no sensor (flat). */
+  function capW(u) {
+    if (u < 0.38) return 0;
+    if (u < 0.46) { var t = (u - 0.38) / 0.08; return 0.93 * (1 - Math.pow(1 - t, 3)); }
+    if (u < 0.9) return 0.93 + 0.07 * (u - 0.46) / 0.44;
+    if (u < 0.95) { var f = (u - 0.9) / 0.05; return 1 - f * f * (3 - 2 * f); }
+    return 0;
+  }
+  function Capno(canvas) {
+    var ctx = canvas.getContext && canvas.getContext("2d"), v = 38, rr = 16, raf = 0, x = 0, prevY = null, last = 0, bS = -1, bN = 0, bRR = 3.75, animating = false;
+    function size() { var r = window.devicePixelRatio || 1, w = canvas.clientWidth || 320, h = canvas.clientHeight || 60;
+      canvas.width = Math.round(w * r); canvas.height = Math.round(h * r); ctx.setTransform(r, 0, 0, r, 0, 0); ctx.fillStyle = "#0b1220"; ctx.fillRect(0, 0, w, h); x = 0; prevY = null; return [w, h]; }
+    function gain(h) { var g = Math.min(h * 0.72, 78); return [g, h / 2 + g / 2]; }
+    function y(t, h) { var G = gain(h); if (v == null) return G[1]; return G[1] - G[0] * Math.min(1.2, v / 50) * capW(((t - bS) / bRR) % 1); }
+    function step(now) { if (bS < 0 || now >= bN) { bS = now; bRR = 60 / Math.max(4, rr || 12); bN = now + bRR; } }
+    function still() { var d = size(), w = d[0], h = d[1], py = null; bS = 0; bRR = 60 / Math.max(4, rr || 12); ctx.strokeStyle = "#fbbf24"; ctx.lineWidth = 2;
+      for (var px = 0; px < w; px++) { var t = px / 80, yy = y(t % bRR + bS, h); ctx.beginPath(); ctx.moveTo(px - 1, py == null ? yy : py); ctx.lineTo(px, yy); ctx.stroke(); py = yy; } }
+    function frame(ts) {
+      if (!last) last = ts; var dt = Math.min(0.05, (ts - last) / 1000); last = ts;
+      var w = canvas.clientWidth, h = canvas.clientHeight, steps = Math.max(1, Math.round(dt * 80));
+      for (var i = 0; i < steps; i++) {
+        var now = ts / 1000 + i / 80; step(now); var yy = y(now, h);
+        ctx.fillStyle = "#0b1220"; ctx.fillRect(x, 0, 8, h); ctx.strokeStyle = "#fbbf24"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x - 1, prevY == null ? yy : prevY); ctx.lineTo(x, yy); ctx.stroke(); prevY = yy;
+        x++; if (x > w) { x = 0; prevY = null; }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    if (ctx && window.ResizeObserver) { var lw = 0, lh = 0; new ResizeObserver(function () { var w = canvas.clientWidth, h = canvas.clientHeight;
+      if (w === lw && h === lh) return; lw = w; lh = h; if (animating) size(); else if (lw) still(); }).observe(canvas); }
+    return { set: function (val, rate) {
+      if (!ctx) return; v = val; rr = rate;
+      if (REDUCED || epaper()) { if (raf) cancelAnimationFrame(raf); raf = 0; animating = false; still(); return; }
+      if (animating) return;   // keep sweeping; the next breath uses the new values
+      animating = true; size(); last = 0; bS = -1; raf = requestAnimationFrame(frame);
+    } };
+  }
   /* Strip(canvas[, plethCanvas]): ECG sweep, optionally with a pleth trace that follows each beat.
      Gain is fixed in CSS pixels (like mm/mV on a monitor), so a taller canvas gives more room, never taller waves. */
   function Strip(canvas, pc) {
@@ -191,6 +229,7 @@
         pa = CONT[shape] && !BEATS[shape] ? 0 : plethAmp == null ? 0.85 : Math.max(0, Math.min(1, plethAmp));
         if (raf) { cancelAnimationFrame(raf); raf = 0; }
         if (!animate || REDUCED || epaper()) { animating = false; still(); return; }
+        if (animating) { raf = requestAnimationFrame(frame); return; }   // already sweeping: carry on from here, as a monitor does
         animating = true; size(); last = 0; beatT = -1; bn = 0; pending = []; marks = []; pT = -1; pVal = 0; pCarry = 0; raf = requestAnimationFrame(frame);
       },
       stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; animating = false; },
@@ -202,50 +241,50 @@
 
   // typical teaching values per rhythm (simulation defaults, not clinical targets); "—" = no reading
   var PRESETS = {
-    normal:    [72, "72", "128/76", "97", "Sinus rhythm"],
-    svt:       [180, "180", "104/68", "96", "Narrow complex tachycardia (SVT)"],
-    irregular: [130, "118", "112/70", "95", "Atrial fibrillation, rapid"],
-    wide:      [170, "170", "86/54", "93", "Wide complex tachycardia (VT with a pulse)"],
-    peaked:    [66, "66", "122/74", "96", "Peaked T waves (high potassium)"],
-    sine:      [48, "48", "76/40", "88", "Sine wave (severe high potassium)"],
-    pea:       [46, "—", "—", "—", "PEA: organized rhythm, no pulse"],
-    longqt:    [58, "58", "118/70", "97", "Sinus rhythm, long QT"],
-    avb1:      [64, "64", "124/76", "97", "Sinus rhythm, first-degree AV block"],
-    mobitz1:   [54, "54", "112/70", "96", "Second-degree AV block, Mobitz I (Wenckebach)"],
-    mobitz2:   [48, "48", "98/60", "95", "Second-degree AV block, Mobitz II"],
-    avb3:      [36, "36", "82/48", "93", "Third-degree (complete) AV block"],
-    pvc:       [76, "76", "126/78", "97", "Sinus rhythm with PVCs"],
-    bigeminy:  [80, "56", "118/72", "96", "Ventricular bigeminy"],
-    torsades:  [240, "—", "—", "—", "Torsades de pointes (polymorphic VT)"],
-    vf:        [300, "—", "—", "—", "Ventricular fibrillation"],
-    asystole:  ["", "—", "—", "—", "Asystole"]
+    normal:    [72, "72", "128/76", "97", "Sinus rhythm", "38", "16"],
+    svt:       [180, "180", "104/68", "96", "Narrow complex tachycardia (SVT)", "34", "20"],
+    irregular: [130, "118", "112/70", "95", "Atrial fibrillation, rapid", "36", "18"],
+    wide:      [170, "170", "86/54", "93", "Wide complex tachycardia (VT with a pulse)", "30", "22"],
+    peaked:    [66, "66", "122/74", "96", "Peaked T waves (high potassium)", "36", "18"],
+    sine:      [48, "48", "76/40", "88", "Sine wave (severe high potassium)", "28", "22"],
+    pea:       [46, "—", "—", "—", "PEA: organized rhythm, no pulse", "12", "10"],
+    longqt:    [58, "58", "118/70", "97", "Sinus rhythm, long QT", "37", "16"],
+    avb1:      [64, "64", "124/76", "97", "Sinus rhythm, first-degree AV block", "37", "16"],
+    mobitz1:   [54, "54", "112/70", "96", "Second-degree AV block, Mobitz I (Wenckebach)", "36", "16"],
+    mobitz2:   [48, "48", "98/60", "95", "Second-degree AV block, Mobitz II", "33", "18"],
+    avb3:      [36, "36", "82/48", "93", "Third-degree (complete) AV block", "30", "20"],
+    pvc:       [76, "76", "126/78", "97", "Sinus rhythm with PVCs", "37", "16"],
+    bigeminy:  [80, "56", "118/72", "96", "Ventricular bigeminy", "35", "18"],
+    torsades:  [240, "—", "—", "—", "Torsades de pointes (polymorphic VT)", "12", "10"],
+    vf:        [300, "—", "—", "—", "Ventricular fibrillation", "12", "10"],
+    asystole:  ["", "—", "—", "—", "Asystole", "8", "10"]
   };
   // sample rhythm playlists (teaching sequences built from the presets; facilitators load, edit and save their own)
   function S(r, o) { var st = presetState(r); for (var k in o || {}) st[k] = o[k]; return st; }
   var SAMPLE_LISTS = [
     { name: "Sample: VF, shock, VF again, shock, ROSC", steps: [
       S("vf", { id: "a1", shock: "a2" }), S("vf", { id: "a2", label: "Ventricular fibrillation (still)", shock: "a3" }),
-      S("normal", { id: "a3", rate: 108, hr: "108", bp: "92/56", spo2: "91", label: "ROSC: sinus tachycardia" })] },
+      S("normal", { id: "a3", rate: 108, hr: "108", bp: "92/56", spo2: "91", label: "ROSC: sinus tachycardia", etco2: "40", rr: "10" })] },
     { name: "Sample: high potassium, peaked T to sine wave to VF", steps: [
       S("peaked", { id: "b1" }), S("sine", { id: "b2" }), S("vf", { id: "b3", shock: "b4" }),
-      S("normal", { id: "b4", rate: 96, hr: "96", bp: "94/58", spo2: "92", label: "ROSC: sinus rhythm" })] },
+      S("normal", { id: "b4", rate: 96, hr: "96", bp: "94/58", spo2: "92", label: "ROSC: sinus rhythm", etco2: "40", rr: "10" })] },
     { name: "Sample: slow rhythm, Mobitz II to complete block", steps: [
       S("normal", { id: "c1", rate: 46, hr: "46", bp: "96/58", label: "Sinus bradycardia" }), S("mobitz2", { id: "c2" }), S("avb3", { id: "c3" }),
       S("pea", { id: "c4" })] },
     { name: "Sample: long QT to torsades", steps: [
       S("longqt", { id: "d1" }), S("pvc", { id: "d2", label: "Long QT with PVCs" }), S("torsades", { id: "d3", shock: "d4" }),
-      S("longqt", { id: "d4", rate: 64, hr: "64", bp: "96/58", spo2: "93", label: "ROSC: sinus rhythm, long QT" })] },
+      S("longqt", { id: "d4", rate: 64, hr: "64", bp: "96/58", spo2: "93", label: "ROSC: sinus rhythm, long QT", etco2: "40", rr: "10" })] },
     { name: "Sample: PVCs to VT to VF", steps: [
       S("pvc", { id: "f1" }), S("bigeminy", { id: "f2" }), S("wide", { id: "f3", label: "Monomorphic VT with a pulse", shock: "f5" }),
-      S("vf", { id: "f4", shock: "f5" }), S("normal", { id: "f5", rate: 98, hr: "98", bp: "100/62", spo2: "93", label: "Sinus rhythm" })] },
+      S("vf", { id: "f4", shock: "f5" }), S("normal", { id: "f5", rate: 98, hr: "98", bp: "100/62", spo2: "93", label: "Sinus rhythm", etco2: "38", rr: "12" })] },
     { name: "Sample: nonshockable arrest, PEA to asystole", steps: [
       S("normal", { id: "g1", rate: 58, hr: "58", bp: "78/40", spo2: "88", label: "Sinus rhythm, falling pressure" }), S("pea", { id: "g2" }),
-      S("asystole", { id: "g3" }), S("normal", { id: "g4", rate: 92, hr: "92", bp: "88/52", spo2: "90", label: "ROSC: sinus rhythm" })] },
+      S("asystole", { id: "g3" }), S("normal", { id: "g4", rate: 92, hr: "92", bp: "88/52", spo2: "90", label: "ROSC: sinus rhythm", etco2: "40", rr: "10" })] },
     { name: "Sample: unstable fast rhythm, synchronized cardioversion", steps: [
       S("svt", { id: "e1" }), S("svt", { id: "e2", bp: "76/40", spo2: "92", label: "SVT, now hypotensive", shock: "e3" }),
       S("normal", { id: "e3", rate: 84, hr: "84", bp: "110/70", label: "Sinus rhythm after cardioversion" })] }
   ];
-  function presetState(r) { var v = PRESETS[r]; return v ? { rhythm: r, rate: +v[0] || 72, hr: v[1], bp: v[2], spo2: v[3], label: v[4] } : null; }
+  function presetState(r) { var v = PRESETS[r]; return v ? { rhythm: r, rate: +v[0] || 72, hr: v[1], bp: v[2], spo2: v[3], label: v[4], etco2: v[5], rr: v[6] } : null; }
 
   /* ════════════ 1. Recognition trainer ════════════ */
   function Recognition(host, data) {
@@ -508,8 +547,8 @@
     disp.innerHTML = "<h3>Shared monitor display</h3><p class=\"rl-note\">Open the display on a second screen or a tablet beside the manikin. You change the rhythm and numbers here, privately; the display follows on the same device and browser.</p>" +
       '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="avb1">First-degree AV block</option><option value="mobitz1">Second-degree AV block, Mobitz I</option><option value="mobitz2">Second-degree AV block, Mobitz II</option><option value="avb3">Third-degree (complete) AV block</option><option value="pvc">Sinus with PVCs</option><option value="bigeminy">Ventricular bigeminy</option><option value="pea">Organized, no pulse (PEA)</option><option value="longqt">Long QT (sinus)</option><option value="torsades">Torsades de pointes</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
       '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="320"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
-      '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
-      '<p class="rl-note rl-d-hint">Choosing a rhythm fills in typical teaching values for it. Change any of them to fit your scenario, then press <b>Update display</b>; the display does not change until you do.</p>' +
+      '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>EtCO₂ shown (mmHg)<input type="text" class="rl-d-co2" value="38"></label><label>Resp rate<input type="text" class="rl-d-rr" value="16"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
+      '<p class="rl-note rl-d-hint">Choosing a rhythm fills in typical teaching values for it (the arrest rhythms assume CPR in progress with an advanced airway, 10 breaths a minute; type &ldquo;&mdash;&rdquo; for no capnography). Change any of them to fit your scenario, then press <b>Update display</b>; the display does not change until you do.</p>' +
       '<label class="rl-lab rl-d-afterwrap">Rhythm after the next shock <select class="rl-d-after" style="max-width:340px;display:block;margin-top:4px;"></select></label>' +
       '<p class="rl-note">When a shock is delivered on the display, the rhythm changes to this one about 2 seconds later, with its typical values, and the form above follows. It applies to one shock, then returns to &ldquo;No change&rdquo;. Choose it before the team shocks; it takes effect at once.</p>' +
       '<label class="rl-chk"><input type="checkbox" class="rl-d-showlab" checked> Show the label on the display (turn off when learners must name the rhythm themselves)</label>' +
@@ -517,7 +556,7 @@
       '<button type="button" class="rl-btn rl-d-send">Update display</button> <a class="rl-btn rl-ghost" href="?display=1" target="_blank" rel="noopener">Open display</a>' +
       '<p class="rl-note">On the display, tap <b>Full screen</b> to hide the browser bars. Out-of-range values turn yellow or red and the alarm bar names the problem, as on a bedside monitor; the limits are simulation defaults, not clinical thresholds. Energy on the simulated defibrillator follows the device manufacturer and your unit protocol. A shock on the display is logged in the recorder when its clock is running; the rhythm changes only when you change it here or set a rhythm for after the next shock.</p>' +
       '<div class="rl-views"><figure class="rl-view"><figcaption>Preview of the form (not sent yet)</figcaption><canvas class="rl-mstrip" role="img" aria-label="Preview of the display rhythm"></canvas></figure>' +
-      '<figure class="rl-view"><figcaption>Live view of the display <button type="button" class="rl-thumb-tog">Hide</button></figcaption><div class="rl-thumb"><iframe title="Live view of the shared display" src="?display=1&amp;thumb=1" tabindex="-1" loading="lazy"></iframe></div></figure></div>' +
+      '<figure class="rl-view"><figcaption>Live view of the display <button type="button" class="rl-thumb-tog">Hide</button></figcaption><div class="rl-thumb"><iframe title="Live view of the shared display" src="?display=1&amp;thumb=1" tabindex="-1" loading="lazy" scrolling="no" width="1280" height="720"></iframe></div></figure></div>' +
       '<div class="rl-pl"><h4>Rhythm playlist</h4>' +
       '<p class="rl-note">Program the scenario&rsquo;s rhythms in order, then switch with one tap: <b>Go</b> on a step, <b>Previous</b> / <b>Next</b>, or keys <b>1&ndash;9</b>, <b>N</b> and <b>P</b> (when you are not typing in a box). To add a step, set the form above and press <b>Add current settings</b>. &ldquo;After a shock&rdquo; makes a shock on the display jump to that step, so transitions run themselves; it is re-armed at every step. Playlists stay on this device.</p>' +
       '<div class="rl-pl-bar"><label class="rl-lab">Load <select class="rl-pl-load"></select></label> <button type="button" class="rl-btn rl-ghost rl-pl-open">Load</button>' +
@@ -529,17 +568,12 @@
     host.appendChild(disp);
     (function () {   // scale the 1280 × 720 display page to the thumbnail width
       var box = $(".rl-thumb", disp), fr = $("iframe", box), tog = $(".rl-thumb-tog", disp);
-      function fit() {   // scale to the box width; grow to the display's real height so nothing at the bottom is cut off
-        var w = box.clientWidth || 320, k = w / 1280, h = 720, d = null;
-        try { d = fr.contentDocument; } catch (e) {}
-        var mon = d && d.querySelector(".rl-display");
-        if (mon) h = Math.max(720, Math.ceil(mon.scrollHeight), Math.ceil(d.documentElement.scrollHeight));
-        if (fr.style.height !== h + "px") fr.style.height = h + "px";
-        fr.style.transform = "scale(" + k + ")"; box.style.aspectRatio = "auto"; box.style.height = Math.ceil(h * k) + "px";
+      function fit() {   // a fixed 1280 x 720 display, scaled to the box width (the display itself never overflows that frame)
+        var w = box.clientWidth || 320, k = w / 1280;
+        fr.style.transform = "scale(" + k + ")"; box.style.height = Math.round(720 * k) + "px";
       }
       fit(); if (window.ResizeObserver) new ResizeObserver(fit).observe(box); else window.addEventListener("resize", fit);
-      fr.addEventListener("load", function () { fit(); setTimeout(fit, 600); });
-      setInterval(function () { if (!box.hidden) fit(); }, 2000);   // the display grows when the defibrillator panel appears
+      fr.addEventListener("load", fit);
       var off = store("rcm-resus-thumb") === "off";
       function setOff(v) { off = v; box.hidden = v; tog.textContent = v ? "Show" : "Hide"; if (v) fr.removeAttribute("src"); else if (!fr.getAttribute("src")) fr.setAttribute("src", "?display=1&thumb=1"); store("rcm-resus-thumb", v ? "off" : "on"); }
       tog.addEventListener("click", function () { setOff(!off); }); if (off) setOff(true);
@@ -547,7 +581,7 @@
     var prev = Strip($(".rl-mstrip", disp)), afterSel = $(".rl-d-after", disp);
     afterSel.innerHTML = '<option value="none">No change (the rhythm persists)</option>' + $(".rl-d-r", disp).innerHTML;
     function send() {
-      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, showLabel: $(".rl-d-showlab", disp).checked, afterShock: afterSel.value, defib: $(".rl-d-defib", disp).checked };
+      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, etco2: $(".rl-d-co2", disp).value, rr: $(".rl-d-rr", disp).value, showLabel: $(".rl-d-showlab", disp).checked, afterShock: afterSel.value, defib: $(".rl-d-defib", disp).checked };
       monState.afterShockState = afterState(afterSel.value); monState.playStep = activeId;
       prev.set(monState.rhythm, monState.rate, true); store("rcm-resus-display", monState); if (CH) CH.postMessage(monState);
     }
@@ -556,7 +590,7 @@
     $(".rl-d-r", disp).addEventListener("change", function () {
       var v = PRESET[this.value]; if (!v) return;
       $(".rl-d-rate", disp).value = v[0]; $(".rl-d-hr", disp).value = v[1]; $(".rl-d-bp", disp).value = v[2];
-      $(".rl-d-sp", disp).value = v[3]; $(".rl-d-lab", disp).value = v[4];
+      $(".rl-d-sp", disp).value = v[3]; $(".rl-d-lab", disp).value = v[4]; $(".rl-d-co2", disp).value = v[5]; $(".rl-d-rr", disp).value = v[6];
       prev.set(this.value, +v[0] || 72, true);   // preview only; the shared display waits for Update display
     });
     $(".rl-d-defib", disp).addEventListener("change", send);
@@ -574,7 +608,7 @@
     function followShock(m) {   // the display changed the rhythm after a shock: show it in the form
       if (!m || m.type || !m.fromShock) return;
       $(".rl-d-r", disp).value = m.rhythm; $(".rl-d-rate", disp).value = m.rate; $(".rl-d-hr", disp).value = m.hr; $(".rl-d-bp", disp).value = m.bp;
-      $(".rl-d-sp", disp).value = m.spo2; $(".rl-d-lab", disp).value = m.label; afterSel.value = "none"; monState = m; prev.set(m.rhythm, m.rate, true);
+      $(".rl-d-sp", disp).value = m.spo2; $(".rl-d-lab", disp).value = m.label; $(".rl-d-co2", disp).value = m.etco2 == null ? "" : m.etco2; $(".rl-d-rr", disp).value = m.rr == null ? "" : m.rr; afterSel.value = "none"; monState = m; prev.set(m.rhythm, m.rate, true);
       activeId = m.playStep || null; var st = stepById(activeId);
       if (st && st.shock && stepById(st.shock)) { afterSel.value = "step:" + st.shock; armAfter(); }   // chain: re-arm this step's own transition
       drawList();
@@ -586,7 +620,7 @@
     function stepById(id) { for (var i = 0; i < steps.length; i++) if (steps[i].id === id) return steps[i]; return null; }
     function idx(id) { for (var i = 0; i < steps.length; i++) if (steps[i].id === id) return i; return -1; }
     function esc(t) { return String(t == null ? "" : t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-    function stepState(st) { return st ? { rhythm: st.rhythm, rate: st.rate, hr: st.hr, bp: st.bp, spo2: st.spo2, label: st.label, playStep: st.id } : null; }
+    function stepState(st) { return st ? { rhythm: st.rhythm, rate: st.rate, hr: st.hr, bp: st.bp, spo2: st.spo2, label: st.label, etco2: st.etco2, rr: st.rr, playStep: st.id } : null; }
     function afterState(v) {
       if (!v || v === "none") return null;
       if (v.indexOf("step:") === 0) return stepState(stepById(v.slice(5)));
@@ -606,7 +640,7 @@
         var opts = '<option value="">stay (no change)</option>' + steps.map(function (o, j) { return '<option value="' + o.id + '"' + (st.shock === o.id ? " selected" : "") + ">step " + (j + 1) + "</option>"; }).join("");
         return '<li class="rl-pl-step' + (st.id === activeId ? " on" : "") + '" data-id="' + st.id + '">' +
           '<button type="button" class="rl-btn rl-pl-go" aria-label="Go to step ' + (i + 1) + '">' + (i + 1) + " &middot; Go</button>" +
-          '<span class="rl-pl-txt"><b>' + esc(st.label) + "</b><small>" + esc((st.rate ? st.rate + "/min · " : "") + "pulse " + st.hr + " · BP " + st.bp + " · SpO₂ " + st.spo2) + "</small></span>" +
+          '<span class="rl-pl-txt"><b>' + esc(st.label) + "</b><small>" + esc((st.rate ? st.rate + "/min · " : "") + "pulse " + st.hr + " · BP " + st.bp + " · SpO₂ " + st.spo2 + (st.etco2 != null && st.etco2 !== "" ? " · EtCO₂ " + st.etco2 : "")) + "</small></span>" +
           '<label class="rl-pl-sh">After a shock <select class="rl-pl-shock">' + opts + "</select></label>" +
           '<span class="rl-pl-ord"><button type="button" class="rl-pl-up" aria-label="Move step ' + (i + 1) + ' up">&#9650;</button><button type="button" class="rl-pl-dn" aria-label="Move step ' + (i + 1) + ' down">&#9660;</button>' +
           '<button type="button" class="rl-pl-x" aria-label="Remove step ' + (i + 1) + '">&#10005;</button></span></li>';
@@ -615,7 +649,7 @@
     function go(id) {   // put the step in the form and send it to the display at once
       var st = stepById(id); if (!st) return; activeId = id;
       $(".rl-d-r", disp).value = st.rhythm; $(".rl-d-rate", disp).value = st.rate; $(".rl-d-hr", disp).value = st.hr; $(".rl-d-bp", disp).value = st.bp;
-      $(".rl-d-sp", disp).value = st.spo2; $(".rl-d-lab", disp).value = st.label;
+      $(".rl-d-sp", disp).value = st.spo2; $(".rl-d-lab", disp).value = st.label; $(".rl-d-co2", disp).value = st.etco2 == null ? "" : st.etco2; $(".rl-d-rr", disp).value = st.rr == null ? "" : st.rr;
       afterOptions(); afterSel.value = st.shock && stepById(st.shock) ? "step:" + st.shock : "none";
       send(); drawList();
     }
@@ -634,7 +668,7 @@
     });
     $(".rl-pl-add", disp).addEventListener("click", function () {
       steps.push({ id: uid(), rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || "", hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value,
-        spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value || $(".rl-d-r", disp).selectedOptions[0].text, shock: null });
+        spo2: $(".rl-d-sp", disp).value, etco2: $(".rl-d-co2", disp).value, rr: $(".rl-d-rr", disp).value, label: $(".rl-d-lab", disp).value || $(".rl-d-r", disp).selectedOptions[0].text, shock: null });
       saveSteps(); drawList();
     });
     $(".rl-pl-prev", disp).addEventListener("click", function () { step(-1); });
@@ -745,7 +779,7 @@
         "<li><b>To improve:</b> the longest pause, 10 seconds around the first shock, sits at the limit; the course asks for pauses under 10 seconds. Charge the defibrillator during compressions so the pause holds only the rhythm check and the shock.</li>" +
         "<li><b>Then:</b> the physician-on-duty took over leadership at 2:30, pulse returned (ROSC) at 5:10, and the patient was handed over at 9:30.</li></ul>" +
         "Copy the log into the timeline analyzer for the written debrief, then press <b>Reset</b> to record your own drill.";
-      $(".rl-d-r", disp).value = "vf"; $(".rl-d-rate", disp).value = 300; $(".rl-d-hr", disp).value = "—"; $(".rl-d-bp", disp).value = "—"; $(".rl-d-sp", disp).value = "—";
+      $(".rl-d-r", disp).value = "vf"; $(".rl-d-rate", disp).value = 300; $(".rl-d-hr", disp).value = "—"; $(".rl-d-bp", disp).value = "—"; $(".rl-d-sp", disp).value = "—"; $(".rl-d-co2", disp).value = "12"; $(".rl-d-rr", disp).value = "10";
       $(".rl-d-lab", disp).value = "Ventricular fibrillation"; send();
       rec.scrollIntoView({ behavior: "smooth", block: "start" });
     };
@@ -866,11 +900,13 @@
       '<div class="m-top"><span class="m-lab"></span><span class="m-alarm" role="status" aria-live="assertive"></span><span class="m-clock"></span>' +
       '<button type="button" class="m-tap" hidden>Tap for sound</button><button type="button" class="m-beep" title="Beep source: QRS (ECG), pulse oximeter, or off"></button><button type="button" class="m-fs">Full screen</button></div>' +
       '<div class="m-main"><div class="m-waves"><div class="m-ecg"><span class="m-lead">II &nbsp;&times;1</span><canvas class="rl-dstrip"></canvas></div>' +
-        '<div class="m-ecg m-pl"><span class="m-lead">Pleth</span><span class="m-plno" hidden>NO PULSE</span><canvas class="rl-dpleth" role="img" aria-label="Pulse oximeter waveform"></canvas></div></div>' +
+        '<div class="m-ecg m-pl"><span class="m-lead">Pleth</span><span class="m-plno" hidden>NO PULSE</span><canvas class="rl-dpleth" role="img" aria-label="Pulse oximeter waveform"></canvas></div>' +
+        '<div class="m-ecg m-co2"><span class="m-lead">CO&#8322; <small>0&ndash;50 mmHg</small></span><span class="m-plno m-co2no" hidden>NO CO&#8322; SENSOR</span><canvas class="rl-dco2" role="img" aria-label="Capnogram"></canvas></div></div>' +
       '<div class="m-par">' +
         '<div class="m-box m-hr"><span class="m-k">HR <small>bpm</small></span><b class="m-v"></b><span class="m-lim">50 &ndash; 120</span></div>' +
         '<div class="m-box m-sp"><span class="m-k">SpO&#8322; <small>%</small></span><b class="m-v"></b><span class="m-sub">PR <i class="m-pr"></i></span></div>' +
         '<div class="m-box m-bp"><span class="m-k">NIBP <small>mmHg</small></span><b class="m-v"></b><span class="m-sub m-map"></span></div>' +
+        '<div class="m-box m-co2b"><span class="m-k">EtCO&#8322; <small>mmHg</small></span><b class="m-v"></b><span class="m-sub">RR <i class="m-rr"></i> /min</span></div>' +
       '</div></div>' +
       '<div class="m-defib" hidden><div class="m-dstat">Defibrillator &middot; <b class="m-dst">READY</b></div>' +
         '<label>Energy <select class="m-j">' + ENERGY.map(function (j) { return '<option value="' + j + '"' + (j === 150 ? " selected" : "") + ">" + j + " J</option>"; }).join("") + "</select></label>" +
@@ -879,7 +915,8 @@
         '<span class="m-count"></span><button type="button" class="m-b m-snd" aria-pressed="true">Sound on</button></div>' +
       '<p class="m-note">Training display &middot; not a medical device &middot; alarm limits are simulation defaults</p>';
     document.body.appendChild(wrap);
-    if (THUMB) wrap.classList.add("m-thumbview");
+    if (THUMB) { wrap.classList.add("m-thumbview"); var hs = document.documentElement.style; hs.height = "720px"; hs.overflow = "hidden"; document.body.style.overflow = "hidden"; }
+    var capno = Capno($(".rl-dco2", wrap));
     var strip = Strip($(".rl-dstrip", wrap), $(".rl-dpleth", wrap)), cur = {}, flash = !(REDUCED || epaper());
     // clock
     function clock() { var d = new Date(); $(".m-clock", wrap).textContent = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); }
@@ -930,6 +967,13 @@
       // pleth: flat when there is no pulse (arrest rhythm, or SpO₂ shown as "--"); smaller when the pressure is low
       var amp = arrest || sp === null ? 0 : sys === null ? 0.8 : Math.max(0.22, Math.min(1, (sys - 30) / 90));
       strip.set(m.rhythm, m.rate, true, amp);
+      // capnography: EtCO₂ 35–45 is usual; during CPR it reflects the quality of compressions
+      var co2 = num(m.etco2), rrv = num(m.rr), cl = co2 === null ? "" : lvl(co2, 20, 30, 50, 60), rl2 = rrv === null ? "" : lvl(rrv, 6, 8, 30, 40);
+      setBox(".m-co2b", co2 === null ? "--" : String(co2), cl || rl2);
+      $(".m-rr", wrap).textContent = rrv === null ? "--" : String(rrv);
+      if (cl) alarms.push([cl, "EtCO₂ " + co2 + (co2 < 30 ? " LOW" : " HIGH")]);
+      if (rl2) alarms.push([rl2, "RESP " + rrv + (rrv < 8 ? " LOW" : " HIGH")]);
+      capno.set(co2, rrv || 12); $(".m-co2no", wrap).hidden = co2 !== null;
       $(".m-plno", wrap).hidden = !!amp;
       alarms.sort(function (a, b) { return (b[0] === "red") - (a[0] === "red"); });
       var al = $(".m-alarm", wrap); al.className = "m-alarm" + (alarms.length ? " " + alarms[0][0] : ""); al.textContent = alarms.map(function (a) { return a[1]; }).join("  ·  ");
