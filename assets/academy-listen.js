@@ -163,7 +163,7 @@
           if (text.length > 1) {
             var it2 = { el: el, sec: si, parts: chunks(text) };
             var fimg = tag === "FIGCAPTION" && el.closest("figure") && el.closest("figure").querySelector("img");
-            if (fimg) { it2.fig = fimg; it2.parts.push(FIG_SAY); }       // Dr. Rivero (Nov 26 2026): show each figure for 10 s
+            if (fimg) it2.fig = fimg;                                    // Dr. Rivero (Nov 28 2026): zoom first, read the description while it shows
             items.push(it2);
           }
           return;
@@ -196,8 +196,7 @@
       });
     });
     if (!items.some(function (it) { return it.note; })) items.push({ el: null, sec: sections.length - 1, note: 1, parts: ["End of module."] });
-    if (slides) items = items.filter(function (it) { return it.fig; }).map(function (it) {   // only the pictures, each with its description
-      it.parts = it.parts.filter(function (p) { return p !== FIG_SAY; }); return it; });
+    if (slides) items = items.filter(function (it) { return it.fig; });   // only the pictures, each with its description
   }
 
   /* ---------- player state ---------- */
@@ -356,7 +355,7 @@
     });
   }
   // Dr. Rivero (Nov 27 2026, Android): when the voice fails silently, skipping sentence after sentence races through the
-  // text and only the 10 s figure pauses take time (a silent "slideshow"). Three failed sentences in a row stop the player.
+  // text and only the figure pauses take time (a silent "slideshow"). Three failed sentences in a row stop the player.
   var fails = 0;
   function failed() {
     if (++fails < 3) return false;
@@ -435,19 +434,24 @@
       navigator.mediaSession.setActionHandler("nexttrack", function () { jumpSection(1); });
     } catch (e) {}
   }
-  /* ---------- figures: after the description, open the image for 10 s, close it, read on ---------- */
-  var FIG_SAY = "Pausing for ten seconds to show the image.", FIG_MS = 10000, figTimer = 0, figOpen = false, figShown = -1;
+  /* ---------- figures (Dr. Rivero, Nov 28 2026): open the image first, read its description while it is on screen,
+     close it when the description ends (never under 10 s on screen; a longer description keeps it up, plus a short tail), then read on ---------- */
+  var FIG_MIN = 10000, FIG_TAIL = 1200, figTimer = 0, figOpen = false, figAt = 0;
   function closeFig() {
     clearTimeout(figTimer); figTimer = 0;
     if (!figOpen) return; figOpen = false;
     var lb = document.getElementById("img-lb");
     if (lb && lb.classList.contains("open")) { lb.classList.remove("open"); document.body.style.overflow = ""; }
   }
-  function showFigure(img, my) {
+  function wantFig(it) { return !!(it && it.fig) && !document.hidden && (slides || figsOn()); }   // screen off: no one can see it
+  function openFigure(img, my) {
     status("Showing the figure");
     try { img.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) {}
-    setTimeout(function () { if (my === token && playing) { figOpen = true; img.click(); } }, 400);   // the image lightbox opens on a tap
-    figTimer = setTimeout(function () { closeFig(); if (my !== token || !playing) return; status("Reading aloud"); idx++; part = 0; save(); speakNext(); }, FIG_MS);
+    setTimeout(function () {                                         // the image lightbox opens on a tap
+      if (my !== token || !playing) return;
+      figOpen = true; figAt = Date.now(); img.click();
+      setTimeout(function () { if (my === token && playing) { status("Reading aloud"); speakNext(); } }, 700);   // let it zoom, then read
+    }, 400);
   }
   function cancelAll() {
     closeFig();
@@ -462,11 +466,15 @@
     if (!playing) return;
     var it = items[idx];
     if (!it) { finish(); return; }
-    if (it.fig && it.parts[part] === FIG_SAY && (document.hidden || !(slides || figsOn()))) part++;   // screen off: no one can see it, so skip the pause
     if (part >= it.parts.length) {
-      if (it.fig && figShown !== idx && !document.hidden && (slides || figsOn())) { figShown = idx; showFigure(it.fig, my); return; }
-      figShown = -1; idx++; part = 0; save(); speakNext(); return;
+      if (figOpen) {                                                 // description finished: keep the image a moment, then close
+        var wait = Math.max(FIG_TAIL, FIG_MIN - (Date.now() - figAt));
+        figTimer = setTimeout(function () { closeFig(); if (my !== token || !playing) return; idx++; part = 0; save(); speakNext(); }, wait);
+        return;
+      }
+      idx++; part = 0; save(); speakNext(); return;
     }
+    if (wantFig(it) && !figOpen) { if (part === 0) mark(); openFigure(it.fig, my); return; }
     if (part === 0) mark();
     hlSentence();
     if (natural) { speakNatural(my); return; }
@@ -525,7 +533,7 @@
   }
   function jumpSection(d) {
     if (slides) {
-      idx = Math.max(0, Math.min(items.length - 1, idx + d)); part = 0; figShown = -1; audKey = null;
+      idx = Math.max(0, Math.min(items.length - 1, idx + d)); part = 0; audKey = null;
       if (playing) restart(); else mark(true);
       return;
     }
@@ -571,7 +579,7 @@
     figBtn.innerHTML = on ? IC.fig : IC.figOff;
     figBtn.setAttribute("aria-pressed", on ? "true" : "false");
     figBtn.setAttribute("aria-label", on ? "Pause to show figures: on" : "Pause to show figures: off");
-    figBtn.setAttribute("data-tip", on ? "Figures: pause 10 s to show each" : "Figures: not shown");
+    figBtn.setAttribute("data-tip", on ? "Figures: show each while its description is read" : "Figures: not shown");
   }
   function rateLabel() { return (rate === 1 ? "1" : String(rate)) + "×"; }
 
@@ -610,7 +618,7 @@
         else if (a === "next") jumpSection(1);
         else if (a === "figs") {
           var on = !figsOn(); ls(K_FIGS, on ? null : "0"); setFigBtn();
-          if (!on && figTimer) { closeFig(); status("Reading aloud"); idx++; part = 0; save(); restart(); }   // turned off mid-figure: read on
+          if (!on && figOpen) { var tail = !!figTimer; closeFig(); if (tail) { idx++; part = 0; save(); restart(); } }   // turned off mid-figure: read on
         }
         else if (a === "rate") {
           rate = RATES[(RATES.indexOf(rate) + 1) % RATES.length] || 1; ls(K_RATE, String(rate)); rateBtn.textContent = rateLabel();
@@ -667,7 +675,6 @@
     ui.querySelector('[data-a="prev"]').setAttribute("data-tip", slides ? "Previous figure" : "Previous section");
     ui.querySelector('[data-a="next"]').setAttribute("data-tip", slides ? "Next figure" : "Next section");
     document.body.classList.add("rcm-tts-on");
-    figShown = -1;
     build();
     playBtn.focus({ preventScroll: true });
   }
@@ -719,12 +726,12 @@
     }
     var nfig = [].filter.call(document.querySelectorAll("main section.section figure"), function (f) {
       return f.querySelector("img") && f.querySelector("figcaption") && visible(f); }).length;
-    if (nfig) {                                                      // Figure slideshow: each picture, its description, 10 s
+    if (nfig) {                                                      // Figure slideshow: each picture shown while its description is read
       var show = document.createElement("button");
       show.type = "button";
       show.className = "rcm-tts-ui rcm-tts-again rcm-tts-show no-print";
       show.innerHTML = IC.fig + '<span>Figure slideshow (' + nfig + ')</span>';
-      show.setAttribute("aria-label", "Figure slideshow: show each of the " + nfig + " figures for 10 seconds and read its description");
+      show.setAttribute("aria-label", "Figure slideshow: show each of the " + nfig + " figures while its description is read");
       show.addEventListener("click", function () {
         if (!slides) stop(true);
         slides = true; openPlayer(); idx = 0; part = 0; play();

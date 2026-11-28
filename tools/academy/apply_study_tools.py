@@ -40,11 +40,11 @@ CARDS = [
      "(about 90 MB, once; use Wi-Fi). After that it works without a signal. Tap Cancel to use your device's built-in "
      "voice instead."),
     ("Figures while listening",
-     "When the reader reaches a figure, it reads the description, opens the image full screen for 10 seconds, then "
-     "reads on. To skip the pictures, tap the picture button in the player to turn this off."),
+     "When the reader reaches a figure, it opens the image full screen and reads its description while you look, then "
+     "closes it and reads on. To skip the pictures, tap the picture button in the player to turn this off."),
     ("Figure slideshow",
      "Tap <strong>Figure slideshow</strong> under the module title to step through just the figures: each description is read "
-     "aloud and each image is shown for 10 seconds. A quick visual review before a quiz or a shift."),
+     "aloud while its image is shown full screen. A quick visual review before a quiz or a shift."),
     ("Highlights and notes",
      "Select any text, then pick a highlight color or tap <strong>Note</strong> to write your own. The orange pen button at the "
      "bottom left lists everything you marked in the module, and lets you export, print or back up your notes."),
