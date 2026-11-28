@@ -130,6 +130,8 @@ def main():
         SR = importlib.util.module_from_spec(spec); spec.loader.exec_module(SR); SR.main([])   # Academy-wide search (Pagefind index + dialog)
         spec = importlib.util.spec_from_file_location("build_schola", Path(__file__).with_name("build_schola.py"))
         S2 = importlib.util.module_from_spec(spec); spec.loader.exec_module(S2); S2.main()  # Schola app: offline file list
+        spec = importlib.util.spec_from_file_location("build_paratus", Path(__file__).with_name("build_paratus.py"))
+        PA = importlib.util.module_from_spec(spec); spec.loader.exec_module(PA); PA.main()  # Paratus app: /paratus/ copies + offline list
 
 
 if __name__ == "__main__":
