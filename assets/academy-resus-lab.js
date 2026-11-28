@@ -388,9 +388,10 @@
     host.appendChild(rec);
     var disp = el("div", "rl-card");
     disp.innerHTML = "<h3>Shared monitor display</h3><p class=\"rl-note\">Open the display on a second screen or a tablet beside the manikin. You change the rhythm and numbers here, privately; the display follows on the same device and browser.</p>" +
-      '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
-      '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="260"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
+      '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="pea">Organized, no pulse (PEA)</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
+      '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="320"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
       '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
+      '<p class="rl-note rl-d-hint">Choosing a rhythm fills in typical teaching values for it. Change any of them to fit your scenario, then press <b>Update display</b>; the display does not change until you do.</p>' +
       '<label class="rl-chk"><input type="checkbox" class="rl-d-defib"> Show a defibrillator on the display (energy selector, sync, charge, shock)</label>' +
       '<button type="button" class="rl-btn rl-d-send">Update display</button> <a class="rl-btn rl-ghost" href="?display=1" target="_blank" rel="noopener">Open display</a>' +
       '<p class="rl-note">On the display, tap <b>Full screen</b> to hide the browser bars. Out-of-range values turn yellow or red and the alarm bar names the problem, as on a bedside monitor; the limits are simulation defaults, not clinical thresholds. Energy on the simulated defibrillator follows the device manufacturer and your unit protocol. A shock on the display is logged in the recorder when its clock is running; the rhythm changes only when you change it here.</p>' +
@@ -402,6 +403,24 @@
       prev.set(monState.rhythm, monState.rate, true); store("rcm-resus-display", monState); if (CH) CH.postMessage(monState);
     }
     $(".rl-d-send", disp).addEventListener("click", send);
+    // typical teaching values per rhythm (simulation defaults, not clinical targets); "—" = no reading
+    var PRESET = {
+      normal:    [72, "72", "128/76", "97", "Sinus rhythm"],
+      svt:       [180, "180", "104/68", "96", "Narrow complex tachycardia (SVT)"],
+      irregular: [130, "118", "112/70", "95", "Atrial fibrillation, rapid"],
+      wide:      [170, "170", "86/54", "93", "Wide complex tachycardia (VT with a pulse)"],
+      peaked:    [66, "66", "122/74", "96", "Peaked T waves (high potassium)"],
+      sine:      [48, "48", "76/40", "88", "Sine wave (severe high potassium)"],
+      pea:       [46, "—", "—", "—", "PEA: organized rhythm, no pulse"],
+      vf:        [300, "—", "—", "—", "Ventricular fibrillation"],
+      asystole:  ["", "—", "—", "—", "Asystole"]
+    };
+    $(".rl-d-r", disp).addEventListener("change", function () {
+      var v = PRESET[this.value]; if (!v) return;
+      $(".rl-d-rate", disp).value = v[0]; $(".rl-d-hr", disp).value = v[1]; $(".rl-d-bp", disp).value = v[2];
+      $(".rl-d-sp", disp).value = v[3]; $(".rl-d-lab", disp).value = v[4];
+      prev.set(this.value, +v[0] || 72, true);   // preview only; the shared display waits for Update display
+    });
     $(".rl-d-defib", disp).addEventListener("change", send);
     var saved = store("rcm-resus-display"); if (saved && saved.defib) $(".rl-d-defib", disp).checked = true;
     var lastShock = 0;

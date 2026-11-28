@@ -172,6 +172,7 @@ html[data-theme="dark"] .rl-verdict.ok{color:#7ee2a0;}
 .rl-crit{border-left:4px solid var(--red);padding:6px 10px;background:var(--red-soft);}
 .rl-why{font-size:14px;color:var(--text-mid);}
 .rl-roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin:8px 0;}
+.rl-roles label:has(.rl-d-lab){grid-column:span 2;} @media (max-width:420px){.rl-roles label:has(.rl-d-lab){grid-column:auto;}}
 .rl-roles label{font-size:13.5px;color:var(--text-mid);display:block;}
 .rl-roles input,.rl-roles select,.rl-lab select{width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font:inherit;box-sizing:border-box;}
 .rl-evs{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:10px 0;}
