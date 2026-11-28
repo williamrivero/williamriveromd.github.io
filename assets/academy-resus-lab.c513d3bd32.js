@@ -46,7 +46,7 @@
   function Strip(canvas, pc) {
     var ctx = canvas.getContext && canvas.getContext("2d"), pctx = pc && pc.getContext && pc.getContext("2d");
     var shape = "normal", hr = 70, raf = 0, x = 0, prevY = null, beatT = -1, next = 0, last = 0, artT = 0, animating = false;
-    var pa = 0, pPrev = null, pT = -1, pRR = 0.85, pCarry = 0, pVal = 0, pending = [];
+    var pa = 0, pPrev = null, pT = -1, pRR = 0.85, pCarry = 0, pVal = 0, pending = [], hooks = {};
     var ECG_GAIN = 88, PL_GAIN = 64;
     function fit(cv, c) {
       var r = window.devicePixelRatio || 1, w = cv.clientWidth || 320, h = cv.clientHeight || 70;
@@ -57,7 +57,7 @@
     function eg(h) { var g = Math.min(h * 0.6, ECG_GAIN); return [g, h / 2 + g / 3]; }           // gain, baseline (0.7h on small strips, as before)
     function pg(h) { var g = Math.min(h * 0.62, PL_GAIN); return [g, h / 2 + g / 2]; }
     function plethAt(now) {
-      while (pending.length && now >= pending[0][0]) { var q = pending.shift(); pCarry = pVal; pT = q[0]; pRR = Math.min(1.3, Math.max(0.34, q[1])); }
+      while (pending.length && now >= pending[0][0]) { var q = pending.shift(); pCarry = pVal; pT = q[0]; pRR = Math.min(1.3, Math.max(0.34, q[1])); if (pa && hooks.pulse) hooks.pulse(0); }
       if (pT < 0) return 0;
       var dt = now - pT; pVal = plethWave(dt / pRR) + pCarry * Math.exp(-dt * 9); return pVal;
     }
@@ -89,7 +89,10 @@
         var now = ts / 1000 + i / 80;
         if (beatT < 0 || now >= next) {
           beatT = now; var rr = 60 / Math.max(25, hr); if (shape === "irregular") rr *= 0.6 + Math.random() * 0.8; next = now + rr;
-          if (!CONT[shape]) pending.push([now + 0.22, rr]);                                             // pulse reaches the finger ~0.2 s after the QRS
+          if (!CONT[shape]) {
+            pending.push([now + 0.42, rr]);                                                       // the QRS peaks 0.22 s into the cycle; the pulse reaches the finger ~0.2 s later
+            if (hooks.qrs) hooks.qrs(i / 80 + 0.22);                                             // QRS beep, scheduled at the R wave
+          }
         }
         var y = G[1] - (CONT[shape] ? cont(shape, now) : wave(shape, now - beatT, hr)) * G[0];
         if (artT && now < artT + 1.2) { var a = now - artT; y = a < 0.05 ? G[1] - G[0] * 1.1 : a < 0.1 ? G[1] + G[0] * 0.45 : G[1] - G[0] * 0.42 * Math.exp(-(a - 0.1) * 4); }
@@ -125,7 +128,8 @@
         animating = true; size(); last = 0; beatT = -1; pending = []; pT = -1; pVal = 0; pCarry = 0; raf = requestAnimationFrame(frame);
       },
       stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; animating = false; },
-      shock: function () { artT = performance.now() / 1000; }
+      shock: function () { artT = performance.now() / 1000; },
+      on: function (h) { hooks = h || {}; }
     };
   }
 
@@ -613,7 +617,7 @@
     var wrap = el("div", "rl-display rl-mon2");
     wrap.innerHTML =
       '<div class="m-top"><span class="m-lab"></span><span class="m-alarm" role="status" aria-live="assertive"></span><span class="m-clock"></span>' +
-      '<button type="button" class="m-fs">Full screen</button></div>' +
+      '<button type="button" class="m-tap" hidden>Tap for sound</button><button type="button" class="m-beep" title="Beep source: QRS (ECG), pulse oximeter, or off"></button><button type="button" class="m-fs">Full screen</button></div>' +
       '<div class="m-main"><div class="m-waves"><div class="m-ecg"><span class="m-lead">II &nbsp;&times;1</span><canvas class="rl-dstrip"></canvas></div>' +
         '<div class="m-ecg m-pl"><span class="m-lead">Pleth</span><span class="m-plno" hidden>NO PULSE</span><canvas class="rl-dpleth" role="img" aria-label="Pulse oximeter waveform"></canvas></div></div>' +
       '<div class="m-par">' +
@@ -717,7 +721,26 @@
       $(".m-count", wrap).textContent = shocks ? "Shocks: " + shocks : "";
     }
     bSy.addEventListener("click", function () { var on = bSy.getAttribute("aria-pressed") !== "true"; bSy.setAttribute("aria-pressed", on); bSy.classList.toggle("on", on); bSy.textContent = on ? "Sync on" : "Sync"; syncBeep(on); });
-    $(".m-snd", wrap).addEventListener("click", function () { sound = !sound; this.setAttribute("aria-pressed", sound); this.textContent = sound ? "Sound on" : "Sound off"; });
+    $(".m-snd", wrap).addEventListener("click", function () { sound = !sound; this.setAttribute("aria-pressed", sound); this.textContent = sound ? "Sound on" : "Sound off"; tapHint(); });
+    // beep tone, as on a monitor/defibrillator: QRS beep follows the ECG (keeps beeping in PEA, silent in VF/asystole);
+    // pulse beep follows the oximeter (silent without a pulse), its pitch falling as SpO₂ falls
+    var BEEPS = { qrs: "Beep: QRS", pulse: "Beep: pulse ox", off: "Beep: off" }, beep = store("rcm-resus-beep") || "qrs", bb = $(".m-beep", wrap);
+    if (!BEEPS[beep]) beep = "qrs";
+    function beepLabel() { bb.textContent = BEEPS[beep]; bb.setAttribute("aria-label", BEEPS[beep] + ". Tap to change."); tapHint(); }
+    bb.addEventListener("click", function () { beep = beep === "qrs" ? "pulse" : beep === "pulse" ? "off" : "qrs"; store("rcm-resus-beep", beep); beepLabel(); });
+    var unlocked = false, tapB = $(".m-tap", wrap);
+    function tapHint() { tapB.hidden = unlocked || !sound || beep === "off"; }
+    function unlock() { if (unlocked) return; try { ac(); unlocked = true; } catch (e) {} tapHint(); }
+    document.addEventListener("pointerdown", unlock, true); document.addEventListener("keydown", unlock, true);
+    strip.on({
+      qrs: function (at) { if (unlocked && beep === "qrs") tone(980, 55, 0.28, "triangle", at); },
+      pulse: function (at) {
+        if (!unlocked || beep !== "pulse") return;
+        var sp = num(cur.spo2); if (sp === null) return;
+        tone(880 * Math.pow(2, -Math.max(0, Math.min(40, 100 - sp)) / 12), 70, 0.28, "triangle", at);   // about one semitone lower per 1% below 100
+      }
+    });
+    beepLabel();
     sel.addEventListener("change", function () { if (st === "charged" || st === "charging") { clearTimeout(armT); show("ready", "DISARMED: ENERGY CHANGED"); } });
     bCh.addEventListener("click", function () {
       clearTimeout(armT); show("charging", "CHARGING " + J() + " J");
