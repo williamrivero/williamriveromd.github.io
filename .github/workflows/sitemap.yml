@@ -64,12 +64,17 @@ jobs:
       - name: Appearance themes (Auto / Light / Dim / Dark bootstrap + Dim CSS)
         run: python3 patch_theme_modes.py
 
+      - name: Academy search index (Pagefind) + search dialog tag
+        run: |
+          pip install --quiet 'pagefind[extended]'
+          python3 tools/academy/apply_search.py
+
       - name: Schola (Academy app) offline file list
         run: python3 tools/academy/build_schola.py
 
       - name: Commit if changed
         run: |
-          if git diff --quiet -- sitemap.xml guides/search-index.json && git diff --quiet -- '*.html' && git diff --quiet -- assets/ academy/schola-offline.json && [ -z "$(git ls-files --others --exclude-standard assets/)" ]; then
+          if git diff --quiet -- sitemap.xml guides/search-index.json && git diff --quiet -- '*.html' && git diff --quiet -- assets/ academy/schola-offline.json academy/pagefind && [ -z "$(git ls-files --others --exclude-standard assets/ academy/pagefind)" ]; then
             echo "sitemap.xml and search-index.json already in sync — nothing to commit."
             exit 0
           fi
@@ -79,5 +84,6 @@ jobs:
           git add -A -- '*.html'
           git add latest_guides.json
           git add academy/schola-offline.json academy/schola-sw.js academy/schola.webmanifest
+          git add -A academy/pagefind
           git commit -m "Regenerate sitemap.xml, search index, Calculo and Schola app files, theme files [skip ci]"
           git push
