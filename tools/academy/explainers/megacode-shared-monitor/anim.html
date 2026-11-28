@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000;}canvas{display:block;}</style></head>
+<body><canvas id="c" width="1280" height="720"></canvas>
+<script>
+var TL = null; // set by the recorder: {scenes, amp, fps}
+var c = document.getElementById('c'), x = c.getContext('2d');
+var W = 1280, H = 720;
+var TEAL = '#1a6b72', DTEAL = '#0e4a50', NAVY = '#1f3864', GOLD = '#b8860b', INK = '#1e2a38';
+var F = 'Inter, system-ui, sans-serif';
+
+function rr(X, Y, w, h, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + h, r); x.arcTo(X + w, Y + h, X, Y + h, r); x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); }
+function box(X, Y, w, h, r, fill, stroke, lw) { rr(X, Y, w, h, r); if (fill) { x.fillStyle = fill; x.fill(); } if (stroke) { x.strokeStyle = stroke; x.lineWidth = lw || 2; x.stroke(); } }
+function txt(s, X, Y, size, color, weight, align) { x.font = (weight || 600) + ' ' + size + 'px ' + F; x.fillStyle = color; x.textAlign = align || 'left'; x.textBaseline = 'middle'; x.fillText(s, X, Y); }
+function ease(u) { u = Math.max(0, Math.min(1, u)); return u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
+function pop(u) { u = Math.max(0, Math.min(1, u)); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(u - 1, 3) + c1 * Math.pow(u - 1, 2); }
+function fadeIn(lt, at, d) { return Math.max(0, Math.min(1, (lt - at) / (d || .4))); }
+
+/* ---------- waveforms ---------- */
+function sinus(u) {            // u = phase in a beat, 0..1
+  var y = 0;
+  y += 0.12 * Math.exp(-Math.pow((u - 0.12) / 0.03, 2));          // P
+  y -= 0.12 * Math.exp(-Math.pow((u - 0.25) / 0.008, 2));         // Q
+  y += 1.0 * Math.exp(-Math.pow((u - 0.27) / 0.012, 2));          // R
+  y -= 0.25 * Math.exp(-Math.pow((u - 0.295) / 0.012, 2));        // S
+  y += 0.25 * Math.exp(-Math.pow((u - 0.5) / 0.05, 2));           // T
+  return y;
+}
+function vf(t) { return 0.45 * Math.sin(t * 2 * Math.PI * 4.6) * (0.7 + 0.3 * Math.sin(t * 1.3)) + 0.2 * Math.sin(t * 2 * Math.PI * 6.9 + 1) + 0.12 * Math.sin(t * 2 * Math.PI * 2.1); }
+function ecgAt(kind, t, hr) { if (kind === 'vf') return vf(t); var p = 60 / (hr || 72); return sinus((t % p) / p); }
+function capAt(t, rr, v) {     // capnogram, height 0..1 scaled by v (0..1)
+  var p = 60 / rr, u = (t % p) / p, y;
+  if (u < 0.38) y = 0; else if (u < 0.46) y = 0.93 * (1 - Math.pow(1 - (u - 0.38) / 0.08, 3)); else if (u < 0.9) y = 0.93 + 0.07 * (u - 0.46) / 0.44;
+  else if (u < 0.95) { var f = (u - 0.9) / 0.05; y = 1 - f * f * (3 - 2 * f); } else y = 0;
+  return y * v;
+}
+/* draw a sweeping trace: fn(time)->value, in box; the sweep head is at time T */
+function trace(X, Y, w, h, T, fn, color, gain, span) {
+  span = span || w / 110; var head = (T % span) / span * w;
+  x.save(); rr(X, Y, w, h, 8); x.clip();
+  x.strokeStyle = color; x.lineWidth = 2.4; x.lineJoin = 'round';
+  x.beginPath(); var first = true;
+  for (var px = 0; px <= w; px += 1) {
+    if (px > head && px < head + 14) { first = true; continue; }   // eraser gap
+    var tt = px <= head ? T - (head - px) / w * span : T - span + (px - head) / w * span, v = 0, dt = span / w;
+    for (var k = 0; k < 5; k++) { var vv = fn(tt + dt * k / 5); if (Math.abs(vv) > Math.abs(v)) v = vv; }   // keep narrow spikes
+    var y = Y + h * 0.6 - v * gain;
+    if (first) { x.moveTo(X + px, y); first = false; } else x.lineTo(X + px, y);
+  }
+  x.stroke(); x.restore();
+}
+/* a small bedside monitor */
+function monitor(X, Y, w, h, T, st) {
+  box(X, Y, w, h, 18, '#0b0f17', '#2b3444', 3);
+  var pad = 14, top = Y + 12;
+  if (st.alarm) { box(X + pad, top, w - 2 * pad - 4, 30, 8, st.alarmColor || '#c1121f'); txt(st.alarm, X + w / 2, top + 15, 15, st.alarmColor === '#f2c200' ? '#111' : '#fff', 800, 'center'); }
+  var gx = X + pad, gw = w * 0.66 - pad, gy = top + 40, rows = st.capno ? 3 : 2, gh = (h - 66) / rows - 6;
+  box(gx, gy, gw, gh, 8, '#0f1724'); trace(gx, gy, gw, gh, T, function (t) { return ecgAt(st.rhythm, t, st.hr); }, '#5ee08a', gh * 0.55);
+  box(gx, gy + gh + 6, gw, gh, 8, '#0f1724');
+  if (st.rhythm === 'vf') { x.strokeStyle = '#22d3ee'; x.lineWidth = 2; x.beginPath(); x.moveTo(gx + 6, gy + gh + 6 + gh * 0.7); x.lineTo(gx + gw - 6, gy + gh + 6 + gh * 0.7); x.stroke(); }
+  else trace(gx, gy + gh + 6, gw, gh, T, function (t) { var p = 60 / st.hr, u = ((t - 0.2) % p + p) % p / p; return u < 0.2 ? Math.sin(u / 0.2 * Math.PI / 2) : Math.exp(-(u - 0.2) * 4.5) * (1 + 0.15 * Math.exp(-Math.pow((u - 0.42) / 0.05, 2))); }, '#22d3ee', gh * 0.5);
+  if (st.capno) { var cy = gy + 2 * (gh + 6); box(gx, cy, gw, gh, 8, '#0f1724'); trace(gx, cy, gw, gh, T, function (t) { return capAt(t, st.rr || 10, (st.co2fn ? st.co2fn(t) : st.co2) / 50); }, '#fbbf24', gh * 0.8); }
+  // numbers
+  var nx = X + w * 0.66 + 6, nw = w * 0.34 - pad - 6, items = [['HR', st.hrShown, '#4ade80'], ['SpO₂', st.spo2, '#22d3ee']];
+  if (st.capno) items.push(['EtCO₂', st.co2Shown, '#fbbf24']);
+  var ih = (h - 66) / items.length - 6;
+  items.forEach(function (it, i) {
+    var iy = gy + i * (ih + 6); box(nx, iy, nw, ih, 8, '#0f1724');
+    txt(it[0], nx + 10, iy + 16, 13, it[2], 700); txt(it[1], nx + 10, iy + ih * 0.62, Math.min(44, ih * 0.5), it[2], 800);
+  });
+}
+
+/* ---------- the cartoon guide (an original character) ---------- */
+function guide(T, amp, mode, lt) {
+  var bx = 210, by = 620 + Math.sin(T * 2.2) * 3;     // feet line
+  x.save();
+  // shadow
+  x.fillStyle = 'rgba(15,30,46,.12)'; x.beginPath(); x.ellipse(bx, 640, 120, 16, 0, 0, Math.PI * 2); x.fill();
+  // body (scrubs)
+  x.fillStyle = TEAL; rr(bx - 95, by - 250, 190, 250, 70); x.fill();
+  x.fillStyle = '#15595f'; x.beginPath(); x.moveTo(bx - 34, by - 245); x.lineTo(bx, by - 200); x.lineTo(bx + 34, by - 245); x.closePath(); x.fill();   // V-neck
+  // badge
+  box(bx + 30, by - 185, 42, 26, 5, '#fff'); x.fillStyle = TEAL; x.fillRect(bx + 36, by - 177, 30, 4); x.fillRect(bx + 36, by - 169, 20, 4);
+  // stethoscope
+  x.strokeStyle = '#334155'; x.lineWidth = 6; x.lineCap = 'round'; x.beginPath(); x.moveTo(bx - 50, by - 238); x.quadraticCurveTo(bx - 60, by - 150, bx - 20, by - 140); x.stroke();
+  x.fillStyle = '#94a3b8'; x.beginPath(); x.arc(bx - 16, by - 138, 10, 0, Math.PI * 2); x.fill();
+  // arms
+  var skin = '#c98a5b';
+  x.strokeStyle = TEAL; x.lineWidth = 34;
+  x.beginPath(); x.moveTo(bx - 80, by - 210); x.quadraticCurveTo(bx - 120, by - 120, bx - 95, by - 70); x.stroke();       // left arm down
+  x.fillStyle = skin; x.beginPath(); x.arc(bx - 93, by - 62, 17, 0, Math.PI * 2); x.fill();
+  var ang;   // right arm: wave in the intro, point toward the content otherwise
+  if (mode === 'wave') ang = -0.95 + Math.sin(T * 7) * 0.22; else ang = -0.55 + Math.sin(T * 1.6) * 0.06;
+  var sx = bx + 80, sy = by - 210, ex = sx + Math.cos(ang) * 70, ey = sy + Math.sin(ang) * 70 + 40, hx = ex + Math.cos(ang - 0.2) * 70, hy = ey + Math.sin(ang - 0.2) * 70;
+  x.strokeStyle = TEAL; x.beginPath(); x.moveTo(sx, sy); x.lineTo(ex, ey); x.stroke();
+  x.strokeStyle = skin; x.lineWidth = 26; x.beginPath(); x.moveTo(ex, ey); x.lineTo(hx, hy); x.stroke();
+  x.fillStyle = skin; x.beginPath(); x.arc(hx, hy, 18, 0, Math.PI * 2); x.fill();
+  // neck + head
+  x.fillStyle = skin; x.fillRect(bx - 20, by - 280, 40, 40);
+  var hy0 = by - 350 + Math.sin(T * 2.2 + .6) * 2, tilt = Math.sin(T * 1.3) * 0.04 + amp * 0.03;
+  x.translate(bx, hy0); x.rotate(tilt);
+  // hair back
+  x.fillStyle = '#1f1611'; x.beginPath(); x.arc(0, -8, 86, Math.PI, 0); x.lineTo(86, 30); x.lineTo(-86, 30); x.closePath(); x.fill();
+  x.beginPath(); x.arc(0, -96, 30, 0, Math.PI * 2); x.fill();   // bun
+  // face
+  x.fillStyle = skin; x.beginPath(); x.ellipse(0, 10, 76, 84, 0, 0, Math.PI * 2); x.fill();
+  // ears
+  x.beginPath(); x.ellipse(-76, 16, 12, 18, 0, 0, Math.PI * 2); x.ellipse(76, 16, 12, 18, 0, 0, Math.PI * 2); x.fill();
+  // fringe
+  x.fillStyle = '#1f1611'; x.beginPath(); x.moveTo(-78, -6); x.quadraticCurveTo(-60, -80, 10, -76); x.quadraticCurveTo(70, -72, 80, -6); x.quadraticCurveTo(40, -40, -10, -38); x.quadraticCurveTo(-50, -36, -78, -6); x.fill();
+  // eyes (blink every ~3.7 s)
+  var blink = ((T % 3.7) < 0.13) ? 0.12 : 1;
+  x.fillStyle = '#1e1b18';
+  [-30, 30].forEach(function (ex2) { x.beginPath(); x.ellipse(ex2, 8, 10, 13 * blink, 0, 0, Math.PI * 2); x.fill(); });
+  x.fillStyle = '#fff'; if (blink > .5) [-27, 33].forEach(function (ex2) { x.beginPath(); x.arc(ex2, 3, 3.5, 0, Math.PI * 2); x.fill(); });
+  // brows lift a little when speaking
+  x.strokeStyle = '#1f1611'; x.lineWidth = 5; x.lineCap = 'round';
+  [-1, 1].forEach(function (s) { x.beginPath(); x.moveTo(s * 18, -16 - amp * 4); x.quadraticCurveTo(s * 30, -24 - amp * 5, s * 44, -17 - amp * 4); x.stroke(); });
+  // cheeks
+  x.fillStyle = 'rgba(232,110,110,.35)'; x.beginPath(); x.ellipse(-46, 36, 13, 8, 0, 0, Math.PI * 2); x.ellipse(46, 36, 13, 8, 0, 0, Math.PI * 2); x.fill();
+  // mouth: smile when quiet, opens with the voice
+  var open = Math.min(1, amp * 1.25);
+  if (open < 0.08) { x.strokeStyle = '#6b2b2b'; x.lineWidth = 5; x.beginPath(); x.arc(0, 40, 20, 0.2 * Math.PI, 0.8 * Math.PI); x.stroke(); }
+  else {
+    x.fillStyle = '#5a1f22'; x.beginPath(); x.ellipse(0, 50, 14 + open * 8, 4 + open * 15, 0, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#e57373'; x.beginPath(); x.ellipse(0, 56 + open * 6, 9 + open * 4, 3 + open * 4, 0, 0, Math.PI); x.fill();
+    x.fillStyle = '#fff'; x.fillRect(-10 - open * 4, 50 - (4 + open * 15) + 1, 20 + open * 8, 4);
+  }
+  x.restore();
+}
+
+/* ---------- caption ---------- */
+function caption(sc, lt) {
+  var s = sc.text.match(/[^.!?]+[.!?]+/g) || [sc.text], L = s.reduce(function (a, b) { return a + b.length; }, 0);
+  var u = (lt - sc.lead) / sc.speech, acc = 0, cur = s[s.length - 1];
+  for (var i = 0; i < s.length; i++) { acc += s[i].length / L; if (u < acc) { cur = s[i]; break; } }
+  if (lt < sc.lead * 0.6) return;
+  cur = cur.trim(); x.font = '600 24px ' + F; var lines = [cur];
+  if (x.measureText(cur).width > 1100) {   // two lines, split near the middle at a word
+    var wds = cur.split(' '), best = 0, bd = 1e9;
+    for (var j = 1; j < wds.length; j++) { var d = Math.abs(x.measureText(wds.slice(0, j).join(' ')).width - x.measureText(wds.slice(j).join(' ')).width); if (d < bd) { bd = d; best = j; } }
+    lines = [wds.slice(0, best).join(' '), wds.slice(best).join(' ')];
+  }
+  var wdt = Math.max.apply(null, lines.map(function (l) { return x.measureText(l).width; })) + 48, hh = lines.length * 32 + 14, top = 700 - hh;
+  box(W / 2 - wdt / 2, top, wdt, hh, 12, 'rgba(15,23,42,.82)');
+  lines.forEach(function (l, j) { txt(l, W / 2, top + 23 + j * 32, 24, '#fff', 600, 'center'); });
+}
+
+/* ---------- scenes (lt = seconds into the scene) ---------- */
+var R = 400;   // left edge of the content area
+var scenes = [
+  function title(lt, T) {
+    var a = pop(fadeIn(lt, 0.2, .7));
+    x.save(); x.globalAlpha = Math.min(1, a); x.translate(0, (1 - a) * 30);
+    box(R + 10, 66, 830, 58, 29, 'rgba(26,107,114,.12)'); txt('RENAL CARE ACADEMY  ·  MEGACODE PRACTICE LAB', R + 40, 95, 18, TEAL, 800);
+    txt('The shared', R + 30, 190, 72, NAVY, 800); txt('monitor display', R + 30, 268, 72, GOLD, 800);
+    x.restore();
+    var m = ease(fadeIn(lt, 1.6, .8));
+    x.save(); x.globalAlpha = m; monitor(R + 120 + (1 - m) * 60, 330, 560, 270, T, { rhythm: 'sinus', hr: 72, hrShown: '72', spo2: '97', capno: true, co2: 38, co2Shown: '38', rr: 16 }); x.restore();
+  },
+  function twoScreens(lt, T) {
+    var a = ease(fadeIn(lt, 0.2, .6)), b = ease(fadeIn(lt, 1.8, .6));
+    // laptop with the controls
+    x.save(); x.globalAlpha = a;
+    box(R + 10, 200, 360, 230, 14, '#e5e9f0', '#94a3b8', 3); box(R + 26, 214, 328, 202, 8, '#fff');
+    txt('Controls', R + 42, 236, 20, NAVY, 800);
+    for (var i = 0; i < 4; i++) { box(R + 42, 258 + i * 36, 130, 26, 6, '#f1f5f9', '#cbd5e1', 1.5); box(R + 186, 258 + i * 36, 150, 26, 6, '#f1f5f9', '#cbd5e1', 1.5); }
+    box(R + 42, 402 - 4, 150, 0, 0); box(R - 10, 430, 400, 18, 9, '#cbd5e1');
+    // lock badge
+    var lk = pop(fadeIn(lt, 4.4, .5)); if (lk > 0) { x.save(); x.translate(R + 190, 480); x.scale(lk, lk); box(-92, -22, 184, 44, 22, NAVY); txt('🔒  Private', 0, 1, 20, '#fff', 700, 'center'); x.restore(); }
+    x.restore();
+    // tablet with the monitor
+    x.save(); x.globalAlpha = b;
+    box(R + 470, 150, 400, 300, 26, '#1f2937'); monitor(R + 486, 166, 368, 268, T, { rhythm: 'sinus', hr: 72, hrShown: '72', spo2: '97' });
+    var ey = pop(fadeIn(lt, 5.6, .5)); if (ey > 0) { x.save(); x.translate(R + 670, 480); x.scale(ey, ey); box(-118, -22, 236, 44, 22, TEAL); txt('👀  The team sees this', 0, 1, 19, '#fff', 700, 'center'); x.restore(); }
+    x.restore();
+    // link: data flows one way
+    if (b > 0.5) { x.strokeStyle = GOLD; x.lineWidth = 4; x.setLineDash([10, 10]); x.lineDashOffset = -T * 40; x.beginPath(); x.moveTo(R + 378, 300); x.lineTo(R + 462, 300); x.stroke(); x.setLineDash([]);
+      x.fillStyle = GOLD; x.beginPath(); x.moveTo(R + 466, 300); x.lineTo(R + 452, 291); x.lineTo(R + 452, 309); x.fill(); }
+  },
+  function chooseRhythm(lt, T) {
+    var a = ease(fadeIn(lt, 0.2, .5)); x.save(); x.globalAlpha = a;
+    box(R + 10, 110, 440, 420, 18, '#fff', '#dfe6f0', 2); txt('Shared monitor display', R + 34, 146, 22, NAVY, 800);
+    var vfOn = lt > 1.6, fill = ease(fadeIn(lt, 1.6, .9));
+    var rows = [['Rhythm', vfOn ? 'Ventricular fibrillation' : 'Sinus rhythm'], ['Electrical rate', vfOn ? '300' : '72'], ['Pulse shown', vfOn ? '—' : '72'], ['SpO₂ shown', vfOn ? '—' : '97'], ['EtCO₂ shown', vfOn ? '12' : '38']];
+    rows.forEach(function (r, i) {
+      var y = 186 + i * 58; txt(r[0], R + 34, y, 15, '#475569', 600);
+      var hl = vfOn && fill < 1 ? 'rgba(242,194,0,' + (0.5 * (1 - fill)) + ')' : '#f8fafc';
+      box(R + 34, y + 12, 392, 32, 7, hl, i === 0 && lt > 0.9 && lt < 1.8 ? TEAL : '#cbd5e1', i === 0 && lt > 0.9 && lt < 1.8 ? 3 : 1.5);
+      txt(r[1], R + 46, y + 28, 17, INK, 600);
+    });
+    // Update display button + cursor
+    var press = lt > 5.6 && lt < 5.9;
+    box(R + 34, 472 + (press ? 2 : 0), 200, 44, 22, press ? DTEAL : TEAL); txt('Update display', R + 134, 494 + (press ? 2 : 0), 18, '#fff', 700, 'center');
+    var cx, cy; if (lt < 1.4) { cx = R + 360; cy = 400; } else if (lt < 2.2) { var u = ease((lt - 1.4) / .8); cx = R + 360 + (R + 300 - R - 360) * u; cy = 400 + (214 - 400) * u; } else if (lt < 5.3) { var u2 = ease((lt - 3.8) / 1.5); cx = R + 300 + (R + 150 - R - 300) * u2; cy = 214 + (494 - 214) * u2; } else { cx = R + 150; cy = 494; }
+    x.fillStyle = '#111'; x.strokeStyle = '#fff'; x.lineWidth = 2; x.beginPath(); x.moveTo(cx, cy); x.lineTo(cx, cy + 26); x.lineTo(cx + 7, cy + 19); x.lineTo(cx + 13, cy + 31); x.lineTo(cx + 18, cy + 28); x.lineTo(cx + 12, cy + 17); x.lineTo(cx + 21, cy + 17); x.closePath(); x.fill(); x.stroke();
+    if (press || (lt > 5.6 && lt < 6.3)) { x.strokeStyle = 'rgba(26,107,114,' + (1 - (lt - 5.6) / .7) + ')'; x.lineWidth = 4; x.beginPath(); x.arc(cx, cy, 10 + (lt - 5.6) * 60, 0, Math.PI * 2); x.stroke(); }
+    x.restore();
+    // the monitor waits for Update display
+    var sent = lt > 5.75;
+    monitor(R + 480, 170, 400, 300, T, sent ? { rhythm: 'vf', hrShown: '- - -', spo2: '- -', alarm: 'VFIB / VTACH', capno: true, co2: 12, co2Shown: '12', rr: 10 } : { rhythm: 'sinus', hr: 72, hrShown: '72', spo2: '97', capno: true, co2: 38, co2Shown: '38', rr: 16 });
+    var lab = sent ? 'Updated' : (lt > 1.7 ? 'Still waiting…' : 'Shared display'); txt(lab, R + 680, 500, 20, sent ? '#b91c1c' : '#64748b', 700, 'center');
+  },
+  function capno(lt, T) {
+    var rosc = 6.6;   // the heart starts again here
+    var co2 = function (t) { var l = t - (T - lt); return l < rosc ? 13 + 2 * Math.sin(l) : Math.min(42, 14 + (l - rosc) * 30); };
+    var cur = co2(T), back = lt > rosc;
+    monitor(R + 30, 90, 820, 440, T, { rhythm: back ? 'sinus' : 'vf', hr: 96, hrShown: back ? '96' : '- - -', spo2: back ? '92' : '- -', capno: true, co2fn: co2, co2Shown: String(Math.round(cur)), rr: 10, alarm: back ? '' : 'VFIB / VTACH' });
+    var a = pop(fadeIn(lt, 1.4, .5)); if (a > 0) { x.save(); x.globalAlpha = Math.min(1, a); box(R + 40, 548, 400, 46, 23, '#fef3c7', '#f59e0b', 2); txt('Yellow trace = capnography (EtCO₂)', R + 240, 571, 18, '#78350f', 700, 'center'); x.restore(); }
+    var r = pop(fadeIn(lt, rosc + 0.4, .5)); if (r > 0) { x.save(); x.globalAlpha = Math.min(1, r); box(R + 470, 548, 380, 46, 23, '#dcfce7', '#16a34a', 2); txt('Sudden rise: check for a pulse', R + 660, 571, 18, '#14532d', 700, 'center'); x.restore(); }
+  },
+  function defib(lt, T) {
+    var after = 4.6, shockAt = 3.2, back = lt > shockAt + 2;
+    monitor(R + 30, 70, 500, 300, T, back ? { rhythm: 'sinus', hr: 88, hrShown: '88', spo2: '94' } : { rhythm: 'vf', hrShown: '- - -', spo2: '- -', alarm: 'VFIB / VTACH' });
+    // the defibrillator panel
+    box(R + 30, 392, 830, 128, 18, '#111827', '#374151', 2);
+    txt('Defibrillator · ' + (lt < 1.2 ? 'READY' : lt < 2.4 ? 'CHARGING…' : lt < shockAt ? 'CHARGED' : 'SHOCK DELIVERED'), R + 54, 422, 22, lt >= 2.4 && lt < shockAt ? '#fbbf24' : '#e5e7eb', 800);
+    var btn = function (lbl, bx, on, col) { box(R + bx, 448, 150, 54, 12, on ? col : '#1f2937', '#4b5563', 2); txt(lbl, R + bx + 75, 475, 21, '#fff', 800, 'center'); };
+    btn('150 J', 54, false); btn('Sync', 220, false); btn('Charge', 386, lt > 1.2 && lt < 2.4, '#b45309'); btn('Shock', 552, lt > 2.4 && lt < shockAt + .3, '#b91c1c');
+    if (lt > 1.2 && lt < 2.4) { box(R + 386, 506, 150 * (lt - 1.2) / 1.2, 6, 3, '#fbbf24'); }
+    // flash
+    if (lt > shockAt && lt < shockAt + .35) { x.fillStyle = 'rgba(255,255,255,' + (1 - (lt - shockAt) / .35) * 0.85 + ')'; x.fillRect(0, 0, W, H); }
+    // setting: rhythm after the next shock
+    var a = ease(fadeIn(lt, after, .5)); x.save(); x.globalAlpha = a;
+    box(R + 560, 110, 300, 210, 16, '#fff', '#dfe6f0', 2); txt('Rhythm after the next shock', R + 580, 140, 17, NAVY, 800);
+    box(R + 580, 162, 260, 36, 8, '#f0fdf4', '#16a34a', 2); txt('Sinus rhythm (ROSC)', R + 594, 180, 16, '#14532d', 700);
+    txt('Applied about 2 s after', R + 580, 232, 16, '#475569', 600); txt('a shock, then resets.', R + 580, 256, 16, '#475569', 600);
+    x.restore();
+    if (lt > shockAt + 0.4 && lt < shockAt + 2) txt('… 2 s …', R + 280, 220, 26, '#fbbf24', 800, 'center');
+  },
+  function playlist(lt, T) {
+    var steps = [['VF', '#b91c1c'], ['Shock', '#b45309'], ['VF again', '#b91c1c'], ['Shock', '#b45309'], ['ROSC: sinus', '#15803d']];
+    box(R + 30, 90, 400, 400, 18, '#fff', '#dfe6f0', 2); txt('Rhythm playlist', R + 54, 126, 22, NAVY, 800);
+    var active = Math.min(steps.length - 1, Math.max(0, Math.floor((lt - 1.2) / 0.9)));
+    steps.forEach(function (s, i) {
+      var a = pop(fadeIn(lt, 0.3 + i * 0.18, .4)); if (a <= 0) return;
+      var y = 156 + i * 62; x.save(); x.globalAlpha = Math.min(1, a);
+      var on = i === active && lt > 1.2; box(R + 54, y, 352, 50, 12, on ? '#ecfeff' : '#f8fafc', on ? TEAL : '#cbd5e1', on ? 3 : 1.5);
+      box(R + 66, y + 10, 30, 30, 15, s[1]); txt(String(i + 1), R + 81, y + 25, 16, '#fff', 800, 'center'); txt(s[0], R + 110, y + 25, 19, INK, 700);
+      if (on) { box(R + 330, y + 10, 64, 30, 15, TEAL); txt('Go', R + 362, y + 25, 15, '#fff', 800, 'center'); }
+      x.restore();
+    });
+    var kind = ['vf', 'vf', 'vf', 'vf', 'sinus'][active];
+    monitor(R + 460, 120, 400, 300, T, kind === 'sinus' ? { rhythm: 'sinus', hr: 92, hrShown: '92', spo2: '95' } : { rhythm: 'vf', hrShown: '- - -', spo2: '- -', alarm: 'VFIB / VTACH' });
+    var e = ease(fadeIn(lt, 5.4, .6)); x.save(); x.globalAlpha = e;
+    box(R + 460, 440, 400, 50, 25, '#fff7e6', '#f0c674', 2); txt('Training display · not a medical device', R + 660, 465, 17, '#6b4200', 700, 'center'); x.restore();
+  }
+];
+
+function bg(i, T) {
+  var g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, ['#eef7f6', '#f3f6fb', '#f3f7f2', '#f8f5ee', '#f4f2fa', '#eef7f6'][i]); g.addColorStop(1, '#ffffff');
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.fillStyle = 'rgba(26,107,114,.06)'; for (var k = 0; k < 6; k++) { x.beginPath(); x.arc(1120 - k * 40 + Math.sin(T * .3 + k) * 10, 80 + k * 22, 60 + k * 18, 0, Math.PI * 2); x.fill(); }
+  x.fillStyle = 'rgba(31,56,100,.05)'; x.fillRect(0, 640, W, 80);
+}
+
+window.render = function (frame) {
+  var fps = TL.fps, T = frame / fps, i = 0, start = 0;
+  while (i < TL.scenes.length - 1 && frame >= start + TL.scenes[i].frames) { start += TL.scenes[i].frames; i++; }
+  var sc = TL.scenes[i], lt = (frame - start) / fps;
+  bg(i, T);
+  scenes[i](lt, T);
+  // the content fades between scenes; the guide stays
+  var d = sc.frames / fps, f = Math.max(0, 1 - lt / .3, 1 - (d - lt) / .3);
+  if (f > 0) { x.save(); x.globalAlpha = f; bg(i, T); x.restore(); }
+  guide(T, TL.amp[frame] || 0, i === 0 && lt < 3.5 ? 'wave' : 'point', lt);
+  caption(sc, lt);
+  if (frame < 12) { x.fillStyle = 'rgba(255,255,255,' + (1 - frame / 12) + ')'; x.fillRect(0, 0, W, H); }
+};
+</script></body></html>

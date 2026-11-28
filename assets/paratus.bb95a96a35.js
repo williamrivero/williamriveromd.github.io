@@ -133,7 +133,6 @@
       '<h2><img src="/images/app/paratus-192.png" alt="">Paratus: ready without signal<button type="button" class="pa-x-close" aria-label="Close">&times;</button></h2>'
       + '<p class="pa-lead">Paratus (Latin for &ldquo;ready&rdquo;) keeps the Emergency Quick Cards, the Dialysis Team Resuscitation Lab, Disaster Preparedness, the Megacode Practice Lab and the Disaster Drills on this device, for a code, a typhoon or a power cut with no signal. It is separate from Schola, the Academy app.</p>'
       + '<div class="pa-grid">'
-      + (inApp ? '' : '<p class="pa-lead">This page is in the Academy (and Schola); Paratus is its own app, with these pages and the practice labs.</p>')
       + '<div class="pa-card"><h3>1. Install</h3><p data-pa="hint">Adds a Paratus icon to your home screen or desktop. It opens full screen.</p>'
       + (inApp ? '' : '<a class="pa-open-app" href="/paratus/">Open Paratus</a>')
       + '<button type="button" class="pa-btn pa-x" data-pa="install" hidden>Install Paratus</button>'
