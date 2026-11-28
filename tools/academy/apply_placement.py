@@ -146,6 +146,11 @@ def sub_meta(head, title, desc, url):
     head = re.sub(r'(<meta name="description" content=")[^"]*(")', lambda m: m.group(1) + html.escape(desc) + m.group(2),
                   head, count=1)
     head = re.sub(r'(<link rel="canonical" href=")[^"]*(")', lambda m: m.group(1) + url + m.group(2), head, count=1)
+    og = ROOT / "images" / "og" / (url.rstrip("/").rsplit("/", 1)[-1] + "-og.jpg")   # a dedicated share card, when one exists
+    if og.exists():
+        img = "https://renalcarematters.com/images/og/" + og.name
+        head = re.sub(r'(<meta (?:property|name)="(?:og:image|twitter:image)" content=")[^"]*(")', lambda m: m.group(1) + img + m.group(2), head)
+        head = re.sub(r'(<meta property="og:image:(?:width|height)" content=")[^"]*(")', lambda m: m.group(1) + ("1200" if "width" in m.group(0) else "630") + m.group(2), head)
     head = re.sub(r'<script type="application/ld\+json">.*?</script>\s*', "", head, flags=re.S)
     head = re.sub(r'<meta name="robots"[^>]*>\s*', "", head)
     return head.replace("</head>", '<meta name="robots" content="noindex, follow">\n</head>', 1)

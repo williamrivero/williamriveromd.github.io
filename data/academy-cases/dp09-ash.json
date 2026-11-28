@@ -1,0 +1,140 @@
+{
+ "id": "dp09-ash",
+ "page": "disaster-preparedness-09-heat-ashfall-outbreaks.html",
+ "title": "Ash on the windshield",
+ "decisions": 3,
+ "monitorTitle": "Unit board",
+ "strip": false,
+ "note": "Fictional unit and patients. DRAFT pending clinical sign-off. Your unit protocol, the attending nephrologist and your local disaster authorities decide every real event.",
+ "labels": {
+  "time": "Time",
+  "alert": "Alert",
+  "power": "Power",
+  "water": "Water",
+  "on": "On machines",
+  "staff": "Staff",
+  "roads": "Roads",
+  "note": "Board note"
+ },
+ "monitorOrder": [
+  "time",
+  "alert",
+  "power",
+  "water",
+  "on",
+  "staff",
+  "roads",
+  "note"
+ ],
+ "monitor": {
+  "time": "5:30 a.m.",
+  "alert": "Volcano alert raised (PHIVOLCS)",
+  "power": "Main",
+  "water": "Normal",
+  "on": "0 (opens 6:00)",
+  "staff": "4 of 6 arrived",
+  "roads": "Ash, slippery"
+ },
+ "intro": "<p>You are the charge nurse of a 12-station unit in Tanauan, Batangas. Fine gray ash covers the roads and cars after an eruption. The first shift starts at 6:00 a.m. The waiting-area windows are open, and the water room draws from a rooftop tank with a loose cover.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "5:30 a.m.",
+   "scene": "",
+   "prompt": "What do you do before the first patient arrives?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Close the windows and doors, set up an ash-cleaning point at the entrance, ask the building staff to cover the air intakes and secure the rooftop tank cover, and have masks ready.",
+     "feedback": "<p>Close, cover, clean: keep ash out of the building, the air and the water.</p>",
+     "next": "n2",
+     "vitals": {
+      "note": "Building closed; ash point set"
+     }
+    },
+    {
+     "grade": "ok",
+     "text": "Start the first patients, then close up.",
+     "feedback": "<p>Every minute with open windows lets ash in.</p>",
+     "next": "n2",
+     "then": "<p>You close up after the first connections.</p>",
+     "vitals": {
+      "note": "Building closed late"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Keep the windows open for ventilation, as usual.",
+     "feedback": "<p>Ash irritates eyes and lungs and gets into equipment.</p>",
+     "next": "n2",
+     "then": "<p>Ash drifts across the waiting area; you close the windows.</p>",
+     "vitals": {
+      "note": "Building closed late"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "The water",
+   "scene": "<p>At 6:20 a.m. the water technician reports the pre-filter pressure drop is rising fast.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Stop new starts; the technician checks the tank and filters and tests the water; follow the water failure steps until the water is released.",
+     "feedback": "<p>Ash may be entering the water. No new patient starts on water that may fail.</p>",
+     "next": "n3",
+     "vitals": {
+      "water": "Testing; no new starts"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Ask the technician to bypass the pre-filter so the pressure holds.",
+     "feedback": "<p>Bypassing a filter lets ash and particles further into the treatment train, putting every patient on the loop at risk.</p>",
+     "next": "n3",
+     "then": "<p>The technician refuses and stops new starts until the water is tested.</p>",
+     "vitals": {
+      "water": "Testing; no new starts"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "The coughing patient",
+   "scene": "<p>Water tests pass and are signed at 8:00 a.m. An older patient with chronic lung disease arrives coughing after waiting outside in the ash.</p>",
+   "prompt": "What happens before he is connected?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "The physician-on-duty examines him first (breathing, oxygen saturation) and calls the attending nephrologist if he is unwell; he wears a mask.",
+     "feedback": "<p>A clinical assessment comes before connection.</p>",
+     "next": "end",
+     "vitals": {
+      "water": "Released 8:00",
+      "on": "11",
+      "note": "Physician reviewed"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Connect him as usual; the cough will settle once he is inside.",
+     "feedback": "<p>He may need hospital care, not a routine session.</p>",
+     "next": "end",
+     "then": "<p>Twenty minutes in he is breathless; the physician-on-duty examines him then.</p>",
+     "vitals": {
+      "water": "Released 8:00",
+      "on": "11",
+      "note": "Physician reviewed (late)"
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Mid-morning",
+   "text": "<p>The building is closed against ash, the water was tested and released before treatments resumed, and the coughing patient was examined first. Two staff who could not travel safely stayed home.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Close, cover, clean:</b> the building, the intakes, and people at the door.</li><li><b>Ash in the water is a water event;</b> never bypass a filter to keep pressure up.</li><li><b>Patients exposed to ash or heat</b> are examined before connection when they are unwell.</li></ul>"
+}

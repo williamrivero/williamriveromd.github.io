@@ -1,0 +1,182 @@
+{
+ "id": "dp05-thursday",
+ "page": "disaster-preparedness-05-typhoons-and-floods.html",
+ "title": "Signal No. 3 by Thursday",
+ "decisions": 4,
+ "monitorTitle": "Unit board",
+ "strip": false,
+ "note": "Fictional unit and patients. DRAFT pending clinical sign-off. Your unit protocol, the attending nephrologist and your local disaster authorities decide every real event.",
+ "labels": {
+  "time": "Time",
+  "alert": "Alert",
+  "power": "Power",
+  "water": "Water",
+  "on": "On machines",
+  "staff": "Staff",
+  "roads": "Roads",
+  "note": "Board note"
+ },
+ "monitorOrder": [
+  "time",
+  "alert",
+  "power",
+  "water",
+  "on",
+  "staff",
+  "roads",
+  "note"
+ ],
+ "monitor": {
+  "time": "Tue 7:00 p.m.",
+  "alert": "Forecast: Signal No. 3 Wed night",
+  "power": "Main",
+  "water": "Normal",
+  "on": "0 (shift ended)",
+  "staff": "22 on roster",
+  "roads": "Open"
+ },
+ "intro": "<p>You are the head nurse of a 24-station unit in Quezon City. Landfall is forecast for Thursday morning. The Tuesday&ndash;Thursday&ndash;Saturday group has 40 patients; Thursday falls on landfall. Eight staff live in Marikina and Rizal, where roads flood first.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "Tuesday 7 p.m.",
+   "scene": "",
+   "prompt": "What do you do first?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Activate the plan and call staff first, to find out who can work an added Wednesday evening shift and who can stay overnight.",
+     "feedback": "<p>Capacity comes from staff. You cannot offer Thursday patients a Wednesday slot you cannot staff.</p>",
+     "next": "n2",
+     "vitals": {
+      "staff": "11 can work Wed eve",
+      "note": "Plan active"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Text all 40 Thursday patients to come on Wednesday.",
+     "feedback": "<p>You do not yet know who can be dialyzed or staffed, and the nephrologist has not decided.</p>",
+     "next": "n2",
+     "then": "<p>You stop the texts and call staff first.</p>",
+     "vitals": {
+      "staff": "11 can work Wed eve",
+      "note": "Plan active"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Wait for PAGASA to actually raise Signal No. 3.",
+     "feedback": "<p>By then the lead time is mostly gone.</p>",
+     "next": "n2",
+     "then": "<p>On Wednesday morning you start the call-down, with less time.</p>",
+     "vitals": {
+      "staff": "9 can work Wed eve",
+      "note": "Plan active (late)"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "Who comes early",
+   "scene": "<p>Eleven staff can work Wednesday evening, enough for 18 chairs. Among Thursday patients: a 74-year-old woman with heart failure who gained 3.5 kg, two with potassium above 6 mmol/L last week, and three who depend on tricycles.</p>",
+   "prompt": "How is early dialysis decided?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Give the attending nephrologist the Thursday list with these flags and the 18-chair limit, and ask for the early-dialysis decision and the order.",
+     "feedback": "<p>The nephrologist decides; the unit supplies facts and limits.</p>",
+     "next": "n3",
+     "vitals": {
+      "on": "Wed eve: 18 booked",
+      "note": "Nephrologist decided"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Shorten every Wednesday evening session to two hours so all 40 can fit, without asking the nephrologist.",
+     "feedback": "<p>Shortened sessions need a written order and all six conditions, and high-risk patients like the woman with heart failure keep full sessions.</p>",
+     "next": "n3",
+     "then": "<p>The nephrologist stops it and sets a roster of 18 early sessions, with receiving units for others.</p>",
+     "vitals": {
+      "on": "Wed eve: 18 booked",
+      "note": "Nephrologist decided"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Let patients choose: whoever calls back first gets a Wednesday slot.",
+     "feedback": "<p>First come is not medical need.</p>",
+     "next": "n3",
+     "then": "<p>You give the list to the nephrologist, who reorders it.</p>",
+     "vitals": {
+      "on": "Wed eve: 18 booked",
+      "note": "Nephrologist decided"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "Getting home",
+   "scene": "",
+   "prompt": "How do you staff Wednesday evening and get everyone home?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Use the unit van for the Marikina and Rizal staff, arrange for two to stay overnight, keep at least one ACLS-current nurse on, and set a last safe session time so the last patient and staff are home before Signal No. 3 takes effect.",
+     "feedback": "<p>Nobody is sent onto flooded roads to keep a schedule.</p>",
+     "next": "n4",
+     "vitals": {
+      "alert": "Signal No. 3 Wed 10 p.m.",
+      "roads": "Flooding begins",
+      "note": "All home by 9:30 p.m."
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Ask the Marikina staff to come in Thursday morning during landfall for the remaining patients.",
+     "feedback": "<p>Travel during landfall puts staff at serious risk, and the unit will be closed.</p>",
+     "next": "n4",
+     "then": "<p>The unit manager cancels Thursday; the remaining patients go to the backup plan.</p>",
+     "vitals": {
+      "alert": "Signal No. 3 Wed 10 p.m.",
+      "roads": "Flooding begins",
+      "note": "Thursday cancelled"
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "The week after",
+   "scene": "<p>The unit reopens Saturday. The next week, a nurse who waded through flood water to reach a patient&rsquo;s house reports fever and muscle pain.</p>",
+   "prompt": "What do you tell her?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Report it and see a physician today: fever and muscle pain after wading can be leptospirosis, which can damage the kidneys.",
+     "feedback": "<p>Leptospirosis follows flood exposure; early assessment matters. Preventive treatment after exposure is a physician&rsquo;s decision.</p>",
+     "next": "end",
+     "vitals": {
+      "note": "Staff referred"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Take paracetamol and keep working; it is probably a cold.",
+     "feedback": "<p>Fever after wading needs a physician&rsquo;s assessment.</p>",
+     "next": "end",
+     "then": "<p>Two days later she is worse and is seen at the hospital.</p>",
+     "vitals": {
+      "note": "Staff referred (late)"
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "After the storm",
+   "text": "<p>Eighteen patients dialyzed early, the rest were placed or dialyzed Saturday by the nephrologist&rsquo;s roster, and every staff member got home before the storm.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Staff first:</b> capacity comes from the people who can safely come.</li><li><b>Early dialysis and any shortening are the nephrologist&rsquo;s decisions.</b> The unit brings facts and limits.</li><li><b>Nobody travels into a storm to keep a schedule;</b> fever after wading means a physician, the same day.</li></ul>"
+}

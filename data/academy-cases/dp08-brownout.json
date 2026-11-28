@@ -1,0 +1,196 @@
+{
+ "id": "dp08-brownout",
+ "page": "disaster-preparedness-08-power-water-supplies.html",
+ "title": "Brownout at 4:20 p.m.",
+ "decisions": 4,
+ "monitorTitle": "Unit board",
+ "strip": false,
+ "note": "Fictional unit and patients. DRAFT pending clinical sign-off. Your unit protocol, the attending nephrologist and your local disaster authorities decide every real event.",
+ "labels": {
+  "time": "Time",
+  "alert": "Alert",
+  "power": "Power",
+  "water": "Water",
+  "on": "On machines",
+  "staff": "Staff",
+  "roads": "Roads",
+  "note": "Board note"
+ },
+ "monitorOrder": [
+  "time",
+  "alert",
+  "power",
+  "water",
+  "on",
+  "staff",
+  "roads",
+  "note"
+ ],
+ "monitor": {
+  "time": "5:10 p.m.",
+  "alert": "Utility outage since 4:20",
+  "power": "Generator",
+  "water": "Normal",
+  "on": "12",
+  "staff": "5",
+  "roads": "Open"
+ },
+ "intro": "<p>You are the charge nurse of a 15-station unit in Ormoc, Leyte. The utility power failed at 4:20 p.m. and the generator started. At 5:10 p.m. the technician reports that the promised fuel delivery has not come: the generator will run out within the hour. The utility says power will return &ldquo;tonight.&rdquo;</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "5:10 p.m.",
+   "scene": "",
+   "prompt": "What do you do now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "No new connections; end sessions in an orderly way while the generator still runs (normal rinse-back with working alarms); call the backup fuel supplier and the attending nephrologist about patients cut short.",
+     "feedback": "<p>A known end time lets you take patients off safely before the power goes.</p>",
+     "next": "n2",
+     "vitals": {
+      "note": "Orderly take-off started"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Wait for the utility to restore power tonight.",
+     "feedback": "<p>&ldquo;Tonight&rdquo; is not a time. Waiting turns a planned take-off into a manual one.</p>",
+     "next": "n2",
+     "then": "<p>At 6:05 the generator stops with patients still on.</p>",
+     "vitals": {
+      "time": "6:05 p.m.",
+      "power": "Battery only",
+      "on": "2",
+      "note": "Generator stopped"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Connect the evening shift on schedule; the utility should be back.",
+     "feedback": "<p>Connecting new patients on a generator about to run dry exposes them to an emergency take-off.</p>",
+     "next": "n2",
+     "then": "<p>At 6:05 the generator stops with more patients connected.</p>",
+     "vitals": {
+      "time": "6:05 p.m.",
+      "power": "Battery only",
+      "on": "4",
+      "note": "Generator stopped"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "6:05 p.m.",
+   "scene": "<p>The generator stops. Machines alarm on battery. Patients at Stations 3 and 11 are still connected.</p>",
+   "prompt": "What do you do first?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Walk the floor: check every patient&rsquo;s airway, consciousness and access, and uncover the needle sites. Then decide with the physician-on-duty.",
+     "feedback": "<p>Patients first, machines second.</p>",
+     "next": "n3",
+     "vitals": {
+      "time": "6:05 p.m.",
+      "power": "Battery only"
+     }
+    },
+    {
+     "grade": "ok",
+     "text": "Open the take-off kits first.",
+     "feedback": "<p>Useful, but look at the patients before the equipment.</p>",
+     "next": "n3",
+     "then": "<p>You walk the floor next.</p>",
+     "vitals": {
+      "time": "6:06 p.m.",
+      "power": "Battery only"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Go to the generator room to see what happened.",
+     "feedback": "<p>That is the technician&rsquo;s job; your place is with the patients.</p>",
+     "next": "n3",
+     "then": "<p>A nurse calls you back to the floor.</p>",
+     "vitals": {
+      "time": "6:08 p.m.",
+      "power": "Battery only"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "Manual return",
+   "scene": "<p>The battery runs down; the blood pumps stop. Both circuits at Stations 3 and 11 look sound so far.</p>",
+   "prompt": "How is the blood returned?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "One nurse at each station turns the hand crank and watches the venous drip chamber and line until the clamp is closed.",
+     "feedback": "<p>Without power, the operator&rsquo;s eyes replace the air detector: one staff member per patient.</p>",
+     "next": "n4",
+     "vitals": {
+      "power": "None",
+      "note": "Manual return in progress"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "One nurse cranks both stations in turn, checking the lines between.",
+     "feedback": "<p>Nobody watches the venous line while the other station is cranked; air can enter unseen.</p>",
+     "next": "n4",
+     "then": "<p>The charge nurse sends a second nurse to Station 11.</p>",
+     "vitals": {
+      "power": "None",
+      "note": "Manual return in progress"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Wait for power before returning the blood.",
+     "feedback": "<p>Standing blood clots by the minute; the chance to return it is shrinking.</p>",
+     "next": "n4",
+     "then": "<p>You start the manual return a few minutes later.</p>",
+     "vitals": {
+      "power": "None",
+      "note": "Manual return in progress"
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "Station 11",
+   "scene": "<p>At Station 11 the crank stiffens; the dialyzer shows dark streaks and the venous pressure rises. The circuit is clotting.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Stop cranking, clamp and cut: do not force a clotted circuit back. Record the blood not returned and tell the attending nephrologist.",
+     "feedback": "<p>Clotted blood is not forced back. The nephrologist decides the next session and any blood count check.</p>",
+     "next": "end",
+     "vitals": {
+      "on": "0",
+      "note": "Stn 11 clamped; Stn 3 returned"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Crank harder to push the blood through.",
+     "feedback": "<p>Forcing a clotting circuit can send clots or rupture the circuit.</p>",
+     "next": "end",
+     "then": "<p>The physician-on-duty stops you; the circuit is clamped.</p>",
+     "vitals": {
+      "on": "0",
+      "note": "Stn 11 clamped; Stn 3 returned"
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "6:40 p.m.",
+   "text": "<p>Both patients are off. Station 3&rsquo;s blood was returned by hand; Station 11&rsquo;s was not. Times, methods and volumes are recorded, and the nephrologist has set their next sessions.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>A known end time is a gift:</b> take patients off in order while the power still runs.</li><li><b>Without power, one staff member per patient</b> watches the venous line, because the air detector may not work.</li><li><b>Never force a clotted circuit back;</b> clamp, record and tell the nephrologist.</li></ul>"
+}

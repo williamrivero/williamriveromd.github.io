@@ -87,6 +87,8 @@ TRACKS = {
                                         "RENAL REHABILITATION", "20 modules · OT and PT pathways · six-tool toolkit"),
     "resuscitation-lab": ("academy/resuscitation-lab.html", "emergency", "Dialysis Team Resuscitation Lab",
                           "BLS-, ALS- AND PALS-ALIGNED REVIEW", "13 modules · 17 megacodes · Practice Lab"),
+    "disaster-preparedness": ("academy/disaster-preparedness.html", "emergency", "Disaster Preparedness and Response",
+                              "TYPHOONS · EARTHQUAKES · FIRE · POWER AND WATER", "12 modules · 10 interactive cases · drill tools"),
 }
 
 FONT_DIRS = ["/usr/share/fonts/opentype/inter", os.path.expanduser("~/Library/Fonts"), "/Library/Fonts",

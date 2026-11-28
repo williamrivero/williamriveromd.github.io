@@ -1,0 +1,189 @@
+{
+ "id": "dp06-quake",
+ "page": "disaster-preparedness-06-earthquake-on-the-machine.html",
+ "title": "Magnitude 6.8 at 9:40 a.m.",
+ "decisions": 4,
+ "monitorTitle": "Unit board",
+ "strip": false,
+ "note": "Fictional unit and patients. DRAFT pending clinical sign-off. Your unit protocol, the attending nephrologist and your local disaster authorities decide every real event.",
+ "labels": {
+  "time": "Time",
+  "alert": "Alert",
+  "power": "Power",
+  "water": "Water",
+  "on": "On machines",
+  "staff": "Staff",
+  "roads": "Roads",
+  "note": "Board note"
+ },
+ "monitorOrder": [
+  "time",
+  "alert",
+  "power",
+  "water",
+  "on",
+  "staff",
+  "roads",
+  "note"
+ ],
+ "monitor": {
+  "time": "9:40 a.m.",
+  "alert": "Strong shaking",
+  "power": "Main (flickering)",
+  "water": "Normal",
+  "on": "16",
+  "staff": "5",
+  "roads": "Unknown"
+ },
+ "intro": "<p>You are the charge nurse of a second-floor unit in Lipa, Batangas. Sixteen patients are connected. The ground starts to shake hard; ceiling panels fall near Station 4.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "Shaking",
+   "scene": "",
+   "prompt": "What do you and the staff do during the shaking?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Stay low beside the nearest patients, shield their heads and steady their access arms, and call out: &ldquo;Stay connected, cover your head!&rdquo; Nobody disconnects and nobody runs.",
+     "feedback": "<p>Protect in place. Disconnecting or moving during shaking causes falls, bleeding and air entry.</p>",
+     "next": "n2",
+     "vitals": {
+      "alert": "Shaking stopped (40 s)",
+      "note": "PHIVOLCS: M6.8"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Start disconnecting the patients nearest the falling panels.",
+     "feedback": "<p>Disconnecting with unsteady hands during shaking risks bleeding, air in a catheter and lost access.</p>",
+     "next": "n2",
+     "then": "<p>A needle pulls out at Station 4; you press and clamp it as the shaking stops.</p>",
+     "vitals": {
+      "alert": "Shaking stopped (40 s)",
+      "note": "PHIVOLCS: M6.8; Stn 4 needle out"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Run to the exit to open the doors.",
+     "feedback": "<p>Running during shaking risks falls and leaves patients alone.</p>",
+     "next": "n2",
+     "then": "<p>You fall against a cart; a nurse shields the patients near you.</p>",
+     "vitals": {
+      "alert": "Shaking stopped (40 s)",
+      "note": "PHIVOLCS: M6.8"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "Checks",
+   "scene": "<p>The shaking stops. A saline pole has tipped at Station 9.</p>",
+   "prompt": "What do you check, in what order?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Every patient first: conscious, breathing, needles and lines secure, no blood at connections. Then machines, then the room (gas, fire, cracks, exits), then count everyone.",
+     "feedback": "<p>Patients first, then equipment, then building.</p>",
+     "next": "n3",
+     "vitals": {
+      "note": "Checks done; crack in a column"
+     }
+    },
+    {
+     "grade": "ok",
+     "text": "Machines first, to stop the alarms.",
+     "feedback": "<p>Alarms matter, but a dislodged needle bleeds faster than an alarm harms.</p>",
+     "next": "n3",
+     "then": "<p>You switch to checking patients first.</p>",
+     "vitals": {
+      "note": "Checks done; crack in a column"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Go and look at the walls for cracks.",
+     "feedback": "<p>The building matters, but the patients come first.</p>",
+     "next": "n3",
+     "then": "<p>A nurse calls you back to a bleeding access site at Station 9.</p>",
+     "vitals": {
+      "note": "Checks done; crack in a column"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "Station 12",
+   "scene": "<p>The patient at Station 12 is pulling at his lines, shouting to be taken off.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Hold his access arm, check his needles, and tell him calmly that staff will take him off if the unit leaves, and that the team is deciding now.",
+     "feedback": "<p>Calm, specific words prevent the most dangerous self-disconnection.</p>",
+     "next": "n4"
+    },
+    {
+     "grade": "harmful",
+     "text": "Let him pull his own needles out to calm him.",
+     "feedback": "<p>Self-disconnection risks bleeding and a lost access, and it panics other patients.</p>",
+     "next": "n4",
+     "then": "<p>His venous needle comes out; you press and clamp the site.</p>"
+    },
+    {
+     "grade": "poor",
+     "text": "Take him off at once, before deciding whether the unit evacuates.",
+     "feedback": "<p>Ending one session may be reasonable, but act on the stay-or-go decision, with the blood rule.</p>",
+     "next": "n4",
+     "then": "<p>You take him off by protocol once the decision is made.</p>"
+    }
+   ]
+  },
+  "n4": {
+   "short": "Stay or go",
+   "scene": "<p>The facilities officer confirms a new crack across a column on your floor. In the venous line at Station 4, where the panels fell, you see foam.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Evacuate: emergency take-off by staff with the blood rule. At Station 4, clamp and do not return the blood (possible air); elsewhere return if quick and safe, or clamp and disconnect; close catheter clamps before separating lines. Then the stairs.",
+     "feedback": "<p>Visible structural damage means evacuate. Blood that may contain air is never returned.</p>",
+     "next": "end",
+     "vitals": {
+      "on": "0",
+      "note": "Evacuated by stairs; all counted"
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Return everyone&rsquo;s blood quickly, including Station 4, to save volume.",
+     "feedback": "<p>Returning a line with foam can push air into the patient.</p>",
+     "next": "end",
+     "then": "<p>The circuit nurse stops the Station 4 return and clamps the line.</p>",
+     "vitals": {
+      "on": "0",
+      "note": "Evacuated by stairs; all counted"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Keep the sessions running until the building official arrives.",
+     "feedback": "<p>With a cracked column and aftershocks expected, staying to finish the schedule risks everyone.</p>",
+     "next": "end",
+     "then": "<p>An aftershock hits; the incident lead orders the take-off.</p>",
+     "vitals": {
+      "on": "0",
+      "note": "Evacuated by stairs; all counted"
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "The assembly point",
+   "text": "<p>All sixteen patients and five staff are counted in the parking lot. The building stays closed until a qualified engineer checks it.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>During shaking, protect in place:</b> patients stay connected and covered; staff stay low beside them.</li><li><b>After shaking, patients first,</b> then machines, then the building, then a count.</li><li><b>The blood rule is the same everywhere:</b> never return blood after air, hemolysis or a severe reaction.</li></ul>"
+}

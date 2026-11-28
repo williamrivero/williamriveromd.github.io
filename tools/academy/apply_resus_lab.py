@@ -27,6 +27,8 @@ NAME = "academy-resus-lab"
 SITE = "https://renalcarematters.com/academy/"
 HUB = "resuscitation-lab"
 PRACTICE, READY = "resuscitation-lab-practice.html", "emergency-readiness.html"
+DHUB, DNAME = "disaster-preparedness", "academy-disaster-lab"     # Disaster Preparedness and Response (Nov 28 2026, DRAFT)
+DPRACTICE = DHUB + "-practice.html"
 LS, LE = "<!-- EMERGENCY-READINESS-START -->", "<!-- EMERGENCY-READINESS-END -->"
 BS, BE = "<!-- RL-BADGE-START -->", "<!-- RL-BADGE-END -->"
 WS, WE = "<!-- RL-WHY-START -->", "<!-- RL-WHY-END -->"
@@ -34,16 +36,18 @@ DS, DE = "<!-- RL-DRAFT-START -->", "<!-- RL-DRAFT-END -->"
 ROBOTS = '<meta name="robots" content="noindex"><!-- RL-DRAFT-ROBOTS -->'
 
 MODS = {}   # filled from the generated hub: number -> (file, title)
+DMODS = {}  # the same for Disaster Preparedness and Response
 
 
-def modules():
-    for f in sorted(ACADEMY.glob(HUB + "-[0-9][0-9]-*.html")):
+def modules(hub=HUB, out=None):
+    out = MODS if out is None else out
+    for f in sorted(ACADEMY.glob(hub + "-[0-9][0-9]-*.html")):
         if re.search(r" \d+\.html$", f.name):
             continue
         n = int(f.name.split("-")[2])
         t = re.search(r"<h1[^>]*>(.*?)</h1>", f.read_text(encoding="utf-8"), re.S)
-        MODS[n] = (f.name, re.sub(r"<[^>]+>", "", t.group(1)).strip() if t else f.name)
-    return MODS
+        out[n] = (f.name, re.sub(r"<[^>]+>", "", t.group(1)).strip() if t else f.name)
+    return out
 
 
 # Readiness level per track hub (draft Academy recommendation; verified Philippine rules flagged)
@@ -69,7 +73,7 @@ WHY = {  # quick card id -> module numbers that teach it
 }
 
 
-def fingerprint(dry):
+def fingerprint(dry, NAME=NAME):
     data = (ASSETS / (NAME + ".js")).read_bytes()
     out = f"{NAME}.{hashlib.sha256(data).hexdigest()[:10]}.js"
     if not dry:
@@ -113,7 +117,7 @@ CSS = """<style id="rl-lab-css">
 .rl-panels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0;}
 .rl-panel{display:block;text-decoration:none;color:var(--text);background:var(--white);border:1px solid var(--border);border-top:5px solid var(--teal);border-radius:14px;padding:16px 18px;}
 .rl-panel:hover{border-color:var(--teal);}
-.rl-panel.act{border-top-color:var(--red);} .rl-panel.prac{border-top-color:var(--amber,#b45309);}
+.rl-panel.act{border-top-color:var(--red);} .rl-panel.prac{border-top-color:var(--amber,#b45309);} .rl-panel.dis{border-top-color:#1f3864;}
 .rl-panel small{display:block;font:800 12px/1.2 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);}
 .rl-panel img{display:block;width:calc(100% + 36px);margin:-16px -18px 12px;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:9px 9px 0 0;}
 .rl-panel b{display:block;font:800 18px/1.25 Inter,system-ui,sans-serif;margin:4px 0 6px;color:var(--text);}
@@ -184,10 +188,21 @@ body.rl-display-mode>*:not(.rl-display){display:none!important;}
 </style>"""
 
 
-def draft_banner():
+DRAFT_TEXT = {
+    "resus": ("An educational reviewer and practice resource; not an American Heart Association course, not Basic Life Support (BLS), "
+              "Advanced Cardiovascular Life Support (ACLS) or Pediatric Advanced Life Support (PALS) certification. "
+              "Your unit protocol decides every real event."),
+    "disaster": ("An educational course and drill resource; not a hospital disaster plan and not a licensing requirement. Your unit protocol, "
+                 "the attending nephrologist and your local disaster authorities decide every real event."),
+    "both": ("Educational courses and practice resources. The Resuscitation Lab is not an American Heart Association course and gives no "
+             "Basic Life Support (BLS), Advanced Cardiovascular Life Support (ACLS) or Pediatric Advanced Life Support (PALS) certification; "
+             "Disaster Preparedness and Response is not a hospital disaster plan. Your unit protocol decides every real event."),
+}
+
+
+def draft_banner(kind="resus"):
     return (f'{DS}<div class="rl-draft" role="note"><b>DRAFT, pending clinical sign-off by Dr. William Gregory Rivero.</b> Not for clinical use. '
-            f'An educational reviewer and practice resource; not an American Heart Association course, not Basic Life Support (BLS), Advanced Cardiovascular Life Support (ACLS) or Pediatric Advanced Life Support (PALS) certification. '
-            f'Your unit protocol decides every real event.</div>{DE}') if DRAFT else ""
+            f'{DRAFT_TEXT[kind]}</div>{DE}') if DRAFT else ""
 
 
 def hero(crumb, h1, tagline):
@@ -218,30 +233,46 @@ def ready_main():
                 names.append(f'<a href="{h}.html">{re.sub(r"<[^>]+>", "", t.group(1)).strip() if t else h}</a>')
         rows.append(f"<tr><td><b>{lvl}</b></td><td>{', '.join(names)}</td></tr>")
     mods = "".join(f'<li><a href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(MODS.items()))
-    return f"""{hero('<span class="nc-cur">Emergency Readiness</span>', 'Emergency <em>Readiness</em>', 'Act, learn and practice the first minutes of an emergency on the dialysis floor')}
+    dmods = "".join(f'<li><a href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(DMODS.items()))
+    return f"""{hero('<span class="nc-cur">Emergency Readiness</span>', 'Emergency <em>Readiness</em>', 'Act, learn and practice for emergencies and disasters on the dialysis floor')}
 {CSS}
 <main class="container rl-main">
 <section class="section" id="parts">
   <div class="section-tag">Cross-track section</div>
-  <h2>Three parts, one team</h2>
-  <p>Emergency Readiness sits beside the role tracks because emergencies cut across every role. A nurse assistant starts compressions; a technician brings the defibrillator; the circuit nurse manages the machine; the physician-on-duty leads. Each part has a different job.</p>
+  <h2>Act, learn, practice</h2>
+  <p>Emergency Readiness sits beside the role tracks because emergencies cut across every role. A nurse assistant starts compressions; a technician brings the defibrillator; the circuit nurse manages the machine; the physician-on-duty leads. When a typhoon, an earthquake or a fire hits, the same team keeps the patients on the machines safe and keeps every patient dialyzed until the unit reopens. There are two courses: one for the arrest at the chair, one for the events that harm many patients at once.</p>
   <div class="rl-panels">
     <a class="rl-panel act" href="emergency-cards.html">{tile("emergency-readiness-card.webp")}<small>Act</small><b>Emergency Quick Cards</b><span>Fourteen one-screen action cards for the first minutes at the chair, saved for use with no signal. Open these during a real event.</span></a>
     <a class="rl-panel" href="{HUB}.html">{tile(HUB + "-card.webp")}<small>Learn</small><b>Dialysis Team Resuscitation Lab</b><span>Thirteen modules: the basic algorithms, algorithm recognition, BLS at the chair, adult ACLS-aligned care, arrest on the machine, hyperkalemia, children, ROSC and the team.</span></a>
-    <a class="rl-panel prac" href="{PRACTICE}">{tile(HUB + "-practice-card.webp")}<small>Practice</small><b>Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for unit drills.</span></a>
+    <a class="rl-panel dis" href="{DHUB}.html">{tile(DHUB + "-card.webp")}<small>Learn</small><b>Disaster Preparedness and Response</b><span>Twelve modules: why disasters hurt dialysis patients twice, the unit plan and command, ready patients, typhoons and floods, earthquakes, fire, power and water, heat and ashfall, keeping everyone dialyzed, reopening and drills.</span></a>
+    <a class="rl-panel prac" href="{PRACTICE}">{tile(HUB + "-practice-card.webp")}<small>Practice</small><b>Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for resuscitation drills.</span></a>
+    <a class="rl-panel prac" href="{DPRACTICE}">{tile(DHUB + "-practice-card.webp")}<small>Practice</small><b>Disaster drills</b><span>A tabletop simulator with timed injects, a call-down drill timer, and a printable evacuation and patient-accounting sheet.</span></a>
   </div>
-  <p>Also: the <a href="{HUB}-trainer.html">facilitator kit</a>, the <a href="../guides/calc-resuscitation-lab-toolkit.html">Resuscitation Lab toolkit</a>, and <a href="same-event-every-role.html">Same event, every role</a>.</p>
+  <p>Also: the facilitator kits for <a href="{HUB}-trainer.html">resuscitation</a> and <a href="{DHUB}-trainer.html">disaster drills</a>, the <a href="../guides/calc-resuscitation-lab-toolkit.html">Resuscitation Lab toolkit</a>, and <a href="same-event-every-role.html">Same event, every role</a>.</p>
 </section>
 <section class="section" id="readiness">
   <div class="section-tag">Who needs which level</div>
-  <h2>Readiness level by track (draft)</h2>
+  <h2>Resuscitation readiness by track (draft)</h2>
   <p>The table is a draft Academy recommendation. Two levels are verified Philippine rules: dialysis nurses hold a current BLS certificate, and the physician-on-duty and at least one nurse on every shift hold current ACLS from a DOH-accredited provider (DOH Administrative Order No. 2012-0001; Philippine Society of Nephrology 2024 guidelines). No DOH or PSN requirement for PALS in units that treat children was verified; it is shown as an Academy recommendation. Certificates come only from an authorized training center.</p>
   <div class="table-wrap"><table class="rl-matrix"><thead><tr><th>Level</th><th>Tracks</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div>
+  <h3>Disaster modules by role (draft)</h3>
+  <div class="table-wrap"><table class="rl-matrix"><thead><tr><th>Role group</th><th>Disaster Preparedness and Response</th></tr></thead><tbody>
+  <tr><td>Hemodialysis, charge and head nurses</td><td>All modules; Modules 6 to 8 hands-on; emergency take-off drill passed</td></tr>
+  <tr><td>Safety nurse (or head nurse)</td><td>All modules, plus the Module 12 facilitator capstone</td></tr>
+  <tr><td>Physician-on-duty, Dialysis Clinical Head, attending nephrologist</td><td>Modules 1, 3, 5, 8, 10, 11</td></tr>
+  <tr><td>Technicians (dialysis, water treatment, biomedical, reprocessing)</td><td>Modules 1, 2, 6, 7, 8, 11</td></tr>
+  <tr><td>Nurse assistants, support staff</td><td>Modules 1, 6, 7; the evacuation drill</td></tr>
+  <tr><td>Unit manager, unit owner</td><td>Modules 1, 2, 3, 10, 11, 12</td></tr>
+  <tr><td>Social worker, records officer, dietitian</td><td>Modules 1, 3, 4, 10</td></tr>
+  </tbody></table></div>
 </section>
 <section class="section" id="modules">
   <div class="section-tag">Learn</div>
-  <h2>The thirteen modules</h2>
+  <h2>The modules</h2>
+  <h3><a href="{HUB}.html">Dialysis Team Resuscitation Lab</a></h3>
   <ul class="rl-list">{mods}</ul>
+  <h3><a href="{DHUB}.html">Disaster Preparedness and Response</a></h3>
+  <ul class="rl-list">{dmods}</ul>
 </section>
 <section class="section" id="drills">
   <div class="section-tag">Who runs the drills</div>
@@ -253,10 +284,11 @@ def ready_main():
   <tr><td>Monthly megacode</td><td>Head nurse</td><td>Charge nurse or physician-on-duty with current Advanced Cardiovascular Life Support (ACLS); Pediatric Advanced Life Support (PALS) for a pediatric case</td><td>The shift team in rotating roles, plus a named watcher</td><td>Head nurse</td></tr>
   <tr><td>Quarterly integrated megacode</td><td>Dialysis Clinical Head</td><td>Unit educator or a certified Basic Life Support (BLS) or ACLS instructor</td><td>Nurses, technicians, nursing assistants, physician-on-duty</td><td>Dialysis Clinical Head</td></tr>
   <tr><td>Same-day debrief after a real resuscitation</td><td>Charge nurse</td><td>Charge nurse or physician-on-duty</td><td>Everyone involved</td><td>Head nurse; system findings to the Dialysis Clinical Head</td></tr>
-  <tr><td colspan="5"><b>Disaster Preparedness and Response (track in preparation)</b></td></tr>
+  <tr><td colspan="5"><b><a href="{DHUB}.html">Disaster Preparedness and Response</a></b></td></tr>
   <tr><td>Patient call-list check (call-down drill), before typhoon season</td><td>Unit manager</td><td>Safety nurse (or head nurse)</td><td>Charge nurses, records officer, social worker</td><td>Unit manager</td></tr>
   <tr><td>Disaster tabletop exercise, before typhoon season</td><td>Unit manager</td><td>Safety nurse (or head nurse), with the Dialysis Clinical Head leading the clinical decisions</td><td>Head nurse, charge nurses, technicians (water and power), biomedical technician, social worker, records officer</td><td>Unit manager; findings to the unit owner</td></tr>
   <tr><td>Power-loss and blood-return-without-power drill, twice a year</td><td>Head nurse</td><td>Safety nurse (or head nurse) with the biomedical technician</td><td>Nurses and technicians on the shift, at an empty station</td><td>Head nurse</td></tr>
+  <tr><td>Earthquake drill, timed with the quarterly Nationwide Simultaneous Earthquake Drill (NSED) where possible</td><td>Unit manager</td><td>Safety nurse (or head nurse)</td><td>Whole shift; patients take part only in the &ldquo;protect in place&rdquo; step if they agree</td><td>Unit manager</td></tr>
   <tr><td>Evacuation and patient-accounting drill, yearly</td><td>Unit manager</td><td>Safety nurse (or head nurse), with the building or facilities officer</td><td>Whole shift, with no patients on machines</td><td>Unit manager; findings to the unit owner</td></tr>
   <tr><td>Same-day debrief after a real disruption</td><td>Unit manager</td><td>Safety nurse (or head nurse) or Dialysis Clinical Head</td><td>Everyone involved</td><td>Unit manager; system findings to the unit owner</td></tr>
   </tbody></table></div>
@@ -269,7 +301,7 @@ def ready_main():
 <section class="section" id="cadence">
   <div class="section-tag">Practice</div>
   <h2>A practice rhythm for the unit</h2>
-  <p>Onboarding: Modules 1 to 4 and 7, a crash-cart and defibrillator orientation, an observed BLS check, one team scenario. Weekly: a five-minute refresher at handover. Monthly: one megacode on the shared display, with a five-question debrief. Quarterly: an integrated megacode with role rotation and the facilitator recorder. After any real event or equipment change: a targeted rehearsal. Disaster drills: a call-down check and a tabletop exercise before typhoon season, a power-loss drill twice a year, and an evacuation drill yearly. This cadence is an Academy teaching choice; studies support spaced practice but do not define the best interval for a dialysis unit.</p>
+  <p>Onboarding: Modules 1 to 4 and 7, a crash-cart and defibrillator orientation, an observed BLS check, one team scenario. Weekly: a five-minute refresher at handover. Monthly: one megacode on the shared display, with a five-question debrief. Quarterly: an integrated megacode with role rotation and the facilitator recorder. After any real event or equipment change: a targeted rehearsal. Disaster drills: a call-down check and a tabletop exercise before typhoon season, a power-loss drill twice a year, an earthquake drill with the quarterly NSED, and an evacuation drill yearly. This cadence is an Academy teaching choice; studies support spaced practice but do not define the best interval for a dialysis unit.</p>
   <div class="alert alert-amber"><div class="alert-icon">⚠️</div><div class="alert-body"><h4>Not certification</h4><p>The Emergency Readiness section is an educational reviewer and practice resource. It is not an American Heart Association course, it gives no BLS, ACLS or PALS certification, and online completion does not establish hands-on competence. Your unit protocol, crash-cart stock and machine manufacturer&rsquo;s instructions govern every real event; always ask the attending nephrologist for guidance.</p></div></div>
 </section>
 </main>"""
@@ -312,6 +344,48 @@ def practice_main(rec, cases):
 <script type="application/json" id="rl-cases-data">{cases_j}</script>"""
 
 
+def disaster_practice_main(tt, cases):
+    mods = "".join(f'<li><a href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(DMODS.items()))
+    cs = "".join(f'<li><a href="{c["page"]}#sim">{c["title"]}</a> <small>(Module {int(c["page"].split("-")[2])})</small></li>' for c in cases)
+    tt_j = json.dumps(tt, ensure_ascii=False).replace("</", "<\\/")
+    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><a href="{DHUB}.html">Disaster Preparedness and Response</a><span class="nc-sep">›</span><span class="nc-cur">Disaster drills</span>', 'Disaster <em>drills</em>', 'Run the tabletop, test the call list, print the evacuation sheet')}
+{CSS}
+<main class="container rl-main">
+<section class="section" id="tabletop">
+  <div class="section-tag">1 &middot; Tabletop simulator</div>
+  <h2>Disaster tabletop simulator</h2>
+  <p>For a facilitator and a team around one screen. Pick a scenario (typhoon, earthquake, fire, long power outage, ashfall) and start the clock. Injects arrive on the exercise clock, or when the facilitator releases them. The facilitator reads each inject aloud, the team decides out loud, and the recorder taps each action as it is said. At the end, a timeline shows each inject, the actions recorded and how long they took, against the scenario&rsquo;s teaching points: the evidence for the hot wash and the after-action report (Module 12). <b>Shared display</b> shows the current inject full screen. No individual is scored, and nothing leaves this device.</p>
+  <div id="dp-tt"><noscript><p>The tabletop simulator needs JavaScript.</p></noscript></div>
+  <p class="rl-note">Run it with a named watcher if any patients are still dialyzing (the watcher rule). The scenarios follow the modules; your unit protocol and the attending nephrologist decide every real event.</p>
+</section>
+<section class="section" id="calldown">
+  <div class="section-tag">2 &middot; Call-down drill</div>
+  <h2>Call-down drill timer</h2>
+  <p>Test the call list before typhoon season. The safety nurse (or head nurse) starts the timer, the team phones every person on the list, and each call is marked: reached, message left, no answer, wrong number, or not able to come. The timer reports the share reached within 2, 6 and 24 hours and the wrong numbers to fix. It counts outcomes only: no names or phone numbers are entered, and the counts stay on this device. The 24-hour figure is your unit&rsquo;s own measure; no external standard is claimed.</p>
+  <div id="dp-call"></div>
+</section>
+<section class="section" id="evacuation">
+  <div class="section-tag">3 &middot; Evacuation sheet</div>
+  <h2>Evacuation and patient-accounting sheet</h2>
+  <p>A one-page sheet made from your chair count: each station&rsquo;s mobility category (walks alone, walks with help, wheelchair, stretcher), the assigned helper, the time off by staff, and a check-off column for the census nurse at the assembly point. Print it blank and fill it in at the start of every shift. Nothing is stored online; the filled sheet is a unit record under the Data Privacy Act.</p>
+  <div id="dp-evac"></div>
+</section>
+<section class="section" id="cases">
+  <div class="section-tag">Interactive cases</div>
+  <h2>Ten branching cases, one in each module</h2>
+  <p>Each case puts you on the shift with a unit board (time, alert, power, water, patients on machines, staff, roads) and asks for one decision at a time. Every case has at least one choice that breaks a hard rule, so you can see why the rule exists.</p>
+  <ul class="rl-list">{cs}</ul>
+</section>
+<section class="section" id="links">
+  <div class="section-tag">Where each topic is taught</div>
+  <h2>Modules</h2>
+  <ul class="rl-list">{mods}</ul>
+  <p>The drill program, the facilitator&rsquo;s role and the observed stations are in the <a href="{DHUB}-trainer.html">facilitator kit</a>.</p>
+</section>
+</main>
+<script type="application/json" id="dp-tt-data">{tt_j}</script>"""
+
+
 LAND = f"""{LS}
 <style id="rl-landing-css">
 .rl-land{{max-width:860px;margin:14px auto 0;padding:0 32px;}}
@@ -325,8 +399,8 @@ html[data-theme="dark"] .rl-land-links a{{color:var(--text);}}
 @media print{{.rl-land{{display:none;}}}}
 </style>
 <div class="rl-land" id="emergency-readiness"><div class="rl-land-box"><h2>&#9889; Emergency Readiness: act, learn, practice</h2>
-<p>A cross-track section for the whole shift team: the Emergency Quick Cards, the Dialysis Team Resuscitation Lab (BLS-, ALS- and PALS-aligned review with algorithm recognition and megacodes), and a Practice Lab for unit drills.{" <b>Draft, pending clinical sign-off.</b>" if DRAFT else ""}</p>
-<div class="rl-land-links"><a href="{READY}">Section home</a><a href="emergency-cards.html">Act: quick cards</a><a href="{HUB}.html">Learn: Resuscitation Lab</a><a href="{PRACTICE}">Practice Lab</a></div></div></div>
+<p>A cross-track section for the whole unit: the Emergency Quick Cards, the Dialysis Team Resuscitation Lab (BLS-, ALS- and PALS-aligned review with algorithm recognition and megacodes), Disaster Preparedness and Response (typhoons, earthquakes, fire, power and water, keeping everyone dialyzed), and practice tools for unit drills.{" <b>Draft, pending clinical sign-off.</b>" if DRAFT else ""}</p>
+<div class="rl-land-links"><a href="{READY}">Section home</a><a href="emergency-cards.html">Act: quick cards</a><a href="{HUB}.html">Learn: Resuscitation Lab</a><a href="{DHUB}.html">Learn: Disaster Preparedness</a><a href="{PRACTICE}">Practice Lab</a><a href="{DPRACTICE}">Disaster drills</a></div></div></div>
 {LE}"""
 
 
@@ -358,7 +432,7 @@ def why_links(text):
     return text
 
 
-def draft_marks(text):
+def draft_marks(text, kind="resus"):
     text = re.sub(r"\n?" + re.escape(DS) + r".*?" + re.escape(DE) + r"\n*", "\n", text, flags=re.S)
     text = text.replace(ROBOTS + "\n", "").replace(ROBOTS, "")
     if not DRAFT:
@@ -367,7 +441,7 @@ def draft_marks(text):
     m = re.search(r"<main[^>]*>", text)
     if m:
         rest = text[m.end():].lstrip("\n")
-        text = text[:m.end()] + "\n" + draft_banner() + "\n\n" + rest
+        text = text[:m.end()] + "\n" + draft_banner(kind) + "\n\n" + rest
     return text
 
 
@@ -392,7 +466,9 @@ def main():
     dry = "--dry-run" in sys.argv
     changed = []
     js = fingerprint(dry)
+    djs = fingerprint(dry, DNAME)
     modules()
+    modules(DHUB, DMODS)
     land_p = ACADEMY / "index.html"
     land = land_p.read_text(encoding="utf-8")
     # 3. landing block after the quick cards callout (else after the nav strip)
@@ -404,12 +480,18 @@ def main():
     rec = json.loads((ROOT / "data" / "academy-resus" / "recognition.json").read_text(encoding="utf-8"))
     cases = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((ROOT / "data" / "academy-cases").glob("rl*.json"))]
     tag = f'\n<script src="../assets/{js}" defer></script>\n'
-    write(ACADEMY / READY, draft_marks(shell(new_land, "Emergency Readiness: Act, Learn, Practice · Renal Care Academy",
-          "The Renal Care Academy Emergency Readiness section: Emergency Quick Cards, the Dialysis Team Resuscitation Lab, and a Practice Lab for unit drills.",
+    write(ACADEMY / READY, draft_marks(kind="both", text=shell(new_land, "Emergency Readiness: Act, Learn, Practice · Renal Care Academy",
+          "The Renal Care Academy Emergency Readiness section: Emergency Quick Cards, the Dialysis Team Resuscitation Lab, Disaster Preparedness and Response, and practice tools for unit drills.",
           SITE + READY[:-5], ready_main())), dry, changed)
     write(ACADEMY / PRACTICE, draft_marks(shell(new_land, "Practice Lab: Algorithm Recognition and Megacodes · Renal Care Academy",
           "Algorithm recognition rounds, timed megacodes and a facilitator recorder with a shared monitor display for dialysis team resuscitation drills.",
           SITE + PRACTICE[:-5], practice_main(rec, cases), tag)), dry, changed)
+    # 2b. disaster drills page (tabletop simulator, call-down timer, evacuation sheet)
+    tt = json.loads((ROOT / "data" / "academy-disaster" / "tabletop.json").read_text(encoding="utf-8"))
+    dcases = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((ROOT / "data" / "academy-cases").glob("dp*.json"))]
+    write(ACADEMY / DPRACTICE, draft_marks(kind="disaster", text=(shell(new_land, "Disaster Drills: Tabletop, Call-Down and Evacuation · Renal Care Academy",
+          "A disaster tabletop simulator with timed injects, a call-down drill timer and a printable evacuation and patient-accounting sheet for dialysis units.",
+          SITE + DPRACTICE[:-5], disaster_practice_main(tt, dcases), f'\n<script src="../assets/{djs}" defer></script>\n'))), dry, changed)
     # 4. hub badges
     for lvl, hubs in LEVEL.items():
         for h in hubs:
@@ -427,10 +509,10 @@ def main():
     if eq.exists():
         write(eq, why_links(eq.read_text(encoding="utf-8")), dry, changed)
     # 6. draft marks and the section crumb on the generated course pages (the two built pages carry them already)
-    for f in sorted(ACADEMY.glob(HUB + "*.html")):
-        if f.name == PRACTICE:
+    for f in sorted(list(ACADEMY.glob(HUB + "*.html")) + list(ACADEMY.glob(DHUB + "*.html"))):
+        if f.name in (PRACTICE, DPRACTICE):
             continue
-        write(f, crumb(draft_marks(f.read_text(encoding="utf-8"))), dry, changed)
+        write(f, crumb(draft_marks(f.read_text(encoding="utf-8"), "disaster" if f.name.startswith(DHUB) else "resus")), dry, changed)
     print(f"academy emergency readiness ({js}): {len(changed)} page(s) updated" + (" [dry run]" if dry else ""))
 
 

@@ -1,0 +1,185 @@
+{
+ "id": "dp03-sunday",
+ "page": "disaster-preparedness-03-unit-plan-and-command.html",
+ "title": "Signal No. 2 on a Sunday",
+ "decisions": 4,
+ "monitorTitle": "Unit board",
+ "strip": false,
+ "note": "Fictional unit and patients. DRAFT pending clinical sign-off. Your unit protocol, the attending nephrologist and your local disaster authorities decide every real event.",
+ "labels": {
+  "time": "Time",
+  "alert": "Alert",
+  "power": "Power",
+  "water": "Water",
+  "on": "On machines",
+  "staff": "Staff",
+  "roads": "Roads",
+  "note": "Board note"
+ },
+ "monitorOrder": [
+  "time",
+  "alert",
+  "power",
+  "water",
+  "on",
+  "staff",
+  "roads",
+  "note"
+ ],
+ "monitor": {
+  "time": "Sun 11:00 a.m.",
+  "alert": "Signal No. 2 (Bulacan)",
+  "power": "Main",
+  "water": "Normal",
+  "on": "0 (closed Sundays)",
+  "staff": "19 on list",
+  "roads": "Open, rain"
+ },
+ "intro": "<p>PAGASA has raised Tropical Cyclone Wind Signal No. 2 for Bulacan. You are the head nurse of a 16-station unit in Malolos, also acting as safety nurse. The plan says: &ldquo;Signal No. 2: activate the call-down; ask the attending nephrologist about early dialysis.&rdquo; The Monday&ndash;Wednesday&ndash;Friday group has 30 patients.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "11:00 a.m.",
+   "scene": "",
+   "prompt": "Who activates the plan?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "You are the named on-call lead today: activate it now, log the time, and tell the unit manager and the Dialysis Clinical Head.",
+     "feedback": "<p>The plan names who activates it. Logging the time starts the record and the clock.</p>",
+     "next": "n2",
+     "vitals": {
+      "note": "Plan active 11:05"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Wait until Monday morning to see how the storm develops.",
+     "feedback": "<p>Signal No. 2 means gale-force winds within 24 hours. Monday morning is too late to move sessions or reach staff.</p>",
+     "next": "n2",
+     "then": "<p>At 2:00 p.m. the unit manager calls and asks why nothing has started. You activate.</p>",
+     "vitals": {
+      "note": "Plan active 14:00"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Text each staff member to decide for themselves what to do.",
+     "feedback": "<p>A plan with no lead is not a plan. One person activates; everyone else follows the plan.</p>",
+     "next": "n2",
+     "then": "<p>Replies conflict, so you activate the plan formally.</p>",
+     "vitals": {
+      "note": "Plan active 12:00"
+     }
+    }
+   ]
+  },
+  "n2": {
+   "short": "Call-down",
+   "scene": "",
+   "prompt": "In what order do you call?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Staff first (to know who can work Monday, especially the charge nurse from the flood-prone barangay), then the 30 Monday patients, then the rest.",
+     "feedback": "<p>Capacity is set by staff. Patients get a real answer only once you know who can come.</p>",
+     "next": "n3",
+     "vitals": {
+      "staff": "12 can come Mon",
+      "note": "Call-down running"
+     }
+    },
+    {
+     "grade": "ok",
+     "text": "Monday patients first, then staff.",
+     "feedback": "<p>Patients hear early, but you may promise sessions you cannot staff.</p>",
+     "next": "n3",
+     "then": "<p>Two patients are told to come early before you know the shift can run; you call them back.</p>",
+     "vitals": {
+      "staff": "12 can come Mon",
+      "note": "Call-down running"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Post the whole call list, with addresses, in the large staff and patient group chat so everyone can help call.",
+     "feedback": "<p>The call list is personal data under the Data Privacy Act. Share it only with the callers.</p>",
+     "next": "n3",
+     "then": "<p>The records officer removes the post and you split the list among three callers.</p>",
+     "vitals": {
+      "staff": "12 can come Mon",
+      "note": "Call-down running"
+     }
+    }
+   ]
+  },
+  "n3": {
+   "short": "Early dialysis",
+   "scene": "<p>Twelve staff can work Monday. Five Monday patients live in barangays that flooded last year; two had potassium above 6 mmol/L last week.</p>",
+   "prompt": "What do you do about early dialysis?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Call the attending nephrologist with the Monday list flagged (flood-prone barangays, recent high potassium, large weight gains) and ask for a decision on who comes early and when.",
+     "feedback": "<p>Early dialysis is the nephrologist&rsquo;s decision. Your job is to give the facts and then make the roster work.</p>",
+     "next": "n4",
+     "vitals": {
+      "note": "Nephrologist: 9 early, Sun 4 p.m."
+     }
+    },
+    {
+     "grade": "harmful",
+     "text": "Move all 30 patients to a shortened Sunday night session yourself, without calling the nephrologist.",
+     "feedback": "<p>Any change to schedule or session length is the nephrologist&rsquo;s decision, and shortened sessions need a written order and the six conditions.</p>",
+     "next": "n4",
+     "then": "<p>The nephrologist hears of it, stops the plan, and decides on 9 patients for early dialysis.</p>",
+     "vitals": {
+      "note": "Nephrologist: 9 early, Sun 4 p.m."
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Do nothing about early dialysis until Signal No. 3.",
+     "feedback": "<p>Signal No. 3 brings storm-force winds within 18 hours; roads may already be closing.</p>",
+     "next": "n4",
+     "then": "<p>At 3:00 p.m. you call the nephrologist after all.</p>",
+     "vitals": {
+      "note": "Nephrologist: 9 early, Sun 6 p.m."
+     }
+    }
+   ]
+  },
+  "n4": {
+   "short": "The receiving unit",
+   "scene": "<p>Calling the receiving unit in the plan, you learn its contact person retired in June.</p>",
+   "prompt": "What now?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Call the unit&rsquo;s main line to find the current contact and confirm capacity, add a second receiving unit, and write both fixes into the after-action notes.",
+     "feedback": "<p>A receiving unit is useful only if someone there answers and expects your patients.</p>",
+     "next": "end",
+     "vitals": {
+      "note": "2 receiving units confirmed"
+     }
+    },
+    {
+     "grade": "poor",
+     "text": "Assume the unit will still take patients if needed.",
+     "feedback": "<p>Without a named contact, a patient may arrive at a unit that cannot take them.</p>",
+     "next": "end",
+     "then": "<p>Monday, a patient is turned away and you find the new contact then.</p>",
+     "vitals": {
+      "note": "1 receiving unit confirmed"
+     }
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Sunday night",
+   "text": "<p>Nine patients dialyze early on Sunday evening, staff know Monday&rsquo;s plan, and two receiving units are confirmed. The after-action notes list three fixes: deputies for every role, receiving-unit contacts checked yearly, and a call-down drill before the season.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>One named person activates the plan,</b> and logs the time.</li><li><b>Staff first, then patients due soonest.</b> Protect the call list as personal data.</li><li><b>Early dialysis is the nephrologist&rsquo;s decision;</b> the unit supplies the facts and the roster.</li></ul>"
+}
