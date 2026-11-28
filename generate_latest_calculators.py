@@ -106,6 +106,8 @@ def local_thumb(project_dir: Path, og_image: str, stem: str) -> str:
         return f"../images/{stem_no_ext}.webp"
     if (images / base).exists():
         return f"../images/{base}"
+    if (images / "og" / base).exists():   # share cards live in images/og/ (Nov 28 2026: the thumb pointed one folder too high)
+        return f"../images/og/{base}"
     for cand in (f"{stem}-og.webp", f"{stem}-og.png", f"{stem}-rg-thumb.webp"):
         if (images / cand).exists():
             return f"../images/{cand}"

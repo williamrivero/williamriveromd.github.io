@@ -171,7 +171,7 @@ SHARED_PAGES = ("index.html", "review-deck.html", "same-event-every-role.html", 
 
 
 def hub_names(names):
-    return [n[:-5] for n in names if n not in SHARED_PAGES and not re.search(r"-\d{2}-|final-exam|trainer|-pretest\.html$|-practice\.html$", n)]
+    return [n[:-5] for n in names if n not in SHARED_PAGES and not re.search(r"-\d{2}-|final-exam|trainer|-pretest\.html$|-practice\.html$|^patients-care-partners-(final-check|urgent-help|worksheets|facilitators)\.html$", n)]   # patient-track extras fold into its hub (Nov 28 2026)
 
 
 def track_of(name, hubs):

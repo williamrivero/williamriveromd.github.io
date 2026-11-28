@@ -21,7 +21,9 @@ FAMILIES = [  # key, heading word to match in the Tracks section, column heading
     ("technicians", "technician", "Technicians"),
     ("ancillary", "ancillary", "Ancillary staff"),
     ("administrative", "administrative", "Administrative"),
+    ("patients", "patient", "Patients"),   # Nov 28 2026, Dr. Rivero: stacked below Administrative (STACK)
 ]
+STACK = {"administrative": "patients"}   # family -> family shown below it in the same column
 FALLBACK = {"peritoneal-dialysis-nurse.html": "nursing", "transplant-nurse.html": "nursing",
             "dialysis-nurse-assistant.html": "nursing", "special-dialysis-nurse-roles.html": "nursing"}
 
@@ -35,6 +37,7 @@ html[data-theme="dark"] .acad-hero .hero-tagline{color:#a9e3d6;}
 .acad-track[data-family="technicians"]{--fam:#c55a11;}
 .acad-track[data-family="ancillary"]{--fam:#2e6b3e;}
 .acad-track[data-family="administrative"]{--fam:#4b3280;}
+.acad-track[data-family="patients"]{--fam:#9d174d;}
 .acad-track[data-family] .acad-track-ico{background:var(--fam);}
 .acad-track.acad-subtrack[data-family]{border-left-color:var(--fam);}
 .acad-track[data-family]:hover{background:#fff;box-shadow:inset 0 3px 0 var(--fam),0 8px 22px rgba(18,58,54,.14);}
@@ -45,6 +48,8 @@ html[data-theme="dark"] .acad-hero .hero-tagline{color:#a9e3d6;}
 .acad-col[data-family="technicians"]{--fam:#c55a11;}
 .acad-col[data-family="ancillary"]{--fam:#2e6b3e;}
 .acad-col[data-family="administrative"]{--fam:#4b3280;}
+.acad-col[data-family="patients"]{--fam:#9d174d;}
+.acad-col-stack{display:flex;flex-direction:column;gap:14px;min-width:0;}
 .acad-col-h{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin:0 0 2px;padding:0 2px 6px;
   border-bottom:3px solid var(--fam);font:700 .74rem/1.2 Inter,system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#17312e;}
 .acad-col-h small{font-weight:600;letter-spacing:0;color:#3d635e;}
@@ -64,7 +69,7 @@ html[data-theme="dark"] .acad-hero .hero-tagline{color:#a9e3d6;}
   .acad-cols .acad-track-t strong{font-size:clamp(.72rem,1.5cqi,.95rem);line-height:1.22;}
   .acad-cols .acad-track-t small{font-size:clamp(.63rem,1.2cqi,.8rem);}
   .acad-cols .acad-track[data-family] .acad-track-ico{width:30%;height:auto;aspect-ratio:1;right:-5%;bottom:-12%;}}
-@media (max-width:900px){.acad-tracks.acad-cols{grid-template-columns:1fr;gap:16px;}
+@media (max-width:900px){.acad-tracks.acad-cols{grid-template-columns:1fr;gap:16px;}.acad-col-stack{gap:16px;}
   .acad-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.acad-col-h{grid-column:1/-1;}}
 html[data-theme="dark"] .acad-track[data-family]{background:color-mix(in srgb,var(--fam) 16%,transparent);box-shadow:inset 0 3px 0 var(--fam);}
 html[data-theme="dark"] .acad-track[data-family]:hover{background:color-mix(in srgb,var(--fam) 26%,transparent);box-shadow:inset 0 3px 0 var(--fam);}
@@ -73,6 +78,7 @@ html[data-theme="dark"] [data-family="physicians"]{--fam:#7d9be0;}
 html[data-theme="dark"] [data-family="technicians"]{--fam:#f08a4b;}
 html[data-theme="dark"] [data-family="ancillary"]{--fam:#5fbf7a;}
 html[data-theme="dark"] [data-family="administrative"]{--fam:#a48bdc;}
+html[data-theme="dark"] [data-family="patients"]{--fam:#f08cb5;}
 html[data-theme="dark"] .acad-track[data-family] .acad-track-ico{background:color-mix(in srgb,var(--fam) 55%,#0b1a24);}
 html[data-theme="dark"] .acad-cols .acad-track[data-family] .acad-track-ico{background:none;color:color-mix(in srgb,var(--fam) 60%,#fff);opacity:.2;}
 html[data-theme="dark"] .acad-col-h{color:#eef7f4;}
@@ -126,12 +132,21 @@ def apply(s):
                lambda m: m.group(1) + re.sub(r"/(?!<wbr>)", "/<wbr>", m.group(2)) + m.group(3), s)
     def columns(m):
         tiles = re.findall(r'<a class="acad-track[^"]*"[^>]*>.*?</a>', m.group(2), re.S)
-        cols = []
+        built = {}
         for k, _, lab in FAMILIES:
             mine = [t for t in tiles if f'data-family="{k}"' in t]
             if mine:
-                cols.append(f'      <div class="acad-col" data-family="{k}"><div class="acad-col-h">{lab}<small>{len(mine)}</small></div>\n'
+                built[k] = (f'      <div class="acad-col" data-family="{k}"><div class="acad-col-h">{lab}<small>{len(mine)}</small></div>\n'
                             + "\n".join("        " + t for t in mine) + "\n      </div>")
+        cols = []
+        for k, _, _ in FAMILIES:
+            if k not in built or k in STACK.values() and any(a in built for a, b in STACK.items() if b == k):
+                continue
+            below = STACK.get(k)
+            if below in built:   # one grid column holding this family with another under it
+                cols.append('      <div class="acad-col-stack">\n' + built[k] + "\n" + built[below] + "\n      </div>")
+            else:
+                cols.append(built[k])
         rest = [t for t in tiles if "data-family=" not in t]   # untagged tiles keep their place at the end
         body = "\n".join(cols + ["      " + t for t in rest])
         return f'<nav class="acad-tracks acad-cols"{m.group(1)}>\n{body}\n    </nav>'
