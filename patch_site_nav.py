@@ -2,8 +2,9 @@
 """
 patch_site_nav.py: the site navigation bar, site-wide (Nov 26 2026, Dr. Rivero).
 
-1. Link ORDER in every <nav class="header-nav">, grouped by what visitors come for:
-       (HOME brand) · GUIDES · PHYSIOLOGY · ATLAS · CALCULATORS · DRUGS · ACADEMY · ABOUT
+1. Link ORDER in every <nav class="header-nav">, following the menu groups (Dr. Rivero, Nov 28 2026:
+   HOME · LEARN · BROADEN · REVIEW · CONNECT):
+       (HOME brand) · ACADEMY · PHYSIOLOGY · ATLAS · GUIDES · DRUGS · CALCULATORS · ABOUT
    Each page keeps its own href spelling and its is-current marker; a missing standard link
    is added (root-relative href). Unknown links are kept, after the standard ones.
 2. Phone menu: writes assets/site-nav.<hash>.js from the source assets/site-nav.js (prunes old
@@ -33,12 +34,12 @@ SRC = ROOT / "assets" / "site-nav.js"
 
 # key, label, default href (used only when a page lacks that link)
 NAV_ORDER = [
-    ("guides", "GUIDES", "/guides/"),
+    ("academy", "ACADEMY", "/academy/"),
     ("physiology", "PHYSIOLOGY", "/guides/kidney-physiology.html"),
     ("atlas", "ATLAS", "/guides/nephrology-atlas.html"),
-    ("calculators", "CALCULATORS", "/guides/calculators.html"),
+    ("guides", "GUIDES", "/guides/"),
     ("drugs", "DRUGS", "/drugs/"),
-    ("academy", "ACADEMY", "/academy/"),
+    ("calculators", "CALCULATORS", "/guides/calculators.html"),
     ("about", "ABOUT", "/about.html"),
 ]
 RANK = {k: i for i, (k, _, _) in enumerate(NAV_ORDER)}
