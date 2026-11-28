@@ -329,12 +329,34 @@ def draft_banner(kind="resus"):
             f'{DRAFT_TEXT[kind]}</div>{DE}') if DRAFT else ""
 
 
-def hero(crumb, h1, tagline):
-    return f"""<section class="hero">
-  <div class="container">
-    <div class="nc-bar"><a href="./">Renal Care Academy</a><span class="nc-sep">›</span>{crumb}</div>
+def hero(crumb, h1, tagline, vignette=None, alt=""):
+    """Page hero. With `vignette` (an images/<name>-vignette-hero file stem), the circular vignette sits on the right,
+    like the course homes (Nov 28 2026, Dr. Rivero: the practice labs had none)."""
+    copy = f"""    <div class="nc-bar"><a href="./">Renal Care Academy</a><span class="nc-sep">›</span>{crumb}</div>
     <h1>{h1}</h1>
-    <p class="hero-tagline">{tagline}</p>
+    <p class="hero-tagline">{tagline}</p>"""
+    if not vignette or not (ROOT / "images" / f"{vignette}.webp").exists():
+        return f"""<section class="hero">
+  <div class="container">
+{copy}
+  </div>
+</section>"""
+    return f"""<style id="rl-hero-v-css">@media (min-width:821px){{.rl-hero-v{{min-height:600px;display:flex;align-items:center}}.rl-hero-v>.container{{width:100%}}}}</style>
+<section class="hero rl-hero-v">
+  <div class="container">
+  <div class="hero-grid">
+  <div class="hero-copy">
+{copy}
+  </div><!-- /.hero-copy -->
+  <figure class="hero-figure">
+    <div class="hero-vignette">
+      <picture>
+        <source srcset="../images/resp/{vignette}-800.webp 800w, ../images/{vignette}.webp 2048w" sizes="(max-width: 900px) 100vw, 380px" type="image/webp">
+        <img src="../images/{vignette}.png" alt="{html.escape(alt, quote=True)}" width="2048" height="2048" fetchpriority="high" loading="eager">
+      </picture>
+    </div>
+  </figure>
+  </div>
   </div>
 </section>"""
 
@@ -594,7 +616,7 @@ def practice_main(rec, cases):
     mc = "".join(f'<li><a href="{c["page"]}#sim">{c["title"]}</a> <small>(Module {int(c["page"].split("-")[2])})</small></li>' for c in cases)
     rec_j = json.dumps(rec, ensure_ascii=False).replace("</", "<\\/")
     cases_j = json.dumps(cases, ensure_ascii=False).replace("</", "<\\/")
-    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><span class="nc-cur">Megacode Practice Lab</span>', 'Megacode Practice <em>Lab</em>', 'Recognize the algorithm, run the megacode, record the drill')}
+    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><span class="nc-cur">Megacode Practice Lab</span>', 'Megacode Practice <em>Lab</em>', 'Recognize the algorithm, run the megacode, record the drill', "resuscitation-lab-practice-vignette-hero", "Dialysis staff practicing a megacode: one performs chest compressions on a manikin in a dialysis recliner while a colleague watches, beside a rhythm monitor, a tablet and a stopwatch.")}
 {CSS}
 <main class="container rl-main">
 <section class="section" id="sample">
@@ -647,7 +669,7 @@ def disaster_practice_main(tt, cases):
     mods = "".join(f'<li><a href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(DMODS.items()))
     cs = "".join(f'<li><a href="{c["page"]}#sim">{c["title"]}</a> <small>(Module {int(c["page"].split("-")[2])})</small></li>' for c in cases)
     tt_j = json.dumps(tt, ensure_ascii=False).replace("</", "<\\/")
-    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><a href="{DHUB}.html">Disaster Preparedness and Response</a><span class="nc-sep">›</span><span class="nc-cur">Disaster Drills</span>', 'Disaster <em>drills</em>', 'Run the tabletop, test the call list, print the evacuation sheet')}
+    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><a href="{DHUB}.html">Disaster Preparedness and Response</a><span class="nc-sep">›</span><span class="nc-cur">Disaster Drills</span>', 'Disaster <em>drills</em>', 'Run the tabletop, test the call list, print the evacuation sheet', "disaster-preparedness-practice-vignette-hero", "A head nurse in a safety vest runs a tabletop drill at a desk, with an inject card, a unit floor plan with colored markers, a tablet timeline and a stopwatch.")}
 {CSS}
 <main class="container rl-main">
 <section class="section" id="sample">
