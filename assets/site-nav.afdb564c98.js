@@ -6,7 +6,7 @@
  * Pages load the script synchronously right after </nav> inside <header class="site-header">,
  * so it runs before the header is painted (no layout shift). On screens up to 640 px wide the
  * row of links is replaced by a Menu button in the top-left corner that opens a grouped
- * dropdown (Learn / Tools / Train). Wider screens keep the centered row. If the script fails
+ * dropdown (Learn / Broaden / Review / Connect). Wider screens get a category bar with the same groups as dropdowns. If the script fails
  * to load (an old saved page offline), the page keeps its scrolling row, so nothing breaks.
  */
 (function () {
@@ -20,25 +20,28 @@
   header.setAttribute("data-rcm-nav", "1");
 
   var PHONE = "(max-width: 640px)";
-  // Icon tiles in category colors (Dr. Rivero chose this style, Nov 26 2026). Groups (Dr. Rivero): Orient · Learn ·
-  // Order (Dr. Rivero, Nov 27 2026): Train · Learn · Assess (calculators, drugs; was "Consult", then "Look up") · Connect (About, Review = rate the site). Colors: Learn teal, Assess orange, Train purple; Orient/About gold.
+  // Icon tiles in category colors (Dr. Rivero chose this style, Nov 26 2026).
+  // Groups (Dr. Rivero, Nov 28 2026): HOME · LEARN (Academy with its 5 tracks + Emergency Readiness, Physiology, Atlas) ·
+  // BROADEN (Guides, curated topics: New, Updated and one link per audience) · REVIEW (Drug Index: Monographs,
+  // Interaction Analyzer, Med Scheduler; Calculators) · CONNECT (About, Feedback = /review, rate the site).
+  // Colors: Learn teal, Broaden purple, Review orange; Orient/Connect gold.
   var ITEMS = {
     home:        { label: "Home",        hint: "Renal Care Matters",       icon: '<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>' },
-    guides:      { label: "Guides",      hint: "For patients and clinicians", icon: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6M9 11h6"/>' },
+    guides:      { label: "Guides",      hint: "Curated topics for patients and clinicians", icon: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6M9 11h6"/>' },
     physiology:  { label: "Physiology",  hint: "How the kidney works",      icon: '<path d="M9.2 3C5.5 3 3.2 6.8 3.2 11.6S5.6 21 9.2 21c2.3 0 3.4-1.5 3.4-3.3 0-2-1.6-3-1.6-5.4s1.6-3.3 1.6-5.4C12.6 4.6 11.3 3 9.2 3z"/><path d="M11.4 12.4h4.8a3 3 0 0 1 3 3V21"/>' },
     atlas:       { label: "Atlas",       hint: "Visual atlas",             icon: '<rect x="3" y="4.5" width="18" height="15" rx="2"/><circle cx="15.5" cy="9.5" r="1.6"/><path d="m3.5 17 5.2-5.2 4.3 4.3 2.5-2.5 5 5"/>' },
     calculators: { label: "Calculators", hint: "Clinical calculators",     icon: '<rect x="5" y="2.8" width="14" height="18.4" rx="2.2"/><path d="M8.5 6.8h7"/><path d="M8.6 11h.01M12 11h.01M15.4 11h.01M8.6 14.4h.01M12 14.4h.01M15.4 14.4h.01M8.6 17.8h.01M12 17.8h.01M15.4 17.8h.01" stroke-width="2.6"/>' },
-    drugs:       { label: "Drugs",       hint: "Drug Index",               icon: '<path d="M10.4 3.9a5 5 0 0 1 7.1 7.1l-6.9 6.9a5 5 0 0 1-7.1-7.1z"/><path d="m7 7.3 6.9 6.9"/>' },
+    drugs:       { label: "Drug Index",  hint: "Philippine drug monographs",               icon: '<path d="M10.4 3.9a5 5 0 0 1 7.1 7.1l-6.9 6.9a5 5 0 0 1-7.1-7.1z"/><path d="m7 7.3 6.9 6.9"/>' },
     academy:     { label: "Academy",     hint: "Training for every role in kidney care", icon: '<path d="m2.5 9 9.5-4.8L21.5 9 12 13.8z"/><path d="M6.5 11.2v4.6c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-4.6"/><path d="M21.5 9v5.5"/>' },
     about:       { label: "About",       hint: "Clinics, schedules and appointments", icon: '<circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>' },
-    review:      { label: "Review",      hint: "Rate the site",           icon: '<path d="M12 3.2l2.6 5.5 6 .7-4.5 4.1 1.2 6L12 16.6l-5.3 2.9 1.2-6-4.5-4.1 6-.7z"/>' }
+    review:      { label: "Feedback",    hint: "Rate the site, tell us what to improve",           icon: '<path d="M12 3.2l2.6 5.5 6 .7-4.5 4.1 1.2 6L12 16.6l-5.3 2.9 1.2-6-4.5-4.1 6-.7z"/>' }
   };
   // wide = full-width row card; others pair up two per row
   var GROUPS = [
-    { id: "base",  title: "Orient",  items: [["home", 1]] },
-    { id: "train", title: "Train", items: [["academy", 1]] },
-    { id: "learn", title: "Learn", items: [["guides", 1], ["physiology", 0], ["atlas", 0]] },
-    { id: "tools", title: "Assess", items: [["calculators", 0], ["drugs", 0]] },
+    { id: "base",    title: "Orient",  items: [["home", 1]] },
+    { id: "learn",   title: "Learn",   items: [["academy", 1], ["physiology", 0], ["atlas", 0]] },
+    { id: "broaden", title: "Broaden", items: [["guides", 1]] },
+    { id: "tools",   title: "Review",  items: [["drugs", 1], ["calculators", 1]] },
     { id: "connect", title: "Connect", items: [["about", 0], ["review", 0]] }
   ];
 
@@ -117,7 +120,7 @@
     ".rsn-host .rsn-g{--g:#ecd08a}",
     ".rsn-host .rsn-g[data-g=learn]{--g:#5ec2c6}",
     ".rsn-host .rsn-g[data-g=tools]{--g:#f2a36b}",
-    ".rsn-host .rsn-g[data-g=train]{--g:#b9a3e3}",
+    ".rsn-host .rsn-g[data-g=broaden]{--g:#b9a3e3}",
     ".rsn-host .rsn-g[data-g=connect]{--g:#ecd08a}",
     ".rsn-host .rsn-g+.rsn-g{margin-top:12px}",
     ".rsn-host .rsn-gt{display:flex;align-items:center;gap:10px;margin:2px 4px 8px;color:var(--g);",
@@ -144,7 +147,7 @@
     ".rsn-host a.rsn-card[aria-current]:after{content:'You are here';position:absolute;top:10px;right:10px;",
     "font:700 9.5px/1 " + F + ";letter-spacing:.1em;text-transform:uppercase;color:#ecd08a}",
     ".rsn-host a.rsn-card:not(.rsn-wide)[aria-current]:after{content:'';width:7px;height:7px;border-radius:50%;background:#ecd08a;top:12px;right:12px}",
-    ".rsn-host .rsn-tracks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}",
+    ".rsn-host .rsn-tracks{display:grid;grid-template-columns:1fr 1fr;gap:6px;grid-column:1/-1;margin:0 0 4px}",
     ".rsn-host a.rsn-trk{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:11px;text-decoration:none;color:#fff;",
     "font:600 13px/1.25 " + F + ";background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:background .15s}",
     ".rsn-host a.rsn-trk:hover{background:rgba(255,255,255,.09)}",
@@ -208,11 +211,35 @@
   panel.id = "rcm-nav-panel";
   panel.setAttribute("role", "navigation");
   panel.setAttribute("aria-label", "Site menu");
-  // Academy tracks (anchors on the Academy landing page), listed under Train in both menus
+  // Sub-links listed right under their card in both menus (Dr. Rivero, Nov 28 2026)
+  // Academy: the five tracks (anchors on the Academy landing page) + Emergency Readiness
   var TRACKS = [["track-nursing", "Nephrology Nursing", "#5ec2c6"], ["track-physicians", "Renal Care Physicians", "#8fb0e8"],
     ["renal-technician-program", "Renal Technicians", "#f2a36b"], ["track-ancillary", "Ancillary Staff", "#7fd39a"],
     ["track-administrative", "Administrative Staff", "#b9a3e3"],
     ["/academy/emergency-readiness", "Emergency Readiness", "#f0938a"]];   // Dr. Rivero, Nov 28 2026: sixth pill
+  // Guides: New / Updated open those groups of the Latest & Updated section; ?for= sets the audience filter on /guides/
+  var GUIDE_LINKS = [["/guides/#latest-new", "New", "#7fd39a"], ["/guides/#latest-updated", "Updated", "#ecd08a"],
+    ["/guides/?for=patients", "Patients & Care Partners", "#5ec2c6"], ["/guides/?for=nurses", "Nephrology Nurses", "#5ec2c6"],
+    ["/guides/?for=technicians", "Renal Technicians", "#f2a36b"], ["/guides/?for=physicians", "Physicians", "#8fb0e8"],
+    ["/guides/?for=dietitians", "Dietitians", "#7fd39a"]];
+  // Drug Index tools
+  var DRUG_LINKS = [["/drugs/#dd-browse", "Monographs", "#f2a36b"], ["/drugs/interactions", "Interaction Analyzer", "#f2a36b"],
+    ["/drugs/med-scheduler", "Med Scheduler", "#f2a36b"]];
+  var SUBS = { academy: TRACKS, guides: GUIDE_LINKS, drugs: DRUG_LINKS };
+  function subRow(list) {
+    var tl = document.createElement("div");
+    tl.className = "rsn-tracks";
+    list.forEach(function (tr) {
+      var a = document.createElement("a");
+      a.className = "rsn-trk";
+      a.href = tr[0].charAt(0) === "/" ? tr[0] : "/academy/#" + tr[0];
+      a.style.setProperty("--t", tr[2]);
+      a.innerHTML = "<i></i><span></span>";
+      a.lastChild.textContent = tr[1];
+      tl.appendChild(a);
+    });
+    return tl;
+  }
   var n = 0;
   function buildGroup(g, withTitle) {
     var items = g.items.filter(function (it) { return it[0] === "home" || hrefs[it[0]]; });
@@ -240,22 +267,9 @@
       a.querySelector(".rsn-nl").textContent = d.label;
       a.querySelector(".rsn-nh").textContent = d.hint;
       grid.appendChild(a);
+      if (SUBS[k]) grid.appendChild(subRow(SUBS[k]));
     });
     box.appendChild(grid);
-    if (g.id === "train") {
-      var tl = document.createElement("div");
-      tl.className = "rsn-tracks";
-      TRACKS.forEach(function (tr) {
-        var a = document.createElement("a");
-        a.className = "rsn-trk";
-        a.href = tr[0].charAt(0) === "/" ? tr[0] : "/academy/#" + tr[0];
-        a.style.setProperty("--t", tr[2]);
-        a.innerHTML = "<i></i><span></span>";
-        a.lastChild.textContent = tr[1];
-        tl.appendChild(a);
-      });
-      box.appendChild(tl);
-    }
     return box;
   }
   panel.classList.add("rsn-host");
