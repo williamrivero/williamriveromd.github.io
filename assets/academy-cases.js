@@ -131,7 +131,7 @@
       var rr = 60 / Math.max(25, hr), py = null;
       ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.6;
       for (var px = 0; px < w; px++) {
-        var k = (px / 70) % rr, y = h * 0.72 - (CONT[shape] ? cont(px / 70) : wave(k)) * h * 0.62;
+        ABS = px / 70; var k = (px / 70) % rr, y = h * 0.72 - (CONT[shape] ? cont(px / 70) : wave(k)) * h * 0.62;
         ctx.beginPath(); ctx.moveTo(px - 1, py == null ? y : py); ctx.lineTo(px, y); ctx.stroke(); py = y;
       }
     }
@@ -146,16 +146,20 @@
       // VF: chaotic. Several components whose rate and height wander independently, so there is no regular
       // swell, no narrow "waist" and no flip of polarity (those belong to torsades)
       var A = 0.37 + 0.09 * Math.sin(2.32 * T) + 0.07 * Math.sin(5.72 * T + 2) + 0.045 * Math.sin(10.7 * T + 1);
-      return A * (0.5 * Math.sin(32.0 * T + 1.3 * Math.sin(4.4 * T)) + 0.3 * Math.sin(45.9 * T + 0.9 * Math.sin(6.9 * T + 1))
-        + 0.2 * Math.sin(23.2 * T + 2 + 0.8 * Math.sin(2.7 * T))) + 0.2 + 0.05 * Math.sin(1.9 * T);
+      return A * (0.62 * Math.sin(31.0 * T + 1.6 * Math.sin(3.1 * T)) + 0.14 * Math.sin(41.0 * T + 0.9 * Math.sin(5.3 * T + 1))
+        + 0.3 * Math.sin(21.5 * T + 2 + 1.1 * Math.sin(2.3 * T))) + 0.2 + 0.05 * Math.sin(1.9 * T);
     }
     // y offset (0..1, up) for time t seconds after a beat
+    var ABS = 0, vtWave = function (t, hr) {   // monomorphic VT: identical wide complexes, a rounded dome then a sharp downstroke; no P waves
+          var rr = 60 / Math.max(25, hr), u = (((t - 0.22) / rr + 0.4) % 1 + 1) % 1;     // dome peak lands on the QRS time (0.22 s)
+          return u < 0.8 ? 0.72 * Math.pow(Math.sin(Math.PI * u / 0.8), 0.8) - 0.05 : -0.05 - 0.62 * Math.sin(Math.PI * (u - 0.8) / 0.2);
+        };
     function wave(t) {
       var g = function (c, w, a) { return a * Math.exp(-Math.pow((t - c) / w, 2)); };
       var y = g(0.08, 0.025, 0.12);                                   // P
-      if (shape === "irregular") y = 0.02 * Math.sin(t * 40);         // no P, fibrillatory baseline
+      if (shape === "irregular") y = 0.035 * Math.sin(ABS * 38) + 0.025 * Math.sin(ABS * 53 + 1) + 0.02 * Math.sin(ABS * 29 + 2);   // no P, fibrillatory baseline
       y += g(0.2, 0.012, -0.12) + g(0.22, 0.012, 0.9) + g(0.24, 0.012, -0.2); // QRS
-      if (shape === "wide") y = g(0.08, 0.025, 0.1) + g(0.24, 0.045, 0.75) + g(0.32, 0.04, -0.25);
+      if (shape === "wide") { if (hr >= 120) return vtWave(t, hr); y = g(0.24, 0.045, 0.75) + g(0.32, 0.04, -0.25); }   // fast: VT; slow: wide escape beats
       if (shape === "svt") y = g(0.2, 0.012, -0.1) + g(0.22, 0.012, 0.85) + g(0.24, 0.012, -0.18) + g(0.34, 0.04, 0.16); // no visible P
       if (shape === "sine") { var rr0 = 60 / Math.max(25, hr); return 0.42 * Math.sin(2 * Math.PI * t / rr0) + 0.2; }  // late hyperkalemia
       if (shape === "paced") y = g(0.1, 0.004, 0.7) + g(0.2, 0.05, 0.6) + g(0.3, 0.05, -0.3) + g(0.5, 0.07, -0.18); // pacer spike, wide QRS
@@ -171,7 +175,7 @@
       var w = canvas.clientWidth, h = canvas.clientHeight, speed = 70;  // px per second
       var steps = Math.max(1, Math.round(dt * speed));
       for (var i = 0; i < steps; i++) {
-        var now = ts / 1000 + i / speed;
+        var now = ts / 1000 + i / speed; ABS = now;
         if (beatT < 0 || now >= nextBeat) {
           beatT = now;
           var rr = 60 / Math.max(25, hr);

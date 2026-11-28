@@ -18,14 +18,49 @@
   function epaper() { return document.documentElement.getAttribute("data-shade") === "epaper"; }
 
   /* ── rhythm drawing (same shapes as academy-cases.js) ── */
+  var ABS = 0;   // absolute time (s) of the sample being drawn, for baselines that run across beats (AF f waves)
+  var vtWave = function (t, hr) {   // monomorphic VT: identical wide complexes, a rounded dome then a sharp downstroke; no P waves
+    var rr = 60 / Math.max(25, hr), u = (((t - 0.22) / rr + 0.4) % 1 + 1) % 1;     // dome peak lands on the QRS time (0.22 s)
+    return u < 0.8 ? 0.72 * Math.pow(Math.sin(Math.PI * u / 0.8), 0.8) - 0.05 : -0.05 - 0.62 * Math.sin(Math.PI * (u - 0.8) / 0.2);
+  };
   function wave(shape, t, hr) {
     var g = function (c, w, a) { return a * Math.exp(-Math.pow((t - c) / w, 2)); };
     if (shape === "sine") { var rr = 60 / Math.max(25, hr); return 0.42 * Math.sin(2 * Math.PI * t / rr) + 0.2; }
     if (shape === "svt") return g(0.2, 0.012, -0.1) + g(0.22, 0.012, 0.85) + g(0.24, 0.012, -0.18) + g(0.34, 0.04, 0.16);
-    if (shape === "wide") return g(0.08, 0.025, 0.1) + g(0.24, 0.045, 0.75) + g(0.32, 0.04, -0.25);
-    var y = shape === "irregular" ? 0.02 * Math.sin(t * 40) : g(0.08, 0.025, 0.12);
+    if (shape === "wide") return hr >= 120 ? vtWave(t, hr) : g(0.24, 0.045, 0.75) + g(0.32, 0.04, -0.25);   // fast: VT; slow: wide escape beats
+    var y = shape === "irregular" ? 0.035 * Math.sin(ABS * 38) + 0.025 * Math.sin(ABS * 53 + 1) + 0.02 * Math.sin(ABS * 29 + 2) : g(0.08, 0.025, 0.12);
     y += g(0.2, 0.012, -0.12) + g(0.22, 0.012, 0.9) + g(0.24, 0.012, -0.2);
     if (shape === "peaked") y += g(0.42, 0.035, 0.62); else if (shape === "longqt") y += g(0.62, 0.075, 0.2); else y += g(0.44, 0.06, 0.22);
+    return y;
+  }
+  /* Beat-by-beat rhythms (AV blocks, PVCs). beatPlan() describes beat n: rr = time to the next beat, q = a QRS is
+     conducted, at = QRS time in the beat, p = P-wave time (null = none), kind "pvc" = premature ventricular beat,
+     amp = pulse strength on the pleth. The "Electrical rate" is the ventricular rate the monitor counts. */
+  var PATTERNED = { avb1: 1, mobitz1: 1, mobitz2: 1, avb3: 1, pvc: 1, bigeminy: 1 };
+  function beatPlan(shape, n, hr) {
+    var rr = 60 / Math.max(20, hr || 70), i;
+    if (shape === "avb1") return { rr: rr, q: true, p: 0.06, at: 0.38, amp: 1 };                       // PR about 0.32 s, every P conducted
+    if (shape === "mobitz1" || shape === "mobitz2") {                                                 // 4:3 conduction: 4 P waves, 3 QRS
+      var pp = rr * 3 / 4; i = n % 4;
+      if (shape === "mobitz1") return i === 3 ? { rr: pp, q: false, p: 0.06, at: 0.22, amp: 0 }       // PR lengthens, then a P is not conducted
+        : { rr: pp, q: true, p: 0.06, at: 0.06 + [0.18, 0.27, 0.34][i], amp: 1 };
+      return i === 3 ? { rr: pp, q: false, p: 0.06, at: 0.22, amp: 0 } : { rr: pp, q: true, p: 0.06, at: 0.26, amp: 1 };   // fixed PR, sudden drop
+    }
+    if (shape === "avb3") return { rr: rr, q: true, p: null, at: 0.24, amp: 0.8, escape: true };       // P waves march on their own (pTrain)
+    if (shape === "pvc") { i = n % 5; return i === 3 ? { rr: rr * 0.62, q: true, p: 0.08, at: 0.22, amp: 1 }   // the beat before the PVC is cut short
+        : i === 4 ? { rr: rr * 1.38, q: true, p: null, at: 0.24, kind: "pvc", amp: 0.35 }                     // PVC, then a compensatory pause
+        : { rr: rr, q: true, p: 0.08, at: 0.22, amp: i === 0 ? 1.15 : 1 }; }
+    if (shape === "bigeminy") { i = n % 2; return i === 0 ? { rr: rr * 0.62, q: true, p: 0.08, at: 0.22, amp: 1.1 }
+        : { rr: rr * 1.38, q: true, p: null, at: 0.24, kind: "pvc", amp: 0.3 }; }
+    return { rr: rr, q: true, p: 0.08, at: 0.22, amp: 1 };
+  }
+  function pTrain(T) { var u = T % 0.75; return 0.12 * Math.exp(-Math.pow((u - 0.08) / 0.025, 2)); }   // atrial rate 80, independent of the ventricles
+  function waveB(shape, t, hr, B) {
+    var g = function (c, w, a) { return a * Math.exp(-Math.pow((t - c) / w, 2)); }, y = 0;
+    if (B.kind === "pvc") return g(B.at - 0.05, 0.04, -0.25) + g(B.at + 0.02, 0.06, 0.95) + g(B.at + 0.12, 0.05, -0.35) + g(B.at + 0.38, 0.1, -0.32);   // wide, bizarre, T opposite
+    if (B.escape) return pTrain(ABS) + g(B.at, 0.05, 0.7) + g(B.at + 0.09, 0.045, -0.25) + g(B.at + 0.34, 0.09, -0.18);   // wide ventricular escape
+    if (B.p != null) y += g(B.p, 0.025, 0.12);
+    if (B.q) y += g(B.at - 0.02, 0.012, -0.12) + g(B.at, 0.012, 0.9) + g(B.at + 0.02, 0.012, -0.2) + g(B.at + 0.22, 0.06, 0.22);
     return y;
   }
   function cont(shape, T, hr) {
@@ -37,8 +72,8 @@
     // VF: chaotic. Several components whose rate and height wander independently, so there is no regular
     // swell, no narrow "waist" and no flip of polarity (those belong to torsades)
     var A = 0.37 + 0.09 * Math.sin(2.32 * T) + 0.07 * Math.sin(5.72 * T + 2) + 0.045 * Math.sin(10.7 * T + 1);
-    return A * (0.5 * Math.sin(32.0 * T + 1.3 * Math.sin(4.4 * T)) + 0.3 * Math.sin(45.9 * T + 0.9 * Math.sin(6.9 * T + 1))
-      + 0.2 * Math.sin(23.2 * T + 2 + 0.8 * Math.sin(2.7 * T))) + 0.2 + 0.05 * Math.sin(1.9 * T);
+    return A * (0.62 * Math.sin(31.0 * T + 1.6 * Math.sin(3.1 * T)) + 0.14 * Math.sin(41.0 * T + 0.9 * Math.sin(5.3 * T + 1))
+      + 0.3 * Math.sin(21.5 * T + 2 + 1.1 * Math.sin(2.3 * T))) + 0.2 + 0.05 * Math.sin(1.9 * T);
   }
   var CONT = { vf: 1, asystole: 1, torsades: 1 };
   var BEATS = { torsades: 1 };   // continuous on the screen, but the QRS counter still counts (and can beep)
@@ -54,7 +89,7 @@
   function Strip(canvas, pc) {
     var ctx = canvas.getContext && canvas.getContext("2d"), pctx = pc && pc.getContext && pc.getContext("2d");
     var shape = "normal", hr = 70, raf = 0, x = 0, prevY = null, beatT = -1, next = 0, last = 0, artT = 0, animating = false;
-    var pa = 0, pPrev = null, pT = -1, pRR = 0.85, pCarry = 0, pVal = 0, pending = [], hooks = {}, syncOn = false, marks = [];
+    var pa = 0, pPrev = null, pT = -1, pRR = 0.85, pCarry = 0, pVal = 0, pAmp = 1, pending = [], hooks = {}, syncOn = false, marks = [], bn = 0, B = beatPlan("normal", 0, 70);
     var ECG_GAIN = 88, PL_GAIN = 64;
     function fit(cv, c) {
       var r = window.devicePixelRatio || 1, w = cv.clientWidth || 320, h = cv.clientHeight || 70;
@@ -65,9 +100,9 @@
     function eg(h) { var g = Math.min(h * 0.6, ECG_GAIN); return [g, h / 2 + g / 3]; }           // gain, baseline (0.7h on small strips, as before)
     function pg(h) { var g = Math.min(h * 0.62, PL_GAIN); return [g, h / 2 + g / 2]; }
     function plethAt(now) {
-      while (pending.length && now >= pending[0][0]) { var q = pending.shift(); pCarry = pVal; pT = q[0]; pRR = Math.min(1.3, Math.max(0.34, q[1])); if (pa && hooks.pulse) hooks.pulse(0); }
+      while (pending.length && now >= pending[0][0]) { var q = pending.shift(); pCarry = pVal; pT = q[0]; pRR = Math.min(1.3, Math.max(0.34, q[1])); pAmp = q[2] == null ? 1 : q[2]; if (pa && pAmp > 0.2 && hooks.pulse) hooks.pulse(0); }
       if (pT < 0) return 0;
-      var dt = now - pT; pVal = plethWave(dt / pRR) + pCarry * Math.exp(-dt * 9); return pVal;
+      var dt = now - pT; pVal = pAmp * plethWave(dt / pRR) + pCarry * Math.exp(-dt * 9); return pVal;
     }
     function plethY(v, h, now) {
       var g = pg(h);
@@ -77,8 +112,26 @@
     function still() {
       var d = size(), w = d[0], h = d[1], rr = 60 / Math.max(25, hr), py = null, G = eg(h);
       ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.7;
+      if (PATTERNED[shape]) {
+        var bt = 0, n = 0, SB = beatPlan(shape, 0, hr), pulses = [];
+        for (var sx = 0; sx < w; sx++) {
+          var st = sx / 80; ABS = st;
+          while (st >= bt + SB.rr) { if (SB.q) pulses.push([bt + SB.at + 0.2, SB.rr, SB.amp]); bt += SB.rr; SB = beatPlan(shape, ++n, hr); }
+          var sy = G[1] - waveB(shape, st - bt, hr, SB) * G[0];
+          ctx.beginPath(); ctx.moveTo(sx - 1, py == null ? sy : py); ctx.lineTo(sx, sy); ctx.stroke(); py = sy;
+        }
+        if (pctx) {
+          var pw2 = pc.clientWidth || w, ph2 = pc.clientHeight || 60, qy2 = null; pctx.strokeStyle = "#22d3ee"; pctx.lineWidth = 2;
+          for (var qx2 = 0; qx2 < pw2; qx2++) {
+            var t2 = qx2 / 80, last2 = null; pulses.forEach(function (pl) { if (pl[0] <= t2) last2 = pl; });
+            var yy2 = plethY(last2 ? last2[2] * plethWave((t2 - last2[0]) / Math.min(1.3, Math.max(0.34, last2[1]))) : 0, ph2, t2);
+            pctx.beginPath(); pctx.moveTo(qx2 - 1, qy2 == null ? yy2 : qy2); pctx.lineTo(qx2, yy2); pctx.stroke(); qy2 = yy2;
+          }
+        }
+        return;
+      }
       for (var px = 0; px < w; px++) {
-        var t = px / 80, k = shape === "irregular" ? (t % (rr * (0.7 + 0.6 * Math.abs(Math.sin(Math.floor(t / rr) * 7.3))))) : t % rr;
+        var t = px / 80; ABS = t; var k = shape === "irregular" ? (t % (rr * (0.7 + 0.6 * Math.abs(Math.sin(Math.floor(t / rr) * 7.3))))) : t % rr;
         var y = G[1] - (CONT[shape] ? cont(shape, t, hr) : wave(shape, k, hr)) * G[0];
         ctx.beginPath(); ctx.moveTo(px - 1, py == null ? y : py); ctx.lineTo(px, y); ctx.stroke(); py = y;
       }
@@ -94,16 +147,16 @@
       var w = canvas.clientWidth, h = canvas.clientHeight, steps = Math.max(1, Math.round(dt * 80)), G = eg(h);
       var ph = pctx ? pc.clientHeight : 0, pw = pctx ? pc.clientWidth : 0;
       for (var i = 0; i < steps; i++) {
-        var now = ts / 1000 + i / 80;
+        var now = ts / 1000 + i / 80; ABS = now;
         if (beatT < 0 || now >= next) {
-          beatT = now; var rr = 60 / Math.max(25, hr); if (shape === "irregular") rr *= 0.6 + Math.random() * 0.8; next = now + rr;
-          if (!CONT[shape] || BEATS[shape]) {
-            pending.push([now + 0.42, rr]);                                                       // the QRS peaks 0.22 s into the cycle; the pulse reaches the finger ~0.2 s later
-            if (hooks.qrs) hooks.qrs(i / 80 + 0.22);                                             // QRS beep, scheduled at the R wave
-            if (syncOn && !CONT[shape]) marks.push(x + 18);                                       // sync sense marker over the coming R wave (0.22 s × 80 px/s)
+          beatT = now; B = beatPlan(shape, bn++, hr); var rr = B.rr; if (shape === "irregular") rr *= 0.6 + Math.random() * 0.8; next = now + rr;
+          if ((!CONT[shape] || BEATS[shape]) && B.q) {
+            pending.push([now + B.at + 0.2, rr, B.amp]);                                          // the pulse reaches the finger ~0.2 s after the QRS
+            if (hooks.qrs) hooks.qrs(i / 80 + B.at);                                             // QRS beep, scheduled at the R wave
+            if (syncOn && !CONT[shape]) marks.push(x + Math.round(B.at * 80));                    // sync sense marker over the coming R wave
           }
         }
-        var y = G[1] - (CONT[shape] ? cont(shape, now, hr) : wave(shape, now - beatT, hr)) * G[0];
+        var y = G[1] - (CONT[shape] ? cont(shape, now, hr) : PATTERNED[shape] ? waveB(shape, now - beatT, hr, B) : wave(shape, now - beatT, hr)) * G[0];
         if (artT && now < artT + 1.2) { var a = now - artT; y = a < 0.05 ? G[1] - G[0] * 1.1 : a < 0.1 ? G[1] + G[0] * 0.45 : G[1] - G[0] * 0.42 * Math.exp(-(a - 0.1) * 4); }
         ctx.fillStyle = "#0b1220"; ctx.fillRect(x, 0, 8, h); ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.7;
         ctx.beginPath(); ctx.moveTo(x - 1, prevY == null ? y : prevY); ctx.lineTo(x, y); ctx.stroke(); prevY = y;
@@ -138,7 +191,7 @@
         pa = CONT[shape] && !BEATS[shape] ? 0 : plethAmp == null ? 0.85 : Math.max(0, Math.min(1, plethAmp));
         if (raf) { cancelAnimationFrame(raf); raf = 0; }
         if (!animate || REDUCED || epaper()) { animating = false; still(); return; }
-        animating = true; size(); last = 0; beatT = -1; pending = []; marks = []; pT = -1; pVal = 0; pCarry = 0; raf = requestAnimationFrame(frame);
+        animating = true; size(); last = 0; beatT = -1; bn = 0; pending = []; marks = []; pT = -1; pVal = 0; pCarry = 0; raf = requestAnimationFrame(frame);
       },
       stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; animating = false; },
       shock: function () { artT = performance.now() / 1000; },
@@ -157,6 +210,12 @@
     sine:      [48, "48", "76/40", "88", "Sine wave (severe high potassium)"],
     pea:       [46, "—", "—", "—", "PEA: organized rhythm, no pulse"],
     longqt:    [58, "58", "118/70", "97", "Sinus rhythm, long QT"],
+    avb1:      [64, "64", "124/76", "97", "Sinus rhythm, first-degree AV block"],
+    mobitz1:   [54, "54", "112/70", "96", "Second-degree AV block, Mobitz I (Wenckebach)"],
+    mobitz2:   [48, "48", "98/60", "95", "Second-degree AV block, Mobitz II"],
+    avb3:      [36, "36", "82/48", "93", "Third-degree (complete) AV block"],
+    pvc:       [76, "76", "126/78", "97", "Sinus rhythm with PVCs"],
+    bigeminy:  [80, "56", "118/72", "96", "Ventricular bigeminy"],
     torsades:  [240, "—", "—", "—", "Torsades de pointes (polymorphic VT)"],
     vf:        [300, "—", "—", "—", "Ventricular fibrillation"],
     asystole:  ["", "—", "—", "—", "Asystole"]
@@ -422,7 +481,7 @@
     host.appendChild(rec);
     var disp = el("div", "rl-card");
     disp.innerHTML = "<h3>Shared monitor display</h3><p class=\"rl-note\">Open the display on a second screen or a tablet beside the manikin. You change the rhythm and numbers here, privately; the display follows on the same device and browser.</p>" +
-      '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="pea">Organized, no pulse (PEA)</option><option value="longqt">Long QT (sinus)</option><option value="torsades">Torsades de pointes</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
+      '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="avb1">First-degree AV block</option><option value="mobitz1">Second-degree AV block, Mobitz I</option><option value="mobitz2">Second-degree AV block, Mobitz II</option><option value="avb3">Third-degree (complete) AV block</option><option value="pvc">Sinus with PVCs</option><option value="bigeminy">Ventricular bigeminy</option><option value="pea">Organized, no pulse (PEA)</option><option value="longqt">Long QT (sinus)</option><option value="torsades">Torsades de pointes</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
       '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="320"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
       '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
       '<p class="rl-note rl-d-hint">Choosing a rhythm fills in typical teaching values for it. Change any of them to fit your scenario, then press <b>Update display</b>; the display does not change until you do.</p>' +
@@ -703,6 +762,7 @@
       else if (m.rhythm === "torsades") alarms.push(["red", "VTACH"]);
       else if (hl) alarms.push([hl, "HR " + hr + (hr < 50 ? " LOW" : " HIGH")]);
       if (m.rhythm === "longqt") alarms.push(["yel", "QTc HIGH"]);
+      else if (m.rhythm === "pvc" || m.rhythm === "bigeminy") alarms.push(["yel", !showLab ? "ARRHYTHMIA" : m.rhythm === "pvc" ? "PVCs" : "VENT BIGEMINY"]);
       else if (m.rhythm === "sine" || m.rhythm === "peaked" || m.rhythm === "wide") alarms.push(["yel", showLab && m.label ? m.label.toUpperCase() : "ARRHYTHMIA"]);
       var sp = num(m.spo2), sl = sp === null ? "yel" : lvl(sp, 85, 90, 100, 101);
       setBox(".m-sp", sp === null ? "--" : String(sp), sl);
