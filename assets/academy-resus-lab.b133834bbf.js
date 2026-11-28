@@ -34,8 +34,11 @@
       var ph = 2 * Math.PI * T * Math.max(150, hr || 240) / 60, env = Math.sin(2 * Math.PI * T / 3.0);
       return 0.62 * env * (0.78 * Math.sin(ph) + 0.22 * Math.sin(2 * ph + 0.6)) + 0.2;
     }
-    var amp = 0.62 + 0.38 * Math.sin(T * 1.3);
-    return amp * (0.24 * Math.sin(T * 33.3) + 0.17 * Math.sin(T * 44.6 + 1) + 0.1 * Math.sin(T * 23.2 + 2)) + 0.2;
+    // VF: chaotic. Several components whose rate and height wander independently, so there is no regular
+    // swell, no narrow "waist" and no flip of polarity (those belong to torsades)
+    var A = 0.37 + 0.09 * Math.sin(2.32 * T) + 0.07 * Math.sin(5.72 * T + 2) + 0.045 * Math.sin(10.7 * T + 1);
+    return A * (0.5 * Math.sin(32.0 * T + 1.3 * Math.sin(4.4 * T)) + 0.3 * Math.sin(45.9 * T + 0.9 * Math.sin(6.9 * T + 1))
+      + 0.2 * Math.sin(23.2 * T + 2 + 0.8 * Math.sin(2.7 * T))) + 0.2 + 0.05 * Math.sin(1.9 * T);
   }
   var CONT = { vf: 1, asystole: 1, torsades: 1 };
   var BEATS = { torsades: 1 };   // continuous on the screen, but the QRS counter still counts (and can beep)
@@ -143,6 +146,22 @@
       sync: function (on) { syncOn = !!on; marks = []; }
     };
   }
+
+  // typical teaching values per rhythm (simulation defaults, not clinical targets); "—" = no reading
+  var PRESETS = {
+    normal:    [72, "72", "128/76", "97", "Sinus rhythm"],
+    svt:       [180, "180", "104/68", "96", "Narrow complex tachycardia (SVT)"],
+    irregular: [130, "118", "112/70", "95", "Atrial fibrillation, rapid"],
+    wide:      [170, "170", "86/54", "93", "Wide complex tachycardia (VT with a pulse)"],
+    peaked:    [66, "66", "122/74", "96", "Peaked T waves (high potassium)"],
+    sine:      [48, "48", "76/40", "88", "Sine wave (severe high potassium)"],
+    pea:       [46, "—", "—", "—", "PEA: organized rhythm, no pulse"],
+    longqt:    [58, "58", "118/70", "97", "Sinus rhythm, long QT"],
+    torsades:  [240, "—", "—", "—", "Torsades de pointes (polymorphic VT)"],
+    vf:        [300, "—", "—", "—", "Ventricular fibrillation"],
+    asystole:  ["", "—", "—", "—", "Asystole"]
+  };
+  function presetState(r) { var v = PRESETS[r]; return v ? { rhythm: r, rate: +v[0] || 72, hr: v[1], bp: v[2], spo2: v[3], label: v[4] } : null; }
 
   /* ════════════ 1. Recognition trainer ════════════ */
   function Recognition(host, data) {
@@ -407,32 +426,22 @@
       '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="320"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
       '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
       '<p class="rl-note rl-d-hint">Choosing a rhythm fills in typical teaching values for it. Change any of them to fit your scenario, then press <b>Update display</b>; the display does not change until you do.</p>' +
+      '<label class="rl-lab rl-d-afterwrap">Rhythm after the next shock <select class="rl-d-after" style="max-width:340px;display:block;margin-top:4px;"></select></label>' +
+      '<p class="rl-note">When a shock is delivered on the display, the rhythm changes to this one about 2 seconds later, with its typical values, and the form above follows. It applies to one shock, then returns to &ldquo;No change&rdquo;. Choose it before the team shocks; it takes effect at once.</p>' +
       '<label class="rl-chk"><input type="checkbox" class="rl-d-showlab" checked> Show the label on the display (turn off when learners must name the rhythm themselves)</label>' +
       '<label class="rl-chk"><input type="checkbox" class="rl-d-defib"> Show a defibrillator on the display (energy selector, sync, charge, shock)</label>' +
       '<button type="button" class="rl-btn rl-d-send">Update display</button> <a class="rl-btn rl-ghost" href="?display=1" target="_blank" rel="noopener">Open display</a>' +
-      '<p class="rl-note">On the display, tap <b>Full screen</b> to hide the browser bars. Out-of-range values turn yellow or red and the alarm bar names the problem, as on a bedside monitor; the limits are simulation defaults, not clinical thresholds. Energy on the simulated defibrillator follows the device manufacturer and your unit protocol. A shock on the display is logged in the recorder when its clock is running; the rhythm changes only when you change it here.</p>' +
+      '<p class="rl-note">On the display, tap <b>Full screen</b> to hide the browser bars. Out-of-range values turn yellow or red and the alarm bar names the problem, as on a bedside monitor; the limits are simulation defaults, not clinical thresholds. Energy on the simulated defibrillator follows the device manufacturer and your unit protocol. A shock on the display is logged in the recorder when its clock is running; the rhythm changes only when you change it here or set a rhythm for after the next shock.</p>' +
       '<canvas class="rl-mstrip" role="img" aria-label="Preview of the display rhythm"></canvas>';
     host.appendChild(disp);
-    var prev = Strip($(".rl-mstrip", disp));
+    var prev = Strip($(".rl-mstrip", disp)), afterSel = $(".rl-d-after", disp);
+    afterSel.innerHTML = '<option value="none">No change (the rhythm persists)</option>' + $(".rl-d-r", disp).innerHTML;
     function send() {
-      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, showLabel: $(".rl-d-showlab", disp).checked, defib: $(".rl-d-defib", disp).checked };
+      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, showLabel: $(".rl-d-showlab", disp).checked, afterShock: afterSel.value, defib: $(".rl-d-defib", disp).checked };
       prev.set(monState.rhythm, monState.rate, true); store("rcm-resus-display", monState); if (CH) CH.postMessage(monState);
     }
     $(".rl-d-send", disp).addEventListener("click", send);
-    // typical teaching values per rhythm (simulation defaults, not clinical targets); "—" = no reading
-    var PRESET = {
-      normal:    [72, "72", "128/76", "97", "Sinus rhythm"],
-      svt:       [180, "180", "104/68", "96", "Narrow complex tachycardia (SVT)"],
-      irregular: [130, "118", "112/70", "95", "Atrial fibrillation, rapid"],
-      wide:      [170, "170", "86/54", "93", "Wide complex tachycardia (VT with a pulse)"],
-      peaked:    [66, "66", "122/74", "96", "Peaked T waves (high potassium)"],
-      sine:      [48, "48", "76/40", "88", "Sine wave (severe high potassium)"],
-      pea:       [46, "—", "—", "—", "PEA: organized rhythm, no pulse"],
-      longqt:    [58, "58", "118/70", "97", "Sinus rhythm, long QT"],
-      torsades:  [240, "—", "—", "—", "Torsades de pointes (polymorphic VT)"],
-      vf:        [300, "—", "—", "—", "Ventricular fibrillation"],
-      asystole:  ["", "—", "—", "—", "Asystole"]
-    };
+    var PRESET = PRESETS;
     $(".rl-d-r", disp).addEventListener("change", function () {
       var v = PRESET[this.value]; if (!v) return;
       $(".rl-d-rate", disp).value = v[0]; $(".rl-d-hr", disp).value = v[1]; $(".rl-d-bp", disp).value = v[2];
@@ -441,10 +450,22 @@
     });
     $(".rl-d-defib", disp).addEventListener("change", send);
     $(".rl-d-showlab", disp).addEventListener("change", function () {   // changes only the label's visibility, not unsent values
-      var cur = store("rcm-resus-display") || monState; cur.showLabel = this.checked; monState.showLabel = this.checked;
+      var cur = store("rcm-resus-display") || monState; delete cur.fromShock; cur.showLabel = this.checked; monState.showLabel = this.checked;
       store("rcm-resus-display", cur); if (CH) CH.postMessage(cur);
     });
+    afterSel.addEventListener("change", function () {   // sets only the post-shock rhythm, not unsent values
+      var cur = store("rcm-resus-display") || monState; delete cur.fromShock; cur.afterShock = this.value; monState.afterShock = this.value;
+      store("rcm-resus-display", cur); if (CH) CH.postMessage(cur);
+    });
+    function followShock(m) {   // the display changed the rhythm after a shock: show it in the form
+      if (!m || m.type || !m.fromShock) return;
+      $(".rl-d-r", disp).value = m.rhythm; $(".rl-d-rate", disp).value = m.rate; $(".rl-d-hr", disp).value = m.hr; $(".rl-d-bp", disp).value = m.bp;
+      $(".rl-d-sp", disp).value = m.spo2; $(".rl-d-lab", disp).value = m.label; afterSel.value = "none"; monState = m; prev.set(m.rhythm, m.rate, true);
+    }
+    if (CH) CH.addEventListener("message", function (e) { followShock(e.data); });
+    window.addEventListener("storage", function (e) { if (e.key === "rcm-resus-display") followShock(store("rcm-resus-display")); });
     var saved = store("rcm-resus-display"); if (saved && saved.defib) $(".rl-d-defib", disp).checked = true;
+    if (saved && saved.afterShock && saved.afterShock !== "none") afterSel.value = saved.afterShock;
     if (saved && saved.showLabel === false) $(".rl-d-showlab", disp).checked = false;
     var lastShock = 0;
     function fromDisplay(m) {   // a shock on the display goes into the drill log while the clock runs
@@ -773,6 +794,11 @@
       shocks++; strip.shock(); shockSound();
       if (flash) { wrap.classList.add("m-zap"); setTimeout(function () { wrap.classList.remove("m-zap"); }, 160); }
       show("ready", "SHOCK DELIVERED " + J() + " J" + (syncOn ? " (SYNC)" : ""));
+      var after = cur.afterShock && cur.afterShock !== "none" ? presetState(cur.afterShock) : null;
+      if (after) setTimeout(function () {   // the new rhythm appears once the shock artifact settles
+        after.showLabel = cur.showLabel; after.defib = cur.defib; after.afterShock = "none"; after.fromShock = true;
+        apply(after); store("rcm-resus-display", after); if (CH) CH.postMessage(after);
+      }, 2000);
       var msg = { type: "defib", ev: "shock", j: J(), sync: syncOn, t: Date.now() };
       if (CH) CH.postMessage(msg); store("rcm-resus-defib", msg);
     });

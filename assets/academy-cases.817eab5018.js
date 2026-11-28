@@ -143,8 +143,11 @@
         var ph = 2 * Math.PI * T * Math.max(150, hr || 240) / 60, env = Math.sin(2 * Math.PI * T / 3.0);
         return 0.62 * env * (0.78 * Math.sin(ph) + 0.22 * Math.sin(2 * ph + 0.6)) + 0.2;
       }
-      var amp = 0.62 + 0.38 * Math.sin(T * 1.3);
-      return amp * (0.24 * Math.sin(T * 33.3) + 0.17 * Math.sin(T * 44.6 + 1) + 0.1 * Math.sin(T * 23.2 + 2)) + 0.2;
+      // VF: chaotic. Several components whose rate and height wander independently, so there is no regular
+      // swell, no narrow "waist" and no flip of polarity (those belong to torsades)
+      var A = 0.37 + 0.09 * Math.sin(2.32 * T) + 0.07 * Math.sin(5.72 * T + 2) + 0.045 * Math.sin(10.7 * T + 1);
+      return A * (0.5 * Math.sin(32.0 * T + 1.3 * Math.sin(4.4 * T)) + 0.3 * Math.sin(45.9 * T + 0.9 * Math.sin(6.9 * T + 1))
+        + 0.2 * Math.sin(23.2 * T + 2 + 0.8 * Math.sin(2.7 * T))) + 0.2 + 0.05 * Math.sin(1.9 * T);
     }
     // y offset (0..1, up) for time t seconds after a beat
     function wave(t) {
