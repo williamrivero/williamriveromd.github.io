@@ -571,10 +571,12 @@ def main_html():
     <p>Sudden cardiac death is the most common cause of death in people on hemodialysis, and in a United States registry of cardiac arrests in outpatient dialysis clinics, most patients received staff-started cardiopulmonary resuscitation (CPR), but a defibrillator was applied in only about six in ten. The first minute is decided by people who have rehearsed it. Each card follows the Academy modules linked at its foot, where the reasoning, the evidence and practice cases are.</p>
     <p>Each card lists who acts, which circuit step to take, and whether the blood is returned. Steps marked &ldquo;At the same time&rdquo; run alongside the step before them. Every card names someone to watch the other patients on the floor. Print a set for the crash cart and the nurses&rsquo; station, and run a five-minute drill from one card at the start of a shift.</p>
     <p>The AHA (American Heart Association) and ERC (European Resuscitation Council) guidelines below apply in the dialysis unit as everywhere; the ERC guideline has a section on cardiac arrest in the dialysis unit. Where sources disagree, the card says so and leaves the choice to the unit protocol. References were checked on {D.CHECKED}.</p>
+    <div class="ref-section">
     <h2>References</h2>
     <ol class="eqc-refs">
 {refs}
     </ol>
+    </div>
   </section>
 </main>
 """
