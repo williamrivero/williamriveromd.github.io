@@ -545,8 +545,9 @@
     host.appendChild(rec);
     var disp = el("div", "rl-card");
     disp.innerHTML = "<h3>Shared monitor display</h3><p class=\"rl-note\">Open the display on a second screen or a tablet beside the manikin. You change the rhythm and numbers here, privately; the display follows on the same device and browser.</p>" +
-      '<figure class="rl-xpl"><figcaption><span class="rl-xpl-play" aria-hidden="true">&#9654;</span> Watch the 1-minute explainer</figcaption>' +
-      '<video controls playsinline preload="none" poster="/videos/academy/megacode-shared-monitor-explainer.jpg" width="1280" height="720"><source src="/videos/academy/megacode-shared-monitor-explainer.mp4" type="video/mp4"></video>' +
+      '<figure class="rl-xpl" id="explainer"><figcaption><span class="rl-xpl-play" aria-hidden="true">&#9654;</span> Watch the 1-minute explainer' +
+      '<button type="button" class="rl-xpl-share" aria-label="Share this explainer: a link to this page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>' +
+      '<video controls playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false" poster="/videos/academy/megacode-shared-monitor-explainer.jpg" width="1280" height="720"><source src="/videos/academy/megacode-shared-monitor-explainer.mp4" type="video/mp4"></video>' +
       '<details class="rl-xpl-tr"><summary>Read the transcript</summary><p>Meet the shared monitor display. It turns any second screen into a bedside monitor for your megacode practice. Open the controls on your laptop, and the display on a tablet beside the manikin. Your controls stay private. The team sees only the monitor. Choose a rhythm, and typical values fill in. Change any number you like, then press Update display. Nothing changes on the monitor until you do. The yellow trace is capnography. During CPR, end-tidal carbon dioxide reflects how well compressions are working, and a sudden rise can mean the heart is beating again. Turn on the defibrillator, and the team can sync, charge and shock. Set the rhythm after the next shock, and the monitor changes on its own. Build a playlist of rhythms, and run the whole scenario with one tap. It is a training display, not a medical device. Now, go practice!</p></details></figure>' +
       '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="avb1">First-degree AV block</option><option value="mobitz1">Second-degree AV block, Mobitz I</option><option value="mobitz2">Second-degree AV block, Mobitz II</option><option value="avb3">Third-degree (complete) AV block</option><option value="pvc">Sinus with PVCs</option><option value="bigeminy">Ventricular bigeminy</option><option value="pea">Organized, no pulse (PEA)</option><option value="longqt">Long QT (sinus)</option><option value="torsades">Torsades de pointes</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
       '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="320"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
@@ -580,6 +581,15 @@
       var off = store("rcm-resus-thumb") === "off";
       function setOff(v) { off = v; box.hidden = v; tog.textContent = v ? "Show" : "Hide"; if (v) fr.removeAttribute("src"); else if (!fr.getAttribute("src")) fr.setAttribute("src", "?display=1&thumb=1"); store("rcm-resus-thumb", v ? "off" : "on"); }
       tog.addEventListener("click", function () { setOff(!off); }); if (off) setOff(true);
+    })();
+    (function () {   // Share the page (opens at the video), never the video file
+      var sb = $(".rl-xpl-share", disp); if (!sb) return;
+      sb.addEventListener("click", function () {
+        var c = document.querySelector("link[rel=canonical]"), u = (c ? c.href : location.href.split("#")[0]) + "#explainer", l = sb.querySelector("span");
+        function done(m) { l.textContent = m; setTimeout(function () { l.textContent = "Share"; }, 2200); }
+        if (navigator.share) { navigator.share({ title: document.title, url: u }).catch(function () {}); return; }
+        if (navigator.clipboard) navigator.clipboard.writeText(u).then(function () { done("Link copied"); }, function () { prompt("Copy this link", u); }); else prompt("Copy this link", u);
+      });
     })();
     var prev = Strip($(".rl-mstrip", disp)), afterSel = $(".rl-d-after", disp);
     afterSel.innerHTML = '<option value="none">No change (the rhythm persists)</option>' + $(".rl-d-r", disp).innerHTML;
