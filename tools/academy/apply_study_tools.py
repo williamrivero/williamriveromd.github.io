@@ -29,6 +29,10 @@ CARDS = [
      "Each tap is stamped with those initials and that date. Once every critical step passes, the preceptor signs the "
      "checklist off. You can then print the record or share it as text. The module and its trainer page show the same record. "
      "It is saved on this device only. Your unit&rsquo;s competency form is the authority."),
+    ("Tap a term to see what it means",
+     "Words and abbreviations from the module&rsquo;s glossary have a dotted underline the first time they appear in each "
+     "section. Tap one to see its meaning without leaving the paragraph, then tap <strong>See in glossary</strong> to open "
+     "the full glossary at that term."),
     ("Search the whole Academy",
      "Tap <strong>Search</strong> at the start of the section bar on any Academy page, the search field on this page, or "
      "press <strong>/</strong> on a keyboard. It searches every track, module, trainer page and emergency card, opens the "
