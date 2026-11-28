@@ -35,7 +35,7 @@
   }
   var CONT = { vf: 1, asystole: 1 };
   function Strip(canvas) {
-    var ctx = canvas.getContext && canvas.getContext("2d"), shape = "normal", hr = 70, raf = 0, x = 0, prevY = null, beatT = -1, next = 0, last = 0;
+    var ctx = canvas.getContext && canvas.getContext("2d"), shape = "normal", hr = 70, raf = 0, x = 0, prevY = null, beatT = -1, next = 0, last = 0, artT = 0;
     function size() {
       var r = window.devicePixelRatio || 1, w = canvas.clientWidth || 320, h = canvas.clientHeight || 70;
       canvas.width = Math.round(w * r); canvas.height = Math.round(h * r); ctx.setTransform(r, 0, 0, r, 0, 0);
@@ -57,6 +57,7 @@
         var now = ts / 1000 + i / 80;
         if (beatT < 0 || now >= next) { beatT = now; var rr = 60 / Math.max(25, hr); if (shape === "irregular") rr *= 0.6 + Math.random() * 0.8; next = now + rr; }
         var y = h * 0.7 - (CONT[shape] ? cont(shape, now) : wave(shape, now - beatT, hr)) * h * 0.6;
+        if (artT && now < artT + 1.2) { var a = now - artT; y = a < 0.05 ? h * 0.04 : a < 0.1 ? h * 0.96 : h * 0.7 - h * 0.25 * Math.exp(-(a - 0.1) * 4); }
         ctx.fillStyle = "#0b1220"; ctx.fillRect(x, 0, 8, h); ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.7;
         ctx.beginPath(); ctx.moveTo(x - 1, prevY == null ? y : prevY); ctx.lineTo(x, y); ctx.stroke(); prevY = y; x++;
         if (x > w) { x = 0; prevY = null; }
@@ -70,7 +71,8 @@
         if (!animate || REDUCED || epaper()) { still(); return; }
         size(); last = 0; beatT = -1; raf = requestAnimationFrame(frame);
       },
-      stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; }
+      stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; },
+      shock: function () { artT = performance.now() / 1000; }
     };
   }
 
@@ -336,15 +338,27 @@
       '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
       '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="260"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
       '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
+      '<label class="rl-chk"><input type="checkbox" class="rl-d-defib"> Show a defibrillator on the display (energy selector, sync, charge, shock)</label>' +
       '<button type="button" class="rl-btn rl-d-send">Update display</button> <a class="rl-btn rl-ghost" href="?display=1" target="_blank" rel="noopener">Open display</a>' +
+      '<p class="rl-note">On the display, tap <b>Full screen</b> to hide the browser bars. Out-of-range values turn yellow or red and the alarm bar names the problem, as on a bedside monitor; the limits are simulation defaults, not clinical thresholds. Energy on the simulated defibrillator follows the device manufacturer and your unit protocol. A shock on the display is logged in the recorder when its clock is running; the rhythm changes only when you change it here.</p>' +
       '<canvas class="rl-mstrip" role="img" aria-label="Preview of the display rhythm"></canvas>';
     host.appendChild(disp);
     var prev = Strip($(".rl-mstrip", disp));
     function send() {
-      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value };
+      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, defib: $(".rl-d-defib", disp).checked };
       prev.set(monState.rhythm, monState.rate, true); store("rcm-resus-display", monState); if (CH) CH.postMessage(monState);
     }
     $(".rl-d-send", disp).addEventListener("click", send);
+    $(".rl-d-defib", disp).addEventListener("change", send);
+    var saved = store("rcm-resus-display"); if (saved && saved.defib) $(".rl-d-defib", disp).checked = true;
+    var lastShock = 0;
+    function fromDisplay(m) {   // a shock on the display goes into the drill log while the clock runs
+      if (!m || m.type !== "defib" || m.ev !== "shock" || !start || m.t === lastShock) return;
+      lastShock = m.t;
+      log.push({ t: now(), ev: "shock" }); render();
+    }
+    if (CH) CH.addEventListener("message", function (e) { fromDisplay(e.data); });
+    window.addEventListener("storage", function (e) { if (e.key === "rcm-resus-defib") fromDisplay(store("rcm-resus-defib")); });
     setTimeout(function () { prev.set("normal", 72, true); }, 0);
     function now() { return start ? (Date.now() - start) / 1000 : 0; }
     function render() {
@@ -408,15 +422,218 @@
       rec.scrollIntoView({ behavior: "smooth", block: "start" });
     };
     $(".rl-reset", rec).addEventListener("click", function () { var n = $(".rl-sample-note", rec); if (n) n.remove(); });
-    $(".rl-cards", roles).addEventListener("click", function () { document.body.classList.add("rl-print-roles"); window.print(); setTimeout(function () { document.body.classList.remove("rl-print-roles"); }, 500); });
+    $(".rl-cards", roles).addEventListener("click", function () { printCards(); });
+  }
+
+  /* ════════════ 4. Role rotation planner + 5. role cards ════════════ */
+  var ROT_ROLES = [["Leader", "lead"], ["Defibrillator and drugs", "drugs"], ["Circuit nurse", "nurse"], ["Airway", "nurse"], ["Watcher", "nurse"],
+    ["Compressor 1", "all"], ["Compressor 2", "all"], ["Recorder and timer", "all"], ["Runner", "all"]];
+  var SHOW = ["Leader", "Compressor 1", "Compressor 2", "Airway", "Defibrillator and drugs", "Circuit nurse", "Recorder and timer", "Watcher", "Runner"];
+  function initials(v) { var seen = {}; return String(v || "").split(/[,;\s]+/).map(function (x) { return x.trim().toUpperCase().slice(0, 8); }).filter(function (x) { if (!x || seen[x]) return false; seen[x] = 1; return true; }); }
+  // fill order and weight: what a small team keeps when roles must combine (Module 13: leader + drugs, compressor + airway, circuit + recorder; the watcher is never combined)
+  var FILL = { "Leader": 1000, "Compressor 1": 900, "Watcher": 850, "Circuit nurse": 800, "Defibrillator and drugs": 500, "Compressor 2": 400, "Recorder and timer": 300, "Airway": 250, "Runner": 200 };
+  function plan(all, lead, drugs, nurse, drills) {
+    var el2 = { all: all, lead: lead.length ? lead : all, drugs: drugs.length ? drugs : (lead.length ? lead : all), nurse: nurse.length ? nurse : all };
+    var full = all.length >= ROT_ROLES.length;
+    // enough people: fill the scarcest roles first so every role is filled; too few: keep what a small team keeps
+    var order = ROT_ROLES.slice().sort(function (x, y) { return full ? (el2[x[1]].length - el2[y[1]].length) || (FILL[y[0]] - FILL[x[0]]) : FILL[y[0]] - FILL[x[0]]; });
+    var cnt = {}, last = {}, out = [];
+    all.forEach(function (p) { cnt[p] = {}; last[p] = null; });
+    function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+    for (var d = 0; d < drills; d++) {
+      var R = rng(1009 * (d + 1) + all.length * 31), best = null, bestS = -1e9;
+      for (var trial = 0; trial < 300; trial++) {
+        var used = {}, row = {}, sc = 0, jit = trial ? 6 : 0;
+        order.forEach(function (rr) {
+          var role = rr[0], pick = null, ps = -1e9;
+          var free = el2[rr[1]].filter(function (p) { return !used[p]; });
+          if (trial && free.length && R() < 0.35) { pick = free[Math.floor(R() * free.length)]; ps = (cnt[pick][role] ? 0 : 12) - 3 * (cnt[pick][role] || 0) - (last[pick] === role ? 9 : 0); }
+          else free.forEach(function (p) {
+            var v = (cnt[p][role] ? 0 : 12) - 3 * (cnt[p][role] || 0) - (last[p] === role ? 9 : 0) + R() * jit;
+            if (v > ps) { ps = v; pick = p; }
+          });
+          if (pick) { used[pick] = 1; row[role] = pick; sc += FILL[role] + ps; } else row[role] = null;
+        });
+        if (sc > bestS) { bestS = sc; best = row; }
+      }
+      all.forEach(function (p) { last[p] = null; });
+      Object.keys(best).forEach(function (r) { var p = best[r]; if (p) { cnt[p][r] = (cnt[p][r] || 0) + 1; last[p] = r; } });
+      out.push(best);
+    }
+    var cov = all.map(function (p) {
+      var scope = ROT_ROLES.filter(function (rr) { return el2[rr[1]].indexOf(p) >= 0; }).map(function (rr) { return rr[0]; });
+      return { p: p, scope: scope, held: scope.filter(function (r) { return cnt[p][r]; }), not: scope.filter(function (r) { return !cnt[p][r]; }) };
+    });
+    return { rows: out, cov: cov };
+  }
+  function Rotation(host) {
+    var KEY = "rcm-resus-rotation", st = store(KEY) || {};
+    host.innerHTML = "";
+    var box = el("div", "rl-card");
+    box.innerHTML = '<div class="rl-rot-in">' +
+      '<label>Everyone in the drills (initials)<input type="text" class="rr-all" placeholder="e.g. AM, JD, KL, BS, PR, CN, RT, LV, EG"></label>' +
+      '<label>Who may lead (unit protocol)<input type="text" class="rr-lead" placeholder="e.g. AM, PR"></label>' +
+      '<label>Medicines and manual defibrillator (ACLS-current)<input type="text" class="rr-drugs" placeholder="e.g. AM, PR, CN"></label>' +
+      '<label>Nurses and physicians (airway, circuit, watcher)<input type="text" class="rr-nurse" placeholder="e.g. AM, PR, CN, LV, KL"></label>' +
+      '<label>Number of drills<input type="number" class="rr-n" min="1" max="24" value="6"></label></div>' +
+      '<div class="rl-rbar"><button type="button" class="rl-btn rr-go">Build the rotation</button> <button type="button" class="rl-btn rl-ghost rr-demo">Try a sample team</button> <button type="button" class="rl-btn rl-ghost rr-print">Print the rotation</button></div>' +
+      '<p class="rl-note">Initials only; they stay on this device. A blank scope box means everyone may hold those roles. Everyone in the drills is assumed BLS-trained.</p><div class="rr-out" aria-live="polite"></div>';
+    host.appendChild(box);
+    var f = { all: $(".rr-all", box), lead: $(".rr-lead", box), drugs: $(".rr-drugs", box), nurse: $(".rr-nurse", box), n: $(".rr-n", box) }, out = $(".rr-out", box), res = null;
+    Object.keys(f).forEach(function (k) { if (st[k] != null) f[k].value = st[k]; });
+    function build() {
+      var all = initials(f.all.value), n = Math.max(1, Math.min(24, parseInt(f.n.value, 10) || 6));
+      var keep = {}; Object.keys(f).forEach(function (k) { keep[k] = f[k].value; }); store(KEY, keep);
+      if (all.length < 2) { out.innerHTML = '<p class="rl-verdict no">Enter at least two people.</p>'; return; }
+      var bad = [];
+      ["lead", "drugs", "nurse"].forEach(function (k) { initials(f[k].value).forEach(function (p) { if (all.indexOf(p) < 0) bad.push(p); }); });
+      res = plan(all, initials(f.lead.value).filter(function (p) { return all.indexOf(p) >= 0; }), initials(f.drugs.value).filter(function (p) { return all.indexOf(p) >= 0; }),
+        initials(f.nurse.value).filter(function (p) { return all.indexOf(p) >= 0; }), n);
+      var h = (bad.length ? '<p class="rl-verdict no">Not in the drill list, so left out: ' + bad.join(", ") + ".</p>" : "") +
+        (all.length < SHOW.length ? '<p class="rl-note">' + all.length + " people for " + SHOW.length + " roles: the roles marked &ldquo;combine&rdquo; are combined as in Module 13 (for example compressor 2 with airway, the recorder with the runner). The watcher is filled early, because the watcher is never combined with the arrest.</p>" : "") +
+        '<div class="rl-rot-wrap"><table class="rl-rot-t"><thead><tr><th>Drill</th>' + SHOW.map(function (r) { return "<th>" + r + "</th>"; }).join("") + "</tr></thead><tbody>" +
+        res.rows.map(function (row, i) { return '<tr data-i="' + i + '"><td><b>' + (i + 1) + "</b></td>" + SHOW.map(function (r) { return row[r] ? "<td>" + row[r] + "</td>" : '<td class="cmb">combine</td>'; }).join("") + "</tr>"; }).join("") +
+        "</tbody></table></div>" +
+        '<div class="rl-rbar"><label class="rl-lab">Drill <select class="rr-pick">' + res.rows.map(function (_, i) { return '<option value="' + i + '">' + (i + 1) + "</option>"; }).join("") + "</select></label>" +
+        ' <button type="button" class="rl-btn rr-send">Send these roles to the recorder</button></div>' +
+        "<h4>Coverage after " + n + " drill" + (n > 1 ? "s" : "") + "</h4><ul class=\"rl-cov\">" + res.cov.map(function (c) {
+          return "<li><b>" + c.p + "</b>: " + c.held.length + " of " + c.scope.length + " roles in scope" + (c.not.length ? "; not yet: " + c.not.join(", ") : "; every role in scope practiced") + ".</li>";
+        }).join("") + "</ul>" + (res.cov.some(function (c) { return c.not.length; }) ? '<p class="rl-note">Not everyone can hold every role in ' + n + " drill" + (n > 1 ? "s" : "") + ": each person holds one role per drill. Extend the series (for example one drill a month for a year) and the planner keeps filling the gaps.</p>" : "");
+      out.innerHTML = h;
+      var pick = $(".rr-pick", out);
+      function mark() { Array.prototype.forEach.call(out.querySelectorAll("tbody tr"), function (tr) { tr.classList.toggle("sel", tr.getAttribute("data-i") === pick.value); }); }
+      pick.addEventListener("change", mark); mark();
+      $(".rr-send", out).addEventListener("click", function () {
+        var row = res.rows[+pick.value];
+        Array.prototype.forEach.call(document.querySelectorAll("#rl-recorder input[data-role]"), function (inp) {
+          var r = inp.getAttribute("data-role"); inp.value = row[r] || "";
+        });
+        var fr = document.getElementById("facilitator"); if (fr) fr.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+    $(".rr-go", box).addEventListener("click", build);
+    $(".rr-demo", box).addEventListener("click", function () {
+      f.all.value = "AM, JD, KL, BS, PR, CN, RT, LV, EG"; f.lead.value = "AM, PR"; f.drugs.value = "AM, PR, CN"; f.nurse.value = "AM, PR, CN, LV, KL"; f.n.value = 6; build();
+    });
+    $(".rr-print", box).addEventListener("click", function () { if (!res) build(); document.body.classList.add("rl-print-rot"); window.print(); setTimeout(function () { document.body.classList.remove("rl-print-rot"); }, 500); });
+    if (st.all) build();
+  }
+  function printCards() {
+    var v = {};
+    Array.prototype.forEach.call(document.querySelectorAll("#rl-recorder input[data-role]"), function (inp) { v[inp.getAttribute("data-role")] = inp.value.trim(); });
+    Array.prototype.forEach.call(document.querySelectorAll(".rl-rc"), function (c) {
+      var r = c.getAttribute("data-role"), b = c.querySelector("[data-held]"); if (!b) return;
+      var t = r === "Compressors 1 and 2" ? [v["Compressor 1"], v["Compressor 2"]].filter(Boolean).join(" / ") : (/^Everyone/.test(r) ? "All" : v[r]);
+      b.innerHTML = t ? t.replace(/[<>&]/g, "") : "&nbsp;";
+    });
+    document.body.classList.add("rl-print-rc"); window.print(); setTimeout(function () { document.body.classList.remove("rl-print-rc"); }, 500);
   }
 
   function DisplayMode() {
     document.body.classList.add("rl-display-mode");
-    var wrap = el("div", "rl-display"); wrap.innerHTML = '<div class="rl-dgrid"><div><span>Pulse</span><b class="d-hr"></b></div><div><span>BP</span><b class="d-bp"></b></div><div><span>SpO₂</span><b class="d-sp"></b></div></div><canvas class="rl-dstrip"></canvas><div class="d-lab"></div><p class="rl-dnote">Training display. Not a medical device.</p>';
+    var ENERGY = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 50, 70, 85, 100, 120, 150, 170, 200, 300, 360];
+    var wrap = el("div", "rl-display rl-mon2");
+    wrap.innerHTML =
+      '<div class="m-top"><span class="m-lab"></span><span class="m-alarm" role="status" aria-live="assertive"></span><span class="m-clock"></span>' +
+      '<button type="button" class="m-fs">Full screen</button></div>' +
+      '<div class="m-main"><div class="m-ecg"><span class="m-lead">II &nbsp;&times;1</span><canvas class="rl-dstrip"></canvas></div>' +
+      '<div class="m-par">' +
+        '<div class="m-box m-hr"><span class="m-k">HR <small>bpm</small></span><b class="m-v"></b><span class="m-lim">50 &ndash; 120</span></div>' +
+        '<div class="m-box m-sp"><span class="m-k">SpO&#8322; <small>%</small></span><b class="m-v"></b><span class="m-sub">PR <i class="m-pr"></i></span></div>' +
+        '<div class="m-box m-bp"><span class="m-k">NIBP <small>mmHg</small></span><b class="m-v"></b><span class="m-sub m-map"></span></div>' +
+      '</div></div>' +
+      '<div class="m-defib" hidden><div class="m-dstat">Defibrillator &middot; <b class="m-dst">READY</b></div>' +
+        '<label>Energy <select class="m-j">' + ENERGY.map(function (j) { return '<option value="' + j + '"' + (j === 150 ? " selected" : "") + ">" + j + " J</option>"; }).join("") + "</select></label>" +
+        '<button type="button" class="m-b m-sync" aria-pressed="false">Sync</button><button type="button" class="m-b m-charge">Charge</button>' +
+        '<button type="button" class="m-b m-shock" disabled>Shock</button><button type="button" class="m-b m-disarm" disabled>Disarm</button>' +
+        '<span class="m-count"></span><button type="button" class="m-b m-snd" aria-pressed="true">Sound on</button></div>' +
+      '<p class="m-note">Training display &middot; not a medical device &middot; alarm limits are simulation defaults</p>';
     document.body.appendChild(wrap);
-    var s = Strip($(".rl-dstrip", wrap));
-    function apply(m) { if (!m) return; $(".d-hr", wrap).textContent = m.hr; $(".d-bp", wrap).textContent = m.bp; $(".d-sp", wrap).textContent = m.spo2; $(".d-lab", wrap).textContent = m.label; s.set(m.rhythm, m.rate, true); }
+    var strip = Strip($(".rl-dstrip", wrap)), cur = {}, flash = !(REDUCED || epaper());
+    // clock
+    function clock() { var d = new Date(); $(".m-clock", wrap).textContent = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); }
+    clock(); setInterval(clock, 10000);
+    // full screen (Fullscreen API; iPhone Safari has none: open from the Schola app instead)
+    var fsb = $(".m-fs", wrap), root = document.documentElement;
+    var canFS = !!(root.requestFullscreen || root.webkitRequestFullscreen);
+    function isFS() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+    function toggleFS() {
+      if (!canFS) { fsb.textContent = "Use the Schola app for full screen"; return; }
+      if (isFS()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+      var p = (root.requestFullscreen || root.webkitRequestFullscreen).call(root, { navigationUI: "hide" });
+      if (p && p.catch) p.catch(function () {});
+      try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(function () {}); } catch (e) {}
+    }
+    function fsLabel() { fsb.textContent = isFS() ? "Exit full screen" : "Full screen"; wrap.classList.toggle("m-isfs", isFS()); }
+    fsb.addEventListener("click", toggleFS);
+    document.addEventListener("fullscreenchange", fsLabel); document.addEventListener("webkitfullscreenchange", fsLabel);
+    document.addEventListener("keydown", function (e) { if ((e.key === "f" || e.key === "F") && !(e.target.closest && e.target.closest("select, input"))) toggleFS(); });
+    if (!canFS && navigator.standalone) fsb.hidden = true;
+    var idle = 0; document.addEventListener("pointermove", function () { wrap.classList.remove("m-idle"); clearTimeout(idle); idle = setTimeout(function () { wrap.classList.add("m-idle"); }, 4000); });
+    // values and alarms
+    function num(v) { var n = parseFloat(String(v).replace(/[^0-9.\-]/g, "")); return isNaN(n) ? null : n; }
+    function lvl(v, lo2, lo1, hi1, hi2) { if (v === null) return ""; if (v < lo2 || v > hi2) return "red"; if (v < lo1 || v > hi1) return "yel"; return ""; }
+    function setBox(cls, txt, level) { var b = $(cls, wrap); $(".m-v", b).textContent = txt; b.classList.remove("red", "yel"); if (level) b.classList.add(level); }
+    function apply(m) {
+      if (!m || m.type) return; cur = m;
+      $(".m-lab", wrap).textContent = m.label || "";
+      strip.set(m.rhythm, m.rate, true);
+      var alarms = [], arrest = m.rhythm === "vf" || m.rhythm === "asystole";
+      // HR is counted from the ECG, as a monitor does
+      var hr = m.rhythm === "vf" ? null : m.rhythm === "asystole" ? 0 : (+m.rate || null), hl = arrest ? "red" : lvl(hr, 40, 50, 120, 140);
+      setBox(".m-hr", m.rhythm === "vf" ? "---" : hr === null ? "---" : String(hr), hl);
+      if (m.rhythm === "vf") alarms.push(["red", "VFIB / VTACH"]); else if (m.rhythm === "asystole") alarms.push(["red", "ASYSTOLE"]);
+      else if (hl) alarms.push([hl, "HR " + hr + (hr < 50 ? " LOW" : " HIGH")]);
+      if (m.rhythm === "sine" || m.rhythm === "peaked" || m.rhythm === "wide") alarms.push(["yel", (m.label || "ARRHYTHMIA").toUpperCase()]);
+      var sp = num(m.spo2), sl = sp === null ? "yel" : lvl(sp, 85, 90, 100, 101);
+      setBox(".m-sp", sp === null ? "--" : String(sp), sl);
+      var pr = num(m.hr); $(".m-pr", wrap).textContent = pr === null ? "--" : String(pr);
+      if (sp === null) alarms.push(["yel", "SpO₂ NO PULSE"]); else if (sl) alarms.push([sl, "SpO₂ " + sp + " LOW"]);
+      var bp = String(m.bp || ""), sys = num(bp.split("/")[0]), dia = num(bp.split("/")[1]), bl = sys === null ? "yel" : lvl(sys, 80, 90, 180, 200);
+      setBox(".m-bp", sys === null ? "---/---" : bp.replace(/\s/g, ""), bl);
+      $(".m-map", wrap).textContent = sys !== null && dia !== null ? "MAP " + Math.round((sys + 2 * dia) / 3) : "";
+      if (sys === null) alarms.push(["yel", "NIBP NO READING"]); else if (bl) alarms.push([bl, "NIBP " + sys + (sys < 90 ? " LOW" : " HIGH")]);
+      alarms.sort(function (a, b) { return (b[0] === "red") - (a[0] === "red"); });
+      var al = $(".m-alarm", wrap); al.className = "m-alarm" + (alarms.length ? " " + alarms[0][0] : ""); al.textContent = alarms.map(function (a) { return a[1]; }).join("  ·  ");
+      wrap.classList.toggle("m-flash", flash && alarms.some(function (a) { return a[0] === "red"; }));
+      $(".m-defib", wrap).hidden = !m.defib;
+    }
+    // simulated defibrillator
+    var st = "ready", shocks = 0, armT = 0, actx = null, sound = true;
+    function tone(f, ms, vol) {
+      if (!sound) return; try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); var o = actx.createOscillator(), g = actx.createGain();
+        o.frequency.value = f; g.gain.value = vol || 0.06; o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime + ms / 1000); } catch (e) {}
+    }
+    var dst = $(".m-dst", wrap), bCh = $(".m-charge", wrap), bSh = $(".m-shock", wrap), bDis = $(".m-disarm", wrap), sel = $(".m-j", wrap), bSy = $(".m-sync", wrap);
+    function J() { return +sel.value; }
+    function show(state, text) {
+      st = state; dst.textContent = text; $(".m-defib", wrap).className = "m-defib m-" + state;
+      bCh.disabled = state === "charging"; bSh.disabled = state !== "charged"; bDis.disabled = state !== "charged" && state !== "charging";
+      $(".m-count", wrap).textContent = shocks ? "Shocks: " + shocks : "";
+    }
+    bSy.addEventListener("click", function () { var on = bSy.getAttribute("aria-pressed") !== "true"; bSy.setAttribute("aria-pressed", on); bSy.classList.toggle("on", on); bSy.textContent = on ? "Sync on" : "Sync"; });
+    $(".m-snd", wrap).addEventListener("click", function () { sound = !sound; this.setAttribute("aria-pressed", sound); this.textContent = sound ? "Sound on" : "Sound off"; });
+    sel.addEventListener("change", function () { if (st === "charged" || st === "charging") { clearTimeout(armT); show("ready", "DISARMED: ENERGY CHANGED"); } });
+    bCh.addEventListener("click", function () {
+      clearTimeout(armT); show("charging", "CHARGING " + J() + " J");
+      var k = 0, iv = setInterval(function () { tone(500 + k * 60, 90, 0.04); k++; }, 250);
+      armT = setTimeout(function () {
+        clearInterval(iv); show("charged", "CHARGED " + J() + " J · PRESS SHOCK"); tone(1100, 400, 0.07);
+        armT = setTimeout(function () { show("ready", "DISARMED: NOT DELIVERED IN 60 S"); }, 60000);
+      }, 2500);
+    });
+    bDis.addEventListener("click", function () { clearTimeout(armT); show("ready", "DISARMED"); });
+    bSh.addEventListener("click", function () {
+      if (st !== "charged") return; clearTimeout(armT);
+      var syncOn = bSy.getAttribute("aria-pressed") === "true";
+      if (syncOn && (cur.rhythm === "vf" || cur.rhythm === "asystole")) { show("charged", "SYNC: NO R WAVE DETECTED · SHOCK NOT DELIVERED"); tone(300, 600, 0.07); return; }
+      shocks++; strip.shock(); tone(180, 250, 0.09);
+      if (flash) { wrap.classList.add("m-zap"); setTimeout(function () { wrap.classList.remove("m-zap"); }, 160); }
+      show("ready", "SHOCK DELIVERED " + J() + " J" + (syncOn ? " (SYNC)" : ""));
+      var msg = { type: "defib", ev: "shock", j: J(), sync: syncOn, t: Date.now() };
+      if (CH) CH.postMessage(msg); store("rcm-resus-defib", msg);
+    });
+    show("ready", "READY");
     apply(store("rcm-resus-display") || { rhythm: "normal", rate: 72, hr: "72", bp: "128/76", spo2: "97", label: "Sinus rhythm" });
     if (CH) CH.onmessage = function (e) { apply(e.data); };
     window.addEventListener("storage", function (e) { if (e.key === "rcm-resus-display") apply(store("rcm-resus-display")); });
@@ -430,6 +647,8 @@
     if (mc && cd) Megacode(mc, cd);
     if (fr) Recorder(fr);
     Sample(rd, mc, fr);
+    var rot = document.getElementById("rl-rot"); if (rot) Rotation(rot);
+    var pr = document.querySelector(".rl-print-rc"); if (pr) pr.addEventListener("click", printCards);
   }
 
   /* Sample case (#sample): a worked recognition item, then buttons that start a megacode and load a sample drill log */

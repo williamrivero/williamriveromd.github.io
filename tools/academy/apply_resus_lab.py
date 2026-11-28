@@ -187,6 +187,46 @@ body.rl-display-mode>*:not(.rl-display){display:none!important;}
 .rl-dgrid span{display:block;font-size:2.2vw;color:#9fb0c6;} .rl-dgrid b{font:800 7vw/1 Inter,system-ui,sans-serif;color:#5ee08a;}
 .rl-dstrip{width:100%;height:28vh;background:#0b1220;border-radius:12px;}
 .d-lab{font-size:2.4vw;color:#c9d6e6;} .rl-dnote{font-size:1.4vw;color:#6f8098;}
+.rl-chk{display:block;margin:10px 0 8px;font-size:14.5px;color:var(--text);} .rl-chk input{margin-right:6px;vertical-align:-2px;}
+/* bedside-monitor display (?display=1) */
+.rl-mon2{background:#000;color:#e8f0fa;justify-content:flex-start;padding:10px 12px calc(8px + env(safe-area-inset-bottom,0px));gap:8px;font-family:Inter,system-ui,sans-serif;}
+.m-top{display:flex;align-items:center;gap:12px;min-height:36px;}
+.m-lab{font:700 15px/1.2 Inter,system-ui,sans-serif;color:#9fb0c6;max-width:28%;}
+.m-alarm{flex:1;text-align:center;font:800 18px/1.25 Inter,system-ui,sans-serif;letter-spacing:.06em;padding:5px 10px;border-radius:6px;min-height:1.25em;}
+.m-alarm.red{background:#c1121f;color:#fff;} .m-alarm.yel{background:#f2c200;color:#111;}
+.m-clock{font:600 15px Inter,system-ui,sans-serif;color:#9fb0c6;font-variant-numeric:tabular-nums;}
+.m-fs{font:700 14px Inter,system-ui,sans-serif;background:#1f2937;color:#e5e7eb;border:1px solid #475569;border-radius:8px;padding:8px 12px;cursor:pointer;transition:opacity .3s;}
+.m-idle .m-fs{opacity:0;}
+.m-main{flex:1;display:grid;grid-template-columns:1fr minmax(210px,28%);gap:10px;min-height:0;}
+.m-ecg{position:relative;background:#0b1220;border-radius:8px;min-height:0;display:flex;overflow:hidden;}
+.m-ecg .rl-dstrip{display:block;flex:1;width:100%;height:100%;border-radius:8px;}
+.m-lead{position:absolute;left:10px;top:6px;color:#4ade80;font:700 13px Inter,system-ui,sans-serif;}
+.m-par{display:grid;grid-template-rows:repeat(3,1fr);gap:8px;min-height:0;}
+.m-box{background:#0b1220;border-radius:8px;padding:8px 12px;display:flex;flex-direction:column;justify-content:center;border:2px solid transparent;min-height:0;}
+.m-k{font:700 14px Inter,system-ui,sans-serif;} .m-k small{font-weight:600;opacity:.8;}
+.m-v{font:800 clamp(38px,10vh,104px)/1 Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums;}
+.m-bp .m-v{font-size:clamp(30px,8vh,84px);white-space:nowrap;}
+.m-hr .m-k,.m-hr .m-v{color:#4ade80;} .m-sp .m-k,.m-sp .m-v{color:#22d3ee;} .m-bp .m-k,.m-bp .m-v{color:#f1f5f9;}
+.m-box.yel{border-color:#facc15;} .m-box.yel .m-v,.m-box.yel .m-k{color:#facc15;}
+.m-box.red{border-color:#ff4d4d;} .m-box.red .m-v,.m-box.red .m-k{color:#ff4d4d;}
+.m-lim,.m-sub{font:600 13px Inter,system-ui,sans-serif;color:#9fb0c6;margin-top:4px;} .m-sub i{font-style:normal;color:#e2e8f0;}
+.m-flash .m-box.red{animation:mflash 1s steps(2,start) infinite;} .m-flash .m-alarm.red{animation:mflash2 1s steps(2,start) infinite;}
+@keyframes mflash{50%{background:#4a0a0a;}} @keyframes mflash2{50%{background:#6d0912;}}
+.m-defib{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#111827;border-radius:8px;padding:8px 10px;}
+.m-defib[hidden]{display:none;}
+.m-dstat{font:700 15px Inter,system-ui,sans-serif;color:#e2e8f0;flex:1 1 260px;} .m-dst{color:#fde68a;}
+.m-charged .m-dst{color:#ff6b6b;} .m-charging .m-dst{color:#fbbf24;}
+.m-defib label{font:600 14px Inter,system-ui,sans-serif;color:#cbd5e1;}
+.m-j{font:700 16px Inter,system-ui,sans-serif;background:#000;color:#fde68a;border:1px solid #475569;border-radius:6px;padding:6px;margin-left:4px;}
+.m-b{font:800 15px Inter,system-ui,sans-serif;border-radius:8px;padding:10px 14px;border:1px solid #475569;background:#1f2937;color:#e5e7eb;cursor:pointer;min-height:44px;}
+.m-charge{background:#b45309;border-color:#b45309;color:#fff;} .m-shock{background:#b91c1c;border-color:#b91c1c;color:#fff;}
+.m-charged .m-shock{box-shadow:0 0 0 3px #fecaca;} .m-b:disabled{opacity:.35;cursor:default;}
+.m-sync.on{background:#0e7490;border-color:#0e7490;color:#fff;}
+.m-count{font:700 14px Inter,system-ui,sans-serif;color:#cbd5e1;}
+.m-zap{background:#fff!important;}
+.m-note{font-size:12px;color:#6f8098;margin:0;text-align:center;}
+@media (max-width:700px){.m-main{grid-template-columns:1fr;grid-template-rows:minmax(140px,1fr) auto;}.m-par{grid-template-columns:repeat(3,1fr);grid-template-rows:none;}.m-v{font-size:32px;}.m-lab{display:none;}.m-alarm{font-size:14px;}}
+@media (prefers-reduced-motion:reduce){.m-flash .m-box.red,.m-flash .m-alarm.red{animation:none;}}
 @media (max-width:760px){.rl-panels,.rl-panels.two{grid-template-columns:1fr;}.rl-list{columns:1;}
  .rl-panels.two .rl-panel.act{display:block;} .rl-panels.two .rl-panel.act img{width:calc(100% + 36px);min-height:0;height:auto;margin:-16px -18px 12px;aspect-ratio:16/9;border-radius:9px 9px 0 0;}
  .rl-colh.r1{order:1;} .rl-panel.o2{order:2;} .rl-panel.o3{order:3;} .rl-colh.r2{order:4;margin-top:10px;} .rl-panel.o5{order:5;} .rl-panel.o6{order:6;}}
@@ -200,8 +240,36 @@ body.rl-display-mode>*:not(.rl-display){display:none!important;}
 .rl-sopts{margin:0;padding-left:20px;font-size:14.5px;line-height:1.45;} .rl-sopts li{margin:4px 0;color:var(--text-mid);} .rl-sopts li b{color:var(--text);}
 .rl-sopts li.ok b{color:var(--green,#2e6b3e);} .rl-sopts li.ok::marker{color:var(--green,#2e6b3e);font-weight:800;}
 .rl-sample-note{border:1px dashed var(--teal);border-radius:10px;padding:8px 12px;}
+.rl-why-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+.rl-why-grid>div{border:1px solid var(--border);border-top:4px solid var(--teal);border-radius:12px;padding:12px 14px;background:var(--white);font-size:15px;line-height:1.55;color:var(--text-mid);}
+.rl-why-grid b{display:block;color:var(--text);margin-bottom:4px;}
+.rl-rules{padding-left:22px;} .rl-rules li{margin:8px 0;font-size:15.5px;line-height:1.55;}
+.rl-rot-in{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:8px 0;}
+.rl-rot-in label{font-size:13.5px;color:var(--text-mid);display:block;}
+.rl-rot-in input{width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--white);color:var(--text);font:inherit;box-sizing:border-box;}
+.rl-rot-wrap{overflow-x:auto;margin:10px 0;} .rl-rot-t{border-collapse:collapse;font-size:14px;min-width:760px;width:100%;}
+.rl-rot-t th,.rl-rot-t td{border:1px solid var(--border);padding:6px 8px;text-align:left;vertical-align:top;} .rl-rot-t th{background:var(--bg);font-weight:700;}
+.rl-rot-t td.cmb{color:var(--text-muted);font-style:italic;} .rl-rot-t tr.sel td{background:var(--teal-soft,rgba(26,107,114,.08));}
+.rl-cov{font-size:14px;line-height:1.5;padding-left:20px;} .rl-cov li{margin:3px 0;}
+.rl-rcs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.rl-rc{border:1px solid var(--border);border-left:5px solid var(--teal);border-radius:12px;background:var(--white);padding:12px 16px;font-size:14.5px;line-height:1.5;}
+.rl-rc:first-child{grid-column:1/-1;border-left-color:var(--red);}
+.rl-rc header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+.rl-rc h3{margin:0;font:800 17px/1.25 Inter,system-ui,sans-serif;color:var(--text);}
+.rl-rc-n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font:800 13px/26px Inter,system-ui,sans-serif;text-align:center;}
+.rl-rc:first-child .rl-rc-n{background:var(--red);}
+.rl-rc-held{margin-left:auto;font-size:13px;color:var(--text-muted);} .rl-rc-held b{display:inline-block;min-width:56px;border-bottom:1px solid var(--text-muted);color:var(--text);}
+.rl-rc-who{margin:4px 0 6px;color:var(--text-mid);} .rl-rc-who b{color:var(--text);}
+.rl-rc h4{margin:10px 0 3px;font:800 12px/1.2 Inter,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);}
+.rl-rc ul{margin:0;padding-left:18px;} .rl-rc li{margin:3px 0;color:var(--text-mid);}
+.rl-rc ul.rl-say li{color:var(--text);font-weight:600;} .rl-rc ul.rl-never li{color:var(--red);}
+.rl-rc-mod{margin:8px 0 0;font-size:12.5px;color:var(--text-muted);}
+@media (max-width:760px){.rl-why-grid,.rl-rcs{grid-template-columns:1fr;}}
 @media (max-width:1100px){.rl-main .rl-host,.rl-main #dp-tt,.rl-main #dp-call,.rl-main #dp-evac,.rl-main .rl-sample-box{margin-right:52px;}}
 @media print{.rl-ctl,.rl-evs,.rl-rbar,#recognition,#megacodes,#sample{display:none!important;}
+ body.rl-print-rc main>*:not(#roles){display:none!important;} body.rl-print-rc #roles>p,body.rl-print-rc #roles>.section-tag,body.rl-print-rc #roles>h2{display:none!important;}
+ body.rl-print-rc .rl-rcs{display:block;} body.rl-print-rc .rl-rc{break-inside:avoid;margin:0 0 10px;border-left-width:3px;}
+ body.rl-print-rot main>*:not(#rotation){display:none!important;} body.rl-print-rot #rotation>*:not(#rl-rot):not(h3){display:none!important;}
  body.rl-print-roles main>*:not(#facilitator){display:none!important;}}
 </style>"""
 
@@ -336,6 +404,132 @@ def ready_main():
 </main>"""
 
 
+# Role rotation and role cards (Practice Lab; Dr. Rivero, Nov 28 2026)
+ROT = '''<section class="section" id="rotation">
+  <div class="section-tag">4 &middot; Role rotation</div>
+  <h2>Rotate the roles: everyone practices every role in their scope</h2>
+  <p>In a real arrest the roles go to whoever is on the shift. The roster changes, night and Sunday shifts are thin, and small teams combine roles (Module 13). The person who always records may be the only one free to compress; the nurse who always compresses becomes the circuit nurse the day her own patient collapses. A role you have only watched is a role you will hesitate in. So the Academy asks every unit to rotate the roles in its drills, drill after drill, until everyone has held every role their license and training allow.</p>
+  <div class="rl-why-grid">
+    <div><b>Every role has a failure that only practice fixes.</b> In the Module 13 case, two physicians gave conflicting orders for a minute, one dose of epinephrine was given twice because orders went to the room, and the watcher was pulled into compressions while another patient&rsquo;s blood pressure fell unnoticed for ten minutes. Each failure belongs to a role: the leader handover, the recorder, the watcher.</div>
+    <div><b>Each role teaches the others.</b> A leader who has compressed knows that compressors tire within about two minutes, before they notice. A compressor who has led knows why every pause has to stay under 10 seconds. A recorder who has given drugs knows what the leader needs called before anyone asks.</div>
+    <div><b>Rotation tests the unit, not just the people.</b> A new person in a role finds what the regular one quietly works around: pads stored out of reach, a drug box only one nurse can open, a recliner that sticks halfway, an ambulance number that is no longer posted.</div>
+    <div><b>It lets the huddle assign anyone.</b> Roles are named at the start of every shift from the real roster (Module 1). When everyone has practiced every role in their scope, the charge nurse can fill the roles from whoever came to work.</div>
+  </div>
+  <h3>How to rotate</h3>
+  <ol class="rl-rules">
+    <li><b>Rotate within scope.</b> Leading follows your unit protocol: the physician-on-duty, and the nurse with current Advanced Cardiovascular Life Support (ACLS) until the physician arrives. Medicines and the manual defibrillator go only to staff whose license and unit protocol allow them; an automated external defibrillator (AED) is for any trained staff member. Airway, circuit nurse and watcher are nursing roles (a trained technician may be circuit nurse where your protocol allows). Compressions, recording and running are for every person trained in Basic Life Support (BLS), including technicians and assistants.</li>
+    <li><b>Everyone compresses.</b> Compressors swap at every two-minute rhythm check, or sooner if tiring. In any drill longer than a few minutes, every free BLS-trained person takes a turn, whatever their named role.</li>
+    <li><b>A new role each drill.</b> Nobody holds the same role two drills running. The planner below spreads the roles so that over a series of drills everyone holds every role in their scope at least once.</li>
+    <li><b>Build in a leader handover.</b> Often enough that it is routine, let the ACLS-current nurse lead the first minutes and hand over when the physician-on-duty &ldquo;arrives&rdquo;: a 15-second summary, &ldquo;I am taking the lead,&rdquo; &ldquo;You have the lead.&rdquo;</li>
+    <li><b>The watcher rotates too, and watches real patients.</b> On a working floor nobody plays the watcher: the watcher&rsquo;s job is the patients still dialyzing, and the watcher never joins the drill.</li>
+    <li><b>Record who held which role.</b> The practice record lists the roles for every drill (see the Emergency Readiness page). The head nurse keeps it, and the Dialysis Clinical Head reviews coverage each quarter: who has not yet led, recorded, run the circuit or watched.</li>
+  </ol>
+  <p class="rl-note">Rotation is an Academy teaching choice, not a guideline requirement. Studies support repeated, spaced team practice but do not set a rotation schedule; your unit decides the pace.</p>
+  <h3>Rotation planner</h3>
+  <p>Enter initials only. The planner fills the scarce roles first (leader, medicines and defibrillator, the nursing roles), gives each person the role they have held least, never repeats a role two drills running when anyone else can take it, and marks a role &ldquo;combine&rdquo; when there are not enough people (combine as in Module 13). Choose a drill and send its roles to the recorder above.</p>
+  <div id="rl-rot" class="rl-host"><noscript><p>The rotation planner needs JavaScript.</p></noscript></div>
+</section>'''
+
+def card(n, rid, title, who, combine, blocks, mod):
+    h = f'<article class="rl-rc" id="role-{rid}" data-role="{title}"><header><span class="rl-rc-n">{n}</span><h3>{title}</h3><span class="rl-rc-held">Held by: <b data-held>&nbsp;</b></span></header>'
+    h += f'<p class="rl-rc-who"><b>Who holds it:</b> {who}' + (f' <b>Small team:</b> {combine}' if combine else '') + '</p>'
+    for head, cls, items in blocks:
+        h += f'<h4>{head}</h4><ul class="{cls}">' + "".join(f"<li>{i}</li>" for i in items) + "</ul>"
+    h += f'<p class="rl-rc-mod">Taught in {mod}.</p></article>'
+    return h
+
+CARDS = [
+ card(0, "first", "Everyone: the first person at the chair", "Whoever reaches the patient first: nurse, technician, assistant, physician or clerk.", "",
+  [("When a patient slumps", "", ["Check in 10 seconds: unresponsive, not breathing normally (gasping is not breathing), no definite pulse.",
+     "Shout for help and call the code so the whole unit hears it; the runner calls the ambulance at once.",
+     "Flatten the recliner and start compressions; do not wait for the defibrillator or the physician.",
+     "Hand over to the named roles as they arrive, and take the role the leader gives you."]),
+   ("Say it aloud", "rl-say", ["&ldquo;Code at Station 7! Call the ambulance! Bring the cart!&rdquo;"]),
+   ("Never", "rl-never", ["Treat the pressure first: in arrest, saline before compressions wastes the critical minute.",
+     "Take gasping for breathing."])], "Modules 3 and 4"),
+ card(1, "leader", "Leader", "The physician-on-duty; the ACLS-current nurse leads until the physician arrives.", "Leader plus defibrillator and drugs when only three staff are present.",
+  [("Before the shift", "", ["Run the two-minute role huddle from the real roster; confirm an ACLS-current nurse is present.",
+     "Know where the highest-risk patients sit, the ambulance number and the realistic travel time."]),
+   ("When the code is called", "", ["Name every role aloud, combining roles safely for the team size.",
+     "Stay hands-off whenever staffing allows, so you can see the whole room.",
+     "Call each rhythm check and keep it under 10 seconds; decide shock or no shock by the algorithm.",
+     "Give every order to a named person and wait for the read-back.",
+     "Decide with the circuit nurse on the blood; decide whether compressions can continue in the chair.",
+     "Think of the dialysis causes taught in Modules 8 and 9: high potassium, and the circuit (air, hemolysis, a reaction, a needle out)."]),
+   ("Say it aloud", "rl-say", ["&ldquo;Stop compressions. Rhythm check.&rdquo;",
+     "When another leader arrives, give the 15-second summary: time down, rhythms, shocks, drugs and times, circuit status, suspected cause.",
+     "The new leader: &ldquo;I am taking the lead.&rdquo; You: &ldquo;You have the lead,&rdquo; then take a named role."]),
+   ("Never", "rl-never", ["Give orders to the room.", "Let two leaders give orders at once.", "Pull the watcher into the arrest."])], "Modules 1, 3, 5, 8, 9 and 13"),
+ card(2, "compressor", "Compressors 1 and 2", "Any BLS-trained staff, including technicians and assistants.", "Compressor 2 also takes the airway, swapping every two minutes.",
+  [("Start", "", ["Flatten the recliner fully; if it sticks halfway, compress as flat as it goes while someone works the mechanism.",
+     "Slide a backboard under when a second person is free; kneel on the chair edge or use a step stool to lock your elbows.",
+     "Never move a connected patient until the circuit nurse says the lines are safe."]),
+   ("Compress", "", ["5 to 6 cm deep, 100 to 120 a minute, full recoil: do not lean.",
+     "30 compressions to 2 breaths until an advanced airway is placed.",
+     "Keep compressing while the pads go on and while the defibrillator charges.",
+     "Swap at every two-minute rhythm check, or sooner if tiring, with the next compressor ready beside the chair."]),
+   ("Say it aloud", "rl-say", ["&ldquo;Charging, continue compressions.&rdquo;", "After the shock: &ldquo;Compressions.&rdquo;", "&ldquo;Swap at the next check.&rdquo;"]),
+   ("Never", "rl-never", ["Stop for the machine.", "Touch the patient, chair, lines or machine after &ldquo;Everyone clear.&rdquo;"])], "Module 4"),
+ card(3, "airway", "Airway", "A nurse or physician.", "Combined with compressor 2.",
+  [("Ventilate", "", ["Bag-valve-mask with oxygen attached; two people when possible: one holds the mask with both hands and lifts the jaw into it, the other squeezes slowly over about one second.",
+     "Give just enough to see the chest rise; give the 2 breaths in each 30:2 pause."]),
+   ("When it does not work", "", ["Chest does not rise: two-hand seal, head tilt and jaw lift, an oral airway in an unresponsive patient.",
+     "Stomach swells: smaller, slower breaths.", "Vomit: turn the head if safe, suction, continue."]),
+   ("Never", "rl-never", ["Give large, fast breaths: they fill the stomach and cut blood return to the heart."])], "Module 4"),
+ card(4, "defib", "Defibrillator and drugs", "The ACLS-current nurse for the manual defibrillator and medicines; any trained staff member for an AED.", "Combined with the leader when only three staff are present.",
+  [("Defibrillator", "", ["Bring the cart; put the pads on while compressions continue: anterolateral or front-and-back, on dry skin, clear of the catheter exit site, dressings and the access arm.",
+     "Check the chair, blanket and floor are dry; move wet drapes.",
+     "Charge during compressions (manual), then clear and shock; compressions restart at once."]),
+   ("Medicines", "", ["Only on a named order from the leader, read back, and only within your license and the unit protocol.",
+     "Use the port the circuit nurse names (the secured venous needle or a catheter limb after the lock is aspirated); flush after each drug.",
+     "Report each drug as done, with the time, for the recorder."]),
+   ("Say it aloud", "rl-say", ["&ldquo;Pads on.&rdquo;", "&ldquo;Everyone clear: patient, chair, lines, machine. Shocking.&rdquo;",
+     "Read-back: &ldquo;Epinephrine 1 milligram IV.&rdquo; Done: &ldquo;Epinephrine 1 milligram in, 10:43.&rdquo;"]),
+   ("Never", "rl-never", ["Shock while anyone touches the lines or the machine.", "Give a drug ordered &ldquo;to the room.&rdquo;",
+     "Push a catheter lock (heparin or citrate) into the patient."])], "Modules 4, 5 and 7"),
+ card(5, "circuit", "Circuit nurse", "The patient&rsquo;s own dialysis nurse, who knows the access, the fluid removed and the machine (a trained technician where your protocol allows).", "Becomes the recorder once the circuit is safe.",
+  [("First minute", "", ["Stop fluid removal at once.", "Make the blood decision: return the blood with saline, or clamp and disconnect. Air, hemolysis, a severe reaction or an open line end forbid returning it.",
+     "Stop the blood pump when the decision requires it; the amount and speed of saline follow your unit protocol and the leader.",
+     "Announce the decision once, clearly, so the recorder writes it with the time."]),
+   ("Before every shock", "", ["When in doubt, clamp and disconnect before the first shock: it takes seconds.",
+     "Let go of the lines when the leader calls &ldquo;clear&rdquo;; never delay a shock for VF to finish disconnecting."]),
+   ("Access for drugs", "", ["Keep the venous needle secured and flushed, and tell the leader which port to use.",
+     "Catheter: aspirate the lock first (at least the limb volume printed on the clamp), flush, give, flush, clamp.",
+     "No peripheral IV in the fistula arm unless the leader decides it is the last resort."]),
+   ("Say it aloud", "rl-say", ["&ldquo;Fluid removal off.&rdquo;", "&ldquo;Blood returned.&rdquo; or &ldquo;Clamped, not returned.&rdquo;"]),
+   ("Never", "rl-never", ["Interrupt compressions or cross the compressor to reach the machine.", "Leave the circuit to fetch equipment."])], "Module 7"),
+ card(6, "recorder", "Recorder and timer", "Any staff member who can write and keep time.", "Combined with the runner.",
+  [("During the arrest", "", ["Start the clock when the code is called; write every action with its time on the code record sheet.",
+     "Call the two-minute rhythm checks and the drug intervals before they are due.",
+     "Write the blood decision and every drug as it is reported done, so no dose is given twice.",
+     "Give the leader the timeline for the 15-second summary and the ambulance handover."]),
+   ("Say it aloud", "rl-say", ["&ldquo;Two minutes: rhythm check.&rdquo;", "&ldquo;Next epinephrine due 10:47.&rdquo;"]),
+   ("After", "", ["Bring the sheet to the debrief: it is the first question, &ldquo;What happened?&rdquo;"]),
+   ("Never", "rl-never", ["Be a passive scribe: the recorder keeps the clock and calls what is due next."])], "Module 13"),
+ card(7, "watcher", "Watcher", "A nurse who stays with the other patients.", "Never combined with the arrest.",
+  [("During the arrest", "", ["Stay with every other connected patient: pressures, alarms, needles and lines.",
+     "Answer the other machines&rsquo; alarms and keep the other patients calm.",
+     "Tell the charge nurse at once if another patient needs help."]),
+   ("In a drill", "", ["On a working floor the watcher watches the real patients; nobody plays this role."]),
+   ("Never", "rl-never", ["Join the compressions, even when asked: in the Module 13 case another patient&rsquo;s pressure fell unnoticed for ten minutes."])], "Modules 1 and 13"),
+ card(8, "runner", "Runner", "A technician, assistant or clerk.", "Combined with the recorder.",
+  [("When the code is called", "", ["Call the ambulance at once, not after the first rhythm check; the numbers are posted where you will look.",
+     "Fetch what the leader asks for: oxygen, suction, extra supplies.",
+     "Call the physician-on-duty or the attending nephrologist as your unit protocol says.",
+     "Meet the ambulance at the door, guide the crew to the chair, and bring what the unit agreed to send with the patient."]),
+   ("Never", "rl-never", ["Wait for the leader to ask before calling the ambulance."])], "Modules 1 and 12"),
+]
+
+ROLES = '''<section class="section" id="roles">
+  <div class="section-tag">5 &middot; Role cards</div>
+  <h2>What each role does</h2>
+  <p>One card per role: who holds it, what to do and say, and what never to do. Read your card before every drill, then read a card you have never held. The names written into the recorder&rsquo;s roles appear on the cards when you print them, so each person can hold their card during the drill. Doses and energies follow your unit protocol and the 2025 American Heart Association (AHA) guidelines taught in the modules; give medicines only within your license.</p>
+  <div class="rl-rbar"><button type="button" class="rl-btn rl-print-rc">Print the role cards</button></div>
+  <div class="rl-rcs">''' + "\n".join(CARDS) + '''</div>
+  <p class="rl-note">The cards summarize the modules for drills. They do not replace your unit protocol, the crash-cart dose card or the instructions of the attending nephrologist.</p>
+</section>'''
+
+
 def practice_main(rec, cases):
     mods = "".join(f'<li><a data-rl-mod="{n}" href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(MODS.items()))
     mc = "".join(f'<li><a href="{c["page"]}#sim">{c["title"]}</a> <small>(Module {int(c["page"].split("-")[2])})</small></li>' for c in cases)
@@ -354,7 +548,7 @@ def practice_main(rec, cases):
       <button type="button" class="rl-btn rl-ghost" data-rl-sample="rec">Go to a practice round</button></li>
     <li><b>Run it against the clock.</b> The same event is the timed megacode &ldquo;Collapse at Station 7&rdquo; (Module 5). You lead until the physician-on-duty returns; each decision has a time budget, and the feedback and timeline wait until the end.
       <br><button type="button" class="rl-btn" data-rl-sample="mcw" data-case="rl05-station-7">Show the worked megacode</button> <button type="button" class="rl-btn rl-ghost" data-rl-sample="mc" data-case="rl05-station-7">Run it myself, timed</button></li>
-    <li><b>Drill it with the team.</b> On the unit, the facilitator writes initials into the roles, starts the clock and taps each action as it happens; the shared display shows the monitor on a second screen. Load the worked sample to see the roles filled in, a finished log of twenty actions, the summary (first compression, pads, first shock, fluid removal off, compression fraction, longest pause), the monitor set for the drill, and how the facilitator reads it in the debrief.
+    <li><b>Drill it with the team.</b> On the unit, the facilitator writes initials into the roles, starts the clock and taps each action as it happens; the shared display shows the monitor on a second screen. Load the worked sample to see the roles filled in, a finished log of twenty actions, the summary (first compression, pads, first shock, fluid removal off, compression fraction, longest pause), the monitor set for the drill, and how the facilitator reads it in the debrief. In the next drill, rotate: the planner in section 4 gives everyone a new role, and section 5 has a card for each role.
       <br><button type="button" class="rl-btn" data-rl-sample="log">Load the worked drill</button></li>
   </ol>
   <p class="rl-note">Names, initials and times in the sample are fictional. Your unit protocol and the attending nephrologist decide every real event.</p></div>
@@ -378,6 +572,8 @@ def practice_main(rec, cases):
   <p>For a drill with your real team and equipment: assign roles from the roster, start the clock, tap each action as it happens, and copy the log into the <a href="../guides/calc-resuscitation-lab-toolkit.html#tool-2">timeline analyzer</a> for the debrief. The shared display shows a monitor on a second screen while you control it privately. Scripts, role cards, the observation checklist and the debrief prompts are in the <a href="{HUB}-trainer.html">facilitator kit</a>. Protect the real patients: drill at an empty station with a named watcher.</p>
   <div id="rl-recorder" class="rl-host"></div>
 </section>
+{ROT}
+{ROLES}
 <section class="section" id="links">
   <div class="section-tag">Where each topic is taught</div>
   <h2>Modules</h2>
