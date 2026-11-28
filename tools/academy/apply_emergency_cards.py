@@ -644,7 +644,8 @@ def patch_landing(dry):
     if not m:
         print("landing page: no nav strip found; callout not placed")
         return 0
-    text = text[:m.end()] + CALLOUT + "\n" + text[m.end():]
+    # Nov 28 2026 (Dr. Rivero): the callout moved into the Emergency Readiness drawer (apply_resus_lab.py), so it is
+    # only removed here, never re-inserted.
     if text != old:
         if not dry:
             p.write_text(text, encoding="utf-8")
