@@ -215,8 +215,26 @@
     function syncGuided() { var c = cases[+sel.value]; $(".rl-mc-guided", pick).setAttribute("href", c.page + "#sim"); }
     sel.addEventListener("change", syncGuided); syncGuided();
     $(".rl-mc-go", pick).addEventListener("click", function () { start(cases[+sel.value]); });
+    var worked = false;
+    host._worked = function (id) {   // sample case: the whole megacode played at its best choice, ending on the full debrief
+      if (!host._start(id)) return;
+      worked = true; clearInterval(timer);
+      var id2 = C.start, t = 0, guard = 0;
+      while (C.nodes[id2] && !C.nodes[id2].end && guard++ < 40) {
+        var n = C.nodes[id2], best = n.choices.filter(function (c) { return c.grade === "best"; })[0], took = 9 + (guard * 7) % 11;
+        t += took; log.push({ id: id2, prompt: n.prompt, short: n.short, choice: best, best: best, t: t, took: took });
+        if (n.vitals) setMon(n.vitals); if (best.vitals) setMon(best.vitals);
+        id2 = best.next;
+      }
+      t0 = Date.now() - (t + 8) * 1000;
+      if (C.nodes[id2]) { if (C.nodes[id2].vitals) setMon(C.nodes[id2].vitals); finish(C.nodes[id2]); }
+    };
+    host._start = function (id) {   // sample case: start one megacode by id
+      for (var i = 0; i < cases.length; i++) if (cases[i].id === id) { sel.value = i; syncGuided(); start(cases[i]); return true; }
+      return false;
+    };
     function start(c) {
-      C = c; log = []; mon = {}; clearInterval(timer); if (strip) strip.stop();
+      C = c; log = []; mon = {}; worked = false; clearInterval(timer); if (strip) strip.stop();
       stage.innerHTML = "";
       var box = el("div", "rl-card rl-mc");
       box.innerHTML = '<div class="rl-top"><span class="rl-type">Timed megacode</span><span class="rl-clock">0:00</span></div><div class="rl-intro">' + c.intro + '</div>' +
@@ -274,13 +292,14 @@
       var box = $(".rl-mc", stage), max = log.length * 2;
       var score = log.reduce(function (a, l) { return a + (l.choice ? GR[l.choice.grade] : 0); }, 0);
       var harmful = log.filter(function (l) { return l.choice && l.choice.grade === "harmful"; });
-      var res = store("rcm-resus-mc") || {}; var prev = res[C.id] || 0; if (score > prev) { res[C.id] = score; store("rcm-resus-mc", res); }
-      var h = '<div class="rl-end"><h3>' + (n.title || "End") + "</h3>" + n.text +
-        '<p class="rl-score">Decisions: <b>' + score + " of " + max + "</b> points in " + mmss((Date.now() - t0) / 1000) + ". Best on this device: " + Math.max(prev, score) + " of " + max + ".</p>" +
+      var res = store("rcm-resus-mc") || {}; var prev = res[C.id] || 0; if (!worked && score > prev) { res[C.id] = score; store("rcm-resus-mc", res); }
+      var h = '<div class="rl-end">' + (worked ? '<p class="rl-note rl-sample-note"><b>Worked sample.</b> Every decision below was taken at its best choice, with the time it took and the reasoning, so you can see a complete run and its debrief. It is not saved as your score. Press <b>Run it again</b> to play it yourself against the clock.</p>' : "") +
+        "<h3>" + (n.title || "End") + "</h3>" + n.text +
+        '<p class="rl-score">Decisions: <b>' + score + " of " + max + "</b> points in " + mmss((Date.now() - t0) / 1000) + (worked ? "" : ". Best on this device: " + Math.max(prev, score) + " of " + max) + ".</p>" +
         (harmful.length ? '<p class="rl-crit">Safety-critical choice' + (harmful.length > 1 ? "s" : "") + ": repeat this megacode until each is corrected. A high score never makes up for a safety-critical error.</p>" : "") +
         '<h4>Timeline</h4><ol class="rl-review">' + log.map(function (l) {
           var c = l.choice, g = c ? c.grade : "timeout";
-          return '<li class="' + (g === "best" ? "ok" : "no") + '"><b>' + mmss(l.t) + "</b> " + l.prompt + "<br><small>" + (c ? "You chose: " + c.text + " (" + g + ", " + Math.round(l.took) + " s)" : "Time ran out") + "</small>" +
+          return '<li class="' + (g === "best" ? "ok" : "no") + '"><b>' + mmss(l.t) + "</b> " + l.prompt + "<br><small>" + (c ? (worked ? "Best choice: " : "You chose: ") + c.text + " (" + g + ", " + Math.round(l.took) + " s)" : "Time ran out") + "</small>" +
             '<div class="rl-why">' + (c ? c.feedback : "") + (g !== "best" ? "<p><b>Best:</b> " + l.best.text + "</p>" + l.best.feedback : "") + "</div></li>";
         }).join("") + "</ol>" + (C.debrief || "") +
         '<p class="rl-note">Simulation success is an educational result, not a prediction of patient survival. Copy the timeline into the <a href="../guides/calc-resuscitation-lab-toolkit.html#tool-2">megacode timeline analyzer</a> during a facilitated drill.</p>' +
@@ -367,6 +386,28 @@
       function done() { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy log"; }, 1500); }
       if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, function () { window.prompt("Copy the log:", txt); }); else window.prompt("Copy the log:", txt);
     });
+    host._sample = function () {   // sample case: a finished drill log (fictional), so the summary shows what a debrief starts from
+      var R = ["AM", "JD", "KL", "BS", "PR", "CN", "RT", "LV", "EG"];
+      Array.prototype.forEach.call(roles.querySelectorAll("input[data-role]"), function (inp, i) { inp.value = R[i] || ""; });
+      var L = [[0, "recognition"], [15, "compressions start"], [25, "circuit stopped"], [40, "pads on"], [43, "compressions stop"], [45, "rhythm check"],
+        [50, "shock"], [53, "compressions start"], [150, "leader handover"], [173, "compressions stop"], [175, "rhythm check"], [179, "shock"],
+        [181, "compressions start"], [200, "epinephrine"], [240, "airway"], [301, "compressions stop"], [303, "rhythm check"], [310, "ROSC"], [570, "handover"], [585, "end"]];
+      clearInterval(tick); start = Date.now() - 585000;
+      log = L.map(function (x) { return { t: x[0], ev: x[1] }; }); render();
+      $(".rl-clock", rec).textContent = "9:45"; $(".rl-start", rec).textContent = "Sample loaded";
+      var note = $(".rl-sample-note", rec);
+      if (!note) { note = el("p", "rl-note rl-sample-note"); $(".rl-sum", rec).parentNode.insertBefore(note, $(".rl-sum", rec)); }
+      note.innerHTML = "<b>Worked sample drill (fictional): collapse at Station 7.</b> The recorder tapped twenty actions. How the facilitator reads the summary below in the debrief:" +
+        "<ul><li><b>What went well:</b> compressions at 0:15 while the circuit nurse stopped fluid removal at 0:25; pads at 0:40 and the first shock at 0:50; compressions restarted within 3 seconds of each shock; epinephrine at 3:20, after the second shock.</li>" +
+        "<li><b>Compression fraction 91%:</b> above the guideline&rsquo;s 60% floor, which is a floor, not a goal.</li>" +
+        "<li><b>To improve:</b> the longest pause, 10 seconds around the first shock, sits at the limit; the course asks for pauses under 10 seconds. Charge the defibrillator during compressions so the pause holds only the rhythm check and the shock.</li>" +
+        "<li><b>Then:</b> the physician-on-duty took over leadership at 2:30, pulse returned (ROSC) at 5:10, and the patient was handed over at 9:30.</li></ul>" +
+        "Copy the log into the timeline analyzer for the written debrief, then press <b>Reset</b> to record your own drill.";
+      $(".rl-d-r", disp).value = "vf"; $(".rl-d-rate", disp).value = 300; $(".rl-d-hr", disp).value = "—"; $(".rl-d-bp", disp).value = "—"; $(".rl-d-sp", disp).value = "—";
+      $(".rl-d-lab", disp).value = "Ventricular fibrillation"; send();
+      rec.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    $(".rl-reset", rec).addEventListener("click", function () { var n = $(".rl-sample-note", rec); if (n) n.remove(); });
     $(".rl-cards", roles).addEventListener("click", function () { document.body.classList.add("rl-print-roles"); window.print(); setTimeout(function () { document.body.classList.remove("rl-print-roles"); }, 500); });
   }
 
@@ -388,6 +429,43 @@
     if (rec && rd) Recognition(rec, rd);
     if (mc && cd) Megacode(mc, cd);
     if (fr) Recorder(fr);
+    Sample(rd, mc, fr);
+  }
+
+  /* Sample case (#sample): a worked recognition item, then buttons that start a megacode and load a sample drill log */
+  function Sample(rd, mc, fr) {
+    var box = document.getElementById("rl-sample-item");
+    if (box && rd) {
+      var TYPE = { pick: "Choose the algorithm and first action", strip: "Rhythm strip with findings", missing: "Find the missing assessment", order: "Arrange the steps", unsafe: "Spot the unsafe action", evolve: "The patient changes" };
+      var byId = {}; rd.items.forEach(function (x) { byId[x.id] = x; });
+      var h = "";
+      ["r01", "r11", "r28", "r30", "r35", "r41"].forEach(function (id, k) {
+        var it = byId[id]; if (!it) return;
+        h += '<div class="rl-sw"><div class="rl-type">Worked item ' + (k + 1) + " &middot; " + TYPE[it.type] + "</div>" + '<p class="rl-stem">' + it.stem + "</p>";
+        if (it.strip) h += '<canvas class="rl-strip rl-sw-strip" data-r="' + it.strip.rhythm + '" data-rate="' + it.strip.rate + '" role="img" aria-label="Rhythm strip"></canvas><p class="rl-find"><b>At the patient:</b> ' + it.findings + "</p>";
+        if (it.type === "order") {
+          h += '<p class="rl-find"><b>Answer:</b> ' + it.answer.map(function (i) { return it.options[i]; }).join(" &rarr; ") + '.</p><p class="rl-why">' + it.why + "</p>";
+        } else {
+          h += '<ol class="rl-sopts">' + it.options.map(function (o, i) {
+            var right = i === it.answer;
+            return "<li" + (right ? ' class="ok"' : "") + "><b>" + o + "</b>" + (right ? (it.type === "unsafe" ? " (the unsafe one)" : " (best)") : "") + " &mdash; " + (it.why[i] || "") + "</li>";
+          }).join("") + "</ol>";
+        }
+        if (rd.tags[it.tag]) h += '<p class="rl-tag">Common error it trains against: ' + rd.tags[it.tag] + ". Taught in Module " + it.mod + ".</p>";
+        h += "</div>";
+      });
+      box.innerHTML = h;
+      Array.prototype.forEach.call(box.querySelectorAll(".rl-sw-strip"), function (cv) { Strip(cv).set(cv.getAttribute("data-r"), +cv.getAttribute("data-rate"), false); });
+    }
+    Array.prototype.forEach.call(document.querySelectorAll("[data-rl-sample]"), function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-rl-sample");
+        if (k === "mc" && mc && mc._start) { mc._start(b.getAttribute("data-case") || "rl05-station-7"); mc.scrollIntoView({ behavior: "smooth", block: "start" }); }
+        if (k === "mcw" && mc && mc._worked) { mc._worked(b.getAttribute("data-case") || "rl05-station-7"); mc.scrollIntoView({ behavior: "smooth", block: "start" }); }
+        if (k === "log" && fr && fr._sample) fr._sample();
+        if (k === "rec") { var r = document.getElementById("recognition"); if (r) r.scrollIntoView({ behavior: "smooth", block: "start" }); }
+      });
+    });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();

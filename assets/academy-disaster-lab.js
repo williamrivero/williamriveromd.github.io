@@ -25,7 +25,11 @@
     ".dpl-btn.on{background:#e7f3f1;border-color:#1f7a4d;color:#14532d}",
     "html[data-theme=\"dark\"] .dpl-btn.on{background:#173a2b;color:#d1fae5;border-color:#34d399}",
     "html[data-theme=\"dark\"] .dpl-btn.warn{color:#fca5a5;border-color:#fca5a5}",
-    ".dpl select,.dpl input[type=number],.dpl input[type=text]{font:500 16px/1.2 Inter,system-ui,sans-serif;border:1px solid var(--border);border-radius:10px;padding:8px 10px;background:var(--white);color:var(--text)}",
+    ".dpl select,.dpl input[type=number],.dpl input[type=text]{font:500 16px/1.2 Inter,system-ui,sans-serif;border:1px solid var(--border);border-radius:10px;padding:8px 10px;background:var(--white);color:var(--text);max-width:100%;box-sizing:border-box}",
+    ".dpl select{min-width:0;width:100%;max-width:440px}.dpl-acts input[type=text]{flex:1 1 200px;min-width:0}",
+    ".dpl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px}.dpl-scroll>table{min-width:600px;margin-top:0}",
+    ".dpl-sample{border:1px dashed var(--teal);border-radius:10px;padding:8px 12px;margin:10px 0;font-size:14px;line-height:1.5;color:var(--text-mid);grid-column:1/-1}.dpl-sample ul{margin:6px 0;padding-left:20px}.dpl-sample li{margin:4px 0}.dpl-sample b{color:var(--text)}",
+    ".dpl-sheet td.fill{font-weight:700;color:var(--teal)}",
     ".dpl-clock{font:800 28px/1 Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums;min-width:96px}",
     ".dpl-setting{font-size:15px;color:var(--text-mid);margin:6px 0 10px}",
     ".dpl-inj{border:1px solid var(--border);border-left:5px solid #c2410c;border-radius:12px;padding:12px 14px;margin:10px 0}",
@@ -45,6 +49,7 @@
     ".dpl-sheet table{width:100%;border-collapse:collapse;font-size:14px}.dpl-sheet th,.dpl-sheet td{border:1px solid #475569;padding:6px 8px;text-align:center}.dpl-sheet td:first-child{font-weight:700}",
     ".dpl-sheet .box{display:inline-block;width:16px;height:16px;border:1.5px solid #475569;border-radius:3px}",
     ".dpl-sheet .line{display:inline-block;min-width:200px;border-bottom:1px solid #475569;height:18px}",
+    "@media (max-width:480px){.dpl-sheet .line{min-width:140px!important}}",
     ".dpl-sheet h3{margin:0 0 6px}.dpl-sheet p{margin:4px 0;font-size:14px}",
     "@media print{body.dpl-printing *{visibility:hidden}body.dpl-printing .dpl-sheet,body.dpl-printing .dpl-sheet *{visibility:visible}body.dpl-printing .dpl-sheet{position:absolute;left:0;top:0;width:100%;border:0;padding:0}body.dpl-printing .dpl-sheet .dpl-row{display:none}}"
   ].join("\n");
@@ -83,18 +88,21 @@
       paintBig();
     }
     function next() { if (!S) { start(); return; } release(); }
-    function release() {
+    function release(atSet) {
       var n = S.rel.length; if (n >= S.sc.injects.length) return;
-      var inj = S.sc.injects[n], at = now(); S.rel.push(at);
+      var inj = S.sc.injects[n], at = atSet != null ? atSet : now(); S.rel.push(at);
       var card = el("div", "dpl-inj"); card.appendChild(el("h4", null, "Inject " + (n + 1) + " · " + mmss(at)));
       card.appendChild(el("p", null, inj.text));
       var acts = el("div", "dpl-acts");
       inj.actions.forEach(function (a) {
-        var b = btn(a, "", function () {
+        var mark = function (e, tSet) {
           if (b.classList.contains("on")) return;
-          b.classList.add("on"); b.textContent = "✓ " + a + " · " + mmss(now() - at);
-          S.log.push({ i: n, a: a, t: now() });
-        });
+          var t = tSet != null ? tSet : now();
+          b.classList.add("on"); b.textContent = "✓ " + a + " · " + mmss(t - at);
+          S.log.push({ i: n, a: a, t: t });
+        };
+        var b = btn(a, "", mark);
+        b._mark = function (t) { mark(null, t); };
         acts.appendChild(b);
       });
       var other = el("input"); other.type = "text"; other.placeholder = "Other action said (no names)"; other.setAttribute("aria-label", "Other action");
@@ -104,6 +112,34 @@
       if (!REDUCED) card.scrollIntoView({ block: "nearest" });
       paintBig();
     }
+    host._sample = function () {   // sample case: a finished typhoon tabletop (fictional)
+      clearInterval(timer); timer = null;
+      for (var i = 0; i < D.scenarios.length; i++) if (/^Typhoon/.test(D.scenarios[i].title)) { sel.value = i; break; }
+      var sc0 = sc(), MISS = { 2: "Last safe session time set", 3: "Social worker or barangay health worker asked to help" };
+      S = { sc: sc0, acc: 0, t0: Date.now(), paused: true, rel: [], log: [], sample: true };
+      sel.disabled = true; out.innerHTML = ""; feed.innerHTML = ""; showSetting();
+      sc0.injects.forEach(function (inj, n) {
+        var at = inj.t * 60 + 20; release(at);
+        var card = feed.firstChild, k = 0;
+        Array.prototype.forEach.call(card.querySelectorAll(".dpl-btn"), function (b) {
+          if (!b._mark || inj.actions[k] === MISS[n]) { k++; return; }
+          b._mark(at + 50 + 70 * k); k++;
+        });
+        if (n === 1) S.log.push({ i: 1, a: "Other: Pharmacy asked to bring Thursday supplies forward", t: at + 240 });
+      });
+      S.acc = sc0.injects[sc0.injects.length - 1].t * 60 + 260; clock.textContent = mmss(S.acc); bStart.textContent = "Resume";
+      finish();
+      var note = el("div", "dpl-sample");
+      note.innerHTML = "<b>Worked sample exercise (fictional): Typhoon, Signal No. 3 by Thursday.</b> Six injects were released over about 40 minutes (newest first below); the recorder tapped each action as the team said it, with the time after the inject. The timeline under the injects is what the hot wash works from. How the facilitator turns it into the after-action report (Module 12):" +
+        "<ul><li><b>What worked:</b> the plan was activated and the staff call-down started within 4 minutes of the forecast; early dialysis was put to the nephrologist and receiving units were contacted at the second inject; the unit stayed closed until all five restart gates were signed.</li>" +
+        "<li><b>Gap 1 (inject 3):</b> nobody set the last safe session time when the roads began to flood. Action: the charge nurse sets and announces it at the first flooding report. Owner and date go in the report.</li>" +
+        "<li><b>Gap 2 (inject 4):</b> for the patient who did not answer, nobody asked the social worker or barangay health worker to help. Action: add that step to the unreachable-patient list.</li>" +
+        "<li><b>Keep:</b> the extra action the team said, asking the pharmacy to bring Thursday supplies forward, goes into the plan.</li>" +
+        "<li><b>Next rehearsal:</b> run the same scenario again after the two fixes and compare the times.</li></ul>" +
+        "Press <b>New exercise</b> to run your own.";
+      feed.insertBefore(note, feed.firstChild);
+      host.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
     var bigEl = null;
     function big() {
       if (bigEl) { bigEl.remove(); bigEl = null; return; }
@@ -138,7 +174,8 @@
           "  Recorded: " + td2.textContent, "  Not recorded: " + td3.textContent, "  Teaching point: " + inj.point);
       });
       tb.appendChild(body); out.innerHTML = "";
-      out.appendChild(el("h3", null, "Timeline for the hot wash")); out.appendChild(tb);
+      out.appendChild(el("h3", null, "Timeline for the hot wash")); var sw = el("div", "dpl-scroll"); sw.appendChild(tb); out.appendChild(sw);
+
       out.appendChild(el("p", "dpl-note", "Use it to write the one-page after-action report (Module 12): objectives met or not, what worked, what failed, actions with owner and date, next rehearsal. \u201cNot recorded\u201d means the recorder did not tap it, not that the team failed: discuss it."));
       var row = el("div", "dpl-row");
       row.appendChild(btn("Copy timeline", "pri", function () {
@@ -184,7 +221,27 @@
       stats.appendChild(stat(String(cnt["No answer"] || 0), "No answer"));
       stats.appendChild(stat(String(cnt["Not able to come"] || 0), "Not able to come"));
       msg.textContent = "The 24-hour figure is your unit's own measure; no external standard is claimed. Fix every wrong number before typhoon season.";
+      if (s.sample) {
+        var w = el("div", "dpl-sample");
+        w.innerHTML = "<b>Worked sample call-down (fictional counts).</b> 58 people on the list; the drill ran for 25 hours. How to read it:" +
+          "<ul><li><b>Reached:</b> 31 within 2 hours (53%), 44 within 6 hours (76%), 52 within 24 hours (90%). Compare these with your unit&rsquo;s own target and with your last drill.</li>" +
+          "<li><b>Not reached, 6 people:</b> 3 wrong numbers (update them before typhoon season), 2 no answer (try the second number and the family contact), 1 not able to come (tell the charge nurse for the roster).</li>" +
+          "<li><b>Next:</b> fix the numbers, record the result in the after-action report, and repeat the drill.</li></ul>" +
+          "Press <b>Clear</b>, then <b>Start the drill</b> for your own.";
+        stats.appendChild(w);
+      }
     }
+    host._sample = function () {   // sample case: a finished call-down drill (fictional counts)
+      var s = store(KEY); if (s && !s.sample && !window.confirm("Replace the current drill with the sample? Its counts will be cleared.")) return;
+      var ev = [], M = 60000, i;
+      for (i = 0; i < 31; i++) ev.push([Math.round((3 + i * 3.6) * M), "Reached"]);
+      for (i = 0; i < 13; i++) ev.push([Math.round((125 + i * 17) * M), "Reached"]);
+      for (i = 0; i < 8; i++) ev.push([Math.round((380 + i * 120) * M), "Reached"]);
+      [[20, "Wrong number"], [41, "Wrong number"], [96, "Wrong number"], [150, "No answer"], [600, "No answer"], [210, "Not able to come"]].forEach(function (x) { ev.push([x[0] * M, x[1]]); });
+      ev.sort(function (a, b) { return a[0] - b[0]; });
+      store(KEY, { start: Date.now() - 25 * 3600000, total: 58, ev: ev, sample: true }); paint();
+      host.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
     paint(); setInterval(paint, 60000);
   })();
 
@@ -203,13 +260,37 @@
       h.push("<p>Date <span class=\"line\" style=\"min-width:120px\"></span> &nbsp; Shift <span class=\"line\" style=\"min-width:80px\"></span></p>");
       h.push("<p>Incident lead <span class=\"line\"></span> &nbsp; Census nurse <span class=\"line\"></span></p>");
       h.push("<p>Assembly point <span class=\"line\" style=\"min-width:320px\"></span></p>");
-      h.push("<table><thead><tr><th>Station</th><th>Walks alone</th><th>Walks with help</th><th>Wheelchair</th><th>Stretcher</th><th>Assigned helper</th><th>Off by staff (time)</th><th>Out ✓</th></tr></thead><tbody>");
+      h.push("<div class=\"dpl-scroll\"><table><thead><tr><th>Station</th><th>Walks alone</th><th>Walks with help</th><th>Wheelchair</th><th>Stretcher</th><th>Assigned helper</th><th>Off by staff (time)</th><th>Out ✓</th></tr></thead><tbody>");
       for (var i = 1; i <= k; i++) h.push("<tr><td>" + i + "</td><td><span class=\"box\"></span></td><td><span class=\"box\"></span></td><td><span class=\"box\"></span></td><td><span class=\"box\"></span></td><td></td><td></td><td><span class=\"box\"></span></td></tr>");
       h.push("<tr><td>Staff</td><td colspan=\"6\" style=\"text-align:left\">Count: ____ of ____</td><td><span class=\"box\"></span></td></tr>");
-      h.push("<tr><td>Visitors</td><td colspan=\"6\" style=\"text-align:left\">Count: ____ of ____</td><td><span class=\"box\"></span></td></tr></tbody></table>");
+      h.push("<tr><td>Visitors</td><td colspan=\"6\" style=\"text-align:left\">Count: ____ of ____</td><td><span class=\"box\"></span></td></tr></tbody></table></div>");
       h.push("<p>Mobility categories and helpers are set at the start of every shift. Staff take patients off with the blood rule; patients never disconnect themselves. A missing name is reported at once to the incident lead and the firefighters; nobody re-enters. This sheet is a unit record under the Data Privacy Act; it is printed blank and nothing is stored online.</p>");
       area.innerHTML = h.join("");
     }
     make();
+    host._sample = function () {   // sample case: a 12-station sheet filled in a fire drill (fictional initials and times)
+      n.value = 12; make();
+      var MOB = [1, 2, 1, 3, 2, 1, 4, 1, 2, 3, 1, 2], HELP = ["—", "JD", "—", "KL", "BS", "—", "PR + CN", "—", "RT", "LV", "—", "EG"];
+      Array.prototype.forEach.call(area.querySelectorAll("tbody tr"), function (tr, i) {
+        var td = tr.children;
+        if (i < 12) {
+          td[MOB[i]].innerHTML = "✓"; td[MOB[i]].className = "fill";
+          td[5].textContent = HELP[i]; td[5].className = "fill";
+          td[6].textContent = "10:" + ("0" + (31 + Math.floor(i / 2))).slice(-2); td[6].className = "fill";
+          td[7].innerHTML = "✓"; td[7].className = "fill";
+        } else { td[1].innerHTML = i === 12 ? "Count: <b>7</b> of <b>7</b>" : "Count: <b>3</b> of <b>3</b>"; td[2].innerHTML = "✓"; td[2].className = "fill"; }
+      });
+      var note = el("div", "dpl-sample");
+      note.innerHTML = "<b>Worked sample sheet (fictional), filled during a fire drill.</b> How it was used:" +
+        "<ul><li><b>Start of shift:</b> the charge nurse marked each station&rsquo;s mobility (five walk alone, four walk with help, two use wheelchairs, one needs a stretcher) and named a helper for everyone who cannot walk alone; the stretcher patient at Station 7 needs two.</li>" +
+        "<li><b>During the drill:</b> staff took each patient off with the blood rule and wrote the time: everyone was off between 10:31 and 10:36.</li>" +
+        "<li><b>At the assembly point:</b> the census nurse checked all twelve stations out, then counted staff (7 of 7) and visitors (3 of 3). A missing name goes at once to the incident lead and the firefighters; nobody re-enters.</li></ul>" +
+        "Press <b>Make the sheet</b> for a blank one to print.";
+      area.insertBefore(note, area.firstChild);
+      host.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
   })();
+  Array.prototype.forEach.call(document.querySelectorAll("[data-dp-sample]"), function (b) {
+    b.addEventListener("click", function () { var h = document.getElementById(b.getAttribute("data-dp-sample")); if (h && h._sample) h._sample(); });
+  });
 })();

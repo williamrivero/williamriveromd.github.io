@@ -190,7 +190,18 @@ body.rl-display-mode>*:not(.rl-display){display:none!important;}
 @media (max-width:760px){.rl-panels,.rl-panels.two{grid-template-columns:1fr;}.rl-list{columns:1;}
  .rl-panels.two .rl-panel.act{display:block;} .rl-panels.two .rl-panel.act img{width:calc(100% + 36px);min-height:0;height:auto;margin:-16px -18px 12px;aspect-ratio:16/9;border-radius:9px 9px 0 0;}
  .rl-colh.r1{order:1;} .rl-panel.o2{order:2;} .rl-panel.o3{order:3;} .rl-colh.r2{order:4;margin-top:10px;} .rl-panel.o5{order:5;} .rl-panel.o6{order:6;}}
-@media print{.rl-ctl,.rl-evs,.rl-rbar,#recognition,#megacodes{display:none!important;}
+.rl-sample-box{border:1px solid var(--border);border-left:5px solid var(--teal);border-radius:14px;background:var(--white);padding:14px 18px;margin:12px 0;}
+.rl-steps{margin:0;padding-left:22px;} .rl-steps>li{margin:0 0 16px;font-size:15.5px;line-height:1.55;} .rl-steps>li:last-child{margin-bottom:4px;}
+.rl-steps>li>b:first-child{color:var(--text);} .rl-steps .rl-btn{margin-top:8px;}
+.rl-sitem{border:1px solid var(--border);border-radius:12px;background:var(--bg);padding:10px 14px;margin:10px 0 4px;}
+.rl-sitem .rl-stem{font-size:15.5px;margin:4px 0 6px;}
+.rl-sw{padding:10px 0;border-top:1px solid var(--border);} .rl-sw:first-child{border-top:0;padding-top:2px;} .rl-sw .rl-strip{height:64px;margin:4px 0;}
+.rl-sample-note ul{margin:6px 0;padding-left:20px;} .rl-sample-note li{margin:4px 0;}
+.rl-sopts{margin:0;padding-left:20px;font-size:14.5px;line-height:1.45;} .rl-sopts li{margin:4px 0;color:var(--text-mid);} .rl-sopts li b{color:var(--text);}
+.rl-sopts li.ok b{color:var(--green,#2e6b3e);} .rl-sopts li.ok::marker{color:var(--green,#2e6b3e);font-weight:800;}
+.rl-sample-note{border:1px dashed var(--teal);border-radius:10px;padding:8px 12px;}
+@media (max-width:1100px){.rl-main .rl-host,.rl-main #dp-tt,.rl-main #dp-call,.rl-main #dp-evac,.rl-main .rl-sample-box{margin-right:52px;}}
+@media print{.rl-ctl,.rl-evs,.rl-rbar,#recognition,#megacodes,#sample{display:none!important;}
  body.rl-print-roles main>*:not(#facilitator){display:none!important;}}
 </style>"""
 
@@ -333,6 +344,21 @@ def practice_main(rec, cases):
     return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><span class="nc-cur">Practice Lab</span>', 'Practice <em>Lab</em>', 'Recognize the algorithm, run the megacode, record the drill')}
 {CSS}
 <main class="container rl-main">
+<section class="section" id="sample">
+  <div class="section-tag">Start here &middot; a sample case</div>
+  <h2>How to use the Practice Lab: collapse at Station 7</h2>
+  <p>One fictional event, run through the three tools in the order a team uses them. Tuesday, 9:40 a.m.: Mr. Arnel Gutierrez, 61, two hours into dialysis, collapses in the chair. First you learn to name the algorithm, then you run the event against the clock, then the unit drills it together and debriefs from the log.</p>
+  <div class="rl-sample-box"><ol class="rl-steps">
+    <li><b>Recognize the algorithm.</b> Recognition rounds mix six kinds of item. Below is one of each, fully answered, with the reason for every choice: what Practice mode shows you after each answer.
+      <div id="rl-sample-item" class="rl-sitem"></div>
+      <button type="button" class="rl-btn rl-ghost" data-rl-sample="rec">Go to a practice round</button></li>
+    <li><b>Run it against the clock.</b> The same event is the timed megacode &ldquo;Collapse at Station 7&rdquo; (Module 5). You lead until the physician-on-duty returns; each decision has a time budget, and the feedback and timeline wait until the end.
+      <br><button type="button" class="rl-btn" data-rl-sample="mcw" data-case="rl05-station-7">Show the worked megacode</button> <button type="button" class="rl-btn rl-ghost" data-rl-sample="mc" data-case="rl05-station-7">Run it myself, timed</button></li>
+    <li><b>Drill it with the team.</b> On the unit, the facilitator writes initials into the roles, starts the clock and taps each action as it happens; the shared display shows the monitor on a second screen. Load the worked sample to see the roles filled in, a finished log of twenty actions, the summary (first compression, pads, first shock, fluid removal off, compression fraction, longest pause), the monitor set for the drill, and how the facilitator reads it in the debrief.
+      <br><button type="button" class="rl-btn" data-rl-sample="log">Load the worked drill</button></li>
+  </ol>
+  <p class="rl-note">Names, initials and times in the sample are fictional. Your unit protocol and the attending nephrologist decide every real event.</p></div>
+</section>
 <section class="section" id="recognition">
   <div class="section-tag">1 &middot; Algorithm recognition</div>
   <h2>Which algorithm are we in?</h2>
@@ -369,6 +395,20 @@ def disaster_practice_main(tt, cases):
     return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><a href="{DHUB}.html">Disaster Preparedness and Response</a><span class="nc-sep">›</span><span class="nc-cur">Disaster drills</span>', 'Disaster <em>drills</em>', 'Run the tabletop, test the call list, print the evacuation sheet')}
 {CSS}
 <main class="container rl-main">
+<section class="section" id="sample">
+  <div class="section-tag">Start here &middot; a sample case</div>
+  <h2>How to use the drills: a sample typhoon week</h2>
+  <p>A fictional 24-station unit runs all three tools before and during typhoon season. Each sample below is fully worked: load it to see the finished result and how the facilitator reads it, then clear it and run your own.</p>
+  <div class="rl-sample-box"><ol class="rl-steps">
+    <li><b>Run the tabletop.</b> The facilitator picks &ldquo;Typhoon: Signal No. 3 by Thursday,&rdquo; starts the clock and reads each inject aloud; the team decides out loud, and the recorder taps each action as it is said. The sample shows six injects over about 40 minutes, the actions the team said with how long each took, two actions nobody said, and the timeline for the hot wash.
+      <br><button type="button" class="rl-btn" data-dp-sample="dp-tt">Load the worked exercise</button></li>
+    <li><b>Test the call list.</b> Enter how many people are on the list, start the drill, and tap one outcome per call. The sample: 58 people, 53% reached within 2 hours, 76% within 6 hours and 90% within 24 hours, with 3 wrong numbers to fix before the season.
+      <br><button type="button" class="rl-btn" data-dp-sample="dp-call">Load the worked call-down</button></li>
+    <li><b>Print the evacuation sheet.</b> Make the sheet from your chair count and print it blank for every shift; the charge nurse fills in mobility and helpers at the start of the shift. The sample shows a 12-station sheet filled during a fire drill.
+      <br><button type="button" class="rl-btn" data-dp-sample="dp-evac">Show the worked sheet</button></li>
+  </ol>
+  <p class="rl-note">Every number, initial and time in the samples is fictional. The call-down sample is kept on this device like a real drill; press Clear to remove it.</p></div>
+</section>
 <section class="section" id="tabletop">
   <div class="section-tag">1 &middot; Tabletop simulator</div>
   <h2>Disaster tabletop simulator</h2>
