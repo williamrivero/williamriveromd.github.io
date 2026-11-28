@@ -29,6 +29,10 @@ CARDS = [
      "Each tap is stamped with those initials and that date. Once every critical step passes, the preceptor signs the "
      "checklist off. You can then print the record or share it as text. The module and its trainer page show the same record. "
      "It is saved on this device only. Your unit&rsquo;s competency form is the authority."),
+    ("Search the whole Academy",
+     "Tap <strong>Search</strong> at the start of the section bar on any Academy page, the search field on this page, or "
+     "press <strong>/</strong> on a keyboard. It searches every track, module, trainer page and emergency card, opens the "
+     "exact section, and narrows by track or by kind of page. Once Schola has saved the Academy it works with no signal."),
     ("Listen to a module",
      "Tap <strong>Listen to this module</strong> under the module title. A player opens at the bottom of the screen and reads "
      "the module aloud, highlighting the sentence it is reading. Use the buttons to go to the previous or next "

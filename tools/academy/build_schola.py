@@ -223,6 +223,12 @@ def main():
     for icon in ICONS:
         if add(icon):
             shared.add(icon)
+    # the Academy search index (Pagefind, apply_search.py): every file, so search works with no signal (Nov 28 2026)
+    for f in sorted((ACADEMY / "pagefind").rglob("*")) if (ACADEMY / "pagefind").is_dir() else []:
+        if f.is_file():
+            pth = "/" + f.relative_to(ROOT).as_posix()
+            if add(pth):
+                shared.add(pth)
 
     # landing page order of tracks
     order = {h: i for i, h in enumerate(dict.fromkeys(re.findall(r'href="(?:\./)?([a-z0-9-]+)\.html"', texts.get("index.html", ""))))}
