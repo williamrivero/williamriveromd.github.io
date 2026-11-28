@@ -21,7 +21,7 @@
 
   var PHONE = "(max-width: 640px)";
   // Icon tiles in category colors (Dr. Rivero chose this style, Nov 26 2026).
-  // Groups (Dr. Rivero, Nov 28 2026): HOME · LEARN (Academy with its tracks + Patients, Physiology, Atlas, Emergency Readiness with 4 links) ·
+  // Groups (Dr. Rivero, Nov 28 2026): HOME · LEARN (Academy with its tracks, Physiology, Atlas, Emergency Readiness with 4 links) ·
   // BROADEN (Guides, curated topics: New, Updated and one link per audience) · REVIEW (Drug Index: Monographs,
   // Interaction Analyzer, Med Scheduler; Calculators) · CONNECT (About, Feedback = /review, rate the site).
   // Colors: Learn teal, Broaden purple, Review orange; Orient/Connect gold.
@@ -219,8 +219,7 @@
   // Academy: the five tracks (anchors on the Academy landing page) + Emergency Readiness
   var TRACKS = [["track-physicians", "Physicians", "#8fb0e8"], ["track-nursing", "Nurses", "#5ec2c6"],
     ["renal-technician-program", "Technicians", "#f2a36b"], ["track-ancillary", "Ancillary Staff", "#7fd39a"],
-    ["track-administrative", "Admin Staff", "#b9a3e3"],
-    ["/guides/?for=patients", "Patients", "#ecd08a"]];   // no patient track yet: the patient guides (Nov 28 2026)
+    ["track-administrative", "Admin Staff", "#b9a3e3"]];   // Patients: Dr. Rivero adds it once the patient track is built
   // Emergency Readiness (Dr. Rivero, Nov 28 2026): its own card under Learn
   var EMERGENCY_LINKS = [["/academy/resuscitation-lab", "Resuscitation Lab", "#f0938a"], ["/academy/resuscitation-lab-practice", "Megacode Practice Lab", "#f0938a"],
     ["/academy/disaster-preparedness", "Disaster Readiness", "#f2a36b"], ["/academy/disaster-preparedness-practice", "Disaster Drills", "#f2a36b"]];   // Dr. Rivero, Nov 28 2026: sixth pill
