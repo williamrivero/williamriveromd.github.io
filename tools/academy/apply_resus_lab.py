@@ -115,6 +115,7 @@ CSS = """<style id="rl-lab-css">
 .rl-panel:hover{border-color:var(--teal);}
 .rl-panel.act{border-top-color:var(--red);} .rl-panel.prac{border-top-color:var(--amber,#b45309);}
 .rl-panel small{display:block;font:800 12px/1.2 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);}
+.rl-panel img{display:block;width:calc(100% + 36px);margin:-16px -18px 12px;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:9px 9px 0 0;}
 .rl-panel b{display:block;font:800 18px/1.25 Inter,system-ui,sans-serif;margin:4px 0 6px;color:var(--text);}
 .rl-panel span{display:block;font-size:14.5px;line-height:1.5;color:var(--text-mid);}
 .rl-draft{border:2px solid var(--red);background:var(--red-soft);color:var(--text);border-radius:12px;padding:10px 14px;margin:14px auto;max-width:860px;font-size:14.5px;line-height:1.45;}
@@ -199,6 +200,13 @@ def hero(crumb, h1, tagline):
 </section>"""
 
 
+def tile(name):
+    """A tile image for a panel, only when the file exists (images arrive after the pages)."""
+    if not (ROOT / "images" / name).exists():
+        return ""
+    return f'<img src="../images/{name}" alt="" loading="lazy" decoding="async" width="640" height="360">'
+
+
 def ready_main():
     rows = []
     for lvl, hubs in LEVEL.items():
@@ -218,9 +226,9 @@ def ready_main():
   <h2>Three parts, one team</h2>
   <p>Emergency Readiness sits beside the role tracks because emergencies cut across every role. A nurse assistant starts compressions; a technician brings the defibrillator; the circuit nurse manages the machine; the physician-on-duty leads. Each part has a different job.</p>
   <div class="rl-panels">
-    <a class="rl-panel act" href="emergency-cards.html"><small>Act</small><b>Emergency Quick Cards</b><span>Fourteen one-screen action cards for the first minutes at the chair, saved for use with no signal. Open these during a real event.</span></a>
-    <a class="rl-panel" href="{HUB}.html"><small>Learn</small><b>Dialysis Team Resuscitation Lab</b><span>Thirteen modules: the basic algorithms, algorithm recognition, BLS at the chair, adult ACLS-aligned care, arrest on the machine, hyperkalemia, children, ROSC and the team.</span></a>
-    <a class="rl-panel prac" href="{PRACTICE}"><small>Practice</small><b>Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for unit drills.</span></a>
+    <a class="rl-panel act" href="emergency-cards.html">{tile("emergency-readiness-card.webp")}<small>Act</small><b>Emergency Quick Cards</b><span>Fourteen one-screen action cards for the first minutes at the chair, saved for use with no signal. Open these during a real event.</span></a>
+    <a class="rl-panel" href="{HUB}.html">{tile(HUB + "-card.webp")}<small>Learn</small><b>Dialysis Team Resuscitation Lab</b><span>Thirteen modules: the basic algorithms, algorithm recognition, BLS at the chair, adult ACLS-aligned care, arrest on the machine, hyperkalemia, children, ROSC and the team.</span></a>
+    <a class="rl-panel prac" href="{PRACTICE}">{tile(HUB + "-practice-card.webp")}<small>Practice</small><b>Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for unit drills.</span></a>
   </div>
   <p>Also: the <a href="{HUB}-trainer.html">facilitator kit</a>, the <a href="../guides/calc-resuscitation-lab-toolkit.html">Resuscitation Lab toolkit</a>, and <a href="same-event-every-role.html">Same event, every role</a>.</p>
 </section>

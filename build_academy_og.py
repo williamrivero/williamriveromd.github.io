@@ -28,6 +28,7 @@ GROUP = {  # accent colors from the locked site palette
     "technician": ("#C55A11", "RENAL TECHNICIANS TRACK"),
     "ancillary":  ("#2E6B3E", "ANCILLARY STAFF TRACK"),
     "administrative": ("#4B3280", "ADMINISTRATIVE STAFF TRACK"),
+    "emergency":  ("#B91C1C", "EMERGENCY READINESS"),
 }
 
 # slug: (page, group, title, tag line under group, stats line)
@@ -84,6 +85,8 @@ TRACKS = {
                       "RENAL SOCIAL WORK", "20 modules · two learner paths · six-tool toolkit"),
     "occupational-physical-therapist": ("academy/occupational-physical-therapist.html", "ancillary", "Occupational and Physical Therapist",
                                         "RENAL REHABILITATION", "20 modules · OT and PT pathways · six-tool toolkit"),
+    "resuscitation-lab": ("academy/resuscitation-lab.html", "emergency", "Dialysis Team Resuscitation Lab",
+                          "BLS-, ALS- AND PALS-ALIGNED REVIEW", "13 modules · 17 megacodes · Practice Lab"),
 }
 
 FONT_DIRS = ["/usr/share/fonts/opentype/inter", os.path.expanduser("~/Library/Fonts"), "/Library/Fonts",
