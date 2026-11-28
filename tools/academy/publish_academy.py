@@ -112,6 +112,8 @@ def main():
         EQ = importlib.util.module_from_spec(spec); spec.loader.exec_module(EQ); EQ.main()   # emergency quick cards page + links
         spec = importlib.util.spec_from_file_location("apply_resus_lab", Path(__file__).with_name("apply_resus_lab.py"))
         RL = importlib.util.module_from_spec(spec); spec.loader.exec_module(RL); RL.main()   # Emergency Readiness section + Resuscitation Lab Practice Lab
+        spec = importlib.util.spec_from_file_location("apply_readiness_rail", Path(__file__).with_name("apply_readiness_rail.py"))
+        RR = importlib.util.module_from_spec(spec); spec.loader.exec_module(RR); RR.main()   # side rail + share bar on Emergency Readiness pages
         spec = importlib.util.spec_from_file_location("apply_updates", Path(__file__).with_name("apply_updates.py"))
         UP = importlib.util.module_from_spec(spec); spec.loader.exec_module(UP); UP.main([])   # "Updated since you read it" flags
         spec = importlib.util.spec_from_file_location("apply_tools", Path(__file__).with_name("apply_tools.py"))
