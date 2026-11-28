@@ -5567,39 +5567,12 @@ def scheduler_data(ctx: "Ctx", ixd: dict) -> dict:
     return {"v": 1, "r": rules, "hdAfter": sorted(hd_after), "sep": sep, "pu": pu}
 
 
-XPL_CSS = """<style>
-.ms-xpl{margin:16px 0 0;max-width:760px;border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;}
-.ms-xpl>figcaption{display:flex;align-items:center;gap:10px;padding:10px 14px;font:700 15px Inter,system-ui,sans-serif;color:var(--teal);}
-.ms-xpl-play{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#0e4a50;color:#fff;font-size:11px;padding-left:2px;box-sizing:border-box;}
-.ms-xpl video{display:block;width:100%;height:auto;background:#000;}
-.ms-xpl-tr{padding:6px 14px 10px;} .ms-xpl-tr summary{cursor:pointer;font:600 13.5px Inter,system-ui,sans-serif;color:var(--text-muted);}
-.ms-xpl-tr p{font-size:14px;line-height:1.6;color:var(--text-mid);margin:8px 0 0;}
-.ms-xpl-share{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:700 13.5px Inter,system-ui,sans-serif;color:#fff;background:#0e4a50;border:0;border-radius:999px;padding:7px 14px;cursor:pointer;}
-.ms-xpl-share svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-.ms-xpl-share:hover{background:#1a6b72;}
-</style>"""
-
-# Share: the page itself (opens at the video), never the video file; native share sheet, else copy the link.
-XPL_JS = """<script>(function(){var b=document.querySelector('[data-xpl-share]');if(!b)return;b.addEventListener('click',function(){
-var w=b.getAttribute('data-xpl-share'),c=document.querySelector('link[rel=canonical]'),u=w?'https://renalcarematters.com'+w:(c?c.href:location.href.split('#')[0])+'#explainer',t=document.title,l=b.querySelector('span');
-function done(m){l.textContent=m;setTimeout(function(){l.textContent='Share';},2200);}
-if(navigator.share){navigator.share({title:t,url:u}).catch(function(){});return;}
-if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){done('Link copied');},function(){prompt('Copy this link',u);});else prompt('Copy this link',u);});})();</script>"""
-
-
-def explainer(name: str, label: str) -> str:
-    """Cartoon explainer video in a tool page's hero (Nov 28 2026): videos/dosis/<name>.mp4 + .jpg poster,
-    transcript from tools/academy/explainers/<name>/script.txt. Inline style, so DRUG_CSS stays unchanged."""
-    sp = REPO / "tools" / "academy" / "explainers" / name / "script.txt"
-    tr = html.escape(" ".join(sp.read_text(encoding="utf-8").split("\n")).strip()) if sp.exists() else ""
-    return (XPL_CSS + f'\n<figure class="ms-xpl" id="explainer"><figcaption><span class="ms-xpl-play" aria-hidden="true">&#9654;</span> {label}'
-            f'<button type="button" class="ms-xpl-share" data-xpl-share="/watch/{name}" aria-label="Share this explainer video">'
-            '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
-            '<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>\n'
-            f'<video controls playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false" '
-            f'poster="/videos/dosis/{name}-explainer.jpg" width="1280" height="720">'
-            f'<source src="/videos/dosis/{name}-explainer.mp4" type="video/mp4"></video>\n'
-            + (f'<details class="ms-xpl-tr"><summary>Read the transcript</summary><p>{tr}</p></details>' if tr else "") + "</figure>" + XPL_JS)
+def explainer(name: str, label: str = "") -> str:
+    """Cartoon explainer in a tool page's hero (Nov 28 2026): a small thumbnail card that opens the video lightbox
+    (explainer_embed.py, shared with Calculo and the Academy). Inline style + script, so DRUG_CSS stays unchanged."""
+    sys.path.insert(0, str(REPO))
+    import explainer_embed
+    return explainer_embed.embed(name)
 
 
 def scheduler_page() -> str:

@@ -21,6 +21,8 @@ import hashlib, html, json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+import explainer_embed  # noqa: E402
 ACADEMY, ASSETS = ROOT / "academy", ROOT / "assets"
 DRAFT = False   # signed off by Dr. Rivero, November 28, 2026
 NAME = "academy-resus-lab"
@@ -176,14 +178,6 @@ html[data-theme="dark"] .rl-verdict.ok{color:#7ee2a0;}
 .rl-views{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;} @media (max-width:760px){.rl-views{grid-template-columns:1fr;}}
 .rl-view{margin:0;min-width:0;} .rl-view figcaption{display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 13px Inter,system-ui,sans-serif;color:var(--text-mid);margin-bottom:4px;}
 .rl-view .rl-mstrip{margin:0;}
-.rl-xpl{margin:4px 0 14px;border:1px solid var(--border);border-radius:12px;background:var(--white);overflow:hidden;}
-.rl-xpl>figcaption{display:flex;align-items:center;gap:10px;padding:10px 14px;font:700 15px Inter,system-ui,sans-serif;color:var(--teal);}
-.rl-xpl-play{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#0e4a50;color:#fff;font-size:11px;padding-left:2px;box-sizing:border-box;}
-.rl-xpl video{display:block;width:100%;height:auto;background:#000;}
-.rl-xpl-share{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:700 13.5px Inter,system-ui,sans-serif;color:#fff;background:#0e4a50;border:0;border-radius:999px;padding:7px 14px;cursor:pointer;}
-.rl-xpl-share svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;} .rl-xpl-share:hover{background:#1a6b72;}
-.rl-xpl-tr{padding:6px 14px 10px;} .rl-xpl-tr summary{cursor:pointer;font:600 13.5px Inter,system-ui,sans-serif;color:var(--text-muted);} .rl-xpl-tr p{font-size:14px;line-height:1.6;color:var(--text-mid);margin:8px 0 0;}
-@media print{.rl-xpl{display:none!important;}}
 .rl-thumb{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;clip-path:inset(0 round 10px);border-radius:10px;background:#000;} .rl-thumb[hidden]{display:none;}
 .rl-thumb iframe{position:absolute;top:0;left:0;width:1280px;height:720px;min-height:720px;max-height:720px;border:0;transform-origin:0 0;pointer-events:none;}
 .rl-thumb-tog{font:600 12px Inter,system-ui,sans-serif;border:1px solid var(--border);background:transparent;color:var(--teal);border-radius:6px;padding:2px 10px;cursor:pointer;}
@@ -378,23 +372,11 @@ def draft_cards_note():
 
 
 def paratus_xpl():
-    """Meet Paratus cartoon explainer (Nov 28 2026, Dr. Rivero): always visible, preload none, no download,
-    Share = the watch page /watch/paratus. Uses the .rl-xpl styles in CSS. Transcript from the explainer's script.txt."""
+    """Meet Paratus cartoon explainer (Nov 28 2026, Dr. Rivero): a small thumbnail card that opens the video lightbox
+    (explainer_embed.py at the repo root, shared with Dosis and Calculo); Share = the watch page /watch/paratus."""
     if not (ROOT / "videos" / "paratus" / "paratus-explainer.mp4").exists():
         return ""
-    sp = ROOT / "tools" / "academy" / "explainers" / "paratus" / "script.txt"
-    tr = html.escape(" ".join(sp.read_text(encoding="utf-8").split())) if sp.exists() else ""
-    return ('<figure class="rl-xpl" id="explainer"><figcaption><span class="rl-xpl-play" aria-hidden="true">&#9654;</span> Meet Paratus (1 min 23 s)'
-            '<button type="button" class="rl-xpl-share" data-xpl-share="/watch/paratus" aria-label="Share this explainer video">'
-            '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
-            '<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>\n'
-            '<video controls playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false" '
-            'poster="/videos/paratus/paratus-explainer.jpg" width="1280" height="720"><source src="/videos/paratus/paratus-explainer.mp4" type="video/mp4"></video>\n'
-            + (f'<details class="rl-xpl-tr"><summary>Read the transcript</summary><p>{tr}</p></details>' if tr else "") + "</figure>"
-            """<script>(function(){var b=document.querySelector('[data-xpl-share="/watch/paratus"]');if(!b)return;b.addEventListener('click',function(){
-var u='https://renalcarematters.com/watch/paratus',l=b.querySelector('span');function done(m){l.textContent=m;setTimeout(function(){l.textContent='Share';},2200);}
-if(navigator.share){navigator.share({title:'Meet Paratus',url:u}).catch(function(){});return;}
-if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){done('Link copied');},function(){prompt('Copy this link',u);});else prompt('Copy this link',u);});})();</script>""")
+    return explainer_embed.embed("paratus")
 
 
 def ready_main():
@@ -618,6 +600,7 @@ def practice_main(rec, cases):
     cases_j = json.dumps(cases, ensure_ascii=False).replace("</", "<\\/")
     return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><span class="nc-cur">Megacode Practice Lab</span>', 'Megacode Practice <em>Lab</em>', 'Recognize the algorithm, run the megacode, record the drill', "resuscitation-lab-practice-vignette-hero", "Dialysis staff practicing a megacode: one performs chest compressions on a manikin in a dialysis recliner while a colleague watches, beside a rhythm monitor, a tablet and a stopwatch.")}
 {CSS}
+{explainer_embed.ASSETS}
 <main class="container rl-main">
 <section class="section" id="sample">
   <div class="section-tag">Start here &middot; a sample case</div>
