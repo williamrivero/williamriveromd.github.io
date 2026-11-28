@@ -34,44 +34,97 @@
     return amp * (0.24 * Math.sin(T * 33.3) + 0.17 * Math.sin(T * 44.6 + 1) + 0.1 * Math.sin(T * 23.2 + 2)) + 0.2;
   }
   var CONT = { vf: 1, asystole: 1 };
-  function Strip(canvas) {
-    var ctx = canvas.getContext && canvas.getContext("2d"), shape = "normal", hr = 70, raf = 0, x = 0, prevY = null, beatT = -1, next = 0, last = 0, artT = 0;
-    function size() {
-      var r = window.devicePixelRatio || 1, w = canvas.clientWidth || 320, h = canvas.clientHeight || 70;
-      canvas.width = Math.round(w * r); canvas.height = Math.round(h * r); ctx.setTransform(r, 0, 0, r, 0, 0);
-      ctx.fillStyle = "#0b1220"; ctx.fillRect(0, 0, w, h); x = 0; prevY = null; return [w, h];
+  /* Pleth: one arterial pulse, u = fraction of the cardiac cycle since the pulse reached the finger */
+  function plethWave(u) {
+    if (u < 0) return 0;
+    if (u < 0.13) return 0.5 - 0.5 * Math.cos(Math.PI * u / 0.13);
+    var d = u - 0.13;
+    return Math.exp(-d * 3.1) * (1 - 0.2 * Math.exp(-Math.pow((u - 0.37) / 0.045, 2))) + 0.11 * Math.exp(-Math.pow((u - 0.45) / 0.06, 2));
+  }
+  /* Strip(canvas[, plethCanvas]): ECG sweep, optionally with a pleth trace that follows each beat.
+     Gain is fixed in CSS pixels (like mm/mV on a monitor), so a taller canvas gives more room, never taller waves. */
+  function Strip(canvas, pc) {
+    var ctx = canvas.getContext && canvas.getContext("2d"), pctx = pc && pc.getContext && pc.getContext("2d");
+    var shape = "normal", hr = 70, raf = 0, x = 0, prevY = null, beatT = -1, next = 0, last = 0, artT = 0, animating = false;
+    var pa = 0, pPrev = null, pT = -1, pRR = 0.85, pCarry = 0, pVal = 0, pending = [];
+    var ECG_GAIN = 88, PL_GAIN = 64;
+    function fit(cv, c) {
+      var r = window.devicePixelRatio || 1, w = cv.clientWidth || 320, h = cv.clientHeight || 70;
+      cv.width = Math.round(w * r); cv.height = Math.round(h * r); c.setTransform(r, 0, 0, r, 0, 0);
+      c.fillStyle = "#0b1220"; c.fillRect(0, 0, w, h); return [w, h];
+    }
+    function size() { var d = fit(canvas, ctx); if (pctx) fit(pc, pctx); x = 0; prevY = null; pPrev = null; return d; }
+    function eg(h) { var g = Math.min(h * 0.6, ECG_GAIN); return [g, h / 2 + g / 3]; }           // gain, baseline (0.7h on small strips, as before)
+    function pg(h) { var g = Math.min(h * 0.62, PL_GAIN); return [g, h / 2 + g / 2]; }
+    function plethAt(now) {
+      while (pending.length && now >= pending[0][0]) { var q = pending.shift(); pCarry = pVal; pT = q[0]; pRR = Math.min(1.3, Math.max(0.34, q[1])); }
+      if (pT < 0) return 0;
+      var dt = now - pT; pVal = plethWave(dt / pRR) + pCarry * Math.exp(-dt * 9); return pVal;
+    }
+    function plethY(v, h, now) {
+      var g = pg(h);
+      if (!pa) return g[1] - g[0] * 0.03 * (Math.sin(now * 7.1) + 0.6 * Math.sin(now * 19.3));          // no pulse: near-flat line
+      return g[1] - v * g[0] * pa;
     }
     function still() {
-      var d = size(), w = d[0], h = d[1], rr = 60 / Math.max(25, hr), py = null;
+      var d = size(), w = d[0], h = d[1], rr = 60 / Math.max(25, hr), py = null, G = eg(h);
       ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.7;
       for (var px = 0; px < w; px++) {
         var t = px / 80, k = shape === "irregular" ? (t % (rr * (0.7 + 0.6 * Math.abs(Math.sin(Math.floor(t / rr) * 7.3))))) : t % rr;
-        var y = h * 0.7 - (CONT[shape] ? cont(shape, t) : wave(shape, k, hr)) * h * 0.6;
+        var y = G[1] - (CONT[shape] ? cont(shape, t) : wave(shape, k, hr)) * G[0];
         ctx.beginPath(); ctx.moveTo(px - 1, py == null ? y : py); ctx.lineTo(px, y); ctx.stroke(); py = y;
+      }
+      if (!pctx) return;
+      var pw = pc.clientWidth || w, ph = pc.clientHeight || 60, qy = null; pctx.strokeStyle = "#22d3ee"; pctx.lineWidth = 2;
+      for (var qx = 0; qx < pw; qx++) {
+        var tt = qx / 80, u = ((tt - 0.22) % rr + rr) % rr / Math.min(1.3, rr), yy = plethY(plethWave(u), ph, tt);
+        pctx.beginPath(); pctx.moveTo(qx - 1, qy == null ? yy : qy); pctx.lineTo(qx, yy); pctx.stroke(); qy = yy;
       }
     }
     function frame(ts) {
       if (!last) last = ts; var dt = Math.min(0.05, (ts - last) / 1000); last = ts;
-      var w = canvas.clientWidth, h = canvas.clientHeight, steps = Math.max(1, Math.round(dt * 80));
+      var w = canvas.clientWidth, h = canvas.clientHeight, steps = Math.max(1, Math.round(dt * 80)), G = eg(h);
+      var ph = pctx ? pc.clientHeight : 0, pw = pctx ? pc.clientWidth : 0;
       for (var i = 0; i < steps; i++) {
         var now = ts / 1000 + i / 80;
-        if (beatT < 0 || now >= next) { beatT = now; var rr = 60 / Math.max(25, hr); if (shape === "irregular") rr *= 0.6 + Math.random() * 0.8; next = now + rr; }
-        var y = h * 0.7 - (CONT[shape] ? cont(shape, now) : wave(shape, now - beatT, hr)) * h * 0.6;
-        if (artT && now < artT + 1.2) { var a = now - artT; y = a < 0.05 ? h * 0.04 : a < 0.1 ? h * 0.96 : h * 0.7 - h * 0.25 * Math.exp(-(a - 0.1) * 4); }
+        if (beatT < 0 || now >= next) {
+          beatT = now; var rr = 60 / Math.max(25, hr); if (shape === "irregular") rr *= 0.6 + Math.random() * 0.8; next = now + rr;
+          if (!CONT[shape]) pending.push([now + 0.22, rr]);                                             // pulse reaches the finger ~0.2 s after the QRS
+        }
+        var y = G[1] - (CONT[shape] ? cont(shape, now) : wave(shape, now - beatT, hr)) * G[0];
+        if (artT && now < artT + 1.2) { var a = now - artT; y = a < 0.05 ? G[1] - G[0] * 1.1 : a < 0.1 ? G[1] + G[0] * 0.45 : G[1] - G[0] * 0.42 * Math.exp(-(a - 0.1) * 4); }
         ctx.fillStyle = "#0b1220"; ctx.fillRect(x, 0, 8, h); ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.7;
-        ctx.beginPath(); ctx.moveTo(x - 1, prevY == null ? y : prevY); ctx.lineTo(x, y); ctx.stroke(); prevY = y; x++;
-        if (x > w) { x = 0; prevY = null; }
+        ctx.beginPath(); ctx.moveTo(x - 1, prevY == null ? y : prevY); ctx.lineTo(x, y); ctx.stroke(); prevY = y;
+        if (pctx && x <= pw) {
+          var v = plethAt(now), yy = plethY(v, ph, now);
+          if (artT && now < artT + 0.8) yy += (Math.random() - 0.5) * pg(ph)[0] * 0.8;
+          pctx.fillStyle = "#0b1220"; pctx.fillRect(x, 0, 8, ph); pctx.strokeStyle = "#22d3ee"; pctx.lineWidth = 2;
+          pctx.beginPath(); pctx.moveTo(x - 1, pPrev == null ? yy : pPrev); pctx.lineTo(x, yy); pctx.stroke(); pPrev = yy;
+        }
+        x++;
+        if (x > w) { x = 0; prevY = null; pPrev = null; }
       }
       raf = requestAnimationFrame(frame);
     }
+    // redraw at the real size whenever the canvas is resized (full screen, rotation), so nothing is stretched
+    if (ctx && window.ResizeObserver) {
+      var lw = 0, lh = 0;
+      var ro = new ResizeObserver(function () {
+        var w = canvas.clientWidth, h = canvas.clientHeight + (pc ? pc.clientHeight : 0);
+        if (w === lw && h === lh) return; lw = w; lh = h;
+        if (animating) size(); else if (lw) still();
+      });
+      ro.observe(canvas); if (pc) ro.observe(pc);
+    }
     return {
-      set: function (s, rate, animate) {
+      set: function (s, rate, animate, plethAmp) {
         if (!ctx) return; shape = s || "normal"; hr = +rate || 70;
+        pa = CONT[shape] ? 0 : plethAmp == null ? 0.85 : Math.max(0, Math.min(1, plethAmp));
         if (raf) { cancelAnimationFrame(raf); raf = 0; }
-        if (!animate || REDUCED || epaper()) { still(); return; }
-        size(); last = 0; beatT = -1; raf = requestAnimationFrame(frame);
+        if (!animate || REDUCED || epaper()) { animating = false; still(); return; }
+        animating = true; size(); last = 0; beatT = -1; pending = []; pT = -1; pVal = 0; pCarry = 0; raf = requestAnimationFrame(frame);
       },
-      stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; },
+      stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; animating = false; },
       shock: function () { artT = performance.now() / 1000; }
     };
   }
@@ -536,7 +589,8 @@
     wrap.innerHTML =
       '<div class="m-top"><span class="m-lab"></span><span class="m-alarm" role="status" aria-live="assertive"></span><span class="m-clock"></span>' +
       '<button type="button" class="m-fs">Full screen</button></div>' +
-      '<div class="m-main"><div class="m-ecg"><span class="m-lead">II &nbsp;&times;1</span><canvas class="rl-dstrip"></canvas></div>' +
+      '<div class="m-main"><div class="m-waves"><div class="m-ecg"><span class="m-lead">II &nbsp;&times;1</span><canvas class="rl-dstrip"></canvas></div>' +
+        '<div class="m-ecg m-pl"><span class="m-lead">Pleth</span><span class="m-plno" hidden>NO PULSE</span><canvas class="rl-dpleth" role="img" aria-label="Pulse oximeter waveform"></canvas></div></div>' +
       '<div class="m-par">' +
         '<div class="m-box m-hr"><span class="m-k">HR <small>bpm</small></span><b class="m-v"></b><span class="m-lim">50 &ndash; 120</span></div>' +
         '<div class="m-box m-sp"><span class="m-k">SpO&#8322; <small>%</small></span><b class="m-v"></b><span class="m-sub">PR <i class="m-pr"></i></span></div>' +
@@ -549,7 +603,7 @@
         '<span class="m-count"></span><button type="button" class="m-b m-snd" aria-pressed="true">Sound on</button></div>' +
       '<p class="m-note">Training display &middot; not a medical device &middot; alarm limits are simulation defaults</p>';
     document.body.appendChild(wrap);
-    var strip = Strip($(".rl-dstrip", wrap)), cur = {}, flash = !(REDUCED || epaper());
+    var strip = Strip($(".rl-dstrip", wrap), $(".rl-dpleth", wrap)), cur = {}, flash = !(REDUCED || epaper());
     // clock
     function clock() { var d = new Date(); $(".m-clock", wrap).textContent = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); }
     clock(); setInterval(clock, 10000);
@@ -577,7 +631,6 @@
     function apply(m) {
       if (!m || m.type) return; cur = m;
       $(".m-lab", wrap).textContent = m.label || "";
-      strip.set(m.rhythm, m.rate, true);
       var alarms = [], arrest = m.rhythm === "vf" || m.rhythm === "asystole";
       // HR is counted from the ECG, as a monitor does
       var hr = m.rhythm === "vf" ? null : m.rhythm === "asystole" ? 0 : (+m.rate || null), hl = arrest ? "red" : lvl(hr, 40, 50, 120, 140);
@@ -593,6 +646,10 @@
       setBox(".m-bp", sys === null ? "---/---" : bp.replace(/\s/g, ""), bl);
       $(".m-map", wrap).textContent = sys !== null && dia !== null ? "MAP " + Math.round((sys + 2 * dia) / 3) : "";
       if (sys === null) alarms.push(["yel", "NIBP NO READING"]); else if (bl) alarms.push([bl, "NIBP " + sys + (sys < 90 ? " LOW" : " HIGH")]);
+      // pleth: flat when there is no pulse (arrest rhythm, or SpO₂ shown as "--"); smaller when the pressure is low
+      var amp = arrest || sp === null ? 0 : sys === null ? 0.8 : Math.max(0.22, Math.min(1, (sys - 30) / 90));
+      strip.set(m.rhythm, m.rate, true, amp);
+      $(".m-plno", wrap).hidden = !!amp;
       alarms.sort(function (a, b) { return (b[0] === "red") - (a[0] === "red"); });
       var al = $(".m-alarm", wrap); al.className = "m-alarm" + (alarms.length ? " " + alarms[0][0] : ""); al.textContent = alarms.map(function (a) { return a[1]; }).join("  ·  ");
       wrap.classList.toggle("m-flash", flash && alarms.some(function (a) { return a[0] === "red"; }));
