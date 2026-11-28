@@ -220,6 +220,31 @@
     vf:        [300, "—", "—", "—", "Ventricular fibrillation"],
     asystole:  ["", "—", "—", "—", "Asystole"]
   };
+  // sample rhythm playlists (teaching sequences built from the presets; facilitators load, edit and save their own)
+  function S(r, o) { var st = presetState(r); for (var k in o || {}) st[k] = o[k]; return st; }
+  var SAMPLE_LISTS = [
+    { name: "Sample: VF, shock, VF again, shock, ROSC", steps: [
+      S("vf", { id: "a1", shock: "a2" }), S("vf", { id: "a2", label: "Ventricular fibrillation (still)", shock: "a3" }),
+      S("normal", { id: "a3", rate: 108, hr: "108", bp: "92/56", spo2: "91", label: "ROSC: sinus tachycardia" })] },
+    { name: "Sample: high potassium, peaked T to sine wave to VF", steps: [
+      S("peaked", { id: "b1" }), S("sine", { id: "b2" }), S("vf", { id: "b3", shock: "b4" }),
+      S("normal", { id: "b4", rate: 96, hr: "96", bp: "94/58", spo2: "92", label: "ROSC: sinus rhythm" })] },
+    { name: "Sample: slow rhythm, Mobitz II to complete block", steps: [
+      S("normal", { id: "c1", rate: 46, hr: "46", bp: "96/58", label: "Sinus bradycardia" }), S("mobitz2", { id: "c2" }), S("avb3", { id: "c3" }),
+      S("pea", { id: "c4" })] },
+    { name: "Sample: long QT to torsades", steps: [
+      S("longqt", { id: "d1" }), S("pvc", { id: "d2", label: "Long QT with PVCs" }), S("torsades", { id: "d3", shock: "d4" }),
+      S("longqt", { id: "d4", rate: 64, hr: "64", bp: "96/58", spo2: "93", label: "ROSC: sinus rhythm, long QT" })] },
+    { name: "Sample: PVCs to VT to VF", steps: [
+      S("pvc", { id: "f1" }), S("bigeminy", { id: "f2" }), S("wide", { id: "f3", label: "Monomorphic VT with a pulse", shock: "f5" }),
+      S("vf", { id: "f4", shock: "f5" }), S("normal", { id: "f5", rate: 98, hr: "98", bp: "100/62", spo2: "93", label: "Sinus rhythm" })] },
+    { name: "Sample: nonshockable arrest, PEA to asystole", steps: [
+      S("normal", { id: "g1", rate: 58, hr: "58", bp: "78/40", spo2: "88", label: "Sinus rhythm, falling pressure" }), S("pea", { id: "g2" }),
+      S("asystole", { id: "g3" }), S("normal", { id: "g4", rate: 92, hr: "92", bp: "88/52", spo2: "90", label: "ROSC: sinus rhythm" })] },
+    { name: "Sample: unstable fast rhythm, synchronized cardioversion", steps: [
+      S("svt", { id: "e1" }), S("svt", { id: "e2", bp: "76/40", spo2: "92", label: "SVT, now hypotensive", shock: "e3" }),
+      S("normal", { id: "e3", rate: 84, hr: "84", bp: "110/70", label: "Sinus rhythm after cardioversion" })] }
+  ];
   function presetState(r) { var v = PRESETS[r]; return v ? { rhythm: r, rate: +v[0] || 72, hr: v[1], bp: v[2], spo2: v[3], label: v[4] } : null; }
 
   /* ════════════ 1. Recognition trainer ════════════ */
@@ -491,12 +516,30 @@
       '<label class="rl-chk"><input type="checkbox" class="rl-d-defib"> Show a defibrillator on the display (energy selector, sync, charge, shock)</label>' +
       '<button type="button" class="rl-btn rl-d-send">Update display</button> <a class="rl-btn rl-ghost" href="?display=1" target="_blank" rel="noopener">Open display</a>' +
       '<p class="rl-note">On the display, tap <b>Full screen</b> to hide the browser bars. Out-of-range values turn yellow or red and the alarm bar names the problem, as on a bedside monitor; the limits are simulation defaults, not clinical thresholds. Energy on the simulated defibrillator follows the device manufacturer and your unit protocol. A shock on the display is logged in the recorder when its clock is running; the rhythm changes only when you change it here or set a rhythm for after the next shock.</p>' +
-      '<canvas class="rl-mstrip" role="img" aria-label="Preview of the display rhythm"></canvas>';
+      '<div class="rl-views"><figure class="rl-view"><figcaption>Preview of the form (not sent yet)</figcaption><canvas class="rl-mstrip" role="img" aria-label="Preview of the display rhythm"></canvas></figure>' +
+      '<figure class="rl-view"><figcaption>Live view of the display <button type="button" class="rl-thumb-tog">Hide</button></figcaption><div class="rl-thumb"><iframe title="Live view of the shared display" src="?display=1&amp;thumb=1" tabindex="-1" loading="lazy"></iframe></div></figure></div>' +
+      '<div class="rl-pl"><h4>Rhythm playlist</h4>' +
+      '<p class="rl-note">Program the scenario&rsquo;s rhythms in order, then switch with one tap: <b>Go</b> on a step, <b>Previous</b> / <b>Next</b>, or keys <b>1&ndash;9</b>, <b>N</b> and <b>P</b> (when you are not typing in a box). To add a step, set the form above and press <b>Add current settings</b>. &ldquo;After a shock&rdquo; makes a shock on the display jump to that step, so transitions run themselves; it is re-armed at every step. Playlists stay on this device.</p>' +
+      '<div class="rl-pl-bar"><label class="rl-lab">Load <select class="rl-pl-load"></select></label> <button type="button" class="rl-btn rl-ghost rl-pl-open">Load</button>' +
+      ' <label class="rl-lab">Name <input type="text" class="rl-pl-name" placeholder="My scenario"></label> <button type="button" class="rl-btn rl-ghost rl-pl-save">Save playlist</button>' +
+      ' <button type="button" class="rl-btn rl-ghost rl-pl-del">Delete saved</button></div>' +
+      '<ol class="rl-pl-list"></ol>' +
+      '<div class="rl-pl-bar"><button type="button" class="rl-btn rl-pl-add">Add current settings</button> <button type="button" class="rl-btn rl-ghost rl-pl-prev">&#9664; Previous</button>' +
+      ' <button type="button" class="rl-btn rl-ghost rl-pl-next">Next &#9654;</button> <button type="button" class="rl-btn rl-ghost rl-pl-clear">Clear list</button></div></div>';
     host.appendChild(disp);
+    (function () {   // scale the 1280 × 720 display page to the thumbnail width
+      var box = $(".rl-thumb", disp), fr = $("iframe", box), tog = $(".rl-thumb-tog", disp);
+      function fit() { var w = box.clientWidth || 320; fr.style.transform = "scale(" + (w / 1280) + ")"; }
+      fit(); if (window.ResizeObserver) new ResizeObserver(fit).observe(box); else window.addEventListener("resize", fit);
+      var off = store("rcm-resus-thumb") === "off";
+      function setOff(v) { off = v; box.hidden = v; tog.textContent = v ? "Show" : "Hide"; if (v) fr.removeAttribute("src"); else if (!fr.getAttribute("src")) fr.setAttribute("src", "?display=1&thumb=1"); store("rcm-resus-thumb", v ? "off" : "on"); }
+      tog.addEventListener("click", function () { setOff(!off); }); if (off) setOff(true);
+    })();
     var prev = Strip($(".rl-mstrip", disp)), afterSel = $(".rl-d-after", disp);
     afterSel.innerHTML = '<option value="none">No change (the rhythm persists)</option>' + $(".rl-d-r", disp).innerHTML;
     function send() {
       monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, showLabel: $(".rl-d-showlab", disp).checked, afterShock: afterSel.value, defib: $(".rl-d-defib", disp).checked };
+      monState.afterShockState = afterState(afterSel.value); monState.playStep = activeId;
       prev.set(monState.rhythm, monState.rate, true); store("rcm-resus-display", monState); if (CH) CH.postMessage(monState);
     }
     $(".rl-d-send", disp).addEventListener("click", send);
@@ -512,19 +555,120 @@
       var cur = store("rcm-resus-display") || monState; delete cur.fromShock; cur.showLabel = this.checked; monState.showLabel = this.checked;
       store("rcm-resus-display", cur); if (CH) CH.postMessage(cur);
     });
-    afterSel.addEventListener("change", function () {   // sets only the post-shock rhythm, not unsent values
-      var cur = store("rcm-resus-display") || monState; delete cur.fromShock; cur.afterShock = this.value; monState.afterShock = this.value;
+    function armAfter() {   // sets only the post-shock transition on the display, not unsent values
+      var cur = store("rcm-resus-display") || monState; delete cur.fromShock; cur.afterShock = afterSel.value; monState.afterShock = afterSel.value;
+      cur.afterShockState = monState.afterShockState = afterState(afterSel.value);
       store("rcm-resus-display", cur); if (CH) CH.postMessage(cur);
-    });
+    }
+    afterSel.addEventListener("change", armAfter);
+    $(".rl-d-r", disp).addEventListener("change", function () { activeId = null; drawList(); });   // a manual change leaves the playlist
     function followShock(m) {   // the display changed the rhythm after a shock: show it in the form
       if (!m || m.type || !m.fromShock) return;
       $(".rl-d-r", disp).value = m.rhythm; $(".rl-d-rate", disp).value = m.rate; $(".rl-d-hr", disp).value = m.hr; $(".rl-d-bp", disp).value = m.bp;
       $(".rl-d-sp", disp).value = m.spo2; $(".rl-d-lab", disp).value = m.label; afterSel.value = "none"; monState = m; prev.set(m.rhythm, m.rate, true);
+      activeId = m.playStep || null; var st = stepById(activeId);
+      if (st && st.shock && stepById(st.shock)) { afterSel.value = "step:" + st.shock; armAfter(); }   // chain: re-arm this step's own transition
+      drawList();
     }
+    /* ── rhythm playlist ── */
+    var PL_KEY = "rcm-resus-playlist", PL_SAVED = "rcm-resus-playlists";
+    var steps = store(PL_KEY) || [], activeId = null, list = $(".rl-pl-list", disp), firstRun = !store(PL_KEY);
+    function uid() { return "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+    function stepById(id) { for (var i = 0; i < steps.length; i++) if (steps[i].id === id) return steps[i]; return null; }
+    function idx(id) { for (var i = 0; i < steps.length; i++) if (steps[i].id === id) return i; return -1; }
+    function esc(t) { return String(t == null ? "" : t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function stepState(st) { return st ? { rhythm: st.rhythm, rate: st.rate, hr: st.hr, bp: st.bp, spo2: st.spo2, label: st.label, playStep: st.id } : null; }
+    function afterState(v) {
+      if (!v || v === "none") return null;
+      if (v.indexOf("step:") === 0) return stepState(stepById(v.slice(5)));
+      return presetState(v);
+    }
+    function saveSteps() { store(PL_KEY, steps); }
+    function afterOptions() {   // the dropdown offers the playlist's steps as well as plain rhythms
+      var keep = afterSel.value, html = '<option value="none">No change (the rhythm persists)</option>';
+      if (steps.length) html += '<optgroup label="Playlist steps">' + steps.map(function (st, i) { return '<option value="step:' + st.id + '">Step ' + (i + 1) + ": " + esc(st.label) + "</option>"; }).join("") + "</optgroup>";
+      html += '<optgroup label="Rhythms">' + $(".rl-d-r", disp).innerHTML + "</optgroup>";
+      afterSel.innerHTML = html; afterSel.value = keep; if (afterSel.value !== keep) afterSel.value = "none";
+    }
+    function drawList() {
+      afterOptions();
+      if (!steps.length) { list.innerHTML = '<li class="rl-pl-empty">No steps yet. Load a sample, or set the form and press <b>Add current settings</b>.</li>'; return; }
+      list.innerHTML = steps.map(function (st, i) {
+        var opts = '<option value="">stay (no change)</option>' + steps.map(function (o, j) { return '<option value="' + o.id + '"' + (st.shock === o.id ? " selected" : "") + ">step " + (j + 1) + "</option>"; }).join("");
+        return '<li class="rl-pl-step' + (st.id === activeId ? " on" : "") + '" data-id="' + st.id + '">' +
+          '<button type="button" class="rl-btn rl-pl-go" aria-label="Go to step ' + (i + 1) + '">' + (i + 1) + " &middot; Go</button>" +
+          '<span class="rl-pl-txt"><b>' + esc(st.label) + "</b><small>" + esc((st.rate ? st.rate + "/min · " : "") + "pulse " + st.hr + " · BP " + st.bp + " · SpO₂ " + st.spo2) + "</small></span>" +
+          '<label class="rl-pl-sh">After a shock <select class="rl-pl-shock">' + opts + "</select></label>" +
+          '<span class="rl-pl-ord"><button type="button" class="rl-pl-up" aria-label="Move step ' + (i + 1) + ' up">&#9650;</button><button type="button" class="rl-pl-dn" aria-label="Move step ' + (i + 1) + ' down">&#9660;</button>' +
+          '<button type="button" class="rl-pl-x" aria-label="Remove step ' + (i + 1) + '">&#10005;</button></span></li>';
+      }).join("");
+    }
+    function go(id) {   // put the step in the form and send it to the display at once
+      var st = stepById(id); if (!st) return; activeId = id;
+      $(".rl-d-r", disp).value = st.rhythm; $(".rl-d-rate", disp).value = st.rate; $(".rl-d-hr", disp).value = st.hr; $(".rl-d-bp", disp).value = st.bp;
+      $(".rl-d-sp", disp).value = st.spo2; $(".rl-d-lab", disp).value = st.label;
+      afterOptions(); afterSel.value = st.shock && stepById(st.shock) ? "step:" + st.shock : "none";
+      send(); drawList();
+    }
+    function step(d) { var i = idx(activeId); i = i < 0 ? (d > 0 ? 0 : steps.length - 1) : Math.max(0, Math.min(steps.length - 1, i + d)); if (steps[i]) go(steps[i].id); }
+    list.addEventListener("click", function (e) {
+      var li = e.target.closest && e.target.closest(".rl-pl-step"); if (!li) return; var id = li.getAttribute("data-id"), i = idx(id);
+      if (e.target.closest(".rl-pl-go")) go(id);
+      else if (e.target.closest(".rl-pl-up") && i > 0) { steps.splice(i - 1, 0, steps.splice(i, 1)[0]); saveSteps(); drawList(); }
+      else if (e.target.closest(".rl-pl-dn") && i < steps.length - 1) { steps.splice(i + 1, 0, steps.splice(i, 1)[0]); saveSteps(); drawList(); }
+      else if (e.target.closest(".rl-pl-x")) { steps.splice(i, 1); steps.forEach(function (o) { if (o.shock === id) o.shock = null; }); if (activeId === id) activeId = null; saveSteps(); drawList(); }
+    });
+    list.addEventListener("change", function (e) {
+      if (!e.target.classList.contains("rl-pl-shock")) return; var st = stepById(e.target.closest(".rl-pl-step").getAttribute("data-id"));
+      st.shock = e.target.value || null; saveSteps();
+      if (st.id === activeId) { afterSel.value = st.shock ? "step:" + st.shock : "none"; armAfter(); }
+    });
+    $(".rl-pl-add", disp).addEventListener("click", function () {
+      steps.push({ id: uid(), rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || "", hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value,
+        spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value || $(".rl-d-r", disp).selectedOptions[0].text, shock: null });
+      saveSteps(); drawList();
+    });
+    $(".rl-pl-prev", disp).addEventListener("click", function () { step(-1); });
+    $(".rl-pl-next", disp).addEventListener("click", function () { step(1); });
+    $(".rl-pl-clear", disp).addEventListener("click", function () { steps = []; activeId = null; saveSteps(); drawList(); });
+    function savedLists() { return store(PL_SAVED) || {}; }
+    function fillLoad() {
+      var sv = savedLists(), html = '<optgroup label="Samples">' + SAMPLE_LISTS.map(function (l, i) { return '<option value="sample:' + i + '">' + esc(l.name.replace(/^Sample: /, "")) + "</option>"; }).join("") + "</optgroup>";
+      var names = Object.keys(sv).sort(); if (names.length) html += '<optgroup label="Saved on this device">' + names.map(function (n) { return '<option value="saved:' + esc(n) + '">' + esc(n) + "</option>"; }).join("") + "</optgroup>";
+      $(".rl-pl-load", disp).innerHTML = html;
+    }
+    function cloneSteps(src) {   // fresh ids, transitions remapped
+      var map = {}, out = src.map(function (st) { var c = {}; for (var k in st) c[k] = st[k]; map[st.id] = c.id = uid(); return c; });
+      out.forEach(function (c) { c.shock = c.shock ? map[c.shock] || null : null; delete c.playStep; }); return out;
+    }
+    $(".rl-pl-open", disp).addEventListener("click", function () {
+      var v = $(".rl-pl-load", disp).value, src = null, name = "";
+      if (v.indexOf("sample:") === 0) { var L = SAMPLE_LISTS[+v.slice(7)]; src = L.steps; name = ""; }
+      else if (v.indexOf("saved:") === 0) { name = v.slice(6); src = savedLists()[name]; }
+      if (!src) return; steps = cloneSteps(src); activeId = null; $(".rl-pl-name", disp).value = name; saveSteps(); drawList();
+    });
+    $(".rl-pl-save", disp).addEventListener("click", function () {
+      var name = $(".rl-pl-name", disp).value.trim(); if (!name || !steps.length) { $(".rl-pl-name", disp).focus(); return; }
+      var sv = savedLists(); sv[name] = steps; store(PL_SAVED, sv); fillLoad(); $(".rl-pl-load", disp).value = "saved:" + name;
+    });
+    $(".rl-pl-del", disp).addEventListener("click", function () {
+      var v = $(".rl-pl-load", disp).value; if (v.indexOf("saved:") !== 0) return; var sv = savedLists(); delete sv[v.slice(6)]; store(PL_SAVED, sv); fillLoad();
+    });
+    document.addEventListener("keydown", function (e) {   // 1–9 go to a step, N / P next and previous; never while typing
+      if (e.ctrlKey || e.metaKey || e.altKey || !steps.length) return;
+      var t = e.target; if (t && (t.isContentEditable || /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName))) return;
+      if (/^[1-9]$/.test(e.key) && steps[+e.key - 1]) { go(steps[+e.key - 1].id); e.preventDefault(); }
+      else if (e.key === "n" || e.key === "N") { step(1); e.preventDefault(); }
+      else if (e.key === "p" || e.key === "P") { step(-1); e.preventDefault(); }
+    });
+    fillLoad();
+    if (firstRun && !steps.length) { steps = cloneSteps(SAMPLE_LISTS[0].steps); saveSteps(); }   // a worked example on first use
+    drawList();
     if (CH) CH.addEventListener("message", function (e) { followShock(e.data); });
     window.addEventListener("storage", function (e) { if (e.key === "rcm-resus-display") followShock(store("rcm-resus-display")); });
     var saved = store("rcm-resus-display"); if (saved && saved.defib) $(".rl-d-defib", disp).checked = true;
-    if (saved && saved.afterShock && saved.afterShock !== "none") afterSel.value = saved.afterShock;
+    if (saved && saved.afterShock && saved.afterShock !== "none") { afterSel.value = saved.afterShock; if (afterSel.value !== saved.afterShock) afterSel.value = "none"; }
+    if (saved && saved.playStep && stepById(saved.playStep)) { activeId = saved.playStep; drawList(); }
     if (saved && saved.showLabel === false) $(".rl-d-showlab", disp).checked = false;
     var lastShock = 0;
     function fromDisplay(m) {   // a shock on the display goes into the drill log while the clock runs
@@ -706,6 +850,7 @@
 
   function DisplayMode() {
     document.body.classList.add("rl-display-mode");
+    var THUMB = /[?&]thumb=1/.test(location.search);   // the facilitator's live thumbnail: silent, no controls
     var ENERGY = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 50, 70, 85, 100, 120, 150, 170, 200, 300, 360];
     var wrap = el("div", "rl-display rl-mon2");
     wrap.innerHTML =
@@ -725,6 +870,7 @@
         '<span class="m-count"></span><button type="button" class="m-b m-snd" aria-pressed="true">Sound on</button></div>' +
       '<p class="m-note">Training display &middot; not a medical device &middot; alarm limits are simulation defaults</p>';
     document.body.appendChild(wrap);
+    if (THUMB) wrap.classList.add("m-thumbview");
     var strip = Strip($(".rl-dstrip", wrap), $(".rl-dpleth", wrap)), cur = {}, flash = !(REDUCED || epaper());
     // clock
     function clock() { var d = new Date(); $(".m-clock", wrap).textContent = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); }
@@ -825,7 +971,8 @@
     function beepLabel() { bb.textContent = BEEPS[beep]; bb.setAttribute("aria-label", BEEPS[beep] + ". Tap to change."); tapHint(); }
     bb.addEventListener("click", function () { beep = beep === "qrs" ? "pulse" : beep === "pulse" ? "off" : "qrs"; store("rcm-resus-beep", beep); beepLabel(); });
     var unlocked = false, tapB = $(".m-tap", wrap);
-    function tapHint() { tapB.hidden = unlocked || !sound || beep === "off"; }
+    if (THUMB) sound = false;
+    function tapHint() { tapB.hidden = THUMB || unlocked || !sound || beep === "off"; }
     function unlock() { if (unlocked) return; try { ac(); unlocked = true; } catch (e) {} tapHint(); }
     document.addEventListener("pointerdown", unlock, true); document.addEventListener("keydown", unlock, true);
     strip.on({
@@ -854,9 +1001,10 @@
       shocks++; strip.shock(); shockSound();
       if (flash) { wrap.classList.add("m-zap"); setTimeout(function () { wrap.classList.remove("m-zap"); }, 160); }
       show("ready", "SHOCK DELIVERED " + J() + " J" + (syncOn ? " (SYNC)" : ""));
-      var after = cur.afterShock && cur.afterShock !== "none" ? presetState(cur.afterShock) : null;
+      var after = cur.afterShockState ? JSON.parse(JSON.stringify(cur.afterShockState))
+        : cur.afterShock && cur.afterShock !== "none" && cur.afterShock.indexOf("step:") !== 0 ? presetState(cur.afterShock) : null;
       if (after) setTimeout(function () {   // the new rhythm appears once the shock artifact settles
-        after.showLabel = cur.showLabel; after.defib = cur.defib; after.afterShock = "none"; after.fromShock = true;
+        after.showLabel = cur.showLabel; after.defib = cur.defib; after.afterShock = "none"; after.afterShockState = null; after.fromShock = true;
         apply(after); store("rcm-resus-display", after); if (CH) CH.postMessage(after);
       }, 2000);
       var msg = { type: "defib", ev: "shock", j: J(), sync: syncOn, t: Date.now() };
