@@ -21,7 +21,7 @@
 
   var PHONE = "(max-width: 640px)";
   // Icon tiles in category colors (Dr. Rivero chose this style, Nov 26 2026).
-  // Groups (Dr. Rivero, Nov 28 2026): HOME · LEARN (Academy with its 5 tracks + Emergency Readiness, Physiology, Atlas) ·
+  // Groups (Dr. Rivero, Nov 28 2026): HOME · LEARN (Academy with its tracks + Patients, Physiology, Atlas, Emergency Readiness with 4 links) ·
   // BROADEN (Guides, curated topics: New, Updated and one link per audience) · REVIEW (Drug Index: Monographs,
   // Interaction Analyzer, Med Scheduler; Calculators) · CONNECT (About, Feedback = /review, rate the site).
   // Colors: Learn teal, Broaden purple, Review orange; Orient/Connect gold.
@@ -34,12 +34,13 @@
     drugs:       { label: "Drug Index",  hint: "Philippine drug monographs",               icon: '<path d="M10.4 3.9a5 5 0 0 1 7.1 7.1l-6.9 6.9a5 5 0 0 1-7.1-7.1z"/><path d="m7 7.3 6.9 6.9"/>' },
     academy:     { label: "Academy",     hint: "Training for every role in kidney care", icon: '<path d="m2.5 9 9.5-4.8L21.5 9 12 13.8z"/><path d="M6.5 11.2v4.6c0 1.5 2.5 3 5.5 3s5.5-1.5 5.5-3v-4.6"/><path d="M21.5 9v5.5"/>' },
     about:       { label: "About",       hint: "Clinics, schedules and appointments", icon: '<circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>' },
+    emergency:   { label: "Emergency Readiness", hint: "Resuscitation and disaster training, quick cards", icon: '<path d="M2.5 12.5h4l2-5 3.5 10 2.5-7 1.5 2h5.5"/>' },
     review:      { label: "Feedback",    hint: "Rate the site, tell us what to improve",           icon: '<path d="M12 3.2l2.6 5.5 6 .7-4.5 4.1 1.2 6L12 16.6l-5.3 2.9 1.2-6-4.5-4.1 6-.7z"/>' }
   };
   // wide = full-width row card; others pair up two per row
   var GROUPS = [
     { id: "base",    title: "Orient",  items: [["home", 1]] },
-    { id: "learn",   title: "Learn",   items: [["academy", 1], ["physiology", 0], ["atlas", 0]] },
+    { id: "learn",   title: "Learn",   items: [["academy", 1], ["physiology", 0], ["atlas", 0], ["emergency", 1]] },
     { id: "broaden", title: "Broaden", items: [["guides", 1]] },
     { id: "tools",   title: "Review",  items: [["drugs", 1], ["calculators", 1]] },
     { id: "connect", title: "Connect", items: [["about", 0], ["review", 0]] }
@@ -54,6 +55,7 @@
     if (/\/guides\/nephrology-atlas$/.test(p)) return "atlas";
     if (/^\/guides(\/|$)/.test(p)) return "guides";
     if (/^\/drugs(\/|$)/.test(p)) return "drugs";
+    if (/^\/paratus(\/|$)/.test(p) || /^\/academy\/(emergency-readiness|emergency-cards|resuscitation-lab|disaster-preparedness)/.test(p)) return "emergency";
     if (/^\/academy(\/|$)/.test(p)) return "academy";
     if (/^\/about$/.test(p)) return "about";
     if (/^\/review(-admin)?$/.test(p)) return "review";
@@ -73,6 +75,8 @@
     if (a.classList.contains("is-current")) currentKey = k;
   });
   if (!hrefs.review) hrefs.review = "/review.html";   // not in the desktop row; menu only
+  hrefs.emergency = "/academy/emergency-readiness";     // menu only (Dr. Rivero, Nov 28 2026)
+  if (keyOf(location.href) === "emergency") currentKey = "emergency";
   if (!currentKey) currentKey = keyOf(location.href);
 
   var F = "Inter,system-ui,-apple-system,'Segoe UI',sans-serif";
@@ -213,10 +217,13 @@
   panel.setAttribute("aria-label", "Site menu");
   // Sub-links listed right under their card in both menus (Dr. Rivero, Nov 28 2026)
   // Academy: the five tracks (anchors on the Academy landing page) + Emergency Readiness
-  var TRACKS = [["track-nursing", "Nephrology Nursing", "#5ec2c6"], ["track-physicians", "Renal Care Physicians", "#8fb0e8"],
-    ["renal-technician-program", "Renal Technicians", "#f2a36b"], ["track-ancillary", "Ancillary Staff", "#7fd39a"],
-    ["track-administrative", "Administrative Staff", "#b9a3e3"],
-    ["/academy/emergency-readiness", "Emergency Readiness", "#f0938a"]];   // Dr. Rivero, Nov 28 2026: sixth pill
+  var TRACKS = [["track-physicians", "Physicians", "#8fb0e8"], ["track-nursing", "Nurses", "#5ec2c6"],
+    ["renal-technician-program", "Technicians", "#f2a36b"], ["track-ancillary", "Ancillary Staff", "#7fd39a"],
+    ["track-administrative", "Admin Staff", "#b9a3e3"],
+    ["/guides/?for=patients", "Patients", "#ecd08a"]];   // no patient track yet: the patient guides (Nov 28 2026)
+  // Emergency Readiness (Dr. Rivero, Nov 28 2026): its own card under Learn
+  var EMERGENCY_LINKS = [["/academy/resuscitation-lab", "Resuscitation Lab", "#f0938a"], ["/academy/resuscitation-lab-practice", "Megacode Practice Lab", "#f0938a"],
+    ["/academy/disaster-preparedness", "Disaster Readiness", "#f2a36b"], ["/academy/disaster-preparedness-practice", "Disaster Drills", "#f2a36b"]];   // Dr. Rivero, Nov 28 2026: sixth pill
   // Guides: New / Updated open those groups of the Latest & Updated section; ?for= sets the audience filter on /guides/
   var GUIDE_LINKS = [["/guides/#latest-new", "New", "#7fd39a"], ["/guides/#latest-updated", "Updated", "#ecd08a"],
     ["/guides/?for=patients", "Patients & Care Partners", "#5ec2c6"], ["/guides/?for=nurses", "Nephrology Nurses", "#5ec2c6"],
@@ -225,7 +232,7 @@
   // Drug Index tools
   var DRUG_LINKS = [["/drugs/#dd-browse", "Monographs", "#f2a36b"], ["/drugs/interactions", "Interaction Analyzer", "#f2a36b"],
     ["/drugs/med-scheduler", "Med Scheduler", "#f2a36b"]];
-  var SUBS = { academy: TRACKS, guides: GUIDE_LINKS, drugs: DRUG_LINKS };
+  var SUBS = { academy: TRACKS, emergency: EMERGENCY_LINKS, guides: GUIDE_LINKS, drugs: DRUG_LINKS };
   function subRow(list) {
     var tl = document.createElement("div");
     tl.className = "rsn-tracks";
