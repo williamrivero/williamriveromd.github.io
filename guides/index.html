@@ -2775,12 +2775,11 @@ html[data-theme="dark"] .lib-dls-all, body.dark-mode .lib-dls-all { color: #9cc8
   <a class="mf-pill mf-link" href="nephrology-atlas.html">Atlas</a>
   <button class="mf-pill" data-filter="decision-tool">Decision Tool</button>
   <button class="mf-pill" data-filter="dialysis">Dialysis</button>
-  <button class="mf-pill" data-filter="patient">Patient</button>
-  <button class="mf-pill" data-filter="caregiver">Caregiver</button>
-  <button class="mf-pill" data-filter="internist-gp">Internist/GP</button>
-  <button class="mf-pill" data-filter="nephrologist">Nephrologist</button>
-  <button class="mf-pill" data-filter="dialysis-staff">Dialysis/HD Tech</button>
-  <button class="mf-pill" data-filter="dietitian">Dietitian</button>
+  <button class="mf-pill" data-filter="patients">Patients &amp; Care Partners</button>
+  <button class="mf-pill" data-filter="nurses">Nephrology Nurses</button>
+  <button class="mf-pill" data-filter="technicians">Renal Technicians</button>
+  <button class="mf-pill" data-filter="physicians">Physicians</button>
+  <button class="mf-pill" data-filter="dietitians">Dietitians</button>
   <button class="mf-pill" data-filter="pre-dialysis">Pre-Dialysis</button>
   <button class="mf-pill" data-filter="hypertension">Hypertension</button>
   <button class="mf-pill" data-filter="diabetes">Diabetes</button>
@@ -2811,23 +2810,20 @@ html[data-theme="dark"] .lib-dls-all, body.dark-mode .lib-dls-all { color: #9cc8
     </div>
     <div class="sidebar-section">
       <div class="sidebar-heading">Filter by role</div>
-      <button class="filter-btn" data-filter="patient">
-        <span class="filter-dot" style="background:#2e6b3e"></span>Patient<span class="count">79</span>
+      <button class="filter-btn" data-filter="patients">
+        <span class="filter-dot" style="background:#2e6b3e"></span>Patients &amp; Care Partners<span class="count">88</span>
       </button>
-      <button class="filter-btn" data-filter="caregiver">
-        <span class="filter-dot" style="background:#d97706"></span>Caregiver<span class="count">15</span>
+      <button class="filter-btn" data-filter="nurses">
+        <span class="filter-dot" style="background:#0d9488"></span>Nephrology Nurses<span class="count">61</span>
       </button>
-      <button class="filter-btn" data-filter="internist-gp">
-        <span class="filter-dot" style="background:#2563eb"></span>Internist / GP<span class="count">55</span>
+      <button class="filter-btn" data-filter="technicians">
+        <span class="filter-dot" style="background:#c55a11"></span>Renal Technicians<span class="count">61</span>
       </button>
-      <button class="filter-btn" data-filter="nephrologist">
-        <span class="filter-dot" style="background:var(--purple)"></span>Nephrologist<span class="count">96</span>
+      <button class="filter-btn" data-filter="physicians">
+        <span class="filter-dot" style="background:var(--purple)"></span>Physicians<span class="count">99</span>
       </button>
-      <button class="filter-btn" data-filter="dialysis-staff">
-        <span class="filter-dot" style="background:var(--navy)"></span>Dialysis Staff / HD Tech<span class="count">61</span>
-      </button>
-      <button class="filter-btn" data-filter="dietitian">
-        <span class="filter-dot" style="background:#0d9488"></span>Dietitian<span class="count">45</span>
+      <button class="filter-btn" data-filter="dietitians">
+        <span class="filter-dot" style="background:#d97706"></span>Dietitians<span class="count">45</span>
       </button>
     </div>
     <div class="sidebar-section">
@@ -5815,6 +5811,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const pinnedGrid = document.getElementById('pinned-grid');
 
   let activeFilter = 'all';
+  // Roles (Dr. Rivero, Nov 28 2026; match the site menu Broaden > Guides): each role filter covers one or more
+  // tile tags. Nurses and technicians share the dialysis-staff tag until nurse-specific tags exist.
+  const ROLE_TAGS = { patients: 'patient caregiver', nurses: 'dialysis-staff', technicians: 'dialysis-staff',
+                      physicians: 'nephrologist internist-gp', dietitians: 'dietitian' };
+  const filterTags = f => (ROLE_TAGS[f] || f).split(' ');
 
   // Auto-populate filter counts from actual tile data-tags (never hand-edit)
   (function refreshCounts() {
@@ -5828,7 +5829,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let n;
       if (f === 'all') n = total;
       else if (f === 'download') n = tiles.filter(isDownload).length;
-      else n = tiles.filter(t => !isDownload(t) && tagsFor(t).includes(f)).length;
+      else n = tiles.filter(t => !isDownload(t) && filterTags(f).some(x => tagsFor(t).includes(x))).length;
       const cEl = btn.querySelector('.count, .mf-count');
       if (cEl) cEl.textContent = n;
     });
@@ -5879,7 +5880,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // and "all" excludes download tiles (Downloads has its own filter)
       const filterMatch = activeFilter === 'download'
         ? tags.includes('download')
-        : (!tags.includes('download') && (activeFilter === 'all' || tags.includes(activeFilter)));
+        : (!tags.includes('download') && (activeFilter === 'all' || filterTags(activeFilter).some(f => tags.includes(f))));
 
       // Search match
       let searchMatch = true;
@@ -5935,6 +5936,18 @@ function highlight(text, words) {
   const pattern = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
   return text.replace(new RegExp(`(${pattern})`, 'gi'), '<mark>$1</mark>');
 }
+
+  // Role links from the site menu (Broaden > Guides, Nov 28 2026): /guides/?for=patients|nurses|technicians|physicians|dietitians
+  // select that role filter on load.
+  (function roleFromUrl() {
+    let f = '';
+    try { f = (new URLSearchParams(location.search).get('for') || '').toLowerCase(); } catch (e) { return; }
+    if (!ROLE_TAGS[f]) return;
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn, .mf-pill').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+    applyFilters();
+    setTimeout(applyFilters, 0);   // again after syncFilterCounts below resets the results counter to the total
+  })();
 
   // Extra search terms from inside each guide (headings, glossary, drugs, trials,
   // distinctive body words) — built by generate_search_index.py, fetched once on
@@ -6059,7 +6072,7 @@ function highlight(text, words) {
         // Match the click behavior: whole tags only, and topic filters never show download tiles
         const n = tiles.filter(t => {
           const tg = (t.dataset.tags || '').toLowerCase().split(/\s+/);
-          return f === 'download' ? tg.includes('download') : (tg.includes(f) && !tg.includes('download'));
+          return f === 'download' ? tg.includes('download') : (filterTags(f).some(x => tg.includes(x)) && !tg.includes('download'));
         }).length;
         const span = btn.querySelector('.count');
         if (span) span.textContent = n;
