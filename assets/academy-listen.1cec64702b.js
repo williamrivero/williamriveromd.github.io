@@ -1512,8 +1512,8 @@ var EasySpeech = (function () {
     } catch (e) {}
   }
   /* ---------- figures (Dr. Rivero, Nov 28 2026): open the image first, read its description while it is on screen,
-     close it when the description ends (never under 10 s on screen; a longer description keeps it up, plus a short tail), then read on ---------- */
-  var FIG_MIN = 10000, FIG_TAIL = 1200, figTimer = 0, figOpen = false, figAt = 0;
+     close it when the description ends (never under 14 s on screen; a longer description keeps it up, plus a short tail), then read on ---------- */
+  var FIG_MIN = 14000, FIG_TAIL = 1200, figTimer = 0, figOpen = false, figAt = 0;
   function closeFig() {
     clearTimeout(figTimer); figTimer = 0;
     if (!figOpen) return; figOpen = false;
