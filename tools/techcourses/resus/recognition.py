@@ -178,6 +178,18 @@ item("evolve", D, "transitions", "Hyperkalemia with a pulse (connected, dialyzin
      ["Arrest comes first.", "Not without a pulse.", "No.", "No."], "hyperk-pulse-vs-arrest", 8)
 
 
+# Torsades de pointes (reviewed November 28, 2026)
+TAGS["torsades-like-vt"] = "Treating torsades like ordinary VT (amiodarone, adenosine, sync)"
+item("strip", D, "adult-tachy", "Recurrent short runs that stop on their own. Between runs: alert, pressure 112/68. 12-lead: QTc 590 ms; potassium 3.1.",
+     ["Torsades with a pulse: magnesium may be considered, correct potassium, stop QT-prolonging drugs, pads on", "Amiodarone to suppress the runs", "Adenosine for the fast runs", "Synchronized cardioversion now"], 0,
+     ["Recurrent polymorphic VT with a long QT is torsades; magnesium may be considered (COR 2b).", "Amiodarone lengthens the QT; it is for polymorphic VT with a normal QT.", "Adenosine treats regular narrow tachycardia, not polymorphic VT.", "Sync cannot lock on to twisting complexes; sustained polymorphic VT gets an unsynchronized shock."],
+     "torsades-like-vt", 6, strip={"rhythm": "torsades", "rate": 240}, findings="Runs stop by themselves; alert between runs; long QT")
+item("strip", A, "adult-arrest", "The twisting rhythm does not stop.",
+     ["Pulseless polymorphic VT: CPR and an unsynchronized shock now", "Synchronized cardioversion", "Magnesium first, then shock if it persists", "Sinus tachycardia: treat the cause"], 0,
+     ["No pulse plus polymorphic VT is treated like VF: shock early.", "Sync cannot find reliable R waves; the device may not fire.", "The shock comes first; no routine magnesium in arrest (COR 3).", "These are not sinus complexes, and there is no pulse."],
+     "sync-unsync", 5, strip={"rhythm": "torsades", "rate": 240}, findings="Unresponsive, no pulse")
+
+
 def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     for it in I:

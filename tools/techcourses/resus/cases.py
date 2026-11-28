@@ -245,6 +245,57 @@ case("rl06-fast", "06-peri-arrest-rhythms", "Fast rhythm with a pulse",
               ("Synchronized for tachycardia with a pulse;", "unsynchronized only for pulseless or polymorphic VT.")]),
      {"algorithm": "adult-tachy", "set": ["adult", "dialysis"], "budget": 25})
 
+# ─────────────────────────── 06c Torsades de pointes (reviewed November 28, 2026) ───────────────────────────
+LQT = {"rhythm": "longqt", "rhythmLabel": "Sinus rhythm, long QT"}
+case("rl06-torsades", "06-peri-arrest-rhythms", "The twisting rhythm after a new antibiotic",
+     dict(LQT, time="10:20 a.m.", bp="118/70", hr=56, spo2=97, ecg="Sinus 56, long QT", uf="On", pump="Running", k="4.0 (before dialysis)",
+          rhythmLabel="Sinus rhythm 56, long QT", alarm=["ecg"]),
+     "<p>Saturday, 10:20 a.m. Mrs. Lorna Bautista, 67, dialyzes through a left-arm fistula on a 2 mmol/L potassium bath; her potassium before the session was 4.0. Three days ago another clinic started azithromycin for a cough. Three hours into the session she says her heart &ldquo;raced and skipped&rdquo; for a few seconds and she felt dizzy. The monitor memory shows a 6-second run of fast, wide complexes that twist around the baseline, then sinus rhythm again. She is alert; pressure 118/70. You are her dialysis nurse.</p>",
+     {"n1": node("10:20", "", "What do you do first?", [
+         ch("best", "Stop fluid removal, call the physician-on-duty, pads on, 12-lead ECG, send electrolytes.",
+            "A run of polymorphic VT that stops by itself is a warning, not a reassurance: the next run may not stop. Stop fluid removal, put the pads on, get a 12-lead to look at the QT, send potassium, magnesium and calcium, and give the physician the results and the full medicine list, including drugs started outside the unit.", "n2", vitals={"uf": "Off"}),
+         ch("poor", "Chart the run and recheck her in 15 minutes, since it stopped by itself and she is alert and talking now.",
+            "Self-terminating polymorphic VT often comes back and can become sustained.", "n2", then="Four minutes later another run makes her dizzy; you stop fluid removal and call the physician-on-duty.", vitals={"uf": "Off"}),
+         ch("harmful", "Ask for adenosine to stop the fast runs before they come back, since she is stable and has a pulse now.",
+            "Adenosine is for stable, regular, narrow-complex tachycardia. It does not treat polymorphic VT, and between runs she is in sinus rhythm.", "n2", then="The physician-on-duty arrives, stops the order and asks for a 12-lead.", vitals={"uf": "Off"})]),
+      "n2": node("10:28", "The 12-lead shows sinus rhythm 56 with a long QT; the machine reads the QTc as 590 ms. Blood gas potassium: 3.1 mmol/L. Short twisting runs keep coming and going; between them she is alert, 112/68.",
+                 "You are the physician-on-duty. Which plan fits?", [
+          ch("best", "Magnesium per protocol, correct the potassium, stop the azithromycin, call the attending.",
+             "Recurrent polymorphic VT with a long QT is torsades de pointes. Magnesium may be considered (AHA 2025, COR 2b, LOE C-LD). Low potassium after a low-potassium bath and a QT-prolonging antibiotic are the likely triggers: correct the potassium per protocol and stop the drug. Keep the pads on. The dose and whether the session continues are the physician&rsquo;s and the attending nephrologist&rsquo;s decision.", "n3", vitals={"k": "3.1 (blood gas)"}),
+          ch("poor", "Amiodarone IV to suppress the runs, since it treats ventricular tachycardia and she still has a pulse.",
+             "Amiodarone lengthens the QT. AHA 2025 lists amiodarone or lidocaine for recurrent polymorphic VT only when the QT is not prolonged.", "n3",
+             then="The attending nephrologist, on the phone, asks you to hold it and give magnesium instead.", vitals={"k": "3.1 (blood gas)"}),
+          ch("poor", "Finish her fluid goal on the same 2 mmol/L potassium bath, then treat the rhythm after she comes off.",
+             "Dialyzing against a low-potassium bath lowers her potassium further, which can provoke more torsades. The bath and the session are now the attending&rsquo;s decision.", "n3",
+             then="The attending stops the session plan and asks for the potassium to be corrected first.", vitals={"k": "3.1 (blood gas)"})],
+                 vitals={"time": "10:28 a.m.", "bp": "112/68", "ecg": "Sinus 56, long QT (QTc 590 ms); runs of polymorphic VT", "alarm": ["ecg"]}),
+      "n3": node("10:34", "During the next run she slumps. No response, no normal breathing, no pulse. The twisting rhythm does not stop.", "What now?", [
+          ch("best", "CPR, stop the blood pump, and an unsynchronized shock as soon as it is charged.",
+             "Pulseless polymorphic VT is treated like VF. Sustained polymorphic VT needs an immediate unsynchronized shock (AHA 2025, COR 1, LOE B-NR); the machine cannot synchronize to these twisting complexes.", "n4",
+             vitals={"time": "10:36 a.m.", "hr": 64, "bp": "96/58", "spo2": 93, "pump": "Stopped", "ecg": "Sinus 64, long QT", "rhythm": "longqt", "rhythmLabel": "Sinus rhythm 64, long QT, pulse present", "alarm": ["ecg"]}),
+          ch("poor", "Synchronized cardioversion, because she was in VT with a pulse only a moment ago and sync is safer.",
+             "She has no pulse now, and sync cannot find reliable R waves in torsades: the device may not fire, and the delay costs time.", "n4",
+             then="The defibrillator will not discharge in sync; you switch sync off and shock.",
+             vitals={"time": "10:37 a.m.", "hr": 64, "bp": "94/56", "spo2": 92, "pump": "Stopped", "ecg": "Sinus 64, long QT", "rhythm": "longqt", "rhythmLabel": "Sinus rhythm 64, long QT, pulse present", "alarm": ["ecg"]}),
+          ch("harmful", "Give the magnesium first and wait a minute to see whether it stops the rhythm before shocking.",
+             "The shock comes first. Magnesium does not replace defibrillation, and routine magnesium in cardiac arrest is not recommended (AHA 2025, COR 3: No Benefit).", "n4",
+             then="The leader calls for the shock; 90 seconds have passed.",
+             vitals={"time": "10:38 a.m.", "hr": 66, "bp": "90/54", "spo2": 91, "pump": "Stopped", "ecg": "Sinus 66, long QT", "rhythm": "longqt", "rhythmLabel": "Sinus rhythm 66, long QT, pulse present", "alarm": ["ecg"]})],
+                 vitals={"time": "10:34 a.m.", "hr": "—", "bp": "—", "spo2": "—", "ecg": "Polymorphic VT, no pulse", "rhythm": "torsades", "rhythmLabel": "Torsades de pointes, no pulse", "stripRate": 240, "alarm": ["hr", "bp", "spo2", "ecg"]}),
+      "n4": node("10:40", "After one shock: pulse and pressure are back, 96/58, sinus rhythm 64. The QT is still long.", "What next?", [
+          ch("best", "Pads on, monitor, recheck potassium and magnesium, flag the drug, transfer for monitored care.",
+             "ROSC care plus removing the triggers: keep the pads on and record azithromycin as a QT warning in her chart. The QT is still long, so torsades can return. She needs a monitored bed and a review of every QT-prolonging medicine, including those started outside the unit; tell the clinic that prescribed it.", "end"),
+          ch("poor", "Restart dialysis to finish her fluid goal, now that she has a pulse and her pressure is acceptable.",
+             "After an arrest, the session decision belongs to the attending nephrologist, and the low-potassium bath helped cause this.", "end",
+             then="The attending ends the session and arranges transfer.")]),
+      "end": end("11:15 a.m.", "Mrs. Bautista is transferred to a monitored bed with both 12-lead ECGs, the recorder&rsquo;s sheet and a note that azithromycin was stopped. The prescribing clinic is informed.")},
+     debrief([("A self-terminating run of twisting VT is a warning:", "stop fluid removal, pads on, 12-lead, electrolytes, full drug list."),
+              ("Long QT plus recurrent polymorphic VT is torsades:", "magnesium may be considered (COR 2b); correct potassium; stop QT-prolonging drugs. Amiodarone and lidocaine are for polymorphic VT with a normal QT."),
+              ("No pulse, or sustained polymorphic VT:", "immediate unsynchronized shock; sync cannot lock on. No routine magnesium in arrest."),
+              ("The dialysis link:", "a low-potassium bath, low magnesium and new QT-prolonging drugs (some antibiotics, antifungals and antiemetics) add up.")]),
+     {"algorithm": "adult-tachy", "set": ["adult", "dialysis"], "budget": 25},
+     order=["time", "bp", "hr", "spo2", "ecg", "uf", "pump", "k"])
+
 # ─────────────────────────── 07a Air in the system ───────────────────────────
 case("rl07-air", "07-arrest-in-the-dialysis-chair", "Air in the system",
      {"time": "1:40 p.m.", "bp": "138/80", "hr": 92, "spo2": 97, "ecg": "Sinus", "line": "Foam below venous chamber", "uf": "On", "pump": "Stopped (air alarm)",
