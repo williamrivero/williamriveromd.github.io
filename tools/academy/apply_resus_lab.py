@@ -222,6 +222,15 @@ def tile(name):
     return f'<img src="../images/{name}" alt="" loading="lazy" decoding="async" width="640" height="360">'
 
 
+def draft_cards_note():
+    """While the disaster quick cards are drafts, point reviewers to their review page (built by apply_emergency_cards.py)."""
+    if not (ACADEMY / "emergency-cards-disaster-draft.html").exists():
+        return ""
+    return ('  <p class="rl-note"><b>In review:</b> five disaster quick cards (power failure, earthquake, fire, typhoon warning, water failure) '
+            'are drafted and waiting for clinical sign-off. They are not on the live quick card page yet. '
+            '<a href="emergency-cards-disaster-draft.html">Read the drafts</a>.</p>')
+
+
 def ready_main():
     rows = []
     for lvl, hubs in LEVEL.items():
@@ -248,6 +257,7 @@ def ready_main():
     <a class="rl-panel prac" href="{PRACTICE}">{tile(HUB + "-practice-card.webp")}<small>Practice</small><b>Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for resuscitation drills.</span></a>
     <a class="rl-panel prac" href="{DPRACTICE}">{tile(DHUB + "-practice-card.webp")}<small>Practice</small><b>Disaster drills</b><span>A tabletop simulator with timed injects, a call-down drill timer, and a printable evacuation and patient-accounting sheet.</span></a>
   </div>
+{draft_cards_note()}
   <p>Also: the facilitator kits for <a href="{HUB}-trainer.html">resuscitation</a> and <a href="{DHUB}-trainer.html">disaster drills</a>, the <a href="../guides/calc-resuscitation-lab-toolkit.html">Resuscitation Lab toolkit</a>, and <a href="same-event-every-role.html">Same event, every role</a>.</p>
 </section>
 <section class="section" id="readiness">

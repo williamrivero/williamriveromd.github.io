@@ -143,14 +143,36 @@ import json as _json, importlib.util as _ilu
 _spec = _ilu.spec_from_file_location("emergency_cards_data", Path(__file__).with_name("emergency_cards_data.py"))
 D = _ilu.module_from_spec(_spec); _spec.loader.exec_module(D)
 REFS = _json.loads((ROOT / "data" / "academy-emergency-cards-refs.json").read_text(encoding="utf-8"))
+# Disaster cards 15 to 19 (drafts until signed off; see emergency_cards_disaster.py)
+_spec = _ilu.spec_from_file_location("emergency_cards_disaster", Path(__file__).with_name("emergency_cards_disaster.py"))
+DIS = _ilu.module_from_spec(_spec); _spec.loader.exec_module(DIS)
+D.SHORT.update(DIS.SHORT); D.LESSONS.update(DIS.LESSONS)
+for _p in ("techcourses/disaster/refs.py", "techcourses/dch/refs.py"):
+    _spec = _ilu.spec_from_file_location("eqc_refs_" + _p.split("/")[1], ROOT / "tools" / _p)
+    _m = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_m)
+    REFS.update({k: v for k, v in _m.REFS.items() if k in DIS.SHORT and k not in REFS})
+D.GROUPS = D.GROUPS + [("disaster", "Disasters and outages")]
+DRAFT_PAGE = "emergency-cards-disaster-draft.html"
+
+
+def review(cid):
+    return D.REVIEW.get(cid) or DIS.REVIEW.get(cid) or {}
+
+
+def live_cards():
+    return D.CARDS + [c for c in DIS.CARDS if review(c["id"]).get("status") == "reviewed"]
+
+
+def draft_cards():
+    return [c for c in DIS.CARDS if review(c["id"]).get("status") != "reviewed"]
 FIXED_REFS = {"code": ["aha9", "aha10", "lott", "hofacker", "handbook"], "leak": ["saha", "handbook"]}
 CARD_NAMES.update({c["id"]: c["index"] for c in D.CARDS})
-GROUP_COLOR = {"arrest": "arrest", "circuit": "circuit", "deterioration": "deter", "infection": "infect"}
+GROUP_COLOR = {"arrest": "arrest", "circuit": "circuit", "deterioration": "deter", "infection": "infect", "disaster": "disas"}
 
 
 def status_html(cid):
     """Visible review status line in a card header (text, not color alone)."""
-    r = D.REVIEW.get(cid)
+    r = review(cid)
     if r and r.get("status") == "reviewed":
         return '<p class="eqc-stat ok">Validate against your own unit protocols</p>'
     if r and r.get("status") == "pending":
@@ -158,11 +180,11 @@ def status_html(cid):
     return '<p class="eqc-stat draft"><b>DRAFT</b> &middot; Clinical review required<span class="eqc-x"> &middot; not yet for bedside use</span></p>'
 
 
-def sources_html(keys):
+def sources_html(keys, checked=None):
     for k in keys:
         assert k in REFS, f"unknown reference key {k}"
     links = " &middot; ".join(f'<a href="#ref-{k}">{D.SHORT[k]}</a>' for k in keys)
-    return f' <span class="eqc-src">Sources: {links}. Checked {D.CHECKED}.</span>'
+    return f' <span class="eqc-src">Sources: {links}. Checked {checked or D.CHECKED}.</span>'
 
 
 def learn_html(files):
@@ -181,7 +203,8 @@ def card_html(c):
         chip = ""
         if who or same:
             lab = ("At the same time &middot; " if same else "") + (who or "")
-            chip = f'<span class="eqc-who">{lab.rstrip(" &middot;")}</span> '
+            lab = lab[:-len(" &middot; ")] if lab.endswith(" &middot; ") else lab
+            chip = f'<span class="eqc-who">{lab}</span> '
         steps.append(f'    <li><span class="eqc-n">{n}</span><div>{chip}{txt}</div></li>')
     det = []
     for key, head in D.DET_ORDER:
@@ -204,19 +227,21 @@ def card_html(c):
 {chr(10).join(det)}
     </div>
   </details>
-  <p class="eqc-foot">Your unit&rsquo;s protocol decides. Learn it: {learn_html(c['learn'])}.{sources_html(c['refs'])}</p>
+  <p class="eqc-foot">Your unit&rsquo;s protocol decides. Learn it: {learn_html(c['learn'])}.{sources_html(c['refs'], DIS.CHECKED if c in DIS.CARDS else None)}</p>
 </article>"""
 
 
-def index_html():
+def index_html(cards, fixed=True):
     items = {g: [] for g, _ in D.GROUPS}
-    for c in D.FIXED_INDEX + D.CARDS:
+    for c in (D.FIXED_INDEX if fixed else []) + cards:
         items[c["group"]].append(c)
     out = ['  <div class="eqc-index" role="navigation" aria-label="Card index">']
     for g, label in D.GROUPS:
+        if not items[g]:
+            continue
         out.append(f'    <div class="eqc-ig eqc-ig-{GROUP_COLOR[g]}"><h2>{label}</h2><ul>')
         for c in sorted(items[g], key=lambda x: x["num"]):
-            st = D.REVIEW.get(c["id"], {}).get("status")
+            st = review(c["id"]).get("status")
             tag = "" if st in ("reviewed", "pending") else ' <span class="eqc-dr">draft</span>'
             out.append(f'      <li><a href="#{c["id"]}"><span class="eqc-in">{c["num"]}</span>{c["index"]}{tag}</a></li>')
         out.append('    </ul></div>')
@@ -298,6 +323,7 @@ STYLE = """
 .eqc-infect .eqc-head{background:#0e5a61;}
 .eqc-arrest .eqc-head{background:#b91c1c;}
 .eqc-circuit .eqc-head{background:#9a3412;}
+.eqc-disas .eqc-head{background:#1f3864;}
 .eqc-who{display:inline-block;font:700 11.5px/1.3 Inter,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em;
   color:var(--text-mid);border:1px solid var(--border);border-radius:6px;padding:1px 6px;margin:0 4px 2px 0;vertical-align:1px;}
 .eqc-warn{margin:4px 14px 12px;padding:10px 12px;border-radius:10px;background:var(--red-soft);border:2px solid var(--red);
@@ -314,6 +340,7 @@ STYLE = """
 .eqc-ig-circuit h2{border-color:#9a3412;}
 .eqc-ig-deter h2{border-color:#4B3280;}
 .eqc-ig-infect h2{border-color:#0e5a61;}
+.eqc-ig-disas h2{border-color:#1f3864;}
 .eqc-ig ul{list-style:none;margin:0;padding:0;}
 .eqc-ig li{margin:0 0 6px;}
 .eqc-ig a{display:flex;align-items:center;gap:8px;min-height:44px;box-sizing:border-box;padding:8px 10px;border:1px solid var(--border);
@@ -331,6 +358,7 @@ html[data-theme="dark"] .eqc-deter .eqc-head{background:#3d2970;}
 html[data-theme="dark"] .eqc-infect .eqc-head{background:#0b474d;}
 html[data-theme="dark"] .eqc-arrest .eqc-head{background:#8f1d1d;}
 html[data-theme="dark"] .eqc-circuit .eqc-head{background:#7c2d12;}
+html[data-theme="dark"] .eqc-disas .eqc-head{background:#1a2f55;}
 html[data-theme="dark"] .eqc-in{background:#2d4a7a;}
 html[data-theme="dark"] .eqc-stat.draft{background:#fff;color:#7a1a1a;}
 html[data-theme="dark"] .eqc-head{background:#8f1d1d;}
@@ -454,9 +482,9 @@ SCRIPT = r"""
 """
 
 
-def used_refs():
+def used_refs(cards, fixed=True):
     keys = []
-    for k in FIXED_REFS["code"] + FIXED_REFS["leak"] + [k for c in D.CARDS for k in c["refs"]]:
+    for k in (FIXED_REFS["code"] + FIXED_REFS["leak"] if fixed else []) + [k for c in cards for k in c["refs"]]:
         if k not in keys:
             keys.append(k)
     return sorted(keys, key=lambda k: re.sub(r"<[^>]+>|&[a-z]+;", "", REFS[k]).lower())
@@ -470,12 +498,41 @@ def fixed_cards():
     return out
 
 
+def draft_main_html():
+    cards = draft_cards()
+    refs = "\n".join(f'      <li id="ref-{k}">{REFS[k]}</li>' for k in used_refs(cards, False))
+    body = "\n".join(card_html(c) for c in sorted(cards, key=lambda c: c["num"]))
+    return f"""
+<section class="hero eqc-hero">
+  <div class="container">
+    <div class="nc-bar"><a href="./">Renal Care Academy</a><span class="nc-sep">›</span><a href="emergency-readiness.html">Emergency Readiness</a><span class="nc-sep">›</span><a href="{PAGE}">Emergency quick cards</a><span class="nc-sep">›</span><span>Disaster cards (draft)</span></div>
+    <h1>Disaster quick cards: draft for review</h1>
+    <p class="hero-tagline">{len(cards)} draft cards for power, earthquake, fire, typhoon and water emergencies</p>
+  </div>
+</section>
+{STYLE}
+<main class="container eqc-main">
+  <div class="alert alert-red" style="margin:14px 0;"><div class="alert-body"><p style="margin:0;"><b>DRAFT, pending clinical sign-off by Dr. William Gregory Rivero. Not for bedside use.</b> These cards are not on the live <a href="{PAGE}">Emergency quick cards</a> page and are not saved for offline use. Each card joins the live page, numbered 15 to 19, when its sign-off is recorded. They follow Disaster Preparedness and Response Modules 3 and 5 to 8 and Physician-on-Duty Module 30; the blood rule matches Resuscitation Lab Module 7.</p></div></div>
+  <p class="eqc-note">Like the signed-off cards, these are a memory aid for trained adult hemodialysis staff, not a protocol. <b>Your unit&rsquo;s protocol decides, and the attending nephrologist is called for every event.</b> Patients never disconnect themselves; staff take patients off. The physician-on-duty (POD) leads the clinical steps.</p>
+{index_html(cards, False)}
+{body}
+  <section class="eqc-more" id="about-cards">
+    <h2>References</h2>
+    <ol class="eqc-refs">
+{refs}
+    </ol>
+  </section>
+</main>
+"""
+
+
 def main_html():
-    refs = "\n".join(f'      <li id="ref-{k}">{REFS[k]}</li>' for k in used_refs())
+    cards = live_cards()
+    refs = "\n".join(f'      <li id="ref-{k}">{REFS[k]}</li>' for k in used_refs(cards))
     code, leak = fixed_cards()
-    new = "\n".join(card_html(c) for c in sorted(D.CARDS, key=lambda c: c["num"]))
-    ndraft = sum(1 for c in D.CARDS if D.REVIEW.get(c["id"], {}).get("status") != "reviewed")
-    total = len(D.CARDS) + 2
+    new = "\n".join(card_html(c) for c in sorted(cards, key=lambda c: c["num"]))
+    ndraft = sum(1 for c in cards if review(c["id"]).get("status") != "reviewed")
+    total = len(cards) + 2
     return f"""
 <!-- ═══ HERO ════════════════════════════════════ -->
 <section class="hero eqc-hero">
@@ -493,7 +550,7 @@ def main_html():
   </div>
   <p class="eqc-status" id="eqc-status" aria-live="polite">Save these cards once while you have signal; they then open on this device with no signal. Saving any track in Schola saves them too.</p>
   <p class="eqc-note">These cards are a memory aid for trained adult hemodialysis staff, not a protocol. <b>Your unit&rsquo;s protocol decides, and the attending nephrologist is called for every event.</b> Drugs are named without doses: doses, limits and stock are set by your unit. {("Validate every card against your own unit protocols before use.") if ndraft == 0 else (str(ndraft) + " of the " + str(total) + " cards are marked <b>DRAFT</b> until a clinical reviewer signs them off.")}</p>
-{index_html()}
+{index_html(cards)}
 {CIRCUIT_WORDS}
 {code}
 {leak}
@@ -512,7 +569,7 @@ def main_html():
 """
 
 
-def sub_meta(head):
+def sub_meta(head, TITLE=TITLE, DESC=DESC, URL=URL):
     head = re.sub(r"<title>.*?</title>", f"<title>{TITLE}</title>", head, count=1, flags=re.S)
     for prop, val in (("og:title", TITLE), ("twitter:title", TITLE), ("og:description", DESC), ("twitter:description", DESC), ("og:url", URL), ("twitter:url", URL)):
         head = re.sub(r'(<meta (?:property|name)="%s" content=")[^"]*(")' % re.escape(prop), lambda m: m.group(1) + val + m.group(2), head)
@@ -523,15 +580,23 @@ def sub_meta(head):
     return head
 
 
-def build_page():
+def build_page(draft=False):
     land = (ACADEMY / "index.html").read_text(encoding="utf-8")
     head, rest = land.split("</head>", 1)
-    head = sub_meta(head + "</head>")
+    if draft:
+        head = sub_meta(head + "</head>", "Disaster quick cards (draft for review) · Renal Care Academy",
+                        "Draft emergency quick cards for power failure, earthquake, fire, typhoon warning and water failure in a dialysis unit, pending clinical sign-off.",
+                        URL.rsplit("/", 1)[0] + "/" + DRAFT_PAGE[:-5])
+        head = head.replace("</head>", '<meta name="robots" content="noindex">\n</head>', 1)
+    else:
+        head = sub_meta(head + "</head>")
     body_open = rest[:rest.index("</header>") + len("</header>")]
     tail = rest[rest.index('<footer class="guide-footer">'):]
     tail = re.sub(r'<button class="print-btn".*?</button>\s*', "", tail, count=1, flags=re.S)
     tail = re.sub(r'\n?<script src="[^"]*assets/(academy-|schola|tech-course|guide-rail|share-buttons|image-lightbox)[^"]*" defer></script>', "", tail)
-    page = head + body_open + "\n" + main_html() + "\n" + tail
+    page = head + body_open + "\n" + (draft_main_html() if draft else main_html()) + "\n" + tail
+    if draft:
+        return page
     i = page.rfind("</body>")
     return page[:i] + SCRIPT + page[i:]
 
@@ -606,6 +671,16 @@ def main():
         changed += 1
         if not dry:
             dst.write_text(page, encoding="utf-8")
+    dpage, dst2 = build_page(draft=True), ACADEMY / DRAFT_PAGE
+    if draft_cards():
+        if not dst2.exists() or dst2.read_text(encoding="utf-8") != dpage:
+            changed += 1
+            if not dry:
+                dst2.write_text(dpage, encoding="utf-8")
+    elif dst2.exists():
+        changed += 1
+        if not dry:
+            dst2.unlink()
     changed += patch_landing(dry)
     changed += patch_modules(dry)
     print(f"academy emergency quick cards: {changed} page(s) updated" + (" [dry run]" if dry else ""))

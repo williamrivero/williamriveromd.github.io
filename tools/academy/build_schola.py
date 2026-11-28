@@ -191,7 +191,8 @@ def h1_text(text):
 
 
 def main():
-    names = sorted(p.name for p in ACADEMY.glob("*.html") if not re.search(r" \d+\.html$", p.name))   # skip iCloud "page 2.html" copies
+    names = sorted(p.name for p in ACADEMY.glob("*.html")
+                   if not re.search(r" \d+\.html$|-draft\.html$", p.name))   # skip iCloud "page 2.html" copies and unsigned drafts
     hubs = hub_names(names)
     texts = {n: (ACADEMY / n).read_text(encoding="utf-8") for n in names}
     small = {}
