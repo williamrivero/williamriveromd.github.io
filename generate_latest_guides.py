@@ -461,7 +461,7 @@ def sync_library_stats(project_dir: Path, guides_index_text: str, dry_run: bool)
     print(f"guides/index.html: {changed} stat/meta reference(s) synced" if changed else "guides/index.html: stats already in sync")
 
     new_calc_text, cn1 = re.subn(
-        r'\d+( evidence-based nephrology calculators)', rf'{calc_count}\g<1>', calc_text)
+        r'\d+( evidence-based (?:nephrology|clinical) calculators)', rf'{calc_count}\g<1>', calc_text)
     cn2 = sync_calc_filter_chips(new_calc_text)
     new_calc_text = cn2[0]
     cn1 += cn2[1]

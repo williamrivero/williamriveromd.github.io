@@ -45,9 +45,9 @@ HEAD_BLOCK = (HEAD_START + "\n"
 
 MANIFEST = {
     "id": "/guides/calculators",
-    "name": "Calculo · Nephrology Calculators",
+    "name": "Calculo · Clinical Calculators",
     "short_name": "Calculo",
-    "description": "Nephrology and clinical calculators from renalcarematters.com. Every calculator works offline once downloaded.",
+    "description": "Clinical calculators across specialties from renalcarematters.com. Every calculator works offline once downloaded.",
     "start_url": "/guides/calculators",
     "scope": "/guides/calc",
     "display": "standalone",
@@ -187,14 +187,14 @@ html[data-theme="dark"] .ca-xpl{background:#161a2e;border-color:#2f3563;} html[d
 html[data-theme="dark"] .ca-xpl-tr summary{color:#b4bfcf;} html[data-theme="dark"] .ca-xpl-tr p{color:#c9d2e0;}
 @media print{.ca-xpl{display:none!important;}}
 </style>
-<figure class="ca-xpl" id="explainer"><figcaption><span class="ca-xpl-play" aria-hidden="true">&#9654;</span> Meet Calculo (1 min 12 s)<button type="button" class="ca-xpl-share" aria-label="Share this explainer video"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>
+<figure class="ca-xpl" id="explainer"><figcaption><span class="ca-xpl-play" aria-hidden="true">&#9654;</span> Meet Calculo (1 min 13 s)<button type="button" class="ca-xpl-share" aria-label="Share this explainer video"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>
 <video controls playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false" poster="/videos/calculo/calculo-explainer.jpg" width="1280" height="720"><source src="/videos/calculo/calculo-explainer.mp4" type="video/mp4"></video>
 <details class="ca-xpl-tr"><summary>Read the transcript</summary><p>__TR__</p></details></figure>
 <script>(function(){var b=document.querySelector('.ca-xpl-share');if(!b)return;b.addEventListener('click',function(){var u='https://renalcarematters.com/watch/calculo',l=b.querySelector('span');
 function done(m){l.textContent=m;setTimeout(function(){l.textContent='Share';},2200);}
 if(navigator.share){navigator.share({title:document.title,url:u}).catch(function(){});return;}
 if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){done('Link copied');},function(){prompt('Copy this link',u);});else prompt('Copy this link',u);});})();</script>
-""" + XPL_END).replace("__TR__", "Meet Calculo, the clinical calculators of Renal Care Matters. More than two hundred and fifty calculators for kidney care, in one place, and free. Search by name, or browse twenty-three categories, from kidney function and electrolytes to dialysis, nutrition and critical care. Each calculator is one clean card. Enter the values, choose your units, and the result appears at once. Not sure what to enter? Tap Sample data to try realistic values, then Clear sample to put your own back. Enter the patient&#x27;s age, weight and creatinine once, and related calculators fill them in for you, saved only on your device. Every result shows its formula, sources and limitations, so you can check the math and the evidence behind it. Open the Calculo tab on the left to install the app, and download every calculator once. Then they all work with no signal, on the ward, in the basement, or in the dialysis unit. Calculators support your clinical judgment; they never replace it. Find Calculo at Renal Care Matters dot com.")
+""" + XPL_END).replace("__TR__", "Meet Calculo, the clinical calculators of Renal Care Matters. More than two hundred and fifty calculators across every specialty, in one place, and free. Search by name, or browse twenty-three categories, from kidney function and drug dosing to cardiology, critical care, pediatrics and neurology. Each calculator is one clean card. Enter the values, choose your units, and the result appears at once. Not sure what to enter? Tap Sample data to try realistic values, then Clear sample to put your own back. Enter the patient&#x27;s age, weight and creatinine once, and related calculators fill them in for you, saved only on your device. Every result shows its formula, sources and limitations, so you can check the math and the evidence behind it. Open the Calculo tab on the left to install the app, and download every calculator once. Then they all work with no signal, on the ward, in the basement, or in the dialysis unit. Calculators support your clinical judgment; they never replace it. Find Calculo at Renal Care Matters dot com.")
 
 
 def panel(n_calc: int, dl_mb: int, store_mb: int) -> str:

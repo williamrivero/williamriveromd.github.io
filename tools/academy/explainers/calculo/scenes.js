@@ -5,13 +5,13 @@ function calcIcon(X, Y, s, col) { x.save(); x.translate(X, Y); x.scale(s, s); bo
   for (var r = 0; r < 3; r++) for (var c = 0; c < 3; c++) box(-11 + c * 8, -2 + r * 7, 6, 5, 1, 'rgba(255,255,255,.7)'); x.restore(); }
 function field(X, Y, w, label, val, hl) { txt(label, X, Y, 14, '#475569', 700); box(X, Y + 12, w, 38, 8, hl ? '#fef3c7' : '#f8fafc', hl ? '#f59e0b' : '#cbd5e1', hl ? 2 : 1.5); txt(val, X + 12, Y + 31, 17, INK, 700); }
 function card(X, Y, w, h, title) { box(X, Y, w, h, 14, '#fff', '#dfe6f0', 2); x.save(); rr(X, Y, w, h, 14); x.clip(); x.fillStyle = TEAL; x.fillRect(X, Y, w, 5); x.restore(); txt(title, X + 22, Y + 34, 19, NAVY, 800); }
-var CATS = [['Kidney Function & GFR', '#1a6b72'], ['Pharmacology & Dosing', '#0d9488'], ['Dialysis Adequacy & Fluid', '#1f3864'], ['Fluids, Electrolytes & Acid–Base', '#6b21a8'],
-  ['Minerals, Anemia & Iron', '#b91c1c'], ['Nutrition, Body & Lifestyle', '#166534'], ['Acute Kidney Injury', '#0f766e'], ['Critical Care & Emergency', '#dc2626']];
+var CATS = [['Kidney Function & GFR', '#1a6b72'], ['Pharmacology & Dosing', '#0d9488'], ['Cardiometabolic', '#be185d'], ['Critical Care & Emergency', '#dc2626'],
+  ['Pediatric Nephrology', '#ea580c'], ['Neurology & Stroke', '#6366f1'], ['Oncology & Urology', '#7c3aed'], ['Rheumatology', '#0369a1']];
 var scenes = [
   function title(lt, T) {
     var a = pop(fadeIn(lt, .2, .7)); x.save(); x.globalAlpha = Math.min(1, a); x.translate(0, (1 - a) * 30);
     box(R + 10, 66, 520, 58, 29, 'rgba(49,46,129,.10)'); txt('RENAL CARE MATTERS  ·  CALCULO', R + 40, 95, 18, IND, 800);
-    txt('Calculo', R + 30, 196, 84, NAVY, 800); txt('clinical calculators for kidney care', R + 32, 262, 34, GOLD, 800); x.restore();
+    txt('Calculo', R + 30, 196, 84, NAVY, 800); txt('clinical calculators, every specialty', R + 32, 262, 34, GOLD, 800); x.restore();
     var cols = CATS.map(function (c) { return c[1]; }); var n = 0;
     for (var r = 0; r < 4; r++) for (var c = 0; c < 9; c++) { var i = r * 9 + c, u = pop(fadeIn(lt, 1.6 + i * .06, .35)); if (u <= 0) continue; n++;
       x.save(); x.translate(R + 60 + c * 64, 340 + r * 62); x.scale(u * .9, u * .9); calcIcon(0, 0, 1, cols[i % cols.length]); x.restore(); }

@@ -41,7 +41,7 @@ VIDEOS = [
     {"name": "calculo", "video": "/videos/calculo/calculo-explainer.mp4",
      "poster": "videos/calculo/calculo-explainer.jpg",
      "title": "Meet Calculo: a cartoon explainer",
-     "desc": "More than 250 clinical calculators for kidney care, free: search, sample data, shared patient inputs, "
+     "desc": "More than 250 free clinical calculators across every specialty: search, sample data, shared patient inputs, "
              "formulas and sources, and one download for use with no signal.",
      "tool": "/guides/calculators", "tool_label": "Open the calculators", "script": "calculo"},
     {"name": "interaction-checker", "video": "/videos/dosis/interaction-checker-explainer.mp4",
