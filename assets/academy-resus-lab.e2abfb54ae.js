@@ -904,8 +904,8 @@
         '<div class="m-ecg m-co2"><span class="m-lead">CO&#8322; <small>0&ndash;50 mmHg</small></span><span class="m-plno m-co2no" hidden>NO CO&#8322; SENSOR</span><canvas class="rl-dco2" role="img" aria-label="Capnogram"></canvas></div></div>' +
       '<div class="m-par">' +
         '<div class="m-box m-hr"><span class="m-k">HR <small>bpm</small></span><b class="m-v"></b><span class="m-lim">50 &ndash; 120</span></div>' +
-        '<div class="m-box m-sp"><span class="m-k">SpO&#8322; <small>%</small></span><b class="m-v"></b><span class="m-sub">PR <i class="m-pr"></i></span></div>' +
         '<div class="m-box m-bp"><span class="m-k">NIBP <small>mmHg</small></span><b class="m-v"></b><span class="m-sub m-map"></span></div>' +
+        '<div class="m-box m-sp"><span class="m-k">SpO&#8322; <small>%</small></span><b class="m-v"></b><span class="m-sub">PR <i class="m-pr"></i></span></div>' +
         '<div class="m-box m-co2b"><span class="m-k">EtCO&#8322; <small>mmHg</small></span><b class="m-v"></b><span class="m-sub">RR <i class="m-rr"></i> /min</span></div>' +
       '</div></div>' +
       '<div class="m-defib" hidden><div class="m-dstat">Defibrillator &middot; <b class="m-dst">READY</b></div>' +
