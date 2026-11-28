@@ -529,8 +529,17 @@
     host.appendChild(disp);
     (function () {   // scale the 1280 × 720 display page to the thumbnail width
       var box = $(".rl-thumb", disp), fr = $("iframe", box), tog = $(".rl-thumb-tog", disp);
-      function fit() { var w = box.clientWidth || 320; fr.style.transform = "scale(" + (w / 1280) + ")"; }
+      function fit() {   // scale to the box width; grow to the display's real height so nothing at the bottom is cut off
+        var w = box.clientWidth || 320, k = w / 1280, h = 720, d = null;
+        try { d = fr.contentDocument; } catch (e) {}
+        var mon = d && d.querySelector(".rl-display");
+        if (mon) h = Math.max(720, Math.ceil(mon.scrollHeight), Math.ceil(d.documentElement.scrollHeight));
+        if (fr.style.height !== h + "px") fr.style.height = h + "px";
+        fr.style.transform = "scale(" + k + ")"; box.style.aspectRatio = "auto"; box.style.height = Math.ceil(h * k) + "px";
+      }
       fit(); if (window.ResizeObserver) new ResizeObserver(fit).observe(box); else window.addEventListener("resize", fit);
+      fr.addEventListener("load", function () { fit(); setTimeout(fit, 600); });
+      setInterval(function () { if (!box.hidden) fit(); }, 2000);   // the display grows when the defibrillator panel appears
       var off = store("rcm-resus-thumb") === "off";
       function setOff(v) { off = v; box.hidden = v; tog.textContent = v ? "Show" : "Hide"; if (v) fr.removeAttribute("src"); else if (!fr.getAttribute("src")) fr.setAttribute("src", "?display=1&thumb=1"); store("rcm-resus-thumb", v ? "off" : "on"); }
       tog.addEventListener("click", function () { setOff(!off); }); if (off) setOff(true);
