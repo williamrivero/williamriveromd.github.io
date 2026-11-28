@@ -683,10 +683,32 @@
     }
     // simulated defibrillator
     var st = "ready", shocks = 0, armT = 0, actx = null, sound = true;
-    function tone(f, ms, vol) {
-      if (!sound) return; try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); var o = actx.createOscillator(), g = actx.createGain();
-        o.frequency.value = f; g.gain.value = vol || 0.06; o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime + ms / 1000); } catch (e) {}
+    var out = null;   // a compressor before the speakers lets the loud alerts play loud without clipping
+    function ac() {
+      if (!actx) {
+        actx = new (window.AudioContext || window.webkitAudioContext)();
+        out = actx.createDynamicsCompressor(); out.threshold.value = -10; out.knee.value = 6; out.ratio.value = 8; out.attack.value = 0.002; out.release.value = 0.12;
+        out.connect(actx.destination);
+      }
+      if (actx.state === "suspended" && actx.resume) actx.resume();
+      return actx;
     }
+    function tone(f, ms, vol, type, at) {
+      if (!sound) return; try { var a = ac(), o = a.createOscillator(), g = a.createGain(), t0 = a.currentTime + (at || 0), t1 = t0 + ms / 1000;
+        o.type = type || "sine"; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(vol || 0.06, t0 + 0.008);
+        g.gain.setValueAtTime(vol || 0.06, Math.max(t0 + 0.009, t1 - 0.02)); g.gain.exponentialRampToValueAtTime(0.0001, t1);
+        o.connect(g); g.connect(out); o.start(t0); o.stop(t1 + 0.01); } catch (e) {}
+    }
+    function burst(ms, vol) {   // the shock's discharge "thump": a band-passed noise burst
+      if (!sound) return; try { var a = ac(), n = Math.round(a.sampleRate * ms / 1000), buf = a.createBuffer(1, n, a.sampleRate), d = buf.getChannelData(0);
+        for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2);
+        var src = a.createBufferSource(), bp = a.createBiquadFilter(), g = a.createGain(); src.buffer = buf; bp.type = "bandpass"; bp.frequency.value = 900; bp.Q.value = 0.7; g.gain.value = vol;
+        src.connect(bp); bp.connect(g); g.connect(out); src.start(); } catch (e) {}
+    }
+    // loud cues for the two moments everyone in the room must hear
+    function syncBeep(on) { if (on) { tone(1200, 90, 0.5, "square"); tone(1200, 90, 0.5, "square", 0.14); } else tone(700, 120, 0.4, "square"); }
+    function shockSound() { burst(260, 1.4); tone(220, 280, 0.6, "square"); tone(880, 160, 0.35, "square", 0.02); }
+    function refuseSound() { for (var k = 0; k < 3; k++) tone(330, 160, 0.55, "square", k * 0.22); }
     var dst = $(".m-dst", wrap), bCh = $(".m-charge", wrap), bSh = $(".m-shock", wrap), bDis = $(".m-disarm", wrap), sel = $(".m-j", wrap), bSy = $(".m-sync", wrap);
     function J() { return +sel.value; }
     function show(state, text) {
@@ -694,7 +716,7 @@
       bCh.disabled = state === "charging"; bSh.disabled = state !== "charged"; bDis.disabled = state !== "charged" && state !== "charging";
       $(".m-count", wrap).textContent = shocks ? "Shocks: " + shocks : "";
     }
-    bSy.addEventListener("click", function () { var on = bSy.getAttribute("aria-pressed") !== "true"; bSy.setAttribute("aria-pressed", on); bSy.classList.toggle("on", on); bSy.textContent = on ? "Sync on" : "Sync"; });
+    bSy.addEventListener("click", function () { var on = bSy.getAttribute("aria-pressed") !== "true"; bSy.setAttribute("aria-pressed", on); bSy.classList.toggle("on", on); bSy.textContent = on ? "Sync on" : "Sync"; syncBeep(on); });
     $(".m-snd", wrap).addEventListener("click", function () { sound = !sound; this.setAttribute("aria-pressed", sound); this.textContent = sound ? "Sound on" : "Sound off"; });
     sel.addEventListener("change", function () { if (st === "charged" || st === "charging") { clearTimeout(armT); show("ready", "DISARMED: ENERGY CHANGED"); } });
     bCh.addEventListener("click", function () {
@@ -709,8 +731,8 @@
     bSh.addEventListener("click", function () {
       if (st !== "charged") return; clearTimeout(armT);
       var syncOn = bSy.getAttribute("aria-pressed") === "true";
-      if (syncOn && (cur.rhythm === "vf" || cur.rhythm === "asystole")) { show("charged", "SYNC: NO R WAVE DETECTED · SHOCK NOT DELIVERED"); tone(300, 600, 0.07); return; }
-      shocks++; strip.shock(); tone(180, 250, 0.09);
+      if (syncOn && (cur.rhythm === "vf" || cur.rhythm === "asystole")) { show("charged", "SYNC: NO R WAVE DETECTED · SHOCK NOT DELIVERED"); refuseSound(); return; }
+      shocks++; strip.shock(); shockSound();
       if (flash) { wrap.classList.add("m-zap"); setTimeout(function () { wrap.classList.remove("m-zap"); }, 160); }
       show("ready", "SHOCK DELIVERED " + J() + " J" + (syncOn ? " (SYNC)" : ""));
       var msg = { type: "defib", ev: "shock", j: J(), sync: syncOn, t: Date.now() };
