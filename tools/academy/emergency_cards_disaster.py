@@ -1,7 +1,7 @@
 """Disaster quick cards 15 to 19 for academy/emergency-cards.html (blueprint section 9; approved in principle by Dr. Rivero on
 November 28, 2026, for drafting). Rendered by apply_emergency_cards.py.
 
-These cards are DRAFTS. A card appears on the live quick card page only when REVIEW below records status "reviewed" with a
+A card appears on the live quick card page only when REVIEW below records status "reviewed" with a
 reviewer and date. Until then it appears only on academy/emergency-cards-disaster-draft.html (noindex), for review.
 Content rules (same as emergency_cards_data.py):
   * every step follows the Disaster Preparedness and Response modules and Physician-on-Duty Module 30 named in "learn";
@@ -12,7 +12,12 @@ Step tuple: (who, html, same_time)."""
 
 CHECKED = "November 28, 2026"
 
-REVIEW = {  # add {"status": "reviewed", "by": "...", "date": "..."} per card after sign-off; the card then goes live
+REVIEW = {  # Dr. Rivero signed off all five disaster cards on November 28, 2026
+    "power-failure": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "earthquake": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "fire": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "typhoon": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
+    "water-failure": {"status": "reviewed", "by": "Dr. William Gregory Rivero", "date": "November 28, 2026"},
 }
 
 SHORT = {

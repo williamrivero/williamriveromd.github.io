@@ -31,7 +31,8 @@ PAGE = "emergency-cards.html"
 URL = "https://renalcarematters.com/academy/emergency-cards"
 TITLE = "Emergency quick cards for the dialysis floor · Renal Care Academy"
 DESC = ("One-screen action cards for the first minutes of a hemodialysis emergency: code, blood leak, low blood pressure, "
-        "needle dislodgement, air, hemolysis, reactions, chest pain, arrhythmia, potassium, low sugar, seizure, stroke and fever.")
+        "needle dislodgement, air, hemolysis, reactions, chest pain, arrhythmia, potassium, low sugar, seizure, stroke, fever, "
+        "power failure, earthquake, fire, typhoon warning and water failure.")
 START, END = "<!-- EMERGENCY-CARDS-START -->", "<!-- EMERGENCY-CARDS-END -->"
 MSTART, MEND = "<!-- EQC-LINK-START -->", "<!-- EQC-LINK-END -->"
 
@@ -70,7 +71,16 @@ MODULE_LINKS = {
     "dialysis-nurse-assistant-07-access-protection-monitoring.html": ("access-bleeding",),
     "dialysis-nurse-assistant-08-deterioration-emergencies.html": ("code", "hypotension", "hypoglycemia"),
     "pediatric-dialysis-nurse-15-emergencies-and-resuscitation.html": ("code",),
-    "special-dialysis-nurse-roles-07-safety-and-emergency-preparedness.html": ("code", "leak"),
+    "special-dialysis-nurse-roles-07-safety-and-emergency-preparedness.html": ("code", "leak", "fire", "earthquake", "power-failure"),
+    # disaster cards 15 to 19 (signed off Nov 28 2026); live only while signed (live_cards())
+    "disaster-preparedness-03-unit-plan-and-command.html": ("typhoon",),
+    "disaster-preparedness-05-typhoons-and-floods.html": ("typhoon",),
+    "disaster-preparedness-06-earthquake-on-the-machine.html": ("earthquake",),
+    "disaster-preparedness-07-fire-and-evacuation.html": ("fire",),
+    "disaster-preparedness-08-power-water-supplies.html": ("power-failure", "water-failure"),
+    "physician-on-duty-30-when-the-power-or-water-fails.html": ("power-failure", "water-failure", "earthquake", "fire"),
+    "water-treatment-technician-12-failures-emergencies-capstone.html": ("water-failure",),
+    "dialysis-head-nurse-12-disaster-and-service-leadership.html": ("typhoon", "power-failure"),
 }
 CARD_NAMES = {"code": "Code during hemodialysis", "leak": "Blood leak alarm"}
 
@@ -167,6 +177,7 @@ def draft_cards():
     return [c for c in DIS.CARDS if review(c["id"]).get("status") != "reviewed"]
 FIXED_REFS = {"code": ["aha9", "aha10", "lott", "hofacker", "handbook"], "leak": ["saha", "handbook"]}
 CARD_NAMES.update({c["id"]: c["index"] for c in D.CARDS})
+CARD_NAMES.update({c["id"]: c["index"] for c in DIS.CARDS})
 GROUP_COLOR = {"arrest": "arrest", "circuit": "circuit", "deterioration": "deter", "infection": "infect", "disaster": "disas"}
 
 
@@ -613,7 +624,7 @@ CALLOUT = f"""{START}
 @media (max-width:640px){{.eqc-callout{{padding:0 16px;}}}}
 @media print{{.eqc-callout{{display:none;}}}}
 </style>
-<div class="eqc-callout"><a href="emergency-cards.html"><span class="eqc-ic" aria-hidden="true">&#128680;</span><span><b>Emergency quick cards</b><span class="t">One-screen action cards for the first minutes at the chair: a code, the blood leak alarm, low blood pressure, a needle out, air, hemolysis, reactions, chest pain, rhythm, potassium, sugar, seizure, stroke and fever. Save them on your phone for use with no signal, or print them for the crash cart.</span></span></a></div>
+<div class="eqc-callout"><a href="emergency-cards.html"><span class="eqc-ic" aria-hidden="true">&#128680;</span><span><b>Emergency quick cards</b><span class="t">One-screen action cards for the first minutes at the chair: a code, the blood leak alarm, low blood pressure, a needle out, air, hemolysis, reactions, chest pain, rhythm, potassium, sugar, seizure, stroke and fever, plus power failure, earthquake, fire, a typhoon warning and water failure. Save them on your phone for use with no signal, or print them for the crash cart.</span></span></a></div>
 {END}"""
 
 
@@ -643,13 +654,17 @@ def patch_landing(dry):
 
 def patch_modules(dry):
     n = 0
+    live = {"code", "leak"} | {c["id"] for c in live_cards()}
     for name, cards in MODULE_LINKS.items():
+        cards = tuple(c for c in cards if c in live)
         p = ACADEMY / name
         if not p.exists():
             print(f"  module not found, skipped: {name}")
             continue
         old = p.read_text(encoding="utf-8")
         text = re.sub(r"\n?" + re.escape(MSTART) + r".*?" + re.escape(MEND), "", old, flags=re.S)
+        if not cards:
+            continue
         m = re.search(r'<section class="section" id="(skills|quiz)"', text)
         if not m:
             print(f"  no skills/quiz section, skipped: {name}")
