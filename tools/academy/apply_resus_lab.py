@@ -364,7 +364,6 @@ def ready_main():
 <section class="section" id="parts">
   <div class="section-tag">Cross-track section</div>
   <h2>Act, learn, practice</h2>
-  <div class="rl-pa-promo"><img src="/images/app/paratus-192.png" alt="" width="48" height="48"><p><b>Paratus, the Emergency Readiness app.</b> Install it and download once, and everything in this section, including both practice labs and the second display, works with no signal. It is separate from Schola, the Academy app.</p><a href="/paratus/#paratus">Get Paratus</a></div>
   <p>Emergency Readiness sits beside the role tracks because emergencies cut across every role. A nurse assistant starts compressions; a technician brings the defibrillator; the circuit nurse manages the machine; the physician-on-duty leads. When a typhoon, an earthquake or a fire hits, the same team keeps the patients on the machines safe and keeps every patient dialyzed until the unit reopens. There are two courses: one for the arrest at the chair, one for the events that harm many patients at once.</p>
   <div class="rl-panels two">
     <a class="rl-panel act" href="emergency-cards.html">{tile("emergency-readiness-card.webp")}<div class="rl-act-t"><small>Act</small><b>Emergency Quick Cards</b><span>Nineteen one-screen action cards: the first minutes at the chair, plus power failure, earthquake, fire, a typhoon warning and water failure. Saved for use with no signal; open these during a real event.</span></div></a>
@@ -701,10 +700,10 @@ LAND = f"""{LS}
 .erd-card .t{{display:block;font-size:14px;line-height:1.45;color:var(--text-mid);}}
 .erd-card.erd-act{{background:var(--red-soft);border-color:rgba(185,28,28,.25);border-left-color:var(--red);}}
 .erd-card.erd-act b{{color:var(--red);}}
-.erd-card.erd-pa{{border-left-color:#991b1b;}} .erd-card.erd-pa b img{{vertical-align:-5px;border-radius:6px;margin-right:4px;}}
-.rl-pa-promo{{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border:1px solid var(--border);border-left:5px solid #991b1b;border-radius:12px;padding:12px 16px;margin:18px 0 0;background:var(--white);}}
-.rl-pa-promo img{{border-radius:10px;flex:none;}} .rl-pa-promo p{{margin:0;flex:1 1 260px;color:var(--text);text-align:left;}}
-.rl-pa-promo a{{font:700 14.5px Inter,system-ui,sans-serif;color:#fff;background:#991b1b;border-radius:9px;padding:10px 14px;text-decoration:none;white-space:nowrap;}}
+.erd-get{{display:flex;align-items:center;gap:12px;margin:14px 0 4px;padding:12px 14px;border-radius:14px;text-decoration:none;color:#fff;
+  background:linear-gradient(135deg,#b91c1c,#7f1d1d);box-shadow:0 6px 18px rgba(127,29,29,.28);}}
+.erd-get:hover{{filter:brightness(1.06);}} .erd-get img{{flex:none;border-radius:10px;box-shadow:0 0 0 2px rgba(255,255,255,.35);}}
+.erd-get b{{display:block;font:800 16px Inter,system-ui,sans-serif;color:#fff;}} .erd-get small{{display:block;font-size:13px;line-height:1.45;color:#fee2e2;margin-top:2px;}}
 .erd-home{{display:inline-block;margin-top:10px;font:700 14.5px Inter,system-ui,sans-serif;color:var(--teal);text-decoration:none;}}
 html[data-theme="dark"] .erd-card b,html[data-theme="dark"] .erd-home{{color:var(--text);}}
 html[data-theme="dark"] .erd-card.erd-act b{{color:#f4a3a3;}}
@@ -716,6 +715,7 @@ html[data-theme="dark"] .erd-card.erd-act b{{color:#f4a3a3;}}
 <div class="erd-scrim no-print"></div>
 <aside class="erd no-print" id="emergency-readiness" aria-label="Emergency Readiness" aria-hidden="true">
 <div class="erd-head"><span class="erd-hic">{BOLT}</span><div><h2>Emergency Readiness</h2><p>Act, learn, practice: one section for the whole dialysis unit.</p></div><button type="button" class="erd-x" aria-label="Close">&times;</button></div>
+<a class="erd-get" href="/paratus/#paratus"><img src="/images/app/paratus-192.png" alt="" width="44" height="44"><span><b>Get Paratus</b><small>The Emergency Readiness app: install it and download once, and the cards, courses and practice labs work with no signal. Separate from Schola.</small></span></a>
 <h3 class="erd-k">Act</h3>
 <a class="erd-card erd-act" href="emergency-cards.html"><b>&#128680; Emergency quick cards</b><span class="t">One-screen action cards for the first minutes at the chair: a code, the blood leak alarm, low blood pressure, a needle out, air, hemolysis, reactions, chest pain, rhythm, potassium, sugar, seizure, stroke and fever, plus power failure, earthquake, fire, a typhoon warning and water failure. Save them on your phone for use with no signal, or print them for the crash cart.</span></a>
 <h3 class="erd-k">Learn</h3>
@@ -724,8 +724,6 @@ html[data-theme="dark"] .erd-card.erd-act b{{color:#f4a3a3;}}
 <h3 class="erd-k">Practice</h3>
 <a class="erd-card" href="{PRACTICE}"><b>Megacode Practice Lab</b><span class="t">Algorithm recognition rounds, timed megacodes and a facilitator recorder for resuscitation drills.</span></a>
 <a class="erd-card" href="{DPRACTICE}"><b>Disaster drills</b><span class="t">A tabletop simulator with timed injects, a call-down drill timer and a printable evacuation sheet.</span></a>
-<h3 class="erd-k">Use it without signal</h3>
-<a class="erd-card erd-pa" href="/paratus/#paratus"><b><img src="/images/app/paratus-192.png" alt="" width="22" height="22"> Paratus app</b><span class="t">This whole section as its own app: install it and download once, and the quick cards, courses and practice labs work with no signal. Separate from Schola.</span></a>
 <a class="erd-home" href="{READY}">Open the Emergency Readiness page &rarr;</a>{" <b>Draft, pending clinical sign-off.</b>" if DRAFT else ""}
 </aside>
 <script>

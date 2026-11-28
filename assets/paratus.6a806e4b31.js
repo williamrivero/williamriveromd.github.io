@@ -21,8 +21,21 @@
   var display = /[?&]display=1/.test(location.search);
 
   var css = ''
-    + '.pa-panel{max-width:860px;margin:22px auto 8px;padding:20px 22px;border:1px solid #f1c4c4;border-radius:16px;background:linear-gradient(180deg,#fff5f5,#fff);color:#1e2a38}'
-    + '.pa-panel h2{display:flex;align-items:center;gap:10px;font:800 21px/1.25 Inter,system-ui,sans-serif;margin:0 0 6px;color:#7f1d1d}'
+    + '.pa-panel{position:fixed;z-index:100001;top:0;left:0;bottom:0;margin:0;width:min(460px,94vw);box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;'
+    + 'padding:20px 22px calc(24px + env(safe-area-inset-bottom,0px));border:0;border-right:1px solid #f1c4c4;border-radius:0 16px 16px 0;background:linear-gradient(180deg,#fff5f5,#fff);color:#1e2a38;'
+    + 'box-shadow:6px 0 28px rgba(15,30,46,.18);transform:translateX(-105%);visibility:hidden;transition:transform .22s ease,visibility 0s linear .22s}'
+    + '.pa-panel.pa-open{transform:none;visibility:visible;transition:transform .22s ease}'
+    + '.pa-panel .pa-grid{grid-template-columns:1fr}'
+    + '.pa-x-close{margin-left:auto;align-self:flex-start;border:0;background:none;font-size:28px;line-height:1;color:#7f1d1d;cursor:pointer;padding:0 4px}'
+    + '.pa-scrim{position:fixed;inset:0;z-index:100000;background:rgba(10,18,32,.45);opacity:0;pointer-events:none;transition:opacity .2s}.pa-scrim.pa-open{opacity:1;pointer-events:auto}'
+    + '.pa-tab{position:fixed;z-index:9996;left:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 7px;border:0;border-radius:0 12px 12px 0;'
+    + 'background:#7f1d1d;color:#fff;cursor:pointer;box-shadow:4px 6px 20px rgba(15,30,46,.25)}'
+    + '.pa-tab img{border-radius:6px}.pa-tab span{writing-mode:vertical-rl;transform:rotate(180deg);font:700 13px Inter,system-ui,sans-serif;letter-spacing:.04em}.pa-tab:hover{background:#991b1b}'
+    + '@media (max-width:640px){.pa-tab{top:auto;left:24px;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:none;width:44px;height:44px;padding:0;border-radius:50%;justify-content:center}'
+    + '.pa-tab span{display:none}.pa-tab img{width:30px;height:30px;border-radius:8px}html.pa-standalone .pa-tab{margin-bottom:calc(60px + env(safe-area-inset-bottom,0px))}}'
+    + 'html[data-theme="dark"] .pa-x-close{color:#fca5a5}'
+    + '@media print{.pa-tab,.pa-scrim{display:none!important}}'
+    + '.pa-panel h2{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;font:800 21px/1.25 Inter,system-ui,sans-serif;margin:0 0 6px;color:#7f1d1d}'
     + '.pa-panel h2 img{width:34px;height:34px;border-radius:9px}'
     + '.pa-lead{font-size:15px;line-height:1.6;margin:0 0 14px;color:#34455f;text-align:left}'
     + '.pa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}'
@@ -45,7 +58,6 @@
     + 'html[data-theme="dark"] .pa-btn.pa-ghost{color:#fca5a5;border-color:#f87171}'
     + 'html[data-theme="dark"] .pa-warn,html[data-theme="dark"] .pa-ios{color:#fde68a;background:#2a1d05;border-color:#6b4f12}'
     + '#eqc-save{display:none!important}'
-    + '.rl-pa-promo{display:none!important}'
     + 'html.pa-offline body::after{content:"Offline · Paratus is showing saved pages";position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:9999;'
     + 'font:600 12.5px/1 Inter,system-ui,sans-serif;color:#fff;background:#7a4b00;padding:8px 14px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.18);pointer-events:none}'
     + 'html.pa-standalone body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}'
@@ -103,14 +115,14 @@
         + 'Use the <b>Live view</b> below on this device, or run both the controls and the display in Safari tabs (open renalcarematters.com/paratus/resuscitation-lab-practice there). On a laptop or an Android device, Open display opens a second Paratus window that follows these controls.';
       od.parentNode.insertBefore(n, od.nextSibling);
     }
-    if (onHome()) panel();
+    panel();
   }
 
   function panel() {
-    var main = document.querySelector('main') || document.body;
-    var box = document.createElement('section'); box.className = 'pa-panel'; box.id = 'paratus';
+    var box = document.createElement('aside'); box.className = 'pa-panel no-print'; box.id = 'paratus';
+    box.setAttribute('aria-label', 'Paratus: install and download'); box.setAttribute('aria-hidden', 'true');
     box.innerHTML =
-      '<h2><img src="/images/app/paratus-192.png" alt="">Paratus: Emergency Readiness, ready without signal</h2>'
+      '<h2><img src="/images/app/paratus-192.png" alt="">Paratus: ready without signal<button type="button" class="pa-x-close" aria-label="Close">&times;</button></h2>'
       + '<p class="pa-lead">Paratus (Latin for &ldquo;ready&rdquo;) keeps the Emergency Quick Cards, the Dialysis Team Resuscitation Lab, Disaster Preparedness, the Megacode Practice Lab and the Disaster Drills on this device, for a code, a typhoon or a power cut with no signal. It is separate from Schola, the Academy app.</p>'
       + '<div class="pa-grid">'
       + '<div class="pa-card"><h3>1. Install</h3><p data-pa="hint">Adds a Paratus icon to your home screen or desktop. It opens full screen.</p>'
@@ -120,7 +132,25 @@
       + '<button type="button" class="pa-btn" data-pa="dl">Download Paratus</button><button type="button" class="pa-btn pa-ghost pa-x" data-pa="rm" hidden>Remove download</button>'
       + '<progress class="pa-x" data-pa="bar" hidden></progress><p class="pa-note" data-pa="status" aria-live="polite"></p></div>'
       + '</div>';
-    main.insertBefore(box, main.firstChild);
+    var scrim = document.createElement('div'); scrim.className = 'pa-scrim no-print';
+    var tab = document.createElement('button'); tab.type = 'button'; tab.className = 'pa-tab no-print';
+    tab.setAttribute('aria-label', 'Open Paratus: install the app and download it for use without signal'); tab.setAttribute('aria-controls', 'paratus'); tab.setAttribute('aria-expanded', 'false');
+    tab.innerHTML = '<img src="/images/app/paratus-192.png" alt="" width="26" height="26"><span>Paratus</span>';
+    document.body.appendChild(scrim); document.body.appendChild(box); document.body.appendChild(tab);
+    function openP() { box.classList.add('pa-open'); scrim.classList.add('pa-open'); box.setAttribute('aria-hidden', 'false'); tab.setAttribute('aria-expanded', 'true'); var x = box.querySelector('.pa-x-close'); if (x) x.focus(); }
+    function closeP() { box.classList.remove('pa-open'); scrim.classList.remove('pa-open'); box.setAttribute('aria-hidden', 'true'); tab.setAttribute('aria-expanded', 'false');
+      if (location.hash === '#paratus') try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+    tab.addEventListener('click', function () { box.classList.contains('pa-open') ? closeP() : openP(); });
+    box.querySelector('.pa-x-close').addEventListener('click', function () { closeP(); tab.focus(); });
+    scrim.addEventListener('click', closeP);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && box.classList.contains('pa-open')) { closeP(); tab.focus(); } });
+    document.addEventListener('click', function (e) {   // links to #paratus (the Emergency drawer's Get Paratus) open this drawer
+      var a = e.target.closest && e.target.closest('a[href$="#paratus"]'); if (!a) return;
+      var u = new URL(a.getAttribute('href'), location.href); if (u.pathname.indexOf('/paratus') !== 0) return;
+      e.preventDefault(); var erd = document.querySelector('.erd.erd-open .erd-x'); if (erd) erd.click(); openP();
+    });
+    window.addEventListener('hashchange', function () { if (location.hash === '#paratus') openP(); });
+    if (location.hash === '#paratus') setTimeout(openP, 300);
     function q(n) { return box.querySelector('[data-pa="' + n + '"]'); }
     var deferred = null;
     function showInstall() {
@@ -137,7 +167,7 @@
     if (standalone() && !(rec() && rec().done)) {
       var nb = document.createElement('div'); nb.className = 'pa-warn';
       nb.innerHTML = '<strong>Paratus is not saved on this device yet.</strong> Download it once while you have signal so every page works without it. <a href="#paratus">Download Paratus</a>';
-      box.parentNode.insertBefore(nb, box);
+      var mn = document.querySelector('main'); if (onHome() && mn) mn.insertBefore(nb, mn.firstChild);
     }
     var dl = q('dl'), rm = q('rm'), stx = q('status'), bar = q('bar');
     if (!('caches' in window) || !('serviceWorker' in navigator)) { q('off').hidden = true; return; }
@@ -187,7 +217,7 @@
             var ct = res.headers.get('content-type') || 'application/octet-stream';
             return res.blob().then(function (bl) { return c.put(u, new Response(bl, { headers: { 'Content-Type': ct, 'X-RCM-Hash': p[1] } })); });
           }).then(function () { ok++; if (ok % 25 === 0) save(); }, function () { failed++; })
-            .then(function () { bar.value = ok; stx.textContent = 'Saving ' + num(ok) + ' of ' + num(total) + ' files… keep this page open.'; return next(); });
+            .then(function () { bar.value = ok; stx.textContent = 'Saving ' + num(ok) + ' of ' + num(total) + ' files… keep this page open.'; tab.querySelector('span').textContent = 'Saving ' + Math.floor(ok * 100 / total) + '%'; return next(); });
         }
         save();
         return Promise.all([next(), next(), next(), next(), next(), next()]).then(function () {
@@ -196,10 +226,10 @@
       }).then(function () {
         setRec({ v: 1, n: ok, total: total, at: Date.now(), h: failed ? '' : m.h, done: !failed });
         try { navigator.serviceWorker.controller && navigator.serviceWorker.controller.postMessage('paratus-refresh'); } catch (e) {}
-        busy = false; bar.hidden = true; status();
+        busy = false; bar.hidden = true; status(); tab.querySelector('span').textContent = 'Paratus';
         if (failed) stx.textContent = num(failed) + ' files could not be saved. Tap the button again on a better connection to finish.';
       }).catch(function (err) {
-        busy = false; bar.hidden = true; status();
+        busy = false; bar.hidden = true; status(); tab.querySelector('span').textContent = 'Paratus';
         stx.textContent = (err && err.msg) || 'The download stopped. Check your connection and tap the button again; files already saved are kept.';
       }).then(function () { try { if (lock) lock.release(); } catch (e) {} });
     }
