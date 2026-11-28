@@ -376,10 +376,10 @@ QUALITY CHECK: left 42% empty and light; subject fully inside the right side; no
                                 eyebrow=f"RESUSCITATION LAB · MODULE {int(k)}", head=_h.unescape(m["title"]), subtitle="Dialysis Team Resuscitation Lab · Renal Care Academy",
                                 chips=chips, art=art))
     extra = [
-        ("Practice Lab", f"{HUB}-practice", "EMERGENCY READINESS", "Practice Lab", "Algorithm recognition · timed megacodes · unit drills",
-         '"46 recognition items" · "17 megacodes" · "Shared display"', "a tablet showing a bedside monitor with a green rhythm trace (no numbers) beside a manikin in a dialysis recliner and a stopwatch"),
+        ("Megacode Practice Lab", f"{HUB}-practice", "EMERGENCY READINESS", "Megacode Practice Lab", "Algorithm recognition · timed megacodes · unit drills",
+         '"48 recognition items" · "17 megacodes" · "Shared display"', "a tablet showing a bedside monitor with a green rhythm trace (no numbers) beside a manikin in a dialysis recliner and a stopwatch"),
         ("Emergency Readiness section", "emergency-readiness", "RENAL CARE ACADEMY", "Emergency Readiness", "Act, learn and practice the first minutes on the dialysis floor",
-         '"Quick cards" · "13 modules" · "Practice Lab"', "a phone with a red-bordered card (blank lines), a tablet with a lesson page, and a small CPR manikin torso on a light counter"),
+         '"Quick cards" · "13 modules" · "Megacode Practice Lab"', "a phone with a red-bordered card (blank lines), a tablet with a lesson page, and a small CPR manikin torso on a light counter"),
         ("Final exam", f"{HUB}-final-exam", "RESUSCITATION LAB", "End-of-Course Examination", "Dialysis Team Resuscitation Lab · timed",
          '"13 modules" · "Timed" · "Certificate of completion"', "a tablet with a multiple-choice card of four blank answer bars beside a stopwatch and a folded pocket mask"),
         ("Trainer and facilitator kit", f"{HUB}-trainer", "RESUSCITATION LAB", "Facilitator Kit", "Scripts · role cards · observation checklist · debrief",
