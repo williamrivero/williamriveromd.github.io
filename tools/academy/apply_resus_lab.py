@@ -355,6 +355,26 @@ def draft_cards_note():
             '<a href="emergency-cards-disaster-draft.html">Read the drafts</a>.</p>')
 
 
+def paratus_xpl():
+    """Meet Paratus cartoon explainer (Nov 28 2026, Dr. Rivero): always visible, preload none, no download,
+    Share = the watch page /watch/paratus. Uses the .rl-xpl styles in CSS. Transcript from the explainer's script.txt."""
+    if not (ROOT / "videos" / "paratus" / "paratus-explainer.mp4").exists():
+        return ""
+    sp = ROOT / "tools" / "academy" / "explainers" / "paratus" / "script.txt"
+    tr = html.escape(" ".join(sp.read_text(encoding="utf-8").split())) if sp.exists() else ""
+    return ('<figure class="rl-xpl" id="explainer"><figcaption><span class="rl-xpl-play" aria-hidden="true">&#9654;</span> Meet Paratus (1 min 23 s)'
+            '<button type="button" class="rl-xpl-share" data-xpl-share="/watch/paratus" aria-label="Share this explainer video">'
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>'
+            '<path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>\n'
+            '<video controls playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false" '
+            'poster="/videos/paratus/paratus-explainer.jpg" width="1280" height="720"><source src="/videos/paratus/paratus-explainer.mp4" type="video/mp4"></video>\n'
+            + (f'<details class="rl-xpl-tr"><summary>Read the transcript</summary><p>{tr}</p></details>' if tr else "") + "</figure>"
+            """<script>(function(){var b=document.querySelector('[data-xpl-share="/watch/paratus"]');if(!b)return;b.addEventListener('click',function(){
+var u='https://renalcarematters.com/watch/paratus',l=b.querySelector('span');function done(m){l.textContent=m;setTimeout(function(){l.textContent='Share';},2200);}
+if(navigator.share){navigator.share({title:'Meet Paratus',url:u}).catch(function(){});return;}
+if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){done('Link copied');},function(){prompt('Copy this link',u);});else prompt('Copy this link',u);});})();</script>""")
+
+
 def ready_main():
     rows = []
     for lvl, hubs in LEVEL.items():
@@ -374,6 +394,7 @@ def ready_main():
   <div class="section-tag">Cross-track section</div>
   <h2>Act, learn, practice</h2>
   <p>Emergency Readiness sits beside the role tracks because emergencies cut across every role. A nurse assistant starts compressions; a technician brings the defibrillator; the circuit nurse manages the machine; the physician-on-duty leads. When a typhoon, an earthquake or a fire hits, the same team keeps the patients on the machines safe and keeps every patient dialyzed until the unit reopens. There are two courses: one for the arrest at the chair, one for the events that harm many patients at once.</p>
+{paratus_xpl()}
   <div class="rl-panels two">
     <a class="rl-panel act" href="emergency-cards.html">{tile("emergency-readiness-card.webp")}<div class="rl-act-t"><small>Act</small><b>Emergency Quick Cards</b><span>Nineteen one-screen action cards: the first minutes at the chair, plus power failure, earthquake, fire, a typhoon warning and water failure. Saved for use with no signal; open these during a real event.</span></div></a>
     <div class="rl-colh r1">Resuscitation: the arrest at the chair</div><div class="rl-colh r2">Disasters: events that harm many patients at once</div>

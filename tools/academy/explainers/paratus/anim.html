@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000;}canvas{display:block;}</style></head>
+<body><canvas id="c" width="1280" height="720"></canvas>
+<script>
+var TL = null; // set by the recorder: {scenes, amp, fps}
+var c = document.getElementById('c'), x = c.getContext('2d');
+var W = 1280, H = 720;
+var TEAL = '#1a6b72', DTEAL = '#0e4a50', NAVY = '#1f3864', GOLD = '#b8860b', INK = '#1e2a38';
+var F = 'Inter, system-ui, sans-serif';
+
+function rr(X, Y, w, h, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + h, r); x.arcTo(X + w, Y + h, X, Y + h, r); x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); }
+function box(X, Y, w, h, r, fill, stroke, lw) { rr(X, Y, w, h, r); if (fill) { x.fillStyle = fill; x.fill(); } if (stroke) { x.strokeStyle = stroke; x.lineWidth = lw || 2; x.stroke(); } }
+function txt(s, X, Y, size, color, weight, align) { x.font = (weight || 600) + ' ' + size + 'px ' + F; x.fillStyle = color; x.textAlign = align || 'left'; x.textBaseline = 'middle'; x.fillText(s, X, Y); }
+function ease(u) { u = Math.max(0, Math.min(1, u)); return u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; }
+function pop(u) { u = Math.max(0, Math.min(1, u)); var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(u - 1, 3) + c1 * Math.pow(u - 1, 2); }
+function fadeIn(lt, at, d) { return Math.max(0, Math.min(1, (lt - at) / (d || .4))); }
+
+/* ---------- waveforms ---------- */
+function sinus(u) {            // u = phase in a beat, 0..1
+  var y = 0;
+  y += 0.12 * Math.exp(-Math.pow((u - 0.12) / 0.03, 2));          // P
+  y -= 0.12 * Math.exp(-Math.pow((u - 0.25) / 0.008, 2));         // Q
+  y += 1.0 * Math.exp(-Math.pow((u - 0.27) / 0.012, 2));          // R
+  y -= 0.25 * Math.exp(-Math.pow((u - 0.295) / 0.012, 2));        // S
+  y += 0.25 * Math.exp(-Math.pow((u - 0.5) / 0.05, 2));           // T
+  return y;
+}
+function vf(t) { return 0.45 * Math.sin(t * 2 * Math.PI * 4.6) * (0.7 + 0.3 * Math.sin(t * 1.3)) + 0.2 * Math.sin(t * 2 * Math.PI * 6.9 + 1) + 0.12 * Math.sin(t * 2 * Math.PI * 2.1); }
+function ecgAt(kind, t, hr) { if (kind === 'vf') return vf(t); var p = 60 / (hr || 72); return sinus((t % p) / p); }
+function capAt(t, rr, v) {     // capnogram, height 0..1 scaled by v (0..1)
+  var p = 60 / rr, u = (t % p) / p, y;
+  if (u < 0.38) y = 0; else if (u < 0.46) y = 0.93 * (1 - Math.pow(1 - (u - 0.38) / 0.08, 3)); else if (u < 0.9) y = 0.93 + 0.07 * (u - 0.46) / 0.44;
+  else if (u < 0.95) { var f = (u - 0.9) / 0.05; y = 1 - f * f * (3 - 2 * f); } else y = 0;
+  return y * v;
+}
+/* draw a sweeping trace: fn(time)->value, in box; the sweep head is at time T */
+function trace(X, Y, w, h, T, fn, color, gain, span) {
+  span = span || w / 110; var head = (T % span) / span * w;
+  x.save(); rr(X, Y, w, h, 8); x.clip();
+  x.strokeStyle = color; x.lineWidth = 2.4; x.lineJoin = 'round';
+  x.beginPath(); var first = true;
+  for (var px = 0; px <= w; px += 1) {
+    if (px > head && px < head + 14) { first = true; continue; }   // eraser gap
+    var tt = px <= head ? T - (head - px) / w * span : T - span + (px - head) / w * span, v = 0, dt = span / w;
+    for (var k = 0; k < 5; k++) { var vv = fn(tt + dt * k / 5); if (Math.abs(vv) > Math.abs(v)) v = vv; }   // keep narrow spikes
+    var y = Y + h * 0.6 - v * gain;
+    if (first) { x.moveTo(X + px, y); first = false; } else x.lineTo(X + px, y);
+  }
+  x.stroke(); x.restore();
+}
+/* a small bedside monitor */
+function monitor(X, Y, w, h, T, st) {
+  box(X, Y, w, h, 18, '#0b0f17', '#2b3444', 3);
+  var pad = 14, top = Y + 12;
+  if (st.alarm) { box(X + pad, top, w - 2 * pad - 4, 30, 8, st.alarmColor || '#c1121f'); txt(st.alarm, X + w / 2, top + 15, 15, st.alarmColor === '#f2c200' ? '#111' : '#fff', 800, 'center'); }
+  var gx = X + pad, gw = w * 0.66 - pad, gy = top + 40, rows = st.capno ? 3 : 2, gh = (h - 66) / rows - 6;
+  box(gx, gy, gw, gh, 8, '#0f1724'); trace(gx, gy, gw, gh, T, function (t) { return ecgAt(st.rhythm, t, st.hr); }, '#5ee08a', gh * 0.55);
+  box(gx, gy + gh + 6, gw, gh, 8, '#0f1724');
+  if (st.rhythm === 'vf') { x.strokeStyle = '#22d3ee'; x.lineWidth = 2; x.beginPath(); x.moveTo(gx + 6, gy + gh + 6 + gh * 0.7); x.lineTo(gx + gw - 6, gy + gh + 6 + gh * 0.7); x.stroke(); }
+  else trace(gx, gy + gh + 6, gw, gh, T, function (t) { var p = 60 / st.hr, u = ((t - 0.2) % p + p) % p / p; return u < 0.2 ? Math.sin(u / 0.2 * Math.PI / 2) : Math.exp(-(u - 0.2) * 4.5) * (1 + 0.15 * Math.exp(-Math.pow((u - 0.42) / 0.05, 2))); }, '#22d3ee', gh * 0.5);
+  if (st.capno) { var cy = gy + 2 * (gh + 6); box(gx, cy, gw, gh, 8, '#0f1724'); trace(gx, cy, gw, gh, T, function (t) { return capAt(t, st.rr || 10, (st.co2fn ? st.co2fn(t) : st.co2) / 50); }, '#fbbf24', gh * 0.8); }
+  // numbers
+  var nx = X + w * 0.66 + 6, nw = w * 0.34 - pad - 6, items = [['HR', st.hrShown, '#4ade80'], ['SpO₂', st.spo2, '#22d3ee']];
+  if (st.capno) items.push(['EtCO₂', st.co2Shown, '#fbbf24']);
+  var ih = (h - 66) / items.length - 6;
+  items.forEach(function (it, i) {
+    var iy = gy + i * (ih + 6); box(nx, iy, nw, ih, 8, '#0f1724');
+    txt(it[0], nx + 10, iy + 16, 13, it[2], 700); txt(it[1], nx + 10, iy + ih * 0.62, Math.min(44, ih * 0.5), it[2], 800);
+  });
+}
+
+/* ---------- the cartoon guide (an original character) ---------- */
+function guide(T, amp, mode, lt) {
+  var bx = 210, by = 620 + Math.sin(T * 2.2) * 3;     // feet line
+  x.save();
+  // shadow
+  x.fillStyle = 'rgba(15,30,46,.12)'; x.beginPath(); x.ellipse(bx, 640, 120, 16, 0, 0, Math.PI * 2); x.fill();
+  // body (scrubs)
+  var SCRUB = '#24406e'; x.fillStyle = SCRUB; rr(bx - 100, by - 252, 200, 252, 64); x.fill();
+  x.fillStyle = '#182d52'; x.beginPath(); x.moveTo(bx - 34, by - 245); x.lineTo(bx, by - 200); x.lineTo(bx + 34, by - 245); x.closePath(); x.fill();   // V-neck
+  // badge
+  box(bx + 30, by - 185, 42, 26, 5, '#fff'); x.fillStyle = '#991b1b'; x.fillRect(bx + 36, by - 177, 30, 4); x.fillRect(bx + 36, by - 169, 20, 4);
+  // stethoscope
+  x.strokeStyle = '#9fb0c6'; x.lineWidth = 6; x.lineCap = 'round'; x.beginPath(); x.moveTo(bx - 50, by - 238); x.quadraticCurveTo(bx - 60, by - 150, bx - 20, by - 140); x.stroke();
+  x.fillStyle = '#94a3b8'; x.beginPath(); x.arc(bx - 16, by - 138, 10, 0, Math.PI * 2); x.fill();
+  // arms
+  var skin = '#b87a4e';
+  x.strokeStyle = SCRUB; x.lineWidth = 36;
+  x.beginPath(); x.moveTo(bx - 80, by - 210); x.quadraticCurveTo(bx - 120, by - 120, bx - 95, by - 70); x.stroke();       // left arm down
+  x.fillStyle = skin; x.beginPath(); x.arc(bx - 93, by - 62, 17, 0, Math.PI * 2); x.fill();
+  var ang;   // right arm: wave in the intro, point toward the content otherwise
+  if (mode === 'wave') ang = -0.95 + Math.sin(T * 7) * 0.22; else ang = -0.55 + Math.sin(T * 1.6) * 0.06;
+  var sx = bx + 80, sy = by - 210, ex = sx + Math.cos(ang) * 70, ey = sy + Math.sin(ang) * 70 + 40, hx = ex + Math.cos(ang - 0.2) * 70, hy = ey + Math.sin(ang - 0.2) * 70;
+  x.strokeStyle = SCRUB; x.beginPath(); x.moveTo(sx, sy); x.lineTo(ex, ey); x.stroke();
+  x.strokeStyle = skin; x.lineWidth = 26; x.beginPath(); x.moveTo(ex, ey); x.lineTo(hx, hy); x.stroke();
+  x.fillStyle = skin; x.beginPath(); x.arc(hx, hy, 18, 0, Math.PI * 2); x.fill();
+  // neck + head
+  x.fillStyle = skin; x.fillRect(bx - 24, by - 282, 48, 42);
+  var hy0 = by - 350 + Math.sin(T * 2.2 + .6) * 2, tilt = Math.sin(T * 1.3) * 0.04 + amp * 0.03;
+  x.translate(bx, hy0); x.rotate(tilt);
+  // hair back
+  // face
+  x.fillStyle = skin; x.beginPath(); x.moveTo(-76, -10); x.quadraticCurveTo(-80, -86, 0, -86); x.quadraticCurveTo(80, -86, 76, -10);
+  x.quadraticCurveTo(78, 62, 40, 86); x.quadraticCurveTo(0, 102, -40, 86); x.quadraticCurveTo(-78, 62, -76, -10); x.closePath(); x.fill();
+  // ears
+  x.beginPath(); x.ellipse(-76, 16, 12, 18, 0, 0, Math.PI * 2); x.ellipse(76, 16, 12, 18, 0, 0, Math.PI * 2); x.fill();
+  // fringe
+  x.fillStyle = '#1a1410'; x.beginPath(); x.moveTo(-80, 4); x.quadraticCurveTo(-92, -70, -30, -96); x.quadraticCurveTo(30, -112, 74, -78); x.quadraticCurveTo(92, -50, 80, 4);
+  x.lineTo(72, 4); x.quadraticCurveTo(70, -30, 52, -44); x.quadraticCurveTo(10, -30, -30, -50); x.quadraticCurveTo(-62, -36, -70, 4); x.closePath(); x.fill();
+  x.fillRect(-80, -6, 9, 30); x.fillRect(71, -6, 9, 30);   // sideburns
+  x.strokeStyle = 'rgba(255,255,255,.12)'; x.lineWidth = 3; x.beginPath(); x.moveTo(-28, -94); x.quadraticCurveTo(-34, -70, -30, -52); x.stroke();   // part
+  x.fillStyle = 'rgba(40,30,25,.10)'; x.beginPath(); x.moveTo(-60, 40); x.quadraticCurveTo(-50, 92, 0, 96); x.quadraticCurveTo(50, 92, 60, 40); x.quadraticCurveTo(0, 74, -60, 40); x.fill();   // stubble shadow
+  // eyes (blink every ~3.7 s)
+  var blink = ((T % 3.7) < 0.13) ? 0.12 : 1;
+  x.fillStyle = '#1e1b18';
+  [-30, 30].forEach(function (ex2) { x.beginPath(); x.ellipse(ex2, 8, 10, 13 * blink, 0, 0, Math.PI * 2); x.fill(); });
+  x.fillStyle = '#fff'; if (blink > .5) [-27, 33].forEach(function (ex2) { x.beginPath(); x.arc(ex2, 3, 3.5, 0, Math.PI * 2); x.fill(); });
+  // brows lift a little when speaking
+  x.strokeStyle = '#1a1410'; x.lineWidth = 8; x.lineCap = 'round';
+  [-1, 1].forEach(function (s) { x.beginPath(); x.moveTo(s * 18, -16 - amp * 4); x.quadraticCurveTo(s * 31, -21 - amp * 5, s * 46, -18 - amp * 4); x.stroke(); });
+  // cheeks
+  x.fillStyle = 'rgba(200,110,90,.14)'; x.beginPath(); x.ellipse(-46, 36, 13, 8, 0, 0, Math.PI * 2); x.ellipse(46, 36, 13, 8, 0, 0, Math.PI * 2); x.fill();
+  // mouth: smile when quiet, opens with the voice
+  var open = Math.min(1, amp * 1.25);
+  if (open < 0.08) { x.strokeStyle = '#6b2b2b'; x.lineWidth = 5; x.beginPath(); x.arc(0, 40, 20, 0.2 * Math.PI, 0.8 * Math.PI); x.stroke(); }
+  else {
+    x.fillStyle = '#5a1f22'; x.beginPath(); x.ellipse(0, 50, 14 + open * 8, 4 + open * 15, 0, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#c85b5b'; x.beginPath(); x.ellipse(0, 56 + open * 6, 9 + open * 4, 3 + open * 4, 0, 0, Math.PI); x.fill();
+    x.fillStyle = '#fff'; x.fillRect(-10 - open * 4, 50 - (4 + open * 15) + 1, 20 + open * 8, 4);
+  }
+  x.restore();
+}
+
+/* ---------- caption ---------- */
+function caption(sc, lt) {
+  var s = sc.text.match(/[^.!?]+[.!?]+/g) || [sc.text], L = s.reduce(function (a, b) { return a + b.length; }, 0);
+  var u = (lt - sc.lead) / sc.speech, acc = 0, cur = s[s.length - 1];
+  for (var i = 0; i < s.length; i++) { acc += s[i].length / L; if (u < acc) { cur = s[i]; break; } }
+  if (lt < sc.lead * 0.6) return;
+  cur = cur.trim(); x.font = '600 24px ' + F; var lines = [cur];
+  if (x.measureText(cur).width > 1100) {   // two lines, split near the middle at a word
+    var wds = cur.split(' '), best = 0, bd = 1e9;
+    for (var j = 1; j < wds.length; j++) { var d = Math.abs(x.measureText(wds.slice(0, j).join(' ')).width - x.measureText(wds.slice(j).join(' ')).width); if (d < bd) { bd = d; best = j; } }
+    lines = [wds.slice(0, best).join(' '), wds.slice(best).join(' ')];
+  }
+  var wdt = Math.max.apply(null, lines.map(function (l) { return x.measureText(l).width; })) + 48, hh = lines.length * 32 + 14, top = 700 - hh;
+  box(W / 2 - wdt / 2, top, wdt, hh, 12, 'rgba(15,23,42,.82)');
+  lines.forEach(function (l, j) { txt(l, W / 2, top + 23 + j * 32, 24, '#fff', 600, 'center'); });
+}
+
+/* ---------- Paratus scenes ---------- */
+var R = 400, RED = '#991b1b', DRED = '#7f1d1d', AMBER = '#b45309';
+function chip(X, Y, label, bg, fg, sz, h) { sz = sz || 15; h = h || 30; x.font = '700 ' + sz + 'px ' + F; var w = x.measureText(label).width + 24; box(X, Y, w, h, h / 2, bg); txt(label, X + w / 2, Y + h / 2, sz, fg, 700, 'center'); return w; }
+function appIcon(X, Y, s) { x.save(); x.translate(X, Y); x.scale(s, s); box(-50, -50, 100, 100, 24, DRED);
+  x.strokeStyle = '#fff'; x.lineWidth = 7; x.lineJoin = 'round'; x.lineCap = 'round'; x.beginPath(); x.moveTo(-36, 4); x.lineTo(-14, 4); x.lineTo(-6, -10); x.lineTo(4, 26); x.lineTo(14, -30); x.lineTo(22, 4); x.lineTo(36, 4); x.stroke(); x.restore(); }
+function bars(X, Y, w, n, col) { for (var i = 0; i < n; i++) box(X, Y + i * 14, w * (i === n - 1 ? .6 : 1), 7, 3.5, col || '#e2e8f0'); }
+function wrapTxt(s, X, Y, maxW, size, color, weight, lh) { x.font = (weight || 600) + ' ' + size + 'px ' + F; var wds = s.split(' '), line = '', yy = Y;
+  wds.forEach(function (w) { var t = line ? line + ' ' + w : w; if (x.measureText(t).width > maxW && line) { txt(line, X, yy, size, color, weight); line = w; yy += lh; } else line = t; }); if (line) txt(line, X, yy, size, color, weight); return yy; }
+/* icons */
+function icon(kind, X, Y, s, col) { x.save(); x.translate(X, Y); x.scale(s, s); x.strokeStyle = col; x.fillStyle = col; x.lineWidth = 5; x.lineCap = 'round'; x.lineJoin = 'round';
+  if (kind === 'storm') { x.beginPath(); x.arc(-8, -6, 14, Math.PI, 0); x.arc(10, -2, 11, Math.PI * 1.3, Math.PI * .5); x.lineTo(-22, 9); x.arc(-22, -2, 11, Math.PI * .5, Math.PI * 1.5); x.fill();
+    for (var i = 0; i < 3; i++) { x.beginPath(); x.moveTo(-12 + i * 11, 16); x.lineTo(-16 + i * 11, 26); x.stroke(); } }
+  else if (kind === 'quake') { x.beginPath(); x.moveTo(-18, 18); x.lineTo(-18, -8); x.lineTo(0, -24); x.lineTo(18, -8); x.lineTo(18, 18); x.closePath(); x.stroke();
+    x.lineWidth = 3.5; x.beginPath(); x.moveTo(2, -14); x.lineTo(-4, -2); x.lineTo(4, 6); x.lineTo(-2, 18); x.stroke(); x.lineWidth = 4;
+    x.beginPath(); x.moveTo(-30, 26); x.lineTo(-20, 22); x.lineTo(-10, 28); x.lineTo(0, 22); x.lineTo(10, 28); x.lineTo(20, 22); x.lineTo(30, 26); x.stroke(); }
+  else if (kind === 'fire') { x.beginPath(); x.moveTo(0, 26); x.bezierCurveTo(-24, 24, -24, 0, -12, -10); x.bezierCurveTo(-10, 0, -4, 2, -4, -4); x.bezierCurveTo(-6, -16, 2, -24, 6, -28); x.bezierCurveTo(8, -14, 24, -6, 20, 10); x.bezierCurveTo(18, 22, 8, 26, 0, 26); x.fill(); }
+  else if (kind === 'bolt') { x.beginPath(); x.moveTo(6, -28); x.lineTo(-16, 4); x.lineTo(-2, 4); x.lineTo(-8, 28); x.lineTo(16, -6); x.lineTo(2, -6); x.closePath(); x.fill(); }
+  else if (kind === 'sun') { x.beginPath(); x.arc(0, 0, 10, 0, Math.PI * 2); x.fill(); for (var k = 0; k < 8; k++) { var a = k * Math.PI / 4; x.beginPath(); x.moveTo(Math.cos(a) * 16, Math.sin(a) * 16); x.lineTo(Math.cos(a) * 25, Math.sin(a) * 25); x.stroke(); } }
+  else if (kind === 'list') { box(-18, -24, 36, 48, 6, null, col, 5); for (var j = 0; j < 3; j++) { x.beginPath(); x.moveTo(-9, -10 + j * 11); x.lineTo(9, -10 + j * 11); x.stroke(); } }
+  else if (kind === 'heart') { x.beginPath(); x.moveTo(0, 22); x.bezierCurveTo(-30, 2, -22, -24, 0, -10); x.bezierCurveTo(22, -24, 30, 2, 0, 22); x.fill(); }
+  x.restore(); }
+
+var CARDS = [['Code on dialysis', '#b91c1c'], ['Blood leak alarm', '#b91c1c'], ['Low blood pressure', '#b45309'], ['Needle dislodgement', '#1f3864'], ['Air embolism', '#1f3864'],
+  ['Hemolysis', '#1f3864'], ['Dialyzer reaction', '#1f3864'], ['Chest pain', '#be123c'], ['Arrhythmia', '#be123c'], ['Hyperkalemia', '#be123c'], ['Low blood sugar', '#b45309'],
+  ['Seizure', '#b45309'], ['Suspected stroke', '#b45309'], ['Fever and rigors', '#0e7490'], ['Power failure', '#5b21b6'], ['Earthquake', '#5b21b6'], ['Fire or smoke', '#5b21b6'],
+  ['Typhoon warning', '#5b21b6'], ['Water failure', '#5b21b6']];
+var RES = ['Ready before the collapse', 'How algorithms think', 'Recognizing the algorithm', 'BLS at the dialysis chair', 'Adult cardiac arrest', 'Bradycardia, tachycardia',
+  'Arrest in the dialysis chair', 'Hyperkalemia', 'Circuit emergencies', 'Pediatric BLS', 'Pediatric arrest', 'ROSC, transfer, handover', 'Team, code status, debrief'];
+
+var scenes = [
+  function title(lt, T) {
+    var a = pop(fadeIn(lt, .2, .7)); x.save(); x.globalAlpha = Math.min(1, a); x.translate(0, (1 - a) * 30);
+    box(R + 10, 66, 520, 58, 29, 'rgba(153,27,27,.10)'); txt('RENAL CARE MATTERS  ·  PARATUS', R + 40, 95, 18, DRED, 800);
+    txt('Paratus', R + 30, 196, 84, DRED, 800); txt('Latin for "ready" · emergency readiness', R + 32, 262, 30, GOLD, 800); x.restore();
+    var b = pop(fadeIn(lt, 1.4, .6)); if (b > 0) { x.save(); x.translate(R + 735, 175); x.scale(b * 1.3, b * 1.3); appIcon(0, 0, 1); x.restore(); }
+    [['Act', '19 quick cards', '#b91c1c'], ['Learn', '25 modules', '#1f3864'], ['Practice', 'megacodes · drills', '#0e7490']].forEach(function (p, i) {
+      var u = pop(fadeIn(lt, 2.6 + i * .45, .45)); if (u <= 0) return; x.save(); x.translate(R + 30 + i * 280, 360); x.scale(1, u);
+      box(0, 0, 262, 150, 18, '#fff', p[2], 2.5); box(0, 0, 262, 8, 4, p[2]); txt(p[0], 24, 58, 34, p[2], 800); txt(p[1], 24, 106, 18, '#334155', 700); x.restore(); });
+  },
+  function cards(lt, T) {
+    var h = ease(fadeIn(lt, .3, .4)); x.save(); x.globalAlpha = h; txt('Emergency Quick Cards', R + 20, 96, 34, DRED, 800);
+    chip(R + 430, 80, '19 one-screen cards', '#fee2e2', DRED, 16, 32); x.restore();
+    CARDS.forEach(function (c, i) { var col = i % 4, row = Math.floor(i / 4), u = pop(fadeIn(lt, .8 + i * .22, .35)); if (u <= 0) return;
+      var X = R + 20 + col * 212, Y = 140 + row * 88; x.save(); x.translate(X + 100, Y + 36); x.scale(u, u); x.translate(-100, -36);
+      var hl = (i === 0 || i === 1) && lt > 4.5 && lt < 7.5 || (i >= 14) && lt > 7.5;
+      box(0, 0, 200, 72, 12, hl ? '#fff7ed' : '#fff', c[1], hl ? 3.5 : 2); box(0, 0, 10, 72, 5, c[1]);
+      txt(String(i + 1), 28, 20, 13, c[1], 800); wrapTxt(c[0], 28, 40, 162, 15.5, INK, 800, 18); x.restore(); });
+  },
+  function oneCard(lt, T) {
+    var a = ease(fadeIn(lt, .2, .5)); x.save(); x.globalAlpha = a; box(R + 10, 70, 840, 540, 18, '#fff', '#e5e7eb', 2);
+    x.save(); rr(R + 10, 70, 840, 540, 18); x.clip(); x.fillStyle = '#5b21b6'; x.fillRect(R + 10, 70, 840, 66); x.restore();
+    txt('Card 15', R + 36, 92, 14, '#ede9fe', 800); txt('Power fails during dialysis', R + 36, 118, 26, '#fff', 800);
+    var steps = [['Every nurse', 'Stay with your patients: airway, alertness, the access.'], ['Technician', 'Report the power status: generator, stability, fuel.'],
+      ['Charge nurse + POD', 'Decide: stay on a stable generator, or begin the take-off.'], ['Chair nurse', 'Return the blood by hand crank, one staff member per patient.']];
+    steps.forEach(function (s, i) { var u = ease(fadeIn(lt, .9 + i * .55, .35)); if (u <= 0) return; x.save(); x.globalAlpha = a * u; var Y = 160 + i * 66;
+      x.fillStyle = '#5b21b6'; x.beginPath(); x.arc(R + 56, Y + 22, 17, 0, Math.PI * 2); x.fill(); txt(String(i + 1), R + 56, Y + 22, 17, '#fff', 800, 'center');
+      var w = chip(R + 88, Y + 8, s[0], '#ede9fe', '#4c1d95', 14, 28); txt(s[1], R + 100 + w, Y + 22, 16.5, INK, 650); x.restore(); });
+    var c = pop(fadeIn(lt, 3.6, .45)); if (c > 0) { x.save(); x.globalAlpha = a * Math.min(1, c); var Y = 424; box(R + 36, Y, 790, 90, 12, '#fef2f2', '#b91c1c', 2.5);
+      txt('⚠  Critical', R + 56, Y + 24, 17, '#991b1b', 800); txt('Without power the air detector and venous clamp may not work:', R + 56, Y + 50, 15.5, '#7f1d1d', 650);
+      txt('one staff member watches each venous line until the clamp is closed.', R + 56, Y + 68, 15.5, '#7f1d1d', 650); x.restore(); }
+    var d = ease(fadeIn(lt, 5.4, .4)); if (d > 0) { x.save(); x.globalAlpha = a * d; box(R + 36, 530, 790, 44, 10, '#f8fafc', '#cbd5e1', 1.5);
+      txt('▸  Details: other causes, monitoring, circuit, blood return, escalation, restart, records', R + 54, 552, 15, '#475569', 700); x.restore(); }
+    x.restore();
+  },
+  function resus(lt, T) {
+    var h = ease(fadeIn(lt, .2, .4)); x.save(); x.globalAlpha = h; txt('Dialysis Team Resuscitation Lab', R + 20, 92, 30, NAVY, 800);
+    chip(R + 520, 76, '13 modules', '#e0e7ff', NAVY, 16, 32); x.restore();
+    RES.forEach(function (m, i) { var col = i < 7 ? 0 : 1, row = i < 7 ? i : i - 7, u = ease(fadeIn(lt, .6 + i * .32, .3)); if (u <= 0) return;
+      x.save(); x.globalAlpha = u; x.translate((1 - u) * 20, 0); var X = R + 20 + col * 300, Y = 128 + row * 64; box(X, Y, 284, 54, 10, '#fff', '#dbe3ee', 1.5);
+      box(X, Y, 44, 54, 10, NAVY); txt(String(i + 1), X + 22, Y + 27, 18, '#fff', 800, 'center'); wrapTxt(m, X + 56, Y + 27, 220, 15, INK, 750, 18); x.restore(); });
+    var m = ease(fadeIn(lt, 1.2, .6)); if (m > 0) { x.save(); x.globalAlpha = m; monitor(R + 630, 150, 230, 200, T, { rhythm: 'sinus', hr: 78, hrShown: '78', spo2: '97' }); x.restore(); }
+  },
+  function disaster(lt, T) {
+    var h = ease(fadeIn(lt, .2, .4)); x.save(); x.globalAlpha = h; txt('Disaster Preparedness and Response', R + 20, 92, 30, '#5b21b6', 800);
+    chip(R + 570, 76, '12 modules', '#ede9fe', '#4c1d95', 16, 32); x.restore();
+    var T6 = [['storm', 'Typhoons and floods', '#0369a1'], ['quake', 'Earthquake on the machine', '#92400e'], ['fire', 'Fire and evacuation', '#c2410c'],
+      ['bolt', 'Power, water, supplies', '#a16207'], ['sun', 'Heat, ashfall, outbreaks', '#b45309'], ['list', 'Keeping everyone dialyzed', '#1f3864']];
+    T6.forEach(function (t, i) { var col = i % 3, row = Math.floor(i / 3), u = pop(fadeIn(lt, .9 + i * .55, .4)); if (u <= 0) return;
+      var X = R + 20 + col * 280, Y = 140 + row * 220; x.save(); x.translate(X + 130, Y + 95); x.scale(u, u); x.translate(-130, -95);
+      box(0, 0, 260, 190, 18, '#fff', t[2], 2.5); x.fillStyle = 'rgba(0,0,0,.04)'; x.beginPath(); x.arc(130, 72, 48, 0, Math.PI * 2); x.fill();
+      icon(t[0], 130, 72, 1.35, t[2]); wrapTxt(t[1], 24, 150, 220, 17, INK, 800, 21); x.restore(); });
+  },
+  function practice(lt, T) {
+    var h = ease(fadeIn(lt, .2, .4)); x.save(); x.globalAlpha = h; txt('Practice', R + 20, 92, 34, '#0e7490', 800); x.restore();
+    // facilitator tablet
+    var a = ease(fadeIn(lt, .6, .5)); if (a > 0) { x.save(); x.globalAlpha = a; box(R + 20, 128, 270, 250, 18, '#1e293b'); box(R + 32, 140, 246, 226, 10, '#fff');
+      txt('Facilitator', R + 48, 164, 16, NAVY, 800); txt('Rhythm', R + 48, 196, 13, '#475569', 700);
+      var vf = lt > 3.0; box(R + 48, 208, 214, 34, 8, '#f8fafc', '#cbd5e1', 1.5); txt(vf ? 'Ventricular fibrillation' : 'Sinus rhythm', R + 60, 225, 14, INK, 700);
+      txt('HR · SpO₂', R + 48, 262, 13, '#475569', 700); box(R + 48, 274, 100, 30, 8, '#f8fafc', '#cbd5e1', 1.5); box(R + 160, 274, 102, 30, 8, '#f8fafc', '#cbd5e1', 1.5);
+      txt(vf ? '—' : '84', R + 60, 289, 14, INK, 700); txt(vf ? '—' : '96', R + 172, 289, 14, INK, 700);
+      var pr = lt > 2.8 && lt < 3.1; box(R + 48, 318 + (pr ? 2 : 0), 214, 36, 18, '#0e7490'); txt('Update display', R + 155, 336 + (pr ? 2 : 0), 15, '#fff', 800, 'center'); x.restore();
+      x.save(); x.globalAlpha = a; x.setLineDash([8, 8]); x.lineDashOffset = -T * 30; x.strokeStyle = '#0e7490'; x.lineWidth = 3; x.beginPath(); x.moveTo(R + 300, 250); x.lineTo(R + 350, 250); x.stroke(); x.restore(); }
+    var m = ease(fadeIn(lt, 1.0, .5)); if (m > 0) { x.save(); x.globalAlpha = m; var vf2 = lt > 3.1;
+      monitor(R + 360, 118, 490, 270, T, vf2 ? { rhythm: 'vf', hr: 0, hrShown: '---', spo2: '--', alarm: 'VENTRICULAR FIBRILLATION', capno: true, co2: 10, co2Shown: '10', rr: 10 } : { rhythm: 'sinus', hr: 84, hrShown: '84', spo2: '96', capno: true, co2: 38, co2Shown: '38', rr: 14 });
+      txt('Shared monitor display, on a second screen', R + 605, 404, 15, '#334155', 700, 'center'); x.restore(); }
+    var d = ease(fadeIn(lt, 4.4, .5)); if (d > 0) { x.save(); x.globalAlpha = d; box(R + 20, 430, 830, 160, 18, '#fff', '#5b21b6', 2.5);
+      icon('storm', R + 70, 492, 1.1, '#5b21b6'); txt('Disaster tabletop drill', R + 120, 474, 21, '#4c1d95', 800); txt('Timed injects, a call-down timer and an evacuation sheet', R + 120, 506, 16, '#334155', 650);
+      var left = Math.max(0, 300 - Math.floor((lt - 4.4) * 7)), mm = Math.floor(left / 60), ss = left % 60; box(R + 640, 458, 180, 64, 12, '#4c1d95');
+      txt('Next inject', R + 730, 476, 13, '#ddd6fe', 700, 'center'); txt(mm + ':' + (ss < 10 ? '0' : '') + ss, R + 730, 504, 28, '#fff', 800, 'center');
+      txt('Inject 2 of 6', R + 120, 552, 15, '#6b21a8', 800); box(R + 240, 545, 380, 14, 7, '#ede9fe'); box(R + 240, 545, 380 * Math.min(1, (lt - 4.4) / 3) * .33 + 2, 14, 7, '#7c3aed'); x.restore(); }
+  },
+  function install(lt, T) {
+    var a = ease(fadeIn(lt, .2, .5)); x.save(); x.globalAlpha = a;
+    // phone
+    var PX = R + 40, PY = 76; box(PX, PY, 300, 540, 36, '#0f172a'); box(PX + 12, PY + 14, 276, 512, 26, '#f8fafc');
+    x.save(); rr(PX + 12, PY + 14, 276, 512, 26); x.clip();
+    box(PX + 12, PY + 14, 276, 50, 0, '#1f3864'); txt('Emergency Readiness', PX + 150, PY + 40, 15, '#fff', 800, 'center');
+    for (var i = 0; i < 5; i++) bars(PX + 36, PY + 90 + i * 70, 226, 3);
+    var open = ease(fadeIn(lt, 1.0, .5)), tapT = lt > .8 && lt < 1.05;
+    box(PX + 12 - (1 - open) * 0, PY + 200, 30 + (tapT ? 4 : 0), 110, 8, DRED); x.save(); x.translate(PX + 27, PY + 255); x.rotate(-Math.PI / 2); txt('Paratus', 0, 0, 13, '#fff', 800, 'center'); x.restore();
+    if (open > 0) { var dw = 240 * open; x.fillStyle = 'rgba(15,23,42,' + (.35 * open) + ')'; x.fillRect(PX + 12, PY + 14, 276, 512);
+      box(PX + 12, PY + 14, dw, 512, 0, '#fff'); if (open > .8) { var X = PX + 30;
+        appIcon(X + 22, PY + 64, .42); txt('Paratus', X + 52, PY + 58, 20, DRED, 800); txt('Emergency readiness', X + 52, PY + 78, 12.5, '#475569', 700);
+        var pi = lt > 2.2 && lt < 2.5; box(X, PY + 116 + (pi ? 2 : 0), 190, 40, 20, RED); txt('Install Paratus', X + 95, PY + 136 + (pi ? 2 : 0), 15, '#fff', 800, 'center');
+        box(X, PY + 176, 190, 40, 20, RED); txt('Download everything', X + 95, PY + 196, 14.5, '#fff', 800, 'center');
+        var p = Math.max(0, Math.min(1, (lt - 3.2) / 2.6)); box(X, PY + 232, 190, 12, 6, '#fee2e2'); box(X, PY + 232, 190 * p, 12, 6, RED);
+        txt(p >= 1 ? '✓ Saved on this device' : 'Saving ' + Math.floor(p * 100) + '%', X, PY + 264, 13.5, p >= 1 ? '#166534' : '#475569', 800);
+        txt('One download, about 37 MB', X, PY + 290, 12.5, '#64748b', 650); } }
+    // app bar
+    box(PX + 12, PY + 476, 276, 50, 0, '#1e293b'); ['Back', 'Home', 'Cards', 'Practice', 'Print'].forEach(function (b, j) { txt(b, PX + 40 + j * 55, PY + 501, 12, '#e2e8f0', 700, 'center'); });
+    x.restore(); x.restore();
+    var o = pop(fadeIn(lt, 6.2, .5)); if (o > 0) { x.save(); x.globalAlpha = Math.min(1, o); var X = R + 420;
+      box(X, 120, 420, 150, 20, '#fff', '#e2e8f0', 2); txt('No signal', X + 30, 160, 20, '#b91c1c', 800);
+      for (var k = 0; k < 4; k++) box(X + 30 + k * 18, 230 - k * 14, 12, 14 + k * 14, 3, '#cbd5e1'); x.strokeStyle = '#b91c1c'; x.lineWidth = 4; x.beginPath(); x.moveTo(X + 26, 240); x.lineTo(X + 110, 180); x.stroke();
+      txt('No power', X + 200, 160, 20, '#b91c1c', 800); icon('bolt', X + 240, 214, 1.1, '#cbd5e1'); x.beginPath(); x.moveTo(X + 205, 240); x.lineTo(X + 280, 186); x.stroke();
+      box(X, 300, 420, 260, 20, '#f0fdf4', '#16a34a', 2.5); txt('✓  Still works offline', X + 30, 340, 22, '#166534', 800);
+      ['Quick cards', 'Both courses', 'Megacode and disaster drills'].forEach(function (s, j) { var u = ease(fadeIn(lt, 6.8 + j * .4, .3)); x.globalAlpha = Math.min(1, o) * u;
+        txt('•  ' + s, X + 40, 392 + j * 44, 19, INK, 700); }); x.restore(); }
+  },
+  function outro(lt, T) {
+    var a = pop(fadeIn(lt, .2, .6)); x.save(); x.globalAlpha = Math.min(1, a); box(R + 30, 100, 820, 170, 20, '#fff7e6', '#f0c674', 2.5);
+    txt('Follow your unit protocol,', R + 60, 150, 34, '#6b4200', 800); txt('and always ask the Attending Nephrologist', R + 60, 198, 26, '#6b4200', 700); txt('for guidance.', R + 60, 234, 26, '#6b4200', 700); x.restore();
+    var b = pop(fadeIn(lt, 3.8, .6)); if (b > 0) { x.save(); x.globalAlpha = Math.min(1, b); x.translate(0, (1 - b) * 20);
+      appIcon(R + 100, 376, .7); txt('Paratus', R + 156, 360, 38, DRED, 800); txt('Emergency readiness for dialysis teams', R + 156, 400, 21, '#334155', 700);
+      txt('renalcarematters.com/paratus', R + 60, 480, 24, INK, 800); x.restore(); }
+  }
+];
+function bg(i, T) {
+  var g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, ['#eef7f6', '#f8f5ee', '#f3f6fb', '#f3f7f2', '#f4f2fa', '#f8f5ee', '#eef7f6', '#eef7f6'][i]); g.addColorStop(1, '#ffffff');
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.fillStyle = 'rgba(26,107,114,.06)'; for (var k = 0; k < 6; k++) { x.beginPath(); x.arc(1120 - k * 40 + Math.sin(T * .3 + k) * 10, 80 + k * 22, 60 + k * 18, 0, Math.PI * 2); x.fill(); }
+  x.fillStyle = 'rgba(31,56,100,.05)'; x.fillRect(0, 640, W, 80);
+}
+
+window.render = function (frame) {
+  var fps = TL.fps, T = frame / fps, i = 0, start = 0;
+  while (i < TL.scenes.length - 1 && frame >= start + TL.scenes[i].frames) { start += TL.scenes[i].frames; i++; }
+  var sc = TL.scenes[i], lt = (frame - start) / fps;
+  bg(i, T);
+  scenes[i](lt, T);
+  // the content fades between scenes; the guide stays
+  var d = sc.frames / fps, f = Math.max(0, 1 - lt / .3, 1 - (d - lt) / .3);
+  if (f > 0) { x.save(); x.globalAlpha = f; bg(i, T); x.restore(); }
+  guide(T, TL.amp[frame] || 0, i === 0 && lt < 3.5 ? 'wave' : 'point', lt);
+  caption(sc, lt);
+  if (frame < 12) { x.fillStyle = 'rgba(255,255,255,' + (1 - frame / 12) + ')'; x.fillRect(0, 0, W, H); }
+};
+</script></body></html>

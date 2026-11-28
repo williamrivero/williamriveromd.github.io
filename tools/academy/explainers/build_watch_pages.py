@@ -44,6 +44,12 @@ VIDEOS = [
      "desc": "More than 250 free clinical calculators across every specialty: search, sample data, shared patient inputs, "
              "formulas and sources, and one download for use with no signal.",
      "tool": "/guides/calculators", "tool_label": "Open the calculators", "script": "calculo"},
+    {"name": "paratus", "video": "/videos/paratus/paratus-explainer.mp4",
+     "poster": "videos/paratus/paratus-explainer.jpg",
+     "title": "Meet Paratus: a cartoon explainer",
+     "desc": "Paratus, the emergency readiness app for dialysis teams: 19 emergency quick cards, the Resuscitation Lab "
+             "and Disaster Preparedness courses, megacode and disaster drills, all working offline. Free.",
+     "tool": "/academy/emergency-readiness", "tool_label": "Open Emergency Readiness", "script": "paratus"},
     {"name": "interaction-checker", "video": "/videos/dosis/interaction-checker-explainer.mp4",
      "poster": "videos/dosis/interaction-checker-explainer.jpg",
      "title": "Interaction Checker: a cartoon explainer",
