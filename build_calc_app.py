@@ -169,6 +169,34 @@ CTA = (CTA_START + '\n' + CTA_CSS + '<a class="ca-cta" href="#calc-app" id="calc
        '<svg class="ca-cta-arr" viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>\n' + CTA_END)
 
 
+
+# Cartoon explainer on the calculators index (Nov 28 2026, Dr. Rivero): same player as the Dosis tool pages
+# (always open, no download menu, Share = the watch page /watch/calculo). Video and poster in videos/calculo/.
+XPL_START, XPL_END = "<!-- CALCULO-EXPLAINER-START -->", "<!-- CALCULO-EXPLAINER-END -->"
+XPL = (XPL_START + """
+<style>
+.ca-xpl{margin:18px 0 0;max-width:680px;border:1px solid rgba(49,46,129,.22);border-radius:12px;background:#fff;overflow:hidden;box-shadow:0 6px 20px rgba(15,30,51,.10);}
+.ca-xpl>figcaption{display:flex;align-items:center;gap:10px;padding:10px 14px;font:700 15px Inter,system-ui,sans-serif;color:#312e81;}
+.ca-xpl-play{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#312e81;color:#fff;font-size:11px;padding-left:2px;box-sizing:border-box;}
+.ca-xpl video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000;}
+.ca-xpl-share{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font:700 13.5px Inter,system-ui,sans-serif;color:#fff;background:#312e81;border:0;border-radius:999px;padding:7px 14px;cursor:pointer;}
+.ca-xpl-share:hover{background:#3730a3;} .ca-xpl-share svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.ca-xpl-tr{padding:6px 14px 10px;} .ca-xpl-tr summary{cursor:pointer;font:600 13.5px Inter,system-ui,sans-serif;color:#475569;}
+.ca-xpl-tr p{font-size:14px;line-height:1.6;color:#334155;margin:8px 0 0;text-align:left;}
+html[data-theme="dark"] .ca-xpl{background:#161a2e;border-color:#2f3563;} html[data-theme="dark"] .ca-xpl>figcaption{color:#c7d2fe;}
+html[data-theme="dark"] .ca-xpl-tr summary{color:#b4bfcf;} html[data-theme="dark"] .ca-xpl-tr p{color:#c9d2e0;}
+@media print{.ca-xpl{display:none!important;}}
+</style>
+<figure class="ca-xpl" id="explainer"><figcaption><span class="ca-xpl-play" aria-hidden="true">&#9654;</span> Meet Calculo (1 min 12 s)<button type="button" class="ca-xpl-share" aria-label="Share this explainer video"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button></figcaption>
+<video controls playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture oncontextmenu="return false" poster="/videos/calculo/calculo-explainer.jpg" width="1280" height="720"><source src="/videos/calculo/calculo-explainer.mp4" type="video/mp4"></video>
+<details class="ca-xpl-tr"><summary>Read the transcript</summary><p>__TR__</p></details></figure>
+<script>(function(){var b=document.querySelector('.ca-xpl-share');if(!b)return;b.addEventListener('click',function(){var u='https://renalcarematters.com/watch/calculo',l=b.querySelector('span');
+function done(m){l.textContent=m;setTimeout(function(){l.textContent='Share';},2200);}
+if(navigator.share){navigator.share({title:document.title,url:u}).catch(function(){});return;}
+if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){done('Link copied');},function(){prompt('Copy this link',u);});else prompt('Copy this link',u);});})();</script>
+""" + XPL_END).replace("__TR__", "Meet Calculo, the clinical calculators of Renal Care Matters. More than two hundred and fifty calculators for kidney care, in one place, and free. Search by name, or browse twenty-three categories, from kidney function and electrolytes to dialysis, nutrition and critical care. Each calculator is one clean card. Enter the values, choose your units, and the result appears at once. Not sure what to enter? Tap Sample data to try realistic values, then Clear sample to put your own back. Enter the patient&#x27;s age, weight and creatinine once, and related calculators fill them in for you, saved only on your device. Every result shows its formula, sources and limitations, so you can check the math and the evidence behind it. Open the Calculo tab on the left to install the app, and download every calculator once. Then they all work with no signal, on the ward, in the basement, or in the dialysis unit. Calculators support your clinical judgment; they never replace it. Find Calculo at Renal Care Matters dot com.")
+
+
 def panel(n_calc: int, dl_mb: int, store_mb: int) -> str:
     return f"""{PANEL_START}
 <section class="ca-panel" id="calc-app" aria-labelledby="calc-app-h">
@@ -254,9 +282,12 @@ def patch_page(t: str) -> str:
 def patch_index(t: str, sizes: dict) -> str:
     t = strip_block(t, CTA_START, CTA_END)
     t = strip_block(t, PANEL_START, PANEL_END)
+    t = strip_block(t, XPL_START, XPL_END)
     anchor = '<p style="margin:14px 0 0;font-size:.9rem;"><a href="/guides/" class="hero-xlink">'
     if anchor in t:
         t = t.replace(anchor, CTA + "\n" + anchor, 1)
+        j = t.find("</p>", t.find(anchor)) + 4   # the explainer goes right after the "All guides" line
+        t = t[:j] + "\n" + XPL + t[j:]
     else:   # fall back to right after the hero subtitle
         t = re.sub(r'(<p class="hero-sub">.*?</p>\n)', lambda m: m.group(1) + CTA + "\n", t, count=1, flags=re.S)
     # Nov 28 2026: the install + offline panel is a left drawer drawn by assets/calc-app.js on every calculator page

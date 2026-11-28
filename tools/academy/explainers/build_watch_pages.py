@@ -38,6 +38,12 @@ VIDEOS = [
      "desc": "Turn a long prescription into one clear daily timetable around meals, bedtime and dialysis days. "
              "Free in Dosis, the Drug Index on renalcarematters.com. For clinicians.",
      "tool": "/drugs/med-scheduler", "tool_label": "Open the Med Scheduler", "script": "med-scheduler"},
+    {"name": "calculo", "video": "/videos/calculo/calculo-explainer.mp4",
+     "poster": "videos/calculo/calculo-explainer.jpg",
+     "title": "Meet Calculo: a cartoon explainer",
+     "desc": "More than 250 clinical calculators for kidney care, free: search, sample data, shared patient inputs, "
+             "formulas and sources, and one download for use with no signal.",
+     "tool": "/guides/calculators", "tool_label": "Open the calculators", "script": "calculo"},
     {"name": "interaction-checker", "video": "/videos/dosis/interaction-checker-explainer.mp4",
      "poster": "videos/dosis/interaction-checker-explainer.jpg",
      "title": "Interaction Checker: a cartoon explainer",
