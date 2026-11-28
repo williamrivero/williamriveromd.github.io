@@ -11,4 +11,4 @@ Pipeline: Piper each line -> pad 0.5 s / 0.8 s -> timeline.json -> render.py -> 
 Pages show them in a `details.rl-xpl` ("Watch the 1-minute explainer", preload none, transcript).
 Clinical lines need Dr. Rivero's check.
 
-Per-explainer voices: Lessac (female guide) for megacode, med-scheduler, interaction-checker, calculo; Ryan high (male guide, `head.js` in `paratus/`) for paratus. `tl.py` builds `timeline.json` + `voice.wav` from `s1..sN.wav`; `render.py [scene ...]` re-renders only the listed scenes.
+Per-explainer voices: Lessac (female guide) for megacode, med-scheduler, interaction-checker, calculo; Ryan high (male guide, `head.js` in `paratus/`) for paratus and drug-index (same guide, teal badge; `still.py` renders check frames). `tl.py` builds `timeline.json` + `voice.wav` from `s1..sN.wav`; `render.py [scene ...]` re-renders only the listed scenes.
