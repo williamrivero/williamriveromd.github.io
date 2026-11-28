@@ -2307,7 +2307,7 @@ html[data-theme="dark"] .lib-dls-all, body.dark-mode .lib-dls-all { color: #9cc8
 <!-- NAV -->
 <header class="site-header">
   <a href="https://renalcarematters.com" class="brand">HOME</a>
-  <nav class="header-nav"><a href="/academy/">ACADEMY</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/" class="is-current">GUIDES</a><a href="/drugs/">DRUGS</a><a href="calculators.html">CALCULATORS</a><a href="/about.html">ABOUT</a></nav><script src="/assets/site-nav.afdb564c98.js"></script>
+  <nav class="header-nav"><a href="/academy/">ACADEMY</a><a href="kidney-physiology.html">PHYSIOLOGY</a><a href="nephrology-atlas.html">ATLAS</a><a href="/guides/" class="is-current">GUIDES</a><a href="/drugs/">DRUGS</a><a href="calculators.html">CALCULATORS</a><a href="/about.html">ABOUT</a></nav><script src="/assets/site-nav.eb803167b2.js"></script>
 </header>
 
 <!-- HERO -->
@@ -6815,9 +6815,31 @@ document.addEventListener('DOMContentLoaded', function() {
       var c=a.querySelector('.jump-count');if(c)c.textContent=t.querySelectorAll('a.guide-tile').length;
       a.addEventListener('click',function(){var sec=t.closest('.guide-section');if(sec)setOpen(sec,true);if(t.classList.contains('sub-group'))setSub(t,true);});
     });
-    /* Deep link to a section (e.g. guides/#sec-dialysis) opens it */
-    function openHash(){if(!location.hash)return;var t;try{t=document.querySelector(location.hash);}catch(e){return;}var sec=t&&t.closest('.guide-section');if(sec){setOpen(sec,true);}if(t&&t.classList.contains('sub-group'))setSub(t,true);}
+    /* Deep link to a section (e.g. guides/#sec-dialysis, #latest-new, #latest-updated) opens it and scrolls to it
+       (the Latest sub-groups are built here, after the browser's own jump, so the page scrolls itself; Nov 28 2026) */
+    function jump(el){if(!el)return;var hdr=document.querySelector('.site-header'),cs=hdr&&getComputedStyle(hdr),off=(cs&&/sticky|fixed/.test(cs.position)?hdr.offsetHeight:0)+12;
+      window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.pageYOffset-off),behavior:'smooth'});}
+    function openHash(){if(!location.hash)return;var t;try{t=document.querySelector(location.hash);}catch(e){return;}if(!t)return;
+      var sec=t.closest('.guide-section,.latest-section');if(sec){setOpen(sec,true);}if(t.classList.contains('sub-group'))setSub(t,true);
+      setTimeout(function(){jump(t);},80);}
     openHash();window.addEventListener('hashchange',openHash);
+    /* Role links (/guides/?for=nurses, from the site menu) land on the filtered list, not the top of the page */
+    var role='';try{role=new URLSearchParams(location.search).get('for')||'';}catch(e){}
+    if(role&&!location.hash)setTimeout(function(){jump(document.getElementById('gi-toolbar'));},120);
+    /* Menu links to this same page apply here, without a reload */
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href^="/guides/?for="],a[href^="/guides/#"]');
+      if(!a||e.defaultPrevented||e.button||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+      var u;try{u=new URL(a.href,location.href);}catch(x){return;}
+      if(u.pathname!==location.pathname&&!(u.pathname==='/guides/'&&/\/guides\/(index(\.html)?)?$/.test(location.pathname)))return;
+      e.preventDefault();
+      var f=u.searchParams.get('for');
+      if(f){var b=document.querySelector('.filter-btn[data-filter="'+f+'"]');if(b)b.click();
+        history.pushState(null,'',location.pathname+'?for='+encodeURIComponent(f));setTimeout(function(){jump(document.getElementById('gi-toolbar'));},80);return;}
+      var all=document.querySelector('.filter-btn[data-filter="all"]');if(all&&!all.classList.contains('active'))all.click();
+      if(search&&search.value){var sc2=document.getElementById('search-clear');if(sc2)sc2.click();}
+      history.pushState(null,'',location.pathname+u.hash);setTimeout(openHash,60);
+    },true);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

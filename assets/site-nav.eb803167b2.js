@@ -359,6 +359,7 @@
     nav.appendChild(dnav);
     nav.classList.add("rcm-d");
     document.addEventListener("click", function (e) { if (!dnav.contains(e.target)) openD(null); });
+    dnav.addEventListener("click", function (e) { if (e.target.closest(".rcm-dp a")) openD(null); });
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Escape") return;
       var open = dnav.querySelector(".rcm-dg.open");
