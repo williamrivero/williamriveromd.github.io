@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 09: Heat, Ashfall and Outbreaks. DRAFT."""
+"""Disaster Preparedness and Response, Module 09: Heat, Ashfall and Outbreaks."""
 
 MODULE = {
     "image_alt": "Two staff in masks closing the windows of a dialysis unit while fine gray volcanic ash coats the parked cars outside.",

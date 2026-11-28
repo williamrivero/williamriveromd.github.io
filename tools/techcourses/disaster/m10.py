@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 10: Keeping Everyone Dialyzed: Priority, Placement, Tracking. DRAFT.
+"""Disaster Preparedness and Response, Module 10: Keeping Everyone Dialyzed: Priority, Placement, Tracking.
 Shortened sessions: Dr. Rivero's decision (blueprint decision 4), taught only under the six conditions in blueprint section 5."""
 
 MODULE = {

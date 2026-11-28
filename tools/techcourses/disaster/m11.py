@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 11: Reopening Safely and Recovering. DRAFT.
+"""Disaster Preparedness and Response, Module 11: Reopening Safely and Recovering.
 The five restart gates are repeated verbatim from Head Nurse Module 12 (the single source); any change goes into both."""
 
 MODULE = {

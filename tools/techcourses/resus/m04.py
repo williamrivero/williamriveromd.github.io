@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 04: BLS at the Dialysis Chair. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 04: BLS at the Dialysis Chair. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A nurse giving chest compressions to a man in a fully flattened dialysis recliner while a second nurse seals a bag-valve-mask.",

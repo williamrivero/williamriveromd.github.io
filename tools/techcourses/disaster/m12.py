@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 12: Running Drills That Change Practice. Facilitator capstone. DRAFT."""
+"""Disaster Preparedness and Response, Module 12: Running Drills That Change Practice. Facilitator capstone."""
 
 MODULE = {
     "image_alt": "A dialysis team leaning over a large printed floor plan with tokens while a facilitator holds inject cards and a timer sits on the table.",

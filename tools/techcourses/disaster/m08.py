@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 08: Power, Water and Supplies. DRAFT.
+"""Disaster Preparedness and Response, Module 08: Power, Water and Supplies.
 Single source for manual blood return and the first ten minutes: Physician-on-Duty Module 30 (repeated here, linked).
 Water failure: Water Treatment Technician Module 12. Outage autonomy: Unit Manager Module 12 (CALC-12)."""
 

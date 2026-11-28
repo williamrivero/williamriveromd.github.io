@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 10: Pediatric BLS and the Child Who Is Getting Worse. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 10: Pediatric BLS and the Child Who Is Getting Worse. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A pediatric dialysis nurse supporting the airway of a drowsy school-age child while a colleague brings a pediatric bag-mask.",

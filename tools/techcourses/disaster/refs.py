@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """References for Disaster Preparedness and Response (APA 7). Merged into SHARED.REFS like the other tracks.
 Journal entries come from the blueprint's source register (DISASTER_PREPAREDNESS_BLUEPRINT.md section 14), checked against
-PubMed on November 28, 2026. Philippine sources: official pages checked the same day. DRAFT pending clinical sign-off."""
+PubMed on November 28, 2026. Philippine sources: official pages checked the same day."""
 
 
 def _doi(d):

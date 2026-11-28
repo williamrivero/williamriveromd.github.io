@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 07: Fire and Evacuation. DRAFT."""
+"""Disaster Preparedness and Response, Module 07: Fire and Evacuation."""
 
 MODULE = {
     "image_alt": "A census nurse checking names at an assembly point while colleagues bring patients in wheelchairs and on a stretcher.",

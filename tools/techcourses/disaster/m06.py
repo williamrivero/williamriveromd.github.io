@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 06: Earthquake on the Machine. DRAFT.
+"""Disaster Preparedness and Response, Module 06: Earthquake on the Machine.
 Consistency lock (blueprint section 4): the emergency take-off rule here and the circuit decision in Resuscitation Lab Module 7
 are one rule. Any edit to either changes both."""
 

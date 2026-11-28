@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emergency Readiness section and the Resuscitation Lab Practice Lab (Nov 28 2026, DRAFT pending Dr. Rivero's sign-off).
+"""Emergency Readiness section and the Resuscitation Lab Practice Lab (Nov 28 2026; signed off by Dr. Rivero the same day).
 Idempotent. publish_academy.py runs it right after apply_emergency_cards.py.
 
   1. fingerprints assets/academy-resus-lab.js as assets/academy-resus-lab.<hash>.js (older copies pruned);
@@ -22,12 +22,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 ACADEMY, ASSETS = ROOT / "academy", ROOT / "assets"
-DRAFT = True
+DRAFT = False   # signed off by Dr. Rivero, November 28, 2026
 NAME = "academy-resus-lab"
 SITE = "https://renalcarematters.com/academy/"
 HUB = "resuscitation-lab"
 PRACTICE, READY = "resuscitation-lab-practice.html", "emergency-readiness.html"
-DHUB, DNAME = "disaster-preparedness", "academy-disaster-lab"     # Disaster Preparedness and Response (Nov 28 2026, DRAFT)
+DHUB, DNAME = "disaster-preparedness", "academy-disaster-lab"     # Disaster Preparedness and Response (Nov 28 2026; signed off)
 DPRACTICE = DHUB + "-practice.html"
 LS, LE = "<!-- EMERGENCY-READINESS-START -->", "<!-- EMERGENCY-READINESS-END -->"
 BS, BE = "<!-- RL-BADGE-START -->", "<!-- RL-BADGE-END -->"
@@ -270,10 +270,10 @@ def ready_main():
 </section>
 <section class="section" id="readiness">
   <div class="section-tag">Who needs which level</div>
-  <h2>Resuscitation readiness by track (draft)</h2>
-  <p>The table is a draft Academy recommendation. Two levels are verified Philippine rules: dialysis nurses hold a current BLS certificate, and the physician-on-duty and at least one nurse on every shift hold current ACLS from a DOH-accredited provider (DOH Administrative Order No. 2012-0001; Philippine Society of Nephrology 2024 guidelines). No DOH or PSN requirement for PALS in units that treat children was verified; it is shown as an Academy recommendation. Certificates come only from an authorized training center.</p>
+  <h2>Resuscitation readiness by track</h2>
+  <p>The table is an Academy recommendation. Two levels are verified Philippine rules: dialysis nurses hold a current BLS certificate, and the physician-on-duty and at least one nurse on every shift hold current ACLS from a DOH-accredited provider (DOH Administrative Order No. 2012-0001; Philippine Society of Nephrology 2024 guidelines). No DOH or PSN requirement for PALS in units that treat children was verified; it is shown as an Academy recommendation. Certificates come only from an authorized training center.</p>
   <div class="table-wrap"><table class="rl-matrix"><thead><tr><th>Level</th><th>Tracks</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div>
-  <h3>Disaster modules by role (draft)</h3>
+  <h3>Disaster modules by role</h3>
   <div class="table-wrap"><table class="rl-matrix"><thead><tr><th>Role group</th><th>Disaster Preparedness and Response</th></tr></thead><tbody>
   <tr><td>Hemodialysis, charge and head nurses</td><td>All modules; Modules 6 to 8 hands-on; emergency take-off drill passed</td></tr>
   <tr><td>Safety nurse (or head nurse)</td><td>All modules, plus the Module 12 facilitator capstone</td></tr>
@@ -295,7 +295,7 @@ def ready_main():
 <section class="section" id="drills">
   <div class="section-tag">Who runs the drills</div>
   <h2>Every drill has an owner, a facilitator and a record</h2>
-  <p>A drill with no named owner does not happen. The table is the Academy&rsquo;s suggested division of work (draft); your unit may assign it differently, but every row needs a name and a deputy for leave and night shifts.</p>
+  <p>A drill with no named owner does not happen. The table is the Academy&rsquo;s suggested division of work; your unit may assign it differently, but every row needs a name and a deputy for leave and night shifts.</p>
   <div class="table-wrap"><table class="rl-matrix"><thead><tr><th>Drill</th><th>Owns the schedule</th><th>Runs it (facilitator)</th><th>Takes part</th><th>Signs the record</th></tr></thead><tbody>
   <tr><td colspan="5"><b>Resuscitation (Dialysis Team Resuscitation Lab)</b></td></tr>
   <tr><td>Weekly five-minute refresher at handover</td><td>Head nurse</td><td>Charge nurse on the shift</td><td>Everyone on that shift</td><td>Charge nurse</td></tr>
@@ -432,7 +432,7 @@ def put(text, start, end, block, anchor_re, after=False):
 
 
 def badge(hub, lvl):
-    v = VERIFIED.get(hub, "Academy recommendation (draft); confirm your unit&rsquo;s requirement.")
+    v = VERIFIED.get(hub, "Academy recommendation; confirm your unit&rsquo;s requirement.")
     return (f'{BS}\n<div class="alert alert-red" style="max-width:860px;margin:18px auto;"><div class="alert-body"><p style="margin:0;">'
             f'<strong>&#9889; Required readiness: {lvl}.</strong> {v} Practice it in <a href="{READY}" style="color:var(--teal);font-weight:600;">Emergency Readiness</a>: '
             f'the quick cards, the <a href="{HUB}.html" style="color:var(--teal);font-weight:600;">Resuscitation Lab</a> and the Practice Lab.'

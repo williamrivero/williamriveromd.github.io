@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Disaster Preparedness and Response, Module 01: Why Disasters Hurt Dialysis Patients Twice.
-Written for this series from published sources. DRAFT."""
+Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A freestanding dialysis clinic on a flooded street, its shutter half down, with an older man and his daughter on a dry step across the street.",

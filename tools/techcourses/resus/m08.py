@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 08: Hyperkalemia: With a Pulse and in Arrest. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 08: Hyperkalemia: With a Pulse and in Arrest. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A physician comparing an ECG with peaked T waves to a laboratory slip while a nurse keeps the patient dialyzing.",

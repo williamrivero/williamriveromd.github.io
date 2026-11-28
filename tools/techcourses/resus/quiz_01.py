@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab self-assessment, Module 01. Correct option first; quizutil.balance() spreads the keys. DRAFT."""
+"""Resuscitation Lab self-assessment, Module 01. Correct option first; quizutil.balance() spreads the keys."""
 
 QUIZ = {"01": [
     ("In a large review of dialysis-unit arrests, which session of the week had the most arrests?",

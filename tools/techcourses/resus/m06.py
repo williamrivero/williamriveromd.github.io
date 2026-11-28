@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 06: Bradycardia and Tachycardia With a Pulse. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 06: Bradycardia and Tachycardia With a Pulse. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A physician-on-duty reading a fast rhythm on the monitor while a nurse places cardioversion pads on a conscious patient.",

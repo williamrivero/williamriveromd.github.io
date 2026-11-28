@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 02: How Resuscitation Algorithms Think. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 02: How Resuscitation Algorithms Think. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A small team at a whiteboard beside a dialysis chair while a physician sketches a branching decision path.",

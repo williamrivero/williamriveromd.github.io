@@ -2,7 +2,7 @@
 """Disaster Preparedness and Response: course definition in the POD/SW package schema.
 Built from Dr. Rivero's blueprint v1.1 (DISASTER_PREPAREDNESS_BLUEPRINT.md, November 28, 2026, decisions in section 13).
 Cross-track course in the Emergency Readiness section, beside the Dialysis Team Resuscitation Lab.
-Every case, name, and identifier is fictional. Review status: DRAFT pending Dr. Rivero's clinical sign-off."""
+Every case, name, and identifier is fictional. Review status: signed off by Dr. Rivero, November 28, 2026."""
 
 HUB = "disaster-preparedness"
 _HB = ("Illustrated clinical vignette, calm and prepared, Filipino dialysis team, modern Philippine hemodialysis unit, realistic "
@@ -37,12 +37,12 @@ COURSE = {
     "h1": "Disaster <em>Preparedness and Response</em>",
     "sub": ("Keep every patient safe when the warning comes, when the ground shakes and when the lights go out, and keep every patient "
             "dialyzed until the unit reopens. A cross-track course and drill program for the whole dialysis unit."),
-    "disclaimer": ("DRAFT pending clinical sign-off by Dr. William Gregory Rivero. Educational course and drill resource for dialysis units. "
+    "disclaimer": ("Educational course and drill resource for dialysis units. "
                    "It is not a hospital disaster plan, a licensing requirement, or a substitute for your unit&rsquo;s approved protocol, "
                    "the machine manufacturer&rsquo;s instructions, or instructions from PAGASA, PHIVOLCS, the Bureau of Fire Protection or "
                    "your local disaster office. Clinical decisions in a disaster (early dialysis, shortened sessions, priority, diet) belong "
                    "to the attending nephrologist."),
-    "scope_note": ("DRAFT, pending clinical sign-off. This module is study material for dialysis teams. It explains the reasoning behind "
+    "scope_note": ("This module is study material for dialysis teams. It explains the reasoning behind "
                    "disaster decisions; it is not a unit protocol or an order set. Early dialysis, shortened sessions, priority rosters and "
                    "emergency diets are decisions of the attending nephrologist and the Dialysis Clinical Head. Escalation follows your "
                    "unit protocol, and you always ask the attending nephrologist for guidance. Every case, name, and identifier is "
@@ -61,7 +61,7 @@ COURSE = {
 {{cards:What this course will help your unit do|Know your hazards and dependencies::Map what your unit runs on, which things fail together, and fix the single points of failure before the season.|Activate one plan, with one command::Triggers tied to PAGASA signals, PHIVOLCS alerts and utility notices; named roles; a call-down that works when networks fail.|Prepare every patient::An emergency card, a three-day emergency kidney diet, a medicine supply, two phone numbers, and the rule on the machine: stay connected and wait for staff.|Protect the patients connected right now::Earthquake, fire, power or water failure: the first minutes at the chair, the emergency take-off, and the census at the assembly point.|Keep everyone dialyzed::Find every patient within 24 hours, place them by medical priority, and use shortened sessions only under six conditions.|Reopen safely and learn::Five signed restart gates, reconciliation of who was dialyzed where, care for tired staff, and drills that change practice.}}
 {{fig:dp00_act_learn_practice}}
 <p>The course is cross-track. Eight role tracks already carry a disaster module, and this course is the shared core they point to: one unit plan, one drill program, one set of rules. Each module says which roles need it. The <a href="disaster-preparedness-practice.html">practice page</a> holds the tabletop simulator, the call-down drill timer and the printable evacuation sheet. Cardiac arrest at the chair belongs to the <a href="resuscitation-lab.html">Dialysis Team Resuscitation Lab</a>; this course links to it and never re-teaches it.</p>
-<div class="alert alert-red"><div class="alert-icon">⛔</div><div class="alert-body"><h4>DRAFT: pending clinical sign-off</h4><p>This course has not yet been signed off by Dr. William Gregory Rivero. Your unit protocol, the attending nephrologist and your local disaster authorities decide every real event.</p></div></div>
+<div class="alert alert-teal"><div class="alert-icon">✅</div><div class="alert-body"><h4>Clinically reviewed</h4><p>Signed off by Dr. William Gregory Rivero on November 28, 2026. Your unit protocol, the attending nephrologist and your local disaster authorities decide every real event.</p></div></div>
 """,
     "is_not": ("It is an original course written from published disaster and dialysis research, Philippine law and policy (Republic Act "
                "No. 10121, the Department of Health&rsquo;s DRRM-H policy, the Fire Code), and public guidance from PAGASA, PHIVOLCS and "
@@ -76,7 +76,7 @@ COURSE = {
 {{cards:The four parts|Part 1 &middot; Understand and plan::Modules 1 to 3. Why disasters hurt dialysis patients twice, your unit&rsquo;s hazards and dependencies, and the unit plan with its command roles.|Part 2 &middot; Ready patients::Module 4. The emergency card, the three-day emergency kidney diet, medicines, contacts, and what to do on the machine.|Part 3 &middot; Respond::Modules 5 to 9. Typhoons and floods, earthquakes, fire and evacuation, power and water failure, and heat, ashfall and outbreaks.|Part 4 &middot; Continue, reopen, practice::Modules 10 to 12. Priority, placement and tracking; reopening through five signed gates; running drills that change practice.}}
 <h3>Which modules for which role</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>Role group</th><th>Modules (draft)</th></tr></thead>
+<thead><tr><th>Role group</th><th>Modules</th></tr></thead>
 <tbody>
 <tr><td>Hemodialysis, charge and head nurses</td><td>All modules; Modules 6 to 8 hands-on; emergency take-off drill passed</td></tr>
 <tr><td>Safety nurse (or head nurse)</td><td>All modules, plus the Module 12 facilitator capstone</td></tr>
@@ -86,7 +86,7 @@ COURSE = {
 <tr><td>Unit manager, unit owner</td><td>Modules 1, 2, 3, 10, 11, 12</td></tr>
 <tr><td>Social worker, records officer, dietitian</td><td>Modules 1, 3, 4, 10</td></tr>
 </tbody></table></div>
-<p>The role paths are a draft Academy recommendation for the unit to adapt.</p>
+<p>The role paths are an Academy recommendation for the unit to adapt.</p>
 """,
     "modules_h2": "Twelve modules in four parts",
     "modules_intro": ("Study in order the first time. Each module opens with a fictional Philippine scenario, teaches the reasoning, and "

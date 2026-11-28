@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 12: Pulse Restored: ROSC, Transfer and Handover. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 12: Pulse Restored: ROSC, Transfer and Handover. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A nurse handing a written summary to ambulance staff beside a stretcher while the monitor shows a regular rhythm.",

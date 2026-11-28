@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 09: Circuit Emergencies That Become Resuscitations. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 09: Circuit Emergencies That Become Resuscitations. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A nurse pressing gauze on a forearm fistula after a needle dislodgement, blood on the blanket, a second nurse checking the pulse.",

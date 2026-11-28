@@ -4,7 +4,7 @@ Item: id, type (pick | strip | missing | order | unsafe | evolve), set (adult | 
 optional strip {rhythm, rate}, findings, options, answer (index; for "order" the correct order of option indexes),
 why (one explanation per option, or one string for "order"), tag (misconception), mod (module number that teaches it).
 Every strip item carries clinical findings: a trace alone never establishes a pulse, perfusion or stability.
-Run from the repo root:  python3 tools/techcourses/resus/recognition.py     DRAFT pending clinical sign-off."""
+Run from the repo root:  python3 tools/techcourses/resus/recognition.py    """
 import json
 from pathlib import Path
 

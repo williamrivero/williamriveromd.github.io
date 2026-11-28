@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 11: Pediatric Arrest and Rhythms During Dialysis. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 11: Pediatric Arrest and Rhythms During Dialysis. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "Two pediatric nurses double-checking a syringe label against a weight-based dose card beside a child on a small dialysis bed.",

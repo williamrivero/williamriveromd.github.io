@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 05: Typhoons and Floods. DRAFT."""
+"""Disaster Preparedness and Response, Module 05: Typhoons and Floods."""
 
 MODULE = {
     "image_alt": "A dialysis unit at dusk under a heavy typhoon sky, staff moving supply boxes onto high shelves while a van waits outside.",

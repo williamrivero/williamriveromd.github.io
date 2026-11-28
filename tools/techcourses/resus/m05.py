@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 05: Adult Cardiac Arrest: Shockable and Nonshockable. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 05: Adult Cardiac Arrest: Shockable and Nonshockable. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A physician holding defibrillator controls while the team steps back from a flattened dialysis chair, hands raised.",

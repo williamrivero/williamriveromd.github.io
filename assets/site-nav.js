@@ -211,7 +211,8 @@
   // Academy tracks (anchors on the Academy landing page), listed under Train in both menus
   var TRACKS = [["track-nursing", "Nephrology Nursing", "#5ec2c6"], ["track-physicians", "Renal Care Physicians", "#8fb0e8"],
     ["renal-technician-program", "Renal Technicians", "#f2a36b"], ["track-ancillary", "Ancillary Staff", "#7fd39a"],
-    ["track-administrative", "Administrative Staff", "#b9a3e3"]];
+    ["track-administrative", "Administrative Staff", "#b9a3e3"],
+    ["/academy/emergency-readiness", "Emergency Readiness", "#f0938a"]];   // Dr. Rivero, Nov 28 2026: sixth pill
   var n = 0;
   function buildGroup(g, withTitle) {
     var items = g.items.filter(function (it) { return it[0] === "home" || hrefs[it[0]]; });
@@ -247,7 +248,7 @@
       TRACKS.forEach(function (tr) {
         var a = document.createElement("a");
         a.className = "rsn-trk";
-        a.href = "/academy/#" + tr[0];
+        a.href = tr[0].charAt(0) === "/" ? tr[0] : "/academy/#" + tr[0];
         a.style.setProperty("--t", tr[2]);
         a.innerHTML = "<i></i><span></span>";
         a.lastChild.textContent = tr[1];

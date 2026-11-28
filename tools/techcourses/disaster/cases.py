@@ -4,7 +4,7 @@ data/academy-cases/dp-*.json in the apply_cases.py schema, with a "unit board" i
 fields: time, alert, power, water, patients connected, staff, roads). Run from the repo root:
     python3 tools/techcourses/disaster/cases.py
 Every decision node sits on every path (weaker choices show their consequence and rejoin). Every case has at least one
-harmful choice that teaches a hard rule. Clinical content follows the module text; DRAFT pending Dr. Rivero's sign-off.
+harmful choice that teaches a hard rule. Clinical content follows the module text; Signed off by Dr. Rivero, November 28, 2026.
 Every name and identifier is fictional."""
 import json
 from pathlib import Path
@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "data" / "academy-cases"
 P = "disaster-preparedness-"
-NOTE = ("Fictional unit and patients. DRAFT pending clinical sign-off. Your unit protocol, the attending nephrologist and your local "
+NOTE = ("Fictional unit and patients. Your unit protocol, the attending nephrologist and your local "
         "disaster authorities decide every real event.")
 LBL = {"time": "Time", "alert": "Alert", "power": "Power", "water": "Water", "on": "On machines", "staff": "Staff", "roads": "Roads",
        "note": "Board note"}

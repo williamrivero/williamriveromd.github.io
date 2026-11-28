@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 13: Team, Code Status, Debrief and Practice. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 13: Team, Code Status, Debrief and Practice. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A dialysis team in a short standing debrief after a drill around a manikin in a recliner, the facilitator holding a clipboard.",

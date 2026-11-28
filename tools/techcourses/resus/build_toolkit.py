@@ -2,7 +2,7 @@
 """Build guides/calc-resuscitation-lab-toolkit.html from the Medical Records Officer toolkit page (house calculator chrome) and
 the Resuscitation Lab tool sources in tools/techcourses/resus/toolkit/ (main.html, script.html). Idempotent: rebuilds the page
 from the template every time. Run from the repo root:  python3 tools/techcourses/resus/build_toolkit.py
-Then test:  node tools/test_resus_toolkit.cjs     DRAFT pending clinical sign-off."""
+Then test:  node tools/test_resus_toolkit.cjs    """
 import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -32,15 +32,14 @@ def main():
     s = re.sub(r'<meta name="twitter:image" content=".*?">', f'<meta name="twitter:image" content="{OG}">', s, count=1)
     s = re.sub(r'<meta property="og:image:alt" content=".*?">',
                '<meta property="og:image:alt" content="Renal Care Academy: Resuscitation Lab toolkit">', s, count=1)
-    if 'name="robots"' not in s:   # DRAFT: keep out of search until clinical sign-off
-        s = s.replace("<head>", '<head>\n<meta name="robots" content="noindex"><!-- RL-DRAFT -->', 1)
+    s = re.sub(r'<meta name="robots" content="noindex"><!-- RL-DRAFT -->\n?', "", s)   # signed off Nov 28 2026
     stamp = None
     if OUT.exists():   # keep the first publish stamp
         m = re.search(r'<meta property="article:published_time" content="([^"]+)"', OUT.read_text(encoding="utf-8"))
         stamp = m.group(1) if m else None
     stamp = stamp or datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%dT%H:%M:%S+08:00")
     s = re.sub(r'<meta property="article:published_time" content="[^"]+">', f'<meta property="article:published_time" content="{stamp}">', s, count=1)
-    hero = ('<section class="hero">\n<div class="container">\n<div class="hero-tag">Renal Care Academy · Emergency Readiness · Drill Tools · DRAFT</div>\n'
+    hero = ('<section class="hero">\n<div class="container">\n<div class="hero-tag">Renal Care Academy · Emergency Readiness · Drill Tools</div>\n'
             '<h1>Resuscitation Lab <em>Toolkit</em></h1>\n'
             '<p class="hero-sub">Five drill and teaching tools for the Dialysis Team Resuscitation Lab: measure CPR pauses and compression '
             'fraction, analyze a megacode timeline, practice pediatric dose and volume arithmetic, plan oxygen for transfer, and rotate '

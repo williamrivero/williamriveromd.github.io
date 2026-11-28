@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 03: Recognizing the Right Algorithm. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 03: Recognizing the Right Algorithm. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A nurse feeling the neck pulse of a pale man in a dialysis chair while looking at the bedside monitor.",

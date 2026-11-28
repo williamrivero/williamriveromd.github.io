@@ -2,7 +2,7 @@
 """Dialysis Team Resuscitation Lab (ACLS, BLS & PALS): course definition in the POD/SW package schema.
 Built from Dr. Rivero's Resuscitation Lab blueprint and the Emergency Readiness handoff, merged as Blueprint v2
 (RESUSCITATION_LAB_BLUEPRINT_v2.md, November 28, 2026). Cross-track course in the Emergency Readiness section.
-Every case, name, and identifier is fictional. Review status: DRAFT pending Dr. Rivero's clinical sign-off."""
+Every case, name, and identifier is fictional. Review status: signed off by Dr. Rivero, November 28, 2026."""
 
 HUB = "resuscitation-lab"
 _HB = ("Illustrated clinical vignette, cinematic but calm, Filipino dialysis team, modern Philippine hemodialysis unit, "
@@ -37,11 +37,11 @@ COURSE = {
     "h1": "Dialysis Team <em>Resuscitation Lab</em>",
     "sub": ("Practice the first minutes. Coordinate every role. Improve with every drill. A BLS-, ALS- and PALS-aligned review for the "
             "whole dialysis team, built around the patient who collapses while connected to a machine."),
-    "disclaimer": ("DRAFT pending clinical sign-off by Dr. William Gregory Rivero. Educational reviewer and practice resource for dialysis "
+    "disclaimer": ("Educational reviewer and practice resource for dialysis "
                    "teams. It is not an American Heart Association (AHA) course, it is not BLS, ACLS or PALS certification, and online "
                    "completion does not establish hands-on competence. Staff certify through an authorized training center. Your unit&rsquo;s "
                    "approved protocol, crash-cart stock and machine manufacturer&rsquo;s instructions govern every real event."),
-    "scope_note": ("DRAFT, pending clinical sign-off. This module is study material for dialysis teams. It explains the reasoning behind "
+    "scope_note": ("This module is study material for dialysis teams. It explains the reasoning behind "
                    "resuscitation decisions; it is not a unit protocol, an order set, or certification. Doses and energies are quoted from the "
                    "2025 American Heart Association (AHA) guidelines and the European Resuscitation Council (ERC) where named, so you can "
                    "recognize them; give medicines only within your license and your unit&rsquo;s approved protocol. Escalation always "
@@ -60,7 +60,7 @@ COURSE = {
 <p>A large registry study from the United States followed 398 arrests inside outpatient dialysis clinics. Two in three began with a rhythm that a shock cannot fix. Staff started CPR in 81.4% of events, and staff-started CPR was associated with about three times the odds of leaving hospital alive with good brain function. The study was observational, so it shows an association, not proof; but it also shows that in about one event in five, nobody started compressions before the ambulance came.[[pun2019]] This course exists to close that gap.</p>
 {{cards:What this course will help your team do|Recognize the right algorithm::Tell arrest from respiratory arrest from a patient who is getting worse with a pulse, in seconds, and switch when the patient changes.|Start high-quality CPR at the chair::Flatten the recliner, compress at the right rate and depth, and keep pauses under 10 seconds.|Run the adult algorithms::Shockable and nonshockable arrest, bradycardia and tachycardia with a pulse, and the reversible causes that dominate in dialysis.|Manage the machine without delaying CPR::Stop fluid removal, decide whether the blood goes back, keep the access safe, and defibrillate safely.|Treat potassium as a dialysis team::Separate hyperkalemia with a pulse from hyperkalemic arrest, and know where the guidelines differ.|Practice as the real shift::Run megacodes with your actual staffing, debrief in five questions, and fix the system, not just the person.}}
 <p>The course is cross-track. A nurse assistant needs the BLS modules and the circuit basics; a physician-on-duty needs everything. Each module says who it is for. Part 4 (children) is essential for pediatric dialysis teams and recommended for everyone. The <a href="resuscitation-lab-practice.html">Practice Lab</a> holds the algorithm recognition trainer, the timed megacodes, and the facilitator recorder; the <a href="emergency-cards.html">Emergency Quick Cards</a> are what you open during a real event.</p>
-<div class="alert alert-red"><div class="alert-icon">⛔</div><div class="alert-body"><h4>DRAFT: pending clinical sign-off</h4><p>This course has not yet been signed off by Dr. William Gregory Rivero. It is not an AHA course and gives no certification. Your unit protocol decides every real event.</p></div></div>
+<div class="alert alert-teal"><div class="alert-icon">✅</div><div class="alert-body"><h4>Clinically reviewed</h4><p>Signed off by Dr. William Gregory Rivero on November 28, 2026. It is not an AHA course and gives no certification. Your unit protocol decides every real event.</p></div></div>
 """,
     "is_not": ("It is an original reviewer written from the 2025 AHA and AHA/American Academy of Pediatrics (AAP) guidelines, the 2025 "
                "European Resuscitation Council (ERC) special-circumstances guideline, kidney guidance, and peer-reviewed research. It is not "
@@ -75,7 +75,7 @@ COURSE = {
 {{cards:The five parts|Part 1 &middot; Readiness and recognition::Modules 1 to 3. Readiness before the collapse, how resuscitation algorithms think, and recognizing the right algorithm.|Part 2 &middot; Adult BLS and ALS::Modules 4 to 6. BLS at the dialysis chair, adult cardiac arrest, and bradycardia and tachycardia with a pulse.|Part 3 &middot; The dialysis difference::Modules 7 to 9. Arrest in the dialysis chair (the core module), hyperkalemia with a pulse and in arrest, and circuit emergencies that become resuscitations.|Part 4 &middot; Children::Modules 10 and 11. Pediatric BLS and the child who is getting worse; pediatric arrest and rhythms during dialysis.|Part 5 &middot; After the first minutes::Modules 12 and 13. Return of spontaneous circulation (ROSC), transfer and handover; team, code status, debriefing and practice.}}
 <h3>Which modules for which role</h3>
 <div class="table-wrap"><table>
-<thead><tr><th>Role</th><th>Core path</th><th>Readiness level (draft)</th></tr></thead>
+<thead><tr><th>Role</th><th>Core path</th><th>Readiness level</th></tr></thead>
 <tbody>
 <tr><td>Nurse assistant, support staff, dietitian, social worker, OT/PT, records officer</td><td>Modules 1, 2, 3, 4, 7 (first two sections), 13</td><td>BLS</td></tr>
 <tr><td>Dialysis, water treatment, biomedical and reprocessing technicians</td><td>Modules 1 to 4, 7, 9, 13</td><td>BLS</td></tr>
@@ -83,7 +83,7 @@ COURSE = {
 <tr><td>Physician-on-duty, attending nephrologist, clinical head, trainees, vascular surgeon</td><td>All modules</td><td>ALS</td></tr>
 <tr><td>Pediatric dialysis nurse, attending pediatric nephrologist</td><td>All modules; Part 4 essential</td><td>PALS</td></tr>
 </tbody></table></div>
-<p>The readiness levels are a draft Academy recommendation. Only two are verified Philippine rules: current BLS for dialysis nurses, and current ACLS for the physician-on-duty and at least one nurse on every shift.[[doh2012]][[psn2024]]</p>
+<p>The readiness levels are an Academy recommendation. Only two are verified Philippine rules: current BLS for dialysis nurses, and current ACLS for the physician-on-duty and at least one nurse on every shift.[[doh2012]][[psn2024]]</p>
 """,
     "modules_h2": "Thirteen modules in five parts",
     "modules_intro": ("Study in order the first time. Each module opens with a timed case, teaches the algorithm with its reasons, and ends "

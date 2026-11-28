@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 04: Ready Patients: Card, Diet, Medicines, Contacts. DRAFT.
+"""Disaster Preparedness and Response, Module 04: Ready Patients: Card, Diet, Medicines, Contacts.
 The Academy three-day emergency kidney diet sheet (downloads/three-day-emergency-kidney-diet.*) was approved by Dr. Rivero on
 November 28, 2026; this module teaches it and links it. The team writes in each patient's fluid allowance."""
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 03: The Unit Plan and Who Commands. DRAFT."""
+"""Disaster Preparedness and Response, Module 03: The Unit Plan and Who Commands."""
 
 MODULE = {
     "image_alt": "A small dialysis team around a table with a one-page plan, a printed phone tree and a two-way radio.",

@@ -3,7 +3,7 @@
 apply_cases.py schema, plus a "lab" block read by the Practice Lab (timed mode and facilitator recorder).
 Run from the repo root:  python3 tools/techcourses/resus/cases.py
 Every decision node sits on every path (weaker choices show their consequence and rejoin). Clinical content follows the
-module text and the signed-off Emergency Quick Cards; deterministic only. DRAFT pending Dr. Rivero's sign-off.
+module text and the signed-off Emergency Quick Cards; deterministic only. Signed off by Dr. Rivero, November 28, 2026.
 Every name and identifier is fictional."""
 import json
 from pathlib import Path
@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "data" / "academy-cases"
 P = "resuscitation-lab-"
-NOTE = ("Fictional patient. DRAFT pending clinical sign-off. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC "
+NOTE = ("Fictional patient. Doses and energies are quoted from the 2025 AHA guidelines (and the ERC "
         "where named) for recognition; your unit protocol, crash-cart stock and the attending nephrologist come first. Simulation success "
         "is an educational result, not a prediction of patient survival.")
 LBL = {"uf": "Fluid removal", "pump": "Blood pump", "ecg": "Rhythm", "k": "Potassium", "glucose": "Glucose", "line": "Venous line",

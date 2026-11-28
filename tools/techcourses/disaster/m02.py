@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Disaster Preparedness and Response, Module 02: Know Your Unit's Hazards and Dependencies. DRAFT."""
+"""Disaster Preparedness and Response, Module 02: Know Your Unit's Hazards and Dependencies."""
 
 MODULE = {
     "image_alt": "A safety nurse and a water treatment technician tracing pipes and cables behind a reverse osmosis unit with a clipboard and flashlight.",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Resuscitation Lab, Module 01: Ready Before the Collapse. Written for this series from published sources. DRAFT."""
+"""Resuscitation Lab, Module 01: Ready Before the Collapse. Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A charge nurse and a technician checking a defibrillator and crash cart at dawn in an empty dialysis unit.",

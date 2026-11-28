@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Self-assessment banks for the Dialysis Team Resuscitation Lab: 10 items per module (130). Every item is
 (stem, [4 options], correct index, why). The correct option is written first and quizutil.balance() spreads the keys evenly
-across A to D at build time. DRAFT pending clinical sign-off."""
+across A to D at build time."""
 import importlib.util as _u
 from pathlib import Path as _P
 

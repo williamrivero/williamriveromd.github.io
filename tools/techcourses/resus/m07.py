@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Resuscitation Lab, Module 07: Arrest in the Dialysis Chair: Machine, Circuit and Access. The core module.
-Written for this series from published sources. DRAFT."""
+Written for this series from published sources."""
 
 MODULE = {
     "image_alt": "A circuit nurse clamping blood lines at a hemodialysis machine while colleagues compress the patient in the flattened chair.",
