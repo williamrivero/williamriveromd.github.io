@@ -380,7 +380,7 @@ def ready_main():
     <a class="rl-panel o2" href="{HUB}.html">{tile(HUB + "-card.webp")}<small>Learn</small><b>Dialysis Team Resuscitation Lab</b><span>Thirteen modules: the basic algorithms, algorithm recognition, BLS at the chair, adult ACLS-aligned care, arrest on the machine, hyperkalemia, children, ROSC and the team.</span></a>
     <a class="rl-panel dis o5" href="{DHUB}.html">{tile(DHUB + "-card.webp")}<small>Learn</small><b>Disaster Preparedness and Response</b><span>Twelve modules: why disasters hurt dialysis patients twice, the unit plan and command, ready patients, typhoons and floods, earthquakes, fire, power and water, heat and ashfall, keeping everyone dialyzed, reopening and drills.</span></a>
     <a class="rl-panel prac o3" href="{PRACTICE}">{tile(HUB + "-practice-card.webp")}<small>Practice</small><b>Megacode Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for resuscitation drills.</span></a>
-    <a class="rl-panel prac o6" href="{DPRACTICE}">{tile(DHUB + "-practice-card.webp")}<small>Practice</small><b>Disaster drills</b><span>A tabletop simulator with timed injects, a call-down drill timer, and a printable evacuation and patient-accounting sheet.</span></a>
+    <a class="rl-panel prac o6" href="{DPRACTICE}">{tile(DHUB + "-practice-card.webp")}<small>Practice</small><b>Disaster Drills</b><span>A tabletop simulator with timed injects, a call-down drill timer, and a printable evacuation and patient-accounting sheet.</span></a>
   </div>
 {draft_cards_note()}
   <p>Also: the facilitator kits for <a href="{HUB}-trainer.html">resuscitation</a> and <a href="{DHUB}-trainer.html">disaster drills</a>, the <a href="../guides/calc-resuscitation-lab-toolkit.html">Resuscitation Lab toolkit</a>, and <a href="same-event-every-role.html">Same event, every role</a>.</p>
@@ -626,7 +626,7 @@ def disaster_practice_main(tt, cases):
     mods = "".join(f'<li><a href="{f}">Module {n}: {t}</a></li>' for n, (f, t) in sorted(DMODS.items()))
     cs = "".join(f'<li><a href="{c["page"]}#sim">{c["title"]}</a> <small>(Module {int(c["page"].split("-")[2])})</small></li>' for c in cases)
     tt_j = json.dumps(tt, ensure_ascii=False).replace("</", "<\\/")
-    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><a href="{DHUB}.html">Disaster Preparedness and Response</a><span class="nc-sep">›</span><span class="nc-cur">Disaster drills</span>', 'Disaster <em>drills</em>', 'Run the tabletop, test the call list, print the evacuation sheet')}
+    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><a href="{DHUB}.html">Disaster Preparedness and Response</a><span class="nc-sep">›</span><span class="nc-cur">Disaster Drills</span>', 'Disaster <em>drills</em>', 'Run the tabletop, test the call list, print the evacuation sheet')}
 {CSS}
 <main class="container rl-main">
 <section class="section" id="sample">
@@ -732,7 +732,7 @@ html[data-theme="dark"] .erd-card.erd-act b{{color:#f4a3a3;}}
 <a class="erd-card" href="{DHUB}.html"><b>Disaster Preparedness and Response</b><span class="t">Typhoons, earthquakes, fire, power and water, keeping everyone dialyzed until the unit reopens.</span></a>
 <h3 class="erd-k">Practice</h3>
 <a class="erd-card" href="{PRACTICE}"><b>Megacode Practice Lab</b><span class="t">Algorithm recognition rounds, timed megacodes and a facilitator recorder for resuscitation drills.</span></a>
-<a class="erd-card" href="{DPRACTICE}"><b>Disaster drills</b><span class="t">A tabletop simulator with timed injects, a call-down drill timer and a printable evacuation sheet.</span></a>
+<a class="erd-card" href="{DPRACTICE}"><b>Disaster Drills</b><span class="t">A tabletop simulator with timed injects, a call-down drill timer and a printable evacuation sheet.</span></a>
 <a class="erd-home" href="{READY}">Open the Emergency Readiness page &rarr;</a>{" <b>Draft, pending clinical sign-off.</b>" if DRAFT else ""}
 </aside>
 <script>
