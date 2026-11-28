@@ -136,9 +136,13 @@
       }
     }
     // continuous (beat-free) rhythms: ventricular fibrillation and asystole (Resuscitation Lab, Nov 2026)
-    var CONT = { vf: 1, asystole: 1 };
+    var CONT = { vf: 1, asystole: 1, torsades: 1 };
     function cont(T) {
       if (shape === "asystole") return 0.012 * Math.sin(T * 4.4) + 0.006 * Math.sin(T * 23);
+      if (shape === "torsades") {   // polymorphic VT: complexes swell, narrow to a waist and flip polarity
+        var ph = 2 * Math.PI * T * Math.max(150, hr || 240) / 60, env = Math.sin(2 * Math.PI * T / 3.0);
+        return 0.62 * env * (0.78 * Math.sin(ph) + 0.22 * Math.sin(2 * ph + 0.6)) + 0.2;
+      }
       var amp = 0.62 + 0.38 * Math.sin(T * 1.3);
       return amp * (0.24 * Math.sin(T * 33.3) + 0.17 * Math.sin(T * 44.6 + 1) + 0.1 * Math.sin(T * 23.2 + 2)) + 0.2;
     }
@@ -154,6 +158,7 @@
       if (shape === "paced") y = g(0.1, 0.004, 0.7) + g(0.2, 0.05, 0.6) + g(0.3, 0.05, -0.3) + g(0.5, 0.07, -0.18); // pacer spike, wide QRS
       if (shape === "peaked") y += g(0.42, 0.035, 0.62);              // tall narrow T
       else if (shape === "st") y += (t > 0.27 && t < 0.38 ? -0.12 : 0) + g(0.47, 0.06, 0.12);
+      else if (shape === "longqt") y += g(0.62, 0.075, 0.2);         // late, broad T wave
       else if (shape !== "wide" && shape !== "svt" && shape !== "paced") y += g(0.44, 0.06, 0.22);
       return y;
     }

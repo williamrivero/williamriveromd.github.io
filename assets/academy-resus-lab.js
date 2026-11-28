@@ -25,15 +25,20 @@
     if (shape === "wide") return g(0.08, 0.025, 0.1) + g(0.24, 0.045, 0.75) + g(0.32, 0.04, -0.25);
     var y = shape === "irregular" ? 0.02 * Math.sin(t * 40) : g(0.08, 0.025, 0.12);
     y += g(0.2, 0.012, -0.12) + g(0.22, 0.012, 0.9) + g(0.24, 0.012, -0.2);
-    if (shape === "peaked") y += g(0.42, 0.035, 0.62); else y += g(0.44, 0.06, 0.22);
+    if (shape === "peaked") y += g(0.42, 0.035, 0.62); else if (shape === "longqt") y += g(0.62, 0.075, 0.2); else y += g(0.44, 0.06, 0.22);
     return y;
   }
-  function cont(shape, T) {
+  function cont(shape, T, hr) {
     if (shape === "asystole") return 0.012 * Math.sin(T * 4.4) + 0.006 * Math.sin(T * 23);
+    if (shape === "torsades") {      // polymorphic VT: wide complexes whose height swells, narrows to a waist and flips polarity
+      var ph = 2 * Math.PI * T * Math.max(150, hr || 240) / 60, env = Math.sin(2 * Math.PI * T / 3.0);
+      return 0.62 * env * (0.78 * Math.sin(ph) + 0.22 * Math.sin(2 * ph + 0.6)) + 0.2;
+    }
     var amp = 0.62 + 0.38 * Math.sin(T * 1.3);
     return amp * (0.24 * Math.sin(T * 33.3) + 0.17 * Math.sin(T * 44.6 + 1) + 0.1 * Math.sin(T * 23.2 + 2)) + 0.2;
   }
-  var CONT = { vf: 1, asystole: 1 };
+  var CONT = { vf: 1, asystole: 1, torsades: 1 };
+  var BEATS = { torsades: 1 };   // continuous on the screen, but the QRS counter still counts (and can beep)
   /* Pleth: one arterial pulse, u = fraction of the cardiac cycle since the pulse reached the finger */
   function plethWave(u) {
     if (u < 0) return 0;
@@ -46,7 +51,7 @@
   function Strip(canvas, pc) {
     var ctx = canvas.getContext && canvas.getContext("2d"), pctx = pc && pc.getContext && pc.getContext("2d");
     var shape = "normal", hr = 70, raf = 0, x = 0, prevY = null, beatT = -1, next = 0, last = 0, artT = 0, animating = false;
-    var pa = 0, pPrev = null, pT = -1, pRR = 0.85, pCarry = 0, pVal = 0, pending = [], hooks = {};
+    var pa = 0, pPrev = null, pT = -1, pRR = 0.85, pCarry = 0, pVal = 0, pending = [], hooks = {}, syncOn = false, marks = [];
     var ECG_GAIN = 88, PL_GAIN = 64;
     function fit(cv, c) {
       var r = window.devicePixelRatio || 1, w = cv.clientWidth || 320, h = cv.clientHeight || 70;
@@ -71,7 +76,7 @@
       ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.7;
       for (var px = 0; px < w; px++) {
         var t = px / 80, k = shape === "irregular" ? (t % (rr * (0.7 + 0.6 * Math.abs(Math.sin(Math.floor(t / rr) * 7.3))))) : t % rr;
-        var y = G[1] - (CONT[shape] ? cont(shape, t) : wave(shape, k, hr)) * G[0];
+        var y = G[1] - (CONT[shape] ? cont(shape, t, hr) : wave(shape, k, hr)) * G[0];
         ctx.beginPath(); ctx.moveTo(px - 1, py == null ? y : py); ctx.lineTo(px, y); ctx.stroke(); py = y;
       }
       if (!pctx) return;
@@ -89,15 +94,20 @@
         var now = ts / 1000 + i / 80;
         if (beatT < 0 || now >= next) {
           beatT = now; var rr = 60 / Math.max(25, hr); if (shape === "irregular") rr *= 0.6 + Math.random() * 0.8; next = now + rr;
-          if (!CONT[shape]) {
+          if (!CONT[shape] || BEATS[shape]) {
             pending.push([now + 0.42, rr]);                                                       // the QRS peaks 0.22 s into the cycle; the pulse reaches the finger ~0.2 s later
             if (hooks.qrs) hooks.qrs(i / 80 + 0.22);                                             // QRS beep, scheduled at the R wave
+            if (syncOn && !CONT[shape]) marks.push(x + 18);                                       // sync sense marker over the coming R wave (0.22 s × 80 px/s)
           }
         }
-        var y = G[1] - (CONT[shape] ? cont(shape, now) : wave(shape, now - beatT, hr)) * G[0];
+        var y = G[1] - (CONT[shape] ? cont(shape, now, hr) : wave(shape, now - beatT, hr)) * G[0];
         if (artT && now < artT + 1.2) { var a = now - artT; y = a < 0.05 ? G[1] - G[0] * 1.1 : a < 0.1 ? G[1] + G[0] * 0.45 : G[1] - G[0] * 0.42 * Math.exp(-(a - 0.1) * 4); }
         ctx.fillStyle = "#0b1220"; ctx.fillRect(x, 0, 8, h); ctx.strokeStyle = "#5ee08a"; ctx.lineWidth = 1.7;
         ctx.beginPath(); ctx.moveTo(x - 1, prevY == null ? y : prevY); ctx.lineTo(x, y); ctx.stroke(); prevY = y;
+        if (marks.length && x >= marks[0] + 6) {   // drawn just behind the sweep so the eraser does not wipe it
+          var mx = marks.shift(); if (mx <= w) { var top = Math.max(7, G[1] - G[0] * 0.9 - 12);
+            ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.moveTo(mx - 5, top - 7); ctx.lineTo(mx + 5, top - 7); ctx.lineTo(mx, top); ctx.closePath(); ctx.fill(); }
+        }
         if (pctx && x <= pw) {
           var v = plethAt(now), yy = plethY(v, ph, now);
           if (artT && now < artT + 0.8) yy += (Math.random() - 0.5) * pg(ph)[0] * 0.8;
@@ -105,7 +115,7 @@
           pctx.beginPath(); pctx.moveTo(x - 1, pPrev == null ? yy : pPrev); pctx.lineTo(x, yy); pctx.stroke(); pPrev = yy;
         }
         x++;
-        if (x > w) { x = 0; prevY = null; pPrev = null; }
+        if (x > w) { x = 0; prevY = null; pPrev = null; marks = marks.filter(function (m) { return m > w; }).map(function (m) { return m - w - 1; }); }
       }
       raf = requestAnimationFrame(frame);
     }
@@ -122,14 +132,15 @@
     return {
       set: function (s, rate, animate, plethAmp) {
         if (!ctx) return; shape = s || "normal"; hr = +rate || 70;
-        pa = CONT[shape] ? 0 : plethAmp == null ? 0.85 : Math.max(0, Math.min(1, plethAmp));
+        pa = CONT[shape] && !BEATS[shape] ? 0 : plethAmp == null ? 0.85 : Math.max(0, Math.min(1, plethAmp));
         if (raf) { cancelAnimationFrame(raf); raf = 0; }
         if (!animate || REDUCED || epaper()) { animating = false; still(); return; }
-        animating = true; size(); last = 0; beatT = -1; pending = []; pT = -1; pVal = 0; pCarry = 0; raf = requestAnimationFrame(frame);
+        animating = true; size(); last = 0; beatT = -1; pending = []; marks = []; pT = -1; pVal = 0; pCarry = 0; raf = requestAnimationFrame(frame);
       },
       stop: function () { if (raf) cancelAnimationFrame(raf); raf = 0; animating = false; },
       shock: function () { artT = performance.now() / 1000; },
-      on: function (h) { hooks = h || {}; }
+      on: function (h) { hooks = h || {}; },
+      sync: function (on) { syncOn = !!on; marks = []; }
     };
   }
 
@@ -392,7 +403,7 @@
     host.appendChild(rec);
     var disp = el("div", "rl-card");
     disp.innerHTML = "<h3>Shared monitor display</h3><p class=\"rl-note\">Open the display on a second screen or a tablet beside the manikin. You change the rhythm and numbers here, privately; the display follows on the same device and browser.</p>" +
-      '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="pea">Organized, no pulse (PEA)</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
+      '<div class="rl-roles"><label>Rhythm<select class="rl-d-r"><option value="normal">Sinus / organized</option><option value="svt">Narrow fast regular</option><option value="irregular">Irregular (AF)</option><option value="wide">Wide (VT or slow wide)</option><option value="peaked">Peaked T waves</option><option value="sine">Sine wave</option><option value="pea">Organized, no pulse (PEA)</option><option value="longqt">Long QT (sinus)</option><option value="torsades">Torsades de pointes</option><option value="vf">Ventricular fibrillation</option><option value="asystole">Asystole</option></select></label>' +
       '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="320"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
       '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
       '<p class="rl-note rl-d-hint">Choosing a rhythm fills in typical teaching values for it. Change any of them to fit your scenario, then press <b>Update display</b>; the display does not change until you do.</p>' +
@@ -417,6 +428,8 @@
       peaked:    [66, "66", "122/74", "96", "Peaked T waves (high potassium)"],
       sine:      [48, "48", "76/40", "88", "Sine wave (severe high potassium)"],
       pea:       [46, "—", "—", "—", "PEA: organized rhythm, no pulse"],
+      longqt:    [58, "58", "118/70", "97", "Sinus rhythm, long QT"],
+      torsades:  [240, "—", "—", "—", "Torsades de pointes (polymorphic VT)"],
       vf:        [300, "—", "—", "—", "Ventricular fibrillation"],
       asystole:  ["", "—", "—", "—", "Asystole"]
     };
@@ -666,8 +679,10 @@
       var hr = m.rhythm === "vf" ? null : m.rhythm === "asystole" ? 0 : (+m.rate || null), hl = arrest ? "red" : lvl(hr, 40, 50, 120, 140);
       setBox(".m-hr", m.rhythm === "vf" ? "---" : hr === null ? "---" : String(hr), hl);
       if (m.rhythm === "vf") alarms.push(["red", "VFIB / VTACH"]); else if (m.rhythm === "asystole") alarms.push(["red", "ASYSTOLE"]);
+      else if (m.rhythm === "torsades") alarms.push(["red", "VTACH"]);
       else if (hl) alarms.push([hl, "HR " + hr + (hr < 50 ? " LOW" : " HIGH")]);
-      if (m.rhythm === "sine" || m.rhythm === "peaked" || m.rhythm === "wide") alarms.push(["yel", showLab && m.label ? m.label.toUpperCase() : "ARRHYTHMIA"]);
+      if (m.rhythm === "longqt") alarms.push(["yel", "QTc HIGH"]);
+      else if (m.rhythm === "sine" || m.rhythm === "peaked" || m.rhythm === "wide") alarms.push(["yel", showLab && m.label ? m.label.toUpperCase() : "ARRHYTHMIA"]);
       var sp = num(m.spo2), sl = sp === null ? "yel" : lvl(sp, 85, 90, 100, 101);
       setBox(".m-sp", sp === null ? "--" : String(sp), sl);
       var pr = num(m.hr); $(".m-pr", wrap).textContent = pr === null ? "--" : String(pr);
@@ -720,7 +735,7 @@
       bCh.disabled = state === "charging"; bSh.disabled = state !== "charged"; bDis.disabled = state !== "charged" && state !== "charging";
       $(".m-count", wrap).textContent = shocks ? "Shocks: " + shocks : "";
     }
-    bSy.addEventListener("click", function () { var on = bSy.getAttribute("aria-pressed") !== "true"; bSy.setAttribute("aria-pressed", on); bSy.classList.toggle("on", on); bSy.textContent = on ? "Sync on" : "Sync"; syncBeep(on); });
+    bSy.addEventListener("click", function () { var on = bSy.getAttribute("aria-pressed") !== "true"; bSy.setAttribute("aria-pressed", on); bSy.classList.toggle("on", on); bSy.textContent = on ? "Sync on" : "Sync"; syncBeep(on); strip.sync(on); });
     $(".m-snd", wrap).addEventListener("click", function () { sound = !sound; this.setAttribute("aria-pressed", sound); this.textContent = sound ? "Sound on" : "Sound off"; tapHint(); });
     // beep tone, as on a monitor/defibrillator: QRS beep follows the ECG (keeps beeping in PEA, silent in VF/asystole);
     // pulse beep follows the oximeter (silent without a pulse), its pitch falling as SpO₂ falls
@@ -754,7 +769,7 @@
     bSh.addEventListener("click", function () {
       if (st !== "charged") return; clearTimeout(armT);
       var syncOn = bSy.getAttribute("aria-pressed") === "true";
-      if (syncOn && (cur.rhythm === "vf" || cur.rhythm === "asystole")) { show("charged", "SYNC: NO R WAVE DETECTED · SHOCK NOT DELIVERED"); refuseSound(); return; }
+      if (syncOn && (cur.rhythm === "vf" || cur.rhythm === "asystole" || cur.rhythm === "torsades")) { show("charged", cur.rhythm === "torsades" ? "SYNC: R WAVES NOT RELIABLY DETECTED · SHOCK NOT DELIVERED" : "SYNC: NO R WAVE DETECTED · SHOCK NOT DELIVERED"); refuseSound(); return; }
       shocks++; strip.shock(); shockSound();
       if (flash) { wrap.classList.add("m-zap"); setTimeout(function () { wrap.classList.remove("m-zap"); }, 160); }
       show("ready", "SHOCK DELIVERED " + J() + " J" + (syncOn ? " (SYNC)" : ""));
