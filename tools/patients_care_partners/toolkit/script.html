@@ -1,0 +1,118 @@
+<script>
+/* ===== PCP-CALC-CORE (pure functions; tested by tools/test_pcp_calcs.cjs) ===== */
+var PCP = (function () {
+  function n(x) { if (x === null || x === undefined || String(x).trim() === "") return NaN; var v = Number(x); return isFinite(v) ? v : NaN; }
+  function req(v, label) {
+    if (typeof v !== "number" || !isFinite(v) || v < 0) throw new RangeError(label + " must be a number of 0 or more");
+    return v;
+  }
+  function addDays(d, k) { var r = new Date(d.getTime()); r.setDate(r.getDate() + k); return r; }
+  function trend(points) {
+    var p = points.filter(function (x) { return x && x.d && isFinite(x.v); }).sort(function (a, b) { return a.d - b.d; });
+    if (p.length < 2) return { points: p, change: null, pct: null };
+    var first = p[0].v, last = p[p.length - 1].v;
+    return { points: p, change: last - first, pct: first === 0 ? null : 100 * (last - first) / first };
+  }
+  function sodium(items, target) {
+    var total = items.reduce(function (s, it) {
+      if (!isFinite(it.mg) && !isFinite(it.servings)) return s;
+      return s + req(it.mg, "Sodium per serving") * req(it.servings, "Servings");
+    }, 0);
+    var out = { total: total, whoShare: 100 * total / 2000 };
+    if (isFinite(target)) { req(target, "Target"); out.target = target; out.left = target - total; out.share = target === 0 ? null : 100 * total / target; }
+    return out;
+  }
+  function fluid(allow, amounts) {
+    if (!isFinite(allow)) throw new RangeError("Enter the daily amount from your own team's plan first");
+    req(allow, "Daily amount");
+    var used = amounts.reduce(function (s, a) { return s + (isFinite(a) ? req(a, "Amount") : 0); }, 0);
+    return { used: used, left: allow - used, share: allow === 0 ? null : 100 * used / allow };
+  }
+  function gain(post, pre, dry) {
+    req(post, "Weight after last session"); req(pre, "Weight today");
+    var g = pre - post;
+    return { gain: g, pct: isFinite(dry) && dry > 0 ? 100 * g / dry : null };
+  }
+  function sessions(cap, used, perWeek, asOf) {
+    req(cap, "Covered sessions"); req(used, "Sessions used"); req(perWeek, "Sessions per week");
+    var left = Math.max(0, cap - used);
+    if (perWeek === 0) return { left: left, weeks: null, runOut: null };
+    var weeks = left / perWeek;
+    return { left: left, weeks: weeks, runOut: addDays(asOf, Math.floor(weeks * 7)) };
+  }
+  function refill(times, perDose, have, lead, today) {
+    var t = times.filter(function (x) { return x; }).sort();
+    req(perDose, "Tablets per dose"); req(have, "Tablets on hand"); req(lead, "Days before");
+    var perDay = t.length * perDose;
+    if (perDay === 0) return { times: t, perDay: 0, days: null, runOut: null, ask: null };
+    var days = Math.floor(have / perDay);
+    var runOut = addDays(today, days);
+    var ask = addDays(today, Math.max(0, days - lead));
+    return { times: t, perDay: perDay, days: days, runOut: runOut, ask: ask, askNow: days <= lead };
+  }
+  return { n: n, req: req, addDays: addDays, trend: trend, sodium: sodium, fluid: fluid, gain: gain, sessions: sessions, refill: refill };
+})();
+if (typeof module !== "undefined") module.exports = PCP;
+/* ===== END PCP-CALC-CORE ===== */
+(function () {
+  if (typeof document === "undefined") return;
+  function $(id) { return document.getElementById(id); }
+  function v(id) { return PCP.n($(id).value); }
+  function D(id) { var x = $(id).value; if (!x) return null; var p = x.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function now() { var t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
+  function today(id) { return D(id) || now(); }
+  function f(d) { return d ? d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", weekday: "short" }) : "&mdash;"; }
+  function num(x, k) { return x.toLocaleString("en-US", { minimumFractionDigits: k || 0, maximumFractionDigits: k || 0 }); }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+  var run = {
+    t1: function () {
+      var pts = [];
+      for (var i = 1; i <= 6; i++) { var d = D("t1_d" + i), x = v("t1_v" + i); if (d && isFinite(x)) pts.push({ d: d, v: x }); }
+      var r = PCP.trend(pts), unit = esc($("t1_unit").value || ""), name = esc($("t1_name").value || "Result");
+      if (r.points.length < 2) return "Enter at least two dated results to see a trend.";
+      var max = Math.max.apply(null, r.points.map(function (p) { return p.v; })) || 1;
+      var bars = r.points.map(function (p) { return '<div style="display:flex;gap:8px;align-items:center;margin:3px 0"><span style="width:118px;font-size:13px">' + p.d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) + '</span><span style="height:14px;border-radius:4px;background:var(--teal);width:' + Math.max(2, 70 * p.v / max) + '%"></span><span style="font-size:13px">' + num(p.v, 1) + " " + unit + "</span></div>"; }).join("");
+      return name + ": from <b>" + num(r.points[0].v, 1) + "</b> to <b>" + num(r.points[r.points.length - 1].v, 1) + " " + unit + "</b> (" + (r.change >= 0 ? "+" : "") + num(r.change, 1) + (r.pct === null ? "" : ", " + (r.pct >= 0 ? "+" : "") + num(r.pct, 0) + "%") + ")." + bars +
+        '<div class="note">Bring this to your next visit and ask: &ldquo;Is this trend stable, improving or getting worse, and what should make me call?&rdquo; One result, and even a small change, needs your team&rsquo;s interpretation.</div>';
+    },
+    t2: function () {
+      var items = [];
+      for (var i = 1; i <= 5; i++) items.push({ mg: v("t2_s" + i), servings: v("t2_n" + i) });
+      items = items.filter(function (it) { return isFinite(it.mg) || isFinite(it.servings); }).map(function (it) { return { mg: isFinite(it.mg) ? it.mg : 0, servings: isFinite(it.servings) ? it.servings : 0 }; });
+      var r = PCP.sodium(items, v("t2_target"));
+      var s = "Sodium from these foods: <b>" + num(r.total) + " mg</b> (" + num(r.whoShare) + "% of the WHO general-population reference of 2,000 mg).";
+      if (r.target !== undefined) s += "<br>Against your team&rsquo;s target of " + num(r.target) + " mg: " + (r.left >= 0 ? "<b>" + num(r.left) + " mg left</b>." : "<b>" + num(-r.left) + " mg over</b>.");
+      return s + '<div class="note">Home cooking adds sodium too (patis, toyo, bagoong, seasoning cubes). Your dietitian can help you swap for calamansi, garlic, onion and herbs.</div>';
+    },
+    t3: function () {
+      var r = PCP.fluid(v("t3_allow"), ["t3_a", "t3_b", "t3_c", "t3_d", "t3_e"].map(v));
+      return "Counted so far: <b>" + num(r.used) + " mL</b>. " + (r.left >= 0 ? "Left in your plan today: <b>" + num(r.left) + " mL</b>." : "<b>" + num(-r.left) + " mL above your plan.</b>") +
+        '<div class="note">This counts; it does not advise. New breathlessness, being unable to lie flat or chest pain needs emergency help whatever the count.</div>';
+    },
+    t4: function () {
+      var r = PCP.gain(v("t4_post"), v("t4_pre"), v("t4_dry"));
+      return "Weight gained since your last session: <b>" + num(r.gain, 1) + " kg</b>" + (r.pct === null ? "." : " (" + num(r.pct, 1) + "% of your target weight).") +
+        '<div class="note">Ask your unit what range they want for you. Salty food makes you thirsty, so less salt is often the easiest way to gain less.</div>';
+    },
+    t5: function () {
+      var r = PCP.sessions(v("t5_cap"), v("t5_used"), v("t5_pw"), today("t5_now"));
+      return "Sessions left this calendar year: <b>" + num(r.left) + "</b>." + (r.runOut ? " At " + num(v("t5_pw")) + " a week they would run out around <b>" + f(r.runOut) + "</b>." : "") +
+        '<div class="note">Talk with your facility&rsquo;s benefits officer well before then. Policy checked November 28, 2026; rules can change.</div>';
+    },
+    t6: function () {
+      var r = PCP.refill([$("t6_t1").value, $("t6_t2").value, $("t6_t3").value], v("t6_per"), v("t6_have"), v("t6_lead"), now());
+      if (!r.perDay) return "Enter at least one dose time and tablets per dose.";
+      var nm = esc($("t6_name").value || "Your medicine");
+      return nm + ": doses at <b>" + r.times.join(", ") + "</b> (" + num(r.perDay, 1) + " tablets a day). Supply lasts about <b>" + num(r.days) + " days</b>, to " + f(r.runOut) + ".<br>" +
+        (r.askNow ? "<b>Ask for a refill now.</b>" : "Ask for a refill by <b>" + f(r.ask) + "</b>.") +
+        '<div class="note">Keep a few days&rsquo; spare supply when you travel. If you miss or vomit a dose, follow your transplant team&rsquo;s written instructions.</div>';
+    }
+  };
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-run]");
+    if (!b) return;
+    var k = b.getAttribute("data-run"), out = $(k + "_out");
+    try { out.innerHTML = run[k](); out.classList.remove("err"); } catch (x) { out.innerHTML = esc(x.message || String(x)); out.classList.add("err"); }
+  });
+})();
+</script>

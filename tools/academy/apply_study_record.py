@@ -130,6 +130,8 @@ def fingerprint(dry):
 
 def is_hub(f):
     n = f.name
+    if n.startswith("patients-care-partners"):   # patient track: no staff study record or placement pre-test
+        return False
     return not (MOD_RE.search(n) or n.endswith(("-final-exam.html", "-trainer.html")) or is_copy(n)) and bool(modules_of(f))
 
 

@@ -39,19 +39,26 @@ def margin_scale(path):
         sw, sh = im.size
         px = im.load()
 
-        def edge(seq):
-            for i, v in enumerate(seq):
-                if v < 235:
-                    return i
-            return len(seq) // 2
-        y, x = sh // 2, sw // 2
-        left = edge([px[i, y] for i in range(sw)])
-        right = edge([px[i, y] for i in range(sw - 1, -1, -1)])
-        top = edge([px[x, j] for j in range(sh)])
-        bottom = edge([px[x, j] for j in range(sh - 1, -1, -1)])
-        m = min(left, right, top, bottom) / sw
+        # Walk in from the edge along 16 directions to the first pixel that is not margin white; the disc radius is
+        # the median, so a bright sky or ceiling in one direction does not count as margin.
+        import math
+        cx, cy, half = sw / 2, sh / 2, min(sw, sh) / 2
+        radii = []
+        for k in range(16):
+            a = k * math.pi / 8
+            dx, dy = math.cos(a), math.sin(a)
+            r = half - 1
+            while r > half * 0.5:
+                x, y = int(cx + dx * r), int(cy + dy * r)
+                if 0 <= x < sw and 0 <= y < sh and px[x, y] < 248:
+                    break
+                r -= 1
+            radii.append(r)
+        radii.sort()
+        r = (radii[7] + radii[8]) / 2
+        m = (half - r) / (2 * half)
         if m >= 0.03:
-            sc = round(min(1.35, 1 / (1 - 2 * m) * 1.02), 3)
+            sc = round(min(1.35, half / r * 1.02), 3)
     except Exception:
         sc = None
     _cache[path] = sc
