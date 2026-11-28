@@ -392,6 +392,7 @@
       '<label>Electrical rate<input type="number" class="rl-d-rate" value="72" min="20" max="320"></label><label>Pulse shown<input type="text" class="rl-d-hr" value="72"></label>' +
       '<label>BP shown<input type="text" class="rl-d-bp" value="128/76"></label><label>SpO₂ shown<input type="text" class="rl-d-sp" value="97"></label><label>Label<input type="text" class="rl-d-lab" value="Sinus rhythm"></label></div>' +
       '<p class="rl-note rl-d-hint">Choosing a rhythm fills in typical teaching values for it. Change any of them to fit your scenario, then press <b>Update display</b>; the display does not change until you do.</p>' +
+      '<label class="rl-chk"><input type="checkbox" class="rl-d-showlab" checked> Show the label on the display (turn off when learners must name the rhythm themselves)</label>' +
       '<label class="rl-chk"><input type="checkbox" class="rl-d-defib"> Show a defibrillator on the display (energy selector, sync, charge, shock)</label>' +
       '<button type="button" class="rl-btn rl-d-send">Update display</button> <a class="rl-btn rl-ghost" href="?display=1" target="_blank" rel="noopener">Open display</a>' +
       '<p class="rl-note">On the display, tap <b>Full screen</b> to hide the browser bars. Out-of-range values turn yellow or red and the alarm bar names the problem, as on a bedside monitor; the limits are simulation defaults, not clinical thresholds. Energy on the simulated defibrillator follows the device manufacturer and your unit protocol. A shock on the display is logged in the recorder when its clock is running; the rhythm changes only when you change it here.</p>' +
@@ -399,7 +400,7 @@
     host.appendChild(disp);
     var prev = Strip($(".rl-mstrip", disp));
     function send() {
-      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, defib: $(".rl-d-defib", disp).checked };
+      monState = { rhythm: $(".rl-d-r", disp).value, rate: +$(".rl-d-rate", disp).value || 72, hr: $(".rl-d-hr", disp).value, bp: $(".rl-d-bp", disp).value, spo2: $(".rl-d-sp", disp).value, label: $(".rl-d-lab", disp).value, showLabel: $(".rl-d-showlab", disp).checked, defib: $(".rl-d-defib", disp).checked };
       prev.set(monState.rhythm, monState.rate, true); store("rcm-resus-display", monState); if (CH) CH.postMessage(monState);
     }
     $(".rl-d-send", disp).addEventListener("click", send);
@@ -422,7 +423,12 @@
       prev.set(this.value, +v[0] || 72, true);   // preview only; the shared display waits for Update display
     });
     $(".rl-d-defib", disp).addEventListener("change", send);
+    $(".rl-d-showlab", disp).addEventListener("change", function () {   // changes only the label's visibility, not unsent values
+      var cur = store("rcm-resus-display") || monState; cur.showLabel = this.checked; monState.showLabel = this.checked;
+      store("rcm-resus-display", cur); if (CH) CH.postMessage(cur);
+    });
     var saved = store("rcm-resus-display"); if (saved && saved.defib) $(".rl-d-defib", disp).checked = true;
+    if (saved && saved.showLabel === false) $(".rl-d-showlab", disp).checked = false;
     var lastShock = 0;
     function fromDisplay(m) {   // a shock on the display goes into the drill log while the clock runs
       if (!m || m.type !== "defib" || m.ev !== "shock" || !start || m.t === lastShock) return;
@@ -649,14 +655,15 @@
     function setBox(cls, txt, level) { var b = $(cls, wrap); $(".m-v", b).textContent = txt; b.classList.remove("red", "yel"); if (level) b.classList.add(level); }
     function apply(m) {
       if (!m || m.type) return; cur = m;
-      $(".m-lab", wrap).textContent = m.label || "";
+      var showLab = m.showLabel !== false;     // the facilitator can hide the label so learners name the rhythm
+      $(".m-lab", wrap).textContent = showLab ? m.label || "" : "";
       var alarms = [], arrest = m.rhythm === "vf" || m.rhythm === "asystole";
       // HR is counted from the ECG, as a monitor does
       var hr = m.rhythm === "vf" ? null : m.rhythm === "asystole" ? 0 : (+m.rate || null), hl = arrest ? "red" : lvl(hr, 40, 50, 120, 140);
       setBox(".m-hr", m.rhythm === "vf" ? "---" : hr === null ? "---" : String(hr), hl);
       if (m.rhythm === "vf") alarms.push(["red", "VFIB / VTACH"]); else if (m.rhythm === "asystole") alarms.push(["red", "ASYSTOLE"]);
       else if (hl) alarms.push([hl, "HR " + hr + (hr < 50 ? " LOW" : " HIGH")]);
-      if (m.rhythm === "sine" || m.rhythm === "peaked" || m.rhythm === "wide") alarms.push(["yel", (m.label || "ARRHYTHMIA").toUpperCase()]);
+      if (m.rhythm === "sine" || m.rhythm === "peaked" || m.rhythm === "wide") alarms.push(["yel", showLab && m.label ? m.label.toUpperCase() : "ARRHYTHMIA"]);
       var sp = num(m.spo2), sl = sp === null ? "yel" : lvl(sp, 85, 90, 100, 101);
       setBox(".m-sp", sp === null ? "--" : String(sp), sl);
       var pr = num(m.hr); $(".m-pr", wrap).textContent = pr === null ? "--" : String(pr);
