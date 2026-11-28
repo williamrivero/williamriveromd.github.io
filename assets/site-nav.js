@@ -151,6 +151,16 @@
     ".rsn-host a.rsn-card[aria-current]:after{content:'You are here';position:absolute;top:10px;right:10px;",
     "font:700 9.5px/1 " + F + ";letter-spacing:.1em;text-transform:uppercase;color:#ecd08a}",
     ".rsn-host a.rsn-card:not(.rsn-wide)[aria-current]:after{content:'';width:7px;height:7px;border-radius:50%;background:#ecd08a;top:12px;right:12px}",
+    ".rsn-host .rsn-cw{grid-column:1/-1;display:flex;gap:6px;align-items:stretch}",
+    ".rsn-host .rsn-cw>a.rsn-card{flex:1 1 auto;min-width:0}",
+    ".rsn-host .rsn-cw>a.rsn-card[aria-current]:after{content:'';width:7px;height:7px;border-radius:50%;background:#ecd08a;top:12px;right:12px}",
+    ".rsn-host .rsn-more{flex:0 0 46px;display:grid;place-items:center;padding:0;margin:0;border-radius:14px;cursor:pointer;color:var(--g);",
+    "background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);-webkit-tap-highlight-color:transparent;",
+    "animation:rcmCardIn .28s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 28ms)}",
+    ".rsn-host .rsn-more:focus-visible{outline:2px solid var(--g);outline-offset:2px}",
+    ".rsn-host .rsn-more svg{width:20px;height:20px;transition:transform .2s}",
+    ".rsn-host .rsn-more[aria-expanded=true] svg{transform:rotate(180deg)}",
+    ".rsn-host .rsn-tracks[hidden]{display:none}",
     ".rsn-host .rsn-tracks{display:grid;grid-template-columns:1fr 1fr;gap:6px;grid-column:1/-1;margin:0 0 4px}",
     ".rsn-host a.rsn-trk{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:11px;text-decoration:none;color:#fff;",
     "font:600 13px/1.25 " + F + ";background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:background .15s}",
@@ -272,6 +282,34 @@
         '<span class="rsn-tx"><span class="rsn-nl"></span><span class="rsn-nh"></span></span>';
       a.querySelector(".rsn-nl").textContent = d.label;
       a.querySelector(".rsn-nh").textContent = d.hint;
+      if (SUBS[k] && withTitle) {
+        // Phone menu (Dr. Rivero, Nov 28 2026): the sub-links fold under their card; a chevron button beside it
+        // opens them. The current section starts open.
+        var row = document.createElement("div");
+        row.className = "rsn-cw";
+        var sub = subRow(SUBS[k]), sid = "rsn-sub-" + k, open = k === currentKey;
+        sub.id = sid;
+        if (!open) sub.hidden = true;
+        var tg = document.createElement("button");
+        tg.type = "button";
+        tg.className = "rsn-more";
+        tg.setAttribute("aria-controls", sid);
+        tg.setAttribute("aria-expanded", open ? "true" : "false");
+        tg.setAttribute("aria-label", (open ? "Hide " : "Show ") + d.label + " links");
+        tg.style.setProperty("--i", n - 1);
+        tg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>';
+        tg.addEventListener("click", function () {
+          var on = sub.hidden;
+          sub.hidden = !on;
+          tg.setAttribute("aria-expanded", on ? "true" : "false");
+          tg.setAttribute("aria-label", (on ? "Hide " : "Show ") + d.label + " links");
+        });
+        row.appendChild(a);
+        row.appendChild(tg);
+        grid.appendChild(row);
+        grid.appendChild(sub);
+        return;
+      }
       grid.appendChild(a);
       if (SUBS[k]) grid.appendChild(subRow(SUBS[k]));
     });
