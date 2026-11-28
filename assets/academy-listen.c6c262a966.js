@@ -1191,6 +1191,12 @@ var EasySpeech = (function () {
     items = []; sections = [];
     var h1 = document.querySelector(".hero h1, h1");
     if (h1) items.push({ el: h1, sec: -1, parts: chunks(speakable(cleanText(h1))) });
+    // Dr. Rivero (Nov 28 2026): the module subtitle under the title was skipped; read it right after the title.
+    var sub = document.querySelector(".hero .hero-sub, .hero .hero-tagline");
+    if (sub && visible(sub)) {
+      var st = speakable(cleanText(sub));
+      if (st.length > 1) items.push({ el: sub, sec: -1, parts: chunks(/[.!?:]$/.test(st) ? st : st + ".") });
+    }
     var main = document.querySelector("main");
     // Boxes between the title and the first section (the course note at the top of every module) are read as part of the introduction.
     document.querySelectorAll(".alert, .intro-callout, .callout").forEach(function (box) {
@@ -1242,6 +1248,13 @@ var EasySpeech = (function () {
         var m = textMap(el);
         if (m.str !== text) m = null;                               // map must match what is read, else no in-text highlight
         var label = "";
+        if (/^H[234]$/.test(tag)) {                                  // the small section label above a heading ("Start here")
+          var tagEl = el.previousElementSibling;
+          if (tagEl && tagEl.classList.contains("section-tag") && visible(tagEl)) {
+            label = cleanText(tagEl);
+            if (label && !/[.:!?]$/.test(label)) label += ".";
+          }
+        }
         if (tag === "DD") {                                          // the card label before it, e.g. "What to do"
           var dt = el.previousElementSibling;
           while (dt && dt.tagName !== "DT") dt = dt.previousElementSibling;
