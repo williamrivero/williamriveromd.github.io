@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Why dialysis patients are tired, slow and sometimes short-tempered, how to protect their privacy and dignity at a shared station, what you may and may not say, and how to report what you see with Stop, Tell, Stay.",
-    "desc": "Dialysis Unit Support Staff Module 2: patient dignity, privacy under the Data Privacy Act, respectful Filipino communication, post-dialysis fatigue and confusion, and the Stop, Tell, Stay reporting habit for orderlies and EVS aides.",
+    "desc": "Housekeeping & Support Staff Module 2: patient dignity, privacy under the Data Privacy Act, respectful Filipino communication, post-dialysis fatigue and confusion, and the Stop, Tell, Stay reporting habit for orderlies and EVS aides.",
     "keywords": "dialysis patient dignity, hospital orderly communication, data privacy act hospital staff, reporting patient deterioration support staff, Stop Tell Stay",
     "image_alt": "An orderly crouching at eye level beside an older woman in a wheelchair in a dialysis unit corridor, listening, with a privacy screen in the background.",
     "objectives": [

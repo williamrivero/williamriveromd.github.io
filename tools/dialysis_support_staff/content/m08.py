@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "The rhythm of cleaning beyond the station: between patients, daily, weekly and terminal; toilets and waiting areas where patients fall; the restricted technical rooms you enter only with permission; pests; and how to handle soiled and clean linen so it does not spread what it carries.",
-    "desc": "Dialysis Unit Support Staff Module 8: routine, daily and terminal cleaning schedules in a dialysis unit, toilets and fall-prone areas, restricted rooms (water treatment, reprocessing, concentrate), pest reporting, and safe handling of soiled and clean linen.",
+    "desc": "Housekeeping & Support Staff Module 8: routine, daily and terminal cleaning schedules in a dialysis unit, toilets and fall-prone areas, restricted rooms (water treatment, reprocessing, concentrate), pest reporting, and safe handling of soiled and clean linen.",
     "keywords": "terminal cleaning dialysis unit, daily cleaning schedule hemodialysis, water treatment room cleaning rules, soiled linen handling minimum agitation, clean linen storage hospital",
     "image_alt": "An aide in a dialysis unit at the end of the day carrying a closed laundry bag held away from her body toward the dirty utility room, empty chairs in soft evening light behind her.",
     "objectives": [

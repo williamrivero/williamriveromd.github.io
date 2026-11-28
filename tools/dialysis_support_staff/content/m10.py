@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Why waste is sorted where it is made and never re-sorted by hand, the Philippine waste categories and how to read your facility&rsquo;s color chart, the waste a dialysis unit produces, filling, closing and labeling, moving waste on a safe route, central storage, and who may take it away.",
-    "desc": "Dialysis Unit Support Staff Module 10: health care waste segregation at the point of generation, DOH 2020 categories and color coding, dialysis-specific waste streams, three-quarters-full rule, labeling, collection routes, central storage, handover to authorized transporters, and the Philippine legal framework (RA 9003, RA 6969, Joint DENR-DOH AO 2005-02).",
+    "desc": "Housekeeping & Support Staff Module 10: health care waste segregation at the point of generation, DOH 2020 categories and color coding, dialysis-specific waste streams, three-quarters-full rule, labeling, collection routes, central storage, handover to authorized transporters, and the Philippine legal framework (RA 9003, RA 6969, Joint DENR-DOH AO 2005-02).",
     "keywords": "health care waste segregation Philippines, DOH waste color coding yellow black green, dialysis unit waste management, infectious waste storage time, hospital waste collection route, healthcare waste handler training",
     "image_alt": "A row of clearly labeled, color-coded waste bins with pedal lids and a locked red sharps container in a dialysis unit&rsquo;s dirty utility room, an aide in utility gloves checking a bag label.",
     "objectives": [

@@ -1,6 +1,6 @@
-# Dialysis Unit Support Staff · Image plan blueprint
+# Housekeeping & Support Staff · Image plan blueprint
 
-Renal Care Academy → Nephrology Nursing → Dialysis Unit Support Staff (orderlies and environmental service aides). Prepared 24 November 2026.
+Renal Care Academy → Nephrology Nursing → Housekeeping & Support Staff (orderlies and environmental service aides). Prepared 24 November 2026.
 
 ## Aim
 

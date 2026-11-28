@@ -111,8 +111,8 @@ def write_blueprint():
     sc = collections.Counter(f["scaffold"] for f in I.FIGURES)
     names = {"A": "Algorithm (portrait)", "B": "Two-panel comparison", "C": "Step sequence", "D": "One-panel poster",
              "E": "Reference card", "M": "Mechanism poster", "P": "Instructional photo strip"}
-    out = ["# Dialysis Unit Support Staff · Image plan blueprint", "",
-           "Renal Care Academy &rarr; Nephrology Nursing &rarr; Dialysis Unit Support Staff (orderlies and environmental service aides). Prepared 24 November 2026.", "",
+    out = ["# Housekeeping & Support Staff · Image plan blueprint", "",
+           "Renal Care Academy &rarr; Nephrology Nursing &rarr; Housekeeping & Support Staff (orderlies and environmental service aides). Prepared 24 November 2026.", "",
            "## Aim", "",
            "Every image must help a support worker do one of three things better:", "",
            "- **Understand** the reason behind a task (a mechanism the learner can redraw from memory: the chain of infection, why soil shields germs, why patients faint after dialysis, why distance loads the spine).",
@@ -150,7 +150,7 @@ def write_blueprint():
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    lines = ["# Dialysis Unit Support Staff subtrack · GPT image prompt pack", "",
+    lines = ["# Housekeeping & Support Staff subtrack · GPT image prompt pack", "",
              "Generated from `tools/dialysis_support_staff/content/images.py` by `tools/dialysis_support_staff/build_image_prompts.py`. Read IMAGE-PLAN-BLUEPRINT.md first for the purpose of each image.",
              f"{len(I.HEROES)} circular-vignette heroes (williamriveromd-hero-vignette v3) and {len(I.FIGURES)} in-body figures (simple-figure scaffolds A-E, mechanism posters M, instructional photo strips P).",
              "Save each PNG under its FILE NAME. Figures appear on the pages automatically on the next `generate_dialysis_support_staff.py --patch` run once the image (and its .webp) is in `images/`. The end-of-course knowledge check reuses the hub hero.", "",

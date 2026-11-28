@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Why hand hygiene is the single habit that protects patients most, the moments that apply to support work, how long to rub, why gloves are not clean hands, and how to choose, put on and take off protective equipment without contaminating yourself.",
-    "desc": "Dialysis Unit Support Staff Module 4: hand hygiene technique and timing (alcohol rub and soap and water), the support-staff moments, glove use and its limits, task-based personal protective equipment, and safe donning and doffing with evidence on contamination during removal.",
+    "desc": "Housekeeping & Support Staff Module 4: hand hygiene technique and timing (alcohol rub and soap and water), the support-staff moments, glove use and its limits, task-based personal protective equipment, and safe donning and doffing with evidence on contamination during removal.",
     "keywords": "hand hygiene housekeeping staff, when to change gloves cleaning, personal protective equipment dialysis cleaner, doffing PPE contamination, WHO hand hygiene alcohol rub time",
     "image_alt": "An environmental service aide rubbing alcohol handrub between her fingers beside a wall dispenser in a dialysis unit, a cleaning trolley behind her.",
     "objectives": [

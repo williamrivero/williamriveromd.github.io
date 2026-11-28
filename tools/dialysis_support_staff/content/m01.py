@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "What a dialysis unit does, why its patients are unusually vulnerable to infection and injury, who decides what, and exactly where an orderly&rsquo;s or environmental service aide&rsquo;s work begins and ends.",
-    "desc": "Dialysis Unit Support Staff Module 1: how hemodialysis works in plain words, why patients are vulnerable, the two support pathways (EVS aide and orderly), the duty and scope matrix, and how to decline clinical work safely.",
+    "desc": "Housekeeping & Support Staff Module 1: how hemodialysis works in plain words, why patients are vulnerable, the two support pathways (EVS aide and orderly), the duty and scope matrix, and how to decline clinical work safely.",
     "keywords": "dialysis unit orderly role, environmental service aide dialysis, utility worker hemodialysis Philippines, support staff scope of work, dialysis housekeeping training",
     "image_alt": "A senior housekeeping supervisor showing a new aide around a bright hemodialysis unit, pointing toward a row of dialysis chairs and machines from the doorway.",
     "objectives": [

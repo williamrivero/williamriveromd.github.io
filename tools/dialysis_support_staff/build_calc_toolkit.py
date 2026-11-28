@@ -27,7 +27,7 @@ HERO = """<section class="hero">
 <div class="container">
 <div class="hero-tag">Dialysis Unit &middot; Support Staff &middot; Toolkit</div>
 <h1>Dialysis Support Staff <em>Toolkit</em></h1>
-<p class="hero-sub">Four practical tools for orderlies, environmental service aides and their supervisors: dilute by measurement from your own label, keep surfaces wet for the full contact time, check whether the shift gap allows a full station turnover, judge a lift before it hurts someone, and turn audit counts into honest percentages. Built for the Renal Care Academy Dialysis Unit Support Staff subtrack.</p>
+<p class="hero-sub">Four practical tools for orderlies, environmental service aides and their supervisors: dilute by measurement from your own label, keep surfaces wet for the full contact time, check whether the shift gap allows a full station turnover, judge a lift before it hurts someone, and turn audit counts into honest percentages. Built for the Renal Care Academy Housekeeping & Support Staff subtrack.</p>
 <div class="hero-meta">
 </div>
 <p style="margin:14px 0 0;font-size:.9rem;"><a href="calculators.html" class="hero-xlink">← All calculators &amp; tools</a> &nbsp;&middot;&nbsp; <a href="../academy/dialysis-unit-support-staff.html" class="hero-xlink">Support Staff subtrack →</a></p>
@@ -229,7 +229,7 @@ RELATED = """<!-- RELATED-GUIDES-START -->
   <div class="related-cards">
   <a class="related-card" href="../academy/dialysis-unit-support-staff.html">
     <div class="related-card-tag">Renal Care Academy</div>
-    <div class="related-card-title">Dialysis Unit Support Staff</div>
+    <div class="related-card-title">Housekeeping & Support Staff</div>
     <div class="related-card-desc">Fifteen modules for orderlies and environmental service aides.</div>
     <div class="related-card-arrow">Read →</div></a>
   <a class="related-card" href="../academy/dialysis-unit-support-staff-07-station-turnover.html">

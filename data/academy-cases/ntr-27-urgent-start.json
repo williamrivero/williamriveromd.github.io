@@ -1,0 +1,277 @@
+{
+ "id": "ntr27-urgent-start",
+ "page": "nephrology-trainee-27-pd-principles-prescription.html",
+ "title": "Urgent start, island life",
+ "decisions": 5,
+ "strip": false,
+ "monitorTitle": "PD record",
+ "note": "Fictional patient. Values are illustrative and follow the module text; no solution strengths, volumes or doses are given. The PD nurse, the surgeon and the attending nephrologist decide every prescription.",
+ "labels": {
+  "time": "When",
+  "wt": "Weight",
+  "urine": "Urine output",
+  "drain": "Drain vs fill",
+  "effl": "Effluent",
+  "site": "Exit site and wound",
+  "ktv": "Weekly Kt/V",
+  "rx": "Prescription"
+ },
+ "monitorOrder": ["time", "bp", "wt", "urine", "drain", "effl", "site", "ktv", "rx"],
+ "monitor": {
+  "time": "Day 0, ward",
+  "bp": "158/94",
+  "wt": "52.0 kg",
+  "urine": "About 900 mL/day",
+  "drain": "—",
+  "effl": "—",
+  "site": "—",
+  "ktv": "Not measured",
+  "rx": "None yet",
+  "alarm": ["bp"]
+ },
+ "intro": "<p>You are the nephrology fellow at a tertiary hospital in Cebu City. Ms. Jocelyn Bacalso, 38, a public school teacher from Bantayan Island, first met a nephrologist three weeks ago with advanced chronic kidney disease (CKD). She is now nauseated and eating little, and the attending nephrologist judges that she needs dialysis within days. She still passes about 900 mL of urine a day. She has no arteriovenous access.</p><p>She wants to keep teaching, and the ferry to Cebu makes thrice-weekly hemodialysis (HD) hard. The attending asks you to discuss peritoneal dialysis (PD) with her, following the International Society for Peritoneal Dialysis (ISPD) 2020 recommendations, and to follow her through the first weeks.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "Day 0:",
+   "prompt": "What do you propose to her and the attending?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Urgent-start PD, explained honestly: a PD catheter placed and used within two weeks, with small fills while lying down at first. Leaks are more likely than with a conventional start, other harms are uncertain, and the alternative is an emergency HD catheter. Decide with her, the attending and the surgeon.",
+     "feedback": "<p>A Cochrane review found, with low-certainty evidence, more dialysate leaks with urgent start (risk ratio 3.90, about 210 more per 1,000 patients); other outcomes were uncertain. No trial compared it with the realistic alternative, an emergency HD catheter with its infection and central vein risks.</p>",
+     "vitals": {
+      "time": "Day 2",
+      "rx": "Urgent-start PD: small supine fills",
+      "drain": "Drains fully",
+      "effl": "Clear",
+      "site": "Dry"
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "ok",
+     "text": "A temporary HD catheter now, with permanent access planned later.",
+     "feedback": "<p>Common and reasonable, but a catheter carries infection and central vein risks, and it does not fit the life she described. She deserves to hear about PD before the choice is made.</p>",
+     "then": "<p>The attending asks you to discuss PD with her as well. She chooses urgent-start PD, and the surgeon places the catheter.</p>",
+     "vitals": {
+      "time": "Day 2",
+      "rx": "Urgent-start PD: small supine fills",
+      "drain": "Drains fully",
+      "effl": "Clear",
+      "site": "Dry"
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "poor",
+     "text": "Urgent-start PD with full-volume exchanges from the first day, to clear her uremia faster.",
+     "feedback": "<p>The tissue around the cuffs and the incision has not healed. Full volumes raise intra-abdominal pressure and push fluid out along the unhealed tunnel. Small supine fills come first.</p>",
+     "then": "<p>The PD nurse and the attending write a low-volume, supine start instead.</p>",
+     "vitals": {
+      "time": "Day 2",
+      "rx": "Urgent-start PD: small supine fills",
+      "drain": "Drains fully",
+      "effl": "Clear",
+      "site": "Dry"
+     },
+     "next": "n2"
+    }
+   ]
+  },
+  "n2": {
+   "vitals": {
+    "time": "Day 4",
+    "drain": "Each drain ~300 mL short",
+    "alarm": ["drain"]
+   },
+   "short": "Day 4:",
+   "scene": "<p>The PD nurse calls. Fluid runs in easily, but it drains slowly, better when Ms. Bacalso turns onto her left side, and each of the last exchanges came back about 300 mL short of the fill. The effluent is clear, she has no pain or fever, and the dressing is dry. She has not moved her bowels in four days.</p>",
+   "prompt": "What do you do first?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "Order an abdominal radiograph and ask the surgeon to reposition the catheter today.",
+     "feedback": "<p>A radiograph to see the tip belongs in the sequence, but repositioning skips the commonest cause. A full colon pushes bowel against the catheter, and treating it often restores drainage.</p>",
+     "then": "<p>The surgeon suggests treating her constipation first. After her bowels open, the bags drain fully.</p>",
+     "vitals": {
+      "time": "Day 5",
+      "drain": "Drains fully",
+      "urine": "About 850 mL/day",
+      "alarm": []
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "poor",
+     "text": "Ask for a stronger glucose bag to pull more fluid.",
+     "feedback": "<p>The membrane is not the problem: inflow is easy and outflow is positional. More glucose means more absorbed glucose, not better outflow through a blocked catheter.</p>",
+     "then": "<p>The PD nurse asks you to work through the drain-volume sequence first. You treat her constipation, and after her bowels open the bags drain fully.</p>",
+     "vitals": {
+      "time": "Day 5",
+      "drain": "Drains fully",
+      "urine": "About 850 mL/day",
+      "alarm": []
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "best",
+     "text": "Work the sequence. Clear effluent without pain or fever makes peritonitis unlikely. Treat the constipation first, note that drainage changes with position, get a radiograph of the tip if it persists, look for a leak, and confirm the exchanges were done as written.",
+     "feedback": "<p>When a new catheter drains less, think bowel, tip, leak and missed bags before membrane. Most early problems are mechanical, and a full colon is the first thing to treat.</p>",
+     "vitals": {
+      "time": "Day 5",
+      "drain": "Drains fully",
+      "urine": "About 850 mL/day",
+      "alarm": []
+     },
+     "next": "n3"
+    }
+   ]
+  },
+  "n3": {
+   "vitals": {
+    "time": "Day 6",
+    "site": "Dressing wet with clear fluid",
+    "alarm": ["site"]
+   },
+   "short": "Day 6:",
+   "scene": "<p>The plan was to increase her fill volume today. Instead, the PD nurse finds the exit-site dressing soaked with clear fluid. There is no redness, and Ms. Bacalso feels well.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Treat it as a leak. Hold the planned increase in fill, keep fills small and supine, document it, and call the attending and the surgeon today to decide management. Watch the site for infection.",
+     "feedback": "<p>A leak at the exit site or wound is a stop-and-call finding, and leaks are the known cost of an urgent start. Raising the fill now would raise the abdominal pressure that is pushing fluid out.</p>",
+     "vitals": {
+      "time": "Week 2",
+      "site": "Dry; healed on small supine fills",
+      "alarm": []
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "Change the dressing and increase the fill as planned, because she needs more clearance.",
+     "feedback": "<p>More volume means more pressure on a tunnel that has not healed. The leak will worsen, and a wet tunnel invites infection.</p>",
+     "then": "<p>The dressing soaks through again within hours. The attending and surgeon return her to small supine fills, and the leak settles.</p>",
+     "vitals": {
+      "time": "Week 2",
+      "site": "Dry; healed on small supine fills",
+      "alarm": []
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "ok",
+     "text": "Change the dressing and check it again tomorrow.",
+     "feedback": "<p>Watching is not wrong, but the attending needs to know about a leak today, and the planned fill increase must be held.</p>",
+     "then": "<p>The PD nurse calls the attending, who holds the increase. On small supine fills the leak settles.</p>",
+     "vitals": {
+      "time": "Week 2",
+      "site": "Dry; healed on small supine fills",
+      "alarm": []
+     },
+     "next": "n4"
+    }
+   ]
+  },
+  "n4": {
+   "vitals": {
+    "time": "Week 6, clinic",
+    "bp": "128/80",
+    "wt": "50.5 kg",
+    "urine": "About 800 mL/day",
+    "ktv": "1.8",
+    "rx": "Incremental CAPD",
+    "alarm": []
+   },
+   "short": "Week 6:",
+   "scene": "<p>Ms. Bacalso is on incremental continuous ambulatory PD (CAPD), less than a full-dose prescription while her kidneys still contribute. She is eating, back at school, free of edema, and her blood pressure is controlled. Her weekly Kt/V is 1.8. A resident suggests adding an exchange and a stronger glucose bag to push her Kt/V above 2.0 “to be safe.”</p>",
+   "prompt": "What do you decide?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "Add one exchange to be safe, but keep the glucose strength low.",
+     "feedback": "<p>It adds bags, cost, time and connections for no shown gain. ISPD 2020 sees no survival advantage in aiming routinely above a weekly Kt/V of 1.7 (practice point), and the Hong Kong trial found no survival difference across targets.</p>",
+     "then": "<p>The attending asks what goal the change would meet. None is unmet, so the prescription stays.</p>",
+     "vitals": {
+      "rx": "Incremental CAPD, unchanged"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "poor",
+     "text": "Agree to both changes; more clearance can only help.",
+     "feedback": "<p>In ADEMEX, higher peritoneal clearance did not improve survival (relative risk 1.00). More glucose means weight gain, higher blood sugar and lipids, and membrane injury over time.</p>",
+     "then": "<p>The attending reviews her goals with you, and the prescription stays.</p>",
+     "vitals": {
+      "rx": "Incremental CAPD, unchanged"
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "best",
+     "text": "Keep the incremental prescription. Her goals are met: she feels well, has no edema, and her pressure is controlled. Keep measuring her urine output and residual function, and review the prescription when her goals or her urine change.",
+     "feedback": "<p>ISPD 2020 sets goals with the person and aims for euvolemia, with blood pressure as a key measure, and says no change is needed only to reach an arbitrary clearance target. Kt/V is a surrogate: a check, not the goal.</p>",
+     "vitals": {
+      "rx": "Incremental CAPD, unchanged"
+     },
+     "next": "n5"
+    }
+   ]
+  },
+  "n5": {
+   "short": "Before she leaves:",
+   "scene": "<p>At the same visit she mentions two things. She has been taking mefenamic acid from the pharmacy for back pain. And last month the ferry was cancelled for three days, so she skipped exchanges to make her bags last.</p>",
+   "prompt": "What goes into her plan?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "Tell her that skipping an exchange is fine whenever a delivery is late, since her prescription is already incremental.",
+     "feedback": "<p>Saved bags mean fluid and wastes left behind. A failed supply is a reason to call the attending, and a buffer of bags prevents the problem.</p>",
+     "then": "<p>The PD nurse sets up a buffer of bags and a written supply plan with her. You also ask her to stop the mefenamic acid.</p>",
+     "vitals": {
+      "rx": "Incremental CAPD; supply and kidney-protection plan"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "best",
+     "text": "Ask her to stop the mefenamic acid and agree a safer pain plan with the attending. Record urine daily, avoid nephrotoxins, contrast without good reason and low blood pressure, and ask about neutral-pH, low-GDP solutions if available. Plan a two-week buffer of bags, a number to call when supply fails, and a check of what the PhilHealth Z Benefits package for PD covers on the date of service.",
+     "feedback": "<p>Her urine is doing part of the dialysis: in CANUSA, each 250 mL more urine a day was associated with a 36% lower risk of death (observational). Neutral-pH, low glucose-degradation-product (GDP) solutions preserved about 114 mL/day more urine (Cochrane, high certainty). A prescription a family cannot keep supplied is not a prescription.</p>",
+     "vitals": {
+      "rx": "Incremental CAPD; supply and kidney-protection plan"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Ask her to stop the mefenamic acid, and leave the rest of the plan as it is.",
+     "feedback": "<p>Stopping it protects her residual function, but the supply problem will come back with the next storm. Plan the buffer and the call before it does.</p>",
+     "then": "<p>The PD nurse adds a buffer of bags and a written supply plan.</p>",
+     "vitals": {
+      "rx": "Incremental CAPD; supply and kidney-protection plan"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "harmful",
+     "text": "Let her continue the mefenamic acid; PD is doing her kidneys’ work now.",
+     "feedback": "<p>Her native kidneys still remove water, sodium and middle molecules beside the PD. Protecting her urine is part of the prescription, and a nephrotoxin works against it.</p>",
+     "then": "<p>The attending stops it and asks the PD nurse to plan the supply buffer with her.</p>",
+     "vitals": {
+      "rx": "Incremental CAPD; supply and kidney-protection plan"
+     },
+     "next": "end"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Six months later",
+   "text": "<p>Ms. Bacalso still teaches. She does her exchanges around the school day, records her urine every morning, and keeps two weeks of bags in a dry corner of the house. When the ferry stopped for four days in the typhoon season, she did every exchange.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Urgent-start PD trades early use for more leaks</b> (low-certainty evidence); start with small supine fills and explain the trade honestly.</li><li><b>When a new catheter drains less, think bowel, tip, leak and missed bags before membrane.</b></li><li><b>A wet dressing is a leak:</b> hold the fill increase and call the attending and surgeon.</li><li><b>Prescribe to goals, not to a Kt/V number;</b> no survival gain from aiming routinely above 1.7.</li><li><b>Protect the urine and the supply:</b> no nephrotoxins, a buffer of bags, and a plan for the week the delivery does not come.</li></ul><p>See <a href=\"#urgent-start\">Urgent-start PD</a>, <a href=\"#adequacy-pet\">Adequacy and PET</a> and <a href=\"#prescription\">Prescription</a>.</p>"
+}

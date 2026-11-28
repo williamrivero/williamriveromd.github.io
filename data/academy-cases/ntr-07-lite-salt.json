@@ -1,0 +1,410 @@
+{
+ "id": "ntr07-lite-salt",
+ "page": "nephrology-trainee-07-potassium-magnesium-arrhythmia.html",
+ "title": "Diarrhea, a salt substitute and a slow pulse",
+ "decisions": 5,
+ "monitorTitle": "Emergency room monitor",
+ "note": "Fictional patient. Values are illustrative and follow the module text; drugs, doses and concentrations come from the unit protocol, not this case. The attending nephrologist&rsquo;s judgment comes first.",
+ "labels": {
+  "time": "Time",
+  "k": "Potassium",
+  "ecg": "ECG",
+  "glu": "Glucose",
+  "crea": "Creatinine",
+  "uo": "Urine output",
+  "mental": "Alertness",
+  "order": "Orders so far"
+ },
+ "monitorOrder": [
+  "time",
+  "bp",
+  "hr",
+  "spo2",
+  "k",
+  "ecg",
+  "glu",
+  "mental",
+  "crea",
+  "uo",
+  "order"
+ ],
+ "monitor": {
+  "time": "14:05",
+  "bp": "96/58",
+  "hr": 46,
+  "spo2": 96,
+  "k": "7.1 mmol/L (&ldquo;slightly hemolyzed&rdquo;)",
+  "ecg": "Peaked T; PR 230 ms; QRS 140 ms",
+  "glu": "140 mg/dL",
+  "mental": "Alert, weak",
+  "crea": "3.4 mg/dL (2.0 at clinic)",
+  "uo": "Little since morning",
+  "order": "None",
+  "rhythm": "wide",
+  "rhythmLabel": "Wide QRS, slow",
+  "alarm": [
+   "hr",
+   "k",
+   "ecg"
+  ]
+ },
+ "intro": "<p>You are the internal medicine resident in the emergency room of a tertiary hospital in Batangas City. At 14:00 on Wednesday, Mrs. Rosario Manalo, 71, arrives with four days of watery diarrhea and poor intake. She has diabetes, chronic kidney disease (CKD) with a clinic creatinine of 2.0 mg/dL three months ago, and heart failure, for which she takes losartan and spironolactone. Her daughter has been seasoning her food with a &ldquo;lite&rdquo; salt substitute to cut her sodium.</p><p>She says her legs feel heavy. Her mucous membranes are dry. The laboratory reports potassium 7.1 mmol/L with the comment &ldquo;slightly hemolyzed,&rdquo; bicarbonate 16 mmol/L and creatinine 3.4 mg/dL. The electrocardiogram (ECG) shows peaked T waves, a PR interval of 230 ms and a QRS of 140 ms. The intern, Dr. Kim Aguilar, has the leads on. The nephrology fellow on call is Dr. Liza Panganiban.</p>",
+ "start": "n1",
+ "nodes": {
+  "n1": {
+   "short": "14:05:",
+   "prompt": "Dr. Aguilar asks whether to repeat the sample first, since it was hemolyzed. What do you order now?",
+   "choices": [
+    {
+     "grade": "ok",
+     "text": "Repeat the potassium from a free-flowing vein first, and treat only if it is confirmed.",
+     "feedback": "<p>That is right for a surprising potassium with a normal ECG and no reason. She has several reasons and a widening QRS with a slow pulse, so treat while you repeat.</p>",
+     "then": "<p>While you wait, her pulse slows to 42. You give intravenous calcium per protocol and call the attending; the repeat potassium is 7.0 mmol/L.</p>",
+     "vitals": {
+      "time": "14:15",
+      "hr": 58,
+      "k": "7.0 mmol/L (repeat)",
+      "ecg": "Peaked T; QRS narrower",
+      "rhythm": "peaked",
+      "rhythmLabel": "Peaked T waves",
+      "order": "Calcium given; attending called",
+      "alarm": [
+       "k",
+       "ecg"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "poor",
+     "text": "Sodium bicarbonate first, because her bicarbonate is low.",
+     "feedback": "<p>Bicarbonate has a small, slow and unreliable effect on potassium, and it does nothing to protect the heart. The ECG shows impaired conduction now.</p>",
+     "then": "<p>You give intravenous calcium per protocol instead and call the attending; the repeat potassium is 7.0 mmol/L.</p>",
+     "vitals": {
+      "time": "14:15",
+      "hr": 58,
+      "k": "7.0 mmol/L (repeat)",
+      "ecg": "Peaked T; QRS narrower",
+      "rhythm": "peaked",
+      "rhythmLabel": "Peaked T waves",
+      "order": "Calcium given; attending called",
+      "alarm": [
+       "k",
+       "ecg"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "best",
+     "text": "Cardiac monitor, intravenous calcium per protocol now, a repeat ECG after it, the repeat sample at the same time, and a call to the attending.",
+     "feedback": "<p>A dangerous potassium with a reason and ECG changes is treated at once. Calcium restores the gap between resting and threshold potential within minutes; it lowers no potassium, so the next steps must follow quickly.</p>",
+     "then": "<p>The QRS narrows and her pulse rises to 58. The repeat potassium is 7.0 mmol/L.</p>",
+     "vitals": {
+      "time": "14:15",
+      "hr": 58,
+      "k": "7.0 mmol/L (repeat)",
+      "ecg": "Peaked T; QRS narrower",
+      "rhythm": "peaked",
+      "rhythmLabel": "Peaked T waves",
+      "order": "Calcium given; attending called",
+      "alarm": [
+       "k",
+       "ecg"
+      ]
+     },
+     "next": "n2"
+    },
+    {
+     "grade": "harmful",
+     "text": "An oral potassium binder, then admission to the ward for a morning potassium.",
+     "feedback": "<p>A binder works over hours, and the ECG shows a widening QRS with bradycardia now. Sending her to the ward without monitoring risks a cardiac arrest before the morning sample.</p>",
+     "then": "<p>The monitor alarms at a pulse of 40. You give intravenous calcium per protocol and call the attending; the repeat potassium is 7.0 mmol/L.</p>",
+     "vitals": {
+      "time": "14:15",
+      "hr": 58,
+      "k": "7.0 mmol/L (repeat)",
+      "ecg": "Peaked T; QRS narrower",
+      "rhythm": "peaked",
+      "rhythmLabel": "Peaked T waves",
+      "order": "Calcium given; attending called",
+      "alarm": [
+       "k",
+       "ecg"
+      ]
+     },
+     "next": "n2"
+    }
+   ]
+  },
+  "n2": {
+   "short": "Shift:",
+   "prompt": "Calcium is protecting the heart. What next?",
+   "choices": [
+    {
+     "grade": "harmful",
+     "text": "Insulin with glucose, then repeat the potassium and glucose with the morning laboratory tests.",
+     "feedback": "<p>The shift lasts only a few hours, after which potassium returns to the plasma. Hypoglycemia after insulin is common when kidney function is low, and nobody would see it until morning.</p>",
+     "then": "<p>Dr. Panganiban asks for hourly glucose checks and a potassium recheck within the first hours.</p>",
+     "vitals": {
+      "time": "14:40",
+      "order": "Calcium; insulin with glucose; nebulizer",
+      "glu": "Checks hourly"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "best",
+     "text": "Insulin with glucose and a nebulized beta-2 agonist per protocol, with capillary glucose checks for several hours and a potassium recheck within the first hours.",
+     "feedback": "<p>Insulin and beta-2 stimulation drive the sodium&ndash;potassium pump and move potassium into cells within the first hour, and their effects add. With low kidney function insulin acts longer, so glucose is checked for hours.</p>",
+     "vitals": {
+      "time": "14:40",
+      "order": "Calcium; insulin with glucose; nebulizer",
+      "glu": "Checks hourly"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "poor",
+     "text": "A nebulized beta-2 agonist alone, because insulin is risky in kidney disease.",
+     "feedback": "<p>Beta-2 agonists add to insulin, but some patients respond little to them alone. Insulin with glucose is the main shift; the answer to its risk is monitoring, not avoidance.</p>",
+     "then": "<p>You add insulin with glucose per protocol and hourly glucose checks.</p>",
+     "vitals": {
+      "time": "14:40",
+      "order": "Calcium; insulin with glucose; nebulizer",
+      "glu": "Checks hourly"
+     },
+     "next": "n3"
+    },
+    {
+     "grade": "ok",
+     "text": "Insulin with glucose per protocol; check glucose only if she develops symptoms.",
+     "feedback": "<p>The shift is right, but symptoms of hypoglycemia are unreliable in an older, unwell patient. Check glucose on a schedule for several hours.</p>",
+     "then": "<p>You add scheduled glucose checks and the nebulizer.</p>",
+     "vitals": {
+      "time": "14:40",
+      "order": "Calcium; insulin with glucose; nebulizer",
+      "glu": "Checks hourly"
+     },
+     "next": "n3"
+    }
+   ]
+  },
+  "n3": {
+   "vitals": {
+    "time": "15:00",
+    "k": "6.3 mmol/L",
+    "uo": "30 mL in the last hour",
+    "alarm": [
+     "k"
+    ]
+   },
+   "short": "15:00, removal:",
+   "scene": "<p>At 15:00 her potassium is 6.3 mmol/L. She has passed 30 mL of urine in the last hour; her blood pressure is still 96/58 mm Hg and her mucous membranes are dry. Dr. Aguilar lists the potassium sources: losartan, spironolactone, and the salt substitute, which is potassium chloride.</p>",
+   "prompt": "How will the potassium leave her body?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Hold the losartan, spironolactone and salt substitute for now, restore her volume with an isotonic crystalloid in measured portions, give a binder the hospital stocks, and ask the fellow to decide with the attending on dialysis if the potassium or urine does not respond.",
+     "feedback": "<p>Only the kidney, the gut and dialysis remove potassium. She is dry, and low effective volume cuts distal sodium delivery and flow, so restoring volume helps the kidney secrete. Stopping the sources is part of removal.</p>",
+     "vitals": {
+      "time": "15:30",
+      "order": "Losartan, spironolactone, salt substitute held; crystalloid; binder"
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "Intravenous furosemide to make her excrete the potassium.",
+     "feedback": "<p>A loop diuretic raises distal flow only if the kidney responds and the volume allows it. In a dry, hypotensive patient it worsens perfusion and the kidney injury.</p>",
+     "then": "<p>Dr. Panganiban holds the furosemide. You hold the potassium sources, start a crystalloid and give a binder.</p>",
+     "vitals": {
+      "time": "15:30",
+      "order": "Losartan, spironolactone, salt substitute held; crystalloid; binder"
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "ok",
+     "text": "Arrange urgent hemodialysis now.",
+     "feedback": "<p>Dialysis removes potassium fastest and may still be needed. But she makes some urine and is volume depleted, so the decision belongs to the fellow and attending after the sources are stopped and her volume is restored.</p>",
+     "then": "<p>The fellow and attending agree to hold dialysis for now. You hold the sources, start a crystalloid and give a binder.</p>",
+     "vitals": {
+      "time": "15:30",
+      "order": "Losartan, spironolactone, salt substitute held; crystalloid; binder"
+     },
+     "next": "n4"
+    },
+    {
+     "grade": "poor",
+     "text": "Keep the losartan and spironolactone running tonight, since they protect her heart.",
+     "feedback": "<p>They do protect her heart, but tonight they are part of the cause. The acute plan stops potassium sources and offending drugs for now; the restart plan comes once she is safe.</p>",
+     "then": "<p>You hold them, stop the salt substitute, start a crystalloid and give a binder.</p>",
+     "vitals": {
+      "time": "15:30",
+      "order": "Losartan, spironolactone, salt substitute held; crystalloid; binder"
+     },
+     "next": "n4"
+    }
+   ]
+  },
+  "n4": {
+   "vitals": {
+    "time": "16:30",
+    "glu": "54 mg/dL",
+    "mental": "Sweaty, drowsy",
+    "k": "5.9 mmol/L",
+    "alarm": [
+     "glu",
+     "mental"
+    ]
+   },
+   "short": "16:30:",
+   "scene": "<p>At 16:30 the nurse calls: Mrs. Manalo is sweaty and drowsy. Her capillary glucose is 54 mg/dL. Her potassium is 5.9 mmol/L.</p>",
+   "prompt": "What do you do?",
+   "choices": [
+    {
+     "grade": "best",
+     "text": "Treat the hypoglycemia per protocol now, tell the attending, continue glucose checks for several hours, and recheck the potassium and ECG later for rebound.",
+     "feedback": "<p>A falling glucose after insulin is a reason to call the attending. Insulin lasts longer without kidney function, and the potassium can rebound when the shift wears off.</p>",
+     "vitals": {
+      "time": "18:00",
+      "glu": "128 mg/dL",
+      "mental": "Alert",
+      "k": "5.6 mmol/L",
+      "uo": "60 mL/h",
+      "ecg": "Sinus rhythm",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm",
+      "hr": 76,
+      "alarm": []
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "harmful",
+     "text": "The drowsiness is from the potassium; repeat the calcium.",
+     "feedback": "<p>Sweating and drowsiness with a glucose of 54 mg/dL is hypoglycemia, and her ECG has improved. Untreated, hypoglycemia can cause seizures and brain injury.</p>",
+     "then": "<p>The nurse asks again about the glucose. You treat the hypoglycemia per protocol and call the attending.</p>",
+     "vitals": {
+      "time": "18:00",
+      "glu": "128 mg/dL",
+      "mental": "Alert",
+      "k": "5.6 mmol/L",
+      "uo": "60 mL/h",
+      "ecg": "Sinus rhythm",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm",
+      "hr": 76,
+      "alarm": []
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "ok",
+     "text": "Treat the hypoglycemia per protocol, then stop the glucose checks once she is above normal.",
+     "feedback": "<p>Treating it is right, but insulin acts longer when kidney function is low, so hypoglycemia can return. Keep the checks going for several hours.</p>",
+     "then": "<p>You restart scheduled glucose checks and recheck the potassium and ECG later.</p>",
+     "vitals": {
+      "time": "18:00",
+      "glu": "128 mg/dL",
+      "mental": "Alert",
+      "k": "5.6 mmol/L",
+      "uo": "60 mL/h",
+      "ecg": "Sinus rhythm",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm",
+      "hr": 76,
+      "alarm": []
+     },
+     "next": "n5"
+    },
+    {
+     "grade": "poor",
+     "text": "Give another round of insulin with glucose to keep the potassium falling.",
+     "feedback": "<p>She is already hypoglycemic, and her potassium is falling with removal under way. More insulin now deepens the hypoglycemia.</p>",
+     "then": "<p>You treat the hypoglycemia per protocol instead and call the attending.</p>",
+     "vitals": {
+      "time": "18:00",
+      "glu": "128 mg/dL",
+      "mental": "Alert",
+      "k": "5.6 mmol/L",
+      "uo": "60 mL/h",
+      "ecg": "Sinus rhythm",
+      "rhythm": "normal",
+      "rhythmLabel": "Sinus rhythm",
+      "hr": 76,
+      "alarm": []
+     },
+     "next": "n5"
+    }
+   ]
+  },
+  "n5": {
+   "vitals": {
+    "time": "Day 3",
+    "k": "5.0 mmol/L",
+    "crea": "2.4 mg/dL",
+    "uo": "Normal",
+    "glu": "Stable",
+    "alarm": []
+   },
+   "short": "Day 3:",
+   "scene": "<p>On day 3 her potassium is 5.0 mmol/L and her creatinine 2.4 mg/dL, coming down toward her baseline. Her daughter asks: &ldquo;Should she stop the losartan and spironolactone for good?&rdquo;</p>",
+   "prompt": "What plan do you propose to the attending?",
+   "choices": [
+    {
+     "grade": "poor",
+     "text": "Stop both for good; this episode shows she cannot take them.",
+     "feedback": "<p>In STOP ACEi, stopping renin&ndash;angiotensin system (RAS) inhibitors in advanced CKD did not preserve the estimated glomerular filtration rate (eGFR), and kidney failure was not less common. Stopped drugs are often never restarted, and her heart loses their protection.</p>",
+     "then": "<p>The attending asks for a restart plan instead.</p>",
+     "vitals": {
+      "order": "Restart plan with checks, written in the discharge note"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "best",
+     "text": "Keep the salt substitute out, propose restarting the RAS inhibitors with potassium checks and a binder the family can afford if needed, and write who restarts them, when, and who checks the potassium.",
+     "feedback": "<p>Kidney Disease: Improving Global Outcomes (KDIGO) 2021 includes a practice point that hyperkalemia with RAS inhibitors can often be managed by measures to lower potassium rather than by stopping the drug. The plan works only if the restart and the checks are written down with a name.</p>",
+     "vitals": {
+      "order": "Restart plan with checks, written in the discharge note"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "ok",
+     "text": "Restart both at the old doses tomorrow, with no other change.",
+     "feedback": "<p>Keeping the protection is right, but nothing that caused this episode has changed. Add the potassium checks, a binder if needed, and remove the salt substitute.</p>",
+     "then": "<p>You add potassium checks and a binder plan, and remove the salt substitute.</p>",
+     "vitals": {
+      "order": "Restart plan with checks, written in the discharge note"
+     },
+     "next": "end"
+    },
+    {
+     "grade": "poor",
+     "text": "No fruit or vegetables at all, instead of any change to her medicines.",
+     "feedback": "<p>The KDIGO 2020 conference urged a shift away from blanket potassium restriction toward healthy eating patterns, and few data show diet alone restores an abnormal potassium. The salt substitute is the source to remove.</p>",
+     "then": "<p>You remove the salt substitute and write a restart plan with checks.</p>",
+     "vitals": {
+      "order": "Restart plan with checks, written in the discharge note"
+     },
+     "next": "end"
+    }
+   ]
+  },
+  "end": {
+   "end": true,
+   "title": "Discharge",
+   "vitals": {
+    "time": "Day 5",
+    "k": "4.9 mmol/L",
+    "crea": "2.2 mg/dL",
+    "alarm": []
+   },
+   "text": "<p>Mrs. Manalo goes home on day 5 with a potassium of 4.9 mmol/L. The salt substitute is in the trash. The discharge note says when the attending will review restarting losartan and spironolactone, which clinic checks the potassium a few days after each restart, and what to do if her potassium rises again. Her daughter knows that a &ldquo;lite&rdquo; salt can be potassium.</p>"
+  }
+ },
+ "debrief": "<h4>What this case teaches</h4><ul><li><b>Look at the number, the ECG and the reason together.</b> A hemolyzed label does not excuse ECG changes: treat while you repeat.</li><li><b>Protect, shift, remove, recheck.</b> Calcium lowers nothing; insulin and beta-2 agonists remove nothing.</li><li><b>Recheck glucose for hours after insulin</b> when kidney function is low, and recheck potassium for rebound.</li><li><b>Removal includes stopping the sources:</b> drugs, supplements, salt substitutes; restoring volume helps a dry kidney excrete.</li><li><b>Treat the high potassium, not the drug that protects the heart.</b> If you stop a RAS inhibitor, write when it will be restarted.</li></ul><p>See <a href=\"#physiology\">Physiology</a>, <a href=\"#hyperkalemia\">Hyperkalemia</a> and <a href=\"#prevention\">Prevention</a>.</p>"
+}

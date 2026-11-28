@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "What aseptic habits mean for people who never do sterile procedures: clean to dirty and top to bottom, one cloth per area, never back into a clean bucket, keeping clean supplies clean, the clean-versus-dirty layout of the unit, and the extra rules of the hepatitis B isolation station.",
-    "desc": "Dialysis Unit Support Staff Module 5: aseptic habits for orderlies and EVS aides, clean-to-dirty workflow, no double-dipping, clean and dirty zones, protecting clean supplies, items that may never return to the clean area, and hepatitis B isolation station rules from CDC dialysis guidance.",
+    "desc": "Housekeeping & Support Staff Module 5: aseptic habits for orderlies and EVS aides, clean-to-dirty workflow, no double-dipping, clean and dirty zones, protecting clean supplies, items that may never return to the clean area, and hepatitis B isolation station rules from CDC dialysis guidance.",
     "keywords": "aseptic technique housekeeping, clean to dirty cleaning order, no double dipping cleaning cloth, dialysis isolation station hepatitis B cleaning, clean and dirty zones hospital",
     "image_alt": "A tidy cleaning trolley with clearly separated clean cloths in a closed upper compartment and a used-cloth bag below, parked outside a dialysis station.",
     "objectives": [

@@ -228,20 +228,38 @@ def build_page(hub_text, d):
 
 
 # ── the hub section ───────────────────────────────────────────────────────────────────────────────────────────
+CAT_SHORT = {"orient": "unit orientation", "infection": "infection prevention", "emergency": "emergencies",
+             "water": "water and machine safety", "medication": "medication safety", "safeguarding": "safeguarding",
+             "privacy": "privacy and records", "capstone": "the capstone"}
+HUB_CSS = ('<style id="rcm-pt-hub-css">#pretest .nc-btn{display:inline-block;text-decoration:none;line-height:1.35}'
+           '#pretest #rcm-pt-hub-app p{margin:18px 0 12px}#pretest .rcm-pt-note{margin-top:12px}</style>')
+
+
+def required_sentence(d):
+    req = [m for m in d["mods"] if "q" not in m]
+    if not req:
+        return ""
+    cats = []
+    for k in CAT_SHORT:                      # fixed order, only the categories this track uses
+        if any(m.get("a") == k for m in req):
+            cats.append(CAT_SHORT[k])
+    lst = cats[0] if len(cats) == 1 else ", ".join(cats[:-1]) + (", and " if len(cats) > 2 else " and ") + cats[-1]
+    verb = "is" if len(req) == 1 else "are"
+    return (f" {len(req)} of the {len(d['mods'])} modules ({lst}) {verb} required for everyone, "
+            f"whatever their experience.")
+
+
 def hub_section(d):
-    n_test = sum(1 for m in d["mods"] if "q" in m)
-    n_req = len(d["mods"]) - n_test
     pct = round(d["mastery"] * 100)
     return f"""
 <!-- PRETEST-START -->
 <section class="section" id="pretest">
+  {HUB_CSS}
   <div class="section-tag">Experienced hires</div>
   <h2>Placement pre-test</h2>
   <p>Transferring from another unit, or already experienced in this role? Take the placement pre-test: a short check of
     up to {d['per']} questions for each module, drawn from that module&rsquo;s own question bank. Score {pct}% or better and
-    the module becomes optional reading for you, so you study only what you need. {n_req} of the {len(d['mods'])} modules
-    (unit orientation, infection prevention, emergencies, water and machine safety, and the capstone) are required for
-    everyone, whatever their experience.</p>
+    the module becomes optional reading for you, so you study only what you need.{required_sentence(d)}</p>
   <div id="rcm-pt-hub-app"><p><a class="nc-btn" href="{d['page']}">Take the placement pre-test</a></p></div>
   <p class="rcm-pt-note">Results stay on this device. The certificate still needs every module quiz; for a module you
     placed out of, go straight to its self-assessment.</p>

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Dialysis Unit Support Staff track of the Renal Care Academy (Ancillary Staff Track).
+"""Housekeeping & Support Staff track of the Renal Care Academy (Ancillary Staff Track).
 
 Orderlies and environmental service (EVS) aides. Course metadata, abbreviations, references and shared copy.
 Module content lives in mNN.py. Rendered by generate_dialysis_support_staff.py; never hand-edit the pages.
-Improved from the owner's blueprint package (/Volumes/Storage/Renal Care Academy/Dialysis Unit Support Staff).
+Improved from the owner's blueprint package (/Volumes/Storage/Renal Care Academy/Housekeeping & Support Staff).
 """
 
 COURSE = {
-    "title": "Dialysis Unit Support Staff",
+    "title": "Housekeeping & Support Staff",
     "long_title": "Orderlies and Environmental Service Aides in the Dialysis Unit",
     "hub_slug": "dialysis-unit-support-staff",
     "parent_slug": "nephrology-nursing",

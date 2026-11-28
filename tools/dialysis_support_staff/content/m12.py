@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Why the back is injured by load, distance and twisting rather than by weakness; why lifting a whole adult by hand is never safe; slide sheets, transfer boards, gait belts and lifts; what to do when a patient is falling or has fallen; and a worked lifting calculation for the heavy boxes and bins of the unit.",
-    "desc": "Dialysis Unit Support Staff Module 12: back biomechanics, the revised NIOSH lifting equation and lifting index with a worked example, the patient-handling weight limit, transfer aids and safe patient handling evidence, controlled lowering, and the response to a fallen patient.",
+    "desc": "Housekeeping & Support Staff Module 12: back biomechanics, the revised NIOSH lifting equation and lifting index with a worked example, the patient-handling weight limit, transfer aids and safe patient handling evidence, controlled lowering, and the response to a fallen patient.",
     "keywords": "safe patient handling orderly, NIOSH lifting equation example, lifting index calculator, never lift patient alone, slide sheet transfer board gait belt, what to do when a patient falls",
     "image_alt": "Two orderlies using a slide sheet to help a patient move from a dialysis chair to a stretcher, knees bent and backs straight, a nurse guiding the patient&rsquo;s head.",
     "objectives": [

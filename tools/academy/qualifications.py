@@ -95,14 +95,14 @@ QUAL = {
    "Physical therapists: PRC-registered under RA 5680; treatment requires a physician&rsquo;s prescription (Sec. 12). <span class=q-src>RA 5680</span>",
    "Occupational therapists: PRC-registered under RA 11241, a separate profession with its own scope; works on referral. <span class=q-src>RA 11241</span>",
    "The DOH and PSN dialysis rules list no renal OT or PT position, staffing ratio or renal therapist certificate; scope is the license, the referral and employer privileges. <span class=q-src>DOH, PSN</span>"]),
- "dialysis-unit-support-staff": ("Dialysis Unit Support Staff (orderly, environmental services aide)", [
+ "dialysis-unit-support-staff": ("Housekeeping & Support Staff (orderly, environmental services aide)", [
    NA + " PSN groups housekeeping with the other nonmedical staff and expects written unit policies on infection control, waste, emergencies, and the environment. <span class=q-src>PSN</span>",
    "Your scope is your employer&rsquo;s written task list plus the tasks you have been trained and signed off on. <span class=q-src>DOH, PSN</span>"]),
  "dialysis-unit-manager": ("Unit Operations Manager/Unit Manager", [
    "At least 2 years of proven success in operations management, or as head of a unit or department with at least 5 employees. <span class=q-src>PSN</span>",
    "Bachelor&rsquo;s degree in operations management, business administration, or a medically related 4-year course; master&rsquo;s in hospital or business administration preferred. <span class=q-src>PSN</span>",
    "A separate manager is required for non-hospital HDCs with more than 15 stations; smaller units may combine the role. <span class=q-src>PSN</span>"]),
- "philhealth-claims": ("PhilHealth Liaison/Claims Officer", [
+ "philhealth-claims": ("Billing &amp; Claims Officer", [
    "Listed among administrative staff (PhilHealth officer or clerk); no qualifications are specified. <span class=q-src>DOH, PSN</span>"]),
 }
 SOURCES = ("Sources: DOH Administrative Order No. 2012-0001, Sec. V.B.2.a; Philippine Society of Nephrology (2024), "

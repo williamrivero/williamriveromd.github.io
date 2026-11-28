@@ -26,7 +26,7 @@ MODULE = {
 <tr><td>Registry (for example the Philippine Renal Disease Registry, PRDR)</td><td>National data on kidney failure: incidence, modality, outcomes</td><td>Planners, researchers, the PSN and DOH</td><td>Accurate census events (new patient, transfer, modality change, death) through the designated records function</td></tr>
 <tr><td>PhilHealth claim</td><td>Payment for covered services under the current circulars</td><td>The facility; PhilHealth</td><td>Truthful source documentation; the claim is prepared and certified by authorized staff</td></tr>
 </tbody></table></div>
-<p>The DOH licensing order names a records function and registry participation as facility duties, and the PSN guidelines describe a designated records and registry role.[[doh2012]][[psn2024]] PhilHealth's quality standards for maintenance hemodialysis include provisions on the prescription and on documenting the treatment delivered.[[phic2024_29]] None of these makes the nurse the default claims officer. The Academy's PhilHealth Liaison and Medical Records Officer tracks cover those roles in depth.</p>
+<p>The DOH licensing order names a records function and registry participation as facility duties, and the PSN guidelines describe a designated records and registry role.[[doh2012]][[psn2024]] PhilHealth's quality standards for maintenance hemodialysis include provisions on the prescription and on documenting the treatment delivered.[[phic2024_29]] None of these makes the nurse the default claims officer. The Academy's Billing & Claims Officer and Medical Records Officer tracks cover those roles in depth.</p>
 """},
         {"id": "truth", "nav": "Audit for truth", "tag": "Practice", "h2": "Audit truth, completeness and consistency",
          "html": """

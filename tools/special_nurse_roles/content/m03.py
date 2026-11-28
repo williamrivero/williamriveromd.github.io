@@ -124,7 +124,7 @@ MODULE = {
         ("antibiotic-stewardship-dialysis.html", "Stewardship in the dialysis unit."),
         ("viral-infections-vaccinations-ckd.html", "Hepatitis B and other vaccinations in kidney disease."),
     ],
-    "academy": [("Dialysis Unit Support Staff Module 3: How germs travel", "dialysis-unit-support-staff-03-how-germs-travel.html")],
+    "academy": [("Housekeeping & Support Staff Module 3: How germs travel", "dialysis-unit-support-staff-03-how-germs-travel.html")],
     "calcs": ["calc-dialysis-nurse-portfolio-toolkit.html", "calc-access-infection-rate.html"],
     "terms": [
         ("Patient-month", "One patient dialyzing in the unit for one month; the usual denominator for dialysis infection rates."),

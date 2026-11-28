@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "Why patients faint and fall after dialysis, explained from the blood vessels up; checking the wheelchair and the route; protecting the fistula arm and catheter during transport; escorting within the nurse&rsquo;s plan; handing over to a named person; and moving isolation patients without spreading germs.",
-    "desc": "Dialysis Unit Support Staff Module 11: post-dialysis orthostatic hypotension and fall risk (Cook 2006), wheelchair and route checks, fistula and catheter protection, escort under the nurse&rsquo;s plan, warning signs during transport, named handoff, belongings, and transport of isolation patients.",
+    "desc": "Housekeeping & Support Staff Module 11: post-dialysis orthostatic hypotension and fall risk (Cook 2006), wheelchair and route checks, fistula and catheter protection, escort under the nurse&rsquo;s plan, warning signs during transport, named handoff, belongings, and transport of isolation patients.",
     "keywords": "patient transport after hemodialysis, orderly wheelchair escort, falls in dialysis patients, protect fistula arm transport, orthostatic hypotension after dialysis, patient handoff orderly",
     "image_alt": "An orderly pushing an older man in a wheelchair along a bright hospital corridor, the man&rsquo;s fistula arm resting on a pillow on his lap, a nurse walking alongside with a clipboard.",
     "objectives": [

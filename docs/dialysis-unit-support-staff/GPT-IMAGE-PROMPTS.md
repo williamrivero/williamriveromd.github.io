@@ -1,4 +1,4 @@
-# Dialysis Unit Support Staff subtrack · GPT image prompt pack
+# Housekeeping & Support Staff subtrack · GPT image prompt pack
 
 Generated from `tools/dialysis_support_staff/content/images.py` by `tools/dialysis_support_staff/build_image_prompts.py`. Read IMAGE-PLAN-BLUEPRINT.md first for the purpose of each image.
 16 circular-vignette heroes (williamriveromd-hero-vignette v3) and 43 in-body figures (simple-figure scaffolds A-E, mechanism posters M, instructional photo strips P).

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "How to make a blood spill safe and clean it within your authorization, why you never pick up a loose sharp, how needlesticks happen to support staff, and the exact first minutes after an exposure, when washing, reporting and fast medical assessment matter most.",
-    "desc": "Dialysis Unit Support Staff Module 9: small blood-spill response within authorization, loose sharps, hidden sharps in waste and linen, needlestick prevalence, immediate exposure first aid, urgent reporting and post-exposure prophylaxis for HIV and hepatitis B.",
+    "desc": "Housekeeping & Support Staff Module 9: small blood-spill response within authorization, loose sharps, hidden sharps in waste and linen, needlestick prevalence, immediate exposure first aid, urgent reporting and post-exposure prophylaxis for HIV and hepatitis B.",
     "keywords": "blood spill cleanup procedure hospital cleaner, needlestick injury housekeeping, what to do after needlestick, post-exposure prophylaxis timing, hepatitis B exposure health worker",
     "image_alt": "A spill kit open on a dialysis unit floor beside a small contained spill marked with a yellow warning sign, a gloved hand holding a scoop, a sharps container nearby.",
     "objectives": [

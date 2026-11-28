@@ -91,7 +91,7 @@ def landing(s):
       <span class="tc-branch-body"><small>Owners and boards</small><b>Dialysis Unit Owner</b><span>For owners, investors, and boards of dialysis units: the owner&rsquo;s authority and its limits, kidney care for non-clinicians, licensing, protected clinical leadership, ethics, capital, safe capacity, workforce, water and infection, PhilHealth stewardship, claims integrity, money, quality, privacy, continuity, and responsible exit.</span><span><strong>{MODULES} modules &middot; 8 owner calculators &middot; a capstone &middot; end-of-course exam</strong></span></span>
     </a>''')
     if f'<tr><td><a href="{HUB}.html">Dialysis Unit Owner</a></td>' not in s:
-        s = after_row(s, '<tr><td><a href="philhealth-claims.html">PhilHealth Liaison/Claims Officer</a></td><td><ul class="acad-qual">',
+        s = after_row(s, '<tr><td><a href="philhealth-claims.html">Billing &amp; Claims Officer</a></td><td><ul class="acad-qual">',
                       f'<tr><td><a href="{HUB}.html">Dialysis Unit Owner</a></td><td><ul class="acad-qual"><li>No owner degree, license, or training credential was found in the DOH or PSN hemodialysis rules. Legal eligibility to own and the facility&rsquo;s license need separate verification with counsel and the CHD. <span class=q-src>DOH, PSN</span></li><li>Owning a unit confers no clinical or technical authority; an owner who also practices needs that role&rsquo;s own credentials and appointment. The course&rsquo;s entry expectations are Academy recommendations only.</li></ul></td></tr>')
     if "<tr><td>Owner, investor, or board member</td>" not in s:
         s = after_row(s, "<tr><td>PhilHealth liaison, claims officer, or clerk</td>",

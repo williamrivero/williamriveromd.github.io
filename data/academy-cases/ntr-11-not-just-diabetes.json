@@ -1,0 +1,263 @@
+{
+  "id": "ntr11-not-just-diabetes",
+  "page": "nephrology-trainee-11-ckd-evaluation-risk-referral.html",
+  "title": "&ldquo;CKD stage 3, diabetic&rdquo;: is it?",
+  "decisions": 5,
+  "strip": false,
+  "monitorTitle": "Clinic sheet",
+  "note": "Fictional patient. Values are illustrative and follow the module text; the risk figures are an arithmetic illustration, not a target. The attending nephrologist decides the workup and the plan.",
+  "labels": {
+    "bp": "Blood pressure",
+    "egfr": "eGFR",
+    "acr": "Urine ACR",
+    "ua": "Urinalysis",
+    "label": "Chart label",
+    "kfre": "Kidney failure risk",
+    "plan": "Plan"
+  },
+  "monitorOrder": [
+    "time",
+    "bp",
+    "egfr",
+    "acr",
+    "ua",
+    "label",
+    "kfre",
+    "plan"
+  ],
+  "monitor": {
+    "time": "Tue 10:00, outpatient clinic",
+    "bp": "148/90",
+    "egfr": "41 today; 58 ten months ago",
+    "acr": "1,450 mg/g (one random sample)",
+    "ua": "Protein 3+; 10&ndash;15 red cells/hpf",
+    "label": "&ldquo;CKD stage 3, diabetic&rdquo;",
+    "kfre": "Not done",
+    "plan": "None yet",
+    "alarm": [
+      "egfr",
+      "acr",
+      "ua"
+    ]
+  },
+  "intro": "<p>You are the second-year medicine resident in the outpatient department of a public hospital in Angeles City. Mrs. Rosario &ldquo;Charing&rdquo; Aquino, 63, sells vegetables at the public market. She has had high blood pressure for 5 years and type 2 diabetes, diagnosed 3 years ago. A barangay health center referred her for a &ldquo;high creatinine.&rdquo;</p><p>Her creatinine today is 1.4 mg/dL, an estimated glomerular filtration rate (eGFR) of 41 mL/min/1.73 m&sup2;. On her phone is a photo of a creatinine of 1.05 mg/dL from 10 months ago, an eGFR of about 58. Her urine albumin-to-creatinine ratio (ACR) on a random sample is 1,450 mg/g, and the urinalysis shows 3+ protein and 10 to 15 red cells per high-power field. The intern has written &ldquo;chronic kidney disease (CKD) stage 3, diabetic&rdquo; and is ready for the next patient.</p>",
+  "start": "n1",
+  "nodes": {
+    "n1": {
+      "short": "The label:",
+      "prompt": "What do you write in the chart?",
+      "choices": [
+        {
+          "grade": "ok",
+          "text": "CKD G3b A3 due to diabetic kidney disease.",
+          "feedback": "<p>The two categories are right, and both matter: at any eGFR, more albumin means more risk. But the cause is written as fact before anyone has asked whether three years of diabetes, hematuria and a fast fall fit it.</p>",
+          "then": "<p>You change the cause to &ldquo;not yet established&rdquo; and add an early-morning ACR to confirm A3.</p>",
+          "vitals": {
+            "label": "CKD G3b A3 (provisional); cause not established"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "best",
+          "text": "Provisional CKD G3b A3, cause not yet established. Chronicity rests on the eGFR of 58 ten months ago; the ACR is to be confirmed on an early-morning sample; note a fall of about 17 in 10 months.",
+          "feedback": "<p>The Kidney Disease: Improving Global Outcomes (KDIGO) 2024 guideline classifies CKD by Cause, GFR and Albuminuria. A past eGFR below 60 more than 3 months ago proves chronicity. Urine albumin varies from day to day, so a high ACR is repeated on an early-morning sample before the A category is final.</p>",
+          "vitals": {
+            "label": "CKD G3b A3 (provisional); cause not established"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "poor",
+          "text": "Leave it as &ldquo;CKD stage 3.&rdquo;",
+          "feedback": "<p>&ldquo;Stage 3&rdquo; hides half the risk (the albuminuria), the cause and the speed of decline. It is an incomplete sentence.</p>",
+          "then": "<p>Your attending asks for the G, the A and the cause. You rewrite it as provisional G3b A3, cause not established.</p>",
+          "vitals": {
+            "label": "CKD G3b A3 (provisional); cause not established"
+          },
+          "next": "n2"
+        },
+        {
+          "grade": "harmful",
+          "text": "Not CKD yet: the creatinine is only slightly high. Recheck it next year.",
+          "feedback": "<p>A &ldquo;slightly high&rdquo; creatinine in a small, older woman can hide a large loss of filtration. Her eGFR was already below 60 ten months ago, and her albuminuria is severe. A year&rsquo;s wait could cost her a treatable cause.</p>",
+          "then": "<p>The attending stops you at the door and asks you to reclassify her: provisional G3b A3, cause not established.</p>",
+          "vitals": {
+            "label": "CKD G3b A3 (provisional); cause not established"
+          },
+          "next": "n2"
+        }
+      ]
+    },
+    "n2": {
+      "short": "The cause:",
+      "scene": "<p>She has no eye examination on record. Nobody has looked at her urine sediment under the microscope.</p>",
+      "prompt": "What workup do you order?",
+      "choices": [
+        {
+          "grade": "ok",
+          "text": "Repeat the ACR and request an ultrasound; keep diabetic kidney disease as the working label.",
+          "feedback": "<p>Both tests help, but the cheapest clue is missing: a sediment read by someone who knows a dysmorphic red cell. A fundus examination is the other.</p>",
+          "then": "<p>You add microscopy and a fundus examination, and ask about her medicines and supplements.</p>",
+          "vitals": {
+            "plan": "Microscopy, ultrasound, fundus, medicine history, early-morning ACR"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "poor",
+          "text": "Request a kidney biopsy this week.",
+          "feedback": "<p>A biopsy belongs to the nephrologist and to a patient whose management it would change. The inexpensive workup comes first, and it may answer the question or show why a biopsy is needed.</p>",
+          "then": "<p>The attending asks for the basic workup first: microscopy, ultrasound, fundus examination, medicine history.</p>",
+          "vitals": {
+            "plan": "Microscopy, ultrasound, fundus, medicine history, early-morning ACR"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "harmful",
+          "text": "None. Diabetes is the commonest cause in the Philippines; it explains this.",
+          "feedback": "<p>That is exactly why the label is applied too quickly. A patient with diabetes can also have a glomerulonephritis, obstruction or a drug or herbal injury, and some of these are treatable or reversible.</p>",
+          "then": "<p>Your attending asks for a sediment, an ultrasound and a fundus examination before the label stays.</p>",
+          "vitals": {
+            "plan": "Microscopy, ultrasound, fundus, medicine history, early-morning ACR"
+          },
+          "next": "n3"
+        },
+        {
+          "grade": "best",
+          "text": "Her picture breaks the diabetic chain: short diabetes, hematuria, a fast fall. Ask for microscopy read for dysmorphic red cells and casts, a kidney ultrasound, a fundus examination, a full medicine and supplement history with brand names, and the repeat ACR; discuss serologies with the attending.",
+          "feedback": "<p>Diabetic kidney disease usually follows years of diabetes, with retinopathy, a bland sediment and a slow fall. When one of these does not fit, look further. The workup at your stage is modest and inexpensive.</p>",
+          "vitals": {
+            "plan": "Microscopy, ultrasound, fundus, medicine history, early-morning ACR"
+          },
+          "next": "n3"
+        }
+      ]
+    },
+    "n3": {
+      "vitals": {
+        "time": "One week later",
+        "acr": "1,380 mg/g (early morning)",
+        "ua": "Dysmorphic red cells; one red cell cast",
+        "alarm": [
+          "egfr",
+          "acr",
+          "ua"
+        ]
+      },
+      "short": "One week later:",
+      "scene": "<p>The sediment shows dysmorphic red cells and a red cell cast. The kidneys are normal in size on ultrasound, and the eye examination shows no diabetic retinopathy. The early-morning ACR is 1,380 mg/g. She also tells you she takes an over-the-counter painkiller from the nonsteroidal anti-inflammatory drug (NSAID) group every day for her knees, and drinks a &ldquo;kidney cleanse&rdquo; tea her neighbor sells.</p>",
+      "prompt": "What do you do now?",
+      "choices": [
+        {
+          "grade": "ok",
+          "text": "Stop the painkiller and the tea, and send a routine referral to the nephrology clinic next month.",
+          "feedback": "<p>A referral is right; its speed is not. A glomerular cause with a falling eGFR is a same-day conversation with the attending, not next month&rsquo;s queue.</p>",
+          "then": "<p>You call the attending, who sees her the same afternoon.</p>",
+          "vitals": {
+            "plan": "Seen by the attending today; NSAID and tea stopped"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "poor",
+          "text": "Stop the painkiller and the tea, recheck in 3 months, and refer if the eGFR keeps falling.",
+          "feedback": "<p>Stopping both is right. But red cell casts with a falling eGFR suggest a glomerular disease, and 3 months is long enough to lose more filtration.</p>",
+          "then": "<p>Your attending, reviewing the sediment report, asks to see her today.</p>",
+          "vitals": {
+            "plan": "Seen by the attending today; NSAID and tea stopped"
+          },
+          "next": "n4"
+        },
+        {
+          "grade": "best",
+          "text": "Call the attending nephrologist today: red cell casts with a falling eGFR. Ask her to stop the painkiller and the tea and to bring the packets.",
+          "feedback": "<p>Red cell casts or dysmorphic hematuria with a falling eGFR is on the module&rsquo;s stop-and-call list. NSAIDs and unknown herbal products are avoidable second hits, and the brand names go in the note.</p>",
+          "vitals": {
+            "plan": "Seen by the attending today; NSAID and tea stopped"
+          },
+          "next": "n4"
+        }
+      ]
+    },
+    "n4": {
+      "vitals": {
+        "kfre": "About 11% at 5 years, 4% at 2 years (calculator)"
+      },
+      "short": "The question every family asks:",
+      "scene": "<p>The attending starts a glomerular workup. Back in your clinic, you run the four-variable kidney failure risk equation (KFRE) with the North American calibration: about 11% over 5 years and 4% over 2 years. Her daughter asks: &ldquo;Doc, magda-dialysis na po ba siya? Should she have a fistula made now?&rdquo;</p>",
+      "prompt": "What do you say?",
+      "choices": [
+        {
+          "grade": "ok",
+          "text": "Show them the heat map: she is in the very-high-risk color.",
+          "feedback": "<p>The heat map is a population picture. It does not give her own chance of dialysis or use her age, and a color without words frightens more than it informs.</p>",
+          "then": "<p>You add the numbers in words, and that the cause is still being found.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "poor",
+          "text": "Yes; arrange a fistula now so she is ready.",
+          "feedback": "<p>KDIGO&rsquo;s practice point ties access planning to a 2-year risk above 40%; hers is about 4%. A fistula now is surgery she may never need, and the cause may still be treatable.</p>",
+          "then": "<p>You correct yourself: not today, and not a fistula yet.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "best",
+          "text": "&ldquo;Not today, and not a fistula yet. Over five years, about 1 in 10 people like her reach dialysis, and this estimate may run high for Filipino patients. Finding the cause may change it. Her heart risk deserves the same attention.&rdquo;",
+          "feedback": "<p>KDIGO recommends a validated risk equation in CKD G3 to G5 (1A). A 5-year risk of 3% to 5% or more supports referral, and access planning waits for a 2-year risk above 40% (practice points). The KFRE meta-analysis included no Philippine cohort and overestimated risk in some non-North American cohorts.</p>",
+          "next": "n5"
+        },
+        {
+          "grade": "harmful",
+          "text": "&ldquo;Do not worry. Her kidneys are fine; this is just from the diabetes.&rdquo;",
+          "feedback": "<p>False reassurance costs her the reason to come back. Her risk is real, and the cause is not yet known.</p>",
+          "then": "<p>The attending, overhearing, sits down with the family and explains the risk and the plan.</p>",
+          "next": "n5"
+        }
+      ]
+    },
+    "n5": {
+      "short": "Before she leaves:",
+      "scene": "<p>Her follow-up will happen partly at her PhilHealth Konsulta provider near the market.</p>",
+      "prompt": "What does the plan she carries say?",
+      "choices": [
+        {
+          "grade": "best",
+          "text": "In short lines, in Kapampangan and English: the CGA label with the cause under investigation, her risk in words, the NSAID and the tea stopped, the date of the next eGFR and ACR, the nephrology appointment, and what should bring her back early; note that the Konsulta laboratory list has no ACR, and plan how she will get it.",
+          "feedback": "<p>Every CKD patient should leave with the label, the risk in words and the date of the next eGFR and ACR. The published Konsulta list includes creatinine and urinalysis but not an ACR, and without an ACR the next doctor cannot place her on the heat map or rerun the KFRE.</p>",
+          "vitals": {
+            "plan": "Written plan carried; nephrology follow-up; ACR arranged"
+          },
+          "next": "end"
+        },
+        {
+          "grade": "ok",
+          "text": "Write the plan in the chart and explain it to her before she goes.",
+          "feedback": "<p>The chart stays in Angeles; she goes to a provider who may never see it. A written plan she carries reaches the next doctor.</p>",
+          "then": "<p>You write the plan on a card in short lines for her to carry.</p>",
+          "vitals": {
+            "plan": "Written plan carried; nephrology follow-up; ACR arranged"
+          },
+          "next": "end"
+        },
+        {
+          "grade": "poor",
+          "text": "eGFR and ACR once a year at the health center, as for all CKD.",
+          "feedback": "<p>&ldquo;At least once a year&rdquo; is the floor for low-risk CKD. KDIGO checks more often as risk rises, and a falling eGFR with red cell casts is not a once-a-year patient.</p>",
+          "then": "<p>Your attending sets the interval with the nephrology clinic, and you write it on a card she carries.</p>",
+          "vitals": {
+            "plan": "Written plan carried; nephrology follow-up; ACR arranged"
+          },
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "end": true,
+      "title": "Two months later",
+      "text": "<p>The nephrology team found a glomerular disease, not diabetic kidney disease, and started its treatment. Without the painkiller and the tea, and with the cause treated, her eGFR has stopped falling. The intern now writes every CKD diagnosis as a cause, a G and an A.</p>"
+    }
+  },
+  "debrief": "<h4>What this case teaches</h4><ul><li><b>Write CKD as cause, G category and A category,</b> with the dates that prove chronicity. Confirm a high ACR before the A is final.</li><li><b>Before you write &ldquo;diabetic kidney disease,&rdquo; check the retina, the sediment, the ultrasound and the speed of decline.</b> If one does not fit, look further.</li><li><b>Red cell casts with a falling eGFR is a same-day call</b> to the attending nephrologist.</li><li><b>Put a number on kidney failure risk and say it in words,</b> with its limits; access planning waits for a much higher 2-year risk.</li><li><b>The patient carries the plan:</b> label, risk, stopped medicines, and the date of the next eGFR and ACR.</li></ul><p>See <a href=\"#define\">Define and stage</a>, <a href=\"#risk\">Estimate risk</a>, <a href=\"#cause\">Find the cause</a> and <a href=\"#referral-plan\">Refer and plan</a>.</p>"
+}

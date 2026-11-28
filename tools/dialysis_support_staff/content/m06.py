@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 MODULE = {
     "sub": "The difference between cleaning and disinfecting, how disinfectants actually kill germs, why wet contact time is not optional, how to read a label and a safety data sheet, how to dilute by measurement, which chemicals must never be mixed, and how color-coded tools keep zones apart.",
-    "desc": "Dialysis Unit Support Staff Module 6: cleaning versus disinfection, how disinfectants work, label wet contact time, reading product labels and safety data sheets, measured dilution with a worked example, dangerous chemical mixtures, worker respiratory health, and zone color-coding.",
+    "desc": "Housekeeping & Support Staff Module 6: cleaning versus disinfection, how disinfectants work, label wet contact time, reading product labels and safety data sheets, measured dilution with a worked example, dangerous chemical mixtures, worker respiratory health, and zone color-coding.",
     "keywords": "cleaning vs disinfecting hospital, disinfectant contact time dwell time, how to read disinfectant label, safety data sheet cleaner training, never mix bleach and ammonia, color coded cleaning cloths hospital",
     "image_alt": "Gloved hands measuring a small amount of disinfectant concentrate in a marked measuring jug beside a labeled spray bottle and a safety data sheet binder.",
     "objectives": [
