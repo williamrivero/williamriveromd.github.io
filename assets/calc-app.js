@@ -2,7 +2,8 @@
    Loaded on every calculator page and the calculators index by build_calc_app.py.
    - registers the service worker (guides/calc-sw.js, scope /guides/calc)
    - in the installed app: bottom bar (Back · All calculators · Search · Print) in place of the page pill
-   - calculators index: install steps and the one complete offline download (#calc-app panel, #calc-app-cta) */
+   - every calculator page and the index: a left drawer (#calc-app, opened by the "Calculo" tab on the left edge, the index's
+     hero button, or a #calc-app link) with install steps and the one complete offline download, like Schola, Paratus and Dosis */
 (function () {
   'use strict';
   var SAVED = 'rcm-calc-saved', KEY = 'wgmr-calc-offline', MAN = '/guides/calc-offline-manifest.json';
@@ -29,9 +30,24 @@
     + '.ca-cta-t strong{font:700 15px/1.2 Inter,system-ui,sans-serif;color:#fff}'
     + '.ca-cta-t small{font:500 12.5px/1.3 Manrope,system-ui,sans-serif;color:#e0e7ff}'
     + '.ca-cta-arr{flex:none;width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:.85}'
-    + '.ca-panel{margin:34px 0 22px;padding:22px;border:1px solid var(--border,#dfe6f0);border-radius:14px;background:var(--white,#fff)}'
-    + '.ca-panel h2{font:700 20px/1.3 Inter,system-ui,sans-serif;margin:0 0 14px;color:#312e81}'
-    + '.ca-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}'
+    + '.ca-panel{position:fixed;z-index:100001;top:0;left:0;bottom:0;margin:0;width:min(460px,94vw);box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;'
+    + 'padding:20px 22px calc(24px + env(safe-area-inset-bottom,0px));border:0;border-right:1px solid #c7d2fe;border-radius:0 16px 16px 0;background:linear-gradient(180deg,#eef2ff,#fff);color:#1e2a38;'
+    + 'box-shadow:6px 0 28px rgba(15,30,46,.18);transform:translateX(-105%);visibility:hidden;transition:transform .22s ease,visibility 0s linear .22s;text-align:left}'
+    + '.ca-panel.ca-open{transform:none;visibility:visible;transition:transform .22s ease}'
+    + '.ca-panel h2{display:flex;align-items:center;gap:10px;font:800 21px/1.25 Inter,system-ui,sans-serif;margin:0 0 6px;color:#312e81}'
+    + '.ca-panel h2 img{width:34px;height:34px;border-radius:9px}'
+    + '.ca-x{margin-left:auto;align-self:flex-start;border:0;background:none;font-size:28px;line-height:1;color:#312e81;cursor:pointer;padding:0 4px}'
+    + '.ca-lead{font-size:15px;line-height:1.6;margin:0 0 14px;color:#34455f}'
+    + '.ca-grid{display:grid;grid-template-columns:1fr;gap:14px}'
+    + '.ca-scrim{position:fixed;inset:0;z-index:100000;background:rgba(10,18,32,.45);opacity:0;pointer-events:none;transition:opacity .2s}.ca-scrim.ca-open{opacity:1;pointer-events:auto}'
+    + '.ca-tab{position:fixed;z-index:9996;left:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 7px;border:0;border-radius:0 12px 12px 0;'
+    + 'background:#312e81;color:#fff;cursor:pointer;box-shadow:4px 6px 20px rgba(15,30,46,.25)}'
+    + '.ca-tab img{border-radius:6px}.ca-tab span{writing-mode:vertical-rl;transform:rotate(180deg);font:700 13px Inter,system-ui,sans-serif;letter-spacing:.04em}.ca-tab:hover{background:#3730a3}'
+    + '@media (max-width:640px){.ca-tab{top:auto;left:24px;bottom:calc(136px + env(safe-area-inset-bottom,0px));transform:none;width:44px;height:44px;padding:0;border-radius:50%;justify-content:center}'
+    + '.ca-tab span{display:none}.ca-tab img{width:30px;height:30px;border-radius:8px}body:has(.dl-fab) .ca-tab{bottom:calc(192px + env(safe-area-inset-bottom,0px))}'
+    + 'html.ca-standalone .ca-tab{bottom:calc(80px + env(safe-area-inset-bottom,0px));margin-bottom:calc(76px + env(safe-area-inset-bottom,0px))}}'
+    + 'html[data-theme="dark"] .ca-panel{background:#161a2e;border-color:#2f3563;color:#eef2fb}'
+    + 'html[data-theme="dark"] .ca-panel h2,html[data-theme="dark"] .ca-x{color:#c7d2fe}html[data-theme="dark"] .ca-lead{color:#c9d2e0}'
     + '.ca-card{border:1px solid var(--border,#dfe6f0);border-radius:12px;padding:16px 18px;background:var(--bg,#f9fafb)}'
     + '.ca-card h3{font:700 15.5px/1.3 Inter,system-ui,sans-serif;margin:0 0 8px;color:var(--text,#1e2a38)}'
     + '.ca-card p,.ca-card li{font-size:14px;line-height:1.6;color:var(--text-mid,#34455f);text-align:left}'
@@ -45,8 +61,6 @@
     + '.ca-warn{font-size:13.5px;line-height:1.55;color:#6b4200;background:#fff7e6;border:1px solid #f0c674;border-radius:10px;padding:10px 12px;margin:6px 0 10px}'
     + '.ca-warn a{color:inherit;font-weight:700}'
     + '.ca-card progress{width:100%;height:8px;margin:2px 0 10px;accent-color:#3730a3}'
-    + 'html[data-theme="dark"] .ca-panel{background:#1a2535;border-color:#2c3a52}'
-    + 'html[data-theme="dark"] .ca-panel h2{color:#c7d2fe}'
     + 'html[data-theme="dark"] .ca-card{background:#141e2c;border-color:#2c3a52}'
     + 'html[data-theme="dark"] .ca-card h3{color:#eef2fb}'
     + 'html[data-theme="dark"] .ca-card p,html[data-theme="dark"] .ca-card li{color:#c9d2e0}'
@@ -67,7 +81,7 @@
     + '.ca-appbar a:active,.ca-appbar button:active,.ca-appbar [aria-current="page"]{background:rgba(255,255,255,.16)}'
     + '.ca-appbar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}'
     + '@media (max-width:400px){.ca-appbar a,.ca-appbar button{padding:0 10px;font-size:12px}.ca-appbar .ca-lbl-print{display:none}}'
-    + '@media print{.ca-appbar,.ca-panel,.ca-cta{display:none!important}html.ca-offline body::after{display:none}}';
+    + '@media print{.ca-appbar,.ca-panel,.ca-cta,.ca-tab,.ca-scrim{display:none!important}html.ca-offline body::after{display:none}}';
   var st = document.createElement('style'); st.id = 'calc-app-style'; st.textContent = css; document.head.appendChild(st);
 
   function net() { document.documentElement.classList.toggle('ca-offline', navigator.onLine === false); }
@@ -80,6 +94,48 @@
     var sq = document.getElementById('cf-search');
     if (sq) { sq.scrollIntoView({ block: 'center' }); try { sq.focus(); } catch (e) {} return true; }
     return false;
+  }
+
+  var ICON = '/images/app/calculo-192.png';
+  function drawer() {
+    var box = document.createElement('aside'); box.className = 'ca-panel no-print'; box.id = 'calc-app';
+    box.setAttribute('aria-labelledby', 'calc-app-h'); box.setAttribute('aria-hidden', 'true');
+    box.innerHTML =
+      '<h2 id="calc-app-h"><img src="' + ICON + '" alt="">Calculo: the calculators as an app<button type="button" class="ca-x" aria-label="Close">&times;</button></h2>'
+      + '<p class="ca-lead">Calculo keeps every calculator on this device: install it like an app, and download it once so the calculators work where there is no signal (wards, basements, the dialysis unit).</p>'
+      + '<div class="ca-grid"><div class="ca-card"><h3>Install on your phone or computer</h3>'
+      + '<p data-ca="hint">Add Calculo to your home screen from your browser menu (<strong>Install app</strong> or <strong>Add to Home Screen</strong>). It opens full screen, like an app.</p>'
+      + '<button type="button" class="ca-btn" data-ca="install" hidden>Install Calculo</button>'
+      + '<ol data-ca="iossteps" hidden><li>In <strong>Safari</strong>, tap the <strong>&#8801;</strong> icon at the left end of the address bar (iPad) or the <strong>&#8943;</strong> button (iPhone). On versions before iOS 26, tap the <strong>Share</strong> button (a square with an arrow pointing up) and skip to step 3.</li>'
+      + '<li>Tap <strong>Share</strong>.</li><li>Tap <strong>Add to Home Screen</strong>. If you don\'t see it, scroll down or tap <strong>View More</strong>.</li>'
+      + '<li>Keep <strong>Open as Web App</strong> switched on, then tap <strong>Add</strong>.</li>'
+      + '<li>Open <strong>Calculo</strong> from your Home Screen, tap the <strong>Calculo</strong> button on the left, then <strong>Download every calculator</strong>. Download inside the Home Screen app, not in a Safari tab: the two keep separate storage, and only the app\'s copy works offline.</li></ol></div>'
+      + '<div class="ca-card" data-ca="off"><h3>Offline use</h3>'
+      + '<p>Every calculator runs on your device. Download them once and <span data-ca="count">every calculator</span> works where there is no signal.</p>'
+      + '<button type="button" class="ca-btn" data-ca="dl">Download every calculator</button><span class="ca-meta" data-ca="meta"></span>'
+      + '<p class="ca-warn" data-ca="iosnote" hidden><strong>iPhone and iPad:</strong> add Calculo to your Home Screen first, then open it from there and download. Safari and the Home Screen app keep separate storage, so a download in a Safari tab does not carry over.</p>'
+      + '<p class="ca-note" data-ca="status" aria-live="polite"></p><progress data-ca="bar" max="1" value="0" hidden></progress>'
+      + '<button type="button" class="ca-btn ca-ghost" data-ca="rm" hidden>Remove downloaded calculators</button>'
+      + '<p class="ca-note">Use Wi-Fi and keep this page open while it downloads. If it stops, tap the button again: files already saved are kept. Updates download only the calculators that changed, and saved calculators refresh each time you open them online.</p></div></div>';
+    var scrim = document.createElement('div'); scrim.className = 'ca-scrim no-print';
+    var tab = document.createElement('button'); tab.type = 'button'; tab.className = 'ca-tab no-print';
+    tab.setAttribute('aria-label', 'Open Calculo: install the calculators app and download it for use without signal'); tab.setAttribute('aria-controls', 'calc-app'); tab.setAttribute('aria-expanded', 'false');
+    tab.innerHTML = '<img src="' + ICON + '" alt="" width="26" height="26"><span>Calculo</span>';
+    document.body.appendChild(scrim); document.body.appendChild(box); document.body.appendChild(tab);
+    function open() { box.classList.add('ca-open'); scrim.classList.add('ca-open'); box.setAttribute('aria-hidden', 'false'); tab.setAttribute('aria-expanded', 'true'); box.querySelector('.ca-x').focus(); }
+    function close() { box.classList.remove('ca-open'); scrim.classList.remove('ca-open'); box.setAttribute('aria-hidden', 'true'); tab.setAttribute('aria-expanded', 'false');
+      if (location.hash === '#calc-app') try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+    tab.addEventListener('click', function () { box.classList.contains('ca-open') ? close() : open(); });
+    box.querySelector('.ca-x').addEventListener('click', function () { close(); tab.focus(); });
+    scrim.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && box.classList.contains('ca-open')) { close(); tab.focus(); } });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href$="#calc-app"]'); if (!a) return;
+      e.preventDefault(); open();
+    });
+    window.addEventListener('hashchange', function () { if (location.hash === '#calc-app') open(); });
+    if (location.hash === '#calc-app') setTimeout(open, 300);
+    return { box: box, label: function (t) { tab.querySelector('span').textContent = t; } };
   }
 
   function init() {
@@ -99,9 +155,10 @@
     }
     if (location.hash === '#search') focusSearch();
 
-    /* Calculators index: hero button + panel */
+    /* Left drawer on every calculator page; the index's hero button opens it */
     var cta = document.getElementById('calc-app-cta');
-    var box = document.getElementById('calc-app');
+    var old = document.getElementById('calc-app'); if (old) old.parentNode.removeChild(old);   // a page built before the drawer
+    var dw = drawer(), box = dw.box;
     if (cta && standalone()) {
       var r0 = rec();
       if (r0 && r0.done) cta.hidden = true;
@@ -109,6 +166,7 @@
     }
     if (!box) return;
     function q(n) { return box.querySelector('[data-ca="' + n + '"]'); }
+    function num(n) { return Number(n).toLocaleString('en-US'); }
     var deferred = null;
     function showInstall() {
       var hint = q('hint'), btn = q('install'), steps = q('iossteps'), note = q('iosnote');
@@ -123,12 +181,12 @@
       if (!deferred) return; deferred.prompt();
       (deferred.userChoice || Promise.resolve()).then(function () { deferred = null; showInstall(); });
     });
-    if (standalone()) {
+    if (standalone() && onIndex()) {
       var r1 = rec();
       if (!r1 || !r1.done) {
         var main = document.querySelector('main');
         if (main) {
-          var nb = document.createElement('div'); nb.className = 'ca-warn';
+          var nb = document.createElement('div'); nb.className = 'ca-warn'; nb.style.margin = '14px 0';
           nb.innerHTML = '<strong>Offline use is not set up yet.</strong> Download every calculator once so they all work without signal. <a href="#calc-app">Set up offline use</a>';
           main.insertBefore(nb, main.firstChild);
         }
@@ -139,7 +197,6 @@
     if (!('caches' in window) || !('serviceWorker' in navigator)) { q('off').hidden = true; return; }
     var busy = false, cur = null, LABEL = 'Download every calculator';
     function fmtDate(ms) { try { return new Date(ms).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); } catch (e) { return ''; } }
-    function num(n) { return Number(n).toLocaleString('en-US'); }
     function manifest() { return fetch(MAN, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
     function status() {
       var r = rec(); dl.disabled = busy; rm.disabled = busy; dl.textContent = LABEL;
@@ -158,8 +215,14 @@
     status();
     // Saved calculators update themselves (Nov 18 2026): when the set on this device is complete but the site has
     // changed since, fetch just the changed files in the background, so the app never keeps showing old pages.
+    function sizes(m) {   // the same estimate build_calc_app.py used for the old page panel
+      var b = 0, n = 0; m.files.forEach(function (f) { b += f[2]; if (/^\/guides\/calc-[^/]+\.html$/.test(f[0])) n++; });
+      var r5 = function (x) { return Math.max(5, Math.round(x / 1e6 / 5) * 5); };
+      q('meta').textContent = 'About ' + r5(b * 0.35) + ' MB to download, ' + r5(b) + ' MB on the device';
+      if (n) q('count').textContent = 'all ' + num(n) + ' calculators';
+    }
     if (navigator.onLine !== false) manifest().then(function (m) {
-      cur = m; if (!busy) status();
+      cur = m; sizes(m); if (!busy) status();
       var r0 = rec(); if (r0 && r0.done && r0.h && m.h !== r0.h && !busy) run();
     }, function () {});
 
@@ -197,17 +260,17 @@
               var ct = res.headers.get('content-type') || 'application/octet-stream';
               return res.blob().then(function (bl) { return c.put(u, new Response(bl, { headers: { 'Content-Type': ct, 'X-RCM-Hash': p[1] } })); });
             }).then(function () { ok++; if (ok % 25 === 0) save(); }, function () { failed++; })
-              .then(function () { bar2.value = ok; stx.textContent = 'Saving ' + num(ok) + ' of ' + num(total) + ' files… keep this page open.'; return next(); });
+              .then(function () { bar2.value = ok; stx.textContent = 'Saving ' + num(ok) + ' of ' + num(total) + ' files… keep this page open.'; dw.label('Saving ' + Math.floor(ok * 100 / total) + '%'); return next(); });
           }
           save();
           return Promise.all([next(), next(), next(), next(), next(), next()]);
         });
       }).then(function () {
         setRec({ v: 1, n: ok, total: total, at: Date.now(), h: failed ? '' : m.h, done: !failed });
-        busy = false; bar2.hidden = true; status();
+        busy = false; bar2.hidden = true; status(); dw.label('Calculo');
         if (failed) stx.textContent = num(failed) + ' files could not be saved. Tap the button again on a better connection to finish.';
       }).catch(function (err) {
-        busy = false; bar2.hidden = true; status();
+        busy = false; bar2.hidden = true; status(); dw.label('Calculo');
         stx.textContent = (err && err.msg) || 'The download stopped. Check your connection and tap the button again; files already saved are kept.';
       }).then(function () { try { if (lock) lock.release(); } catch (e) {} });
     }

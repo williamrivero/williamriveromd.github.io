@@ -2998,9 +2998,29 @@ body.dark-mode .dd-tool-ms { background: linear-gradient(135deg, #2f3f94 0%, #1a
 @media print { .dd-tools { display: none !important; } }
 
 
-.dd-app { margin: 34px 0 22px; padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); }
-.dd-app h2 { font-family: 'Inter', sans-serif; font-size: 20px; margin: 0 0 14px; color: var(--navy); }
-.dd-app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.dd-app { position: fixed; z-index: 100001; top: 0; left: 0; bottom: 0; margin: 0; width: min(460px, 94vw); box-sizing: border-box;
+  overflow-y: auto; overscroll-behavior: contain; padding: 20px 22px calc(24px + env(safe-area-inset-bottom, 0px));
+  border: 0; border-right: 1px solid var(--border); border-radius: 0 16px 16px 0; background: var(--white); color: var(--text);
+  box-shadow: 6px 0 28px rgba(15,30,46,.18); transform: translateX(-105%); visibility: hidden; transition: transform .22s ease, visibility 0s linear .22s; }
+.dd-app.dd-open { transform: none; visibility: visible; transition: transform .22s ease; }
+.dd-app h2 { display: flex; align-items: center; gap: 10px; font-family: 'Inter', sans-serif; font-size: 21px; font-weight: 800; line-height: 1.25; margin: 0 0 6px; color: var(--teal); }
+.dd-app h2 img { width: 34px; height: 34px; border-radius: 9px; }
+.dd-app-x { margin-left: auto; align-self: flex-start; border: 0; background: none; font-size: 28px; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 0 4px; }
+.dd-app-lead { font-size: 15px; line-height: 1.6; margin: 0 0 14px; color: var(--text-mid); }
+.dd-app-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.dd-app-scrim { position: fixed; inset: 0; z-index: 100000; background: rgba(10,18,32,.45); opacity: 0; pointer-events: none; transition: opacity .2s; }
+.dd-app-scrim.dd-open { opacity: 1; pointer-events: auto; }
+.dd-app-tab { position: fixed; z-index: 9996; left: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 12px 7px; border: 0; border-radius: 0 12px 12px 0; background: #0e4a50; color: #fff; cursor: pointer; box-shadow: 4px 6px 20px rgba(15,30,46,.25); }
+.dd-app-tab:hover { background: #1a6b72; }
+.dd-app-tab img { border-radius: 6px; }
+.dd-app-tab span { writing-mode: vertical-rl; transform: rotate(180deg); font: 700 13px Inter, system-ui, sans-serif; letter-spacing: .04em; }
+@media (max-width: 640px) {
+  .dd-app-tab { top: auto; left: 24px; bottom: calc(136px + env(safe-area-inset-bottom, 0px)); transform: none; width: 44px; height: 44px; padding: 0; border-radius: 50%; justify-content: center; }
+  .dd-app-tab span { display: none; } .dd-app-tab img { width: 30px; height: 30px; border-radius: 8px; }
+  .dd-standalone .dd-app-tab { margin-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+}
+@media print { .dd-app, .dd-app-tab, .dd-app-scrim { display: none !important; } }
 .dd-app-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--bg); }
 .dd-app-card h3 { font-family: 'Inter', sans-serif; font-size: 15.5px; margin: 0 0 8px; color: var(--text); }
 .dd-app-card p { font-size: 14px; line-height: 1.6; color: var(--text-mid); margin: 0 0 10px; }

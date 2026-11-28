@@ -26,7 +26,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent
 G = REPO / "guides"
-ASSET_V = "7"   # bump when assets/calc-app.js changes
+ASSET_V = "8"   # bump when assets/calc-app.js changes
 
 HEAD_START, HEAD_END = "<!-- CALC-APP-START -->", "<!-- CALC-APP-END -->"
 CTA_START, CTA_END = "<!-- CALC-APP-CTA-START -->", "<!-- CALC-APP-CTA-END -->"
@@ -259,10 +259,8 @@ def patch_index(t: str, sizes: dict) -> str:
         t = t.replace(anchor, CTA + "\n" + anchor, 1)
     else:   # fall back to right after the hero subtitle
         t = re.sub(r'(<p class="hero-sub">.*?</p>\n)', lambda m: m.group(1) + CTA + "\n", t, count=1, flags=re.S)
-    i = t.find('<main')
-    j = t.find('</main>', i)
-    if j > 0:
-        t = t[:j] + panel(sizes["n"], sizes["dl"], sizes["store"]) + "\n" + t[j:]
+    # Nov 28 2026: the install + offline panel is a left drawer drawn by assets/calc-app.js on every calculator page
+    # (like Schola, Paratus and Dosis); the old in-page panel is stripped above and no longer inserted.
     return t
 
 

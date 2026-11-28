@@ -19,6 +19,9 @@
   function ios() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
   function onHome() { return /^\/paratus\/?(index(\.html)?)?$/.test(location.pathname); }
   var display = /[?&]display=1/.test(location.search);
+  // Also loaded on the Academy's emergency pages (Nov 28 2026): there it adds only the drawer (download works there;
+  // installing happens in /paratus/, because an Academy page installs Schola), below the Schola and Emergency tabs.
+  var inApp = location.pathname.indexOf('/paratus') === 0;
 
   var css = ''
     + '.pa-panel{position:fixed;z-index:100001;top:0;left:0;bottom:0;margin:0;width:min(460px,94vw);box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;'
@@ -57,7 +60,11 @@
     + 'html[data-theme="dark"] .pa-card p,html[data-theme="dark"] .pa-card li{color:#c9d2e0}html[data-theme="dark"] .pa-note{color:#b4bfcf!important}'
     + 'html[data-theme="dark"] .pa-btn.pa-ghost{color:#fca5a5;border-color:#f87171}'
     + 'html[data-theme="dark"] .pa-warn,html[data-theme="dark"] .pa-ios{color:#fde68a;background:#2a1d05;border-color:#6b4f12}'
-    + '#eqc-save{display:none!important}'
+    + (inApp ? '#eqc-save{display:none!important}' : '')
+    + '.pa-tab.pa-acad{transform:translateY(66px)}'
+    + '@media (max-width:640px){.pa-tab.pa-acad{transform:none;bottom:calc(212px + env(safe-area-inset-bottom,0px))}html.sch-app .pa-tab.pa-acad{margin-bottom:calc(60px + env(safe-area-inset-bottom,0px))}}'
+    + '.pa-open-app{display:inline-flex;align-items:center;font:700 14px/1 Inter,system-ui,sans-serif;color:#fff!important;background:#991b1b;border-radius:9px;padding:11px 15px;margin:2px 8px 8px 0;text-decoration:none!important}'
+    + '.pa-open-app:hover{background:#7f1d1d}'
     + 'html.pa-offline body::after{content:"Offline · Paratus is showing saved pages";position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:9999;'
     + 'font:600 12.5px/1 Inter,system-ui,sans-serif;color:#fff;background:#7a4b00;padding:8px 14px;border-radius:20px;box-shadow:0 4px 14px rgba(0,0,0,.18);pointer-events:none}'
     + 'html.pa-standalone body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}'
@@ -72,7 +79,7 @@
     + '@media print{.pa-appbar,.pa-panel,.pa-warn,.pa-ios{display:none!important}html.pa-offline body::after{display:none}}';
   var st = document.createElement('style'); st.id = 'paratus-style'; st.textContent = css; document.head.appendChild(st);
 
-  function net() { document.documentElement.classList.toggle('pa-offline', navigator.onLine === false && !display); }
+  function net() { document.documentElement.classList.toggle('pa-offline', navigator.onLine === false && !display && inApp); }
   window.addEventListener('online', net); window.addEventListener('offline', net); net();
   function rec() { try { var r = JSON.parse(localStorage.getItem(KEY) || 'null'); return r && r.v === 1 ? r : null; } catch (e) { return null; } }
   function setRec(r) { try { localStorage.setItem(KEY, JSON.stringify(r)); } catch (e) {} }
@@ -90,6 +97,7 @@
 
   function init() {
     if (display) return;   // the second display stays a clean full-screen monitor
+    if (!inApp) { panel(); return; }
     var here = location.pathname.replace(/\.html$/, '');
     if (standalone() && !document.querySelector('.pa-appbar')) {
       document.documentElement.classList.add('pa-standalone');
@@ -126,6 +134,7 @@
       + '<p class="pa-lead">Paratus (Latin for &ldquo;ready&rdquo;) keeps the Emergency Quick Cards, the Dialysis Team Resuscitation Lab, Disaster Preparedness, the Megacode Practice Lab and the Disaster Drills on this device, for a code, a typhoon or a power cut with no signal. It is separate from Schola, the Academy app.</p>'
       + '<div class="pa-grid">'
       + '<div class="pa-card"><h3>1. Install</h3><p data-pa="hint">Adds a Paratus icon to your home screen or desktop. It opens full screen.</p>'
+      + (inApp ? '' : '<a class="pa-open-app" href="/paratus/">Open Paratus</a>')
       + '<button type="button" class="pa-btn pa-x" data-pa="install" hidden>Install Paratus</button>'
       + '<ol class="pa-x" data-pa="ios" hidden><li>Tap the <b>Share</b> button in Safari.</li><li>Choose <b>Add to Home Screen</b>, then <b>Add</b>.</li><li>Open Paratus from the Home Screen and download it there (the Home Screen app and Safari keep separate storage).</li></ol></div>'
       + '<div class="pa-card pa-x" data-pa="off"><h3>2. Download for use without signal</h3><p>Everything in Paratus, in one download, so nothing is missing when it matters.</p>'
@@ -133,7 +142,7 @@
       + '<progress class="pa-x" data-pa="bar" hidden></progress><p class="pa-note" data-pa="status" aria-live="polite"></p></div>'
       + '</div>';
     var scrim = document.createElement('div'); scrim.className = 'pa-scrim no-print';
-    var tab = document.createElement('button'); tab.type = 'button'; tab.className = 'pa-tab no-print';
+    var tab = document.createElement('button'); tab.type = 'button'; tab.className = 'pa-tab no-print' + (inApp ? '' : ' pa-acad');
     tab.setAttribute('aria-label', 'Open Paratus: install the app and download it for use without signal'); tab.setAttribute('aria-controls', 'paratus'); tab.setAttribute('aria-expanded', 'false');
     tab.innerHTML = '<img src="/images/app/paratus-192.png" alt="" width="26" height="26"><span>Paratus</span>';
     document.body.appendChild(scrim); document.body.appendChild(box); document.body.appendChild(tab);
@@ -155,12 +164,18 @@
     var deferred = null;
     function showInstall() {
       var hint = q('hint'), btn = q('install'), steps = q('ios');
+      if (!inApp) {   // an Academy page would install Schola: Paratus installs from its own pages
+        btn.hidden = true; steps.hidden = true;
+        hint.textContent = ios() ? 'Open Paratus in Safari, then add it to your Home Screen from there (Share, then Add to Home Screen) and download it inside the Home Screen app: Safari, Schola and Paratus each keep their own storage.'
+          : 'Open Paratus, then install it from your browser menu (Install app, or Add to Home screen). You can also download it below to use these pages without signal in this browser.';
+        return;
+      }
       if (standalone()) { btn.hidden = true; steps.hidden = true; hint.textContent = 'You are using the installed Paratus app.'; return; }
       if (ios()) { btn.hidden = true; steps.hidden = false; hint.textContent = 'On iPhone or iPad, add Paratus to your Home Screen:'; return; }
       if (deferred) { btn.hidden = false; hint.textContent = 'Adds a Paratus icon to your home screen or desktop. It opens full screen and works offline.'; }
       else hint.textContent = 'Use your browser menu: Install app, or Add to Home screen. On a computer, look for the install icon in the address bar.';
     }
-    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; showInstall(); });
+    if (inApp) window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; showInstall(); });
     window.addEventListener('appinstalled', function () { deferred = null; showInstall(); });
     showInstall();
     q('install').addEventListener('click', function () { if (!deferred) return; deferred.prompt(); (deferred.userChoice || Promise.resolve()).then(function () { deferred = null; showInstall(); }); });

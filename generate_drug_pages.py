@@ -1244,10 +1244,30 @@ html[data-theme="dark"] .dd-tool-ms { background: linear-gradient(135deg, #2f3f9
 @media (prefers-reduced-motion: reduce) { .dd-tool, .dd-tool-arr { transition: none; } .dd-tool:hover { transform: none; } }
 @media print { .dd-tools { display: none !important; } }
 
-/* Installable app + offline panel (index) */
-.dd-app { margin: 34px 0 22px; padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); }
-.dd-app h2 { font-family: 'Inter', sans-serif; font-size: 20px; margin: 0 0 14px; color: var(--navy); }
-.dd-app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+/* Installable app + offline panel: a left drawer on every Drug Index page (Nov 28 2026), like Schola, Paratus and Calculo */
+.dd-app { position: fixed; z-index: 100001; top: 0; left: 0; bottom: 0; margin: 0; width: min(460px, 94vw); box-sizing: border-box;
+  overflow-y: auto; overscroll-behavior: contain; padding: 20px 22px calc(24px + env(safe-area-inset-bottom, 0px));
+  border: 0; border-right: 1px solid var(--border); border-radius: 0 16px 16px 0; background: var(--white); color: var(--text);
+  box-shadow: 6px 0 28px rgba(15,30,46,.18); transform: translateX(-105%); visibility: hidden; transition: transform .22s ease, visibility 0s linear .22s; }
+.dd-app.dd-open { transform: none; visibility: visible; transition: transform .22s ease; }
+.dd-app h2 { display: flex; align-items: center; gap: 10px; font-family: 'Inter', sans-serif; font-size: 21px; font-weight: 800; line-height: 1.25; margin: 0 0 6px; color: var(--teal); }
+.dd-app h2 img { width: 34px; height: 34px; border-radius: 9px; }
+.dd-app-x { margin-left: auto; align-self: flex-start; border: 0; background: none; font-size: 28px; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 0 4px; }
+.dd-app-lead { font-size: 15px; line-height: 1.6; margin: 0 0 14px; color: var(--text-mid); }
+.dd-app-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.dd-app-scrim { position: fixed; inset: 0; z-index: 100000; background: rgba(10,18,32,.45); opacity: 0; pointer-events: none; transition: opacity .2s; }
+.dd-app-scrim.dd-open { opacity: 1; pointer-events: auto; }
+.dd-app-tab { position: fixed; z-index: 9996; left: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 12px 7px; border: 0; border-radius: 0 12px 12px 0; background: #0e4a50; color: #fff; cursor: pointer; box-shadow: 4px 6px 20px rgba(15,30,46,.25); }
+.dd-app-tab:hover { background: #1a6b72; }
+.dd-app-tab img { border-radius: 6px; }
+.dd-app-tab span { writing-mode: vertical-rl; transform: rotate(180deg); font: 700 13px Inter, system-ui, sans-serif; letter-spacing: .04em; }
+@media (max-width: 640px) {
+  .dd-app-tab { top: auto; left: 24px; bottom: calc(136px + env(safe-area-inset-bottom, 0px)); transform: none; width: 44px; height: 44px; padding: 0; border-radius: 50%; justify-content: center; }
+  .dd-app-tab span { display: none; } .dd-app-tab img { width: 30px; height: 30px; border-radius: 8px; }
+  .dd-standalone .dd-app-tab { margin-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+}
+@media print { .dd-app, .dd-app-tab, .dd-app-scrim { display: none !important; } }
 .dd-app-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; background: var(--bg); }
 .dd-app-card h3 { font-family: 'Inter', sans-serif; font-size: 15.5px; margin: 0 0 8px; color: var(--text); }
 .dd-app-card p { font-size: 14px; line-height: 1.6; color: var(--text-mid); margin: 0 0 10px; }
@@ -1644,7 +1664,46 @@ if(standalone()&&!document.querySelector('.dd-appbar')){
     if(sq){e.preventDefault();sq.scrollIntoView({block:'center'});sq.focus();}});
 }
 if(location.hash==='#search'){var sq0=document.getElementById('dd-sq');if(sq0){sq0.scrollIntoView({block:'center'});try{sq0.focus();}catch(e){}}}
-var box=document.getElementById('dd-app');
+var ICON='/images/app/dosis-192.png',tabEl=null;
+function drawer(){
+  var old=document.getElementById('dd-app');if(old)old.parentNode.removeChild(old);
+  var b=document.createElement('aside');b.className='dd-app no-print';b.id='dd-app';b.setAttribute('aria-labelledby','dd-app-h');b.setAttribute('aria-hidden','true');
+  b.innerHTML='<h2 id="dd-app-h"><img src="'+ICON+'" alt="">Dosis: the Drug Index as an app<button type="button" class="dd-app-x" aria-label="Close">&times;</button></h2>'
+   +'<p class="dd-app-lead">Dosis keeps the Drug Index on this device: install it like an app, and download it once so every drug page opens where there is no signal (wards, basements, the dialysis unit).</p>'
+   +'<div class="dd-app-grid"><div class="dd-app-card"><h3>Install on your phone or computer</h3>'
+   +'<p data-app="hint">Add Dosis to your home screen from your browser menu (<strong>Install app</strong> or <strong>Add to Home Screen</strong>). It opens full screen, like an app.</p>'
+   +'<button type="button" class="dd-btn" data-app="install" hidden>Install the app</button>'
+   +'<ol class="dd-app-ios" data-app="iossteps" hidden><li>In <strong>Safari</strong>, tap the <strong>&#8801;</strong> icon at the left end of the address bar (iPad) or the <strong>&#8943;</strong> button (iPhone). On versions before iOS 26, tap the <strong>Share</strong> button (a square with an arrow pointing up) and skip to step 3.</li>'
+   +'<li>Tap <strong>Share</strong>.</li><li>Tap <strong>Add to Home Screen</strong>. If you don\'t see it, scroll down or tap <strong>View More</strong>.</li>'
+   +'<li>Keep <strong>Open as Web App</strong> switched on, then tap <strong>Add</strong>.</li>'
+   +'<li>Open <strong>Dosis</strong> from your Home Screen, tap the <strong>Dosis</strong> button on the left, then <strong>Download the complete Drug Index</strong>. Download inside the Home Screen app, not in a Safari tab: the two keep separate storage, and only the app\'s copy works offline.</li></ol></div>'
+   +'<div class="dd-app-card" data-app="off"><h3>Offline use</h3>'
+   +'<p>Once loaded, search and the browse lists work without signal, and every drug page you open is kept on this device. For reliable use where there is no signal, download the complete Drug Index once:</p>'
+   +'<div class="dd-app-opt"><button type="button" class="dd-btn" data-app="dl">Download the complete Drug Index</button>'
+   +'<span class="dd-app-meta" data-app="meta">Every drug, drug class and supplement page</span></div>'
+   +'<p class="dd-app-warn" data-app="iosnote" hidden><strong>iPhone and iPad:</strong> add Dosis to your Home Screen first, then open it from there and download. Safari and the Home Screen app keep separate storage, so pages downloaded in a Safari tab do not carry over, and Safari may clear them after a week without a visit. The Home Screen app keeps them.</p>'
+   +'<p class="dd-note" data-app="status" aria-live="polite"></p><progress data-app="bar" max="1" value="0" hidden></progress>'
+   +'<button type="button" class="dd-btn dd-btn-ghost" data-app="rm" hidden>Remove downloaded pages</button>'
+   +'<p class="dd-note">Use Wi-Fi for the full set and keep this page open while it downloads. If it stops, tap the button again: pages already saved are kept. Updates download only the pages that changed. Saved pages also refresh each time you open them online; check a page\'s &ldquo;Last updated&rdquo; date before relying on it offline, and verify doses against the current Philippine package insert.</p></div></div>';
+  var sc=document.createElement('div');sc.className='dd-app-scrim no-print';
+  var tb=document.createElement('button');tb.type='button';tb.className='dd-app-tab no-print';tabEl=tb;
+  tb.setAttribute('aria-label','Open Dosis: install the Drug Index app and download it for use without signal');tb.setAttribute('aria-controls','dd-app');tb.setAttribute('aria-expanded','false');
+  tb.innerHTML='<img src="'+ICON+'" alt="" width="26" height="26"><span>Dosis</span>';
+  document.body.appendChild(sc);document.body.appendChild(b);document.body.appendChild(tb);
+  function op(){b.classList.add('dd-open');sc.classList.add('dd-open');b.setAttribute('aria-hidden','false');tb.setAttribute('aria-expanded','true');b.querySelector('.dd-app-x').focus();}
+  function cl(){b.classList.remove('dd-open');sc.classList.remove('dd-open');b.setAttribute('aria-hidden','true');tb.setAttribute('aria-expanded','false');
+    if(location.hash==='#dd-app')try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}}
+  tb.addEventListener('click',function(){b.classList.contains('dd-open')?cl():op();});
+  b.querySelector('.dd-app-x').addEventListener('click',function(){cl();tb.focus();});
+  sc.addEventListener('click',cl);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&b.classList.contains('dd-open')){cl();tb.focus();}});
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href$="#dd-app"]');if(!a)return;e.preventDefault();op();});
+  window.addEventListener('hashchange',function(){if(location.hash==='#dd-app')op();});
+  if(location.hash==='#dd-app')setTimeout(op,300);
+  return b;
+}
+function tabLabel(t){if(tabEl)tabEl.querySelector('span').textContent=t;}
+var box=document.body?drawer():null;
 function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
 function q(n){return box?box.querySelector('[data-app="'+n+'"]'):null;}
 function showInstall(){
@@ -1685,7 +1744,9 @@ function status(){
     if(x&&x.usage&&!busy)st.textContent=msg+' Using about '+num(Math.max(1,Math.round(x.usage/1e6)))+' MB on this device.';}).catch(function(){});
 }
 status();
-if(navigator.onLine!==false)manifest().then(function(m){cur=m;if(!busy)status();},function(){});
+function sizes(m){var b=0;m.pages.forEach(function(p){b+=p[2];});var r5=function(x){return Math.max(5,Math.round(x/1e6/5)*5);};
+  var e=q('meta');if(e)e.textContent='Every drug, drug class and supplement page · about '+r5(b*0.25)+' MB to download, '+r5(b)+' MB on the device';}
+if(navigator.onLine!==false)manifest().then(function(m){cur=m;sizes(m);if(!busy)status();},function(){});
 
 function run(){
   if(busy)return;
@@ -1722,17 +1783,17 @@ function run(){
           return res.blob().then(function(bl){return c.put(u,new Response(bl,{headers:{
             'Content-Type':json?'application/json':'text/html; charset=utf-8','X-RCM-Hash':p[1]}}));});
         }).then(function(){ok++;if(ok%40===0)save();},function(){failed++;})
-          .then(function(){bar.value=ok;st.textContent='Saving '+num(ok)+' of '+num(total)+' pages… keep this page open.';return next();});
+          .then(function(){bar.value=ok;st.textContent='Saving '+num(ok)+' of '+num(total)+' pages… keep this page open.';tabLabel('Saving '+Math.floor(ok*100/total)+'%');return next();});
       }
       save();
       return Promise.all([next(),next(),next(),next(),next(),next()]);
     });
   }).then(function(){
     setRec({v:3,n:ok,total:total,at:Date.now(),h:failed?'':m.h,done:!failed});
-    busy=false;bar.hidden=true;status();
+    busy=false;bar.hidden=true;status();tabLabel('Dosis');
     if(failed)st.textContent=num(failed)+' pages could not be saved. Tap the button again on a better connection to finish.';
   }).catch(function(err){
-    busy=false;bar.hidden=true;status();
+    busy=false;bar.hidden=true;status();tabLabel('Dosis');
     st.textContent=(err&&err.msg)||'The download stopped. Check your connection and tap the button again; pages already saved are kept.';
   }).then(function(){try{if(lock)lock.release();}catch(e){}});
 }
@@ -5337,42 +5398,6 @@ Search by brand, generic, class, indication, manufacturer or registration number
 <nav class="dd-alpha" id="dd-alpha" aria-label="Filter by first letter">{btns}</nav>
 <div id="dd-az" role="tabpanel" aria-labelledby="dd-tab-generic">{secs}</div>
 <div id="dd-view" role="tabpanel" aria-labelledby="dd-tab-generic" hidden data-src="/drugs/browse.json?v={ASSET_VERSION}" data-brands="/drugs/browse-brands.json?v={ASSET_VERSION}"></div>
-<section class="dd-app no-print" id="dd-app" aria-labelledby="dd-app-h">
-<h2 id="dd-app-h">Dosis: use the Drug Index as an app</h2>
-<div class="dd-app-grid">
-<div class="dd-app-card">
-<h3>Install on your phone or computer</h3>
-<p data-app="hint">Add Dosis to your home screen from your browser menu (<strong>Install app</strong> or <strong>Add to Home Screen</strong>).
-It opens full screen, like an app.</p>
-<button type="button" class="dd-btn" data-app="install" hidden>Install the app</button>
-<ol class="dd-app-ios" data-app="iossteps" hidden>
-<li>In <strong>Safari</strong>, tap the <strong>&#8801;</strong> icon at the left end of the address bar (iPad) or the <strong>&#8943;</strong> button
-(iPhone). On versions before iOS 26, tap the <strong>Share</strong> button (a square with an arrow pointing up) and skip to step 3.</li>
-<li>Tap <strong>Share</strong>.</li>
-<li>Tap <strong>Add to Home Screen</strong>. If you don't see it, scroll down or tap <strong>View More</strong>.</li>
-<li>Keep <strong>Open as Web App</strong> switched on, then tap <strong>Add</strong>.</li>
-<li>Open <strong>Dosis</strong> from your Home Screen, tap <strong>Set up offline use</strong>, then <strong>Download the complete Drug
-Index</strong>. Download inside the Home Screen app, not in a Safari tab: the two keep separate storage, and only the app's copy works offline.</li>
-</ol>
-</div>
-<div class="dd-app-card" data-app="off">
-<h3>Offline use</h3>
-<p>Once loaded, search and the browse lists work without signal, and every drug page you open is kept on this device.
-For reliable use where there is no signal (wards, basements, the dialysis unit), download the complete Drug Index once:</p>
-<div class="dd-app-opt"><button type="button" class="dd-btn" data-app="dl">Download the complete Drug Index</button>
-<span class="dd-app-meta">Every drug, drug class and supplement page · about {oa["dl"]} MB to download, {oa["store"]} MB on the device</span></div>
-<p class="dd-app-warn" data-app="iosnote" hidden><strong>iPhone and iPad:</strong> add Dosis to your Home Screen first, then open it
-from there and download. Safari and the Home Screen app keep separate storage, so pages downloaded in a Safari tab do not carry over,
-and Safari may clear them after a week without a visit. The Home Screen app keeps them.</p>
-<p class="dd-note" data-app="status" aria-live="polite"></p>
-<progress data-app="bar" max="1" value="0" hidden></progress>
-<button type="button" class="dd-btn dd-btn-ghost" data-app="rm" hidden>Remove downloaded pages</button>
-<p class="dd-note">Use Wi-Fi for the full set and keep this page open while it downloads. If it stops, tap the button again: pages
-already saved are kept. Updates download only the pages that changed. Saved pages also refresh each time you open them online;
-check a page's "Last updated" date before relying on it offline, and verify doses against the current Philippine package insert.</p>
-</div>
-</div>
-</section>
 <div class="disclaimer" role="note"><strong>For health professionals.</strong> Product data come from the FDA Philippines registration
 database and may lag behind the official record; verify on <a href="{FDA_VERIFY_URL}" rel="noopener" target="_blank">verification.fda.gov.ph</a>
 and the current Philippine package insert. Not a substitute for clinical judgment.</div>

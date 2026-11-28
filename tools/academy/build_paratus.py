@@ -142,6 +142,13 @@ def main():
         f = OUT / n
         if not f.exists() or f.read_text(encoding="utf-8") != text:
             f.write_text(text, encoding="utf-8")
+    # the Academy's own emergency pages carry the Paratus drawer too (download there; install in /paratus/)
+    for n in names:
+        f = ACADEMY / n; t = f.read_text(encoding="utf-8")
+        u = re.sub(r'\n?<script src="/assets/paratus(?:\.[0-9a-f]{10})?\.js" defer></script>', "", t)
+        i = u.rfind("</body>"); u = u[:i] + f'<script src="/assets/{js}" defer></script>\n' + u[i:]
+        if u != t:
+            f.write_text(u, encoding="utf-8")
     (OUT / "paratus-offline.json").write_text(json.dumps(doc, separators=(",", ":")), encoding="utf-8")
     (OUT / "paratus.webmanifest").write_text(json.dumps(MANIFEST, indent=1) + "\n", encoding="utf-8")
     (OUT / "paratus-sw.js").write_text(SW_JS.replace("__V__", hashlib.sha1(SW_JS.encode()).hexdigest()[:10]), encoding="utf-8")
