@@ -21,7 +21,8 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
 DIRS = ["guides", "academy"]
-CSS = ('<style id="vtrim-css">.hero-vignette.vtrim img{transform:scale(var(--vt,1.14));transform-origin:50% 50%}'
+CSS = ('<style id="vtrim-css">.hero-vignette{border-color:transparent!important}'
+       '.hero-vignette.vtrim img{transform:scale(var(--vt,1.14));transform-origin:50% 50%}'
        '@media print{.hero-vignette.vtrim img{transform:none}}</style>')
 BLOCK = re.compile(r'<div class="hero-vignette(?: vtrim)?"(?: style="--vt:[0-9.]+")?>(.*?)</div>', re.S)
 _cache = {}
@@ -39,13 +40,14 @@ def margin_scale(path):
         sw, sh = im.size
         px = im.load()
 
-        # Walk in from the edge along 16 directions to the first pixel that is not margin white; the disc radius is
-        # the median, so a bright sky or ceiling in one direction does not count as margin.
+        # Walk in from the edge along 32 directions to the first pixel that is not margin white, fit a circle to those
+        # edge points (dropping outliers: a bright sky or ceiling reads as margin in some directions), and scale so the
+        # disc the page draws (centered on the image) stays inside the photo circle even when that circle is off-center.
         import math
         cx, cy, half = sw / 2, sh / 2, min(sw, sh) / 2
-        radii = []
-        for k in range(16):
-            a = k * math.pi / 8
+        pts = []
+        for k in range(32):
+            a = k * math.pi / 16
             dx, dy = math.cos(a), math.sin(a)
             r = half - 1
             while r > half * 0.5:
@@ -53,12 +55,31 @@ def margin_scale(path):
                 if 0 <= x < sw and 0 <= y < sh and px[x, y] < 248:
                     break
                 r -= 1
-            radii.append(r)
-        radii.sort()
-        r = (radii[7] + radii[8]) / 2
-        m = (half - r) / (2 * half)
-        if m >= 0.03:
-            sc = round(min(1.35, half / r * 1.02), 3)
+            pts.append((cx + dx * r, cy + dy * r))
+
+        def fit(ps):
+            n = len(ps); sx = sum(p[0] for p in ps) / n; sy = sum(p[1] for p in ps) / n
+            u = [(p[0] - sx, p[1] - sy) for p in ps]
+            suu = sum(a * a for a, b in u); svv = sum(b * b for a, b in u); suv = sum(a * b for a, b in u)
+            suuu = sum(a ** 3 for a, b in u); svvv = sum(b ** 3 for a, b in u)
+            suvv = sum(a * b * b for a, b in u); svuu = sum(b * a * a for a, b in u)
+            det = suu * svv - suv * suv
+            if abs(det) < 1e-9:
+                return sx, sy, half
+            uc = (0.5 * (suuu + suvv) * svv - 0.5 * (svvv + svuu) * suv) / det
+            vc = (0.5 * (svvv + svuu) * suu - 0.5 * (suuu + suvv) * suv) / det
+            return uc + sx, vc + sy, math.sqrt(uc * uc + vc * vc + (suu + svv) / n)
+        ps = pts
+        for _ in range(4):
+            fx, fy, fr = fit(ps)
+            keep = [p for p in ps if abs(math.hypot(p[0] - fx, p[1] - fy) - fr) < half * 0.03]
+            if len(keep) < 12 or len(keep) == len(ps):
+                break
+            ps = keep
+        fx, fy, fr = fit(ps)
+        need = fr - math.hypot(fx - cx, fy - cy)       # largest centered disc inside the photo circle
+        if need < half * 0.993 and need > half * 0.6:
+            sc = round(min(1.4, half / need * 1.02), 3)
     except Exception:
         sc = None
     _cache[path] = sc
@@ -89,7 +110,7 @@ def patch(text, page):
         open_tag = f'<div class="hero-vignette vtrim" style="--vt:{sc}">' if sc else '<div class="hero-vignette">'
         return open_tag + whole[whole.index(">") + 1:]
     new = BLOCK.sub(sub, text)
-    has = "vtrim" in re.sub(r'<style id="vtrim-css">.*?</style>', "", new, flags=re.S)
+    has = 'class="hero-vignette' in new   # every vignette page: no white outline either (Nov 28 2026)
     new = re.sub(r'<style id="vtrim-css">.*?</style>\n?', "", new, flags=re.S)
     if has:
         new = new.replace("</head>", CSS + "\n</head>", 1)

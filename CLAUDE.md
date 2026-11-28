@@ -830,7 +830,7 @@ dual-mode clinical sections), not part of the default rollout.
 inside a white border (the circle fills ~84–90% of the square), and the page draws its own disc, so the border showed as a thick
 white ring. `patch_vignette_trim.py` (guides/ + academy/; run by the sitemap workflow and `publish_academy.py`; `--check`) measures
 each hero image and adds `class="hero-vignette vtrim" style="--vt:<scale>"` plus `<style id="vtrim-css">` in the head, so the
-picture is scaled until the photo fills the disc; full-bleed art and `.zoom` heroes are left alone. Re-measures on every run.
+picture is scaled until the photo fills the disc (it fits a circle to the photo's edge in 32 directions, so off-center circles and bright skies are handled); full-bleed art and `.zoom` heroes are left alone, and the disc's faint white outline is removed on every vignette page. Re-measures on every run.
 
 **Circular-vignette hero placement (convention).** On desktop (≥821px) a guide's circular
 vignette (`figure.hero-figure > .hero-vignette`) renders as an **oversized disc that bleeds
