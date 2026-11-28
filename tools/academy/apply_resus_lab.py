@@ -350,7 +350,7 @@ def ready_main():
     <div class="rl-colh r1">Resuscitation: the arrest at the chair</div><div class="rl-colh r2">Disasters: events that harm many patients at once</div>
     <a class="rl-panel o2" href="{HUB}.html">{tile(HUB + "-card.webp")}<small>Learn</small><b>Dialysis Team Resuscitation Lab</b><span>Thirteen modules: the basic algorithms, algorithm recognition, BLS at the chair, adult ACLS-aligned care, arrest on the machine, hyperkalemia, children, ROSC and the team.</span></a>
     <a class="rl-panel dis o5" href="{DHUB}.html">{tile(DHUB + "-card.webp")}<small>Learn</small><b>Disaster Preparedness and Response</b><span>Twelve modules: why disasters hurt dialysis patients twice, the unit plan and command, ready patients, typhoons and floods, earthquakes, fire, power and water, heat and ashfall, keeping everyone dialyzed, reopening and drills.</span></a>
-    <a class="rl-panel prac o3" href="{PRACTICE}">{tile(HUB + "-practice-card.webp")}<small>Practice</small><b>Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for resuscitation drills.</span></a>
+    <a class="rl-panel prac o3" href="{PRACTICE}">{tile(HUB + "-practice-card.webp")}<small>Practice</small><b>Megacode Practice Lab</b><span>Algorithm recognition rounds, timed megacodes, and a facilitator recorder with a shared monitor display for resuscitation drills.</span></a>
     <a class="rl-panel prac o6" href="{DPRACTICE}">{tile(DHUB + "-practice-card.webp")}<small>Practice</small><b>Disaster drills</b><span>A tabletop simulator with timed injects, a call-down drill timer, and a printable evacuation and patient-accounting sheet.</span></a>
   </div>
 {draft_cards_note()}
@@ -544,12 +544,12 @@ def practice_main(rec, cases):
     mc = "".join(f'<li><a href="{c["page"]}#sim">{c["title"]}</a> <small>(Module {int(c["page"].split("-")[2])})</small></li>' for c in cases)
     rec_j = json.dumps(rec, ensure_ascii=False).replace("</", "<\\/")
     cases_j = json.dumps(cases, ensure_ascii=False).replace("</", "<\\/")
-    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><span class="nc-cur">Practice Lab</span>', 'Practice <em>Lab</em>', 'Recognize the algorithm, run the megacode, record the drill')}
+    return f"""{hero(f'<a href="{READY}">Emergency Readiness</a><span class="nc-sep">›</span><span class="nc-cur">Megacode Practice Lab</span>', 'Megacode Practice <em>Lab</em>', 'Recognize the algorithm, run the megacode, record the drill')}
 {CSS}
 <main class="container rl-main">
 <section class="section" id="sample">
   <div class="section-tag">Start here &middot; a sample case</div>
-  <h2>How to use the Practice Lab: collapse at Station 7</h2>
+  <h2>How to use the Megacode Practice Lab: collapse at Station 7</h2>
   <p>One fictional event, run through the three tools in the order a team uses them. Tuesday, 9:40 a.m.: Mr. Arnel Gutierrez, 61, two hours into dialysis, collapses in the chair. First you learn to name the algorithm, then you run the event against the clock, then the unit drills it together and debriefs from the log.</p>
   <div class="rl-sample-box"><ol class="rl-steps">
     <li><b>Recognize the algorithm.</b> Recognition rounds mix six kinds of item. Below is one of each, fully answered, with the reason for every choice: what Practice mode shows you after each answer.
@@ -697,7 +697,7 @@ html[data-theme="dark"] .erd-card.erd-act b{{color:#f4a3a3;}}
 <a class="erd-card" href="{HUB}.html"><b>Dialysis Team Resuscitation Lab</b><span class="t">A BLS-, ALS- and PALS-aligned review with algorithm recognition and megacodes, built around the patient who collapses on the machine.</span></a>
 <a class="erd-card" href="{DHUB}.html"><b>Disaster Preparedness and Response</b><span class="t">Typhoons, earthquakes, fire, power and water, keeping everyone dialyzed until the unit reopens.</span></a>
 <h3 class="erd-k">Practice</h3>
-<a class="erd-card" href="{PRACTICE}"><b>Practice Lab</b><span class="t">Algorithm recognition rounds, timed megacodes and a facilitator recorder for resuscitation drills.</span></a>
+<a class="erd-card" href="{PRACTICE}"><b>Megacode Practice Lab</b><span class="t">Algorithm recognition rounds, timed megacodes and a facilitator recorder for resuscitation drills.</span></a>
 <a class="erd-card" href="{DPRACTICE}"><b>Disaster drills</b><span class="t">A tabletop simulator with timed injects, a call-down drill timer and a printable evacuation sheet.</span></a>
 <a class="erd-home" href="{READY}">Open the Emergency Readiness page &rarr;</a>{" <b>Draft, pending clinical sign-off.</b>" if DRAFT else ""}
 </aside>
@@ -725,7 +725,7 @@ def badge(hub, lvl):
     v = VERIFIED.get(hub, "Academy recommendation; confirm your unit&rsquo;s requirement.")
     return (f'{BS}\n<div class="alert alert-red" style="max-width:860px;margin:18px auto;"><div class="alert-body"><p style="margin:0;">'
             f'<strong>&#9889; Required readiness: {lvl}.</strong> {v} Practice it in <a href="{READY}" style="color:var(--teal);font-weight:600;">Emergency Readiness</a>: '
-            f'the quick cards, the <a href="{HUB}.html" style="color:var(--teal);font-weight:600;">Resuscitation Lab</a> and the Practice Lab.'
+            f'the quick cards, the <a href="{HUB}.html" style="color:var(--teal);font-weight:600;">Resuscitation Lab</a> and the Megacode Practice Lab.'
             f'{" Draft, pending clinical sign-off." if DRAFT else ""}</p></div></div>\n{BE}')
 
 
@@ -791,7 +791,7 @@ def main():
     write(ACADEMY / READY, draft_marks(kind="both", text=shell(new_land, "Emergency Readiness: Act, Learn, Practice · Renal Care Academy",
           "The Renal Care Academy Emergency Readiness section: Emergency Quick Cards, the Dialysis Team Resuscitation Lab, Disaster Preparedness and Response, and practice tools for unit drills.",
           SITE + READY[:-5], ready_main())), dry, changed)
-    write(ACADEMY / PRACTICE, draft_marks(shell(new_land, "Practice Lab: Algorithm Recognition and Megacodes · Renal Care Academy",
+    write(ACADEMY / PRACTICE, draft_marks(shell(new_land, "Megacode Practice Lab: Algorithm Recognition and Megacodes · Renal Care Academy",
           "Algorithm recognition rounds, timed megacodes and a facilitator recorder with a shared monitor display for dialysis team resuscitation drills.",
           SITE + PRACTICE[:-5], practice_main(rec, cases), tag)), dry, changed)
     # 2b. disaster drills page (tabletop simulator, call-down timer, evacuation sheet)

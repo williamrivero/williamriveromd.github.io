@@ -99,7 +99,7 @@ MODULE = {
                    ("Separates hyperkalemia with a pulse from hyperkalemic arrest and names the first action for each.", False),
                    ("Chooses the pediatric pathway for a child before puberty and says why.", False),
                ],
-               "placement": "Complete three recognition rounds in the Practice Lab and review every missed item with the charge nurse."},
+               "placement": "Complete three recognition rounds in the Megacode Practice Lab and review every missed item with the charge nurse."},
     "terms": [("Agonal breathing", "Gasping breaths from a brain without blood flow; not normal breathing."),
               ("PEA", "Pulseless electrical activity: an organized rhythm with no pulse."),
               ("Asystole", "No electrical activity, confirmed in more than one lead."),

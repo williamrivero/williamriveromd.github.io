@@ -48,7 +48,7 @@ MODULE = {
 <tr><td>Done</td><td>&ldquo;Epinephrine 1 milligram in, 10:43.&rdquo;</td></tr>
 <tr><td>Recorded</td><td>Recorder writes the time and calls the next dose due: &ldquo;Next epinephrine due 10:47.&rdquo;</td></tr>
 </tbody></table></div>
-<p>The recorder is not a passive scribe. The recorder keeps the clock, calls the two-minute checks and drug intervals, and keeps the timeline that the debrief and the handover depend on. In the case, the doubled epinephrine dose is the predictable result of orders given to the room, without a recorder calling the last dose. The facilitator recorder in the <a href="resuscitation-lab-practice.html">Practice Lab</a> produces a timestamped timeline in drills.</p>
+<p>The recorder is not a passive scribe. The recorder keeps the clock, calls the two-minute checks and drug intervals, and keeps the timeline that the debrief and the handover depend on. In the case, the doubled epinephrine dose is the predictable result of orders given to the room, without a recorder calling the last dose. The facilitator recorder in the <a href="resuscitation-lab-practice.html">Megacode Practice Lab</a> produces a timestamped timeline in drills.</p>
 {{key:Every order: a name, a read-back, a &ldquo;done&rdquo; with the time. The recorder keeps the clock and calls what is due next.}}
 """),
         ("ethics", "Code status and families", "Code status, families, and dignity", """
